@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public class Missing : Error
         {
             public Missing(Symbol container, string name, string metadataName, DiagnosticInfo? errorInfo, object? modelObject)
-                : base(container, name, metadataName, errorInfo, modelObject)
+                : base(container, name, metadataName, ErrorKind.Missing, errorInfo, default, false, modelObject)
             {
             }
         }

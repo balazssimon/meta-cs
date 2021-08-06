@@ -119,7 +119,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new Metadata.MetadataNamedTypeSymbol.Unsupported(container, name, metadataName, null, modelObject);
         }
 
-        public Symbol MakeMetadataErrorSymbol(string name, string metadataName, object modelObject, DiagnosticInfo? errorInfo = null)
+        public Symbol MakeMetadataErrorSymbol(string name, string metadataName, object? modelObject)
+        {
+            return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.None, null, default, false, modelObject);
+        }
+
+        public Symbol MakeMetadataErrorSymbol(string name, string metadataName, ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject)
         {
             var symbolType = _symbolFacts.GetSymbolType(modelObject);
             var pobj = _symbolFacts.GetParent(modelObject);
@@ -128,7 +133,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var generatedFactory = GetGeneratedSymbolFactory(symbolType);
             if (generatedFactory is not null)
             {
-                result = generatedFactory.CreateMetadataErrorSymbol(container, name, metadataName, modelObject, errorInfo);
+                result = generatedFactory.CreateMetadataErrorSymbol(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
             }
             if (result is not null) return result;
             return new Metadata.MetadataNamedTypeSymbol.Unsupported(container, name, metadataName, null, modelObject);

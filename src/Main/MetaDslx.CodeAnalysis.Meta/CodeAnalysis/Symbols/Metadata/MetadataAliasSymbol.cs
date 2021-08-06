@@ -185,16 +185,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public partial class Error
         {
-            public Error(Binder binder, DeclaredSymbol target, string aliasName, ImmutableArray<Location> locations) 
-                : base(binder, target, aliasName, locations, true)
+            private Symbol _container;
+
+            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported)
+                : base(null, name, null, Location.None, false, true)
             {
+                _container = container;
+                _name = name;
+                _metadataName = metadataName;
+                _kind = kind;
+                _errorInfo = errorInfo;
+                _candidateSymbols = candidateSymbols;
+                _unreported = unreported;
             }
 
-            public Error(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false) 
-                : base(binder, aliasName, aliasTargetName, location, isExtern, true)
-            {
-            }
-
+            public override Symbol ContainingSymbol => _container;
         }
     }
 }

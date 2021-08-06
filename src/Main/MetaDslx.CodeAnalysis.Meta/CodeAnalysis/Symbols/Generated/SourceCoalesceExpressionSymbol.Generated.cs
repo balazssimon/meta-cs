@@ -102,20 +102,77 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             private readonly string _name;
             private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
+            private readonly bool _unreported;
+            private ImmutableArray<DeclaredSymbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
 
-            public Error(Symbol container, MergedDeclaration declaration, DiagnosticInfo? errorInfo, object? modelObject = null)
+            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject)
                 : base(container, declaration, modelObject, true)
             {
                 _name = declaration.Name;
                 _metadataName = declaration.MetadataName;
+                _kind = kind;
                 _errorInfo = errorInfo;
+                _candidateSymbols = candidateSymbols;
+                _unreported = unreported;
             }
 
-            public sealed override bool IsError => true;
+            public Error AsUnreported()
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, ErrorInfo, CandidateSymbols, true, this.ModelObject);
+            }
+
+            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
+            {
+                return _kind == kind ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, CandidateSymbols, _unreported, this.ModelObject);
+            }
+
+            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<DeclaredSymbol> candidateSymbols)
+            {
+                return _kind == kind && CandidateSymbols == candidateSymbols ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, candidateSymbols, _unreported, this.ModelObject);
+            }
+
+            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols)
+            {
+                return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, errorInfo, candidateSymbols, _unreported, this.ModelObject);
+            }
+
+            public Error WithErrorInfo(DiagnosticInfo errorInfo)
+            {
+                return ErrorInfo == errorInfo ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo, CandidateSymbols, _unreported, this.ModelObject);
+            }
+
+            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject)
+            {
+                return new Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+            }
 
             public override string Name => _name;
 
             public override string MetadataName => _metadataName;
+
+            public sealed override bool IsError => true;
+
+            public bool IsUnreported => _unreported;
+
+            public MetaDslx.CodeAnalysis.Symbols.ErrorKind ErrorKind => _kind;
+
+            public ImmutableArray<DeclaredSymbol> CandidateSymbols
+            {
+                get
+                {
+                    if (_candidateSymbols.IsDefault)
+                    {
+                        System.Collections.Immutable.ImmutableInterlocked.InterlockedInitialize(ref _candidateSymbols, MakeCandidateSymbols());
+                    }
+                    return _candidateSymbols;
+                }
+            }
 
             public DiagnosticInfo? ErrorInfo
             {
@@ -129,9 +186,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
             }
 
+            public DiagnosticInfo? UseSiteDiagnosticInfo => _unreported ? ErrorInfo : null;
+
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
                 return null;
+            }
+
+            protected virtual ImmutableArray<DeclaredSymbol> MakeCandidateSymbols()
+            {
+                return ImmutableArray<DeclaredSymbol>.Empty;
             }
 
             protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)

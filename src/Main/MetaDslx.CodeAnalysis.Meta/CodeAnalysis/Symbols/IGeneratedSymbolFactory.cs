@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -9,8 +10,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public interface IGeneratedSymbolFactory
     {
         Symbol? CreateMetadataSymbol(Symbol container, object? modelObject);
-        Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo? errorInfo);
+        Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject);
         Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject);
-        Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, object? modelObject, DiagnosticInfo? errorInfo);
+        Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject);
     }
 }

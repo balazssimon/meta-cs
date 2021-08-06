@@ -142,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
         {
-            return new Metadata.MetadataNamedTypeSymbol.Error(this, emittedName.TypeName, emittedName.FullName, null, null);
+            return new Metadata.MetadataNamedTypeSymbol.Error(this, emittedName.TypeName, emittedName.FullName, ErrorKind.Missing, null, default, false, null);
         }
 
         public override ImmutableArray<AssemblyIdentity> ReferencedAssemblies => ImmutableArray<AssemblyIdentity>.Empty;

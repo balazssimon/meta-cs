@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public class Missing : Error
         {
             public Missing(Symbol container, string name, string metadataName, DiagnosticInfo? errorInfo, object? modelObject) 
-                : base(container, name, metadataName, errorInfo, modelObject)
+                : base(container, name, metadataName, ErrorKind.Missing, errorInfo, default, false, modelObject)
             {
             }
         }
@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public class Unsupported : Error
         {
             public Unsupported(Symbol container, string name, string metadataName, DiagnosticInfo? errorInfo, object? modelObject)
-                : base(container, name, metadataName, errorInfo, modelObject)
+                : base(container, name, metadataName, ErrorKind.Unsupported, errorInfo, default, false, modelObject)
             {
             }
         }
@@ -33,9 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         /// </summary>
         public class ExtendedError : Error
         {
-            private readonly bool _unreported;
             public readonly bool VariableUsedBeforeDeclaration;
-            private readonly ImmutableArray<DeclaredSymbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
             private readonly LookupResultKind _resultKind; // why the guessSymbols were wrong.
 
             internal ExtendedError(LanguageCompilation compilation, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
@@ -44,24 +42,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             }
 
             internal ExtendedError(DeclaredSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
-                : base(containingSymbol, name, metadataName, errorInfo, null)
+                : base(containingSymbol, name, metadataName, ErrorKind.None, errorInfo, default, unreported, null)
             {
                 Debug.Assert(((object)containingSymbol == null) || containingSymbol.IsError || containingSymbol is NamespaceOrTypeSymbol);
 
                 Debug.Assert(name != null);
                 Debug.Assert(unreported == false || errorInfo != null);
 
-                _unreported = unreported;
                 this.VariableUsedBeforeDeclaration = variableUsedBeforeDeclaration;
                 _resultKind = LookupResultKind.Empty;
             }
 
             private ExtendedError(DeclaredSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported, bool variableUsedBeforeDeclaration, ImmutableArray<DeclaredSymbol> candidateSymbols, LookupResultKind resultKind)
-                : base(containingSymbol, name, metadataName, errorInfo, null)
+                : base(containingSymbol, name, metadataName, ErrorKind.None, errorInfo, candidateSymbols, unreported, null)
             {
-                _unreported = unreported;
                 this.VariableUsedBeforeDeclaration = variableUsedBeforeDeclaration;
-                _candidateSymbols = candidateSymbols;
                 _resultKind = resultKind;
             }
 
@@ -78,15 +73,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             internal ExtendedError(DeclaredSymbol containingSymbol, ImmutableArray<DeclaredSymbol> candidateSymbols, LookupResultKind resultKind, DiagnosticInfo errorInfo, string metadataName, bool unreported = false)
                 : this(containingSymbol, candidateSymbols[0].Name, metadataName, errorInfo, unreported)
             {
-                _candidateSymbols = UnwrapErrorCandidates(candidateSymbols);
+                //_candidateSymbols = UnwrapErrorCandidates(candidateSymbols);
                 _resultKind = resultKind;
                 Debug.Assert(candidateSymbols.IsEmpty || resultKind != LookupResultKind.Viable, "Shouldn't use LookupResultKind.Viable with candidate symbols");
-            }
-
-            internal ExtendedError AsUnreported()
-            {
-                return this.Unreported ? this :
-                    new ExtendedError(this.ContainingDeclaration, this.Name, this.MetadataName, this.ErrorInfo, true, VariableUsedBeforeDeclaration, _candidateSymbols, _resultKind);
             }
 
             private static ImmutableArray<DeclaredSymbol> UnwrapErrorCandidates(ImmutableArray<DeclaredSymbol> candidateSymbols)
@@ -97,17 +86,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
             public LookupResultKind ResultKind => _resultKind;
 
-            public ImmutableArray<DeclaredSymbol> CandidateSymbols => _candidateSymbols.NullToEmpty();
-
-            public bool Unreported => _unreported;
-
             public override DiagnosticInfo GetUseSiteDiagnostic()
             {
-                if (_unreported)
-                {
-                    return this.ErrorInfo;
-                }
-
                 return null;
             }
 
@@ -123,7 +103,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 }
 
                 var other = t2 as ExtendedError;
-                if ((object)other == null || _unreported || other._unreported)
+                if ((object)other == null )
                 {
                     return false;
                 }
