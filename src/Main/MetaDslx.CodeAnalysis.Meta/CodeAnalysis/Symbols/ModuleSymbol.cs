@@ -278,7 +278,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
                 if (result is null || result.IsError || result is DeclaredSymbol declaredSymbol && !declaredSymbol.IsError && declaredSymbol.DeclaredAccessibility != Accessibility.Public)
                 {
-                    result = this.SymbolFactory.MakeMetadataErrorSymbol(modelObject ?? specialSymbolId);
+                    var name = this.Language.SymbolFacts.GetName(modelObject);
+                    result = this.SymbolFactory.MakeMetadataErrorSymbol(name, metadataName, modelObject ?? specialSymbolId);
                 }
                 RegisterDeclaredSpecialSymbol(specialSymbolId, ref result);
             }
@@ -321,7 +322,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     results.Add(symbol);
                 }
             }
-            var result = AssemblySymbol.SelectSingleModelSymbolResult(results, modelObject, this.SymbolFactory, false);
+            var name = this.Language.SymbolFacts.GetName(modelObject);
+            var metadataName = this.Language.SymbolFacts.GetMetadataName(modelObject);
+            var result = AssemblySymbol.SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.SymbolFactory, false);
             results.Free();
             return result;
         }

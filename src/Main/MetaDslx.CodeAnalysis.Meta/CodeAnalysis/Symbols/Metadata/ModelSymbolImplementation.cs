@@ -57,6 +57,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public static T? AssignSymbolPropertyValue<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             if (symbol is ModuleSymbol || symbol is AssemblySymbol) return default;
+            if (symbolPropertyName == SymbolConstants.NameProperty)
+            {
+                return (T)(object)AssignNameProperty(symbol, diagnostics);
+            }
             var values = ArrayBuilder<T>.GetInstance();
             try
             {
@@ -76,6 +80,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             var values = ArrayBuilder<T>.GetInstance();
             AssignSymbolProperty<T>(symbol, symbolPropertyName, values, false, diagnostics, cancellationToken);
             return values.ToImmutableAndFree();
+        }
+
+        private static string AssignNameProperty(Symbol symbol, DiagnosticBag diagnostics)
+        {
+            if (symbol is IModelSymbol msymbol && msymbol.ModelObject != null)
+            {
+                var symbolFacts = symbol.Language.SymbolFacts;
+                return symbolFacts.GetName(msymbol.ModelObject);
+            }
+            return string.Empty;
         }
 
         private static void AssignSymbolProperty<T>(Symbol symbol, string symbolPropertyName, ArrayBuilder<T> result, bool singleValue, DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -105,10 +119,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             if (value != null && !typeof(T).IsAssignableFrom(value.GetType()))
             {
-                if (symbolPropertyName != "Name")
-                {
-                    diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), value.GetType().ToString()));
-                }
+                diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), value.GetType().ToString()));
             }
             else if (value != null)
             {

@@ -117,15 +117,23 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public partial class Error : MetadataMethodSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
+            private readonly string _name;
+            private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
 
-            public Error(Symbol container, DiagnosticInfo? errorInfo, object? modelObject)
+            public Error(Symbol container, string name, string metadataName, DiagnosticInfo? errorInfo, object? modelObject)
                 : base(container, modelObject, true)
             {
+                _name = name;
+                _metadataName = metadataName;
                 _errorInfo = errorInfo;
             }
 
             public sealed override bool IsError => true;
+
+            public override string Name => _name;
+
+            public override string MetadataName => _metadataName;
 
             public DiagnosticInfo? ErrorInfo
             {
@@ -142,6 +150,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
                 return null;
+            }
+
+            protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _name;
             }
         }
     }

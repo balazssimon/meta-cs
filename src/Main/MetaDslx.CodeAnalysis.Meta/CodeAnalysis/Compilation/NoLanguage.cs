@@ -316,6 +316,11 @@ namespace MetaDslx.CodeAnalysis
                 throw new NotImplementedException();
             }
 
+            public override string GetMetadataName(object modelObject)
+            {
+                throw new NotImplementedException();
+            }
+
             public override object GetParent(object modelObject)
             {
                 throw new NotImplementedException();

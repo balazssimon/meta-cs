@@ -18,9 +18,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataArgumentSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataArgumentSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataArgumentSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -40,9 +40,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataAssignmentExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataAssignmentExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataAssignmentExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -62,9 +62,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataAwaitExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataAwaitExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataAwaitExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -84,9 +84,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataBinaryExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataBinaryExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataBinaryExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -106,9 +106,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataCoalesceExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataCoalesceExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataCoalesceExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -128,9 +128,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataCompoundAssignmentExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataCompoundAssignmentExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataCompoundAssignmentExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -150,9 +150,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConditionalExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataConditionalExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataConditionalExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -172,9 +172,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConversionExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataConversionExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataConversionExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -194,9 +194,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDefaultValueExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataDefaultValueExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataDefaultValueExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -216,9 +216,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDiscardExpressionSymbol(container);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataDiscardExpressionSymbol.Error(container, errorInfo);
+            return new Metadata.MetadataDiscardExpressionSymbol.Error(container, name, metadataName, errorInfo);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -238,9 +238,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDynamicExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataDynamicExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataDynamicExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -260,9 +260,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIncrementOrDecrementExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataIncrementOrDecrementExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataIncrementOrDecrementExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -282,9 +282,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIndexerAccessExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataIndexerAccessExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataIndexerAccessExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -304,9 +304,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataInstanceReferenceExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataInstanceReferenceExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataInstanceReferenceExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -326,9 +326,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataInvocationExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataInvocationExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataInvocationExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -348,9 +348,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIsTypeExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataIsTypeExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataIsTypeExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -370,9 +370,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLambdaExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataLambdaExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataLambdaExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -392,9 +392,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLiteralExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataLiteralExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataLiteralExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -414,9 +414,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataMemberReferenceExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataMemberReferenceExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataMemberReferenceExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -436,9 +436,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNameOfExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataNameOfExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataNameOfExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -458,9 +458,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataObjectCreationExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataObjectCreationExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataObjectCreationExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -480,9 +480,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataParenthesizedExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataParenthesizedExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataParenthesizedExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -502,9 +502,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataReferenceExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataReferenceExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataReferenceExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -524,9 +524,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataSizeOfExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataSizeOfExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataSizeOfExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -546,9 +546,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataThrowExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataThrowExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataThrowExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -568,9 +568,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTupleExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataTupleExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataTupleExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -590,9 +590,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTypeOfExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataTypeOfExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataTypeOfExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -612,9 +612,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataUnaryExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataUnaryExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataUnaryExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -634,9 +634,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataVariableDeclarationExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataVariableDeclarationExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataVariableDeclarationExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -656,9 +656,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataVariableDeclarationGroupExpressionSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataVariableDeclarationGroupExpressionSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataVariableDeclarationGroupExpressionSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -678,9 +678,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataBinaryOperatorSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataBinaryOperatorSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataBinaryOperatorSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -700,9 +700,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConstructorSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataConstructorSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataConstructorSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -722,9 +722,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConversionOperatorSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataConversionOperatorSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataConversionOperatorSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -744,9 +744,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDestructorSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataDestructorSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataDestructorSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -766,9 +766,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataFieldSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataFieldSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataFieldSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -788,9 +788,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIndexerSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataIndexerSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataIndexerSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -810,9 +810,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLambdaSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataLambdaSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataLambdaSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -832,9 +832,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataMemberSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataMemberSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataMemberSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -854,9 +854,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataMethodSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataMethodSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataMethodSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -876,9 +876,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataParameterSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataParameterSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataParameterSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -898,9 +898,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataPropertySymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataPropertySymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataPropertySymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -920,9 +920,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataUnaryOperatorSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataUnaryOperatorSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataUnaryOperatorSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -942,7 +942,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             throw new NotImplementedException("CreateMetadataSymbol for MetadataAliasSymbol should be implemented in a custom SymbolFactory.");
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
             throw new NotImplementedException("CreateMetadataSymbol for MetadataAliasSymbol should be implemented in a custom SymbolFactory.");
         }
@@ -964,9 +964,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNamespaceSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataNamespaceSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataNamespaceSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -986,9 +986,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataBlockStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataBlockStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataBlockStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1008,9 +1008,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataCatchClauseSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataCatchClauseSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataCatchClauseSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1030,9 +1030,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDefaultCaseClauseSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataDefaultCaseClauseSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataDefaultCaseClauseSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1052,9 +1052,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataEmptyStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataEmptyStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataEmptyStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1074,9 +1074,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataExpressionStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataExpressionStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataExpressionStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1096,9 +1096,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataForEachLoopStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataForEachLoopStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataForEachLoopStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1118,9 +1118,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataForLoopStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataForLoopStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataForLoopStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1140,9 +1140,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataForToLoopStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataForToLoopStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataForToLoopStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1162,9 +1162,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIfStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataIfStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataIfStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1184,9 +1184,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataJumpStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataJumpStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataJumpStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1206,9 +1206,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLabelSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataLabelSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataLabelSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1228,9 +1228,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLockStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataLockStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataLockStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1250,9 +1250,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataReturnStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataReturnStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataReturnStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1272,9 +1272,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataSwitchCaseSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataSwitchCaseSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataSwitchCaseSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1294,9 +1294,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataSwitchStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataSwitchStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataSwitchStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1316,9 +1316,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTryStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataTryStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataTryStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1338,9 +1338,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataUsingStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataUsingStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataUsingStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1360,9 +1360,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataVariableSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataVariableSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataVariableSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1382,9 +1382,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataWhileLoopStatementSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataWhileLoopStatementSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataWhileLoopStatementSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1404,9 +1404,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataArrayTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataArrayTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataArrayTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1426,9 +1426,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataClassTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataClassTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataClassTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1448,9 +1448,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDelegateTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataDelegateTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataDelegateTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1470,9 +1470,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataEnumLiteralSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataEnumLiteralSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataEnumLiteralSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1492,9 +1492,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataEnumTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataEnumTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataEnumTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1514,9 +1514,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataInterfaceTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataInterfaceTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataInterfaceTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1536,9 +1536,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNamedTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataNamedTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataNamedTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1558,9 +1558,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNullableTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataNullableTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataNullableTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1580,9 +1580,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataPrimitiveTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataPrimitiveTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataPrimitiveTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1602,9 +1602,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataStructTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataStructTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataStructTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1624,9 +1624,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTupleTypeSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataTupleTypeSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataTupleTypeSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -1646,9 +1646,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTypeParameterSymbol(container, modelObject);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataTypeParameterSymbol.Error(container, errorInfo, modelObject);
+            return new Metadata.MetadataTypeParameterSymbol.Error(container, name, metadataName, errorInfo, modelObject);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)

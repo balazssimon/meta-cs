@@ -33,6 +33,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return mobj.MName;
         }
 
+        public override string GetMetadataName(object modelObject)
+        {
+            if (modelObject is not IModelObject mobj) return null;
+            return mobj.MName;
+        }
+
         public override object GetParent(object modelObject)
         {
             if (modelObject is not IModelObject mobj) return null;

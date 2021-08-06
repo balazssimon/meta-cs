@@ -72,11 +72,13 @@ namespace MetaDslx.Bootstrap.MetaModel
             var compiledModel = compilation.Model as MutableModel;
             Console.WriteLine(compiledModel);
 
-            var int32 = compilation.GetSpecialSymbol(SpecialType.System_Int32);
+            var int32 = compilation.Assembly.GetSpecialSymbol(SpecialType.System_Int32);
             Console.WriteLine(int32);
-            int32 = compilation.GetSpecialType(SpecialType.System_Int32);
+            int32 = compilation.Assembly.ResolveModelSymbol(MetaInstance.Int);
             Console.WriteLine(int32);
-            var mobj = compilation.GetSpecialSymbol(MetaInstance.ModelObject);
+            var mobj = compilation.Assembly.GetSpecialSymbol(MetaInstance.ModelObject);
+            Console.WriteLine(mobj);
+            mobj = compilation.Assembly.ResolveModelSymbol(MetaInstance.ModelObject);
             Console.WriteLine(mobj);
 
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;

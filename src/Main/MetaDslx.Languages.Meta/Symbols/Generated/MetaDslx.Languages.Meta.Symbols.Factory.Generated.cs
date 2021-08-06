@@ -18,9 +18,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Factory
             return new Metadata.MetadataAssociationSymbol(container);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
         {
-            return new Metadata.MetadataAssociationSymbol.Error(container, errorInfo);
+            return new Metadata.MetadataAssociationSymbol.Error(container, name, metadataName, errorInfo);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)

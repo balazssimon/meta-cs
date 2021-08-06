@@ -93,17 +93,25 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
 
-        public partial class Error : SourceReturnStatementSymbol
+        public partial class Error : SourceReturnStatementSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
-            private DiagnosticInfo? _errorInfo;
+            private readonly string _name;
+            private readonly string _metadataName;
+            private DiagnosticInfo _errorInfo;
 
             public Error(Symbol container, MergedDeclaration declaration, DiagnosticInfo? errorInfo, object? modelObject = null)
                 : base(container, declaration, modelObject, true)
             {
+                _name = declaration.Name;
+                _metadataName = declaration.MetadataName;
                 _errorInfo = errorInfo;
             }
 
             public sealed override bool IsError => true;
+
+            public override string Name => _name;
+
+            public override string MetadataName => _metadataName;
 
             public DiagnosticInfo? ErrorInfo
             {
@@ -120,6 +128,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
                 return null;
+            }
+
+            protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _name;
             }
         }
 	}

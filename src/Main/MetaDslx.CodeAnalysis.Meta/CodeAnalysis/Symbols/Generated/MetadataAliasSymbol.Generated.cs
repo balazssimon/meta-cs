@@ -10,7 +10,6 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using MetaDslx.CodeAnalysis.Binding;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
@@ -29,9 +28,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public partial class Error : MetadataAliasSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
+            private readonly string _name;
+            private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
 
+
             public sealed override bool IsError => true;
+
+            public override string Name => _name;
+
+            public override string MetadataName => _metadataName;
 
             public DiagnosticInfo? ErrorInfo
             {
@@ -48,6 +54,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
                 return null;
+            }
+
+            protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _name;
             }
         }
     }

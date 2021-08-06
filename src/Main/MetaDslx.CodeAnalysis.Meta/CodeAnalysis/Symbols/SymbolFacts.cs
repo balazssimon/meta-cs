@@ -23,6 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract bool ContainsObject(object model, object modelObject);
         public abstract IEnumerable<object> GetRootObjects(object model);
         public abstract string GetName(object modelObject);
+        public abstract string GetMetadataName(object modelObject);
         public abstract object GetParent(object modelObject);
         public abstract Type GetModelObjectType(object modelObject);
         public abstract IEnumerable<object> GetChildren(object modelObject);

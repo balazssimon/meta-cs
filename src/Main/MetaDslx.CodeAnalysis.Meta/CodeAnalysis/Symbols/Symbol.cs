@@ -71,14 +71,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual bool MangleName => this.Name != this.MetadataName;
 
-        /// <summary>
-        /// Gets corresponding special symbol id of this symbol.
-        /// </summary>
-        /// <remarks>
-        /// Not preserved in symbols constructed from this one.
-        /// </remarks>
-        public virtual object? SpecialSymbol => null;
-
         public virtual bool IsError => false;
 
         /// <summary>

@@ -115,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             else return new UnsupportedModelSymbol(container, modelObject);
         }
 
-        public Symbol MakeMetadataErrorSymbol(object modelObject, DiagnosticInfo? errorInfo = null)
+        public Symbol MakeMetadataErrorSymbol(string name, string metadataName, object modelObject, DiagnosticInfo? errorInfo = null)
         {
             var symbolType = _symbolFacts.GetSymbolType(modelObject);
             var pobj = _symbolFacts.GetParent(modelObject);
@@ -124,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var generatedFactory = GetGeneratedSymbolFactory(symbolType);
             if (generatedFactory is not null)
             {
-                result = generatedFactory.CreateMetadataErrorSymbol(container, modelObject, errorInfo);
+                result = generatedFactory.CreateMetadataErrorSymbol(container, name, metadataName, modelObject, errorInfo);
             }
             if (result is not null) return result;
             else return new UnsupportedModelSymbol(container, modelObject);

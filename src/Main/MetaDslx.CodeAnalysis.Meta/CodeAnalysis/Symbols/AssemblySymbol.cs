@@ -30,6 +30,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+        public override Language Language => Modules[0].Language;
+
         /// <summary>
         /// The system assembly, which provides primitive types like Object, String, etc., e.g. mscorlib.dll. 
         /// The value is provided by ReferenceManager and must not be modified. For SourceAssemblySymbol, non-missing 
@@ -383,8 +385,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     results.Add(symbol);
                 }
             }
-            var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId) ?? specialSymbolId;
-            var result = SelectSingleModelSymbolResult(results, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            string name;
+            string metadataName;
+            var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId);
+            if (modelObject is null)
+            {
+                modelObject = specialSymbolId;
+                metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : specialSymbolId.ToString();
+                name = specialSymbolId.ToString();
+            }
+            else
+            {
+                name = this.Language.SymbolFacts.GetName(modelObject);
+                metadataName = this.Language.SymbolFacts.GetMetadataName(modelObject);
+            }
+            var result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
             results.Free();
             return result!;
         }
@@ -400,7 +415,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     results.Add(symbol);
                 }
             }
-            var result = SelectSingleModelSymbolResult(results, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: true);
+            var name = this.Language.SymbolFacts.GetName(modelObject);
+            var metadataName = this.Language.SymbolFacts.GetMetadataName(modelObject);
+            var result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: true);
             results.Free();
             return result;
         }
@@ -418,18 +435,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     results.Add(symbol);
                 }
             }
-            result = SelectSingleModelSymbolResult(results, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            var name = this.Language.SymbolFacts.GetName(modelObject);
+            var metadataName = this.Language.SymbolFacts.GetMetadataName(modelObject);
+            result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
             results.Free();
             return result!;
         }
 
-        internal static Symbol? SelectSingleModelSymbolResult(ArrayBuilder<Symbol> results, object modelObject, SymbolFactory symbolFactory, bool nullIfNotFound)
+        internal static Symbol? SelectSingleModelSymbolResult(ArrayBuilder<Symbol> results, string name, string metadataName, object modelObject, SymbolFactory symbolFactory, bool nullIfNotFound)
         {
             var goodCount = results.Count(s => !s.IsError);
             var badCount = results.Count - goodCount;
             if (results.Count == 0)
             {
-                return nullIfNotFound ? null : symbolFactory.MakeMetadataErrorSymbol(modelObject);
+                return nullIfNotFound ? null : symbolFactory.MakeMetadataErrorSymbol(name, metadataName ?? name, modelObject);
             }
             else if (goodCount == 1)
             {
@@ -437,7 +456,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             else
             {
-                return symbolFactory.MakeMetadataErrorSymbol(modelObject);
+                return symbolFactory.MakeMetadataErrorSymbol(name, metadataName ?? name, modelObject);
             }
         }
 

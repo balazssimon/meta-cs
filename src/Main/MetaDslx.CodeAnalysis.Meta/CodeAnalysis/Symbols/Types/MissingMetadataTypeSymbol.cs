@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         protected readonly string metadataName;
 
         private MissingMetadataTypeSymbol(Symbol container, string name, int arity, object? modelObject)
-            : base(container, null, modelObject)
+            : base(container, name, name, null, modelObject)
         {
             Debug.Assert(name != null);
 

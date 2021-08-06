@@ -30,7 +30,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override string GetName(object modelObject)
         {
-            throw new NotImplementedException();
+            return null;
+        }
+
+        public override string GetMetadataName(object modelObject)
+        {
+            return null;
         }
 
         public override object GetParent(object modelObject)
