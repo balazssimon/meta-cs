@@ -19,6 +19,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -337,6 +338,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual ImmutableArray<AttributeData> GetAttributes()
         {
             return ImmutableArray<AttributeData>.Empty;
+        }
+
+        public virtual bool IsSpecialSymbol(object specialSymbolId)
+        {
+            if (specialSymbolId is null) throw new ArgumentNullException(nameof(specialSymbolId));
+            var metadataName = this.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbolId);
+            if (!string.IsNullOrEmpty(metadataName) && this.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == metadataName) return true;
+            var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId);
+            if (this is IModelSymbol modelSymbol)
+            {
+                if (modelObject is not null && modelObject.Equals(modelSymbol.ModelObject)) return true;
+                else return specialSymbolId.Equals(modelSymbol.ModelObject);
+            }
+            return false;
         }
 
         /// <summary>

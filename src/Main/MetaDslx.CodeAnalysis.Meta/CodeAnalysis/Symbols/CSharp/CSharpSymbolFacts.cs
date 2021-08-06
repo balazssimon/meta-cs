@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override Type GetModelObjectType(object modelObject)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override string GetName(object modelObject)
@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override object GetParent(object modelObject)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override IEnumerable<object> GetProperties(Type modelObjectType)
@@ -75,7 +75,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override Type GetSymbolType(Type modelObjectType)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override bool IsContainmentProperty(object property)

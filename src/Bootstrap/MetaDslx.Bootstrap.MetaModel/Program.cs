@@ -21,6 +21,10 @@ namespace MetaDslx.Bootstrap.MetaModel
         {
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
+            var coreAssembly = typeof(object).Assembly.Location;
+            var assemblyPath = Path.GetDirectoryName(coreAssembly);
+            var coreRef = MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll"));
+            Console.WriteLine(coreRef);
 
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
             string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
@@ -65,21 +69,27 @@ namespace MetaDslx.Bootstrap.MetaModel
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
-                AddReferences(SystemRuntimeAssemblies()).
+                AddReferences(coreRef).
                 AddReferences(ModelReference.CreateFromModel(coreModel)).
                 AddReferences(MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location)).
                 WithOptions(options);
             var compiledModel = compilation.Model as MutableModel;
             Console.WriteLine(compiledModel);
 
-            var int32 = compilation.Assembly.GetSpecialSymbol(SpecialType.System_Int32);
-            Console.WriteLine(int32);
+            var corLib = compilation.GetAssemblyOrModuleSymbol(coreRef) as AssemblySymbol;
+            var int32 = corLib.GetSpecialSymbol(SpecialType.System_Int32);
+            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialSymbol(MetaInstance.Int));
+            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialSymbol(MetaInstance.Long));
+            int32 = compilation.Assembly.GetSpecialSymbol(SpecialType.System_Int32);
+            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialSymbol(MetaInstance.Int));
+            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialSymbol(MetaInstance.Long));
             int32 = compilation.Assembly.ResolveModelSymbol(MetaInstance.Int);
-            Console.WriteLine(int32);
+            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialSymbol(MetaInstance.Int));
+            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialSymbol(MetaInstance.Long));
             var mobj = compilation.Assembly.GetSpecialSymbol(MetaInstance.ModelObject);
-            Console.WriteLine(mobj);
+            Console.WriteLine(mobj + " -> MetaInstance.ModelObject:" + mobj.IsSpecialSymbol(MetaInstance.ModelObject));
             mobj = compilation.Assembly.ResolveModelSymbol(MetaInstance.ModelObject);
-            Console.WriteLine(mobj);
+            Console.WriteLine(mobj + " -> MetaInstance.ModelObject:" + mobj.IsSpecialSymbol(MetaInstance.ModelObject));
 
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.TypeReference.SimpleType.ClassType.Qualifier.Identifier[0];
