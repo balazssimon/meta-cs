@@ -515,22 +515,44 @@ namespace [symbol.NamespaceName].Metadata
             private readonly string _name;
             private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
+            private readonly bool _unreported;
+            private readonly ImmutableArray<DeclaredSymbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
 ^
             [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
-            public Error(Symbol container, string name, string metadataName, DiagnosticInfo? errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
                 : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
                 _name = name;
                 _metadataName = metadataName;
+                _kind = kind;
                 _errorInfo = errorInfo;
+                _candidateSymbols = candidateSymbols;
+                _unreported = unreported;
             }
             [end if]
-^
-            public sealed override bool IsError => true;
 ^
             public override string Name => _name;
 ^
             public override string MetadataName => _metadataName;
+^
+            public sealed override bool IsError => true;
+^
+            public bool IsUnreported => _unreported;
+^
+            public MetaDslx.CodeAnalysis.Symbols.ErrorKind Kind => _kind;
+^
+            public ImmutableArray<DeclaredSymbol> CandidateSymbols
+            {
+                get
+                {
+                    if (_candidateSymbols.IsDefault)
+                    {
+                        System.Collections.Immutable.ImmutableInterlocked.InterlockedInitialize(ref _candidateSymbols, MakeCandidateSymbols(), null);
+                    }
+                    return _candidateSymbols;
+                }
+            }
 ^
             public DiagnosticInfo? ErrorInfo
             {
@@ -547,6 +569,11 @@ namespace [symbol.NamespaceName].Metadata
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
                 return null;
+            }
+^
+            protected virtual ImmutableArray<DeclaredSymbol> MakeCandidateSymbols()
+            {
+                return ImmutableArray<DeclaredSymbol>.Empty;
             }
 ^
             protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -691,27 +718,50 @@ namespace [symbol.NamespaceName].Source
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         public partial class Error : Source[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
             private readonly string _name;
             private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
+            private readonly bool _unreported;
+            private readonly ImmutableArray<DeclaredSymbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
 ^
-            [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
-            public Error(Symbol container, MergedDeclaration declaration, DiagnosticInfo? errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject = null[end if])
+            [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
                 : base(container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
                 _name = declaration.Name;
                 _metadataName = declaration.MetadataName;
+                _kind = kind;
                 _errorInfo = errorInfo;
+                _candidateSymbols = candidateSymbols;
+                _unreported = unreported;
             }
             [end if]
-^
-            public sealed override bool IsError => true;
 ^
             public override string Name => _name;
 ^
             public override string MetadataName => _metadataName;
+^
+            public sealed override bool IsError => true;
+^
+            public bool IsUnreported => _unreported;
+^
+            public MetaDslx.CodeAnalysis.Symbols.ErrorKind Kind => _kind;
+^
+            public ImmutableArray<DeclaredSymbol> CandidateSymbols
+            {
+                get
+                {
+                    if (_candidateSymbols.IsDefault)
+                    {
+                        System.Collections.Immutable.ImmutableInterlocked.InterlockedInitialize(ref _candidateSymbols, MakeCandidateSymbols(), null);
+                    }
+                    return _candidateSymbols;
+                }
+            }
 ^
             public DiagnosticInfo? ErrorInfo
             {
@@ -730,11 +780,17 @@ namespace [symbol.NamespaceName].Source
                 return null;
             }
 ^
+            protected virtual ImmutableArray<DeclaredSymbol> MakeCandidateSymbols()
+            {
+                return ImmutableArray<DeclaredSymbol>.Empty;
+            }
+^
             protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
                 return _name;
             }
         }
+        [end if]
         [end if]
 	}
 }

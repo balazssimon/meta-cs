@@ -288,13 +288,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal NamedTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
         {
             DiagnosticInfo diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CycleInTypeForwarder, emittedName.FullName, this.Name);
-            return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(this.Modules[0], ref emittedName, diagnosticInfo);
+            return new Metadata.MetadataNamedTypeSymbol.Error(this.Modules[0], this.Name, emittedName.FullName, diagnosticInfo, null);
         }
 
         internal NamedTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
         {
             var diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_TypeForwardedToMultipleAssemblies, forwardingModule, this, emittedName.FullName, destination1, destination2);
-            return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(forwardingModule, ref emittedName, diagnosticInfo);
+            return new Metadata.MetadataNamedTypeSymbol.Error(forwardingModule, this.Name, emittedName.FullName, diagnosticInfo, null);
         }
 
         /// <summary>
@@ -849,7 +849,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
         {
-            return !candidate.IsError || !(candidate is MissingMetadataTypeSymbol);
+            return !candidate.IsError || !(candidate is Metadata.MetadataNamedTypeSymbol.Missing);
         }
 
         /// <summary>

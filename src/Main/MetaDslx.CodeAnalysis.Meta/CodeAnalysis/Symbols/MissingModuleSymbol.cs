@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     {
         protected readonly AssemblySymbol assembly;
         protected readonly int ordinal;
-        protected readonly MissingNamespaceSymbol globalNamespace;
+        protected readonly NamespaceSymbol globalNamespace;
 
         public MissingModuleSymbol(AssemblySymbol assembly, int ordinal)
         {
@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             this.assembly = assembly;
             this.ordinal = ordinal;
-            globalNamespace = new MissingNamespaceSymbol(this);
+            globalNamespace = new Metadata.MetadataNamespaceSymbol.Missing(this, string.Empty, string.Empty, null, null);
         }
 
         public sealed override bool IsError => true;
@@ -142,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
         {
-            return new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName);
+            return new Metadata.MetadataNamedTypeSymbol.Error(this, emittedName.TypeName, emittedName.FullName, null, null);
         }
 
         public override ImmutableArray<AssemblyIdentity> ReferencedAssemblies => ImmutableArray<AssemblyIdentity>.Empty;

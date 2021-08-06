@@ -8,5 +8,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public interface IErrorSymbol
     {
         DiagnosticInfo? ErrorInfo { get; }
+        
     }
 }

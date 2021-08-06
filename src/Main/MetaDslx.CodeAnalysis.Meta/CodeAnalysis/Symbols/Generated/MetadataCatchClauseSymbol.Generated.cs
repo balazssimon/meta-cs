@@ -65,7 +65,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
         }
 
-        public partial class Error : MetadataCatchClauseSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
+        public partial class Error : MetadataCatchClauseSymbol, IErrorSymbol
         {
             private readonly string _name;
             private readonly string _metadataName;

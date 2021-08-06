@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     public abstract partial class ErrorTypeSymbol : NamedTypeSymbol
     {
-        internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
+        internal static readonly ErrorTypeSymbol UnknownResultType = null;
 
         public override bool IsError => true;
         public override bool IsStatic => false;

@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -165,7 +166,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private void AddCandidateSymbolsInErrorType(LookupCandidates result, LookupConstraints constraints)
         {
-            var errorType = (ErrorTypeSymbol)constraints.QualifierOpt;
+            var errorType = constraints.QualifierOpt as ExtendedErrorTypeSymbol;
             if (!errorType.CandidateSymbols.IsDefault && errorType.CandidateSymbols.Length == 1)
             {
                 // The dev11 IDE experience provided meaningful information about members of inaccessible types,

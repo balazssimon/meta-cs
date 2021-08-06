@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class UnsupportedCSharpSymbol : ErrorTypeSymbol
+    public sealed class UnsupportedCSharpSymbol : NamedTypeSymbol, IErrorSymbol
     {
         private Symbol _containingSymbol;
         private Microsoft.CodeAnalysis.CSharp.Symbol _symbol;
@@ -20,6 +20,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public ISymbol Symbol => _symbol.GetPublicSymbol();
 
+        public override bool IsError => true;
+
+        public override string Name => _symbol.Name;
+
+        public override string MetadataName => _symbol.MetadataName;
+
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
         public override Symbol ContainingSymbol => _containingSymbol;
@@ -28,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
-        public override DiagnosticInfo ErrorInfo => LanguageDiagnosticInfo.EmptyErrorInfo;
+        public DiagnosticInfo ErrorInfo => LanguageDiagnosticInfo.EmptyErrorInfo;
 
         public override void Accept(SymbolVisitor visitor)
         {

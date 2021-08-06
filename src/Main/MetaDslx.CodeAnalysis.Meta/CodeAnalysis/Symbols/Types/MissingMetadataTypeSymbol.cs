@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
-using MetaDslx.CodeAnalysis.Symbols.Error;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -263,7 +262,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
             }
 
-            /*public override SpecialType SpecialType
+            public SpecialType SpecialType
             {
                 get
                 {
@@ -272,7 +271,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
             }
 
-            public override object? SpecialSymbol => this.SpecialType;*/
+            public object? SpecialSymbol => this.SpecialType;
 
             public new DiagnosticInfo ErrorInfo
             {

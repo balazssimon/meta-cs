@@ -99,7 +99,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 result = generatedFactory.CreateMetadataSymbol(container, modelObject);
             }
             if (result is not null) return result;
-            else return new UnsupportedModelSymbol(container, modelObject);
+            var name = _symbolFacts.GetName(modelObject);
+            var metadataName = _symbolFacts.GetMetadataName(modelObject);
+            return new Metadata.MetadataNamedTypeSymbol.Unsupported(container, name, metadataName, null, modelObject);
         }
 
         protected virtual Symbol CreateSourceSymbol(Symbol container, Type? symbolType, object modelObject, MergedDeclaration declaration)
@@ -112,7 +114,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 result = generatedFactory.CreateSourceSymbol(container, declaration, modelObject);
             }
             if (result is not null) return result;
-            else return new UnsupportedModelSymbol(container, modelObject);
+            var name = _symbolFacts.GetName(modelObject);
+            var metadataName = _symbolFacts.GetMetadataName(modelObject);
+            return new Metadata.MetadataNamedTypeSymbol.Unsupported(container, name, metadataName, null, modelObject);
         }
 
         public Symbol MakeMetadataErrorSymbol(string name, string metadataName, object modelObject, DiagnosticInfo? errorInfo = null)
@@ -127,7 +131,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 result = generatedFactory.CreateMetadataErrorSymbol(container, name, metadataName, modelObject, errorInfo);
             }
             if (result is not null) return result;
-            else return new UnsupportedModelSymbol(container, modelObject);
+            return new Metadata.MetadataNamedTypeSymbol.Unsupported(container, name, metadataName, null, modelObject);
         }
 
         public Symbol ResolveSymbol(object modelObject)

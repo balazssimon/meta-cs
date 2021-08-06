@@ -1347,7 +1347,7 @@ namespace MetaDslx.CodeAnalysis
             else
             {
                 var result = SourceAssembly.GetSpecialSymbol(specialSymbolId);
-                Debug.Assert(specialSymbolId.Equals(result.SpecialSymbol));
+                //Debug.Assert(specialSymbolId.Equals(result.SpecialSymbol));
                 return result;
             }
         }
