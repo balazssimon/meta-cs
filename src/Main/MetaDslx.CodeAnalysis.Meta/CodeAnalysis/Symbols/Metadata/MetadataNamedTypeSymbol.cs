@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 _resultKind = LookupResultKind.Empty;
             }
 
-            private ExtendedError(DeclaredSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported, bool variableUsedBeforeDeclaration, ImmutableArray<DeclaredSymbol> candidateSymbols, LookupResultKind resultKind)
+            private ExtendedError(DeclaredSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported, bool variableUsedBeforeDeclaration, ImmutableArray<Symbol> candidateSymbols, LookupResultKind resultKind)
                 : base(containingSymbol, name, metadataName, ErrorKind.None, errorInfo, candidateSymbols, unreported, null)
             {
                 this.VariableUsedBeforeDeclaration = variableUsedBeforeDeclaration;
@@ -78,7 +78,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 Debug.Assert(candidateSymbols.IsEmpty || resultKind != LookupResultKind.Viable, "Shouldn't use LookupResultKind.Viable with candidate symbols");
             }
 
-            private static ImmutableArray<DeclaredSymbol> UnwrapErrorCandidates(ImmutableArray<DeclaredSymbol> candidateSymbols)
+            private static ImmutableArray<Symbol> UnwrapErrorCandidates(ImmutableArray<Symbol> candidateSymbols)
             {
                 var candidate = candidateSymbols.IsEmpty ? null : candidateSymbols[0] as ExtendedError;
                 return ((object)candidate != null && !candidate.CandidateSymbols.IsEmpty) ? candidate.CandidateSymbols : candidateSymbols;

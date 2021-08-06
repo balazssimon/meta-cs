@@ -82,17 +82,23 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             private DiagnosticInfo _errorInfo;
             private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
             private readonly bool _unreported;
-            private ImmutableArray<DeclaredSymbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
+            private ImmutableArray<Symbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
 
-            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject)
+            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
                 : base(container, modelObject, true)
             {
+                Debug.Assert(unreported == false || errorInfo != null);
                 _name = name;
                 _metadataName = metadataName;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
                 _unreported = unreported;
+            }
+
+            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+            {
+                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
             }
 
             public Error AsUnreported()
@@ -107,13 +113,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, CandidateSymbols, _unreported, this.ModelObject);
             }
 
-            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<DeclaredSymbol> candidateSymbols)
+            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && CandidateSymbols == candidateSymbols ? this :
                     Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, candidateSymbols, _unreported, this.ModelObject);
             }
 
-            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols)
+            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
                     Update(this.ContainingSymbol, _name, _metadataName, kind, errorInfo, candidateSymbols, _unreported, this.ModelObject);
@@ -125,11 +131,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo, CandidateSymbols, _unreported, this.ModelObject);
             }
 
-            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject)
-            {
-                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
-            }
-
             public override string Name => _name;
 
             public override string MetadataName => _metadataName;
@@ -138,9 +139,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
             public bool IsUnreported => _unreported;
 
-            public MetaDslx.CodeAnalysis.Symbols.ErrorKind Kind => _kind;
+            public MetaDslx.CodeAnalysis.Symbols.ErrorKind ErrorKind => _kind;
 
-            public ImmutableArray<DeclaredSymbol> CandidateSymbols
+            public ImmutableArray<Symbol> CandidateSymbols
             {
                 get
                 {
@@ -169,9 +170,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 return null;
             }
 
-            protected virtual ImmutableArray<DeclaredSymbol> MakeCandidateSymbols()
+            protected virtual ImmutableArray<Symbol> MakeCandidateSymbols()
             {
-                return ImmutableArray<DeclaredSymbol>.Empty;
+                return ImmutableArray<Symbol>.Empty;
             }
 
             protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)

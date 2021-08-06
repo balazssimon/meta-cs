@@ -288,13 +288,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal NamedTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
         {
             DiagnosticInfo diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CycleInTypeForwarder, emittedName.FullName, this.Name);
-            return new Metadata.MetadataNamedTypeSymbol.Error(this.Modules[0], this.Name, emittedName.FullName, ErrorKind.None, diagnosticInfo, ImmutableArray<DeclaredSymbol>.Empty, false, null);
+            return new Metadata.MetadataNamedTypeSymbol.Error(this.Modules[0], this.Name, emittedName.FullName, ErrorKind.None, diagnosticInfo, ImmutableArray<Symbol>.Empty, false, null);
         }
 
         internal NamedTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
         {
             var diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_TypeForwardedToMultipleAssemblies, forwardingModule, this, emittedName.FullName, destination1, destination2);
-            return new Metadata.MetadataNamedTypeSymbol.Error(forwardingModule, this.Name, emittedName.FullName, ErrorKind.None, diagnosticInfo, ImmutableArray<DeclaredSymbol>.Empty, false, null);
+            return new Metadata.MetadataNamedTypeSymbol.Error(forwardingModule, this.Name, emittedName.FullName, ErrorKind.None, diagnosticInfo, ImmutableArray<Symbol>.Empty, false, null);
         }
 
         /// <summary>
@@ -448,15 +448,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var badCount = results.Count - goodCount;
             if (results.Count == 0)
             {
-                return nullIfNotFound ? null : symbolFactory.MakeMetadataErrorSymbol(name, metadataName ?? name, modelObject);
+                return nullIfNotFound ? null : symbolFactory.MakeMissingSymbol(name, metadataName ?? name, modelObject);
             }
             else if (goodCount == 1)
             {
                 return results.First(s => !s.IsError);
             }
+            else if (goodCount > 1)
+            {
+                return symbolFactory.MakeAmbiguousSymbol(name, metadataName ?? name, results.Where(s => !s.IsError).ToImmutableArray(), modelObject);
+            }
             else
             {
-                return symbolFactory.MakeMetadataErrorSymbol(name, metadataName ?? name, modelObject);
+                return symbolFactory.MakeAmbiguousSymbol(name, metadataName ?? name, results.ToImmutable(), modelObject);
             }
         }
 

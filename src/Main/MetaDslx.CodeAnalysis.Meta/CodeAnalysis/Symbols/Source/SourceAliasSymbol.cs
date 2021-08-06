@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             private Symbol _container;
 
-            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported)
+            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
                 : base(null, declaration, true)
             {
                 _container = container;

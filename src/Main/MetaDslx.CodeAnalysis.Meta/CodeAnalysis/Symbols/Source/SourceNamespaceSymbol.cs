@@ -119,7 +119,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public partial class Error
         {
-            public Error(SourceModuleSymbol module, Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject = null)
+            public Error(SourceModuleSymbol module, Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject = null)
                 : base(module, container, declaration, modelObject, true)
             {
                 _name = declaration.Name;
@@ -130,7 +130,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 _unreported = unreported;
             }
 
-            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject = null)
+            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject = null)
             {
                 return new Error((SourceModuleSymbol)this.ContainingModule, container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
             }

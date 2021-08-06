@@ -187,7 +187,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             private Symbol _container;
 
-            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported)
+            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
                 : base(null, name, null, Location.None, false, true)
             {
                 _container = container;
@@ -197,6 +197,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
                 _unreported = unreported;
+            }
+
+            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
+            {
+                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported);
             }
 
             public override Symbol ContainingSymbol => _container;

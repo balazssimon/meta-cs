@@ -119,12 +119,67 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new Metadata.MetadataNamedTypeSymbol.Unsupported(container, name, metadataName, null, modelObject);
         }
 
-        public Symbol MakeMetadataErrorSymbol(string name, string metadataName, object? modelObject)
+        public Symbol MakeMissingSymbol<T>(string name, string metadataName, object? modelObject = null)
+            where T: Symbol
+        {
+            return this.MakeMetadataErrorSymbol<T>(name, metadataName, ErrorKind.Missing, null, default, false, modelObject);
+        }
+
+        public Symbol MakeMissingSymbol(string name, string metadataName, object? modelObject)
+        {
+            return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.Missing, null, default, false, modelObject);
+        }
+
+        public Symbol MakeUnsupportedSymbol<T>(string name, string metadataName, object? modelObject = null)
+            where T : Symbol
+        {
+            return this.MakeMetadataErrorSymbol<T>(name, metadataName, ErrorKind.Unsupported, null, default, false, modelObject);
+        }
+
+        public Symbol MakeUnsupportedSymbol(string name, string metadataName, object? modelObject)
+        {
+            return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.Unsupported, null, default, false, modelObject);
+        }
+
+        public Symbol MakeAmbiguousSymbol<T>(string name, string metadataName, ImmutableArray<Symbol> candidateSymbols, object? modelObject = null)
+            where T : Symbol
+        {
+            return this.MakeMetadataErrorSymbol<T>(name, metadataName, ErrorKind.Ambiguous, null, candidateSymbols, false, modelObject);
+        }
+
+        public Symbol MakeAmbiguousSymbol(string name, string metadataName, ImmutableArray<Symbol> candidateSymbols, object? modelObject)
+        {
+            return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.Ambiguous, null, candidateSymbols, false, modelObject);
+        }
+
+        public Symbol MakeErrorSymbol<T>(string name, string metadataName, object? modelObject = null)
+            where T : Symbol
+        {
+            return this.MakeMetadataErrorSymbol<T>(name, metadataName, ErrorKind.None, null, default, false, modelObject);
+        }
+
+        public Symbol MakeErrorSymbol(string name, string metadataName, object? modelObject)
         {
             return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.None, null, default, false, modelObject);
         }
 
-        public Symbol MakeMetadataErrorSymbol(string name, string metadataName, ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<DeclaredSymbol> candidateSymbols, bool unreported, object? modelObject)
+        public Symbol MakeMetadataErrorSymbol<T>(string name, string metadataName, ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+            where T: Symbol
+        {
+            var symbolType = typeof(T);
+            var pobj = _symbolFacts.GetParent(modelObject);
+            var container = pobj != null ? GetSymbol(pobj) : _module;
+            Symbol? result = null;
+            var generatedFactory = GetGeneratedSymbolFactory(symbolType);
+            if (generatedFactory is not null)
+            {
+                result = generatedFactory.CreateMetadataErrorSymbol(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
+            }
+            if (result is not null) return result;
+            return new Metadata.MetadataNamedTypeSymbol.Unsupported(container, name, metadataName, null, modelObject);
+        }
+
+        public Symbol MakeMetadataErrorSymbol(string name, string metadataName, ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             var symbolType = _symbolFacts.GetSymbolType(modelObject);
             var pobj = _symbolFacts.GetParent(modelObject);

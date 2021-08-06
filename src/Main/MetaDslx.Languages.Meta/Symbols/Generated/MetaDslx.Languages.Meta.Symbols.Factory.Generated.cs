@@ -18,9 +18,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Factory
             return new Metadata.MetadataAssociationSymbol(container);
         }
 
-        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
-            return new Metadata.MetadataAssociationSymbol.Error(container, name, metadataName, errorInfo);
+            return new Metadata.MetadataAssociationSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported);
         }
 
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
@@ -28,9 +28,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Factory
             return new Source.SourceAssociationSymbol(container, declaration);
         }
 
-        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, object? modelObject, DiagnosticInfo errorInfo)
+        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
-            return new Source.SourceAssociationSymbol.Error(container, declaration, errorInfo);
+            return new Source.SourceAssociationSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported);
         }
 	}
 }
