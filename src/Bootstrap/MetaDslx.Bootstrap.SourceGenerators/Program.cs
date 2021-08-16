@@ -12,8 +12,8 @@ namespace MetaDslx.Bootstrap.SourceGenerators
     class Program
     {
         //static readonly string SourceFilesPath = @"..\..\..\..\..\Experiments\GeneratedSourceSymbols";
-        static readonly string SourceFilesPath = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols";
-        //static readonly string SourceFilesPath = @"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Symbols";
+        //static readonly string SourceFilesPath = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols";
+        static readonly string SourceFilesPath = @"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Symbols";
         static readonly string GeneratedFilesPath = Path.Combine(SourceFilesPath, "Generated");
 
         static void Main(string[] args)
