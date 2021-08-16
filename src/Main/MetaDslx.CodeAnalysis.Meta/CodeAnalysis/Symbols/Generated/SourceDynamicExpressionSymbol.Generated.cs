@@ -123,34 +123,34 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 return new Error(container, declaration, kind, errorInfo, candidateSymbols, flags, modelObject);
             }
 
-            public Error AsUnreported(DiagnosticInfo? errorInfo = null)
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsReported(DiagnosticInfo? errorInfo = null)
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags & ~MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, this.ModelObject);
+            }
+
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsUnreported(DiagnosticInfo? errorInfo = null)
             {
                 return this.IsUnreported ? this :
                     Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, this.ModelObject);
             }
 
-            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
             {
                 return _kind == kind ? this :
                     Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, CandidateSymbols, _flags, this.ModelObject);
             }
 
-            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<Symbol> candidateSymbols)
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && CandidateSymbols == candidateSymbols ? this :
                     Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, candidateSymbols, _flags, this.ModelObject);
             }
 
-            public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols)
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
                     Update(this.ContainingSymbol, this.MergedDeclaration, kind, errorInfo, candidateSymbols, _flags, this.ModelObject);
-            }
-
-            public Error WithErrorInfo(DiagnosticInfo errorInfo)
-            {
-                return ErrorInfo == errorInfo ? this :
-                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo, CandidateSymbols, _flags, this.ModelObject);
             }
 
             public override string Name => _name;

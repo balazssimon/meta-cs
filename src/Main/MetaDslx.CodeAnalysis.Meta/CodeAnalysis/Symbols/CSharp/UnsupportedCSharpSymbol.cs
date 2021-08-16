@@ -57,5 +57,29 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return default;
         }
 
+        public Symbol AsKind(ErrorKind kind)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Symbol AsKind(ErrorKind kind, ImmutableArray<Symbol> candidateSymbols)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Symbol AsKind(ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Symbol AsReported(DiagnosticInfo? errorInfo = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Symbol AsUnreported(DiagnosticInfo? errorInfo = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

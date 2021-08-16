@@ -626,8 +626,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 {
                                     wasError = true;
                                     diagnostics.Add(errorInfo, where.GetLocation());
-                                    singleResult = this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(GetContainingDeclaration(singleResult), singleResult.Name, singleResult.MetadataName, ErrorKind.Invalid, errorInfo, ImmutableArray.Create<Symbol>(singleResult));
-                                    //singleResult = new ExtendedErrorTypeSymbol(GetContainingDeclaration(errorType), errorType.Name, errorType.MetadataName, errorInfo, unreported: false);
+                                    singleResult = (DeclaredSymbol)errorType.AsReported();
                                 }
                             }
                         }

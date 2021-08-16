@@ -12,5 +12,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         bool IsUnreported { get; }
         ErrorKind ErrorKind { get; }
         ImmutableArray<Symbol> CandidateSymbols { get; }
+        Symbol AsUnreported(DiagnosticInfo? errorInfo = null);
+        Symbol AsReported(DiagnosticInfo? errorInfo = null);
+        Symbol AsKind(ErrorKind kind);
+        Symbol AsKind(ErrorKind kind, ImmutableArray<Symbol> candidateSymbols);
+        Symbol AsKind(ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols);
     }
 }
