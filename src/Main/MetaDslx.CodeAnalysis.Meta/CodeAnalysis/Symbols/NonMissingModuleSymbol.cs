@@ -209,7 +209,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if ((object)scope == null)
             {
                 // We failed to locate the namespace
-                result = new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName);
+                return this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(this, emittedName.FullName, emittedName.FullName, ErrorKind.Missing);
             }
             else
             {

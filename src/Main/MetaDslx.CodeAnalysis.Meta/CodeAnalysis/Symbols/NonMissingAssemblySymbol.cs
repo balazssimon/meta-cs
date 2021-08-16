@@ -116,7 +116,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
 
                 // According to the cache, the type wasn't found, or isn't declared in this assembly (forwarded).
-                return new MissingMetadataTypeSymbol.TopLevel(this.Modules[0], ref emittedName);
+                return this.Modules[0].SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(this, emittedName.FullName, emittedName.FullName, ErrorKind.Missing);
             }
             else
             {
@@ -129,14 +129,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 result = modules[i].LookupTopLevelMetadataType(ref emittedName);
 
-                if (result is MissingMetadataTypeSymbol)
+                if (result is IErrorSymbol errorSymbol && errorSymbol.ErrorKind == ErrorKind.Missing)
                 {
                     for (i = 1; i < count; i++)
                     {
                         var newResult = modules[i].LookupTopLevelMetadataType(ref emittedName);
 
                         // Hold on to the first missing type result, unless we found the type.
-                        if (!(newResult is MissingMetadataTypeSymbol))
+                        if (!(newResult is IErrorSymbol newErrorSymbol && newErrorSymbol.ErrorKind == ErrorKind.Missing))
                         {
                             result = newResult;
                             break;
@@ -151,7 +151,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if (!foundMatchInThisAssembly && digThroughForwardedTypes)
                 {
                     // We didn't find the type
-                    System.Diagnostics.Debug.Assert(result is MissingMetadataTypeSymbol);
+                    System.Diagnostics.Debug.Assert(result is IErrorSymbol debugErrorSymbol && debugErrorSymbol.ErrorKind == ErrorKind.Missing);
 
                     NamedTypeSymbol forwarded = TryLookupForwardedMetadataTypeWithCycleDetection(ref emittedName, visitedAssemblies);
                     if ((object)forwarded != null)

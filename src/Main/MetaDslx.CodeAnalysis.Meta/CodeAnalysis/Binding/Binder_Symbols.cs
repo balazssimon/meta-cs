@@ -72,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                return new ExtendedErrorTypeSymbol(Compilation.Assembly.GlobalNamespace, name, metadataName, new LanguageDiagnosticInfo(InternalErrorCode.ERR_SingleTypeNameNotFound));
+                return this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(Compilation.Assembly.GlobalNamespace, name, metadataName, ErrorKind.Missing, new LanguageDiagnosticInfo(InternalErrorCode.ERR_SingleTypeNameNotFound));
             }
 
             var validators = validatorOpt != null ? ImmutableArray.Create(validatorOpt) : ImmutableArray<ILookupValidator>.Empty;

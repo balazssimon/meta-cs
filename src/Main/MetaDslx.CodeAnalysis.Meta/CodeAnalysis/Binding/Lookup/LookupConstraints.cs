@@ -156,6 +156,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         public LanguageCompilation Compilation => this.OriginalBinder.Compilation;
+        public SymbolFactory SymbolFactory => Compilation.SourceModule.SymbolFactory;
         public SyntaxNodeOrToken Syntax => this.OriginalBinder.Syntax;
 
         public virtual bool AreValid()
@@ -588,12 +589,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         diagnostics.Add(info, where.GetLocation());
                     }
 
-                    return new ExtendedErrorTypeSymbol(
-                        GetContainingDeclaration(originalSymbols[0]),
-                        originalSymbols,
-                        LookupResultKind.Ambiguous,
-                        info,
-                        MetadataName);
+                    return this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(GetContainingDeclaration(originalSymbols[0]), Name, MetadataName, ErrorKind.Ambiguous, info, originalSymbols.Cast<DeclaredSymbol, Symbol>());
                 }
                 else
                 {
@@ -607,7 +603,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         wasError = true;
                         var errorInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_SystemVoid);
                         diagnostics.Add(errorInfo, where.GetLocation());
-                        singleResult = new ExtendedErrorTypeSymbol(GetContainingDeclaration(singleResult), singleResult, LookupResultKind.NotReferencable, errorInfo); // UNDONE: Review resultkind.
+                        singleResult = this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(GetContainingDeclaration(singleResult), Name, MetadataName, ErrorKind.Invalid, errorInfo, ImmutableArray.Create<Symbol>(singleResult));
                     }
                     // Check for bad symbol.
                     else
@@ -620,9 +616,9 @@ namespace MetaDslx.CodeAnalysis.Binding
                         {
                             // We want to report ERR_CircularBase error on the spot to make sure 
                             // that the right location is used for it.
-                            var errorType = (ErrorTypeSymbol)singleResult;
+                            var errorType = singleResult as IErrorSymbol;
 
-                            if (errorType.Unreported)
+                            if (errorType.IsUnreported)
                             {
                                 DiagnosticInfo errorInfo = errorType.ErrorInfo;
 
@@ -630,7 +626,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 {
                                     wasError = true;
                                     diagnostics.Add(errorInfo, where.GetLocation());
-                                    singleResult = new ExtendedErrorTypeSymbol(GetContainingDeclaration(errorType), errorType.Name, errorType.MetadataName, errorInfo, unreported: false);
+                                    singleResult = this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(GetContainingDeclaration(singleResult), singleResult.Name, singleResult.MetadataName, ErrorKind.Invalid, errorInfo, ImmutableArray.Create<Symbol>(singleResult));
+                                    //singleResult = new ExtendedErrorTypeSymbol(GetContainingDeclaration(errorType), errorType.Name, errorType.MetadataName, errorInfo, unreported: false);
                                 }
                             }
                         }
@@ -646,7 +643,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (result.Kind == LookupResultKind.Empty)
             {
                 LanguageDiagnosticInfo info = NotFound(Name, this.AutomaticNamePrefix, this.AutomaticNameSuffix, diagnostics);
-                return new ExtendedErrorTypeSymbol(QualifierOpt ?? Compilation.Assembly.GlobalNamespace, Name, MetadataName, info);
+                return this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(QualifierOpt ?? Compilation.Assembly.GlobalNamespace, Name, MetadataName, ErrorKind.Missing, errorInfo: info);
             }
 
             Debug.Assert(symbols.Count > 0);
@@ -674,7 +671,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 // Bad type or namespace (or things expected as types/namespaces) are packaged up as error types, preserving the symbols and the result kind.
                 // We do this if there are multiple symbols too, because just returning one would be losing important information, and they might
                 // be of different kinds.
-                return new ExtendedErrorTypeSymbol(GetContainingDeclaration(symbols[0]), symbols.ToImmutable(), result.Kind, result.Error, MetadataName);
+                return this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(GetContainingDeclaration(symbols[0]), result.Kind.ToErrorKind(), result.Error);
             }
             else
             {
@@ -727,8 +724,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 if (qualifierOpt is TypeSymbol)
                 {
-                    var errorQualifier = qualifierOpt as ErrorTypeSymbol;
-                    if ((object)errorQualifier != null && errorQualifier.ErrorInfo != null)
+                    if (qualifierOpt is IErrorSymbol errorQualifier && errorQualifier.ErrorInfo != null)
                     {
                         return (LanguageDiagnosticInfo)errorQualifier.ErrorInfo;
                     }
@@ -806,7 +802,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     if (forwardedType.IsError)
                     {
-                        DiagnosticInfo diagInfo = ((ErrorTypeSymbol)forwardedType).ErrorInfo;
+                        DiagnosticInfo diagInfo = ((IErrorSymbol)forwardedType).ErrorInfo;
 
                         if (diagInfo.HasErrorCode(InternalErrorCode.ERR_CycleInTypeForwarder))
                         {

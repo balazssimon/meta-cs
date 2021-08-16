@@ -166,13 +166,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private void AddCandidateSymbolsInErrorType(LookupCandidates result, LookupConstraints constraints)
         {
-            var errorType = constraints.QualifierOpt as ExtendedErrorTypeSymbol;
+            var errorType = constraints.QualifierOpt as IErrorSymbol;
             if (!errorType.CandidateSymbols.IsDefault && errorType.CandidateSymbols.Length == 1)
             {
                 // The dev11 IDE experience provided meaningful information about members of inaccessible types,
                 // so we should do the same (DevDiv #633340).
                 // TODO: generalize to other result kinds and/or candidate counts?
-                if (errorType.ResultKind == LookupResultKind.Inaccessible)
+                if (errorType.ErrorKind == ErrorKind.Inaccessible)
                 {
                     TypeSymbol candidateType = errorType.CandidateSymbols.First() as TypeSymbol;
                     if ((object)candidateType != null)
@@ -244,7 +244,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     var other = GetNearestOtherSymbol(constraints.BasesBeingResolved, type);
                     var diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CircularBase, type, other);
-                    var error = new ExtendedErrorTypeSymbol(this.Compilation, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
+                    var error = (DeclaredSymbol)this.Compilation.SourceModule.SymbolFactory.MakeMetadataErrorSymbol(type, errorInfo: diagInfo, unreported: true);
                     result.Clear();
                     result.Add(error); // force lookup to be done w/ error symbol as result
                 }

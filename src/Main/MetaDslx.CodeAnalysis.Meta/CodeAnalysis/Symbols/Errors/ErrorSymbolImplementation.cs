@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,6 +9,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public static class ErrorSymbolImplementation
     {
+        public static readonly MetadataNamedTypeSymbol.Error UnknownResultType = new MetadataNamedTypeSymbol.Error(null, string.Empty, string.Empty, ErrorKind.Missing, null, ImmutableArray<Symbol>.Empty, false, null);
+
         public static DiagnosticInfo? MakeErrorInfo(IErrorSymbol errorSymbol)
         {
             var symbol = (Symbol)errorSymbol;

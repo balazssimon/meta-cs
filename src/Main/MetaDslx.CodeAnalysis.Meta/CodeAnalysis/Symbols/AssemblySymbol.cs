@@ -448,7 +448,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var badCount = results.Count - goodCount;
             if (results.Count == 0)
             {
-                return nullIfNotFound ? null : symbolFactory.MakeMissingSymbol(name, metadataName ?? name, modelObject);
+                return nullIfNotFound ? null : symbolFactory.MakeMetadataErrorSymbol(null, name, metadataName ?? name, ErrorKind.Missing, modelObject: modelObject);
             }
             else if (goodCount == 1)
             {
@@ -456,11 +456,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             else if (goodCount > 1)
             {
-                return symbolFactory.MakeAmbiguousSymbol(name, metadataName ?? name, results.Where(s => !s.IsError).ToImmutableArray(), modelObject);
+                return symbolFactory.MakeMetadataErrorSymbol(null, name, metadataName ?? name, ErrorKind.Ambiguous, null, results.Where(s => !s.IsError).ToImmutableArray(), false, modelObject);
             }
             else
             {
-                return symbolFactory.MakeAmbiguousSymbol(name, metadataName ?? name, results.ToImmutable(), modelObject);
+                return symbolFactory.MakeMetadataErrorSymbol(null, name, metadataName ?? name, ErrorKind.Ambiguous, null, results.ToImmutable(), false, modelObject);
             }
         }
 

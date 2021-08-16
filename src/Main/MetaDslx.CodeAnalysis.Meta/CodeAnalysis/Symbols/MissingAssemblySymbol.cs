@@ -157,7 +157,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal override NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes)
         {
             var result = this.moduleSymbol.LookupTopLevelMetadataType(ref emittedName);
-            Debug.Assert(result is Metadata.MetadataNamedTypeSymbol.Missing);
+            Debug.Assert(result is IErrorSymbol errorSymbol && errorSymbol.ErrorKind == ErrorKind.Missing);
             return result;
         }
 

@@ -81,7 +81,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
 #endif
 
-            if (_lazySpecialTypeMembers == null || ReferenceEquals(_lazySpecialTypeMembers[(int)member], ErrorTypeSymbol.UnknownResultType))
+            if (_lazySpecialTypeMembers == null || ReferenceEquals(_lazySpecialTypeMembers[(int)member], ErrorSymbolImplementation.UnknownResultType))
             {
                 if (_lazySpecialTypeMembers == null)
                 {
@@ -89,7 +89,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 
                     for (int i = 0; i < specialTypeMembers.Length; i++)
                     {
-                        specialTypeMembers[i] = ErrorTypeSymbol.UnknownResultType;
+                        specialTypeMembers[i] = ErrorSymbolImplementation.UnknownResultType;
                     }
 
                     Interlocked.CompareExchange(ref _lazySpecialTypeMembers, specialTypeMembers, null);
@@ -105,7 +105,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                     // result = LanguageCompilation.GetRuntimeMember(type, ref descriptor, LanguageCompilation.SpecialMembersSignatureComparer.Instance, accessWithinOpt: null);
                 }
 
-                Interlocked.CompareExchange(ref _lazySpecialTypeMembers[(int)member], result, ErrorTypeSymbol.UnknownResultType);
+                Interlocked.CompareExchange(ref _lazySpecialTypeMembers[(int)member], result, ErrorSymbolImplementation.UnknownResultType);
             }
 
             return _lazySpecialTypeMembers[(int)member];

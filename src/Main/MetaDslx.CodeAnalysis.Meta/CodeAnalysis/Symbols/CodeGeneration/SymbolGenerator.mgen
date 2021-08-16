@@ -442,6 +442,12 @@ namespace [symbol.NamespaceName].Metadata
                     Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
+            public Error AsReported(DiagnosticInfo? errorInfo = null)
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags & ~MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
             {
                 return _kind == kind ? this :
@@ -689,6 +695,12 @@ namespace [symbol.NamespaceName].Source
                 return new Error(container, declaration, kind, errorInfo, candidateSymbols, flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
             }
             [end if]
+^
+            public Error AsReported(DiagnosticInfo? errorInfo = null)
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags & ~MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
 ^
             public Error AsUnreported(DiagnosticInfo? errorInfo = null)
             {

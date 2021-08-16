@@ -1148,7 +1148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         {
                             if (forwarded.IsError)
                             {
-                                DiagnosticInfo info = forwarded.GetUseSiteDiagnostic() ?? ((ErrorTypeSymbol)forwarded).ErrorInfo;
+                                DiagnosticInfo info = forwarded.GetUseSiteDiagnostic() ?? ((IErrorSymbol)forwarded).ErrorInfo;
 
                                 if ((object)info != null)
                                 {

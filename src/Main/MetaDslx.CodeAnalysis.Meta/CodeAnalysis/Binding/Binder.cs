@@ -71,6 +71,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public Language Language => _compilation.Language;
 
+        public SymbolFactory SymbolFactory => _compilation.SourceModule.SymbolFactory;
+
         public SyntaxNodeOrToken Syntax => !_syntax.IsNull ? _syntax : (_next?.Syntax ?? null);
 
         public Binder WithFlags(params BinderFlags[] flags)

@@ -279,7 +279,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if (result is null || result.IsError || result is DeclaredSymbol declaredSymbol && !declaredSymbol.IsError && declaredSymbol.DeclaredAccessibility != Accessibility.Public)
                 {
                     var name = this.Language.SymbolFacts.GetName(modelObject);
-                    result = this.SymbolFactory.MakeMissingSymbol(name, metadataName, modelObject ?? specialSymbolId);
+                    result = this.SymbolFactory.MakeMetadataErrorSymbol(this, name, metadataName, ErrorKind.Missing, modelObject: modelObject ?? specialSymbolId);
                 }
                 RegisterDeclaredSpecialSymbol(specialSymbolId, ref result);
             }

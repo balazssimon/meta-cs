@@ -508,7 +508,7 @@ namespace MetaDslx.CodeAnalysis
 
         private static void AddUnwrappingErrorTypes(ArrayBuilder<Symbol> builder, Symbol s)
         {
-            var originalErrorSymbol = (s as DeclaredSymbol)?.OriginalDefinition as ErrorTypeSymbol;
+            var originalErrorSymbol = (s as DeclaredSymbol)?.OriginalDefinition as IErrorSymbol;
             if ((object)originalErrorSymbol != null)
             {
                 builder.AddRange(originalErrorSymbol.CandidateSymbols);

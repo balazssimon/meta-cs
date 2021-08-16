@@ -48,7 +48,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 // The name '{0}' does not exist in the current context (are you missing a reference to assembly '{1}'?)
                 result.SetFrom(new LanguageDiagnosticInfo(
                     InternalErrorCode.ERR_NameNotInContextPossibleMissingReference,
-                    new object[] { constraints.Name, ((MissingMetadataTypeSymbol)hostObjectType).ContainingAssembly.Identity },
+                    new object[] { constraints.Name, hostObjectType.ContainingAssembly.Identity },
                     ImmutableArray<Symbol>.Empty,
                     ImmutableArray<Location>.Empty
                 ));

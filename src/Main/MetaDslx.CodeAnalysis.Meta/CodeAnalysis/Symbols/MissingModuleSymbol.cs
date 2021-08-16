@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             this.assembly = assembly;
             this.ordinal = ordinal;
-            globalNamespace = new Metadata.MetadataNamespaceSymbol.Missing(this, string.Empty, string.Empty, null, null);
+            globalNamespace = new Metadata.MetadataNamespaceSymbol.Error(this, string.Empty, string.Empty, ErrorKind.Missing, null, ImmutableArray<Symbol>.Empty, false);
         }
 
         public sealed override bool IsError => true;

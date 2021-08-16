@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
+using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -63,6 +64,35 @@ namespace MetaDslx.CodeAnalysis.Binding
 
     internal static class LookupResultKindExtensions
     {
+        public static ErrorKind ToErrorKind(this LookupResultKind resultKind)
+        {
+            switch (resultKind)
+            {
+                case LookupResultKind.Empty: return ErrorKind.None;
+                case LookupResultKind.WrongSymbol: return ErrorKind.Invalid;
+                case LookupResultKind.NotATypeOrNamespace: return ErrorKind.Invalid;
+                case LookupResultKind.NotAnAttributeType: return ErrorKind.Invalid;
+                case LookupResultKind.WrongArity: return ErrorKind.Invalid;
+                case LookupResultKind.Inaccessible: return ErrorKind.Inaccessible;
+                case LookupResultKind.NotCreatable: return ErrorKind.Invalid;
+                case LookupResultKind.NotReferencable: return ErrorKind.Invalid;
+                case LookupResultKind.NotAValue: return ErrorKind.Invalid;
+                case LookupResultKind.NotAVariable: return ErrorKind.Invalid;
+                case LookupResultKind.NotInvocable: return ErrorKind.Invalid;
+                case LookupResultKind.StaticInstanceMismatch: return ErrorKind.Invalid;
+                case LookupResultKind.OverloadResolutionFailure: return ErrorKind.Ambiguous;
+                case LookupResultKind.Ambiguous: return ErrorKind.Ambiguous;
+                case LookupResultKind.MemberGroup: return ErrorKind.Invalid;
+
+                case LookupResultKind.Viable:
+                    Debug.Assert(false, "Should not call this on LookupResultKind.Viable");
+                    return ErrorKind.None;
+
+                default:
+                    throw ExceptionUtilities.UnexpectedValue(resultKind);
+            }
+        }
+
         /// <summary>
         /// Maps a LookupResultKind to a CandidateReason. Should not be called on LookupResultKind.Viable!
         /// </summary>

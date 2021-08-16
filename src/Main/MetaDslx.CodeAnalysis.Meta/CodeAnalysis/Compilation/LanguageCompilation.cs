@@ -1225,7 +1225,7 @@ namespace MetaDslx.CodeAnalysis
             }
             else if (_externAliasTargets.TryGetValue(aliasName, out @namespace))
             {
-                return !(@namespace is MissingNamespaceSymbol);
+                return !@namespace.IsError;
             }
 
             ArrayBuilder<NamespaceSymbol>? builder = null;
@@ -1245,12 +1245,12 @@ namespace MetaDslx.CodeAnalysis
             // same alias will have the same target.
             @namespace = foundNamespace
                 ? MergedNamespaceSymbol.Create(new NamespaceExtent(this), namespacesToMerge: builder!.ToImmutableAndFree(), containingNamespace: null, nameOpt: null)
-                : new MissingNamespaceSymbol(new MissingModuleSymbol(new MissingAssemblySymbol(new AssemblyIdentity(System.Guid.NewGuid().ToString())), ordinal: -1));
+                : this.SourceModule.SymbolFactory.MakeMetadataErrorSymbol<NamespaceSymbol>(new MissingModuleSymbol(new MissingAssemblySymbol(new AssemblyIdentity(System.Guid.NewGuid().ToString())), ordinal: -1), aliasName, aliasName, ErrorKind.Missing);
 
             // Use GetOrAdd in case another thread beat us to the punch (i.e. should return the same object for the same alias, every time).
             @namespace = _externAliasTargets.GetOrAdd(aliasName, @namespace);
 
-            Debug.Assert(foundNamespace == !(@namespace is MissingNamespaceSymbol));
+            Debug.Assert(foundNamespace == !@namespace.IsError);
 
             return foundNamespace;
         }
@@ -1365,8 +1365,7 @@ namespace MetaDslx.CodeAnalysis
             NamedTypeSymbol result;
             if (IsTypeMissing(specialType))
             {
-                MetadataTypeName emittedName = MetadataTypeName.FromFullName(specialType.GetMetadataName(), useCLSCompliantNameArityEncoding: true);
-                result = new MissingMetadataTypeSymbol.TopLevel(Assembly.CorLibrary.Modules[0], ref emittedName, specialType);
+                result = this.SourceModule.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(Assembly.CorLibrary.Modules[0], specialType.GetMetadataName(), specialType.GetMetadataName(), ErrorKind.Missing, modelObject: specialType);
             }
             else
             {
@@ -1396,7 +1395,7 @@ namespace MetaDslx.CodeAnalysis
             if ((object)scope == null)
             {
                 // We failed to locate the namespace
-                result = new MissingMetadataTypeSymbol.TopLevel(this.SourceModule, ref emittedName);
+                result = this.SourceModule.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(this.SourceModule, emittedName.FullName, emittedName.FullName, ErrorKind.Missing);
             }
             else
             {
@@ -1426,8 +1425,9 @@ namespace MetaDslx.CodeAnalysis
             var result = Assembly.GetTypeByReflectionType(type, includeReferences: true);
             if ((object)result == null)
             {
-                var errorType = new ExtendedErrorTypeSymbol(this, type.Name, type.Name, CreateReflectionTypeNotFoundError(type));
-                diagnostics.Add(errorType.ErrorInfo, NoLocation.Singleton);
+                var errorInfo = CreateReflectionTypeNotFoundError(type);
+                diagnostics.Add(errorInfo, NoLocation.Singleton);
+                var errorType = SourceModule.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(Assembly.GlobalNamespace, type.Name, type.Name, ErrorKind.Missing, errorInfo);
                 result = errorType;
             }
 
@@ -1457,15 +1457,12 @@ namespace MetaDslx.CodeAnalysis
 
                 if ((object)symbol == null)
                 {
-                    MetadataTypeName mdName = MetadataTypeName.FromNamespaceAndTypeName(HostObjectType.Namespace ?? String.Empty,
-                                                                                        HostObjectType.Name,
-                                                                                        useCLSCompliantNameArityEncoding: true);
-
-                    symbol = new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(
+                    symbol = this.SourceModule.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(
                         new MissingAssemblySymbol(AssemblyIdentity.FromAssemblyDefinition(HostObjectType.GetTypeInfo().Assembly)).Modules[0],
-                        ref mdName,
-                        CreateReflectionTypeNotFoundError(HostObjectType),
-                        SpecialType.None);
+                        HostObjectType.FullName,
+                        HostObjectType.FullName,
+                        ErrorKind.Missing,
+                        CreateReflectionTypeNotFoundError(HostObjectType));
                 }
 
                 Interlocked.CompareExchange(ref _lazyHostObjectTypeSymbol, symbol, null);

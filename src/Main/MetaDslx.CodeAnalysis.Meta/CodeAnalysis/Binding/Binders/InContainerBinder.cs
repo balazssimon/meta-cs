@@ -137,7 +137,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 if (imports != null && imports.IsUsingAlias(constraints.Name, this.IsSemanticModelBinder))
                 {
                     LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, constraints.Name, constraints.QualifierOpt);
-                    var error = new ExtendedErrorTypeSymbol((DeclaredSymbol)null, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
+                    var error = this.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(null, constraints.Name, constraints.MetadataName, ErrorKind.Ambiguous, diagInfo, unreported: true);
                     result.SetFrom(LookupResult.Good(error));
                 }
             }

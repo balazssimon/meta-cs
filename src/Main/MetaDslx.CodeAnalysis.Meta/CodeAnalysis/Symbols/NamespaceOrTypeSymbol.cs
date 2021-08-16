@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             if (scope.IsError)
             {
-                return new MissingMetadataTypeSymbol.Nested((NamedTypeSymbol)scope, ref emittedTypeName);
+                return this.ContainingModule.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>((NamedTypeSymbol)scope, emittedTypeName.FullName, emittedTypeName.FullName, ErrorKind.Missing);
             }
 
             NamedTypeSymbol namedType = null;
@@ -116,11 +116,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 if (isTopLevel)
                 {
-                    return new MissingMetadataTypeSymbol.TopLevel(scope.ContainingModule, ref emittedTypeName);
+                    return this.ContainingModule.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>(scope.ContainingModule, emittedTypeName.FullName, emittedTypeName.FullName, ErrorKind.Missing);
                 }
                 else
                 {
-                    return new MissingMetadataTypeSymbol.Nested((NamedTypeSymbol)scope, ref emittedTypeName);
+                    return this.ContainingModule.SymbolFactory.MakeMetadataErrorSymbol<NamedTypeSymbol>((NamedTypeSymbol)scope, emittedTypeName.FullName, emittedTypeName.FullName, ErrorKind.Missing);
                 }
             }
 

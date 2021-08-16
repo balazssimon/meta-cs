@@ -22,9 +22,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
                 case SymbolKind.DynamicType:
                     return typeof(DynamicTypeSymbol);
                 case SymbolKind.ErrorType:
-                    return typeof(ErrorTypeSymbol);
+                    return null;
                 case SymbolKind.Event:
-                    return typeof(ErrorTypeSymbol); // TODO:MetaDslx
+                    return null; // TODO:MetaDslx
                 case SymbolKind.Field:
                     return typeof(FieldSymbol);
                 case SymbolKind.Label:
@@ -42,21 +42,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
                 case SymbolKind.Parameter:
                     return typeof(ParameterSymbol);
                 case SymbolKind.PointerType:
-                    return typeof(ErrorTypeSymbol); // TODO:MetaDslx
+                    return null; // TODO:MetaDslx
                 case SymbolKind.Property:
                     return typeof(PropertySymbol);
                 case SymbolKind.RangeVariable:
-                    return typeof(ErrorTypeSymbol); // TODO:MetaDslx
+                    return null; // TODO:MetaDslx
                 case SymbolKind.TypeParameter:
                     return typeof(TypeParameterSymbol);
                 case SymbolKind.Preprocessing:
-                    return typeof(ErrorTypeSymbol); // TODO:MetaDslx
+                    return null; // TODO:MetaDslx
                 case SymbolKind.Discard:
                     return typeof(DiscardExpressionSymbol);
                 case SymbolKind.FunctionPointerType:
                     return typeof(DelegateTypeSymbol);
                 default:
-                    return typeof(ErrorTypeSymbol);
+                    return null;
             }
         }
 
