@@ -87,7 +87,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.MakeGlobalSymbols(this, null, diagnostics, cancellationToken);
+            return MetadataSymbolImplementation.MakeGlobalSymbols(this, null, diagnostics, cancellationToken);
         }
 
         protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

@@ -39,118 +39,6 @@ namespace [symbol.NamespaceName]
 }
 end template
 
-template GenerateErrorSymbol(SymbolGenerationInfo symbol)
-using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using Roslyn.Utilities;
-^
-namespace [symbol.NamespaceName].Error
-{
-	public partial class Error[symbol.Name][if (symbol.ExistingErrorTypeInfo.BaseType == null)] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if][if (symbol.SymbolParts.HasFlag(SymbolParts.Source))], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol[end if][end if]
-	{
-        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-        private readonly Symbol _container;
-        [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
-        private readonly MergedDeclaration? _declaration;
-        [end if]
-        [end if]
-        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
-        private readonly object? _modelObject;
-        [end if]
-        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-        [if (!symbol.ExistingErrorTypeInfo.Members.Contains(".ctor"))]
-^
-        public Error[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject = null[end if], MergedDeclaration? declaration = null)
-        {
-            if (container is null) throw new ArgumentNullException(nameof(container));
-            _container = container;
-            [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
-            _modelObject = modelObject;
-            [end if]
-        }
-        [end if]
-        [if (!symbol.ExistingErrorTypeInfo.Members.Contains("Language"))]
-^
-        public sealed override Language Language => ContainingModule.Language;
-        [end if]
-        [if (!symbol.ExistingErrorTypeInfo.Members.Contains("SymbolFactory"))]
-^
-        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
-        [end if]
-        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
-            [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ModelObject"))]
-^
-        public object ModelObject => _modelObject;
-            [end if]
-            [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ModelObjectType"))]
-^
-        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
-            [end if]
-            [if (!symbol.ExistingErrorTypeInfo.Members.Contains("SpecialSymbol"))]
-^
-        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
-            [end if]
-        [end if]
-        [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
-^
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration"))]
-        public MergedDeclaration MergedDeclaration => _declaration;
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder"))]
-        public MetaDslx.CodeAnalysis.Binding.BinderPosition<MetaDslx.CodeAnalysis.Binding.Binders.SymbolBinder> GetBinder(SyntaxReference syntax) => default;
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol"))]
-        public Symbol GetChildSymbol(SyntaxReference syntax) => null;
-        [end if]
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations"))]
-^
-        public override ImmutableArray<Location> Locations => [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]_declaration?.NameLocations ?? ImmutableArray<Location>.Empty;[else]ImmutableArray<Location>.Empty;[end if]
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
-^
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]_declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;[else]ImmutableArray<SyntaxReference>.Empty;[end if]
-        [end if]
-        [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ContainingSymbol"))]
-^
-        public override Symbol ContainingSymbol => _container;
-        [end if]
-        [end if]
-^
-        public sealed override bool IsError => true;
-        [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ChildSymbols"))]
-^
-        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-        [end if]
-        [if (!symbol.ExistingErrorTypeInfo.Members.Contains("Name"))]
-^
-        public override string Name => [if (symbol.ModelObjectOption != ParameterOption.Disabled)]_modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;[else]string.Empty;[end if]
-        [end if]
-        [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ErrorInfo"))]
-^
-        public virtual DiagnosticInfo ErrorInfo { get; }
-        [end if]
-        [loop (prop:symbol.Properties)]
-            [if (!symbol.ExistingErrorTypeInfo.Members.Contains(prop.Name))]
-^
-        public override [prop.Type] [prop.Name] => default;
-            [end if]
-        [end loop]
-^
-    }
-}
-end template
-
 template GenerateCompletionSymbol(SymbolGenerationInfo symbol)
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
@@ -464,7 +352,7 @@ namespace [symbol.NamespaceName].Metadata
 ^
         protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
+            return MetadataSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
         [end if]
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteInitializingSymbol"))]
@@ -477,7 +365,7 @@ namespace [symbol.NamespaceName].Metadata
 ^
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
+            return MetadataSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
         }
         [end if]
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteImports"))]
@@ -494,9 +382,9 @@ namespace [symbol.NamespaceName].Metadata
             [if (part is SymbolPropertyGenerationInfo)]
                 [var prop = (SymbolPropertyGenerationInfo)part]
                 [if (prop.IsCollection)]
-            return ModelSymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
+            return MetadataSymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
                 [else]
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
+            return MetadataSymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
                 [end if]
             [end if]
         }
@@ -516,56 +404,66 @@ namespace [symbol.NamespaceName].Metadata
             private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
             private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
-            private readonly bool _unreported;
-            private ImmutableArray<Symbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags _flags;
+            private ImmutableArray<Symbol> _candidateSymbols;
 ^
             [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
-            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+            private Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
                 : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
-                Debug.Assert(unreported == false || errorInfo != null);
+                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
                 _name = name;
                 _metadataName = metadataName;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
-                _unreported = unreported;
+                _flags = flags;
+            }
+
+            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.None[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
+            {
+            }
+
+            public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(wrappedSymbol.ContainingSymbol, wrappedSymbol.Name, wrappedSymbol.MetadataName, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject : (symbol as IModelSymbol)?.modelObject[end if])
+            {
             }
 ^
-            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
             {
-                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
             }
             [end if]
 ^
-            public Error AsUnreported()
+            public Error AsUnreported(DiagnosticInfo? errorInfo = null)
             {
                 return this.IsUnreported ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, _kind, ErrorInfo, CandidateSymbols, true[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
             {
                 return _kind == kind ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, CandidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, CandidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && CandidateSymbols == candidateSymbols ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, candidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, kind, errorInfo, candidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, errorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error WithErrorInfo(DiagnosticInfo errorInfo)
             {
                 return ErrorInfo == errorInfo ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo, CandidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo, CandidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public override string Name => _name;
@@ -574,7 +472,7 @@ namespace [symbol.NamespaceName].Metadata
 ^
             public sealed override bool IsError => true;
 ^
-            public bool IsUnreported => _unreported;
+            public bool IsUnreported => _flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported);
 ^
             public MetaDslx.CodeAnalysis.Symbols.ErrorKind ErrorKind => _kind;
 ^
@@ -604,12 +502,12 @@ namespace [symbol.NamespaceName].Metadata
 ^
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
-                return null;
+                return ErrorSymbolImplementation.MakeErrorInfo(this);
             }
 ^
             protected virtual ImmutableArray<Symbol> MakeCandidateSymbols()
             {
-                return ImmutableArray<Symbol>.Empty;
+                return ErrorSymbolImplementation.MakeCandidateSymbols(this);
             }
 ^
             protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -754,63 +652,72 @@ namespace [symbol.NamespaceName].Source
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         public partial class Error : Source[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
             private readonly string _name;
             private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
             private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
-            private readonly bool _unreported;
-            private ImmutableArray<Symbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags _flags;
+            private ImmutableArray<Symbol> _candidateSymbols;
 ^
             [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
-            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
-                : base(container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
+            private Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
+                : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
-                Debug.Assert(unreported == false || errorInfo != null);
+                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
                 _name = declaration.Name;
                 _metadataName = declaration.MetadataName;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
-                _unreported = unreported;
+                _flags = flags;
+            }
+
+            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(container, declaration, kind, errorInfo, candidateSymbols, unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.None[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
+            {
+            }
+
+            public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(wrappedSymbol.ContainingSymbol, (wrappedSymbol as ISourceSymbol).MergedDeclaration, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject : (symbol as IModelSymbol)?.modelObject[end if])
+            {
             }
 ^
-            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
             {
-                return new Error(container, declaration, kind, errorInfo, candidateSymbols, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+                return new Error(container, declaration, kind, errorInfo, candidateSymbols, flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
             }
             [end if]
 ^
-            public Error AsUnreported()
+            public Error AsUnreported(DiagnosticInfo? errorInfo = null)
             {
                 return this.IsUnreported ? this :
-                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, ErrorInfo, CandidateSymbols, true[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
             {
                 return _kind == kind ? this :
-                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, CandidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, CandidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && CandidateSymbols == candidateSymbols ? this :
-                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, candidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
-                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, errorInfo, candidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, errorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error WithErrorInfo(DiagnosticInfo errorInfo)
             {
                 return ErrorInfo == errorInfo ? this :
-                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo, CandidateSymbols, _unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo, CandidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public override string Name => _name;
@@ -819,7 +726,7 @@ namespace [symbol.NamespaceName].Source
 ^
             public sealed override bool IsError => true;
 ^
-            public bool IsUnreported => _unreported;
+            public bool IsUnreported => _flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported);
 ^
             public MetaDslx.CodeAnalysis.Symbols.ErrorKind ErrorKind => _kind;
 ^
@@ -847,7 +754,7 @@ namespace [symbol.NamespaceName].Source
                 }
             }
 ^
-            public DiagnosticInfo? UseSiteDiagnosticInfo => _unreported ? ErrorInfo : null;
+            public DiagnosticInfo? UseSiteDiagnosticInfo => IsUnreported ? ErrorInfo : null;
 ^
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
@@ -864,7 +771,6 @@ namespace [symbol.NamespaceName].Source
                 return _name;
             }
         }
-        [end if]
         [end if]
 	}
 }
@@ -945,6 +851,17 @@ namespace [namespaceName].Factory
             [end if]
         }
 ^
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+            throw new NotImplementedException("There is no Metadata[symbol.Name] implemented.");
+            [else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateMetadataSymbol for Metadata[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Metadata.Metadata[symbol.Name].Error(wrappedSymbol, kind, errorInfo, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
@@ -964,6 +881,17 @@ namespace [namespaceName].Factory
             throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
             [else]
             return new Source.Source[symbol.Name].Error(container, declaration, kind, errorInfo, candidateSymbols, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+            throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
+            [else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Source.Source[symbol.Name].Error(wrappedSymbol, kind, errorInfo, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
             [end if]
         }
 	}

@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public static class ModelSymbolImplementation
+    public static class MetadataSymbolImplementation
     {
         public static ImmutableArray<Symbol> MakeGlobalSymbols(Symbol rootSymbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

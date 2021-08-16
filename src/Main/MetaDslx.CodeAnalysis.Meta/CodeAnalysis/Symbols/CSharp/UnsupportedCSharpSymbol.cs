@@ -36,6 +36,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public DiagnosticInfo ErrorInfo => LanguageDiagnosticInfo.EmptyErrorInfo;
 
+        public bool IsUnreported => false;
+
+        public ErrorKind ErrorKind => ErrorKind.Unsupported;
+
+        public ImmutableArray<Symbol> CandidateSymbols => ImmutableArray<Symbol>.Empty;
+
         public override void Accept(SymbolVisitor visitor)
         {
             // nop

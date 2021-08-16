@@ -118,6 +118,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             private readonly bool _unreported;
             private ImmutableArray<Symbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
 
+            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
+                : base(container, declaration, true)
+            {
+                Debug.Assert(unreported == false || errorInfo != null);
+                _name = declaration.Name;
+                _metadataName = declaration.MetadataName;
+                _kind = kind;
+                _errorInfo = errorInfo;
+                _candidateSymbols = candidateSymbols;
+                _unreported = unreported;
+            }
+
             protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
             {
                 return new Error(container, declaration, kind, errorInfo, candidateSymbols, unreported);

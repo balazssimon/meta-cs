@@ -18,12 +18,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeParameterSymbol> CompleteSymbolProperty_TypeParameters(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.TypeParameterSymbol>(this, nameof(TypeParameters), diagnostics, cancellationToken);
+            return MetadataSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.TypeParameterSymbol>(this, nameof(TypeParameters), diagnostics, cancellationToken);
         }
 
         protected override global::Microsoft.CodeAnalysis.Accessibility CompleteSymbolProperty_DeclaredAccessibility(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::Microsoft.CodeAnalysis.Accessibility>(this, nameof(DeclaredAccessibility), diagnostics, cancellationToken);
+            return MetadataSymbolImplementation.AssignSymbolPropertyValue<global::Microsoft.CodeAnalysis.Accessibility>(this, nameof(DeclaredAccessibility), diagnostics, cancellationToken);
         }
 
         public partial class Error : MetadataAliasSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             private DiagnosticInfo _errorInfo;
             private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
             private readonly bool _unreported;
-            private ImmutableArray<Symbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
+            private ImmutableArray<Symbol> _candidateSymbols;
 
 
             public Error AsUnreported()
@@ -102,12 +102,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
             protected virtual DiagnosticInfo? MakeErrorInfo()
             {
-                return null;
+                return ErrorSymbolImplementation.MakeErrorInfo(this);
             }
 
             protected virtual ImmutableArray<Symbol> MakeCandidateSymbols()
             {
-                return ImmutableArray<Symbol>.Empty;
+                return ErrorSymbolImplementation.MakeCandidateSymbols(this);
             }
 
             protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)

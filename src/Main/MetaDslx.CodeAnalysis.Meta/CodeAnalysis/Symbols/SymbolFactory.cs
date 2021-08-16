@@ -163,6 +163,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.Ambiguous, null, candidateSymbols, false, modelObject);
         }
 
+        public Symbol MakeInaccessibleSymbol(object? modelObject)
+        {
+            return this.MakeMetadataErrorSymbol(string.Empty, string.Empty, ErrorKind.Inaccessible, null, default, false, modelObject);
+        }
+
+        public Symbol MakeInaccessibleSymbol(string name, string metadataName, object? modelObject)
+        {
+            return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.Inaccessible, null, default, false, modelObject);
+        }
+
+        public Symbol MakeInaccessibleSymbol<T>(string name, string metadataName, ImmutableArray<Symbol> candidateSymbols, object? modelObject = null)
+            where T : Symbol
+        {
+            return this.MakeMetadataErrorSymbol<T>(name, metadataName, ErrorKind.Inaccessible, null, candidateSymbols, false, modelObject);
+        }
+
+        public Symbol MakeInaccessibleSymbol(string name, string metadataName, ImmutableArray<Symbol> candidateSymbols, object? modelObject)
+        {
+            return this.MakeMetadataErrorSymbol(name, metadataName, ErrorKind.Inaccessible, null, candidateSymbols, false, modelObject);
+        }
+
         public Symbol MakeErrorSymbol<T>(object? modelObject = null)
             where T : Symbol
         {

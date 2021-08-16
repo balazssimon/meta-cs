@@ -853,7 +853,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
         {
-            return !candidate.IsError || !(candidate is Metadata.MetadataNamedTypeSymbol.Missing);
+            return !candidate.IsError || candidate is not IErrorSymbol error || error.ErrorKind != ErrorKind.Missing;
         }
 
         /// <summary>
