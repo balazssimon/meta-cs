@@ -119,22 +119,32 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public partial class Error
         {
-            public Error(SourceModuleSymbol module, Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject = null)
+            private Error(SourceModuleSymbol module, Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags, object? modelObject)
                 : base(module, container, declaration, modelObject, true)
             {
+                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
                 _name = declaration.Name;
                 _metadataName = declaration.MetadataName;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
-                _unreported = unreported;
+                _flags = flags;
             }
 
-            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject = null)
+            public Error(SourceModuleSymbol module, Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject = null)
+                : this(module, container, declaration, kind, errorInfo, candidateSymbols, unreported? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.None, modelObject)
             {
-                return new Error((SourceModuleSymbol)this.ContainingModule, container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
             }
 
+            public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject = null)
+                : this((SourceModuleSymbol)wrappedSymbol.ContainingModule, wrappedSymbol.ContainingSymbol, (wrappedSymbol as ISourceSymbol).MergedDeclaration, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped, modelObject is not null ? modelObject :  (wrappedSymbol as IModelSymbol)?.ModelObject)
+            {
+            }
+
+            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags, object? modelObject)
+            {
+                return new Error((SourceModuleSymbol)this.ContainingModule, container, declaration, kind, errorInfo, candidateSymbols, flags, modelObject);
+            }
         }
     }
 }

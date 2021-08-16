@@ -23,6 +23,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataArgumentSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataArgumentSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceArgumentSymbol(container, declaration, modelObject);
@@ -31,6 +36,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceArgumentSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceArgumentSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class AssignmentExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -45,6 +55,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataAssignmentExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataAssignmentExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceAssignmentExpressionSymbol(container, declaration, modelObject);
@@ -53,6 +68,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceAssignmentExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceAssignmentExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class AwaitExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -67,6 +87,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataAwaitExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataAwaitExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceAwaitExpressionSymbol(container, declaration, modelObject);
@@ -75,6 +100,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceAwaitExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceAwaitExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class BinaryExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -89,6 +119,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataBinaryExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataBinaryExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceBinaryExpressionSymbol(container, declaration, modelObject);
@@ -97,6 +132,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceBinaryExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceBinaryExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class CoalesceExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -111,6 +151,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataCoalesceExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataCoalesceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceCoalesceExpressionSymbol(container, declaration, modelObject);
@@ -119,6 +164,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceCoalesceExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceCoalesceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class CompoundAssignmentExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -133,6 +183,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataCompoundAssignmentExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataCompoundAssignmentExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceCompoundAssignmentExpressionSymbol(container, declaration, modelObject);
@@ -141,6 +196,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceCompoundAssignmentExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceCompoundAssignmentExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ConditionalExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -155,6 +215,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConditionalExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataConditionalExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceConditionalExpressionSymbol(container, declaration, modelObject);
@@ -163,6 +228,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceConditionalExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceConditionalExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ConversionExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -177,6 +247,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConversionExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataConversionExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceConversionExpressionSymbol(container, declaration, modelObject);
@@ -185,6 +260,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceConversionExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceConversionExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class DefaultValueExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -199,6 +279,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDefaultValueExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDefaultValueExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceDefaultValueExpressionSymbol(container, declaration, modelObject);
@@ -207,6 +292,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceDefaultValueExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDefaultValueExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class DiscardExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -221,6 +311,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDiscardExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDiscardExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceDiscardExpressionSymbol(container, declaration);
@@ -229,6 +324,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceDiscardExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDiscardExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported);
         }
 	}
 	public class DynamicExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -243,6 +343,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDynamicExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDynamicExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceDynamicExpressionSymbol(container, declaration, modelObject);
@@ -251,6 +356,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceDynamicExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDynamicExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class IncrementOrDecrementExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -265,6 +375,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIncrementOrDecrementExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataIncrementOrDecrementExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceIncrementOrDecrementExpressionSymbol(container, declaration, modelObject);
@@ -273,6 +388,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceIncrementOrDecrementExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceIncrementOrDecrementExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class IndexerAccessExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -287,6 +407,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIndexerAccessExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataIndexerAccessExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceIndexerAccessExpressionSymbol(container, declaration, modelObject);
@@ -295,6 +420,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceIndexerAccessExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceIndexerAccessExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class InstanceReferenceExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -309,6 +439,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataInstanceReferenceExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataInstanceReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceInstanceReferenceExpressionSymbol(container, declaration, modelObject);
@@ -317,6 +452,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceInstanceReferenceExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceInstanceReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class InvocationExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -331,6 +471,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataInvocationExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataInvocationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceInvocationExpressionSymbol(container, declaration, modelObject);
@@ -339,6 +484,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceInvocationExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceInvocationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class IsTypeExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -353,6 +503,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIsTypeExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataIsTypeExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceIsTypeExpressionSymbol(container, declaration, modelObject);
@@ -361,6 +516,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceIsTypeExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceIsTypeExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class LambdaExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -375,6 +535,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLambdaExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataLambdaExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceLambdaExpressionSymbol(container, declaration, modelObject);
@@ -383,6 +548,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceLambdaExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceLambdaExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class LiteralExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -397,6 +567,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLiteralExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataLiteralExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceLiteralExpressionSymbol(container, declaration, modelObject);
@@ -405,6 +580,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceLiteralExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceLiteralExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class MemberReferenceExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -419,6 +599,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataMemberReferenceExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataMemberReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceMemberReferenceExpressionSymbol(container, declaration, modelObject);
@@ -427,6 +612,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceMemberReferenceExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceMemberReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class NameOfExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -441,6 +631,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNameOfExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataNameOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceNameOfExpressionSymbol(container, declaration, modelObject);
@@ -449,6 +644,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceNameOfExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceNameOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ObjectCreationExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -463,6 +663,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataObjectCreationExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataObjectCreationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceObjectCreationExpressionSymbol(container, declaration, modelObject);
@@ -471,6 +676,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceObjectCreationExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceObjectCreationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ParenthesizedExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -485,6 +695,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataParenthesizedExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataParenthesizedExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceParenthesizedExpressionSymbol(container, declaration, modelObject);
@@ -493,6 +708,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceParenthesizedExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceParenthesizedExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ReferenceExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -507,6 +727,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataReferenceExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceReferenceExpressionSymbol(container, declaration, modelObject);
@@ -515,6 +740,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceReferenceExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class SizeOfExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -529,6 +759,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataSizeOfExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataSizeOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceSizeOfExpressionSymbol(container, declaration, modelObject);
@@ -537,6 +772,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceSizeOfExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceSizeOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ThrowExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -551,6 +791,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataThrowExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataThrowExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceThrowExpressionSymbol(container, declaration, modelObject);
@@ -559,6 +804,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceThrowExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceThrowExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class TupleExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -573,6 +823,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTupleExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataTupleExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceTupleExpressionSymbol(container, declaration, modelObject);
@@ -581,6 +836,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceTupleExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceTupleExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class TypeOfExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -595,6 +855,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTypeOfExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataTypeOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceTypeOfExpressionSymbol(container, declaration, modelObject);
@@ -603,6 +868,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceTypeOfExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceTypeOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class UnaryExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -617,6 +887,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataUnaryExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataUnaryExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceUnaryExpressionSymbol(container, declaration, modelObject);
@@ -625,6 +900,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceUnaryExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceUnaryExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class VariableDeclarationExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -639,6 +919,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataVariableDeclarationExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataVariableDeclarationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceVariableDeclarationExpressionSymbol(container, declaration, modelObject);
@@ -647,6 +932,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceVariableDeclarationExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceVariableDeclarationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class VariableDeclarationGroupExpressionSymbolFactory : IGeneratedSymbolFactory
@@ -661,6 +951,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataVariableDeclarationGroupExpressionSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataVariableDeclarationGroupExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceVariableDeclarationGroupExpressionSymbol(container, declaration, modelObject);
@@ -669,6 +964,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceVariableDeclarationGroupExpressionSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceVariableDeclarationGroupExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class BinaryOperatorSymbolFactory : IGeneratedSymbolFactory
@@ -683,6 +983,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataBinaryOperatorSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataBinaryOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceBinaryOperatorSymbol(container, declaration, modelObject);
@@ -691,6 +996,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceBinaryOperatorSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceBinaryOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ConstructorSymbolFactory : IGeneratedSymbolFactory
@@ -705,6 +1015,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConstructorSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataConstructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceConstructorSymbol(container, declaration, modelObject);
@@ -713,6 +1028,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceConstructorSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceConstructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ConversionOperatorSymbolFactory : IGeneratedSymbolFactory
@@ -727,6 +1047,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataConversionOperatorSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataConversionOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceConversionOperatorSymbol(container, declaration, modelObject);
@@ -735,6 +1060,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceConversionOperatorSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceConversionOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class DestructorSymbolFactory : IGeneratedSymbolFactory
@@ -749,6 +1079,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDestructorSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDestructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceDestructorSymbol(container, declaration, modelObject);
@@ -757,6 +1092,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceDestructorSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDestructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class FieldSymbolFactory : IGeneratedSymbolFactory
@@ -771,6 +1111,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataFieldSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataFieldSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceFieldSymbol(container, declaration, modelObject);
@@ -779,6 +1124,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceFieldSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceFieldSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class IndexerSymbolFactory : IGeneratedSymbolFactory
@@ -793,6 +1143,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIndexerSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataIndexerSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceIndexerSymbol(container, declaration, modelObject);
@@ -801,6 +1156,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceIndexerSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceIndexerSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class LambdaSymbolFactory : IGeneratedSymbolFactory
@@ -815,6 +1175,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLambdaSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataLambdaSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceLambdaSymbol(container, declaration, modelObject);
@@ -823,6 +1188,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceLambdaSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceLambdaSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class MemberSymbolFactory : IGeneratedSymbolFactory
@@ -837,6 +1207,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataMemberSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataMemberSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceMemberSymbol(container, declaration, modelObject);
@@ -845,6 +1220,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceMemberSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceMemberSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class MethodSymbolFactory : IGeneratedSymbolFactory
@@ -859,6 +1239,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataMethodSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataMethodSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceMethodSymbol(container, declaration, modelObject);
@@ -867,6 +1252,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceMethodSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceMethodSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ParameterSymbolFactory : IGeneratedSymbolFactory
@@ -881,6 +1271,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataParameterSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataParameterSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceParameterSymbol(container, declaration, modelObject);
@@ -889,6 +1284,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceParameterSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceParameterSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class PropertySymbolFactory : IGeneratedSymbolFactory
@@ -903,6 +1303,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataPropertySymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataPropertySymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourcePropertySymbol(container, declaration, modelObject);
@@ -911,6 +1316,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourcePropertySymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourcePropertySymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class UnaryOperatorSymbolFactory : IGeneratedSymbolFactory
@@ -925,6 +1335,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataUnaryOperatorSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataUnaryOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceUnaryOperatorSymbol(container, declaration, modelObject);
@@ -933,6 +1348,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceUnaryOperatorSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceUnaryOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class AliasSymbolFactory : IGeneratedSymbolFactory
@@ -947,6 +1367,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             throw new NotImplementedException("CreateMetadataSymbol for MetadataAliasSymbol should be implemented in a custom SymbolFactory.");
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            throw new NotImplementedException("CreateMetadataSymbol for MetadataAliasSymbol should be implemented in a custom SymbolFactory.");
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceAliasSymbol(container, declaration);
@@ -955,6 +1380,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceAliasSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceAliasSymbol.Error(wrappedSymbol, kind, errorInfo, unreported);
         }
 	}
 	public class NamespaceSymbolFactory : IGeneratedSymbolFactory
@@ -969,12 +1399,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNamespaceSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataNamespaceSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             throw new NotImplementedException("CreateSourceSymbol for SourceNamespaceSymbol should be implemented in a custom SymbolFactory.");
         }
 
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            throw new NotImplementedException("CreateSourceSymbol for SourceNamespaceSymbol should be implemented in a custom SymbolFactory.");
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
         {
             throw new NotImplementedException("CreateSourceSymbol for SourceNamespaceSymbol should be implemented in a custom SymbolFactory.");
         }
@@ -991,6 +1431,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataBlockStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataBlockStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceBlockStatementSymbol(container, declaration, modelObject);
@@ -999,6 +1444,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceBlockStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceBlockStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class CatchClauseSymbolFactory : IGeneratedSymbolFactory
@@ -1013,6 +1463,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataCatchClauseSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataCatchClauseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceCatchClauseSymbol(container, declaration, modelObject);
@@ -1021,6 +1476,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceCatchClauseSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceCatchClauseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class DefaultCaseClauseSymbolFactory : IGeneratedSymbolFactory
@@ -1035,6 +1495,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDefaultCaseClauseSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDefaultCaseClauseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceDefaultCaseClauseSymbol(container, declaration, modelObject);
@@ -1043,6 +1508,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceDefaultCaseClauseSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDefaultCaseClauseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class EmptyStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1057,6 +1527,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataEmptyStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataEmptyStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceEmptyStatementSymbol(container, declaration, modelObject);
@@ -1065,6 +1540,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceEmptyStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceEmptyStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ExpressionStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1079,6 +1559,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataExpressionStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataExpressionStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceExpressionStatementSymbol(container, declaration, modelObject);
@@ -1087,6 +1572,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceExpressionStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceExpressionStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ForEachLoopStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1101,6 +1591,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataForEachLoopStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataForEachLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceForEachLoopStatementSymbol(container, declaration, modelObject);
@@ -1109,6 +1604,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceForEachLoopStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceForEachLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ForLoopStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1123,6 +1623,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataForLoopStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataForLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceForLoopStatementSymbol(container, declaration, modelObject);
@@ -1131,6 +1636,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceForLoopStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceForLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ForToLoopStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1145,6 +1655,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataForToLoopStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataForToLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceForToLoopStatementSymbol(container, declaration, modelObject);
@@ -1153,6 +1668,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceForToLoopStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceForToLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class IfStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1167,6 +1687,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataIfStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataIfStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceIfStatementSymbol(container, declaration, modelObject);
@@ -1175,6 +1700,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceIfStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceIfStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class JumpStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1189,6 +1719,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataJumpStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataJumpStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceJumpStatementSymbol(container, declaration, modelObject);
@@ -1197,6 +1732,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceJumpStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceJumpStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class LabelSymbolFactory : IGeneratedSymbolFactory
@@ -1211,6 +1751,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLabelSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataLabelSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceLabelSymbol(container, declaration, modelObject);
@@ -1219,6 +1764,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceLabelSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceLabelSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class LockStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1233,6 +1783,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataLockStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataLockStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceLockStatementSymbol(container, declaration, modelObject);
@@ -1241,6 +1796,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceLockStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceLockStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ReturnStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1255,6 +1815,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataReturnStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataReturnStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceReturnStatementSymbol(container, declaration, modelObject);
@@ -1263,6 +1828,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceReturnStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceReturnStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class SwitchCaseSymbolFactory : IGeneratedSymbolFactory
@@ -1277,6 +1847,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataSwitchCaseSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataSwitchCaseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceSwitchCaseSymbol(container, declaration, modelObject);
@@ -1285,6 +1860,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceSwitchCaseSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceSwitchCaseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class SwitchStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1299,6 +1879,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataSwitchStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataSwitchStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceSwitchStatementSymbol(container, declaration, modelObject);
@@ -1307,6 +1892,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceSwitchStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceSwitchStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class TryStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1321,6 +1911,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTryStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataTryStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceTryStatementSymbol(container, declaration, modelObject);
@@ -1329,6 +1924,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceTryStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceTryStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class UsingStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1343,6 +1943,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataUsingStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataUsingStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceUsingStatementSymbol(container, declaration, modelObject);
@@ -1351,6 +1956,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceUsingStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceUsingStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class VariableSymbolFactory : IGeneratedSymbolFactory
@@ -1365,6 +1975,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataVariableSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataVariableSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceVariableSymbol(container, declaration, modelObject);
@@ -1373,6 +1988,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceVariableSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceVariableSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class WhileLoopStatementSymbolFactory : IGeneratedSymbolFactory
@@ -1387,6 +2007,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataWhileLoopStatementSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataWhileLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceWhileLoopStatementSymbol(container, declaration, modelObject);
@@ -1395,6 +2020,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceWhileLoopStatementSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceWhileLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ArrayTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1409,6 +2039,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataArrayTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataArrayTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceArrayTypeSymbol(container, declaration, modelObject);
@@ -1417,6 +2052,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceArrayTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceArrayTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class ClassTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1431,6 +2071,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataClassTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataClassTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceClassTypeSymbol(container, declaration, modelObject);
@@ -1439,6 +2084,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceClassTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceClassTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class DelegateTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1453,6 +2103,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataDelegateTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDelegateTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceDelegateTypeSymbol(container, declaration, modelObject);
@@ -1461,6 +2116,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceDelegateTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDelegateTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class EnumLiteralSymbolFactory : IGeneratedSymbolFactory
@@ -1475,6 +2135,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataEnumLiteralSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataEnumLiteralSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceEnumLiteralSymbol(container, declaration, modelObject);
@@ -1483,6 +2148,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceEnumLiteralSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceEnumLiteralSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class EnumTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1497,6 +2167,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataEnumTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataEnumTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceEnumTypeSymbol(container, declaration, modelObject);
@@ -1505,6 +2180,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceEnumTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceEnumTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class InterfaceTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1519,6 +2199,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataInterfaceTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataInterfaceTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceInterfaceTypeSymbol(container, declaration, modelObject);
@@ -1527,6 +2212,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceInterfaceTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceInterfaceTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class NamedTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1541,6 +2231,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNamedTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataNamedTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceNamedTypeSymbol(container, declaration, modelObject);
@@ -1549,6 +2244,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceNamedTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceNamedTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class NullableTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1563,6 +2263,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataNullableTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataNullableTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceNullableTypeSymbol(container, declaration, modelObject);
@@ -1571,6 +2276,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceNullableTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceNullableTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class PrimitiveTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1585,6 +2295,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataPrimitiveTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataPrimitiveTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourcePrimitiveTypeSymbol(container, declaration, modelObject);
@@ -1593,6 +2308,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourcePrimitiveTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourcePrimitiveTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class StructTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1607,6 +2327,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataStructTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataStructTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceStructTypeSymbol(container, declaration, modelObject);
@@ -1615,6 +2340,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceStructTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceStructTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class TupleTypeSymbolFactory : IGeneratedSymbolFactory
@@ -1629,6 +2359,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTupleTypeSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataTupleTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceTupleTypeSymbol(container, declaration, modelObject);
@@ -1637,6 +2372,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceTupleTypeSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceTupleTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 	public class TypeParameterSymbolFactory : IGeneratedSymbolFactory
@@ -1651,6 +2391,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Metadata.MetadataTypeParameterSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
         }
 
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataTypeParameterSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
         public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceTypeParameterSymbol(container, declaration, modelObject);
@@ -1659,6 +2404,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
         public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
         {
             return new Source.SourceTypeParameterSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceTypeParameterSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
 }

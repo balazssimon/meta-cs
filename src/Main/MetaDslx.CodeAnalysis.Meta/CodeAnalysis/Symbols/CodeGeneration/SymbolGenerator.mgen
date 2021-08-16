@@ -426,7 +426,7 @@ namespace [symbol.NamespaceName].Metadata
             }
 
             public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
-                : this(wrappedSymbol.ContainingSymbol, wrappedSymbol.Name, wrappedSymbol.MetadataName, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject : (symbol as IModelSymbol)?.modelObject[end if])
+                : this(wrappedSymbol.ContainingSymbol, wrappedSymbol.Name, wrappedSymbol.MetadataName, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject : (wrappedSymbol as IModelSymbol)?.ModelObject[end if])
             {
             }
 ^
@@ -439,7 +439,7 @@ namespace [symbol.NamespaceName].Metadata
             public Error AsUnreported(DiagnosticInfo? errorInfo = null)
             {
                 return this.IsUnreported ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
@@ -663,7 +663,7 @@ namespace [symbol.NamespaceName].Source
 ^
             [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
             private Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
-                : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
+                : base(container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
                 Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
                 _name = declaration.Name;
@@ -680,7 +680,7 @@ namespace [symbol.NamespaceName].Source
             }
 
             public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
-                : this(wrappedSymbol.ContainingSymbol, (wrappedSymbol as ISourceSymbol).MergedDeclaration, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject : (symbol as IModelSymbol)?.modelObject[end if])
+                : this(wrappedSymbol.ContainingSymbol, (wrappedSymbol as ISourceSymbol).MergedDeclaration, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject :  (wrappedSymbol as IModelSymbol)?.ModelObject[end if])
             {
             }
 ^
@@ -693,7 +693,7 @@ namespace [symbol.NamespaceName].Source
             public Error AsUnreported(DiagnosticInfo? errorInfo = null)
             {
                 return this.IsUnreported ? this :
-                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
             }
 ^
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)

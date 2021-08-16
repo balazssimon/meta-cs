@@ -32,38 +32,38 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             private readonly string _metadataName;
             private DiagnosticInfo _errorInfo;
             private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
-            private readonly bool _unreported;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags _flags;
             private ImmutableArray<Symbol> _candidateSymbols;
 
 
-            public Error AsUnreported()
+            public Error AsUnreported(DiagnosticInfo? errorInfo = null)
             {
                 return this.IsUnreported ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, _kind, ErrorInfo, CandidateSymbols, true);
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported);
             }
 
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
             {
                 return _kind == kind ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, CandidateSymbols, _unreported);
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, CandidateSymbols, _flags);
             }
 
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && CandidateSymbols == candidateSymbols ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, candidateSymbols, _unreported);
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, candidateSymbols, _flags);
             }
 
             public Error AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<Symbol> candidateSymbols)
             {
                 return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, kind, errorInfo, candidateSymbols, _unreported);
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, errorInfo, candidateSymbols, _flags);
             }
 
             public Error WithErrorInfo(DiagnosticInfo errorInfo)
             {
                 return ErrorInfo == errorInfo ? this :
-                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo, CandidateSymbols, _unreported);
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo, CandidateSymbols, _flags);
             }
 
             public override string Name => _name;
@@ -72,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
             public sealed override bool IsError => true;
 
-            public bool IsUnreported => _unreported;
+            public bool IsUnreported => _flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported);
 
             public MetaDslx.CodeAnalysis.Symbols.ErrorKind ErrorKind => _kind;
 

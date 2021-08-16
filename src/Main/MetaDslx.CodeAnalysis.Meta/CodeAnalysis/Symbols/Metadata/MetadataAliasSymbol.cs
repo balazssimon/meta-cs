@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols.Completion;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -32,16 +33,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _locations = locations;
             _aliasTarget = target;
             _binder = binder;
-        }
-
-        public MetadataAliasSymbol(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false, bool isError = false)
-            : base(binder.ContainingSymbol, isError)
-        {
-            _aliasName = aliasName;
-            _locations = ImmutableArray.Create(location);
-            _aliasTargetName = aliasTargetName;
-            _binder = binder;
-            _isExtern = isExtern;
         }
 
         public override ImmutableArray<Location> Locations => _locations;
@@ -187,21 +178,32 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             private Symbol _container;
 
-            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
-                : base(null, name, null, Location.None, false, true)
+            private Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags)
+                : base(null, null, name, container.ContainingModule?.Locations ?? ImmutableArray<Location>.Empty, true)
             {
+                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
                 _container = container;
                 _name = name;
                 _metadataName = metadataName;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
-                _unreported = unreported;
+                _flags = flags;
             }
 
-            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
+            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported)
+                : this(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.None)
             {
-                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported);
+            }
+
+            public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported)
+                : this(wrappedSymbol.ContainingSymbol, wrappedSymbol.Name, wrappedSymbol.MetadataName, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped)
+            {
+            }
+
+            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags)
+            {
+                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, flags);
             }
 
             public override Symbol ContainingSymbol => _container;

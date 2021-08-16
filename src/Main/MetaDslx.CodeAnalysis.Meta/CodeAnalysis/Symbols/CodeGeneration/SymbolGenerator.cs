@@ -2256,10 +2256,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.Write("                : this(wrappedSymbol.ContainingSymbol, wrappedSymbol.Name, wrappedSymbol.MetadataName, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped"); //429:1
                     if (symbol.ModelObjectOption != ParameterOption.Disabled) //429:302
                     {
-                        __out.Write(", modelObject is not null ? modelObject : (symbol as IModelSymbol)?.modelObject"); //429:359
+                        __out.Write(", modelObject is not null ? modelObject : (wrappedSymbol as IModelSymbol)?.ModelObject"); //429:359
                     }
-                    __out.Write(")"); //429:446
-                    __out.AppendLine(false); //429:447
+                    __out.Write(")"); //429:453
+                    __out.AppendLine(false); //429:454
                     __out.Write("            {"); //430:1
                     __out.AppendLine(false); //430:14
                     __out.Write("            }"); //431:1
@@ -2291,13 +2291,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 __out.AppendLine(false); //440:14
                 __out.Write("                return this.IsUnreported ? this :"); //441:1
                 __out.AppendLine(false); //441:50
-                __out.Write("                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, "); //442:1
-                if (symbol.ModelObjectOption != ParameterOption.Disabled) //442:210
+                __out.Write("                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported"); //442:1
+                if (symbol.ModelObjectOption != ParameterOption.Disabled) //442:208
                 {
-                    __out.Write(", this.ModelObject"); //442:267
+                    __out.Write(", this.ModelObject"); //442:265
                 }
-                __out.Write(");"); //442:293
-                __out.AppendLine(false); //442:295
+                __out.Write(");"); //442:291
+                __out.AppendLine(false); //442:293
                 __out.Write("            }"); //443:1
                 __out.AppendLine(false); //443:14
                 __out.AppendLine(true); //444:1
@@ -3106,13 +3106,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     __out.Write(")"); //665:329
                     __out.AppendLine(false); //665:330
-                    __out.Write("                : base(container"); //666:1
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //666:34
+                    __out.Write("                : base(container, declaration"); //666:1
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //666:47
                     {
-                        __out.Write(", modelObject"); //666:91
+                        __out.Write(", modelObject"); //666:104
                     }
-                    __out.Write(", true)"); //666:112
-                    __out.AppendLine(false); //666:119
+                    __out.Write(", true)"); //666:125
+                    __out.AppendLine(false); //666:132
                     __out.Write("            {"); //667:1
                     __out.AppendLine(false); //667:14
                     __out.Write("                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);"); //668:1
@@ -3167,10 +3167,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.Write("                : this(wrappedSymbol.ContainingSymbol, (wrappedSymbol as ISourceSymbol).MergedDeclaration, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped"); //683:1
                     if (symbol.ModelObjectOption != ParameterOption.Disabled) //683:306
                     {
-                        __out.Write(", modelObject is not null ? modelObject : (symbol as IModelSymbol)?.modelObject"); //683:363
+                        __out.Write(", modelObject is not null ? modelObject :  (wrappedSymbol as IModelSymbol)?.ModelObject"); //683:363
                     }
-                    __out.Write(")"); //683:450
-                    __out.AppendLine(false); //683:451
+                    __out.Write(")"); //683:458
+                    __out.AppendLine(false); //683:459
                     __out.Write("            {"); //684:1
                     __out.AppendLine(false); //684:14
                     __out.Write("            }"); //685:1
@@ -3202,13 +3202,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 __out.AppendLine(false); //694:14
                 __out.Write("                return this.IsUnreported ? this :"); //695:1
                 __out.AppendLine(false); //695:50
-                __out.Write("                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported, "); //696:1
-                if (symbol.ModelObjectOption != ParameterOption.Disabled) //696:212
+                __out.Write("                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported"); //696:1
+                if (symbol.ModelObjectOption != ParameterOption.Disabled) //696:210
                 {
-                    __out.Write(", this.ModelObject"); //696:269
+                    __out.Write(", this.ModelObject"); //696:267
                 }
-                __out.Write(");"); //696:295
-                __out.AppendLine(false); //696:297
+                __out.Write(");"); //696:293
+                __out.AppendLine(false); //696:295
                 __out.Write("            }"); //697:1
                 __out.AppendLine(false); //697:14
                 __out.AppendLine(true); //698:1

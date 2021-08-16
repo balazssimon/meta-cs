@@ -11,6 +11,8 @@ using Roslyn.Utilities;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using System;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis.Declarations;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -69,12 +71,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal static AliasSymbol CreateUsing(string aliasName, UsingDirective directive, Binder binder)
         {
-            return new MetadataAliasSymbol(binder, aliasName, directive.TargetName, directive.Location, false);
+            var singleDecl = new SingleDeclaration(aliasName, aliasName, typeof(AliasSymbol), null, directive.AliasName.GetReference(), (SourceLocation)directive.AliasName.GetLocation(),
+                false, false, false, null, ImmutableArray<SingleDeclaration>.Empty, ImmutableArray<DeclarationTreeInfo.Property>.Empty, ImmutableArray<Diagnostic>.Empty);
+            var mergedDecl = new MergedDeclaration(ImmutableArray.Create(singleDecl));
+            return new SourceAliasSymbol(binder.ContainingSymbol, mergedDecl, false);
         }
 
         internal static AliasSymbol CreateExternAlias(string aliasName, ExternAliasDirective directive, Binder binder)
         {
-            return new MetadataAliasSymbol(binder, aliasName, null, directive.Location, true);
+            var singleDecl = new SingleDeclaration(aliasName, aliasName, typeof(AliasSymbol), null, directive.AliasName.GetReference(), (SourceLocation)directive.AliasName.GetLocation(),
+                false, false, false, null, ImmutableArray<SingleDeclaration>.Empty, ImmutableArray<DeclarationTreeInfo.Property>.Empty, ImmutableArray<Diagnostic>.Empty);
+            var mergedDecl = new MergedDeclaration(ImmutableArray.Create(singleDecl));
+            return new SourceAliasSymbol(binder.ContainingSymbol, mergedDecl, false);
         }
 
         public virtual AliasSymbol ToNewSubmission(LanguageCompilation compilation)
