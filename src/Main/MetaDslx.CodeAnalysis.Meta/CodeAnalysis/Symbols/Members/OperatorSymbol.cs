@@ -5,16 +5,8 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract partial class OperatorSymbol : BehavioralMemberSymbol
+    public abstract partial class OperatorSymbol : MethodLikeSymbol
     {
-        [SymbolProperty]
-        public abstract TypeSymbol ReturnType { get; }
-
-        [SymbolProperty]
-        public abstract ImmutableArray<ParameterSymbol> Parameters { get; }
-
-        [SymbolProperty]
-        public abstract StatementSymbol Body { get; }
 
     }
 }

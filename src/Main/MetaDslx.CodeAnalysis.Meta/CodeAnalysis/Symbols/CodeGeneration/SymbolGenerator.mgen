@@ -4,6 +4,8 @@ generator SymbolGenerator;
 template GenerateSymbol(SymbolGenerationInfo symbol)
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
@@ -12,9 +14,28 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 ^
+#nullable enable
+^
+[GeneratePartialSymbol(symbol)]
+[if (symbol.SymbolParts != SymbolParts.None)]
+^
+[GenerateCompletionSymbol(symbol)]
+[if (symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+^
+[GenerateMetadataSymbol(symbol)]
+[end if]
+[if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+^
+[GenerateSourceSymbol(symbol)]
+[end if]
+[end if]
+end template
+
+template GeneratePartialSymbol(SymbolGenerationInfo symbol)
 namespace [symbol.NamespaceName]
 {
 	public [if (!symbol.ExistingTypeInfo.IsSealed)]abstract [end if]partial class [symbol.Name]
@@ -40,20 +61,6 @@ namespace [symbol.NamespaceName]
 end template
 
 template GenerateCompletionSymbol(SymbolGenerationInfo symbol)
-using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using Roslyn.Utilities;
-^
 namespace [symbol.NamespaceName].Completion
 {
 	public abstract partial class Completion[symbol.Name][if (symbol.ExistingCompletionTypeInfo.BaseType == null)] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if][end if]
@@ -316,19 +323,6 @@ namespace [symbol.NamespaceName].Completion
 end template
 
 template GenerateMetadataSymbol(SymbolGenerationInfo symbol)
-using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-^
 namespace [symbol.NamespaceName].Metadata
 {
 	public partial class Metadata[symbol.Name][if (symbol.ExistingMetadataTypeInfo.BaseType == null)] : [symbol.NamespaceName].Completion.Completion[symbol.Name][end if]
@@ -521,22 +515,6 @@ namespace [symbol.NamespaceName].Metadata
 end template
 
 template GenerateSourceSymbol(SymbolGenerationInfo symbol)
-using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-^
 namespace [symbol.NamespaceName].Source
 {
 	public partial class Source[symbol.Name][if (symbol.ExistingSourceTypeInfo.BaseType == null)] : [symbol.NamespaceName].Completion.Completion[symbol.Name][if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol[end if][end if]
@@ -776,6 +754,57 @@ namespace [symbol.NamespaceName].Source
 }
 end template
 
+template GenerateWrappedSymbol(SymbolGenerationInfo symbol)
+namespace [symbol.NamespaceName].Wrapped
+{
+	public partial class Wrapped[symbol.Name] : [symbol.NamespaceName].Completion.Completion[symbol.Name]
+	{
+        private readonly [symbol.NamespaceName].[symbol.Name] _wrappedSymbol;
+
+        public Wrapped[symbol.Name]([symbol.NamespaceName].[symbol.Name] wrappedSymbol)
+            : base(wrappedSymbol.ContainingSymbol[if(symbol.ModelObjectOption != ParameterOption.Disabled)], ((IModelSymbol)wrappedSymbol).ModelObject[end if], wrappedSymbol.IsError)
+        {
+            _wrappedSymbol = wrappedSymbol;
+        }
+^
+        public override ImmutableArray<Location> Locations => _wrappedSymbol.Locations;
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _wrappedSymbol.DeclaringSyntaxReferences;
+^
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return _wrappedSymbol.Name;
+        }
+^
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            _wrappedSymbol.CompleteInitializingSymbol(diagnostics, cancellationToken);
+        }
+^
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return _wrappedSymbol.CompleteCreatingChildSymbols(diagnostics, cancellationToken);
+        }
+^
+        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            _wrappedSymbol.CompleteImports(locationOpt, diagnostics, cancellationToken);
+        }
+        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
+^
+        protected override [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
+        {
+            [if (part.CompleteMethodReturnType != "void")]return [end if]_wrappedSymbol.[part.CompleteMethodName]([part.CompleteMethodArgList]);
+        }
+        [end loop]
+^
+        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            _wrappedSymbol.CompleteNonSymbolProperties(locationOpt, diagnostics, cancellationToken);
+        }
+    }
+}
+end template
+
 template GenerateVisitor(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols)
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
@@ -786,6 +815,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+^
+#nullable enable
 ^
 namespace [namespaceName]
 {
@@ -823,6 +854,8 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Declarations;
+^
+#nullable enable
 ^
 namespace [namespaceName].Factory
 {
@@ -895,6 +928,7 @@ namespace [namespaceName].Factory
             [end if]
         }
 	}
+^
     [end loop]
 }
 end template

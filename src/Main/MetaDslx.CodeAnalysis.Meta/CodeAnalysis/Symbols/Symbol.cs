@@ -354,6 +354,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return false;
         }
 
+        public virtual ImmutableArray<Conversion> GetConversions()
+        {
+            return ImmutableArray<Conversion>.Empty;
+        }
+
         /// <summary>
         /// Returns a string representation of this symbol, suitable for debugging purposes, or
         /// for placing in an error message.

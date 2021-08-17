@@ -40,5 +40,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
 
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
     }
 }

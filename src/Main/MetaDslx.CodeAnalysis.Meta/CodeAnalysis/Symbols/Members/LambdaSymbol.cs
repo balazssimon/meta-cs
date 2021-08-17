@@ -6,12 +6,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract partial class LambdaSymbol : BehavioralMemberSymbol
+    public abstract partial class LambdaSymbol : MethodLikeSymbol
     {
-        [SymbolProperty]
-        public abstract TypeSymbol ReturnType { get; }
 
-        [SymbolProperty]
-        public abstract ImmutableArray<ParameterSymbol> Parameters { get; }
     }
 }

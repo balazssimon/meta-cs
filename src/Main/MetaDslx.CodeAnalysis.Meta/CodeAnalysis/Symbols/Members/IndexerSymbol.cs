@@ -6,16 +6,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract partial class IndexerSymbol : BehavioralMemberSymbol
+    public abstract partial class IndexerSymbol : MethodLikeSymbol
     {
-        [SymbolProperty]
-        public abstract TypeSymbol ReturnType { get; }
-
-        [SymbolProperty]
-        public abstract ImmutableArray<ParameterSymbol> Parameters { get; }
-
-        [SymbolProperty]
-        public abstract StatementSymbol Body { get; }
 
     }
 }

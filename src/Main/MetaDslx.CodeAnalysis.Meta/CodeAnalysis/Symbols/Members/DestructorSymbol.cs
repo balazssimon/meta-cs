@@ -5,10 +5,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract partial class DestructorSymbol : BehavioralMemberSymbol
+    public abstract partial class DestructorSymbol : MethodLikeSymbol
     {
-        [SymbolProperty]
-        public abstract StatementSymbol Body { get; }
 
     }
 }

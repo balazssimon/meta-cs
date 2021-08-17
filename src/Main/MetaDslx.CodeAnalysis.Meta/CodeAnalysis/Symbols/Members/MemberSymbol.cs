@@ -12,8 +12,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [Symbol]
     public abstract partial class MemberSymbol : DeclaredSymbol
     {
-        public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
-
         /// <summary>
         /// Returns true if this symbol is "static"; i.e., declared with the <c>static</c> modifier or
         /// implicitly static.

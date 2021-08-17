@@ -7,7 +7,7 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract partial class PropertySymbol : StructuralMemberSymbol
+    public abstract partial class PropertySymbol : FieldLikeSymbol
     {
         [SymbolProperty]
         public virtual MethodSymbol GetMethod { get; }

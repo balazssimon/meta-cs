@@ -10,14 +10,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the nearest enclosing behavioral member for this non-declared symbol.
         /// </summary>
-        public virtual BehavioralMemberSymbol? ContainingMember
+        public virtual MethodLikeSymbol? ContainingMember
         {
             get
             {
                 Symbol container = this.ContainingSymbol;
                 while (container is not null)
                 {
-                    if (container is BehavioralMemberSymbol result)
+                    if (container is MethodLikeSymbol result)
                     {
                         return result;
                     }
