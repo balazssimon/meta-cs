@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public abstract bool IsImplicit { get; }
 
-        public abstract ConversionOperatorSymbol? Method { get; }
+        public abstract ConversionOperatorSymbol? ConversionOperator { get; }
 
         public virtual bool Equals(Conversion? other)
         {

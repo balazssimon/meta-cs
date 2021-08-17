@@ -257,15 +257,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <param name="specialSymbolId">The identifier of the special symbol.</param>
         internal Symbol? GetDeclaredSpecialSymbol(object specialSymbolId)
         {
-            if (!this.Language.SymbolFacts.SpecialTypes.Contains(specialSymbolId)) return null;
+            if (!this.Language.SymbolFacts.SpecialSymbols.Contains(specialSymbolId)) return null;
             if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(specialSymbolId))
             {
-                var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId);
-                var metadataName = this.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbolId);
-                if (metadataName is null)
-                {
-                    metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : null;
-                }
+                var modelObject = this.Language.SymbolFacts.GetModelObjectOfSpecialSymbol(specialSymbolId);
+                var metadataName = this.Language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
                 Symbol? result = null;
                 if (metadataName is not null)
                 {

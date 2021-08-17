@@ -89,7 +89,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseName(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -136,7 +135,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseQualifiedName(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -183,7 +181,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseQualifier(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -230,7 +227,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseAttribute(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -277,7 +273,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseUsingNamespace(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -324,7 +319,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseNamespaceDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -371,7 +365,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseNamespaceBody(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -418,7 +411,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseMetamodelDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -465,7 +457,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseMetamodelPropertyList(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -512,7 +503,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseMetamodelProperty(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -559,7 +549,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseMetamodelUriProperty(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -606,7 +595,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseMetamodelPrefixProperty(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -653,7 +641,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -700,7 +687,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseEnumDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -747,7 +733,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseEnumBody(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -794,7 +779,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseEnumValues(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -841,7 +825,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseEnumValue(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -888,7 +871,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseEnumMemberDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -935,7 +917,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseClassDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -982,7 +963,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseSymbolTypeAttribute(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1029,7 +1009,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseClassBody(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1076,7 +1055,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseClassAncestors(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1123,7 +1101,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseClassAncestor(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1170,7 +1147,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseClassMemberDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1217,7 +1193,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseFieldDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1264,7 +1239,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseFieldSymbolPropertyAttribute(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1311,7 +1285,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseFieldContainment(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1358,7 +1331,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseFieldModifier(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1405,7 +1377,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseDefaultValue(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1452,7 +1423,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseRedefinitionsOrSubsettings(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1499,7 +1469,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseRedefinitions(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1546,7 +1515,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseSubsettings(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1593,7 +1561,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseNameUseList(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1640,7 +1607,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseConstDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1687,7 +1653,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseConstValue(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1734,7 +1699,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseReturnType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1781,7 +1745,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseTypeOfReference(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1828,7 +1791,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseTypeReference(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1875,7 +1837,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseSimpleType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1922,7 +1883,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseClassType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1969,7 +1929,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseObjectType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2016,7 +1975,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParsePrimitiveType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2063,7 +2021,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseVoidType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2110,7 +2067,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseNullableType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2157,7 +2113,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseCollectionType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2204,7 +2159,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseCollectionKind(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2251,7 +2205,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseOperationDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2298,7 +2251,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseOperationModifier(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2345,7 +2297,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseOperationModifierBuilder(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2392,7 +2343,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseOperationModifierReadonly(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2439,7 +2389,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseParameterList(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2486,7 +2435,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseParameter(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2533,7 +2481,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseAssociationDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2580,7 +2527,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseIdentifier(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2627,7 +2573,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2674,7 +2619,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseNullLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2721,7 +2665,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseBooleanLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2768,7 +2711,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseIntegerLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2815,7 +2757,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseDecimalLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2862,7 +2803,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseScientificLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2909,7 +2849,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
 		public GreenNode ParseStringLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2956,7 +2895,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		
         private class Antlr4ToRoslynVisitor : MetaParserBaseVisitor<GreenNode>
         {
 			// list pools - allocators for lists that are used to build sequences of nodes. The lists

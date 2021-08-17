@@ -340,25 +340,49 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ImmutableArray<AttributeData>.Empty;
         }
 
-        public virtual bool IsSpecialSymbol(object specialSymbolId)
+        public virtual bool IsSpecialSymbol(object specialSymbolId, Language? language = null)
         {
             if (specialSymbolId is null) throw new ArgumentNullException(nameof(specialSymbolId));
-            var metadataName = this.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbolId);
-            if (!string.IsNullOrEmpty(metadataName) && this.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == metadataName) return true;
-            var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId);
-            if (this is IModelSymbol modelSymbol)
+            if (language is null) language = this.Language;
+            var metadataName = language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
+            if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.MetadataName == metadataName)) return true;
+            else return false;
+        }
+
+        public virtual object? GetSpecialSymbol(Language? language = null)
+        {
+            if (language is null) language = this.Language;
+            var metadataName = this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat);
+            var specialSymbolId = language.SymbolFacts.GetSpecialSymbolOfMetadataName(metadataName);
+            if (specialSymbolId is not null) return specialSymbolId;
+            specialSymbolId = language.SymbolFacts.GetSpecialSymbolOfMetadataName(this.MetadataName);
+            return specialSymbolId;
+        }
+
+        public virtual bool IsSpecialModelObject(object specialModelObject, Language? language = null)
+        {
+            if (specialModelObject is null) throw new ArgumentNullException(nameof(specialModelObject));
+            if (language is null) language = this.Language;
+            var specialSymbolId = language.SymbolFacts.GetSpecialSymbolOfModelObject(specialModelObject);
+            if (specialSymbolId is not null)
             {
-                if (modelObject is not null && modelObject.Equals(modelSymbol.ModelObject)) return true;
-                else return specialSymbolId.Equals(modelSymbol.ModelObject);
+                var metadataName = language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
+                if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.MetadataName == metadataName)) return true;
+                else return false;
             }
             return false;
         }
 
-        public virtual ImmutableArray<Conversion> GetConversions()
+        public virtual object? GetSpecialModelObject(Language? language = null)
         {
-            return ImmutableArray<Conversion>.Empty;
+            if (language is null) language = this.Language;
+            if (this is IModelSymbol modelSymbol && modelSymbol.ModelObject is not null)
+            {
+                var specialSymbolId = language.SymbolFacts.GetSpecialSymbolOfModelObject(modelSymbol.ModelObject);
+                if (specialSymbolId is not null) return modelSymbol.ModelObject;
+            }
+            return null;
         }
-
         /// <summary>
         /// Returns a string representation of this symbol, suitable for debugging purposes, or
         /// for placing in an error message.

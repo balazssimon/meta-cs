@@ -385,20 +385,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     results.Add(symbol);
                 }
             }
-            string name;
-            string metadataName;
-            var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId);
-            if (modelObject is null)
-            {
-                modelObject = specialSymbolId;
-                metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : specialSymbolId.ToString();
-                name = specialSymbolId.ToString();
-            }
-            else
-            {
-                name = this.Language.SymbolFacts.GetName(modelObject);
-                metadataName = this.Language.SymbolFacts.GetMetadataName(modelObject);
-            }
+            var modelObject = this.Language.SymbolFacts.GetModelObjectOfSpecialSymbol(specialSymbolId);
+            var metadataName = this.Language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
+            var name = this.Language.SymbolFacts.GetName(modelObject);
             var result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
             results.Free();
             return result!;

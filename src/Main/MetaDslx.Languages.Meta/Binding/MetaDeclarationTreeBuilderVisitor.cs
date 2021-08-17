@@ -1097,37 +1097,140 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitObjectType(ObjectTypeSyntax node)
 		{
-			this.BeginIdentifier(node);
-			try
+			if (node.ObjectType != null)
 			{
-			}
-			finally
-			{
-				this.EndIdentifier(node);
+			    switch (node.ObjectType.GetKind().Switch())
+			    {
+			    	case MetaSyntaxKind.KObject:
+			    		this.BeginValue(node.ObjectType, value: MetaInstance.Object);
+			    		try
+			    		{
+			    			this.Visit(node.ObjectType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.ObjectType, value: MetaInstance.Object);
+			    		}
+			    		break;
+			    	case MetaSyntaxKind.KSymbol:
+			    		this.BeginValue(node.ObjectType, value: MetaInstance.ModelObject);
+			    		try
+			    		{
+			    			this.Visit(node.ObjectType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.ObjectType, value: MetaInstance.ModelObject);
+			    		}
+			    		break;
+			    	case MetaSyntaxKind.KString:
+			    		this.BeginValue(node.ObjectType, value: MetaInstance.String);
+			    		try
+			    		{
+			    			this.Visit(node.ObjectType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.ObjectType, value: MetaInstance.String);
+			    		}
+			    		break;
+			    	default:
+			    		break;
+			    }
 			}
 		}
 		
 		public virtual void VisitPrimitiveType(PrimitiveTypeSyntax node)
 		{
-			this.BeginIdentifier(node);
-			try
+			if (node.PrimitiveType != null)
 			{
-			}
-			finally
-			{
-				this.EndIdentifier(node);
+			    switch (node.PrimitiveType.GetKind().Switch())
+			    {
+			    	case MetaSyntaxKind.KInt:
+			    		this.BeginValue(node.PrimitiveType, value: MetaInstance.Int);
+			    		try
+			    		{
+			    			this.Visit(node.PrimitiveType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrimitiveType, value: MetaInstance.Int);
+			    		}
+			    		break;
+			    	case MetaSyntaxKind.KLong:
+			    		this.BeginValue(node.PrimitiveType, value: MetaInstance.Long);
+			    		try
+			    		{
+			    			this.Visit(node.PrimitiveType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrimitiveType, value: MetaInstance.Long);
+			    		}
+			    		break;
+			    	case MetaSyntaxKind.KFloat:
+			    		this.BeginValue(node.PrimitiveType, value: MetaInstance.Float);
+			    		try
+			    		{
+			    			this.Visit(node.PrimitiveType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrimitiveType, value: MetaInstance.Float);
+			    		}
+			    		break;
+			    	case MetaSyntaxKind.KDouble:
+			    		this.BeginValue(node.PrimitiveType, value: MetaInstance.Double);
+			    		try
+			    		{
+			    			this.Visit(node.PrimitiveType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrimitiveType, value: MetaInstance.Double);
+			    		}
+			    		break;
+			    	case MetaSyntaxKind.KByte:
+			    		this.BeginValue(node.PrimitiveType, value: MetaInstance.Byte);
+			    		try
+			    		{
+			    			this.Visit(node.PrimitiveType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrimitiveType, value: MetaInstance.Byte);
+			    		}
+			    		break;
+			    	case MetaSyntaxKind.KBool:
+			    		this.BeginValue(node.PrimitiveType, value: MetaInstance.Bool);
+			    		try
+			    		{
+			    			this.Visit(node.PrimitiveType);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrimitiveType, value: MetaInstance.Bool);
+			    		}
+			    		break;
+			    	default:
+			    		break;
+			    }
 			}
 		}
 		
 		public virtual void VisitVoidType(VoidTypeSyntax node)
 		{
-			this.BeginIdentifier(node);
-			try
+			if (node.KVoid.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
 			{
-			}
-			finally
-			{
-				this.EndIdentifier(node);
+			    this.BeginValue(node.KVoid, value: MetaInstance.Void);
+			    try
+			    {
+			    	this.Visit(node.KVoid);
+			    }
+			    finally
+			    {
+			    	this.EndValue(node.KVoid, value: MetaInstance.Void);
+			    }
 			}
 		}
 		

@@ -1,6 +1,7 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
@@ -78,14 +79,17 @@ namespace MetaDslx.Bootstrap.MetaModel
 
             var corLib = compilation.GetAssemblyOrModuleSymbol(coreRef) as AssemblySymbol;
             var int32 = corLib.GetSpecialSymbol(SpecialType.System_Int32);
-            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialSymbol(MetaInstance.Int));
-            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialSymbol(MetaInstance.Long));
+            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialModelObject(MetaInstance.Int) + " -> MetaInstance.Int+Lang:" + int32.IsSpecialModelObject(MetaInstance.Int, MetaLanguage.Instance));
+            Console.WriteLine("None: " + int32.GetSpecialSymbol() + " - CSharp: " + int32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + int32.GetSpecialSymbol(MetaLanguage.Instance));
+            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialModelObject(MetaInstance.Long) + " -> MetaInstance.Long+Lang:" + int32.IsSpecialModelObject(MetaInstance.Long, MetaLanguage.Instance));
             int32 = compilation.Assembly.GetSpecialSymbol(SpecialType.System_Int32);
-            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialSymbol(MetaInstance.Int));
-            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialSymbol(MetaInstance.Long));
+            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialModelObject(MetaInstance.Int));
+            Console.WriteLine("None: " + int32.GetSpecialSymbol() + " - CSharp: " + int32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + int32.GetSpecialSymbol(MetaLanguage.Instance));
+            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialModelObject(MetaInstance.Long));
             int32 = compilation.Assembly.ResolveModelSymbol(MetaInstance.Int);
-            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialSymbol(MetaInstance.Int));
-            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialSymbol(MetaInstance.Long));
+            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialModelObject(MetaInstance.Int));
+            Console.WriteLine("None: " + int32.GetSpecialSymbol() + " - CSharp: " + int32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + int32.GetSpecialSymbol(MetaLanguage.Instance));
+            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialModelObject(MetaInstance.Long));
             var mobj = compilation.Assembly.GetSpecialSymbol(MetaInstance.ModelObject);
             Console.WriteLine(mobj + " -> MetaInstance.ModelObject:" + mobj.IsSpecialSymbol(MetaInstance.ModelObject));
             mobj = compilation.Assembly.ResolveModelSymbol(MetaInstance.ModelObject);

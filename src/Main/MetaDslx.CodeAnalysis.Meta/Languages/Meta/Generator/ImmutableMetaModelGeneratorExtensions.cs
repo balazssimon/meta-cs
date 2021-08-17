@@ -221,7 +221,7 @@ namespace MetaDslx.Languages.Meta.Generator
                         result = this.ToPascalCase(mtype.Name);
                         break;
                     default:
-                        result = mtype.Name;
+                        result = ToCSharpAlias(mtype.Name);
                         break;
                 }
             }
@@ -457,7 +457,7 @@ namespace MetaDslx.Languages.Meta.Generator
                     case ClassKind.BuilderOperation:
                         if (mconst.DotNetName != null)
                         {
-                            result = mconst.DotNetName;
+                            result = ToCSharpAlias(mconst.DotNetName);
                         }
                         else
                         {
@@ -472,6 +472,33 @@ namespace MetaDslx.Languages.Meta.Generator
                 }
             }
             return result;
+        }
+
+        private string ToCSharpAlias(string name)
+        {
+            switch (name)
+            {
+                case "System.Object":
+                    return "object";
+                case "System.String":
+                    return "String";
+                case "System.Int32":
+                    return "int";
+                case "System.Int64":
+                    return "long";
+                case "System.Single":
+                    return "float";
+                case "System.Double":
+                    return "double";
+                case "System.Byte":
+                    return "byte";
+                case "System.Boolean":
+                    return "bool";
+                case "System.Void":
+                    return "void";
+                default:
+                    return name;
+            }
         }
 
         public string ToCamelCase(string identifier)
@@ -709,6 +736,15 @@ namespace MetaDslx.Languages.Meta.Generator
                     case "double":
                     case "char":
                     case "decimal":
+                    case "System.Boolean":
+                    case "System.Byte":
+                    case "System.Int16":
+                    case "System.Int32":
+                    case "System.Int64":
+                    case "System.Single":
+                    case "System.Double":
+                    case "System.Char":
+                    case "System.Decimal":
                         return false;
                     default:
                         return true;

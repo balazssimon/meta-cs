@@ -4489,7 +4489,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __tmp71_outputWritten = true;
                     }
                     var __tmp76 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                    __tmp76.Write(ToPascalCase(((MetaPrimitiveType)value).Name));
+                    __tmp76.Write(CSharpName(((MetaPrimitiveType)value), model, ClassKind.Immutable, false));
                     var __tmp76Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp76.ToStringAndFree());
                     bool __tmp76_last = __tmp76Reader.EndOfStream;
                     while(!__tmp76_last)
@@ -4503,7 +4503,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp76_last) __out.AppendLine(true);
                     }
-                    string __tmp77_line = ");"; //372:81
+                    string __tmp77_line = ");"; //372:107
                     if (!string.IsNullOrEmpty(__tmp77_line))
                     {
                         __out.Write(__tmp77_line);
@@ -4512,7 +4512,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     if (__tmp71_outputWritten) __out.AppendLine(true);
                     if (__tmp71_outputWritten)
                     {
-                        __out.AppendLine(false); //372:83
+                        __out.AppendLine(false); //372:109
                     }
                 }
                 else //373:3
@@ -5559,7 +5559,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __tmp71_outputWritten = true;
                     }
                     var __tmp76 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                    __tmp76.Write(ToPascalCase(((MetaPrimitiveType)value).Name));
+                    __tmp76.Write(CSharpName(((MetaPrimitiveType)value), model, ClassKind.Immutable, false));
                     var __tmp76Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp76.ToStringAndFree());
                     bool __tmp76_last = __tmp76Reader.EndOfStream;
                     while(!__tmp76_last)
@@ -5573,7 +5573,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp76_last) __out.AppendLine(true);
                     }
-                    string __tmp77_line = ");"; //418:82
+                    string __tmp77_line = ");"; //418:108
                     if (!string.IsNullOrEmpty(__tmp77_line))
                     {
                         __out.Write(__tmp77_line);
@@ -5582,7 +5582,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     if (__tmp71_outputWritten) __out.AppendLine(true);
                     if (__tmp71_outputWritten)
                     {
-                        __out.AppendLine(false); //418:84
+                        __out.AppendLine(false); //418:110
                     }
                 }
                 else //419:3

@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public TypeSymbol Source => _source;
         public TypeSymbol Target => _target;
-        public bool IsImplicit => _isImplicit;
-        public ConversionOperatorSymbol? ConversionOperator => _conversionOperator;
+        public override bool IsImplicit => _isImplicit;
+        public override ConversionOperatorSymbol? ConversionOperator => _conversionOperator;
     }
 }

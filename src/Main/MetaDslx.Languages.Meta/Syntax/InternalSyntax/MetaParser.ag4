@@ -125,26 +125,23 @@ simpleType : primitiveType | objectType | nullableType | classType;
 $Use(types=(MetaClass,MetaEnum,MetaConstant))
 classType : qualifier;
 
-$Identifier
 objectType 
-	: KObject 
-	| KSymbol
-	| KString
+	: $Value(MetaInstance.Object) KObject 
+	| $Value(MetaInstance.ModelObject) KSymbol
+	| $Value(MetaInstance.String) KString
 	;
 
-$Identifier
 primitiveType 
-	: KInt 
-	| KLong 
-	| KFloat 
-	| KDouble 
-	| KByte 
-	| KBool
+	: $Value(MetaInstance.Int) KInt 
+	| $Value(MetaInstance.Long) KLong 
+	| $Value(MetaInstance.Float) KFloat 
+	| $Value(MetaInstance.Double) KDouble 
+	| $Value(MetaInstance.Byte) KByte 
+	| $Value(MetaInstance.Bool) KBool
 	;
 
-$Identifier
 voidType 
-	: KVoid
+	: $Value(MetaInstance.Void) KVoid
 	;
 
 $Define(MetaNullableType)

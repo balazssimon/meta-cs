@@ -14,8 +14,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
     public abstract class SymbolFacts
     {
-        private Dictionary<object, object> _specialModelObjectsToSpecialId;
-        private Dictionary<string, object> _metadataNameToSpecialModelObject;
+        private Dictionary<object, object>? _specialModelObjectsToSpecialId;
+        private Dictionary<string, object>? _specialMetadataNameToSpecialId;
 
         public virtual string AttributeNameSuffix => "Attribute";
 
@@ -38,22 +38,29 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
         public abstract void SetOrAddPropertyValue(object modelObject, object property, object symbolValue, Location location, DiagnosticBag diagnostics, CancellationToken cancellationToken);
 
-        public virtual ImmutableArray<object> SpecialTypes => ImmutableArray<object>.Empty;
+        public virtual ImmutableArray<object> SpecialSymbols => ImmutableArray<object>.Empty;
 
-        public virtual string? GetSpecialSymbolMetadataName(object specialSymbolId)
+        public virtual string? GetMetadataNameOfSpecialSymbol(object specialSymbolId)
         {
             return null;
         }
 
-        public virtual object? GetSpecialModelObject(object specialSymbolId)
+        public virtual object? GetModelObjectOfSpecialSymbol(object specialSymbolId)
         {
             return null;
         }
 
-        public object? GetSpecialSymbol(object modelObject)
+        public object? GetSpecialSymbolOfModelObject(object modelObject)
         {
             BuildSpecialSymbolMap();
             _specialModelObjectsToSpecialId.TryGetValue(modelObject, out var result);
+            return result;
+        }
+
+        public object? GetSpecialSymbolOfMetadataName(string metadataName)
+        {
+            BuildSpecialSymbolMap();
+            _specialMetadataNameToSpecialId.TryGetValue(metadataName, out var result);
             return result;
         }
 
@@ -62,15 +69,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (_specialModelObjectsToSpecialId == null)
             {
                 var dict = new Dictionary<object, object>();
-                foreach (var st in this.SpecialTypes)
+                var names = new Dictionary<string, object>();
+                foreach (var st in this.SpecialSymbols)
                 {
-                    var mobj = this.GetSpecialModelObject(st);
+                    var mobj = this.GetModelObjectOfSpecialSymbol(st);
                     if (mobj is not null)
                     {
                         dict.Add(mobj, st);
                     }
+                    var metadataName = this.GetMetadataNameOfSpecialSymbol(st);
+                    if (metadataName is not null)
+                    {
+                        names.Add(metadataName, st);
+                    }
                 }
                 Interlocked.CompareExchange(ref _specialModelObjectsToSpecialId, dict, null);
+                Interlocked.CompareExchange(ref _specialMetadataNameToSpecialId, names, null);
             }
         }
 

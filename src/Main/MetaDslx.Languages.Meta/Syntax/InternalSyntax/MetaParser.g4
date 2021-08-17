@@ -125,26 +125,23 @@ simpleType : primitiveType | objectType | nullableType | classType;
                                              
 classType : qualifier;
 
-           
 objectType 
-	: KObject 
-	| KSymbol
-	| KString
+	:                             KObject 
+	|                                  KSymbol
+	|                             KString
 	;
 
-           
 primitiveType 
-	: KInt 
-	| KLong 
-	| KFloat 
-	| KDouble 
-	| KByte 
-	| KBool
+	:                          KInt 
+	|                           KLong 
+	|                            KFloat 
+	|                             KDouble 
+	|                           KByte 
+	|                           KBool
 	;
 
-           
 voidType 
-	: KVoid
+	:                           KVoid
 	;
 
                          

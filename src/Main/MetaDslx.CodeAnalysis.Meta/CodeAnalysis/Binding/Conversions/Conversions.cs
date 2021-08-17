@@ -12,9 +12,21 @@ namespace MetaDslx.CodeAnalysis.Binding
 {
     public sealed class Conversions 
     {
-        public static readonly Conversion UnsetConversion = new StandardConversion(true);
-        public static readonly Conversion NoConversion = new StandardConversion(true);
-        public static readonly Conversion Identity = new StandardConversion(true);
+        public static readonly Conversion UnsetConversion = new StandardConversion(isImplicit: true);
+        public static readonly Conversion NoConversion = new StandardConversion(isImplicit: true);
+        public static readonly Conversion Identity = new StandardConversion(isImplicit: true);
+
+        public static readonly Conversion ImplicitNumeric = new StandardConversion(isImplicit: true);
+        public static readonly Conversion ImplicitNullable = new StandardConversion(isImplicit: true);
+        public static readonly Conversion ImplicitReference = new StandardConversion(isImplicit: true);
+        public static readonly Conversion NullLiteral = new StandardConversion(isImplicit: true);
+        public static readonly Conversion DefaultLiteral = new StandardConversion(isImplicit: true);
+        public static readonly Conversion Boxing = new StandardConversion(isImplicit: true);
+
+        public static readonly Conversion ExplicitNumeric = new StandardConversion(isImplicit: false);
+        public static readonly Conversion ExplicitNullable = new StandardConversion(isImplicit: false);
+        public static readonly Conversion ExplicitReference = new StandardConversion(isImplicit: false);
+        public static readonly Conversion Unboxing = new StandardConversion(isImplicit: false);
 
         private readonly LanguageCompilation _compilation;
 

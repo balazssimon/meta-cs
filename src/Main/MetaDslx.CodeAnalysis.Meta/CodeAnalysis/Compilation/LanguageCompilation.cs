@@ -1336,7 +1336,7 @@ namespace MetaDslx.CodeAnalysis
 
         public Symbol GetSpecialSymbol(object specialSymbolId)
         {
-            if (!Language.SymbolFacts.SpecialTypes.Contains(specialSymbolId))
+            if (!Language.SymbolFacts.SpecialSymbols.Contains(specialSymbolId))
             {
                 throw new ArgumentOutOfRangeException(nameof(specialSymbolId), $"Unexpected SpecialSymbol: '{specialSymbolId}'.");
             }

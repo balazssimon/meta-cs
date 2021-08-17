@@ -13,7 +13,7 @@ namespace MetaDslx.Languages.Meta.Symbols
     {
         private ImmutableArray<object> _specialModelObjects;
 
-        public override ImmutableArray<object> SpecialTypes
+        public override ImmutableArray<object> SpecialSymbols
         {
             get
             {
@@ -36,14 +36,14 @@ namespace MetaDslx.Languages.Meta.Symbols
             }
         }
 
-        public override string? GetSpecialSymbolMetadataName(object specialSymbol)
+        public override string? GetMetadataNameOfSpecialSymbol(object specialSymbol)
         {
             if (specialSymbol is SpecialType st) return st.GetMetadataName();
             if (ReferenceEquals(specialSymbol, MetaInstance.ModelObject)) return "MetaDslx.Modeling.IModelObject";
             return null;
         }
 
-        public override object? GetSpecialModelObject(object specialSymbol)
+        public override object? GetModelObjectOfSpecialSymbol(object specialSymbol)
         {
             if (specialSymbol is SpecialType st)
             {

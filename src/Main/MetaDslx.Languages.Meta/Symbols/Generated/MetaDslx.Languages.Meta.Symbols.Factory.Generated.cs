@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Declarations;
 
+#nullable enable
+
 namespace MetaDslx.Languages.Meta.Symbols.Factory
 {
 	public class AssociationSymbolFactory : IGeneratedSymbolFactory
@@ -43,4 +45,5 @@ namespace MetaDslx.Languages.Meta.Symbols.Factory
             return new Source.SourceAssociationSymbol.Error(wrappedSymbol, kind, errorInfo, unreported);
         }
 	}
+
 }

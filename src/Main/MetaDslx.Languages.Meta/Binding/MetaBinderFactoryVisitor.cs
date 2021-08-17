@@ -36,6 +36,16 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseKDerived = new object();
 		public static object UseKUnion = new object();
 		public static object UseNameUseList = new object();
+		public static object UseKObject = new object();
+		public static object UseKSymbol = new object();
+		public static object UseKString = new object();
+		public static object UseKInt = new object();
+		public static object UseKLong = new object();
+		public static object UseKFloat = new object();
+		public static object UseKDouble = new object();
+		public static object UseKByte = new object();
+		public static object UseKBool = new object();
+		public static object UseKVoid = new object();
 		public static object UsePrimitiveType = new object();
 		public static object UseCollectionKind = new object();
 		public static object UseSimpleType = new object();
@@ -71,11 +81,10 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseFieldModifier = new object();
 		public static object UseDefaultValue = new object();
 		public static object UseConstValue = new object();
-		public static object UseVoidType = new object();
 		public static object UseCollectionType = new object();
-		public static object UseObjectType = new object();
 		public static object UseNullableType = new object();
 		public static object UseClassType = new object();
+		public static object UseObjectType = new object();
 		public static object UseOperationModifierBuilder = new object();
 		public static object UseOperationModifierReadonly = new object();
 		public static object UseParameter = new object();
@@ -90,6 +99,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseClassAncestor = new object();
 		public static object UseRedefinitions = new object();
 		public static object UseSubsettings = new object();
+		public static object UseVoidType = new object();
 		public static object UseOperationModifier = new object();
 		public static object UseMetamodelPropertyList = new object();
 		public static object UseRedefinitionsOrSubsettings = new object();
@@ -984,12 +994,33 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.ObjectType)) use = UseObjectType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateIdentifierBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseObjectType)
+				{
+					switch (parent.ObjectType.GetKind().Switch())
+					{
+						case MetaSyntaxKind.KObject:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.ObjectType, value: MetaInstance.Object);
+							break;
+						case MetaSyntaxKind.KSymbol:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.ObjectType, value: MetaInstance.ModelObject);
+							break;
+						case MetaSyntaxKind.KString:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.ObjectType, value: MetaInstance.String);
+							break;
+						default:
+							break;
+					}
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -1001,12 +1032,42 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.PrimitiveType)) use = UsePrimitiveType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateIdentifierBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UsePrimitiveType)
+				{
+					switch (parent.PrimitiveType.GetKind().Switch())
+					{
+						case MetaSyntaxKind.KInt:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, value: MetaInstance.Int);
+							break;
+						case MetaSyntaxKind.KLong:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, value: MetaInstance.Long);
+							break;
+						case MetaSyntaxKind.KFloat:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, value: MetaInstance.Float);
+							break;
+						case MetaSyntaxKind.KDouble:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, value: MetaInstance.Double);
+							break;
+						case MetaSyntaxKind.KByte:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, value: MetaInstance.Byte);
+							break;
+						case MetaSyntaxKind.KBool:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, value: MetaInstance.Bool);
+							break;
+						default:
+							break;
+					}
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -1018,12 +1079,20 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.KVoid)) use = UseKVoid;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateIdentifierBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseKVoid)
+				{
+					resultBinder = this.CreateValueBinder(resultBinder, parent.KVoid, value: MetaInstance.Void);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

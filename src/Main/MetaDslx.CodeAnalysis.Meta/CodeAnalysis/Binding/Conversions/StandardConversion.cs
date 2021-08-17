@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public override bool IsImplicit => _flags.HasFlag(Flags.Implicit);
 
-        public override ConversionOperatorSymbol? Method => null;
+        public override ConversionOperatorSymbol? ConversionOperator => null;
 
         [Flags]
         private enum Flags

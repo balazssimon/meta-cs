@@ -18,10 +18,10 @@
     <Compile Remove="Binding\MetaIsBindableNodeVisitor.cs" />
   </ItemGroup>
 
-  <!--ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-    <PackageReference Include="MetaDslx.CodeAnalysis.Analyzers" Version="$(BootstrapVersion)" PrivateAssets="all" />
-  </ItemGroup-->
+    <!--PackageReference Include="MetaDslx.CodeAnalysis.Analyzers" Version="$(BootstrapVersion)" PrivateAssets="all" /-->
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
