@@ -1,5 +1,7 @@
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
@@ -8,8 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
+using Roslyn.Utilities;
+
+#nullable enable
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {

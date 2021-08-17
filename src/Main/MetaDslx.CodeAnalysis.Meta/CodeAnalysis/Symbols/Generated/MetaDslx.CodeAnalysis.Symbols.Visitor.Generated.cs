@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
+#nullable enable
+
 namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public interface ISymbolVisitor

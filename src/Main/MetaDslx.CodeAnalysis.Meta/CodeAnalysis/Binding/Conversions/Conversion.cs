@@ -14,15 +14,15 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// Summarizes whether a conversion is allowed, and if so, which kind of conversion (and in some cases, the
     /// associated symbol).
     /// </summary>
-    public class Conversion : IEquatable<Conversion>
+    public abstract class Conversion : IEquatable<Conversion>
     {
         protected Conversion()
         {
         }
 
-        public static readonly Conversion UnsetConversion = new Conversion();
-        public static readonly Conversion NoConversion = new Conversion();
-        public static readonly Conversion Identity = new Conversion();
+        public abstract bool IsImplicit { get; }
+
+        public abstract ConversionOperatorSymbol? Method { get; }
 
         public virtual bool Equals(Conversion? other)
         {
@@ -38,7 +38,5 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return base.GetHashCode();
         }
-
-        public virtual ConversionOperatorSymbol? Method { get; }
     }
 }

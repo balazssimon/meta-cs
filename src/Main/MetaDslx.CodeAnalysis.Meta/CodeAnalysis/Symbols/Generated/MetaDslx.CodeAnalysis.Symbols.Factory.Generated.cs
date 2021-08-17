@@ -45,6 +45,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceArgumentSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class AssignmentExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -77,6 +78,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceAssignmentExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class AwaitExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -109,6 +111,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceAwaitExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class BinaryExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -141,6 +144,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceBinaryExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class CoalesceExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -173,6 +177,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceCoalesceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class CompoundAssignmentExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -205,6 +210,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceCompoundAssignmentExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ConditionalExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -237,6 +243,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceConditionalExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ConversionExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -269,6 +276,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceConversionExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class DefaultValueExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -301,6 +309,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceDefaultValueExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class DiscardExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -333,6 +342,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceDiscardExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported);
         }
 	}
+
 	public class DynamicExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -365,6 +375,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceDynamicExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class IncrementOrDecrementExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -397,6 +408,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceIncrementOrDecrementExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class IndexerAccessExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -429,6 +441,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceIndexerAccessExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class InstanceReferenceExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -461,6 +474,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceInstanceReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class InvocationExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -493,6 +507,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceInvocationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class IsTypeExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -525,6 +540,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceIsTypeExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class LambdaExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -557,6 +573,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceLambdaExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class LiteralExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -589,6 +606,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceLiteralExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class MemberReferenceExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -621,6 +639,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceMemberReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class NameOfExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -653,6 +672,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceNameOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ObjectCreationExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -685,6 +705,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceObjectCreationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ParenthesizedExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -717,6 +738,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceParenthesizedExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ReferenceExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -749,6 +771,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceReferenceExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class SizeOfExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -781,6 +804,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceSizeOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ThrowExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -813,6 +837,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceThrowExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class TupleExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -845,6 +870,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceTupleExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class TypeOfExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -877,6 +903,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceTypeOfExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class UnaryExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -909,6 +936,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceUnaryExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class VariableDeclarationExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -941,6 +969,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceVariableDeclarationExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class VariableDeclarationGroupExpressionSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -973,6 +1002,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceVariableDeclarationGroupExpressionSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class BinaryOperatorSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1005,6 +1035,40 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceBinaryOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
+	public class ConstructorSymbolFactory : IGeneratedSymbolFactory
+	{
+        public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
+        {
+            return new Metadata.MetadataConstructorSymbol(container, modelObject);
+        }
+
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataConstructorSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataConstructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
+        {
+            return new Source.SourceConstructorSymbol(container, declaration, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            return new Source.SourceConstructorSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceConstructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+	}
+
 	public class ConversionOperatorSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1037,6 +1101,40 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceConversionOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
+	public class DestructorSymbolFactory : IGeneratedSymbolFactory
+	{
+        public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
+        {
+            return new Metadata.MetadataDestructorSymbol(container, modelObject);
+        }
+
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDestructorSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataDestructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
+        {
+            return new Source.SourceDestructorSymbol(container, declaration, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDestructorSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceDestructorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+	}
+
 	public class FieldSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1069,6 +1167,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceFieldSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class IndexerSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1101,6 +1200,40 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceIndexerSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
+	public class LambdaSymbolFactory : IGeneratedSymbolFactory
+	{
+        public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
+        {
+            return new Metadata.MetadataLambdaSymbol(container, modelObject);
+        }
+
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataLambdaSymbol.Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Metadata.MetadataLambdaSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
+        {
+            return new Source.SourceLambdaSymbol(container, declaration, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            return new Source.SourceLambdaSymbol.Error(container, declaration, kind, errorInfo, candidateSymbols, unreported, modelObject);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            return new Source.SourceLambdaSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
+        }
+	}
+
 	public class MemberSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1133,6 +1266,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceMemberSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class MethodSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1165,6 +1299,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceMethodSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ParameterSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1197,6 +1332,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceParameterSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class PropertySymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1229,6 +1365,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourcePropertySymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class UnaryOperatorSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1261,6 +1398,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceUnaryOperatorSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class AliasSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1293,6 +1431,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceAliasSymbol.Error(wrappedSymbol, kind, errorInfo, unreported);
         }
 	}
+
 	public class NamespaceSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1325,6 +1464,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             throw new NotImplementedException("CreateSourceSymbol for SourceNamespaceSymbol should be implemented in a custom SymbolFactory.");
         }
 	}
+
 	public class BlockStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1357,6 +1497,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceBlockStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class CatchClauseSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1389,6 +1530,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceCatchClauseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class DefaultCaseClauseSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1421,6 +1563,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceDefaultCaseClauseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class EmptyStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1453,6 +1596,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceEmptyStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ExpressionStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1485,6 +1629,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceExpressionStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ForEachLoopStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1517,6 +1662,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceForEachLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ForLoopStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1549,6 +1695,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceForLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ForToLoopStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1581,6 +1728,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceForToLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class IfStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1613,6 +1761,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceIfStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class JumpStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1645,6 +1794,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceJumpStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class LabelSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1677,6 +1827,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceLabelSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class LockStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1709,6 +1860,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceLockStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ReturnStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1741,6 +1893,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceReturnStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class SwitchCaseSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1773,6 +1926,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceSwitchCaseSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class SwitchStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1805,6 +1959,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceSwitchStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class TryStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1837,6 +1992,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceTryStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class UsingStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1869,6 +2025,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceUsingStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class VariableSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1901,6 +2058,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceVariableSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class WhileLoopStatementSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1933,6 +2091,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceWhileLoopStatementSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ArrayTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1965,6 +2124,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceArrayTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class ClassTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -1997,6 +2157,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceClassTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class DelegateTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2029,6 +2190,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceDelegateTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class EnumLiteralSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2061,6 +2223,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceEnumLiteralSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class EnumTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2093,6 +2256,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceEnumTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class InterfaceTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2125,6 +2289,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceInterfaceTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class NamedTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2157,6 +2322,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceNamedTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class NullableTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2189,6 +2355,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceNullableTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class PrimitiveTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2221,6 +2388,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourcePrimitiveTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class StructTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2253,6 +2421,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceStructTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class TupleTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2285,6 +2454,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceTupleTypeSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 	public class TypeParameterSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
@@ -2317,4 +2487,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceTypeParameterSymbol.Error(wrappedSymbol, kind, errorInfo, unreported, modelObject);
         }
 	}
+
 }

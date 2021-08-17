@@ -29,21 +29,6 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     Debug.WriteLine($"Generating source symbol for: {info.NamespaceName}.{info.Name}");
                     var symbolCode = generator.GenerateSymbol(info);
                     context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
-                    if (info.SymbolParts != SymbolParts.None)
-                    {
-                        var completionSymbolCode = generator.GenerateCompletionSymbol(info);
-                        context.AddSource("Completion" + symbol.Name + ".Generated.cs", completionSymbolCode);
-                        if (info.SymbolParts.HasFlag(SymbolParts.Metadata))
-                        {
-                            var metaSymbolCode = generator.GenerateMetadataSymbol(info);
-                            context.AddSource("Metadata" + symbol.Name + ".Generated.cs", metaSymbolCode);
-                        }
-                        if (info.SymbolParts.HasFlag(SymbolParts.Source))
-                        {
-                            var sourceSymbolCode = generator.GenerateSourceSymbol(info);
-                            context.AddSource("Source" + symbol.Name + ".Generated.cs", sourceSymbolCode);
-                        }
-                    }
                 }
             }
             var symbolsByNamespace = symbols.GroupBy(s => s.NamespaceName);
