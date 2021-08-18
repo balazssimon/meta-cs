@@ -13,6 +13,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
         }
 
+        public override Conversion ClassifyConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            return NoConversion;
+        }
+
         public override Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             return NoConversion;

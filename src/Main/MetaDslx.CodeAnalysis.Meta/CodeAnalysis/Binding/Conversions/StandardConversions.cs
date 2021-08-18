@@ -3,6 +3,7 @@ using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
@@ -16,6 +17,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public override Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
+            if (target.Equals(Compilation.DynamicType)) return ImplicitDynamic;
+            if (source.Equals(Compilation.DynamicType)) return ExplicitDynamic;
             var srcNullable = false;
             if (source is NullableTypeSymbol srcNts)
             {
@@ -28,7 +31,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 srcIndex = SpecialTypeToIndex(srcSpecialType);
             }
-            if (srcIndex < 0) return NoConversion;
             var trgNullable = false;
             if (target is NullableTypeSymbol trgNts)
             {
@@ -41,25 +43,50 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 trgIndex = SpecialTypeToIndex(trgSpecialType);
             }
-            if (trgIndex < 0) return NoConversion;
-            var kind = s_convkind[srcIndex, trgIndex];
+            var kind = UnsetConversion;
+            if (srcIndex >= 0 && trgIndex >= 0)
+            {
+                kind = s_convkind[srcIndex, trgIndex];
+            }
+            else
+            {
+                if (source.Equals(target)) kind = Identity;
+                if (trgIndex == 0 /*target == object*/) return source.IsReferenceType ? ImplicitReference : Boxing;
+                if (srcIndex == 0 /*source == object*/) return target.IsReferenceType ? ExplicitReference : Unboxing;
+                if (source.IsReferenceType && target.IsReferenceType)
+                {
+                    if (target is NamedTypeSymbol trgNamedType && source.AllBaseTypesNoUseSiteDiagnostics.Any(baseType => baseType.Equals(trgNamedType))) kind = ImplicitReference;
+                    else if (source is NamedTypeSymbol srcNamedType && target.AllBaseTypesNoUseSiteDiagnostics.Any(baseType => baseType.Equals(srcNamedType))) kind = ExplicitReference;
+                }
+                else if (source.IsValueType && target.IsValueType)
+                {
+                    if (target is NamedTypeSymbol trgNamedType && source.AllBaseTypesNoUseSiteDiagnostics.Any(baseType => baseType.Equals(trgNamedType))) kind = ImplicitValue;
+                    else if (source is NamedTypeSymbol srcNamedType && target.AllBaseTypesNoUseSiteDiagnostics.Any(baseType => baseType.Equals(srcNamedType))) kind = ExplicitValue;
+                }
+                else 
+                {
+                    if (target is NamedTypeSymbol trgNamedType && source.AllBaseTypesNoUseSiteDiagnostics.Any(baseType => baseType.Equals(trgNamedType))) kind = target.IsReferenceType ? Boxing : Unboxing;
+                    else if (source is NamedTypeSymbol srcNamedType && target.AllBaseTypesNoUseSiteDiagnostics.Any(baseType => baseType.Equals(srcNamedType))) kind = target.IsReferenceType ? Boxing : Unboxing;
+                }
+                if (kind == UnsetConversion) return kind;
+            }
             if (!srcNullable && !trgNullable)
             {
                 return kind; 
             }
             else if (!srcNullable && trgNullable)
             {
-                if (kind == NoConversion) return kind;
+                if (kind == NoConversion || kind == UnsetConversion) return kind;
                 else return kind.IsImplicit ? ImplicitNullable : ExplicitNullable;
             }
             else if (srcNullable && !trgNullable)
             {
-                if (kind == NoConversion) return kind;
+                if (kind == NoConversion || kind == UnsetConversion) return kind;
                 else return ExplicitNullable;
             }
             else
             {
-                if (kind == NoConversion || kind == Identity) return kind;
+                if (kind == NoConversion || kind == UnsetConversion || kind == Identity) return kind;
                 else return kind.IsImplicit ? ImplicitNullable : ExplicitNullable;
             }
         }
@@ -118,6 +145,13 @@ namespace MetaDslx.CodeAnalysis.Binding
                     break;
             }
             return -1;
+        }
+
+        public override Conversion ClassifyConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            if (source is DefaultValueExpressionSymbol) return DefaultLiteral;
+            if (source is LiteralExpressionSymbol literal && literal.Value is null) return target is NullableTypeSymbol ? NullLiteral : NoConversion;
+            return UnsetConversion;
         }
 
         // There are situations in which we know that there is no unusual conversion going on

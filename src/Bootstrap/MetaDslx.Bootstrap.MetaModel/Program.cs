@@ -130,6 +130,15 @@ namespace MetaDslx.Bootstrap.MetaModel
             Console.WriteLine("corInt32->corInt64: " + compilation.Conversions.ClassifyConversionFromType(corInt32, corInt64, ref usd));
             Console.WriteLine("compInt32->corInt64: " + compilation.Conversions.ClassifyConversionFromType(compInt32, corInt64, ref usd));
             Console.WriteLine("metaInt32->corInt64: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, corInt64, ref usd));
+            Console.WriteLine("metaInt32->metaMobj: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, metaMobj, ref usd));
+            Console.WriteLine("metaInt32->object: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, compilation.ObjectType, ref usd));
+            Console.WriteLine("metaMobj->object: " + compilation.Conversions.ClassifyConversionFromType(metaMobj, compilation.ObjectType, ref usd));
+            Console.WriteLine("metaInt32->dynamic: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, compilation.DynamicType, ref usd));
+            Console.WriteLine("metaMobj->dynamic: " + compilation.Conversions.ClassifyConversionFromType(metaMobj, compilation.DynamicType, ref usd));
+            Console.WriteLine("object->metaInt32: " + compilation.Conversions.ClassifyConversionFromType(compilation.ObjectType, metaInt32, ref usd));
+            Console.WriteLine("object->metaMobj: " + compilation.Conversions.ClassifyConversionFromType(compilation.ObjectType, metaMobj, ref usd));
+            Console.WriteLine("dynamic->metaInt32: " + compilation.Conversions.ClassifyConversionFromType(compilation.DynamicType, metaInt32, ref usd));
+            Console.WriteLine("dynamic->metaMobj: " + compilation.Conversions.ClassifyConversionFromType(compilation.DynamicType, metaMobj, ref usd));
             Console.WriteLine("----");
 
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;

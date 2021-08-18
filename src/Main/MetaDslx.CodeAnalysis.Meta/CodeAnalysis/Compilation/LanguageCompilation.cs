@@ -1491,7 +1491,7 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// The TypeSymbol for the type 'dynamic' in this Compilation.
         /// </summary>
-        internal new TypeSymbol DynamicType
+        public new TypeSymbol DynamicType
         {
             get
             {

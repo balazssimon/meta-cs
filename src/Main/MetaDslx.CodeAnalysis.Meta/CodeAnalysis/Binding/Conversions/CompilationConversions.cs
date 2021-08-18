@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 if (_userDefinedConversions is null)
                 {
-                    Interlocked.CompareExchange(ref _standardConversions, Compilation.Language.CompilationFactory.CreateUserDefinedConversions(Compilation), null);
+                    Interlocked.CompareExchange(ref _userDefinedConversions, Compilation.Language.CompilationFactory.CreateUserDefinedConversions(Compilation), null);
                 }
                 return _userDefinedConversions;
             }
@@ -44,8 +44,22 @@ namespace MetaDslx.CodeAnalysis.Binding
         public override Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             var kind = StandardConversions.ClassifyConversionFromType(source, target, ref useSiteDiagnostics);
-            if (kind != NoConversion) return kind;
-            return UserDefinedConversions.ClassifyConversionFromType(source, target, ref useSiteDiagnostics);
+            if (kind != UnsetConversion) return kind;
+            kind = UserDefinedConversions.ClassifyConversionFromType(source, target, ref useSiteDiagnostics);
+            if (kind != UnsetConversion) return kind;
+            else return NoConversion;
+        }
+
+        public override Conversion ClassifyConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var kind = StandardConversions.ClassifyConversionFromExpression(source, target, ref useSiteDiagnostics);
+            if (kind != UnsetConversion) return kind;
+            kind = UserDefinedConversions.ClassifyConversionFromExpression(source, target, ref useSiteDiagnostics);
+            if (kind != UnsetConversion) return kind;
+            if (source.Type is null) return NoConversion;
+            kind = ClassifyConversionFromType(source.Type, target, ref useSiteDiagnostics);
+            if (kind != UnsetConversion) return kind;
+            else return NoConversion;
         }
     }
 }
