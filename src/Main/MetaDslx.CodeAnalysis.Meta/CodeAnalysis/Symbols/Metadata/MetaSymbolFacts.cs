@@ -35,6 +35,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override string GetMetadataName(object modelObject)
         {
+            if (modelObject is MetaPrimitiveType mpt) return mpt.DotNetName;
+            if (modelObject is MetaPrimitiveTypeBuilder mptb) return mptb.DotNetName;
             if (modelObject is not IModelObject mobj) return null;
             return mobj.MName;
         }

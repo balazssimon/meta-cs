@@ -50,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override IEnumerable<object> GetProperties(Type modelObjectType)
         {
-            throw new NotImplementedException();
+            return ImmutableArray<object>.Empty;
         }
 
         public override object GetProperty(Type modelObjectType, string propertyName)

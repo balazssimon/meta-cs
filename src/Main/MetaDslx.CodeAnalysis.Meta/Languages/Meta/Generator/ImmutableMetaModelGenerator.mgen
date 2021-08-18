@@ -287,7 +287,8 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 		[cst.CSharpName(model, ClassKind.BuilderInstance)] = constantFactory.[cst.Type.CSharpName(model, ClassKind.Immutable)]();
 			[end if]
 			[if (cst.DotNetName != null)]
-		[cst.CSharpName(model, ClassKind.BuilderInstance)].MName = "[cst.DotNetName]";
+		[cst.CSharpName(model, ClassKind.BuilderInstance)].MName = "[cst.Name]";
+		[cst.CSharpName(model, ClassKind.BuilderInstance)].DotNetName = "[cst.DotNetName]";
 			[end if]
 		[end loop]
 ^
@@ -369,16 +370,16 @@ template GenerateInstancePropertyValue(MetaModel model, bool metaMetaModel, Immu
 [name].Set[prop.Name]Lazy(() => [((MetaExternalType)value).Name.ToPascalCase()]);
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
 	[if (metaMetaModel)]
-[name].Set[prop.Name]Lazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.Immutable, false)]);
+[name].Set[prop.Name]Lazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, false)]);
 	[else]
 [name].Set[prop.Name]Lazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable());
 	[end if]
 [else if (valueObject != null && instanceNames.ContainsKey(valueObject))]
 [name].Set[prop.Name]Lazy(() => [instanceNames[valueObject]]);
 [else if (valueDecl != null && valueDecl is MetaType)]
-[name].Set[prop.Name]Lazy(() => [((MetaType)valueDecl).CSharpName(model, ClassKind.Immutable, true)]);
+[name].Set[prop.Name]Lazy(() => [((MetaType)valueDecl).CSharpName(model, ClassKind.ImmutableInstance, true)]);
 [else if (valueDecl != null && valueDecl is MetaConstant)]
-[name].Set[prop.Name]Lazy(() => [((MetaConstant)valueDecl).CSharpName(model, ClassKind.Immutable, true)]);
+[name].Set[prop.Name]Lazy(() => [((MetaConstant)valueDecl).CSharpName(model, ClassKind.ImmutableInstance, true)]);
 [else if (valueCollection != null)]
 	[loop(cvalue:valueCollection)]
 [GenerateInstancePropertyCollectionValue(model, metaMetaModel, obj, prop, cvalue, instanceNames)]
@@ -415,16 +416,16 @@ template GenerateInstancePropertyCollectionValue(MetaModel model, bool metaMetaM
 [name].[prop.Name].AddLazy(() => [((MetaExternalType)value).Name.ToPascalCase()]);
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
 	[if (metaMetaModel)]
-[name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.Immutable, false)]);
+[name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, false)]);
 	[else]
 [name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable());
 	[end if]
 [else if (valueObject != null && instanceNames.ContainsKey(valueObject))]
 [name].[prop.Name].AddLazy(() => [instanceNames[valueObject]]);
 [else if (valueDecl != null && valueDecl is MetaType)]
-[name].[prop.Name].AddLazy(() => [((MetaType)valueDecl).CSharpName(model, ClassKind.Immutable, true)]);
+[name].[prop.Name].AddLazy(() => [((MetaType)valueDecl).CSharpName(model, ClassKind.ImmutableInstance, true)]);
 [else if (valueDecl != null && valueDecl is MetaConstant)]
-[name].[prop.Name].AddLazy(() => [((MetaConstant)valueDecl).CSharpName(model, ClassKind.Immutable, true)]);
+[name].[prop.Name].AddLazy(() => [((MetaConstant)valueDecl).CSharpName(model, ClassKind.ImmutableInstance, true)]);
 [else]
 // TODO: [name].[prop.Name]
 [end if]

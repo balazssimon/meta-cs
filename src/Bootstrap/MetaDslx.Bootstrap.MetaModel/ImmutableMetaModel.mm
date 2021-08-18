@@ -7,17 +7,17 @@
 	*/
 	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
-	const MetaPrimitiveType Object = "object";
-	const MetaPrimitiveType String = "string";
-	const MetaPrimitiveType Int = "int";
-	const MetaPrimitiveType Long = "long";
-	const MetaPrimitiveType Float = "float";
-	const MetaPrimitiveType Double = "double";
-	const MetaPrimitiveType Byte = "byte";
-	const MetaPrimitiveType Bool = "bool";
-	const MetaPrimitiveType Void = "void";
-	const MetaPrimitiveType SystemType = "global::System.Type";
-	const MetaPrimitiveType ModelObject = "global::MetaDslx.Modeling.IModelObject";
+	const MetaPrimitiveType Object = "System.Object";
+	const MetaPrimitiveType String = "System.String";
+	const MetaPrimitiveType Int = "System.Int32";
+	const MetaPrimitiveType Long = "System.Int64";
+	const MetaPrimitiveType Float = "System.Single";
+	const MetaPrimitiveType Double = "System.Double";
+	const MetaPrimitiveType Byte = "System.Byte";
+	const MetaPrimitiveType Bool = "System.Boolean";
+	const MetaPrimitiveType Void = "System.Void";
+	const MetaPrimitiveType SystemType = "System.Type";
+	const MetaPrimitiveType ModelObject = "MetaDslx.Modeling.IModelObject";
 	
 	/**
 	Represents an element.
@@ -116,6 +116,7 @@
 
 	class MetaPrimitiveType : MetaNamedType
 	{
+		string DotNetName;
 		bool ConformsTo(MetaType type);
 	}
 

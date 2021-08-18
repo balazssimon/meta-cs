@@ -212,16 +212,12 @@ namespace MetaDslx.Languages.Meta.Generator
                 switch (kind)
                 {
                     case ClassKind.ImmutableInstance:
-                        result = this.ToPascalCase(mtype.Name);
-                        break;
                     case ClassKind.BuilderInstance:
-                        result = this.ToPascalCase(mtype.Name);
-                        break;
                     case ClassKind.FactoryMethod:
-                        result = this.ToPascalCase(mtype.Name);
+                        result = mtype.Name;
                         break;
                     default:
-                        result = ToCSharpAlias(mtype.Name);
+                        result = ToCSharpAlias(mtype.DotNetName);
                         break;
                 }
             }
@@ -722,35 +718,38 @@ namespace MetaDslx.Languages.Meta.Generator
                 return !((MetaExternalType)mtype).IsValueType;
             }
             if (mtype is MetaClass) return true;
-            if (mtype is MetaConstant || mtype is MetaPrimitiveType)
-            {
-                string name = mtype.MName;
-                switch (name)
-                {
-                    case "bool":
-                    case "byte":
-                    case "short":
-                    case "int":
-                    case "long":
-                    case "float":
-                    case "double":
-                    case "char":
-                    case "decimal":
-                    case "System.Boolean":
-                    case "System.Byte":
-                    case "System.Int16":
-                    case "System.Int32":
-                    case "System.Int64":
-                    case "System.Single":
-                    case "System.Double":
-                    case "System.Char":
-                    case "System.Decimal":
-                        return false;
-                    default:
-                        return true;
-                }
-            }
+            if (mtype is MetaConstant mc) return IsCSharpReferenceType(mc.DotNetName);
+            if (mtype is MetaPrimitiveType mp) return IsCSharpReferenceType(mp.DotNetName);
             return false;
+        }
+
+
+        public bool IsCSharpReferenceType(string name)
+        {
+            switch (name)
+            {
+                case "bool":
+                case "byte":
+                case "short":
+                case "int":
+                case "long":
+                case "float":
+                case "double":
+                case "char":
+                case "decimal":
+                case "System.Boolean":
+                case "System.Byte":
+                case "System.Int16":
+                case "System.Int32":
+                case "System.Int64":
+                case "System.Single":
+                case "System.Double":
+                case "System.Char":
+                case "System.Decimal":
+                    return false;
+                default:
+                    return true;
+            }
         }
 
         public string GetAttributeName(MetaElement element, MetaAnnotation mannot)

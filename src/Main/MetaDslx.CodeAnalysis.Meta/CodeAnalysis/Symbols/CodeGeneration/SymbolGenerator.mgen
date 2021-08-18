@@ -85,6 +85,7 @@ namespace [symbol.NamespaceName].Completion
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
         private string _name;
+        private string _metadataName;
         [loop (prop:symbol.Properties)]
         private [prop.Type] [prop.FieldName];
         [end loop]
@@ -148,6 +149,17 @@ namespace [symbol.NamespaceName].Completion
             }
         }
         [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("MetadataName"))]
+^
+        public override string MetadataName 
+        {
+            get
+            {
+                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);
+                return _metadataName;
+            }
+        }
+        [end if]
         [loop (prop:symbol.Properties)]
             [if (!symbol.ExistingCompletionTypeInfo.Members.Contains(prop.Name))]
 ^
@@ -185,6 +197,7 @@ namespace [symbol.NamespaceName].Completion
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         _name = CompleteSymbolProperty_Name(diagnostics, cancellationToken);
+                        _metadataName = CompleteSymbolProperty_MetadataName(diagnostics, cancellationToken);
                         CompleteInitializingSymbol(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
@@ -301,6 +314,9 @@ namespace [symbol.NamespaceName].Completion
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_Name"))]
         protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
+        protected abstract string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteInitializingSymbol"))]
         protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         [end if]
@@ -348,6 +364,13 @@ namespace [symbol.NamespaceName].Metadata
         protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return MetadataSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
+        }
+        [end if]
+        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
+^
+        protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return MetadataSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(MetadataName), diagnostics, cancellationToken);
         }
         [end if]
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteInitializingSymbol"))]
@@ -605,8 +628,15 @@ namespace [symbol.NamespaceName].Source
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
-        [end if]
 ^
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
+        protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(MetadataName), diagnostics, cancellationToken);
+        }
+^
+        [end if]
         [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
             [if (!symbol.ExistingSourceTypeInfo.Members.Contains(part.CompleteMethodName))]
         protected override [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
@@ -774,6 +804,11 @@ namespace [symbol.NamespaceName].Wrapped
         protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return _wrappedSymbol.Name;
+        }
+^
+        protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return _wrappedSymbol.MetadataName;
         }
 ^
         protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)

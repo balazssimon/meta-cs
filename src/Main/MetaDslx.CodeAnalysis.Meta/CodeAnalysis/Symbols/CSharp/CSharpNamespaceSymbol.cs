@@ -34,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 
-        public override Symbol ContainingSymbol => CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
+        public override Symbol ContainingSymbol => _csharpSymbol.ContainingSymbol is CSharpSymbols.ModuleSymbol ? _module : CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
 
         public override ImmutableArray<Location> Locations => _csharpSymbol.Locations;
 

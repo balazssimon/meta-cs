@@ -92,6 +92,7 @@ namespace MetaDslx.Languages.Meta.Model
 		public static readonly MetaClass MetaNullableType;
 		public static readonly MetaProperty MetaNullableType_InnerType;
 		public static readonly MetaClass MetaPrimitiveType;
+		public static readonly MetaProperty MetaPrimitiveType_DotNetName;
 		public static readonly MetaClass MetaEnum;
 		public static readonly MetaProperty MetaEnum_EnumLiterals;
 		public static readonly MetaProperty MetaEnum_Operations;
@@ -174,6 +175,7 @@ namespace MetaDslx.Languages.Meta.Model
 			MetaNullableType = MetaBuilderInstance.instance.MetaNullableType.ToImmutable(MModel);
 			MetaNullableType_InnerType = MetaBuilderInstance.instance.MetaNullableType_InnerType.ToImmutable(MModel);
 			MetaPrimitiveType = MetaBuilderInstance.instance.MetaPrimitiveType.ToImmutable(MModel);
+			MetaPrimitiveType_DotNetName = MetaBuilderInstance.instance.MetaPrimitiveType_DotNetName.ToImmutable(MModel);
 			MetaEnum = MetaBuilderInstance.instance.MetaEnum.ToImmutable(MModel);
 			MetaEnum_EnumLiterals = MetaBuilderInstance.instance.MetaEnum_EnumLiterals.ToImmutable(MModel);
 			MetaEnum_Operations = MetaBuilderInstance.instance.MetaEnum_Operations.ToImmutable(MModel);
@@ -444,7 +446,7 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaDocumentedElement : MetaElement
 	{
-		string Documentation { get; }
+		String Documentation { get; }
 	
 	
 		/// <summary>
@@ -461,10 +463,10 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaDocumentedElementBuilder : MetaElementBuilder
 	{
-		string Documentation { get; set; }
-		void SetDocumentationLazy(global::System.Func<string> lazy);
-		void SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy);
-		void SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy);
+		String Documentation { get; set; }
+		void SetDocumentationLazy(global::System.Func<String> lazy);
+		void SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy);
+		void SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy);
 	
 	
 		/// <summary>
@@ -481,7 +483,7 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaNamedElement : MetaDocumentedElement
 	{
-		string Name { get; }
+		String Name { get; }
 	
 	
 		/// <summary>
@@ -498,10 +500,10 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaNamedElementBuilder : MetaDocumentedElementBuilder
 	{
-		string Name { get; set; }
-		void SetNameLazy(global::System.Func<string> lazy);
-		void SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy);
-		void SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy);
+		String Name { get; set; }
+		void SetNameLazy(global::System.Func<String> lazy);
+		void SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy);
+		void SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy);
 	
 	
 		/// <summary>
@@ -655,7 +657,7 @@ namespace MetaDslx.Languages.Meta.Model
 	{
 		MetaNamespace Namespace { get; }
 		MetaModel MetaModel { get; }
-		string FullName { get; }
+		String FullName { get; }
 	
 	
 		/// <summary>
@@ -680,10 +682,10 @@ namespace MetaDslx.Languages.Meta.Model
 		void SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy);
 		void SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy);
 		void SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy);
-		string FullName { get; }
-		void SetFullNameLazy(global::System.Func<string> lazy);
-		void SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy);
-		void SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy);
+		String FullName { get; }
+		void SetFullNameLazy(global::System.Func<String> lazy);
+		void SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy);
+		void SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy);
 	
 	
 		/// <summary>
@@ -743,8 +745,8 @@ namespace MetaDslx.Languages.Meta.Model
 		/// The name of the metamodel.
 		/// </summary>
 		new string Name { get; }
-		new string Uri { get; }
-		new string Prefix { get; }
+		new String Uri { get; }
+		new String Prefix { get; }
 		new MetaNamespace Namespace { get; }
 	
 	
@@ -766,14 +768,14 @@ namespace MetaDslx.Languages.Meta.Model
 		/// The name of the metamodel.
 		/// </summary>
 		new string Name { get; set; }
-		new string Uri { get; set; }
-		void SetUriLazy(global::System.Func<string> lazy);
-		void SetUriLazy(global::System.Func<MetaModelBuilder, string> lazy);
-		void SetUriLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy);
-		new string Prefix { get; set; }
-		void SetPrefixLazy(global::System.Func<string> lazy);
-		void SetPrefixLazy(global::System.Func<MetaModelBuilder, string> lazy);
-		void SetPrefixLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy);
+		new String Uri { get; set; }
+		void SetUriLazy(global::System.Func<String> lazy);
+		void SetUriLazy(global::System.Func<MetaModelBuilder, String> lazy);
+		void SetUriLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy);
+		new String Prefix { get; set; }
+		void SetPrefixLazy(global::System.Func<String> lazy);
+		void SetPrefixLazy(global::System.Func<MetaModelBuilder, String> lazy);
+		void SetPrefixLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy);
 		new MetaNamespaceBuilder Namespace { get; set; }
 		void SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy);
 		void SetNamespaceLazy(global::System.Func<MetaModelBuilder, MetaNamespaceBuilder> lazy);
@@ -877,6 +879,7 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaPrimitiveType : MetaNamedType
 	{
+		String DotNetName { get; }
 	
 		bool ConformsTo(MetaType type);
 	
@@ -894,6 +897,10 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaPrimitiveTypeBuilder : MetaNamedTypeBuilder
 	{
+		String DotNetName { get; set; }
+		void SetDotNetNameLazy(global::System.Func<String> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaPrimitiveTypeBuilder, String> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaPrimitiveType, String> immutableLazy, global::System.Func<MetaPrimitiveTypeBuilder, String> mutableLazy);
 	
 		bool ConformsTo(MetaTypeBuilder type);
 	
@@ -984,8 +991,8 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaConstant : MetaNamedType, MetaTypedElement
 	{
-		string DotNetName { get; }
-		global::MetaDslx.Modeling.IModelObject Value { get; }
+		String DotNetName { get; }
+		MetaDslx.Modeling.IModelObject Value { get; }
 	
 		bool ConformsTo(MetaType type);
 	
@@ -1003,14 +1010,14 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaConstantBuilder : MetaNamedTypeBuilder, MetaTypedElementBuilder
 	{
-		string DotNetName { get; set; }
-		void SetDotNetNameLazy(global::System.Func<string> lazy);
-		void SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, string> lazy);
-		void SetDotNetNameLazy(global::System.Func<MetaConstant, string> immutableLazy, global::System.Func<MetaConstantBuilder, string> mutableLazy);
-		global::MetaDslx.Modeling.IModelObject Value { get; }
-		void SetValueLazy(global::System.Func<global::MetaDslx.Modeling.IModelObject> lazy);
-		void SetValueLazy(global::System.Func<MetaConstantBuilder, global::MetaDslx.Modeling.IModelObject> lazy);
-		void SetValueLazy(global::System.Func<MetaConstant, global::MetaDslx.Modeling.IModelObject> immutableLazy, global::System.Func<MetaConstantBuilder, global::MetaDslx.Modeling.IModelObject> mutableLazy);
+		String DotNetName { get; set; }
+		void SetDotNetNameLazy(global::System.Func<String> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, String> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaConstant, String> immutableLazy, global::System.Func<MetaConstantBuilder, String> mutableLazy);
+		MetaDslx.Modeling.IModelObject Value { get; }
+		void SetValueLazy(global::System.Func<MetaDslx.Modeling.IModelObject> lazy);
+		void SetValueLazy(global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> lazy);
+		void SetValueLazy(global::System.Func<MetaConstant, MetaDslx.Modeling.IModelObject> immutableLazy, global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> mutableLazy);
 	
 		bool ConformsTo(MetaTypeBuilder type);
 	
@@ -1028,7 +1035,7 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaClass : MetaNamedType
 	{
-		global::System.Type SymbolType { get; }
+		System.Type SymbolType { get; }
 		bool IsAbstract { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaClass> SuperClasses { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> Properties { get; }
@@ -1057,10 +1064,10 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaClassBuilder : MetaNamedTypeBuilder
 	{
-		global::System.Type SymbolType { get; set; }
-		void SetSymbolTypeLazy(global::System.Func<global::System.Type> lazy);
-		void SetSymbolTypeLazy(global::System.Func<MetaClassBuilder, global::System.Type> lazy);
-		void SetSymbolTypeLazy(global::System.Func<MetaClass, global::System.Type> immutableLazy, global::System.Func<MetaClassBuilder, global::System.Type> mutableLazy);
+		System.Type SymbolType { get; set; }
+		void SetSymbolTypeLazy(global::System.Func<System.Type> lazy);
+		void SetSymbolTypeLazy(global::System.Func<MetaClassBuilder, System.Type> lazy);
+		void SetSymbolTypeLazy(global::System.Func<MetaClass, System.Type> immutableLazy, global::System.Func<MetaClassBuilder, System.Type> mutableLazy);
 		bool IsAbstract { get; set; }
 		void SetIsAbstractLazy(global::System.Func<bool> lazy);
 		void SetIsAbstractLazy(global::System.Func<MetaClassBuilder, bool> lazy);
@@ -1190,10 +1197,10 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaProperty : MetaNamedElement, MetaTypedElement
 	{
-		string SymbolProperty { get; }
+		String SymbolProperty { get; }
 		MetaPropertyKind Kind { get; }
 		MetaClass Class { get; }
-		string DefaultValue { get; }
+		String DefaultValue { get; }
 		bool IsContainment { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> OppositeProperties { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> SubsettedProperties { get; }
@@ -1217,10 +1224,10 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaPropertyBuilder : MetaNamedElementBuilder, MetaTypedElementBuilder
 	{
-		string SymbolProperty { get; set; }
-		void SetSymbolPropertyLazy(global::System.Func<string> lazy);
-		void SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, string> lazy);
-		void SetSymbolPropertyLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy);
+		String SymbolProperty { get; set; }
+		void SetSymbolPropertyLazy(global::System.Func<String> lazy);
+		void SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, String> lazy);
+		void SetSymbolPropertyLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy);
 		MetaPropertyKind Kind { get; set; }
 		void SetKindLazy(global::System.Func<MetaPropertyKind> lazy);
 		void SetKindLazy(global::System.Func<MetaPropertyBuilder, MetaPropertyKind> lazy);
@@ -1229,10 +1236,10 @@ namespace MetaDslx.Languages.Meta.Model
 		void SetClassLazy(global::System.Func<MetaClassBuilder> lazy);
 		void SetClassLazy(global::System.Func<MetaPropertyBuilder, MetaClassBuilder> lazy);
 		void SetClassLazy(global::System.Func<MetaProperty, MetaClass> immutableLazy, global::System.Func<MetaPropertyBuilder, MetaClassBuilder> mutableLazy);
-		string DefaultValue { get; set; }
-		void SetDefaultValueLazy(global::System.Func<string> lazy);
-		void SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, string> lazy);
-		void SetDefaultValueLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy);
+		String DefaultValue { get; set; }
+		void SetDefaultValueLazy(global::System.Func<String> lazy);
+		void SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, String> lazy);
+		void SetDefaultValueLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy);
 		bool IsContainment { get; set; }
 		void SetIsContainmentLazy(global::System.Func<bool> lazy);
 		void SetIsContainmentLazy(global::System.Func<MetaPropertyBuilder, bool> lazy);
@@ -1299,6 +1306,7 @@ namespace MetaDslx.Languages.Meta.Model
 			properties.Add(MetaDescriptor.MetaCollectionType.KindProperty);
 			properties.Add(MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 			properties.Add(MetaDescriptor.MetaNullableType.InnerTypeProperty);
+			properties.Add(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty);
 			properties.Add(MetaDescriptor.MetaEnum.EnumLiteralsProperty);
 			properties.Add(MetaDescriptor.MetaEnum.OperationsProperty);
 			properties.Add(MetaDescriptor.MetaEnumLiteral.EnumProperty);
@@ -1400,8 +1408,8 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty DocumentationProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDocumentedElement), name: "Documentation",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDocumentedElement_Documentation,
 					defaultValue: null);
 		}
@@ -1433,8 +1441,8 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Name")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamedElement), name: "Name",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedElement_Name,
 					defaultValue: null);
 		}
@@ -1593,8 +1601,8 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty FullNameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "FullName",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_FullName,
 					defaultValue: null);
 		}
@@ -1674,15 +1682,15 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty UriProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Uri",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Uri,
 					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty PrefixProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Prefix",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Prefix,
 					defaultValue: null);
 			
@@ -1793,6 +1801,13 @@ namespace MetaDslx.Languages.Meta.Model
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaPrimitiveType; }
 			}
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty DotNetNameProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaPrimitiveType), name: "DotNetName",
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaPrimitiveType_DotNetName,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.EnumTypeSymbol))]
@@ -1906,16 +1921,16 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty DotNetNameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "DotNetName",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_DotNetName,
 					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ValueProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "Value",
-			        immutableType: typeof(global::MetaDslx.Modeling.IModelObject),
-			        mutableType: typeof(global::MetaDslx.Modeling.IModelObject),
+			        immutableType: typeof(MetaDslx.Modeling.IModelObject),
+			        mutableType: typeof(MetaDslx.Modeling.IModelObject),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_Value,
 					defaultValue: null);
 		}
@@ -1948,8 +1963,8 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Attributes")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SymbolTypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SymbolType",
-			        immutableType: typeof(global::System.Type),
-			        mutableType: typeof(global::System.Type),
+			        immutableType: typeof(System.Type),
+			        mutableType: typeof(System.Type),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_SymbolType,
 					defaultValue: null);
 			
@@ -2131,8 +2146,8 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty SymbolPropertyProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SymbolProperty",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SymbolProperty,
 					defaultValue: null);
 			
@@ -2153,8 +2168,8 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefaultValueProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "DefaultValue",
-			        immutableType: typeof(string),
-			        mutableType: typeof(string),
+			        immutableType: typeof(String),
+			        mutableType: typeof(String),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_DefaultValue,
 					defaultValue: null);
 			
@@ -2334,7 +2349,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 	
 		internal MetaDocumentedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -2378,9 +2393,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	}
 	
@@ -2435,23 +2450,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
@@ -2477,9 +2492,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 	
 		internal MetaNamedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -2533,15 +2548,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	}
 	
@@ -2606,45 +2621,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -2903,15 +2918,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
 	
 		internal MetaNamedTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -2995,15 +3010,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -3019,9 +3034,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	
 		
@@ -3122,45 +3137,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -3209,22 +3224,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
@@ -3256,15 +3271,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
 	
 		internal MetaAttributeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -3358,15 +3373,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -3382,9 +3397,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	
 		
@@ -3495,45 +3510,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -3582,22 +3597,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
@@ -3629,15 +3644,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
 	
 		internal MetaDeclarationImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -3701,15 +3716,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -3725,9 +3740,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	}
 	
@@ -3802,45 +3817,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -3889,22 +3904,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
@@ -3930,15 +3945,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel definedMetaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4016,15 +4031,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -4040,9 +4055,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	
 		
@@ -4140,45 +4155,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -4227,22 +4242,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
@@ -4296,13 +4311,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string uri0;
+		private String uri0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string prefix0;
+		private String prefix0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 	
@@ -4368,27 +4383,27 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
-		public string Uri
+		public String Uri
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, ref uri0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, ref uri0); }
 		}
 	
 		
-		public string Prefix
+		public String Prefix
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, ref prefix0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, ref prefix0); }
 		}
 	
 		
@@ -4482,89 +4497,89 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Uri
+		public String Uri
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, value); }
 		}
 		
-		void MetaModelBuilder.SetUriLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, lazy);
-		}
-		
-		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModelBuilder, string> lazy)
+		void MetaModelBuilder.SetUriLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, lazy);
 		}
 		
-		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy)
+		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModelBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, lazy);
+		}
+		
+		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Prefix
+		public String Prefix
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, value); }
 		}
 		
-		void MetaModelBuilder.SetPrefixLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, lazy);
-		}
-		
-		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModelBuilder, string> lazy)
+		void MetaModelBuilder.SetPrefixLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, lazy);
 		}
 		
-		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy)
+		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModelBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, lazy);
+		}
+		
+		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, immutableLazy, mutableLazy);
 		}
@@ -4960,15 +4975,17 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private String dotNetName0;
 	
 		internal MetaPrimitiveTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -5062,15 +5079,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -5086,9 +5103,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		}
+	
+		
+		public String DotNetName
+		{
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -5205,45 +5228,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -5292,24 +5315,46 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public String DotNetName
+		{
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, value); }
+		}
+		
+		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, lazy);
+		}
+		
+		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<MetaPrimitiveTypeBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, lazy);
+		}
+		
+		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<MetaPrimitiveType, String> immutableLazy, global::System.Func<MetaPrimitiveTypeBuilder, String> mutableLazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -5345,15 +5390,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaEnumLiteral> enumLiterals0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5451,15 +5496,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -5475,9 +5520,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	
 		
@@ -5602,45 +5647,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -5689,22 +5734,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
@@ -5748,11 +5793,11 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaEnum enum0;
 	
@@ -5828,9 +5873,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
@@ -5840,9 +5885,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -5933,23 +5978,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
@@ -5977,23 +6022,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -6039,9 +6084,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaConstantImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaConstant
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6049,13 +6094,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string dotNetName0;
+		private String dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.IModelObject value0;
+		private MetaDslx.Modeling.IModelObject value0;
 	
 		internal MetaConstantImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -6153,15 +6198,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -6183,9 +6228,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	
 		
@@ -6195,15 +6240,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string DotNetName
+		public String DotNetName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, ref dotNetName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
-		public global::MetaDslx.Modeling.IModelObject Value
+		public MetaDslx.Modeling.IModelObject Value
 		{
-		    get { return this.GetReference<global::MetaDslx.Modeling.IModelObject>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.ValueProperty, ref value0); }
+		    get { return this.GetReference<MetaDslx.Modeling.IModelObject>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.ValueProperty, ref value0); }
 		}
 	
 		
@@ -6324,45 +6369,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -6417,22 +6462,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
@@ -6460,44 +6505,44 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string DotNetName
+		public String DotNetName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, value); }
 		}
 		
-		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, lazy);
-		}
-		
-		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, string> lazy)
+		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, lazy);
 		}
 		
-		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstant, string> immutableLazy, global::System.Func<MetaConstantBuilder, string> mutableLazy)
+		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, lazy);
+		}
+		
+		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstant, String> immutableLazy, global::System.Func<MetaConstantBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public global::MetaDslx.Modeling.IModelObject Value
+		public MetaDslx.Modeling.IModelObject Value
 		{
-			get { return this.GetReference<global::MetaDslx.Modeling.IModelObject>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.ValueProperty); }
+			get { return this.GetReference<MetaDslx.Modeling.IModelObject>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.ValueProperty); }
 		}
 		
-		void MetaConstantBuilder.SetValueLazy(global::System.Func<global::MetaDslx.Modeling.IModelObject> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaConstant.ValueProperty, lazy);
-		}
-		
-		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaConstantBuilder, global::MetaDslx.Modeling.IModelObject> lazy)
+		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaDslx.Modeling.IModelObject> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.ValueProperty, lazy);
 		}
 		
-		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaConstant, global::MetaDslx.Modeling.IModelObject> immutableLazy, global::System.Func<MetaConstantBuilder, global::MetaDslx.Modeling.IModelObject> mutableLazy)
+		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaConstant.ValueProperty, lazy);
+		}
+		
+		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaConstant, MetaDslx.Modeling.IModelObject> immutableLazy, global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.ValueProperty, immutableLazy, mutableLazy);
 		}
@@ -6535,17 +6580,17 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string fullName0;
+		private String fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::System.Type symbolType0;
+		private System.Type symbolType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6647,15 +6692,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -6671,15 +6716,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	
 		
-		public global::System.Type SymbolType
+		public System.Type SymbolType
 		{
-		    get { return this.GetReference<global::System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty, ref symbolType0); }
+		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty, ref symbolType0); }
 		}
 	
 		
@@ -6865,45 +6910,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -6952,44 +6997,44 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string FullName
+		public String FullName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
 		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public global::System.Type SymbolType
+		public System.Type SymbolType
 		{
-			get { return this.GetReference<global::System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty); }
-			set { this.SetReference<global::System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty, value); }
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty); }
+			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty, value); }
 		}
 		
-		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<global::System.Type> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaClass.SymbolTypeProperty, lazy);
-		}
-		
-		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<MetaClassBuilder, global::System.Type> lazy)
+		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<System.Type> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaClass.SymbolTypeProperty, lazy);
 		}
 		
-		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<MetaClass, global::System.Type> immutableLazy, global::System.Func<MetaClassBuilder, global::System.Type> mutableLazy)
+		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<MetaClassBuilder, System.Type> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaClass.SymbolTypeProperty, lazy);
+		}
+		
+		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<MetaClass, System.Type> immutableLazy, global::System.Func<MetaClassBuilder, System.Type> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaClass.SymbolTypeProperty, immutableLazy, mutableLazy);
 		}
@@ -7109,9 +7154,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaClass class0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7187,15 +7232,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -7313,45 +7358,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -7499,11 +7544,11 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaOperation operation0;
 	
@@ -7579,9 +7624,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
@@ -7591,9 +7636,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -7684,23 +7729,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
@@ -7728,23 +7773,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
@@ -7792,19 +7837,19 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private String documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private String name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string symbolProperty0;
+		private String symbolProperty0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaPropertyKind kind0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaClass class0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string defaultValue0;
+		private String defaultValue0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isContainment0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7890,9 +7935,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
@@ -7902,15 +7947,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
-		public string SymbolProperty
+		public String SymbolProperty
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, ref symbolProperty0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, ref symbolProperty0); }
 		}
 	
 		
@@ -7926,9 +7971,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string DefaultValue
+		public String DefaultValue
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, ref defaultValue0); }
+		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, ref defaultValue0); }
 		}
 	
 		
@@ -8060,23 +8105,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Documentation
+		public String Documentation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
 		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+		
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
@@ -8104,45 +8149,45 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string Name
+		public String Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
 		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+		
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
-		public string SymbolProperty
+		public String SymbolProperty
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, value); }
 		}
 		
-		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, lazy);
-		}
-		
-		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, string> lazy)
+		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, lazy);
 		}
 		
-		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy)
+		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, lazy);
+		}
+		
+		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, immutableLazy, mutableLazy);
 		}
@@ -8192,23 +8237,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public string DefaultValue
+		public String DefaultValue
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, value); }
+			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty); }
+			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, value); }
 		}
 		
-		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, lazy);
-		}
-		
-		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, string> lazy)
+		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<String> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, lazy);
 		}
 		
-		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy)
+		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, String> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, lazy);
+		}
+		
+		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
@@ -8347,6 +8392,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private MetaOperationBuilder __tmp27;
 		private MetaParameterBuilder __tmp28;
 		internal MetaClassBuilder MetaPrimitiveType;
+		internal MetaPropertyBuilder MetaPrimitiveType_DotNetName;
 		private MetaOperationBuilder __tmp29;
 		private MetaParameterBuilder __tmp30;
 		internal MetaClassBuilder MetaEnum;
@@ -8463,27 +8509,38 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			global::MetaDslx.Languages.Meta.Model.MetaFactory factory = new global::MetaDslx.Languages.Meta.Model.MetaFactory(this.MModel, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
 	
 			Object = factory.MetaPrimitiveType();
-			Object.MName = "System.Object";
+			Object.MName = "Object";
+			Object.DotNetName = "System.Object";
 			String = factory.MetaPrimitiveType();
-			String.MName = "System.String";
+			String.MName = "String";
+			String.DotNetName = "System.String";
 			Int = factory.MetaPrimitiveType();
-			Int.MName = "System.Int32";
+			Int.MName = "Int";
+			Int.DotNetName = "System.Int32";
 			Long = factory.MetaPrimitiveType();
-			Long.MName = "System.Int64";
+			Long.MName = "Long";
+			Long.DotNetName = "System.Int64";
 			Float = factory.MetaPrimitiveType();
-			Float.MName = "System.Single";
+			Float.MName = "Float";
+			Float.DotNetName = "System.Single";
 			Double = factory.MetaPrimitiveType();
-			Double.MName = "System.Double";
+			Double.MName = "Double";
+			Double.DotNetName = "System.Double";
 			Byte = factory.MetaPrimitiveType();
-			Byte.MName = "System.Byte";
+			Byte.MName = "Byte";
+			Byte.DotNetName = "System.Byte";
 			Bool = factory.MetaPrimitiveType();
-			Bool.MName = "System.Boolean";
+			Bool.MName = "Bool";
+			Bool.DotNetName = "System.Boolean";
 			Void = factory.MetaPrimitiveType();
-			Void.MName = "System.Void";
+			Void.MName = "Void";
+			Void.DotNetName = "System.Void";
 			SystemType = factory.MetaPrimitiveType();
-			SystemType.MName = "System.Type";
+			SystemType.MName = "SystemType";
+			SystemType.DotNetName = "System.Type";
 			ModelObject = factory.MetaPrimitiveType();
-			ModelObject.MName = "MetaDslx.Modeling.IModelObject";
+			ModelObject.MName = "ModelObject";
+			ModelObject.DotNetName = "MetaDslx.Modeling.IModelObject";
 	
 			__tmp1 = factory.MetaNamespace();
 			__tmp2 = factory.MetaNamespace();
@@ -8540,6 +8597,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp27 = factory.MetaOperation();
 			__tmp28 = factory.MetaParameter();
 			MetaPrimitiveType = factory.MetaClass();
+			MetaPrimitiveType_DotNetName = factory.MetaProperty();
 			__tmp29 = factory.MetaOperation();
 			__tmp30 = factory.MetaParameter();
 			MetaEnum = factory.MetaClass();
@@ -8682,67 +8740,67 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp6.Documentation = null;
 			__tmp6.Name = "Object";
 			__tmp6.SetNamespaceLazy(() => __tmp4);
-			__tmp6.DotNetName = "object";
+			__tmp6.DotNetName = "System.Object";
 			__tmp6.SetValueLazy(() => Object);
 			__tmp7.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp7.Documentation = null;
 			__tmp7.Name = "String";
 			__tmp7.SetNamespaceLazy(() => __tmp4);
-			__tmp7.DotNetName = "string";
+			__tmp7.DotNetName = "System.String";
 			__tmp7.SetValueLazy(() => String);
 			__tmp8.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp8.Documentation = null;
 			__tmp8.Name = "Int";
 			__tmp8.SetNamespaceLazy(() => __tmp4);
-			__tmp8.DotNetName = "int";
+			__tmp8.DotNetName = "System.Int32";
 			__tmp8.SetValueLazy(() => Int);
 			__tmp9.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp9.Documentation = null;
 			__tmp9.Name = "Long";
 			__tmp9.SetNamespaceLazy(() => __tmp4);
-			__tmp9.DotNetName = "long";
+			__tmp9.DotNetName = "System.Int64";
 			__tmp9.SetValueLazy(() => Long);
 			__tmp10.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp10.Documentation = null;
 			__tmp10.Name = "Float";
 			__tmp10.SetNamespaceLazy(() => __tmp4);
-			__tmp10.DotNetName = "float";
+			__tmp10.DotNetName = "System.Single";
 			__tmp10.SetValueLazy(() => Float);
 			__tmp11.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp11.Documentation = null;
 			__tmp11.Name = "Double";
 			__tmp11.SetNamespaceLazy(() => __tmp4);
-			__tmp11.DotNetName = "double";
+			__tmp11.DotNetName = "System.Double";
 			__tmp11.SetValueLazy(() => Double);
 			__tmp12.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp12.Documentation = null;
 			__tmp12.Name = "Byte";
 			__tmp12.SetNamespaceLazy(() => __tmp4);
-			__tmp12.DotNetName = "byte";
+			__tmp12.DotNetName = "System.Byte";
 			__tmp12.SetValueLazy(() => Byte);
 			__tmp13.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp13.Documentation = null;
 			__tmp13.Name = "Bool";
 			__tmp13.SetNamespaceLazy(() => __tmp4);
-			__tmp13.DotNetName = "bool";
+			__tmp13.DotNetName = "System.Boolean";
 			__tmp13.SetValueLazy(() => Bool);
 			__tmp14.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp14.Documentation = null;
 			__tmp14.Name = "Void";
 			__tmp14.SetNamespaceLazy(() => __tmp4);
-			__tmp14.DotNetName = "void";
+			__tmp14.DotNetName = "System.Void";
 			__tmp14.SetValueLazy(() => Void);
 			__tmp15.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp15.Documentation = null;
 			__tmp15.Name = "SystemType";
 			__tmp15.SetNamespaceLazy(() => __tmp4);
-			__tmp15.DotNetName = "global::System.Type";
+			__tmp15.DotNetName = "System.Type";
 			__tmp15.SetValueLazy(() => SystemType);
 			__tmp16.SetTypeLazy(() => MetaPrimitiveType);
 			__tmp16.Documentation = null;
 			__tmp16.Name = "ModelObject";
 			__tmp16.SetNamespaceLazy(() => __tmp4);
-			__tmp16.DotNetName = "global::MetaDslx.Modeling.IModelObject";
+			__tmp16.DotNetName = "MetaDslx.Modeling.IModelObject";
 			__tmp16.SetValueLazy(() => ModelObject);
 			MetaElement.Documentation = "\n\tRepresents an element.\n\t\r\n";
 			MetaElement.Name = "MetaElement";
@@ -9019,7 +9077,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaPrimitiveType.SymbolType = null;
 			MetaPrimitiveType.IsAbstract = false;
 			MetaPrimitiveType.SuperClasses.AddLazy(() => MetaNamedType);
+			MetaPrimitiveType.Properties.AddLazy(() => MetaPrimitiveType_DotNetName);
 			MetaPrimitiveType.Operations.AddLazy(() => __tmp29);
+			MetaPrimitiveType_DotNetName.SetTypeLazy(() => String);
+			MetaPrimitiveType_DotNetName.Documentation = null;
+			MetaPrimitiveType_DotNetName.Name = "DotNetName";
+			MetaPrimitiveType_DotNetName.SymbolProperty = null;
+			MetaPrimitiveType_DotNetName.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			MetaPrimitiveType_DotNetName.SetClassLazy(() => MetaPrimitiveType);
+			MetaPrimitiveType_DotNetName.DefaultValue = null;
+			MetaPrimitiveType_DotNetName.IsContainment = false;
 			__tmp29.Documentation = null;
 			__tmp29.Name = "ConformsTo";
 			__tmp29.SetClassLazy(() => MetaPrimitiveType);
@@ -9791,7 +9858,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// <summary>
 		/// Computes the value of the property: MetaDeclaration.FullName
 		/// </summary	
-		public abstract string MetaDeclaration_ComputeProperty_FullName(MetaDeclarationBuilder _this);
+		public abstract String MetaDeclaration_ComputeProperty_FullName(MetaDeclarationBuilder _this);
 	
 	
 	
