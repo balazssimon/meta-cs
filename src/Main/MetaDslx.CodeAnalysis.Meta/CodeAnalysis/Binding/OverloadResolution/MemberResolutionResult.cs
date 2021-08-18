@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// Represents the results of overload resolution for a single member.
     /// </summary>
     [SuppressMessage("Performance", "CA1067", Justification = "Equality not actually implemented")]
-    internal struct MemberResolutionResult<TMember> where TMember : MemberSymbol
+    public struct MemberResolutionResult<TMember> where TMember : MemberSymbol
     {
         private readonly TMember _member;
         private readonly TMember _leastOverriddenMember;

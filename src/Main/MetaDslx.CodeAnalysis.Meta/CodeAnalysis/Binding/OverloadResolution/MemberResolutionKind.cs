@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// <summary>
     /// Indicates why the compiler accepted or rejected the member during overload resolution.
     /// </summary>
-    internal enum MemberResolutionKind : byte
+    public enum MemberResolutionKind : byte
     {
         /// <summary>
         /// No resolution has (yet) been determined.

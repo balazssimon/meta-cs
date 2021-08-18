@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// The method or operation to be invoked.
         /// </summary>
         [SymbolProperty]
-        public abstract ExpressionSymbol Operation { get; }
+        public abstract ExpressionSymbol Receiver { get; }
 
         /// <summary>
         /// Arguments of the invocation, excluding the instance argument. Arguments are in evaluation order.

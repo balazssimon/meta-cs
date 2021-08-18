@@ -15,6 +15,7 @@ using Microsoft.Cci;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.Collections;
 using System.Linq;
+using MetaDslx.CodeAnalysis.Binding;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -25,8 +26,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private string _lazyQualifiedName;
 
         public virtual int Arity => this.TypeParameters.Length;
+
         [SymbolProperty]
         public virtual ImmutableArray<TypeParameterSymbol> TypeParameters => ImmutableArray<TypeParameterSymbol>.Empty;
+
+        public virtual DeclaredSymbol Construct(ImmutableArray<TypeWithAnnotations> typeArguments)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        public virtual bool CheckAllConstraints(LanguageCompilation compilation, Conversions conversions)
+        {
+            return true;
+        }
 
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another

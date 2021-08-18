@@ -68,7 +68,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual MemberSymbol OverridenMember => null;
 
-        public new MemberSymbol OriginalDefinition => this;
+        public virtual bool RequiresInstanceReceiver()
+        {
+            return !this.IsStatic;
+        }
 
         /// <summary>
         /// Returns the original virtual or abstract method which a given method symbol overrides,

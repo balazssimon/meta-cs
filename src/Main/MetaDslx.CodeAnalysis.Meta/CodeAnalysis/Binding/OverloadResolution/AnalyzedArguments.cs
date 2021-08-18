@@ -13,21 +13,24 @@ using Roslyn.Utilities;
 namespace MetaDslx.CodeAnalysis.Binding
 {
     // Note: instances of this object are pooled
-    internal sealed class AnalyzedArguments
+    public sealed class AnalyzedArguments
     {
         public readonly ArrayBuilder<ArgumentSymbol> Arguments;
-        public bool IsExtensionMethodInvocation;
+        private bool _isExtensionMethodInvocation;
         private ThreeState _lazyHasDynamicArgument;
 
-        internal AnalyzedArguments()
+        private AnalyzedArguments()
         {
             this.Arguments = new ArrayBuilder<ArgumentSymbol>(32);
         }
 
+        public bool IsExtensionMethodInvocation => _isExtensionMethodInvocation;
+        public bool HasNamedArguments => Arguments.Any(arg => arg.HasName);
+
         public void Clear()
         {
             this.Arguments.Clear();
-            this.IsExtensionMethodInvocation = false;
+            _isExtensionMethodInvocation = false;
             _lazyHasDynamicArgument = ThreeState.Unknown;
         }
 
@@ -127,7 +130,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             var instance = GetInstance();
             instance.Arguments.AddRange(original.Arguments);
-            instance.IsExtensionMethodInvocation = original.IsExtensionMethodInvocation;
+            instance._isExtensionMethodInvocation = original.IsExtensionMethodInvocation;
             instance._lazyHasDynamicArgument = original._lazyHasDynamicArgument;
             return instance;
         }

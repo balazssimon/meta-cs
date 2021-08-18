@@ -1391,7 +1391,7 @@ namespace MetaDslx.CodeAnalysis
                 result = (NamedTypeSymbol)SourceAssembly.GetSpecialSymbol(specialType);
             }
 
-            Debug.Assert(result.SpecialSymbol is SpecialType st && specialType == st);
+            Debug.Assert(result.IsSpecialSymbol(specialType));
             return result;
         }
 

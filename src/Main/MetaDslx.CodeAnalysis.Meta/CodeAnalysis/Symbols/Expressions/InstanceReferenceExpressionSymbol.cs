@@ -4,12 +4,6 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public enum InstanceReferenceKind
-    {
-        This,
-        Base
-    }
-
     /// <summary>
     /// Represents an implicit/explicit reference to an instance (e.g., this or base).
     /// </summary>
@@ -17,9 +11,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class InstanceReferenceExpressionSymbol : ExpressionSymbol
     {
         /// <summary>
-        /// The kind of reference that is being made.
+        /// Reference through a base type.
         /// </summary>
         [SymbolProperty]
-        public abstract InstanceReferenceKind ReferenceKind { get; }
+        public virtual NamedTypeSymbol? AccessThroughBaseType { get; }
+
+        public bool IsThis => this.AccessThroughBaseType is null;
+
+        public bool IsBase => this.AccessThroughBaseType is not null;
+
+        public override bool IsInstanceReceiver => true;
     }
 }

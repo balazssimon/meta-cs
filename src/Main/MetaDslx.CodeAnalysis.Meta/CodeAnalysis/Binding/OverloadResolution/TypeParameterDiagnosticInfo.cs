@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// This decouples constraints checking from syntax and Locations, and supports
     /// callers that may want to create Location instances lazily or not at all.
     /// </summary>
-    internal readonly struct TypeParameterDiagnosticInfo
+    public readonly struct TypeParameterDiagnosticInfo
     {
         public readonly TypeParameterSymbol TypeParameter;
         public readonly DiagnosticInfo DiagnosticInfo;

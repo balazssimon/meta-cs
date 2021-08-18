@@ -39,6 +39,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual Conversion OutConversion { get; }
 
+        public bool HasName => !string.IsNullOrEmpty(this.Name);
+
+        public bool IsArgList => false;
+
         public object Display
         {
             get

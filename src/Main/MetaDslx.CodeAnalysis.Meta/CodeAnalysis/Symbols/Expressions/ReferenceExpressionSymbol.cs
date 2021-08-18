@@ -12,10 +12,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class ReferenceExpressionSymbol : ExpressionSymbol
     {
         /// <summary>
-        /// Referenced symbol.
+        /// If the reference is a member access, this is the type or instance of which the member is accessed.
         /// </summary>
         [SymbolProperty]
-        public abstract DeclaredSymbol Reference { get; }
+        public abstract ExpressionSymbol? Receiver { get; }
+
+        /// <summary>
+        /// Indicates whether member access is null conditional (?. operator)
+        /// </summary>
+        [SymbolProperty]
+        public abstract bool IsNullConditional { get; }
 
         /// <summary>
         /// Type arguments.
@@ -29,5 +35,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract bool IsDeclaration { get; }
+
+        /// <summary>
+        /// Referenced symbol (e.g., a type, a variable or a member).
+        /// </summary>
+        public virtual DeclaredSymbol ReferencedSymbol { get; }
+
+        /// <summary>
+        /// The containing type of the referenced member, if different from type of the <see cref="Receiver" />.
+        /// </summary>
+        public virtual TypeSymbol? ContainingType { get; }
+
+        public override bool IsInstanceReceiver => Receiver?.IsInstanceReceiver ?? !(ReferencedSymbol is TypeSymbol);
+
+        public override bool IsStaticReceiver => ReferencedSymbol is TypeSymbol;
     }
 }

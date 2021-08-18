@@ -24,6 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual RefKind RefKind => RefKind.None;
 
-        public new ParameterSymbol OriginalDefinition => this;
+        public TypeWithAnnotations TypeWithAnnotations => null;
+        public bool IsOptional => DefaultValue is not null;
     }
 }

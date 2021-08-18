@@ -24,6 +24,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static readonly Conversion NullLiteral = new StandardConversion(nameof(NullLiteral), isImplicit: true);
         public static readonly Conversion DefaultLiteral = new StandardConversion(nameof(DefaultLiteral), isImplicit: true);
         public static readonly Conversion Boxing = new StandardConversion(nameof(Boxing), isImplicit: true);
+        public static readonly Conversion ConditionalExpression = new StandardConversion(nameof(ConditionalExpression), isImplicit: true);
 
         public static readonly Conversion ExplicitNumeric = new StandardConversion(nameof(ExplicitNumeric), isImplicit: false);
         public static readonly Conversion ExplicitValue = new StandardConversion(nameof(ExplicitValue), isImplicit: false);
@@ -43,7 +44,56 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public abstract Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics);
 
+        public virtual Conversion ClassifyImplicitConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var kind = ClassifyConversionFromType(source, target, ref useSiteDiagnostics);
+            if (kind.IsImplicit) return kind;
+            else return NoConversion;
+        }
+
+        public virtual bool HasIdentityConversion(TypeSymbol source, TypeSymbol target)
+        {
+            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            var kind = ClassifyConversionFromType(source, target, ref useSiteDiagnostics);
+            return kind == Identity;
+        }
+
         public abstract Conversion ClassifyConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics);
 
+        public virtual Conversion ClassifyImplicitConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var kind = ClassifyConversionFromExpression(source, target, ref useSiteDiagnostics);
+            if (kind.IsImplicit) return kind;
+            else return NoConversion;
+        }
+
+        // Spec 7.6.5.2: "An extension method ... is eligible if ... [an] implicit identity, reference,
+        // or boxing conversion exists from expr to the type of the first parameter"
+        public Conversion ClassifyImplicitExtensionMethodThisArgConversion(ExpressionSymbol sourceExpressionOpt, TypeSymbol sourceType, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            Debug.Assert(sourceExpressionOpt == null || (object)sourceExpressionOpt.Type == sourceType);
+            Debug.Assert((object)destination != null);
+
+            if ((object)sourceType != null)
+            {
+                var kind = ClassifyConversionFromType(sourceType, destination, ref useSiteDiagnostics);
+                if (kind == Identity || kind == Boxing || kind == ImplicitReference) return kind;
+            }
+            return NoConversion;
+        }
+
+        // It should be possible to remove IsValidExtensionMethodThisArgConversion
+        // since ClassifyImplicitExtensionMethodThisArgConversion should only
+        // return valid conversions. https://github.com/dotnet/roslyn/issues/19622
+
+        // Spec 7.6.5.2: "An extension method ... is eligible if ... [an] implicit identity, reference,
+        // or boxing conversion exists from expr to the type of the first parameter"
+        public static bool IsValidExtensionMethodThisArgConversion(Conversion conversion)
+        {
+            if (conversion == Identity || conversion == Boxing || conversion == ImplicitReference) return true;
+            // Caller should have not have calculated another conversion.
+            Debug.Assert(conversion == NoConversion);
+            return false;
+        }
     }
 }

@@ -6,7 +6,7 @@
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal enum ArgumentAnalysisResultKind : byte
+    public enum ArgumentAnalysisResultKind : byte
     {
         Normal,
         Expanded,

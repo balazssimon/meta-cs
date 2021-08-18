@@ -14,7 +14,7 @@ using Roslyn.Utilities;
 namespace MetaDslx.CodeAnalysis.Binding
 {
     [SuppressMessage("Performance", "CA1067", Justification = "Equality not actually implemented")]
-    internal struct MemberAnalysisResult
+    public struct MemberAnalysisResult
     {
         // put these first for better packing
         public readonly ImmutableArray<Conversion> ConversionsOpt;

@@ -35,7 +35,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(IsTypeExpressionSymbol symbol);
         void Visit(LambdaExpressionSymbol symbol);
         void Visit(LiteralExpressionSymbol symbol);
-        void Visit(MemberReferenceExpressionSymbol symbol);
         void Visit(NameOfExpressionSymbol symbol);
         void Visit(ObjectCreationExpressionSymbol symbol);
         void Visit(ParenthesizedExpressionSymbol symbol);
@@ -121,7 +120,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(IsTypeExpressionSymbol symbol);
         TResult Visit(LambdaExpressionSymbol symbol);
         TResult Visit(LiteralExpressionSymbol symbol);
-        TResult Visit(MemberReferenceExpressionSymbol symbol);
         TResult Visit(NameOfExpressionSymbol symbol);
         TResult Visit(ObjectCreationExpressionSymbol symbol);
         TResult Visit(ParenthesizedExpressionSymbol symbol);
@@ -207,7 +205,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(IsTypeExpressionSymbol symbol, TArgument argument);
         TResult Visit(LambdaExpressionSymbol symbol, TArgument argument);
         TResult Visit(LiteralExpressionSymbol symbol, TArgument argument);
-        TResult Visit(MemberReferenceExpressionSymbol symbol, TArgument argument);
         TResult Visit(NameOfExpressionSymbol symbol, TArgument argument);
         TResult Visit(ObjectCreationExpressionSymbol symbol, TArgument argument);
         TResult Visit(ParenthesizedExpressionSymbol symbol, TArgument argument);

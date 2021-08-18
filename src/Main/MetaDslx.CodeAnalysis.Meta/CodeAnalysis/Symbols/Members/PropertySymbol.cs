@@ -15,7 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual MethodSymbol SetMethod { get; }
 
-        public new PropertySymbol OriginalDefinition => this;
         public PropertySymbol OverriddenProperty { get; }
         public FieldSymbol BackingField { get; }
     }

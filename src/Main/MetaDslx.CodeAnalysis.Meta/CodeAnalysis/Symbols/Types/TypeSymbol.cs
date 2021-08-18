@@ -355,10 +355,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return FindMostSpecificImplementationWithDiagnostics(baseTypeMember, (NamedTypeSymbol)this).Symbol;
         }
 
-        public virtual SpecialType SpecialType { get; }
-
-        public virtual object SpecialSymbol { get; }
-
         internal Microsoft.Cci.PrimitiveTypeCode PrimitiveTypeCode { get; }
 
         #region Use-Site Diagnostics

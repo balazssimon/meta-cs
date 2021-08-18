@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Tuple elements.
         /// </summary>
         [SymbolProperty]
-        public abstract ImmutableArray<ExpressionSymbol> Elements { get; }
+        public abstract ImmutableArray<ArgumentSymbol> Arguments { get; }
 
         /// <summary>
         /// Natural type of the tuple, or null if tuple doesn't have a natural type.

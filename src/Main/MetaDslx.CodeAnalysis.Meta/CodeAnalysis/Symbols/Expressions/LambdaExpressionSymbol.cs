@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -34,5 +35,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual LambdaSymbol Symbol { get; }
 
+        // TODO:MetaDslx
+        public bool IsBound => true;
+
+        public LambdaExpressionSymbol BindForReturnTypeInference(DelegateTypeSymbol type)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        public TypeWithAnnotations GetInferredReturnType(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
     }
 }

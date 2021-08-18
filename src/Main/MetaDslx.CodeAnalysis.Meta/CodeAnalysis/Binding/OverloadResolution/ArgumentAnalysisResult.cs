@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal struct ArgumentAnalysisResult
+    public struct ArgumentAnalysisResult
     {
         public readonly ImmutableArray<int> ArgsToParamsOpt;
         public readonly int ArgumentPosition;

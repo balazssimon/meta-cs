@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// The indexed operation.
         /// </summary>
         [SymbolProperty]
-        public abstract ExpressionSymbol Operation { get; }
+        public abstract ExpressionSymbol Receiver { get; }
 
         /// <summary>
         /// Arguments, excluding the instance argument.

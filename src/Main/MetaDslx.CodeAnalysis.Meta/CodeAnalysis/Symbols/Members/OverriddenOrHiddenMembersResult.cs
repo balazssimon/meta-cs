@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         {
                             return overriddenByDefinitionMember;
                         }
-                        return overriddenByDefinitionMember.OriginalDefinition.AsMember(baseType);
+                        return ((MemberSymbol)overriddenByDefinitionMember.OriginalDefinition).AsMember(baseType);
                     }
                 }
 

@@ -148,7 +148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // return a distinguished value for 'object' so we can return the same value for 'dynamic'.
             // That's because the hash code ignores the distinction between dynamic and object.  It also
             // ignores custom modifiers.
-            if (this.SpecialType == SpecialType.System_Object)
+            if (this.IsSpecialSymbol(SpecialType.System_Object))
             {
                 return (int)SpecialType.System_Object;
             }
@@ -172,7 +172,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if (t2 is DynamicTypeSymbol)
                 {
                     // if ignoring dynamic, then treat dynamic the same as the type 'object'
-                    if (this.SpecialType == SpecialType.System_Object)
+                    if (this.IsSpecialSymbol(SpecialType.System_Object))
                     {
                         return true;
                     }
@@ -278,6 +278,91 @@ namespace MetaDslx.CodeAnalysis.Symbols
         #endregion
 
         public virtual bool IsGenericType => this.Arity > 0;
+
+        /// <summary>
+        /// Returns the type arguments that have been substituted for the type parameters. 
+        /// If nothing has been substituted for a give type parameters,
+        /// then the type parameter itself is consider the type argument.
+        /// </summary>
+        internal virtual ImmutableArray<TypeWithAnnotations> TypeArgumentsWithAnnotationsNoUseSiteDiagnostics => ImmutableArray<TypeWithAnnotations>.Empty;
+
+        internal ImmutableArray<TypeWithAnnotations> TypeArgumentsWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var result = TypeArgumentsWithAnnotationsNoUseSiteDiagnostics;
+
+            foreach (var typeArgument in result)
+            {
+                typeArgument.Type.OriginalDefinition.AddUseSiteDiagnostics(ref useSiteDiagnostics);
+            }
+
+            return result;
+        }
+
+        internal TypeWithAnnotations TypeArgumentWithDefinitionUseSiteDiagnostics(int index, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var result = TypeArgumentsWithAnnotationsNoUseSiteDiagnostics[index];
+            result.Type.OriginalDefinition.AddUseSiteDiagnostics(ref useSiteDiagnostics);
+            return result;
+        }
+
+
+        // Given C<int>.D<string, double>, yields { int, string, double }
+        internal void GetAllTypeArguments(ArrayBuilder<TypeSymbol> builder, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var outer = ContainingType;
+            if (!ReferenceEquals(outer, null))
+            {
+                outer.GetAllTypeArguments(builder, ref useSiteDiagnostics);
+            }
+
+            foreach (var argument in TypeArgumentsWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics))
+            {
+                builder.Add(argument.Type);
+            }
+        }
+
+        internal ImmutableArray<TypeWithAnnotations> GetAllTypeArguments(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            ArrayBuilder<TypeWithAnnotations> builder = ArrayBuilder<TypeWithAnnotations>.GetInstance();
+            GetAllTypeArguments(builder, ref useSiteDiagnostics);
+            return builder.ToImmutableAndFree();
+        }
+
+        internal void GetAllTypeArguments(ArrayBuilder<TypeWithAnnotations> builder, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var outer = ContainingType;
+            if (!ReferenceEquals(outer, null))
+            {
+                outer.GetAllTypeArguments(builder, ref useSiteDiagnostics);
+            }
+
+            builder.AddRange(TypeArgumentsWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics));
+        }
+
+        internal void GetAllTypeArgumentsNoUseSiteDiagnostics(ArrayBuilder<TypeWithAnnotations> builder)
+        {
+            ContainingType?.GetAllTypeArgumentsNoUseSiteDiagnostics(builder);
+            builder.AddRange(TypeArgumentsWithAnnotationsNoUseSiteDiagnostics);
+        }
+
+        internal int AllTypeArgumentCount()
+        {
+            int count = TypeArgumentsWithAnnotationsNoUseSiteDiagnostics.Length;
+
+            var outer = ContainingType;
+            if (!ReferenceEquals(outer, null))
+            {
+                count += outer.AllTypeArgumentCount();
+            }
+
+            return count;
+        }
+
+        internal ImmutableArray<TypeWithAnnotations> GetTypeParametersAsTypeArguments()
+        {
+            return TypeMap.TypeParametersAsTypeSymbolsWithAnnotations(this.TypeParameters);
+        }
+
 
     }
 }

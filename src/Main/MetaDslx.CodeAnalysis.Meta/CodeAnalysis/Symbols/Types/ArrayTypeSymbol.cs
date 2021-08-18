@@ -20,9 +20,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual TypeSymbol ElementType { get; }
 
+        public TypeWithAnnotations ElementTypeWithAnnotations { get; }
+
         public override bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual bool HasSameShapeAs(ArrayTypeSymbol other)
+        {
+            return true;
         }
     }
 }

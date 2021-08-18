@@ -70,15 +70,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             public static readonly CompletionPart FinishComputingProperty_IsAsync = new CompletionPart(nameof(FinishComputingProperty_IsAsync));
             public static readonly CompletionPart StartComputingProperty_ReturnType = new CompletionPart(nameof(StartComputingProperty_ReturnType));
             public static readonly CompletionPart FinishComputingProperty_ReturnType = new CompletionPart(nameof(FinishComputingProperty_ReturnType));
+            public static readonly CompletionPart StartComputingProperty_ReturnRefKind = new CompletionPart(nameof(StartComputingProperty_ReturnRefKind));
+            public static readonly CompletionPart FinishComputingProperty_ReturnRefKind = new CompletionPart(nameof(FinishComputingProperty_ReturnRefKind));
             public static readonly CompletionPart StartComputingProperty_Parameters = new CompletionPart(nameof(StartComputingProperty_Parameters));
             public static readonly CompletionPart FinishComputingProperty_Parameters = new CompletionPart(nameof(FinishComputingProperty_Parameters));
             public static readonly CompletionPart StartComputingProperty_Body = new CompletionPart(nameof(StartComputingProperty_Body));
             public static readonly CompletionPart FinishComputingProperty_Body = new CompletionPart(nameof(FinishComputingProperty_Body));
             public static readonly CompletionPart StartComputingProperty_IsImplicit = new CompletionPart(nameof(StartComputingProperty_IsImplicit));
             public static readonly CompletionPart FinishComputingProperty_IsImplicit = new CompletionPart(nameof(FinishComputingProperty_IsImplicit));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_TypeParameters, FinishComputingProperty_TypeParameters, StartComputingProperty_DeclaredAccessibility, FinishComputingProperty_DeclaredAccessibility, StartComputingProperty_IsExtern, FinishComputingProperty_IsExtern, StartComputingProperty_Members, FinishComputingProperty_Members, StartComputingProperty_IsStatic, FinishComputingProperty_IsStatic, StartComputingProperty_IsVirtual, FinishComputingProperty_IsVirtual, StartComputingProperty_IsOverride, FinishComputingProperty_IsOverride, StartComputingProperty_IsAbstract, FinishComputingProperty_IsAbstract, StartComputingProperty_IsSealed, FinishComputingProperty_IsSealed, StartComputingProperty_IsAsync, FinishComputingProperty_IsAsync, StartComputingProperty_ReturnType, FinishComputingProperty_ReturnType, StartComputingProperty_Parameters, FinishComputingProperty_Parameters, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_IsImplicit, FinishComputingProperty_IsImplicit, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_TypeParameters, FinishComputingProperty_TypeParameters, StartComputingProperty_DeclaredAccessibility, FinishComputingProperty_DeclaredAccessibility, StartComputingProperty_IsExtern, FinishComputingProperty_IsExtern, StartComputingProperty_Members, FinishComputingProperty_Members, StartComputingProperty_IsStatic, FinishComputingProperty_IsStatic, StartComputingProperty_IsVirtual, FinishComputingProperty_IsVirtual, StartComputingProperty_IsOverride, FinishComputingProperty_IsOverride, StartComputingProperty_IsAbstract, FinishComputingProperty_IsAbstract, StartComputingProperty_IsSealed, FinishComputingProperty_IsSealed, StartComputingProperty_IsAsync, FinishComputingProperty_IsAsync, StartComputingProperty_ReturnType, FinishComputingProperty_ReturnType, StartComputingProperty_Parameters, FinishComputingProperty_Parameters, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_IsImplicit, FinishComputingProperty_IsImplicit, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_TypeParameters, FinishComputingProperty_TypeParameters, StartComputingProperty_DeclaredAccessibility, FinishComputingProperty_DeclaredAccessibility, StartComputingProperty_IsExtern, FinishComputingProperty_IsExtern, StartComputingProperty_Members, FinishComputingProperty_Members, StartComputingProperty_IsStatic, FinishComputingProperty_IsStatic, StartComputingProperty_IsVirtual, FinishComputingProperty_IsVirtual, StartComputingProperty_IsOverride, FinishComputingProperty_IsOverride, StartComputingProperty_IsAbstract, FinishComputingProperty_IsAbstract, StartComputingProperty_IsSealed, FinishComputingProperty_IsSealed, StartComputingProperty_IsAsync, FinishComputingProperty_IsAsync, StartComputingProperty_ReturnType, FinishComputingProperty_ReturnType, StartComputingProperty_Parameters, FinishComputingProperty_Parameters, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_IsImplicit, FinishComputingProperty_IsImplicit, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_TypeParameters, FinishComputingProperty_TypeParameters, StartComputingProperty_DeclaredAccessibility, FinishComputingProperty_DeclaredAccessibility, StartComputingProperty_IsExtern, FinishComputingProperty_IsExtern, StartComputingProperty_Members, FinishComputingProperty_Members, StartComputingProperty_IsStatic, FinishComputingProperty_IsStatic, StartComputingProperty_IsVirtual, FinishComputingProperty_IsVirtual, StartComputingProperty_IsOverride, FinishComputingProperty_IsOverride, StartComputingProperty_IsAbstract, FinishComputingProperty_IsAbstract, StartComputingProperty_IsSealed, FinishComputingProperty_IsSealed, StartComputingProperty_IsAsync, FinishComputingProperty_IsAsync, StartComputingProperty_ReturnType, FinishComputingProperty_ReturnType, StartComputingProperty_ReturnRefKind, FinishComputingProperty_ReturnRefKind, StartComputingProperty_Parameters, FinishComputingProperty_Parameters, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_IsImplicit, FinishComputingProperty_IsImplicit, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_TypeParameters, FinishComputingProperty_TypeParameters, StartComputingProperty_DeclaredAccessibility, FinishComputingProperty_DeclaredAccessibility, StartComputingProperty_IsExtern, FinishComputingProperty_IsExtern, StartComputingProperty_Members, FinishComputingProperty_Members, StartComputingProperty_IsStatic, FinishComputingProperty_IsStatic, StartComputingProperty_IsVirtual, FinishComputingProperty_IsVirtual, StartComputingProperty_IsOverride, FinishComputingProperty_IsOverride, StartComputingProperty_IsAbstract, FinishComputingProperty_IsAbstract, StartComputingProperty_IsSealed, FinishComputingProperty_IsSealed, StartComputingProperty_IsAsync, FinishComputingProperty_IsAsync, StartComputingProperty_ReturnType, FinishComputingProperty_ReturnType, StartComputingProperty_ReturnRefKind, FinishComputingProperty_ReturnRefKind, StartComputingProperty_Parameters, FinishComputingProperty_Parameters, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_IsImplicit, FinishComputingProperty_IsImplicit, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_TypeParameters, FinishComputingProperty_TypeParameters, StartComputingProperty_DeclaredAccessibility, FinishComputingProperty_DeclaredAccessibility, StartComputingProperty_IsExtern, FinishComputingProperty_IsExtern, StartComputingProperty_Members, FinishComputingProperty_Members, StartComputingProperty_IsStatic, FinishComputingProperty_IsStatic, StartComputingProperty_IsVirtual, FinishComputingProperty_IsVirtual, StartComputingProperty_IsOverride, FinishComputingProperty_IsOverride, StartComputingProperty_IsAbstract, FinishComputingProperty_IsAbstract, StartComputingProperty_IsSealed, FinishComputingProperty_IsSealed, StartComputingProperty_IsAsync, FinishComputingProperty_IsAsync, StartComputingProperty_ReturnType, FinishComputingProperty_ReturnType, StartComputingProperty_ReturnRefKind, FinishComputingProperty_ReturnRefKind, StartComputingProperty_Parameters, FinishComputingProperty_Parameters, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_IsImplicit, FinishComputingProperty_IsImplicit, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
         }
 
         private readonly Symbol _container;
@@ -98,6 +100,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private bool _isSealed;
         private bool _isAsync;
         private global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol _returnType;
+        private global::Microsoft.CodeAnalysis.RefKind _returnRefKind;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> _parameters;
         private global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol _body;
         private bool _isImplicit;
@@ -243,6 +246,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             {
                 this.ForceComplete(CompletionParts.FinishComputingProperty_ReturnType, null, default);
                 return _returnType;
+            }
+        }
+
+        public override global::Microsoft.CodeAnalysis.RefKind ReturnRefKind
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_ReturnRefKind, null, default);
+                return _returnRefKind;
             }
         }
 
@@ -445,6 +457,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_ReturnType);
                     }
                 }
+                else if (incompletePart == CompletionParts.StartComputingProperty_ReturnRefKind || incompletePart == CompletionParts.FinishComputingProperty_ReturnRefKind)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ReturnRefKind))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _returnRefKind = CompleteSymbolProperty_ReturnRefKind(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ReturnRefKind);
+                    }
+                }
                 else if (incompletePart == CompletionParts.StartComputingProperty_Parameters || incompletePart == CompletionParts.FinishComputingProperty_Parameters)
                 {
                     if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Parameters))
@@ -555,6 +578,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         protected abstract bool CompleteSymbolProperty_IsSealed(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract bool CompleteSymbolProperty_IsAsync(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol CompleteSymbolProperty_ReturnType(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract global::Microsoft.CodeAnalysis.RefKind CompleteSymbolProperty_ReturnRefKind(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> CompleteSymbolProperty_Parameters(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol CompleteSymbolProperty_Body(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract bool CompleteSymbolProperty_IsImplicit(DiagnosticBag diagnostics, CancellationToken cancellationToken);
@@ -651,6 +675,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         protected override global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol CompleteSymbolProperty_ReturnType(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return MetadataSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(ReturnType), diagnostics, cancellationToken);
+        }
+
+        protected override global::Microsoft.CodeAnalysis.RefKind CompleteSymbolProperty_ReturnRefKind(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return MetadataSymbolImplementation.AssignSymbolPropertyValue<global::Microsoft.CodeAnalysis.RefKind>(this, nameof(ReturnRefKind), diagnostics, cancellationToken);
         }
 
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> CompleteSymbolProperty_Parameters(DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -900,6 +929,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol CompleteSymbolProperty_ReturnType(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(ReturnType), diagnostics, cancellationToken);
+        }
+        protected override global::Microsoft.CodeAnalysis.RefKind CompleteSymbolProperty_ReturnRefKind(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::Microsoft.CodeAnalysis.RefKind>(this, nameof(ReturnRefKind), diagnostics, cancellationToken);
         }
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> CompleteSymbolProperty_Parameters(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

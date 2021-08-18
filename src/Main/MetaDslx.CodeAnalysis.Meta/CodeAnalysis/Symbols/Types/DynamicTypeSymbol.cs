@@ -82,7 +82,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 var other = t2 as NamedTypeSymbol;
-                return (object?)other != null && other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object;
+                return (object?)other != null && other.IsSpecialSymbol(SpecialType.System_Object);
             }
 
             return false;

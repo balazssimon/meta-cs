@@ -249,10 +249,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                     bool symIsHidden = false;
                     foreach (var hidingSym in hidingSymbols)
                     {
-                        var hiddenSpecialType = hiddenContainer.SpecialSymbol is SpecialType st ? st : SpecialType.None;
+                        var hiddenIsSystemObject = hiddenContainer.IsSpecialSymbol(SpecialType.System_Object);
                         var hidingContainer = hidingSym.ContainingType;
                         if (!IsDerivedType(baseType: hiddenContainer, derivedType: hidingContainer, useSiteDiagnostics: resultHiding.UseSiteDiagnostics) &&
-                            (hiddenContainer == null || hiddenSpecialType != SpecialType.System_Object))
+                            (hiddenContainer == null || !hiddenIsSystemObject))
                         {
                             continue; // not in inheritance relationship, so it cannot hide
                         }

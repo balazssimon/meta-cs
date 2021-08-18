@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// method was selected if overload resolution succeeded, as well as detailed information about
     /// each method that was considered. 
     /// </summary>
-    internal class OverloadResolutionResult<TMember> where TMember : MethodLikeSymbol
+    public class OverloadResolutionResult<TMember> where TMember : MemberSymbol
     {
         private MemberResolutionResult<TMember> _bestResult;
         private ThreeState _bestResultState;
@@ -639,7 +639,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             mismatch = GetFirstMemberKind(MemberResolutionKind.WrongReturnType);
             if (!mismatch.IsNull)
             {
-                var method = mismatch.Member;
+                var method = mismatch.Member as MethodLikeSymbol;
                 diagnostics.Add(InternalErrorCode.ERR_BadRetType, location, method, method.ReturnType);
                 return true;
             }
@@ -814,7 +814,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // error instead has to be that there was no argument corresponding
             // to required formal parameter 'y'.
 
-            TMember badMember = bad.Member;
+            var badMember = bad.Member as MethodLikeSymbol;
             ImmutableArray<ParameterSymbol> parameters = badMember.Parameters;
             int badParamIndex = bad.Result.BadParameter;
             string badParamName;
@@ -957,7 +957,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // to meet constraints on the method's type argument. See if that's the case; if it
             // is, then just report that error.
 
-            var method = result.Member;
+            var method = result.Member as MethodLikeSymbol;
             if (!method.CheckConstraints(compilation, location, diagnostics))
             {
                 // The error is already reported into the diagnostics bag.
@@ -1027,7 +1027,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             ImmutableArray<Symbol> symbols,
             Location location,
             MemberResolutionResult<TMember> badArg,
-            TMember method,
+            TMember member,
             int arg)
         {
             var argument = arguments.Argument(arg);
@@ -1042,7 +1042,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var sourceLocation = argument.Locations.FirstOrNone();
 
             // Early out: if the bad argument is an __arglist parameter then simply report that:
-
+            var method = member as MethodLikeSymbol;
             if (method.IsVarArg && parm == method.Parameters.Length)
             {
                 // NOTE: No SymbolDistinguisher required, since one of the arguments is "__arglist".

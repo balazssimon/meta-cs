@@ -11,5 +11,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsConstant => false;
         public virtual TypeSymbol? ExpectedType => null;
         public virtual bool IsConstantExpected => false;
+
+        public virtual bool IsInferencePending => false;
+        public virtual bool IsStaticReceiver => false;
+        public virtual bool IsInstanceReceiver => false;
+        public virtual bool IsImplicitReceiver => false;
     }
 }
