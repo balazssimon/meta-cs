@@ -116,6 +116,7 @@
 
 	class MetaPrimitiveType : MetaNamedType
 	{
+		string DotNetName;
 		bool ConformsTo(MetaType type);
 	}
 

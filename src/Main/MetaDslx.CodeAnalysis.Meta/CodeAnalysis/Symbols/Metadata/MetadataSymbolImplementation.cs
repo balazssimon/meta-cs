@@ -61,6 +61,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             {
                 return (T)(object)AssignNameProperty(symbol, diagnostics);
             }
+            if (symbolPropertyName == SymbolConstants.MetadataNameProperty)
+            {
+                return (T)(object)AssignMetadataNameProperty(symbol, diagnostics);
+            }
             var values = ArrayBuilder<T>.GetInstance();
             try
             {
@@ -88,6 +92,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             {
                 var symbolFacts = symbol.Language.SymbolFacts;
                 return symbolFacts.GetName(msymbol.ModelObject);
+            }
+            return string.Empty;
+        }
+
+        private static string AssignMetadataNameProperty(Symbol symbol, DiagnosticBag diagnostics)
+        {
+            if (symbol is IModelSymbol msymbol && msymbol.ModelObject != null)
+            {
+                var symbolFacts = symbol.Language.SymbolFacts;
+                return symbolFacts.GetMetadataName(msymbol.ModelObject);
             }
             return string.Empty;
         }

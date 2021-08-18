@@ -117,6 +117,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return string.Empty;
         }
 
+        protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return string.Empty;
+        }
+
         protected override bool CompleteSymbolProperty_IsExtern(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return false;

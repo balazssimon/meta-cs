@@ -354,7 +354,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (specialSymbolId is null) throw new ArgumentNullException(nameof(specialSymbolId));
             if (language is null) language = this.Language;
             var metadataName = language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
-            if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.MetadataName == metadataName)) return true;
+            if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.ContainingSymbol is ModuleSymbol && this.MetadataName == metadataName)) return true;
             else return false;
         }
 
@@ -376,7 +376,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (specialSymbolId is not null)
             {
                 var metadataName = language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
-                if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.MetadataName == metadataName)) return true;
+                if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.ContainingSymbol is ModuleSymbol && this.MetadataName == metadataName)) return true;
                 else return false;
             }
             return false;

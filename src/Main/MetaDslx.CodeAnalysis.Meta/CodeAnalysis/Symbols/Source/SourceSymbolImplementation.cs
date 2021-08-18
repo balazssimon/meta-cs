@@ -148,6 +148,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 return (T)(object)AssignNameProperty(symbol, diagnostics);
             }
+            if (symbolPropertyName == SymbolConstants.MetadataNameProperty)
+            {
+                return (T)(object)AssignMetadataNameProperty(symbol, diagnostics);
+            }
             var values = ArrayBuilder<T>.GetInstance();
             try
             {
@@ -214,6 +218,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     symbolFacts.SetOrAddPropertyValue(msymbol.ModelObject, objectProperty, mergedDeclaration.Name, mergedDeclaration.NameLocations.FirstOrDefault(), diagnostics, default);
                 }
                 return mergedDeclaration.Name;
+            }
+            return string.Empty;
+        }
+
+        private static string AssignMetadataNameProperty(Symbol symbol, DiagnosticBag diagnostics)
+        {
+            if (symbol is ISourceSymbol ssymbol)
+            {
+                var mergedDeclaration = ssymbol.MergedDeclaration;
+                return mergedDeclaration.MetadataName;
             }
             return string.Empty;
         }
