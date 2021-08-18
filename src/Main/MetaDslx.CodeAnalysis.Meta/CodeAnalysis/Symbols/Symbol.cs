@@ -234,6 +234,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        public bool HasAnyErrors
+        {
+            get
+            {
+                if (s_diagnostics.TryGetValue(this, out var diagnostics)) return diagnostics.HasAnyErrors();
+                else return false;
+            }
+        }
+
         protected void AddSymbolDiagnostics(DiagnosticBag diagnostics)
         {
             if (!diagnostics.IsEmptyWithoutResolution)
@@ -569,6 +578,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 var container = this.ContainingDeclaration;
                 if (container is not null) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
                 else return this.MetadataName;
+            }
+            if (format == SymbolDisplayFormat.FullyQualifiedFormat)
+            {
+                var container = this.ContainingDeclaration;
+                if (container is not null) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
+                else return "global::" + this.MetadataName;
             }
             return this.MetadataName + " (" + GetKindText() + ")";
         }

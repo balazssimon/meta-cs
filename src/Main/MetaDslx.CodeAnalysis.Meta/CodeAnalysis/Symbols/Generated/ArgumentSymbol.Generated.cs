@@ -120,15 +120,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-        public override string ParameterName
-        {
-            get
-            {
-                this.ForceComplete(CompletionParts.FinishComputingProperty_ParameterName, null, default);
-                return _parameterName;
-            }
-        }
-
         #region Completion
 
         public sealed override bool RequiresCompletion => true;
@@ -189,17 +180,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Value);
-                    }
-                }
-                else if (incompletePart == CompletionParts.StartComputingProperty_ParameterName || incompletePart == CompletionParts.FinishComputingProperty_ParameterName)
-                {
-                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ParameterName))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        _parameterName = CompleteSymbolProperty_ParameterName(diagnostics, cancellationToken);
-                        AddSymbolDiagnostics(diagnostics);
-                        diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ParameterName);
                     }
                 }
                 else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)
@@ -269,7 +249,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Value(DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract string CompleteSymbolProperty_ParameterName(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion
     }
@@ -313,11 +292,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Value(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return MetadataSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Value), diagnostics, cancellationToken);
-        }
-
-        protected override string CompleteSymbolProperty_ParameterName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return MetadataSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(ParameterName), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -512,10 +486,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Value(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Value), diagnostics, cancellationToken);
-        }
-        protected override string CompleteSymbolProperty_ParameterName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(ParameterName), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

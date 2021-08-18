@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -22,5 +24,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         [SymbolProperty]
         public abstract StatementSymbol Body { get; }
+
+        public bool IsVarArg => this.Parameters.Any(p => p.IsVarArg);
+
+        internal bool CheckConstraints(LanguageCompilation compilation, Location location, DiagnosticBag diagnostics)
+        {
+            return true;
+        }
     }
 }

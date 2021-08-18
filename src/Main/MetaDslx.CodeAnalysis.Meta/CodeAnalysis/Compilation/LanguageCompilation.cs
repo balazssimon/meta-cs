@@ -90,6 +90,24 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
+        private OverloadResolution? _overloadResolution;
+
+        /// <summary>
+        /// A conversions object that ignores nullability.
+        /// </summary>
+        public OverloadResolution OverloadResolution
+        {
+            get
+            {
+                if (_overloadResolution == null)
+                {
+                    Interlocked.CompareExchange(ref _overloadResolution, this.Language.CompilationFactory.CreateOverloadResolution(this), null);
+                }
+
+                return _overloadResolution;
+            }
+        }
+
         /// <summary>
         /// Manages anonymous types declared in this compilation. Unifies types that are structurally equivalent.
         /// </summary>

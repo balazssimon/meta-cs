@@ -83,5 +83,10 @@ namespace MetaDslx.CodeAnalysis
         {
             return new NoConversions(compilation);
         }
+
+        public virtual OverloadResolution CreateOverloadResolution(LanguageCompilation compilation)
+        {
+            return new OverloadResolution(compilation);
+        }
     }
 }

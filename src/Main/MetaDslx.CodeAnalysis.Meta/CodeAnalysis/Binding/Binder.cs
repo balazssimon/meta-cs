@@ -183,18 +183,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public Conversions Conversions => Compilation.Conversions;
 
-        public OverloadResolution OverloadResolution
-        {
-            get
-            {
-                if (_lazyOverloadResolution == null)
-                {
-                    Interlocked.CompareExchange(ref _lazyOverloadResolution, new OverloadResolution(this), null);
-                }
-
-                return _lazyOverloadResolution;
-            }
-        }
+        public OverloadResolution OverloadResolution => Compilation.OverloadResolution;
 
         public static void Error(DiagnosticBag diagnostics, DiagnosticInfo info, SyntaxNode syntax)
         {

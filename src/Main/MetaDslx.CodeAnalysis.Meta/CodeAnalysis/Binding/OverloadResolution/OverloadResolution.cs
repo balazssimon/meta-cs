@@ -10,24 +10,23 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    // TODO:MetaDslx
-    public sealed partial class OverloadResolution
+    public class OverloadResolution
     {
-        private readonly Binder _binder;
+        private readonly LanguageCompilation _compilation;
 
-        public OverloadResolution(Binder binder)
+        public OverloadResolution(LanguageCompilation compilation)
         {
-            _binder = binder;
+            _compilation = compilation;
         }
 
-        private LanguageCompilation Compilation
+        public LanguageCompilation Compilation
         {
-            get { return _binder.Compilation; }
+            get { return _compilation; }
         }
 
-        private Conversions Conversions
+        public Conversions Conversions
         {
-            get { return _binder.Conversions; }
+            get { return _compilation.Conversions; }
         }
 
     }
