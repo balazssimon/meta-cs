@@ -10,23 +10,23 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public sealed class Conversions 
+    public abstract class Conversions 
     {
-        public static readonly Conversion UnsetConversion = new StandardConversion(isImplicit: true);
-        public static readonly Conversion NoConversion = new StandardConversion(isImplicit: true);
-        public static readonly Conversion Identity = new StandardConversion(isImplicit: true);
+        public static readonly Conversion UnsetConversion = new StandardConversion(nameof(UnsetConversion), isImplicit: true);
+        public static readonly Conversion NoConversion = new StandardConversion(nameof(NoConversion), isImplicit: true);
+        public static readonly Conversion Identity = new StandardConversion(nameof(Identity), isImplicit: true);
 
-        public static readonly Conversion ImplicitNumeric = new StandardConversion(isImplicit: true);
-        public static readonly Conversion ImplicitNullable = new StandardConversion(isImplicit: true);
-        public static readonly Conversion ImplicitReference = new StandardConversion(isImplicit: true);
-        public static readonly Conversion NullLiteral = new StandardConversion(isImplicit: true);
-        public static readonly Conversion DefaultLiteral = new StandardConversion(isImplicit: true);
-        public static readonly Conversion Boxing = new StandardConversion(isImplicit: true);
+        public static readonly Conversion ImplicitNumeric = new StandardConversion(nameof(ImplicitNumeric), isImplicit: true);
+        public static readonly Conversion ImplicitNullable = new StandardConversion(nameof(ImplicitNullable), isImplicit: true);
+        public static readonly Conversion ImplicitReference = new StandardConversion(nameof(ImplicitReference), isImplicit: true);
+        public static readonly Conversion NullLiteral = new StandardConversion(nameof(NullLiteral), isImplicit: true);
+        public static readonly Conversion DefaultLiteral = new StandardConversion(nameof(DefaultLiteral), isImplicit: true);
+        public static readonly Conversion Boxing = new StandardConversion(nameof(Boxing), isImplicit: true);
 
-        public static readonly Conversion ExplicitNumeric = new StandardConversion(isImplicit: false);
-        public static readonly Conversion ExplicitNullable = new StandardConversion(isImplicit: false);
-        public static readonly Conversion ExplicitReference = new StandardConversion(isImplicit: false);
-        public static readonly Conversion Unboxing = new StandardConversion(isImplicit: false);
+        public static readonly Conversion ExplicitNumeric = new StandardConversion(nameof(ExplicitNumeric), isImplicit: false);
+        public static readonly Conversion ExplicitNullable = new StandardConversion(nameof(ExplicitNullable), isImplicit: false);
+        public static readonly Conversion ExplicitReference = new StandardConversion(nameof(ExplicitReference), isImplicit: false);
+        public static readonly Conversion Unboxing = new StandardConversion(nameof(Unboxing), isImplicit: false);
 
         private readonly LanguageCompilation _compilation;
 
@@ -37,10 +37,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public LanguageCompilation Compilation => _compilation;
 
-        public Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics);
 
     }
 }

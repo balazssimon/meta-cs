@@ -72,17 +72,18 @@ namespace MetaDslx.CodeAnalysis
         // and re-created.
         private ConcurrentSet<ImportInfo>? _lazyImportInfos;
 
-        private Conversions? _conversions;
+        private CompilationConversions? _conversions;
+
         /// <summary>
         /// A conversions object that ignores nullability.
         /// </summary>
-        internal Conversions Conversions
+        public Conversions Conversions
         {
             get
             {
                 if (_conversions == null)
                 {
-                    Interlocked.CompareExchange(ref _conversions, new BuckStopsHereBinder(this).Conversions, null);
+                    Interlocked.CompareExchange(ref _conversions, new CompilationConversions(this), null);
                 }
 
                 return _conversions;

@@ -74,5 +74,14 @@ namespace MetaDslx.CodeAnalysis
             return new SymbolFactory(module);
         }
 
+        public virtual Conversions CreateStandardConversions(LanguageCompilation compilation)
+        {
+            return new StandardConversions(compilation);
+        }
+
+        public virtual Conversions CreateUserDefinedConversions(LanguageCompilation compilation)
+        {
+            return new NoConversions(compilation);
+        }
     }
 }

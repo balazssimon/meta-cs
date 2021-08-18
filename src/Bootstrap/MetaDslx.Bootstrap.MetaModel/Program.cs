@@ -78,22 +78,59 @@ namespace MetaDslx.Bootstrap.MetaModel
             Console.WriteLine(compiledModel);
 
             var corLib = compilation.GetAssemblyOrModuleSymbol(coreRef) as AssemblySymbol;
-            var int32 = corLib.GetSpecialSymbol(SpecialType.System_Int32);
-            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialModelObject(MetaInstance.Int) + " -> MetaInstance.Int+Lang:" + int32.IsSpecialModelObject(MetaInstance.Int, MetaLanguage.Instance));
-            Console.WriteLine("None: " + int32.GetSpecialSymbol() + " - CSharp: " + int32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + int32.GetSpecialSymbol(MetaLanguage.Instance));
-            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialModelObject(MetaInstance.Long) + " -> MetaInstance.Long+Lang:" + int32.IsSpecialModelObject(MetaInstance.Long, MetaLanguage.Instance));
-            int32 = compilation.Assembly.GetSpecialSymbol(SpecialType.System_Int32);
-            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialModelObject(MetaInstance.Int));
-            Console.WriteLine("None: " + int32.GetSpecialSymbol() + " - CSharp: " + int32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + int32.GetSpecialSymbol(MetaLanguage.Instance));
-            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialModelObject(MetaInstance.Long));
-            int32 = compilation.Assembly.ResolveModelSymbol(MetaInstance.Int);
-            Console.WriteLine(int32 + " -> System.Int32:" + int32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + int32.IsSpecialModelObject(MetaInstance.Int));
-            Console.WriteLine("None: " + int32.GetSpecialSymbol() + " - CSharp: " + int32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + int32.GetSpecialSymbol(MetaLanguage.Instance));
-            Console.WriteLine(int32 + " -> System.Int64:" + int32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + int32.IsSpecialModelObject(MetaInstance.Long));
-            var mobj = compilation.Assembly.GetSpecialSymbol(MetaInstance.ModelObject);
-            Console.WriteLine(mobj + " -> MetaInstance.ModelObject:" + mobj.IsSpecialSymbol(MetaInstance.ModelObject));
-            mobj = compilation.Assembly.ResolveModelSymbol(MetaInstance.ModelObject);
-            Console.WriteLine(mobj + " -> MetaInstance.ModelObject:" + mobj.IsSpecialSymbol(MetaInstance.ModelObject));
+            var corInt32 = corLib.GetSpecialSymbol(SpecialType.System_Int32) as TypeSymbol;
+            Console.WriteLine("corInt32:");
+            Console.WriteLine(corInt32 + " -> System.Int32:" + corInt32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + corInt32.IsSpecialModelObject(MetaInstance.Int) + " -> MetaInstance.Int+Lang:" + corInt32.IsSpecialModelObject(MetaInstance.Int, MetaLanguage.Instance));
+            Console.WriteLine("None: " + corInt32.GetSpecialSymbol() + " - CSharp: " + corInt32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + corInt32.GetSpecialSymbol(MetaLanguage.Instance));
+            Console.WriteLine(corInt32 + " -> System.Int64:" + corInt32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + corInt32.IsSpecialModelObject(MetaInstance.Long) + " -> MetaInstance.Long+Lang:" + corInt32.IsSpecialModelObject(MetaInstance.Long, MetaLanguage.Instance));
+            Console.WriteLine("----");
+
+            var corInt64 = corLib.GetSpecialSymbol(SpecialType.System_Int64) as TypeSymbol;
+            Console.WriteLine("corInt64:");
+            Console.WriteLine(corInt64 + " -> System.Int32:" + corInt64.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + corInt64.IsSpecialModelObject(MetaInstance.Int) + " -> MetaInstance.Int+Lang:" + corInt64.IsSpecialModelObject(MetaInstance.Int, MetaLanguage.Instance));
+            Console.WriteLine("None: " + corInt32.GetSpecialSymbol() + " - CSharp: " + corInt32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + corInt32.GetSpecialSymbol(MetaLanguage.Instance));
+            Console.WriteLine(corInt64 + " -> System.Int64:" + corInt64.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + corInt64.IsSpecialModelObject(MetaInstance.Long) + " -> MetaInstance.Long+Lang:" + corInt64.IsSpecialModelObject(MetaInstance.Long, MetaLanguage.Instance));
+            Console.WriteLine("----");
+
+            var compInt32 = compilation.Assembly.GetSpecialSymbol(SpecialType.System_Int32) as TypeSymbol;
+            Console.WriteLine("compInt32:");
+            Console.WriteLine(compInt32 + " -> System.Int32:" + compInt32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + compInt32.IsSpecialModelObject(MetaInstance.Int));
+            Console.WriteLine("None: " + compInt32.GetSpecialSymbol() + " - CSharp: " + compInt32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + compInt32.GetSpecialSymbol(MetaLanguage.Instance));
+            Console.WriteLine(compInt32 + " -> System.Int64:" + compInt32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + compInt32.IsSpecialModelObject(MetaInstance.Long));
+            Console.WriteLine("----");
+
+            var metaInt32 = compilation.Assembly.ResolveModelSymbol(MetaInstance.Int) as TypeSymbol;
+            Console.WriteLine("metaInt32:");
+            Console.WriteLine(metaInt32 + " -> System.Int32:" + metaInt32.IsSpecialSymbol(SpecialType.System_Int32) + " -> MetaInstance.Int:" + metaInt32.IsSpecialModelObject(MetaInstance.Int));
+            Console.WriteLine("None: " + metaInt32.GetSpecialSymbol() + " - CSharp: " + metaInt32.GetSpecialSymbol(CSharpLanguage.Instance) + " - Meta: " + metaInt32.GetSpecialSymbol(MetaLanguage.Instance));
+            Console.WriteLine(metaInt32 + " -> System.Int64:" + metaInt32.IsSpecialSymbol(SpecialType.System_Int64) + " -> MetaInstance.Long:" + metaInt32.IsSpecialModelObject(MetaInstance.Long));
+            Console.WriteLine("----");
+
+            var compMobj = compilation.Assembly.GetSpecialSymbol(MetaInstance.ModelObject) as TypeSymbol;
+            Console.WriteLine(compMobj + " -> MetaInstance.ModelObject:" + compMobj.IsSpecialSymbol(MetaInstance.ModelObject));
+            Console.WriteLine("----");
+
+            var metaMobj = compilation.Assembly.ResolveModelSymbol(MetaInstance.ModelObject) as TypeSymbol;
+            Console.WriteLine(metaMobj + " -> MetaInstance.ModelObject:" + metaMobj.IsSpecialSymbol(MetaInstance.ModelObject));
+            Console.WriteLine("----");
+
+            HashSet<DiagnosticInfo>? usd = null;
+            Console.WriteLine("corInt32->corInt32: " + compilation.Conversions.ClassifyConversionFromType(corInt32, corInt32, ref usd));
+            Console.WriteLine("corInt32->compInt32: " + compilation.Conversions.ClassifyConversionFromType(corInt32, compInt32, ref usd));
+            Console.WriteLine("corInt32->metaInt32: " + compilation.Conversions.ClassifyConversionFromType(corInt32, metaInt32, ref usd));
+            Console.WriteLine("compInt32->corInt32: " + compilation.Conversions.ClassifyConversionFromType(compInt32, corInt32, ref usd));
+            Console.WriteLine("compInt32->compInt32: " + compilation.Conversions.ClassifyConversionFromType(compInt32, compInt32, ref usd));
+            Console.WriteLine("compInt32->metaInt32: " + compilation.Conversions.ClassifyConversionFromType(compInt32, metaInt32, ref usd));
+            Console.WriteLine("metaInt32->corInt32: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, corInt32, ref usd));
+            Console.WriteLine("metaInt32->compInt32: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, compInt32, ref usd));
+            Console.WriteLine("metaInt32->metaInt32: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, metaInt32, ref usd));
+            Console.WriteLine("corInt64->corInt32: " + compilation.Conversions.ClassifyConversionFromType(corInt64, corInt32, ref usd));
+            Console.WriteLine("corInt64->compInt32: " + compilation.Conversions.ClassifyConversionFromType(corInt64, compInt32, ref usd));
+            Console.WriteLine("corInt64->metaInt32: " + compilation.Conversions.ClassifyConversionFromType(corInt64, metaInt32, ref usd));
+            Console.WriteLine("corInt32->corInt64: " + compilation.Conversions.ClassifyConversionFromType(corInt32, corInt64, ref usd));
+            Console.WriteLine("compInt32->corInt64: " + compilation.Conversions.ClassifyConversionFromType(compInt32, corInt64, ref usd));
+            Console.WriteLine("metaInt32->corInt64: " + compilation.Conversions.ClassifyConversionFromType(metaInt32, corInt64, ref usd));
+            Console.WriteLine("----");
 
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.TypeReference.SimpleType.ClassType.Qualifier.Identifier[0];
