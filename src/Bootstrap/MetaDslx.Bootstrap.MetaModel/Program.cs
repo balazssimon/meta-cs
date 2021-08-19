@@ -141,6 +141,11 @@ namespace MetaDslx.Bootstrap.MetaModel
             Console.WriteLine("dynamic->metaMobj: " + compilation.Conversions.ClassifyConversionFromType(compilation.DynamicType, metaMobj, ref usd));
             Console.WriteLine("----");
 
+            Console.WriteLine("++corInt32: " + compilation.UnaryOperators.ClassifyOperatorByType(UnaryOperatorKind.PrefixIncrement, corInt32));
+            Console.WriteLine("++compInt32: " + compilation.UnaryOperators.ClassifyOperatorByType(UnaryOperatorKind.PrefixIncrement, compInt32));
+            Console.WriteLine("++metaInt32: " + compilation.UnaryOperators.ClassifyOperatorByType(UnaryOperatorKind.PrefixIncrement, metaInt32));
+            Console.WriteLine("++metaMobj: " + compilation.UnaryOperators.ClassifyOperatorByType(UnaryOperatorKind.PrefixIncrement, metaMobj));
+
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.TypeReference.SimpleType.ClassType.Qualifier.Identifier[0];
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.Name.Identifier;

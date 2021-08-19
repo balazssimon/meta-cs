@@ -90,6 +90,23 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
+        private UnaryOperators? _unaryOperators;
+
+        /// <summary>
+        /// A conversions object that ignores nullability.
+        /// </summary>
+        public UnaryOperators UnaryOperators
+        {
+            get
+            {
+                if (_unaryOperators == null)
+                {
+                    Interlocked.CompareExchange(ref _unaryOperators, new CompilationUnaryOperators(this), null);
+                }
+
+                return _unaryOperators;
+            }
+        }
         private OverloadResolution? _overloadResolution;
 
         /// <summary>

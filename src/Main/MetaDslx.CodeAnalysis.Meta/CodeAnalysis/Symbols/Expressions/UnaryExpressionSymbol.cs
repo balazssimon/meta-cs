@@ -4,11 +4,6 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public enum UnaryOperatorKind
-    {
-
-    }
-
     /// <summary>
     /// Represents an operation with one operand and a unary operator.
     /// </summary>

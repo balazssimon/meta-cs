@@ -1515,7 +1515,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 bool okToDowngradeToNeither;
                 BetterResult r;
 
-                r = BetterConversionFromExpression(arguments[i],
+                r = BetterConversionFromExpression(arguments[i].Value,
+                                                   arguments[i].RefKind, 
                                                    type1,
                                                    m1.Result.ConversionForArg(i),
                                                    parameter1.RefKind,
@@ -2063,23 +2064,25 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         // Determine whether t1 or t2 is a better conversion target from node.
-        private BetterResult BetterConversionFromExpression(ArgumentSymbol node, TypeSymbol t1, TypeSymbol t2, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private BetterResult BetterConversionFromExpression(ExpressionSymbol expression, RefKind refKind, TypeSymbol t1, TypeSymbol t2, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(node.Value is not LambdaExpressionSymbol lambda || !lambda.IsBound);
+            Debug.Assert(expression is not LambdaExpressionSymbol lambda || !lambda.IsBound);
             bool ignore;
             return BetterConversionFromExpression(
-                node,
+                expression,
+                refKind,
                 t1,
-                Conversions.ClassifyImplicitConversionFromExpression(node.Value, t1, ref useSiteDiagnostics),
+                Conversions.ClassifyImplicitConversionFromExpression(expression, t1, ref useSiteDiagnostics),
                 t2,
-                Conversions.ClassifyImplicitConversionFromExpression(node.Value, t2, ref useSiteDiagnostics),
+                Conversions.ClassifyImplicitConversionFromExpression(expression, t2, ref useSiteDiagnostics),
                 ref useSiteDiagnostics,
                 out ignore);
         }
 
         // Determine whether t1 or t2 is a better conversion target from node, possibly considering parameter ref kinds.
         private BetterResult BetterConversionFromExpression(
-            ArgumentSymbol node,
+            ExpressionSymbol expression, 
+            RefKind refKind,
             TypeSymbol t1,
             Conversion conv1,
             RefKind refKind1,
@@ -2130,11 +2133,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
             }
 
-            return BetterConversionFromExpression(node, t1, conv1, t2, conv2, ref useSiteDiagnostics, out okToDowngradeToNeither);
+            return BetterConversionFromExpression(expression, refKind, t1, conv1, t2, conv2, ref useSiteDiagnostics, out okToDowngradeToNeither);
         }
 
         // Determine whether t1 or t2 is a better conversion target from node.
-        private BetterResult BetterConversionFromExpression(ArgumentSymbol node, TypeSymbol t1, Conversion conv1, TypeSymbol t2, Conversion conv2, ref HashSet<DiagnosticInfo> useSiteDiagnostics, out bool okToDowngradeToNeither)
+        private BetterResult BetterConversionFromExpression(ExpressionSymbol expression, RefKind refKind, TypeSymbol t1, Conversion conv1, TypeSymbol t2, Conversion conv2, ref HashSet<DiagnosticInfo> useSiteDiagnostics, out bool okToDowngradeToNeither)
         {
             okToDowngradeToNeither = false;
 
@@ -2144,11 +2147,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return BetterResult.Neither;
             }
 
-            var lambdaOpt = node.Value as LambdaExpressionSymbol;
+            var lambdaOpt = expression as LambdaExpressionSymbol;
 
-            if (node.RefKind == RefKind.Out &&
-               (node.Value is ReferenceExpressionSymbol refExpr && refExpr.IsDeclaration ||
-                node.Value is DiscardExpressionSymbol discard && discard.Type is null))
+            if (refKind == RefKind.Out &&
+               (expression is ReferenceExpressionSymbol refExpr && refExpr.IsDeclaration ||
+                expression is DiscardExpressionSymbol discard && discard.Type is null))
             {
                 // Neither conversion from expression is better when the argument is an implicitly-typed out variable declaration.
                 okToDowngradeToNeither = false;
@@ -2158,8 +2161,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             // Given an implicit conversion C1 that converts from an expression E to a type T1, 
             // and an implicit conversion C2 that converts from an expression E to a type T2,
             // C1 is a better conversion than C2 if E does not exactly match T2 and one of the following holds:
-            bool t1MatchesExactly = ExpressionMatchExactly(node, t1, ref useSiteDiagnostics);
-            bool t2MatchesExactly = ExpressionMatchExactly(node, t2, ref useSiteDiagnostics);
+            bool t1MatchesExactly = ExpressionMatchExactly(expression, t1, ref useSiteDiagnostics);
+            bool t2MatchesExactly = ExpressionMatchExactly(expression, t2, ref useSiteDiagnostics);
 
             if (t1MatchesExactly)
             {
@@ -2184,20 +2187,20 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             // - T1 is a better conversion target than T2 and either C1 and C2 are both conditional expression
             //   conversions or neither is a conditional expression conversion.
-            return BetterConversionTarget(node.Value, t1, conv1, t2, conv2, ref useSiteDiagnostics, out okToDowngradeToNeither);
+            return BetterConversionTarget(expression, t1, conv1, t2, conv2, ref useSiteDiagnostics, out okToDowngradeToNeither);
         }
 
-        private bool ExpressionMatchExactly(ArgumentSymbol node, TypeSymbol t, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private bool ExpressionMatchExactly(ExpressionSymbol expression, TypeSymbol t, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             // Given an expression E and a type T, E exactly matches T if one of the following holds:
 
             // - E has a type S, and an identity conversion exists from S to T 
-            if (node.Value.Type is not null && Conversions.HasIdentityConversion(node.Value.Type, t))
+            if (expression.Type is not null && Conversions.HasIdentityConversion(expression.Type, t))
             {
                 return true;
             }
 
-            if (node.Value is TupleExpressionSymbol tuple)
+            if (expression is TupleExpressionSymbol tuple)
             {
                 // Recurse into tuple constituent arguments.
                 // Even if the tuple literal has a natural type and conversion 
@@ -2211,7 +2214,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             //   type Expression<D>, D has a return type Y, and one of the following holds:
             TypeSymbol y;
 
-            if (node.Value is LambdaExpressionSymbol lambda &&
+            if (expression is LambdaExpressionSymbol lambda &&
                 t is DelegateTypeSymbol d &&
                 !(y = d.ReturnType).IsSpecialSymbol(SpecialType.System_Void))
             {

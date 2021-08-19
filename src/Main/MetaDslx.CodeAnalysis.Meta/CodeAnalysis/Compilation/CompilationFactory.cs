@@ -84,6 +84,16 @@ namespace MetaDslx.CodeAnalysis
             return new NoConversions(compilation);
         }
 
+        public virtual UnaryOperators CreateStandardUnaryOperators(LanguageCompilation compilation)
+        {
+            return new StandardUnaryOperators(compilation);
+        }
+
+        public virtual UnaryOperators CreateUserDefinedUnaryOperators(LanguageCompilation compilation)
+        {
+            return new NoUnaryOperators(compilation);
+        }
+
         public virtual OverloadResolution CreateOverloadResolution(LanguageCompilation compilation)
         {
             return new OverloadResolution(compilation);

@@ -4,11 +4,6 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public enum BinaryOperatorKind
-    {
-
-    }
-
     /// <summary>
     /// Represents an operation with two operands and a binary operator that produces a result with a non-null type.
     /// </summary>
