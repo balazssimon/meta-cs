@@ -8,19 +8,32 @@ using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
 
+#nullable disable
+
 namespace MetaDslx.CodeAnalysis.Binding
 {
     public class StandardUnaryOperators : UnaryOperators
     {
-        private TypeSymbol[] _specialTypes;
-        private UnaryOperatorSignature[] _plus;
-        private UnaryOperatorSignature[] _minus;
-        private UnaryOperatorSignature[] _logicalNegation;
-        private UnaryOperatorSignature[] _bitwiseComplement;
-        private UnaryOperatorSignature[] _prefixIncrement;
-        private UnaryOperatorSignature[] _postfixIncrement;
-        private UnaryOperatorSignature[] _prefixDecrement;
-        private UnaryOperatorSignature[] _postfixDecrement;
+        private TypeSymbol ERR = null;
+        private TypeSymbol OBJ;
+        private TypeSymbol STR;
+        private TypeSymbol BOL;
+        private TypeSymbol CHR;
+        private TypeSymbol I08;
+        private TypeSymbol U08;
+        private TypeSymbol I16;
+        private TypeSymbol U16;
+        private TypeSymbol I32;
+        private TypeSymbol U32;
+        private TypeSymbol I64;
+        private TypeSymbol U64;
+        private TypeSymbol NIN;
+        private TypeSymbol NUI;
+        private TypeSymbol R32;
+        private TypeSymbol R64;
+        private TypeSymbol DEC;
+
+        private TypeSymbol[] _types;
         private UnaryOperatorSignature[][] _table;
         private UnaryOperatorSignature[][] _liftedTable;
 
@@ -31,177 +44,89 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual void ComputeTable()
         {
-            Interlocked.CompareExchange(ref _specialTypes, CreateSpecialTypes(), null);
-
-            Interlocked.CompareExchange(ref _plus, CreatePlusSignatures(UnaryOperatorKind.UnaryPlus), null);
-            Interlocked.CompareExchange(ref _minus, CreateMinusSignatures(UnaryOperatorKind.UnaryMinus), null);
-            Interlocked.CompareExchange(ref _logicalNegation, CreateLogicalNegationSignatures(UnaryOperatorKind.LogicalNegation), null);
-            Interlocked.CompareExchange(ref _bitwiseComplement, CreateBitwiseComplementSignatures(UnaryOperatorKind.BitwiseComplement), null);
-            Interlocked.CompareExchange(ref _prefixIncrement, CreateIncrementSignatures(UnaryOperatorKind.PrefixIncrement), null);
-            Interlocked.CompareExchange(ref _postfixIncrement, CreateIncrementSignatures(UnaryOperatorKind.PostfixIncrement), null);
-            Interlocked.CompareExchange(ref _prefixDecrement, CreateIncrementSignatures(UnaryOperatorKind.PrefixDecrement), null);
-            Interlocked.CompareExchange(ref _postfixDecrement, CreateIncrementSignatures(UnaryOperatorKind.PostfixDecrement), null);
-
             Interlocked.CompareExchange(ref _table, CreateTable(), null);
             Interlocked.CompareExchange(ref _liftedTable, CreateLiftedTable(), null);
         }
 
-        private TypeSymbol[] CreateSpecialTypes()
+        private void CreateSpecialTypes()
         {
-            return new TypeSymbol[]
-            {
-                Compilation.GetSpecialType(SpecialType.System_Object),
-                Compilation.GetSpecialType(SpecialType.System_String),
-                Compilation.GetSpecialType(SpecialType.System_Boolean),
-                Compilation.GetSpecialType(SpecialType.System_Char),
-                Compilation.GetSpecialType(SpecialType.System_SByte),
-                Compilation.GetSpecialType(SpecialType.System_Int16),
-                Compilation.GetSpecialType(SpecialType.System_Int32),
-                Compilation.GetSpecialType(SpecialType.System_Int64),
-                Compilation.GetSpecialType(SpecialType.System_Byte),
-                Compilation.GetSpecialType(SpecialType.System_UInt16),
-                Compilation.GetSpecialType(SpecialType.System_UInt32),
-                Compilation.GetSpecialType(SpecialType.System_UInt64),
-                Compilation.Options.Platform.Requires64Bit() ? Compilation.GetSpecialType(SpecialType.System_Int64) : Compilation.GetSpecialType(SpecialType.System_Int32),
-                Compilation.Options.Platform.Requires64Bit() ? Compilation.GetSpecialType(SpecialType.System_UInt64) : Compilation.GetSpecialType(SpecialType.System_UInt32),
-                Compilation.GetSpecialType(SpecialType.System_Single),
-                Compilation.GetSpecialType(SpecialType.System_Double),
-                Compilation.GetSpecialType(SpecialType.System_Decimal),
-            };
+            Interlocked.CompareExchange(ref OBJ, Compilation.GetSpecialType(SpecialType.System_Object), null);
+            Interlocked.CompareExchange(ref STR, Compilation.GetSpecialType(SpecialType.System_String), null);
+            Interlocked.CompareExchange(ref BOL, Compilation.GetSpecialType(SpecialType.System_Boolean), null);
+            Interlocked.CompareExchange(ref CHR, Compilation.GetSpecialType(SpecialType.System_Char), null);
+            Interlocked.CompareExchange(ref I08, Compilation.GetSpecialType(SpecialType.System_SByte), null);
+            Interlocked.CompareExchange(ref I16, Compilation.GetSpecialType(SpecialType.System_Int16), null);
+            Interlocked.CompareExchange(ref I32, Compilation.GetSpecialType(SpecialType.System_Int32), null);
+            Interlocked.CompareExchange(ref I64, Compilation.GetSpecialType(SpecialType.System_Int64), null);
+            Interlocked.CompareExchange(ref U08, Compilation.GetSpecialType(SpecialType.System_Byte), null);
+            Interlocked.CompareExchange(ref U16, Compilation.GetSpecialType(SpecialType.System_UInt16), null);
+            Interlocked.CompareExchange(ref U32, Compilation.GetSpecialType(SpecialType.System_UInt32), null);
+            Interlocked.CompareExchange(ref U64, Compilation.GetSpecialType(SpecialType.System_UInt64), null);
+            Interlocked.CompareExchange(ref NIN, Compilation.Options.Platform.Requires64Bit() ? Compilation.GetSpecialType(SpecialType.System_Int64) : Compilation.GetSpecialType(SpecialType.System_Int32), null);
+            Interlocked.CompareExchange(ref NUI, Compilation.Options.Platform.Requires64Bit() ? Compilation.GetSpecialType(SpecialType.System_UInt64) : Compilation.GetSpecialType(SpecialType.System_UInt32), null);
+            Interlocked.CompareExchange(ref R32, Compilation.GetSpecialType(SpecialType.System_Single), null);
+            Interlocked.CompareExchange(ref R64, Compilation.GetSpecialType(SpecialType.System_Double), null);
+            Interlocked.CompareExchange(ref DEC, Compilation.GetSpecialType(SpecialType.System_Decimal), null);
+
+            var types = new TypeSymbol[] { OBJ, STR, BOL, CHR, I08, I16, I32, I64, U08, U16, U32, U64, NIN, NUI, R32, R64, DEC };
+            Interlocked.CompareExchange(ref _types, types, null);
         }
 
-        private UnaryOperatorSignature[] CreateIncrementSignatures(UnaryOperatorKind kind)
+        private TypeSymbol[] GetIncrementTypes()
         {
-            return new UnaryOperatorSignature[]
-            {
-                UnaryOperatorSignature.Error, // obj
-                UnaryOperatorSignature.Error, // str
-                UnaryOperatorSignature.Error, // bool
-                new UnaryOperatorSignature(kind, _specialTypes[ 3], _specialTypes[ 3]), // chr
-                new UnaryOperatorSignature(kind, _specialTypes[ 4], _specialTypes[ 4]), // i08
-                new UnaryOperatorSignature(kind, _specialTypes[ 5], _specialTypes[ 5]), // i16
-                new UnaryOperatorSignature(kind, _specialTypes[ 6], _specialTypes[ 6]), // i32
-                new UnaryOperatorSignature(kind, _specialTypes[ 7], _specialTypes[ 7]), // i64
-                new UnaryOperatorSignature(kind, _specialTypes[ 8], _specialTypes[ 8]), // u08
-                new UnaryOperatorSignature(kind, _specialTypes[ 9], _specialTypes[ 9]), // u16
-                new UnaryOperatorSignature(kind, _specialTypes[10], _specialTypes[10]), // u32
-                new UnaryOperatorSignature(kind, _specialTypes[11], _specialTypes[11]), // u64
-                new UnaryOperatorSignature(kind, _specialTypes[12], _specialTypes[12]), // nint
-                new UnaryOperatorSignature(kind, _specialTypes[13], _specialTypes[13]), // nuint
-                new UnaryOperatorSignature(kind, _specialTypes[14], _specialTypes[14]), // r32
-                new UnaryOperatorSignature(kind, _specialTypes[15], _specialTypes[15]), // r64
-                new UnaryOperatorSignature(kind, _specialTypes[16], _specialTypes[16]), // dec
-            };
+                                    //obj   str  bool   chr   i08   i16   i32   i64   u08   u16   u32   u64  nint nuint   r32   r64   dec  
+            return new TypeSymbol[] { ERR,  ERR,  ERR,  CHR,  I08,  I16,  I32,  I64,  U08,  U16,  U32,  U64,  NIN,  NUI,  R32,  R64,  DEC };
         }
 
-        private UnaryOperatorSignature[] CreatePlusSignatures(UnaryOperatorKind kind)
+        private TypeSymbol[] GetPlusTypes()
         {
-            return new UnaryOperatorSignature[]
-            {
-                UnaryOperatorSignature.Error, // obj
-                UnaryOperatorSignature.Error, // str
-                UnaryOperatorSignature.Error, // bool
-                new UnaryOperatorSignature(kind, _specialTypes[ 3], _specialTypes[ 6]), // chr
-                new UnaryOperatorSignature(kind, _specialTypes[ 4], _specialTypes[ 6]), // i08
-                new UnaryOperatorSignature(kind, _specialTypes[ 5], _specialTypes[ 6]), // i16
-                new UnaryOperatorSignature(kind, _specialTypes[ 6], _specialTypes[ 6]), // i32
-                new UnaryOperatorSignature(kind, _specialTypes[ 7], _specialTypes[ 7]), // i64
-                new UnaryOperatorSignature(kind, _specialTypes[ 8], _specialTypes[ 6]), // u08
-                new UnaryOperatorSignature(kind, _specialTypes[ 9], _specialTypes[ 6]), // u16
-                new UnaryOperatorSignature(kind, _specialTypes[10], _specialTypes[10]), // u32
-                new UnaryOperatorSignature(kind, _specialTypes[11], _specialTypes[11]), // u64
-                new UnaryOperatorSignature(kind, _specialTypes[12], _specialTypes[12]), // nint
-                new UnaryOperatorSignature(kind, _specialTypes[13], _specialTypes[13]), // nuint
-                new UnaryOperatorSignature(kind, _specialTypes[14], _specialTypes[14]), // r32
-                new UnaryOperatorSignature(kind, _specialTypes[15], _specialTypes[15]), // r64
-                new UnaryOperatorSignature(kind, _specialTypes[16], _specialTypes[16]), // dec
-            };
+                                    //obj   str  bool   chr   i08   i16   i32   i64   u08   u16   u32   u64  nint nuint   r32   r64   dec  
+            return new TypeSymbol[] { ERR,  ERR,  ERR,  I32,  I32,  I32,  I32,  I64,  I32,  I32,  U32,  U64,  NIN,  NUI,  R32,  R64,  DEC };
         }
 
-        private UnaryOperatorSignature[] CreateMinusSignatures(UnaryOperatorKind kind)
+        private TypeSymbol[] GetMinusTypes()
         {
-            return new UnaryOperatorSignature[]
-            {
-                UnaryOperatorSignature.Error, // obj
-                UnaryOperatorSignature.Error, // str
-                UnaryOperatorSignature.Error, // bool
-                new UnaryOperatorSignature(kind, _specialTypes[ 3], _specialTypes[ 6]), // chr
-                new UnaryOperatorSignature(kind, _specialTypes[ 4], _specialTypes[ 6]), // i08
-                new UnaryOperatorSignature(kind, _specialTypes[ 5], _specialTypes[ 6]), // i16
-                new UnaryOperatorSignature(kind, _specialTypes[ 6], _specialTypes[ 6]), // i32
-                new UnaryOperatorSignature(kind, _specialTypes[ 7], _specialTypes[ 7]), // i64
-                new UnaryOperatorSignature(kind, _specialTypes[ 8], _specialTypes[ 6]), // u08
-                new UnaryOperatorSignature(kind, _specialTypes[ 9], _specialTypes[ 6]), // u16
-                new UnaryOperatorSignature(kind, _specialTypes[10], _specialTypes[11]), // u32
-                UnaryOperatorSignature.Error, // u64
-                new UnaryOperatorSignature(kind, _specialTypes[12], _specialTypes[12]), // nint
-                UnaryOperatorSignature.Error, // nuint
-                new UnaryOperatorSignature(kind, _specialTypes[14], _specialTypes[14]), // r32
-                new UnaryOperatorSignature(kind, _specialTypes[15], _specialTypes[15]), // r64
-                new UnaryOperatorSignature(kind, _specialTypes[16], _specialTypes[16]), // dec
-            };
+                                    //obj   str  bool   chr   i08   i16   i32   i64   u08   u16   u32   u64  nint nuint   r32   r64   dec  
+            return new TypeSymbol[] { ERR,  ERR,  ERR,  I32,  I32,  I32,  I32,  I64,  I32,  I32,  I64,  ERR,  NIN,  ERR,  R32,  R64,  DEC };
         }
 
-        private UnaryOperatorSignature[] CreateLogicalNegationSignatures(UnaryOperatorKind kind)
+        private TypeSymbol[] GetLogicalNegationTypes()
         {
-            return new UnaryOperatorSignature[]
-            {
-                UnaryOperatorSignature.Error, // obj
-                UnaryOperatorSignature.Error, // str
-                new UnaryOperatorSignature(kind, _specialTypes[ 2], _specialTypes[ 2]), // bool
-                UnaryOperatorSignature.Error, // chr
-                UnaryOperatorSignature.Error, // i08
-                UnaryOperatorSignature.Error, // i16
-                UnaryOperatorSignature.Error, // i32
-                UnaryOperatorSignature.Error, // i64
-                UnaryOperatorSignature.Error, // u08
-                UnaryOperatorSignature.Error, // u16
-                UnaryOperatorSignature.Error, // u32
-                UnaryOperatorSignature.Error, // u64
-                UnaryOperatorSignature.Error, // nint
-                UnaryOperatorSignature.Error, // nuint
-                UnaryOperatorSignature.Error, // r32
-                UnaryOperatorSignature.Error, // r64
-                UnaryOperatorSignature.Error, // dec
-            };
+                                    //obj   str  bool   chr   i08   i16   i32   i64   u08   u16   u32   u64  nint nuint   r32   r64   dec  
+            return new TypeSymbol[] { ERR,  ERR,  BOL,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR };
         }
 
-        private UnaryOperatorSignature[] CreateBitwiseComplementSignatures(UnaryOperatorKind kind)
+        private TypeSymbol[] GetBitwiseComplementTypes()
         {
-            return new UnaryOperatorSignature[]
+                                    //obj   str  bool   chr   i08   i16   i32   i64   u08   u16   u32   u64  nint nuint   r32   r64   dec  
+            return new TypeSymbol[] { ERR,  ERR,  ERR,  I32,  I32,  I32,  I32,  I64,  I32,  I32,  U32,  U64,  NIN,  NUI,  ERR,  ERR,  ERR };
+        }
+
+
+        private UnaryOperatorSignature[] CreateSignatures(UnaryOperatorKind kind, TypeSymbol[] returnTypes)
+        {
+            var result = new UnaryOperatorSignature[returnTypes.Length];
+            for (int i = 0; i < returnTypes.Length; i++)
             {
-                UnaryOperatorSignature.Error, // obj
-                UnaryOperatorSignature.Error, // str
-                UnaryOperatorSignature.Error, // bool
-                new UnaryOperatorSignature(kind, _specialTypes[ 3], _specialTypes[ 6]), // chr
-                new UnaryOperatorSignature(kind, _specialTypes[ 4], _specialTypes[ 6]), // i08
-                new UnaryOperatorSignature(kind, _specialTypes[ 5], _specialTypes[ 6]), // i16
-                new UnaryOperatorSignature(kind, _specialTypes[ 6], _specialTypes[ 6]), // i32
-                new UnaryOperatorSignature(kind, _specialTypes[ 7], _specialTypes[ 7]), // i64
-                new UnaryOperatorSignature(kind, _specialTypes[ 8], _specialTypes[ 6]), // u08
-                new UnaryOperatorSignature(kind, _specialTypes[ 9], _specialTypes[ 6]), // u16
-                new UnaryOperatorSignature(kind, _specialTypes[10], _specialTypes[10]), // u32
-                new UnaryOperatorSignature(kind, _specialTypes[11], _specialTypes[11]), // u64
-                new UnaryOperatorSignature(kind, _specialTypes[12], _specialTypes[12]), // nint
-                new UnaryOperatorSignature(kind, _specialTypes[13], _specialTypes[13]), // nuint
-                UnaryOperatorSignature.Error, // r32
-                UnaryOperatorSignature.Error, // r64
-                UnaryOperatorSignature.Error, // dec
-            };
+                var returnType = returnTypes[i];
+                result[i] = (returnType == ERR) ? UnaryOperatorSignature.Error : new UnaryOperatorSignature(kind, _types[i], returnType);
+            }
+            return result;
         }
 
         private UnaryOperatorSignature[][] CreateTable()
         {
+            CreateSpecialTypes();
             return new UnaryOperatorSignature[][]
             {
-                _plus,
-                _minus,
-                _logicalNegation,
-                _bitwiseComplement,
-                _prefixIncrement,
-                _postfixIncrement,
-                _prefixDecrement,
-                _postfixDecrement
+                CreateSignatures(UnaryOperatorKind.UnaryPlus, GetPlusTypes()),
+                CreateSignatures(UnaryOperatorKind.UnaryMinus, GetMinusTypes()),
+                CreateSignatures(UnaryOperatorKind.LogicalNegation, GetLogicalNegationTypes()),
+                CreateSignatures(UnaryOperatorKind.BitwiseComplement, GetBitwiseComplementTypes()),
+                CreateSignatures(UnaryOperatorKind.PrefixIncrement, GetIncrementTypes()),
+                CreateSignatures(UnaryOperatorKind.PostfixIncrement, GetIncrementTypes()),
+                CreateSignatures(UnaryOperatorKind.PrefixDecrement, GetIncrementTypes()),
+                CreateSignatures(UnaryOperatorKind.PostfixDecrement, GetIncrementTypes()),
             };
         }
 

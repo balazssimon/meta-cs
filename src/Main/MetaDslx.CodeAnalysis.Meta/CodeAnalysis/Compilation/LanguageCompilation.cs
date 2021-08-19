@@ -75,7 +75,7 @@ namespace MetaDslx.CodeAnalysis
         private CompilationConversions? _conversions;
 
         /// <summary>
-        /// A conversions object that ignores nullability.
+        /// A conversions object for type conversions.
         /// </summary>
         public Conversions Conversions
         {
@@ -93,7 +93,7 @@ namespace MetaDslx.CodeAnalysis
         private UnaryOperators? _unaryOperators;
 
         /// <summary>
-        /// A conversions object that ignores nullability.
+        /// Unary operators.
         /// </summary>
         public UnaryOperators UnaryOperators
         {
@@ -107,6 +107,26 @@ namespace MetaDslx.CodeAnalysis
                 return _unaryOperators;
             }
         }
+
+
+        private BinaryOperators? _binaryOperators;
+
+        /// <summary>
+        /// Binary operators.
+        /// </summary>
+        public BinaryOperators BinaryOperators
+        {
+            get
+            {
+                if (_binaryOperators == null)
+                {
+                    Interlocked.CompareExchange(ref _binaryOperators, new CompilationBinaryOperators(this), null);
+                }
+
+                return _binaryOperators;
+            }
+        }
+
         private OverloadResolution? _overloadResolution;
 
         /// <summary>
@@ -131,8 +151,6 @@ namespace MetaDslx.CodeAnalysis
         private readonly AnonymousTypeManager _anonymousTypeManager;
 
         private NamespaceSymbol? _lazyGlobalNamespace;
-
-        internal readonly BuiltInOperators builtInOperators;
 
         /// <summary>
         /// The <see cref="SourceAssemblySymbol"/> for this compilation. Do not access directly, use Assembly property
@@ -279,7 +297,6 @@ namespace MetaDslx.CodeAnalysis
 
             _options = options;
             _language = _options.Language;
-            this.builtInOperators = new BuiltInOperators(this);
             _scriptClass = new Lazy<ImplicitNamedTypeSymbol?>(BindScriptClass);
             _globalImports = new Lazy<Imports>(BindGlobalImports);
             _previousSubmissionImports = new Lazy<Imports>(ExpandPreviousSubmissionImports);

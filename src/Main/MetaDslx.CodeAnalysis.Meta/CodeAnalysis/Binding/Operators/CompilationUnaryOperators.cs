@@ -32,7 +32,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                // TODO:MetaDslx see UnaryOperatorOverloadResolution.cs in the Roslyn implementation to load user defined unary operators
                 if (_userDefinedUnaryOperators is null)
                 {
                     Interlocked.CompareExchange(ref _userDefinedUnaryOperators, Compilation.Language.CompilationFactory.CreateUserDefinedUnaryOperators(Compilation), null);

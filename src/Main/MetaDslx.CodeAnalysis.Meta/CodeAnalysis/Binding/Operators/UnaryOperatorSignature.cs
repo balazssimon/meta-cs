@@ -50,13 +50,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if ((object)Method != null)
                 {
                     Debug.Assert(Method.Parameters.Length == 1);
-
-                    if (Method.Parameters.Any(p => p.RefKind != RefKind.None))
+                    if (Method.Parameters.Length == 1)
                     {
-                        return Method.Parameters.Single(p => p.RefKind != RefKind.None).RefKind;
+                        return Method.Parameters[0].RefKind;
                     }
                 }
-
                 return RefKind.None;
             }
         }

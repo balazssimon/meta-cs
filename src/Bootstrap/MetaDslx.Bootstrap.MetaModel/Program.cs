@@ -146,6 +146,22 @@ namespace MetaDslx.Bootstrap.MetaModel
             Console.WriteLine("++metaInt32: " + compilation.UnaryOperators.ClassifyOperatorByType(UnaryOperatorKind.PrefixIncrement, metaInt32));
             Console.WriteLine("++metaMobj: " + compilation.UnaryOperators.ClassifyOperatorByType(UnaryOperatorKind.PrefixIncrement, metaMobj));
 
+            Console.WriteLine("----");
+
+            Console.WriteLine("corInt32+corInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, corInt32, corInt32));
+            Console.WriteLine("corInt64+corInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, corInt64, corInt32));
+            Console.WriteLine("compInt32+corInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, compInt32, corInt32));
+            Console.WriteLine("metaInt32+corInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, metaInt32, corInt32));
+            Console.WriteLine("metaMobj+corInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, metaMobj, corInt32));
+
+            Console.WriteLine("corInt32+corInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, corInt32, corInt32));
+            Console.WriteLine("corInt32+corInt64: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, corInt32, corInt64));
+            Console.WriteLine("corInt32+compInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, corInt32, compInt32));
+            Console.WriteLine("corInt32+metaInt32: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, corInt32, metaInt32));
+            Console.WriteLine("corInt32+metaMobj: " + compilation.BinaryOperators.ClassifyOperatorByType(BinaryOperatorKind.Addition, corInt32, metaMobj));
+
+            Console.WriteLine("----");
+
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.TypeReference.SimpleType.ClassType.Qualifier.Identifier[0];
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.Name.Identifier;

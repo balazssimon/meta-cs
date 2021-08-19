@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         Equal
     }
 
-    public partial class OverloadResolution
+    public sealed partial class OverloadResolution
     {
         private readonly LanguageCompilation _compilation;
 

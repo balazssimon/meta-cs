@@ -81,7 +81,7 @@ namespace MetaDslx.CodeAnalysis
 
         public virtual Conversions CreateUserDefinedConversions(LanguageCompilation compilation)
         {
-            return new NoConversions(compilation);
+            return new UserDefinedConversions(compilation);
         }
 
         public virtual UnaryOperators CreateStandardUnaryOperators(LanguageCompilation compilation)
@@ -91,7 +91,17 @@ namespace MetaDslx.CodeAnalysis
 
         public virtual UnaryOperators CreateUserDefinedUnaryOperators(LanguageCompilation compilation)
         {
-            return new NoUnaryOperators(compilation);
+            return new UserDefinedUnaryOperators(compilation);
+        }
+
+        public virtual BinaryOperators CreateStandardBinaryOperators(LanguageCompilation compilation)
+        {
+            return new StandardBinaryOperators(compilation);
+        }
+
+        public virtual BinaryOperators CreateUserDefinedBinaryOperators(LanguageCompilation compilation)
+        {
+            return new UserDefinedBinaryOperators(compilation);
         }
 
         public virtual OverloadResolution CreateOverloadResolution(LanguageCompilation compilation)
