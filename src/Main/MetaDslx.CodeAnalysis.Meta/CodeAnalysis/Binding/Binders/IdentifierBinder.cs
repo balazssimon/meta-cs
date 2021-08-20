@@ -72,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
-            return base.AdjustConstraints(constraints).WithName(this.Name, this.MetadataName);
+            return base.AdjustConstraints(constraints).WithName(this.Name);
         }
 
     }

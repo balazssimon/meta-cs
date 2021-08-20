@@ -20,6 +20,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 {
     public class LookupConstraints
     {
+        private readonly string[] _viableNames;
         public readonly Binder OriginalBinder;
         public readonly DeclaredSymbol? QualifierOpt;
         public readonly string? Name;
@@ -50,7 +51,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             OriginalBinder = originalBinder;
             QualifierOpt = qualifierOpt;
             Name = name;
-            MetadataName = metadataName ?? name;
+            MetadataName = metadataName;
             AutomaticNamePrefix = automaticNamePrefix;
             AutomaticNameSuffix = automaticNameSuffix;
             Validators = validators.IsDefault ? ImmutableArray<ILookupValidator>.Empty : validators;
@@ -59,6 +60,21 @@ namespace MetaDslx.CodeAnalysis.Binding
             Diagnose = diagnose;
             InUsing = inUsing;
             IsLookup = isLookup;
+            if (this.Name != null && this.IsAutomaticNameLookup)
+            {
+                if (this.AutomaticNamePrefix != null && this.AutomaticNameSuffix != null)
+                {
+                    _viableNames = new string[] { this.Name, this.AutomaticNamePrefix + this.Name, this.Name + this.AutomaticNameSuffix, this.AutomaticNamePrefix + this.Name + this.AutomaticNameSuffix };
+                }
+                else if (this.AutomaticNamePrefix != null)
+                {
+                    _viableNames = new string[] { this.Name, this.AutomaticNamePrefix + this.Name };
+                }
+                else if (this.AutomaticNameSuffix != null)
+                {
+                    _viableNames = new string[] { this.Name, this.Name + this.AutomaticNameSuffix };
+                }
+            }
         }
 
         protected virtual LookupConstraints Update(
@@ -98,7 +114,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public LookupConstraints WithName(string name, string metadataName = null)
         {
-            return Update(this.OriginalBinder, name, metadataName ?? name, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
+            return Update(this.OriginalBinder, name, metadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints WithAutomaticName(string namePrefix, string nameSuffix)
@@ -186,7 +202,14 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual bool IsViable(DeclaredSymbol symbol)
         {
             if (symbol == null) return false;
-            if (this.Name != null && symbol.Name != this.Name) return false;
+            if (this.IsAutomaticNameLookup)
+            {
+                if (!_viableNames.Contains(symbol.Name)) return false;
+            }
+            else
+            {
+                if (symbol.Name != this.Name) return false;
+            }
             if (this.MetadataName != null && symbol.MetadataName != this.MetadataName) return false;
             if (!this.Validators.IsDefaultOrEmpty)
             {

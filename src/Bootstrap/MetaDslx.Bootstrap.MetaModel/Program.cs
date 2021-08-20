@@ -52,10 +52,10 @@ namespace MetaDslx.Bootstrap.MetaModel
             //Console.WriteLine(declarations.Dump());
 
             var formatter = new DiagnosticFormatter();
-            //foreach (var diag in tree.GetDiagnostics())
-            //{
-            //    Console.WriteLine(formatter.Format(diag));
-            //}
+            foreach (var diag in tree.GetDiagnostics())
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
             //foreach (var diag in declarations.Diagnostics)
             //{
             //    Console.WriteLine(formatter.Format(diag));

@@ -135,16 +135,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 // Accumulate all the child namespaces and types.
                 foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
                 {
-                    foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembers(name))
+                    foreach (Symbol childSymbol in namespaceSymbol.ChildSymbols)
                     {
-                        if (childSymbol is NamespaceSymbol ns)
+                        if (childSymbol is not DeclaredSymbol declaredSymbol || childSymbol.Name != name) continue;
+                        if (declaredSymbol is NamespaceSymbol ns)
                         {
                             namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
                             namespaceSymbols.Add(ns);
                         }
                         else
                         {
-                            memberSymbols.Add(childSymbol);
+                            memberSymbols.Add(declaredSymbol);
                         }
                     }
                 }

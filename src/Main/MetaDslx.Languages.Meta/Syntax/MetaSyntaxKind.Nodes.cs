@@ -45,7 +45,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string EnumValue = nameof(EnumValue);
 		public const string EnumMemberDeclaration = nameof(EnumMemberDeclaration);
 		public const string ClassDeclaration = nameof(ClassDeclaration);
-		public const string SymbolTypeAttribute = nameof(SymbolTypeAttribute);
+		public const string SymbolAttribute = nameof(SymbolAttribute);
+		public const string SymbolSymbolAttribute = nameof(SymbolSymbolAttribute);
+		public const string ExpressionSymbolAttribute = nameof(ExpressionSymbolAttribute);
+		public const string StatementSymbolTypeAttribute = nameof(StatementSymbolTypeAttribute);
+		public const string TypeSymbolTypeAttribute = nameof(TypeSymbolTypeAttribute);
 		public const string ClassBody = nameof(ClassBody);
 		public const string ClassAncestors = nameof(ClassAncestors);
 		public const string ClassAncestor = nameof(ClassAncestor);

@@ -70,10 +70,19 @@ enumMemberDeclaration :                       operationDeclaration;
                   
                         
               
-classDeclaration : attribute* symbolTypeAttribute?                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
+classDeclaration : attribute* symbolAttribute?                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
                      
+symbolAttribute : symbolSymbolAttribute | expressionSymbolAttribute | statementSymbolTypeAttribute | typeSymbolTypeAttribute;
+
+             
+symbolSymbolAttribute : TOpenBracket KSymbol TColon qualifier TCloseBracket;
+                 
+expressionSymbolAttribute : TOpenBracket KExpression TColon qualifier TCloseBracket;
+                
+statementSymbolTypeAttribute : TOpenBracket KStatement TColon qualifier TCloseBracket;
            
-symbolTypeAttribute : TOpenBracket KSymbol TColon qualifier TCloseBracket;
+typeSymbolTypeAttribute : TOpenBracket KType TColon qualifier TCloseBracket;
+
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
@@ -88,7 +97,7 @@ classMemberDeclaration
               
 fieldDeclaration : attribute* fieldSymbolPropertyAttribute? fieldContainment? fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
                          
-fieldSymbolPropertyAttribute : TOpenBracket KSymbol TColon                 identifier TCloseBracket;
+fieldSymbolPropertyAttribute : TOpenBracket KProperty TColon                 identifier TCloseBracket;
                                         
 fieldContainment : KContainment;
                

@@ -58,7 +58,19 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
             else if (symbol is CSharpNamedTypeSymbol cnts)
             {
-                return _types.Any(t => t == typeof(Type) || t.IsAssignableFrom(cnts.GetType()));
+                var cntsFullName = cnts.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                var cntsBases = cnts.AllBaseTypesNoUseSiteDiagnostics;
+                foreach (var type in _types)
+                {
+                    var fullName = "global::"+type.FullName;
+                    if (cntsFullName == fullName) return true;
+                    foreach (var cntsBase in cntsBases)
+                    {
+                        var cntsBaseFullName = cntsBase.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        if (cntsBaseFullName == fullName) return true;
+                    }
+                }
+                return _types.Any(t => t == typeof(Type));
             }
             if (symbol is IModelSymbol ms)
             {

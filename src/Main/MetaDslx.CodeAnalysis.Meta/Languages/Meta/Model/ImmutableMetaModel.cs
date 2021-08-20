@@ -2077,6 +2077,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Parameters,
 					defaultValue: null);
 			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReturnType")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ReturnTypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "ReturnType",
 			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
@@ -9377,7 +9378,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaOperation_ReturnType.SetTypeLazy(() => MetaType);
 			MetaOperation_ReturnType.Documentation = null;
 			MetaOperation_ReturnType.Name = "ReturnType";
-			MetaOperation_ReturnType.SymbolProperty = null;
+			MetaOperation_ReturnType.SymbolProperty = "ReturnType";
 			MetaOperation_ReturnType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			MetaOperation_ReturnType.SetClassLazy(() => MetaOperation);
 			MetaOperation_ReturnType.DefaultValue = null;

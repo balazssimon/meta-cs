@@ -595,13 +595,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (format == SymbolDisplayFormat.QualifiedNameOnlyFormat)
             {
                 var container = this.ContainingDeclaration;
-                if (container is not null) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
+                if (container is not null && container.ContainingSymbol is not ModuleSymbol) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
                 else return this.MetadataName;
             }
             if (format == SymbolDisplayFormat.FullyQualifiedFormat)
             {
                 var container = this.ContainingDeclaration;
-                if (container is not null) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
+                if (container is not null && container.ContainingSymbol is not ModuleSymbol) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
                 else return "global::" + this.MetadataName;
             }
             return this.MetadataName + " (" + GetKindText() + ")";

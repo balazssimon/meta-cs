@@ -70,10 +70,19 @@ enumMemberDeclaration : $Property(Operations) operationDeclaration;
 $Define(MetaClass)
 $Property(Documentation)
 $Documentation
-classDeclaration : attribute* symbolTypeAttribute? $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
+classDeclaration : attribute* symbolAttribute? $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
 $Property(SymbolType)
-$SymbolType
-symbolTypeAttribute : TOpenBracket KSymbol TColon qualifier TCloseBracket;
+symbolAttribute : symbolSymbolAttribute | expressionSymbolAttribute | statementSymbolTypeAttribute | typeSymbolTypeAttribute;
+
+$SymbolSymbol
+symbolSymbolAttribute : TOpenBracket KSymbol TColon qualifier TCloseBracket;
+$ExpressionSymbol
+expressionSymbolAttribute : TOpenBracket KExpression TColon qualifier TCloseBracket;
+$StatementSymbol
+statementSymbolTypeAttribute : TOpenBracket KStatement TColon qualifier TCloseBracket;
+$TypeSymbol
+typeSymbolTypeAttribute : TOpenBracket KType TColon qualifier TCloseBracket;
+
 $Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
@@ -88,7 +97,7 @@ $Property(Documentation)
 $Documentation
 fieldDeclaration : attribute* fieldSymbolPropertyAttribute? fieldContainment? fieldModifier? $Property(Type) typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
 $Property(SymbolProperty)
-fieldSymbolPropertyAttribute : TOpenBracket KSymbol TColon $SymbolProperty identifier TCloseBracket;
+fieldSymbolPropertyAttribute : TOpenBracket KProperty TColon $SymbolProperty identifier TCloseBracket;
 $Property(name=IsContainment,value=true)
 fieldContainment : KContainment;
 $Property(Kind)

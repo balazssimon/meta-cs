@@ -79,7 +79,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var result = LookupResult.GetInstance();
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             var binder = identifierSyntax.IsNull ? this : this.GetBinder(identifierSyntax);
-            var constraints = new LookupConstraints(binder, name, metadataName, qualifierOpt: qualifierOpt, isLookup: true, basesBeingResolved: recursionConstraints?.BasesBeingResolved, diagnose: recursionConstraints?.Diagnose ?? true, inUsing: recursionConstraints?.InUsing ?? false, validators: validators);
+            var constraints = new LookupConstraints(binder, name, qualifierOpt: qualifierOpt, isLookup: true, basesBeingResolved: recursionConstraints?.BasesBeingResolved, diagnose: recursionConstraints?.Diagnose ?? true, inUsing: recursionConstraints?.InUsing ?? false, validators: validators);
             constraints = binder.AdjustConstraints(constraints);
             LookupSymbols(result, constraints, ref useSiteDiagnostics);
             diagnostics.Add(identifierSyntax.GetLocation(), useSiteDiagnostics);

@@ -26,7 +26,7 @@
 	abstract class MetaElement
 	{
 		// List of attributes
-		[symbol: Attributes]
+		[property: Attributes]
 		list<MetaAttribute> Attributes; 
 	}
 
@@ -37,7 +37,7 @@
 
 	abstract class MetaNamedElement : MetaDocumentedElement
 	{
-		[symbol: Name]
+		[property: Name]
 		string Name;
 	}
 
@@ -46,13 +46,13 @@
 		MetaType Type;
 	}
 
-	[symbol: TypeSymbol]
+	[type: TypeSymbol]
 	abstract class MetaType
 	{
 		bool ConformsTo(MetaType type);
 	}
 
-	[symbol: NamedTypeSymbol]
+	[type: Named]
 	class MetaNamedType : MetaType, MetaDeclaration
 	{
 	}
@@ -68,18 +68,18 @@
 		derived string FullName;
 	}
 	
-	[symbol: NamespaceSymbol]
+	[symbol: Namespace]
 	class MetaNamespace : MetaDeclaration
 	{
-		[symbol: Members]
+		[property: Members]
 		containment MetaModel DefinedMetaModel;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaDeclaration> Declarations;
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
 
-	[symbol: NamedTypeSymbol]
+	[type: Named]
 	class MetaModel : MetaNamedElement
 	{
 		string Uri;
@@ -97,19 +97,19 @@
 		MultiSet
 	}
 
-	[symbol: ArrayTypeSymbol]
+	[type: Array]
 	class MetaCollectionType : MetaType
 	{
 		MetaCollectionKind Kind;
-		[symbol: ElementType]
+		[property: ElementType]
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
 
-	[symbol: NullableTypeSymbol]
+	[type: Nullable]
 	class MetaNullableType : MetaType
 	{
-		[symbol: InnerType]
+		[property: InnerType]
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
@@ -120,16 +120,16 @@
 		bool ConformsTo(MetaType type);
 	}
 
-	[symbol: EnumTypeSymbol]
+	[type: Enum]
 	class MetaEnum : MetaNamedType
 	{
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaEnumLiteral> EnumLiterals;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaOperation> Operations;
 	}
 
-	[symbol: EnumLiteralSymbol]
+	[symbol: EnumLiteral]
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
 	{
 		MetaEnum Enum redefines MetaTypedElement.Type;
@@ -144,17 +144,17 @@
 		bool ConformsTo(MetaType type);
 	}
 
-	[symbol: ClassTypeSymbol]
+	[type: Class]
 	class MetaClass : MetaNamedType
 	{
-		[symbol: Attributes]
+		[property: Attributes]
 		SystemType SymbolType;
 		bool IsAbstract;
-		[symbol: BaseTypes]
+		[property: BaseTypes]
 		list<MetaClass> SuperClasses;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaProperty> Properties;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaOperation> Operations;
 		bool ConformsTo(MetaType type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
@@ -166,16 +166,16 @@
 		list<MetaOperation> GetAllFinalOperations();
 	}
 	
-	[symbol: MethodSymbol]
+	[symbol: Method]
 	class MetaOperation : MetaNamedElement
 	{
 		MetaClass Class;
 		MetaEnum Enum;
 		bool IsBuilder;
 		bool IsReadonly;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaParameter> Parameters;
-		[symbol: ReturnTypeSymbol]
+		[property: ReturnType]
 		MetaType ReturnType;
 		bool ConformsTo(MetaOperation operation);
 	}
@@ -183,7 +183,7 @@
 	association MetaOperation.Class with MetaClass.Operations;
 	association MetaOperation.Enum with MetaEnum.Operations;
 
-	[symbol: ParameterSymbol]
+	[symbol: Parameter]
 	class MetaParameter : MetaNamedElement, MetaTypedElement
 	{
 		MetaOperation Operation;
@@ -200,7 +200,7 @@
 		DerivedUnion
 	}
 
-	[symbol: PropertySymbol]
+	[symbol: Property]
 	class MetaProperty : MetaNamedElement, MetaTypedElement
 	{
 		string SymbolProperty;

@@ -73,9 +73,13 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseConstDeclaration = new object();
 		public static object UseEnumBody = new object();
 		public static object UseEnumValue = new object();
-		public static object UseSymbolTypeAttribute = new object();
+		public static object UseSymbolAttribute = new object();
 		public static object Use = new object();
 		public static object UseClassBody = new object();
+		public static object UseSymbolSymbolAttribute = new object();
+		public static object UseExpressionSymbolAttribute = new object();
+		public static object UseStatementSymbolTypeAttribute = new object();
+		public static object UseTypeSymbolTypeAttribute = new object();
 		public static object UseFieldSymbolPropertyAttribute = new object();
 		public static object UseFieldContainment = new object();
 		public static object UseFieldModifier = new object();
@@ -110,14 +114,44 @@ namespace MetaDslx.Languages.Meta.Binding
 
         }
 
-        protected virtual Binder CreateSymbolTypeBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateSymbolSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
-            return this.CreateSymbolTypeBinderCore(parentBinder, syntax);
+            return this.CreateSymbolSymbolBinderCore(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateSymbolTypeBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateSymbolSymbolBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
-            return new SymbolTypeBinder(parentBinder, syntax);
+            return new SymbolSymbolBinder(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateExpressionSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        {
+            return this.CreateExpressionSymbolBinderCore(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateExpressionSymbolBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
+        {
+            return new ExpressionSymbolBinder(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateStatementSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        {
+            return this.CreateStatementSymbolBinderCore(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateStatementSymbolBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
+        {
+            return new StatementSymbolBinder(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateTypeSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        {
+            return this.CreateTypeSymbolBinderCore(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateTypeSymbolBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
+        {
+            return new TypeSymbolBinder(parentBinder, syntax);
         }
 
         protected virtual Binder CreateSymbolPropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
@@ -521,7 +555,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax parent)
+		public Binder VisitSymbolAttribute(SymbolAttributeSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -533,7 +567,74 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "SymbolType");
-				resultBinder = this.CreateSymbolTypeBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreateSymbolSymbolBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreateExpressionSymbolBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreateStatementSymbolBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreateTypeSymbolBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

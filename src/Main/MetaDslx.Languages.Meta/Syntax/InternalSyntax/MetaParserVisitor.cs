@@ -157,11 +157,35 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitClassDeclaration([NotNull] MetaParser.ClassDeclarationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaParser.symbolTypeAttribute"/>.
+	/// Visit a parse tree produced by <see cref="MetaParser.symbolAttribute"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitSymbolTypeAttribute([NotNull] MetaParser.SymbolTypeAttributeContext context);
+	Result VisitSymbolAttribute([NotNull] MetaParser.SymbolAttributeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.symbolSymbolAttribute"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSymbolSymbolAttribute([NotNull] MetaParser.SymbolSymbolAttributeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.expressionSymbolAttribute"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionSymbolAttribute([NotNull] MetaParser.ExpressionSymbolAttributeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.statementSymbolTypeAttribute"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStatementSymbolTypeAttribute([NotNull] MetaParser.StatementSymbolTypeAttributeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.typeSymbolTypeAttribute"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeSymbolTypeAttribute([NotNull] MetaParser.TypeSymbolTypeAttributeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.classBody"/>.
 	/// </summary>

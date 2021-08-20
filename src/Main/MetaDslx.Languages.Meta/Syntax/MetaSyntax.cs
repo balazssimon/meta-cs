@@ -2174,7 +2174,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	public sealed class ClassDeclarationSyntax : MetaSyntaxNode
 	{
 	    private SyntaxNode attribute;
-	    private SymbolTypeAttributeSyntax symbolTypeAttribute;
+	    private SymbolAttributeSyntax symbolAttribute;
 	    private NameSyntax name;
 	    private ClassAncestorsSyntax classAncestors;
 	    private ClassBodySyntax classBody;
@@ -2198,9 +2198,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return default;
 			} 
 		}
-	    public SymbolTypeAttributeSyntax SymbolTypeAttribute 
+	    public SymbolAttributeSyntax SymbolAttribute 
 		{ 
-			get { return this.GetRed(ref this.symbolTypeAttribute, 1); } 
+			get { return this.GetRed(ref this.symbolAttribute, 1); } 
 		}
 	    public SyntaxToken KAbstract 
 		{ 
@@ -2247,7 +2247,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        switch (index)
 	        {
 				case 0: return this.GetRed(ref this.attribute, 0);
-				case 1: return this.GetRed(ref this.symbolTypeAttribute, 1);
+				case 1: return this.GetRed(ref this.symbolAttribute, 1);
 				case 4: return this.GetRed(ref this.name, 4);
 				case 6: return this.GetRed(ref this.classAncestors, 6);
 				case 7: return this.GetRed(ref this.classBody, 7);
@@ -2260,7 +2260,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        switch (index)
 	        {
 				case 0: return this.attribute;
-				case 1: return this.symbolTypeAttribute;
+				case 1: return this.symbolAttribute;
 				case 4: return this.name;
 				case 6: return this.classAncestors;
 				case 7: return this.classBody;
@@ -2270,7 +2270,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	    public ClassDeclarationSyntax WithAttribute(Microsoft.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Attribute, this.SymbolTypeAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(Attribute, this.SymbolAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
@@ -2278,45 +2278,45 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
-	    public ClassDeclarationSyntax WithSymbolTypeAttribute(SymbolTypeAttributeSyntax symbolTypeAttribute)
+	    public ClassDeclarationSyntax WithSymbolAttribute(SymbolAttributeSyntax symbolAttribute)
 		{
-			return this.Update(this.Attribute, SymbolTypeAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, SymbolAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithKAbstract(SyntaxToken kAbstract)
 		{
-			return this.Update(this.Attribute, this.SymbolTypeAttribute, KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.SymbolAttribute, KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithKClass(SyntaxToken kClass)
 		{
-			return this.Update(this.Attribute, this.SymbolTypeAttribute, this.KAbstract, KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.SymbolAttribute, this.KAbstract, KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Attribute, this.SymbolTypeAttribute, this.KAbstract, this.KClass, Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.SymbolAttribute, this.KAbstract, this.KClass, Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithTColon(SyntaxToken tColon)
 		{
-			return this.Update(this.Attribute, this.SymbolTypeAttribute, this.KAbstract, this.KClass, this.Name, TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.SymbolAttribute, this.KAbstract, this.KClass, this.Name, TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithClassAncestors(ClassAncestorsSyntax classAncestors)
 		{
-			return this.Update(this.Attribute, this.SymbolTypeAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.SymbolAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithClassBody(ClassBodySyntax classBody)
 		{
-			return this.Update(this.Attribute, this.SymbolTypeAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, ClassBody);
+			return this.Update(this.Attribute, this.SymbolAttribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, ClassBody);
 		}
 	
-	    public ClassDeclarationSyntax Update(Microsoft.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SymbolTypeAttributeSyntax symbolTypeAttribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+	    public ClassDeclarationSyntax Update(Microsoft.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SymbolAttributeSyntax symbolAttribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 	    {
 	        if (this.Attribute != attribute ||
-				this.SymbolTypeAttribute != symbolTypeAttribute ||
+				this.SymbolAttribute != symbolAttribute ||
 				this.KAbstract != kAbstract ||
 				this.KClass != kClass ||
 				this.Name != name ||
@@ -2324,7 +2324,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				this.ClassAncestors != classAncestors ||
 				this.ClassBody != classBody)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ClassDeclaration(attribute, symbolTypeAttribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.ClassDeclaration(attribute, symbolAttribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -2349,16 +2349,162 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    }
 	}
 	
-	public sealed class SymbolTypeAttributeSyntax : MetaSyntaxNode
+	public sealed class SymbolAttributeSyntax : MetaSyntaxNode
 	{
-	    private QualifierSyntax qualifier;
+	    private SymbolSymbolAttributeSyntax symbolSymbolAttribute;
+	    private ExpressionSymbolAttributeSyntax expressionSymbolAttribute;
+	    private StatementSymbolTypeAttributeSyntax statementSymbolTypeAttribute;
+	    private TypeSymbolTypeAttributeSyntax typeSymbolTypeAttribute;
 	
-	    public SymbolTypeAttributeSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	    public SymbolAttributeSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public SymbolTypeAttributeSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	    public SymbolAttributeSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SymbolSymbolAttributeSyntax SymbolSymbolAttribute 
+		{ 
+			get { return this.GetRed(ref this.symbolSymbolAttribute, 0); } 
+		}
+	    public ExpressionSymbolAttributeSyntax ExpressionSymbolAttribute 
+		{ 
+			get { return this.GetRed(ref this.expressionSymbolAttribute, 1); } 
+		}
+	    public StatementSymbolTypeAttributeSyntax StatementSymbolTypeAttribute 
+		{ 
+			get { return this.GetRed(ref this.statementSymbolTypeAttribute, 2); } 
+		}
+	    public TypeSymbolTypeAttributeSyntax TypeSymbolTypeAttribute 
+		{ 
+			get { return this.GetRed(ref this.typeSymbolTypeAttribute, 3); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.symbolSymbolAttribute, 0);
+				case 1: return this.GetRed(ref this.expressionSymbolAttribute, 1);
+				case 2: return this.GetRed(ref this.statementSymbolTypeAttribute, 2);
+				case 3: return this.GetRed(ref this.typeSymbolTypeAttribute, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.symbolSymbolAttribute;
+				case 1: return this.expressionSymbolAttribute;
+				case 2: return this.statementSymbolTypeAttribute;
+				case 3: return this.typeSymbolTypeAttribute;
+				default: return null;
+	        }
+	    }
+	
+	    public SymbolAttributeSyntax WithSymbolSymbolAttribute(SymbolSymbolAttributeSyntax symbolSymbolAttribute)
+		{
+			return this.Update(symbolSymbolAttribute);
+		}
+	
+	    public SymbolAttributeSyntax WithExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax expressionSymbolAttribute)
+		{
+			return this.Update(expressionSymbolAttribute);
+		}
+	
+	    public SymbolAttributeSyntax WithStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax statementSymbolTypeAttribute)
+		{
+			return this.Update(statementSymbolTypeAttribute);
+		}
+	
+	    public SymbolAttributeSyntax WithTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax typeSymbolTypeAttribute)
+		{
+			return this.Update(typeSymbolTypeAttribute);
+		}
+	
+	    public SymbolAttributeSyntax Update(SymbolSymbolAttributeSyntax symbolSymbolAttribute)
+	    {
+	        if (this.SymbolSymbolAttribute != symbolSymbolAttribute)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.SymbolAttribute(symbolSymbolAttribute);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (SymbolAttributeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public SymbolAttributeSyntax Update(ExpressionSymbolAttributeSyntax expressionSymbolAttribute)
+	    {
+	        if (this.ExpressionSymbolAttribute != expressionSymbolAttribute)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.SymbolAttribute(expressionSymbolAttribute);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (SymbolAttributeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public SymbolAttributeSyntax Update(StatementSymbolTypeAttributeSyntax statementSymbolTypeAttribute)
+	    {
+	        if (this.StatementSymbolTypeAttribute != statementSymbolTypeAttribute)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.SymbolAttribute(statementSymbolTypeAttribute);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (SymbolAttributeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public SymbolAttributeSyntax Update(TypeSymbolTypeAttributeSyntax typeSymbolTypeAttribute)
+	    {
+	        if (this.TypeSymbolTypeAttribute != typeSymbolTypeAttribute)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.SymbolAttribute(typeSymbolTypeAttribute);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (SymbolAttributeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitSymbolAttribute(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitSymbolAttribute(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitSymbolAttribute(this);
+	    }
+	}
+	
+	public sealed class SymbolSymbolAttributeSyntax : MetaSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	
+	    public SymbolSymbolAttributeSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public SymbolSymbolAttributeSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
@@ -2367,7 +2513,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolTypeAttributeGreen)this.Green;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolSymbolAttributeGreen)this.Green;
 				var greenToken = green.TOpenBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2376,7 +2522,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolTypeAttributeGreen)this.Green;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolSymbolAttributeGreen)this.Green;
 				var greenToken = green.KSymbol;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -2385,7 +2531,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolTypeAttributeGreen)this.Green;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolSymbolAttributeGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -2398,7 +2544,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolTypeAttributeGreen)this.Green;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.SymbolSymbolAttributeGreen)this.Green;
 				var greenToken = green.TCloseBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -2422,32 +2568,32 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public SymbolTypeAttributeSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
+	    public SymbolSymbolAttributeSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
 		{
 			return this.Update(TOpenBracket, this.KSymbol, this.TColon, this.Qualifier, this.TCloseBracket);
 		}
 	
-	    public SymbolTypeAttributeSyntax WithKSymbol(SyntaxToken kSymbol)
+	    public SymbolSymbolAttributeSyntax WithKSymbol(SyntaxToken kSymbol)
 		{
 			return this.Update(this.TOpenBracket, KSymbol, this.TColon, this.Qualifier, this.TCloseBracket);
 		}
 	
-	    public SymbolTypeAttributeSyntax WithTColon(SyntaxToken tColon)
+	    public SymbolSymbolAttributeSyntax WithTColon(SyntaxToken tColon)
 		{
 			return this.Update(this.TOpenBracket, this.KSymbol, TColon, this.Qualifier, this.TCloseBracket);
 		}
 	
-	    public SymbolTypeAttributeSyntax WithQualifier(QualifierSyntax qualifier)
+	    public SymbolSymbolAttributeSyntax WithQualifier(QualifierSyntax qualifier)
 		{
 			return this.Update(this.TOpenBracket, this.KSymbol, this.TColon, Qualifier, this.TCloseBracket);
 		}
 	
-	    public SymbolTypeAttributeSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
+	    public SymbolSymbolAttributeSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
 		{
 			return this.Update(this.TOpenBracket, this.KSymbol, this.TColon, this.Qualifier, TCloseBracket);
 		}
 	
-	    public SymbolTypeAttributeSyntax Update(SyntaxToken tOpenBracket, SyntaxToken kSymbol, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+	    public SymbolSymbolAttributeSyntax Update(SyntaxToken tOpenBracket, SyntaxToken kSymbol, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
 	    {
 	        if (this.TOpenBracket != tOpenBracket ||
 				this.KSymbol != kSymbol ||
@@ -2455,28 +2601,421 @@ namespace MetaDslx.Languages.Meta.Syntax
 				this.Qualifier != qualifier ||
 				this.TCloseBracket != tCloseBracket)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.SymbolTypeAttribute(tOpenBracket, kSymbol, tColon, qualifier, tCloseBracket);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.SymbolSymbolAttribute(tOpenBracket, kSymbol, tColon, qualifier, tCloseBracket);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (SymbolTypeAttributeSyntax)newNode;
+				return (SymbolSymbolAttributeSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitSymbolTypeAttribute(this, argument);
+	        return visitor.VisitSymbolSymbolAttribute(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitSymbolTypeAttribute(this);
+	        return visitor.VisitSymbolSymbolAttribute(this);
 	    }
 	
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
-	        visitor.VisitSymbolTypeAttribute(this);
+	        visitor.VisitSymbolSymbolAttribute(this);
+	    }
+	}
+	
+	public sealed class ExpressionSymbolAttributeSyntax : MetaSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	
+	    public ExpressionSymbolAttributeSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ExpressionSymbolAttributeSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExpressionSymbolAttributeGreen)this.Green;
+				var greenToken = green.TOpenBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public SyntaxToken KExpression 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExpressionSymbolAttributeGreen)this.Green;
+				var greenToken = green.KExpression;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public SyntaxToken TColon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExpressionSymbolAttributeGreen)this.Green;
+				var greenToken = green.TColon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 3); } 
+		}
+	    public SyntaxToken TCloseBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExpressionSymbolAttributeGreen)this.Green;
+				var greenToken = green.TCloseBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 3: return this.GetRed(ref this.qualifier, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 3: return this.qualifier;
+				default: return null;
+	        }
+	    }
+	
+	    public ExpressionSymbolAttributeSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
+		{
+			return this.Update(TOpenBracket, this.KExpression, this.TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public ExpressionSymbolAttributeSyntax WithKExpression(SyntaxToken kExpression)
+		{
+			return this.Update(this.TOpenBracket, KExpression, this.TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public ExpressionSymbolAttributeSyntax WithTColon(SyntaxToken tColon)
+		{
+			return this.Update(this.TOpenBracket, this.KExpression, TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public ExpressionSymbolAttributeSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.TOpenBracket, this.KExpression, this.TColon, Qualifier, this.TCloseBracket);
+		}
+	
+	    public ExpressionSymbolAttributeSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
+		{
+			return this.Update(this.TOpenBracket, this.KExpression, this.TColon, this.Qualifier, TCloseBracket);
+		}
+	
+	    public ExpressionSymbolAttributeSyntax Update(SyntaxToken tOpenBracket, SyntaxToken kExpression, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+	    {
+	        if (this.TOpenBracket != tOpenBracket ||
+				this.KExpression != kExpression ||
+				this.TColon != tColon ||
+				this.Qualifier != qualifier ||
+				this.TCloseBracket != tCloseBracket)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.ExpressionSymbolAttribute(tOpenBracket, kExpression, tColon, qualifier, tCloseBracket);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExpressionSymbolAttributeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitExpressionSymbolAttribute(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitExpressionSymbolAttribute(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitExpressionSymbolAttribute(this);
+	    }
+	}
+	
+	public sealed class StatementSymbolTypeAttributeSyntax : MetaSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	
+	    public StatementSymbolTypeAttributeSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public StatementSymbolTypeAttributeSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.StatementSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.TOpenBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public SyntaxToken KStatement 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.StatementSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.KStatement;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public SyntaxToken TColon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.StatementSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.TColon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 3); } 
+		}
+	    public SyntaxToken TCloseBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.StatementSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.TCloseBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 3: return this.GetRed(ref this.qualifier, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 3: return this.qualifier;
+				default: return null;
+	        }
+	    }
+	
+	    public StatementSymbolTypeAttributeSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
+		{
+			return this.Update(TOpenBracket, this.KStatement, this.TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public StatementSymbolTypeAttributeSyntax WithKStatement(SyntaxToken kStatement)
+		{
+			return this.Update(this.TOpenBracket, KStatement, this.TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public StatementSymbolTypeAttributeSyntax WithTColon(SyntaxToken tColon)
+		{
+			return this.Update(this.TOpenBracket, this.KStatement, TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public StatementSymbolTypeAttributeSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.TOpenBracket, this.KStatement, this.TColon, Qualifier, this.TCloseBracket);
+		}
+	
+	    public StatementSymbolTypeAttributeSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
+		{
+			return this.Update(this.TOpenBracket, this.KStatement, this.TColon, this.Qualifier, TCloseBracket);
+		}
+	
+	    public StatementSymbolTypeAttributeSyntax Update(SyntaxToken tOpenBracket, SyntaxToken kStatement, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+	    {
+	        if (this.TOpenBracket != tOpenBracket ||
+				this.KStatement != kStatement ||
+				this.TColon != tColon ||
+				this.Qualifier != qualifier ||
+				this.TCloseBracket != tCloseBracket)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.StatementSymbolTypeAttribute(tOpenBracket, kStatement, tColon, qualifier, tCloseBracket);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (StatementSymbolTypeAttributeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitStatementSymbolTypeAttribute(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitStatementSymbolTypeAttribute(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitStatementSymbolTypeAttribute(this);
+	    }
+	}
+	
+	public sealed class TypeSymbolTypeAttributeSyntax : MetaSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	
+	    public TypeSymbolTypeAttributeSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public TypeSymbolTypeAttributeSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.TypeSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.TOpenBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public SyntaxToken KType 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.TypeSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.KType;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public SyntaxToken TColon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.TypeSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.TColon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 3); } 
+		}
+	    public SyntaxToken TCloseBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.TypeSymbolTypeAttributeGreen)this.Green;
+				var greenToken = green.TCloseBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 3: return this.GetRed(ref this.qualifier, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 3: return this.qualifier;
+				default: return null;
+	        }
+	    }
+	
+	    public TypeSymbolTypeAttributeSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
+		{
+			return this.Update(TOpenBracket, this.KType, this.TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public TypeSymbolTypeAttributeSyntax WithKType(SyntaxToken kType)
+		{
+			return this.Update(this.TOpenBracket, KType, this.TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public TypeSymbolTypeAttributeSyntax WithTColon(SyntaxToken tColon)
+		{
+			return this.Update(this.TOpenBracket, this.KType, TColon, this.Qualifier, this.TCloseBracket);
+		}
+	
+	    public TypeSymbolTypeAttributeSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.TOpenBracket, this.KType, this.TColon, Qualifier, this.TCloseBracket);
+		}
+	
+	    public TypeSymbolTypeAttributeSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
+		{
+			return this.Update(this.TOpenBracket, this.KType, this.TColon, this.Qualifier, TCloseBracket);
+		}
+	
+	    public TypeSymbolTypeAttributeSyntax Update(SyntaxToken tOpenBracket, SyntaxToken kType, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+	    {
+	        if (this.TOpenBracket != tOpenBracket ||
+				this.KType != kType ||
+				this.TColon != tColon ||
+				this.Qualifier != qualifier ||
+				this.TCloseBracket != tCloseBracket)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.TypeSymbolTypeAttribute(tOpenBracket, kType, tColon, qualifier, tCloseBracket);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (TypeSymbolTypeAttributeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitTypeSymbolTypeAttribute(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitTypeSymbolTypeAttribute(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitTypeSymbolTypeAttribute(this);
 	    }
 	}
 	
@@ -3062,12 +3601,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
-	    public SyntaxToken KSymbol 
+	    public SyntaxToken KProperty 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.FieldSymbolPropertyAttributeGreen)this.Green;
-				var greenToken = green.KSymbol;
+				var greenToken = green.KProperty;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
 		}
@@ -3114,38 +3653,38 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	    public FieldSymbolPropertyAttributeSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
 		{
-			return this.Update(TOpenBracket, this.KSymbol, this.TColon, this.Identifier, this.TCloseBracket);
+			return this.Update(TOpenBracket, this.KProperty, this.TColon, this.Identifier, this.TCloseBracket);
 		}
 	
-	    public FieldSymbolPropertyAttributeSyntax WithKSymbol(SyntaxToken kSymbol)
+	    public FieldSymbolPropertyAttributeSyntax WithKProperty(SyntaxToken kProperty)
 		{
-			return this.Update(this.TOpenBracket, KSymbol, this.TColon, this.Identifier, this.TCloseBracket);
+			return this.Update(this.TOpenBracket, KProperty, this.TColon, this.Identifier, this.TCloseBracket);
 		}
 	
 	    public FieldSymbolPropertyAttributeSyntax WithTColon(SyntaxToken tColon)
 		{
-			return this.Update(this.TOpenBracket, this.KSymbol, TColon, this.Identifier, this.TCloseBracket);
+			return this.Update(this.TOpenBracket, this.KProperty, TColon, this.Identifier, this.TCloseBracket);
 		}
 	
 	    public FieldSymbolPropertyAttributeSyntax WithIdentifier(IdentifierSyntax identifier)
 		{
-			return this.Update(this.TOpenBracket, this.KSymbol, this.TColon, Identifier, this.TCloseBracket);
+			return this.Update(this.TOpenBracket, this.KProperty, this.TColon, Identifier, this.TCloseBracket);
 		}
 	
 	    public FieldSymbolPropertyAttributeSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
 		{
-			return this.Update(this.TOpenBracket, this.KSymbol, this.TColon, this.Identifier, TCloseBracket);
+			return this.Update(this.TOpenBracket, this.KProperty, this.TColon, this.Identifier, TCloseBracket);
 		}
 	
-	    public FieldSymbolPropertyAttributeSyntax Update(SyntaxToken tOpenBracket, SyntaxToken kSymbol, SyntaxToken tColon, IdentifierSyntax identifier, SyntaxToken tCloseBracket)
+	    public FieldSymbolPropertyAttributeSyntax Update(SyntaxToken tOpenBracket, SyntaxToken kProperty, SyntaxToken tColon, IdentifierSyntax identifier, SyntaxToken tCloseBracket)
 	    {
 	        if (this.TOpenBracket != tOpenBracket ||
-				this.KSymbol != kSymbol ||
+				this.KProperty != kProperty ||
 				this.TColon != tColon ||
 				this.Identifier != identifier ||
 				this.TCloseBracket != tCloseBracket)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldSymbolPropertyAttribute(tOpenBracket, kSymbol, tColon, identifier, tCloseBracket);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldSymbolPropertyAttribute(tOpenBracket, kProperty, tColon, identifier, tCloseBracket);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -6471,7 +7010,15 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitClassDeclaration(ClassDeclarationSyntax node);
 		
-		void VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node);
+		void VisitSymbolAttribute(SymbolAttributeSyntax node);
+		
+		void VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node);
+		
+		void VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node);
+		
+		void VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node);
+		
+		void VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node);
 		
 		void VisitClassBody(ClassBodySyntax node);
 		
@@ -6663,7 +7210,27 @@ namespace MetaDslx.Languages.Meta
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node)
+		public virtual void VisitSymbolAttribute(SymbolAttributeSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -6920,7 +7487,15 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitClassDeclaration(ClassDeclarationSyntax node, TArg argument);
 		
-		TResult VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node, TArg argument);
+		TResult VisitSymbolAttribute(SymbolAttributeSyntax node, TArg argument);
+		
+		TResult VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node, TArg argument);
+		
+		TResult VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node, TArg argument);
+		
+		TResult VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node, TArg argument);
+		
+		TResult VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node, TArg argument);
 		
 		TResult VisitClassBody(ClassBodySyntax node, TArg argument);
 		
@@ -7112,7 +7687,27 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node, TArg argument)
+		public virtual TResult VisitSymbolAttribute(SymbolAttributeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -7367,7 +7962,15 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitClassDeclaration(ClassDeclarationSyntax node);
 		
-		TResult VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node);
+		TResult VisitSymbolAttribute(SymbolAttributeSyntax node);
+		
+		TResult VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node);
+		
+		TResult VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node);
+		
+		TResult VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node);
+		
+		TResult VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node);
 		
 		TResult VisitClassBody(ClassBodySyntax node);
 		
@@ -7559,7 +8162,27 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node)
+		public virtual TResult VisitSymbolAttribute(SymbolAttributeSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -7965,17 +8588,46 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
 		{
 		    var attribute = this.VisitList(node.Attribute);
-		    var symbolTypeAttribute = (SymbolTypeAttributeSyntax)this.Visit(node.SymbolTypeAttribute);
+		    var symbolAttribute = (SymbolAttributeSyntax)this.Visit(node.SymbolAttribute);
 		    var kAbstract = this.VisitToken(node.KAbstract);
 		    var kClass = this.VisitToken(node.KClass);
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tColon = this.VisitToken(node.TColon);
 		    var classAncestors = (ClassAncestorsSyntax)this.Visit(node.ClassAncestors);
 		    var classBody = (ClassBodySyntax)this.Visit(node.ClassBody);
-			return node.Update(attribute, symbolTypeAttribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
+			return node.Update(attribute, symbolAttribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
 		}
 		
-		public virtual SyntaxNode VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node)
+		public virtual SyntaxNode VisitSymbolAttribute(SymbolAttributeSyntax node)
+		{
+			var oldSymbolSymbolAttribute = node.SymbolSymbolAttribute;
+			if (oldSymbolSymbolAttribute != null)
+			{
+			    var newSymbolSymbolAttribute = (SymbolSymbolAttributeSyntax)this.Visit(oldSymbolSymbolAttribute);
+				return node.Update(newSymbolSymbolAttribute);
+			}
+			var oldExpressionSymbolAttribute = node.ExpressionSymbolAttribute;
+			if (oldExpressionSymbolAttribute != null)
+			{
+			    var newExpressionSymbolAttribute = (ExpressionSymbolAttributeSyntax)this.Visit(oldExpressionSymbolAttribute);
+				return node.Update(newExpressionSymbolAttribute);
+			}
+			var oldStatementSymbolTypeAttribute = node.StatementSymbolTypeAttribute;
+			if (oldStatementSymbolTypeAttribute != null)
+			{
+			    var newStatementSymbolTypeAttribute = (StatementSymbolTypeAttributeSyntax)this.Visit(oldStatementSymbolTypeAttribute);
+				return node.Update(newStatementSymbolTypeAttribute);
+			}
+			var oldTypeSymbolTypeAttribute = node.TypeSymbolTypeAttribute;
+			if (oldTypeSymbolTypeAttribute != null)
+			{
+			    var newTypeSymbolTypeAttribute = (TypeSymbolTypeAttributeSyntax)this.Visit(oldTypeSymbolTypeAttribute);
+				return node.Update(newTypeSymbolTypeAttribute);
+			}
+			return node;   
+		}
+		
+		public virtual SyntaxNode VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node)
 		{
 		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
 		    var kSymbol = this.VisitToken(node.KSymbol);
@@ -7983,6 +8635,36 @@ namespace MetaDslx.Languages.Meta
 		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
 		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
 			return node.Update(tOpenBracket, kSymbol, tColon, qualifier, tCloseBracket);
+		}
+		
+		public virtual SyntaxNode VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node)
+		{
+		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
+		    var kExpression = this.VisitToken(node.KExpression);
+		    var tColon = this.VisitToken(node.TColon);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
+			return node.Update(tOpenBracket, kExpression, tColon, qualifier, tCloseBracket);
+		}
+		
+		public virtual SyntaxNode VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node)
+		{
+		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
+		    var kStatement = this.VisitToken(node.KStatement);
+		    var tColon = this.VisitToken(node.TColon);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
+			return node.Update(tOpenBracket, kStatement, tColon, qualifier, tCloseBracket);
+		}
+		
+		public virtual SyntaxNode VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node)
+		{
+		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
+		    var kType = this.VisitToken(node.KType);
+		    var tColon = this.VisitToken(node.TColon);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
+			return node.Update(tOpenBracket, kType, tColon, qualifier, tCloseBracket);
 		}
 		
 		public virtual SyntaxNode VisitClassBody(ClassBodySyntax node)
@@ -8039,11 +8721,11 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitFieldSymbolPropertyAttribute(FieldSymbolPropertyAttributeSyntax node)
 		{
 		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
-		    var kSymbol = this.VisitToken(node.KSymbol);
+		    var kProperty = this.VisitToken(node.KProperty);
 		    var tColon = this.VisitToken(node.TColon);
 		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
 		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
-			return node.Update(tOpenBracket, kSymbol, tColon, identifier, tCloseBracket);
+			return node.Update(tOpenBracket, kProperty, tColon, identifier, tCloseBracket);
 		}
 		
 		public virtual SyntaxNode VisitFieldContainment(FieldContainmentSyntax node)
@@ -8851,7 +9533,7 @@ namespace MetaDslx.Languages.Meta
 		    return (EnumMemberDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public ClassDeclarationSyntax ClassDeclaration(Microsoft.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SymbolTypeAttributeSyntax symbolTypeAttribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+		public ClassDeclarationSyntax ClassDeclaration(Microsoft.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SymbolAttributeSyntax symbolAttribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 		{
 		    if (kAbstract != null && kAbstract.GetKind() != MetaSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
 		    if (kClass == null) throw new ArgumentNullException(nameof(kClass));
@@ -8859,7 +9541,7 @@ namespace MetaDslx.Languages.Meta
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tColon != null && tColon.GetKind() != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (classBody == null) throw new ArgumentNullException(nameof(classBody));
-		    return (ClassDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), symbolTypeAttribute == null ? null : (Syntax.InternalSyntax.SymbolTypeAttributeGreen)symbolTypeAttribute.Green, (InternalSyntaxToken)kAbstract.Node, (InternalSyntaxToken)kClass.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
+		    return (ClassDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), symbolAttribute == null ? null : (Syntax.InternalSyntax.SymbolAttributeGreen)symbolAttribute.Green, (InternalSyntaxToken)kAbstract.Node, (InternalSyntaxToken)kClass.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
 		}
 		
 		public ClassDeclarationSyntax ClassDeclaration(NameSyntax name, ClassBodySyntax classBody)
@@ -8867,7 +9549,31 @@ namespace MetaDslx.Languages.Meta
 			return this.ClassDeclaration(default, default, default, this.Token(MetaSyntaxKind.KClass), name, default, default, classBody);
 		}
 		
-		public SymbolTypeAttributeSyntax SymbolTypeAttribute(SyntaxToken tOpenBracket, SyntaxToken kSymbol, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+		public SymbolAttributeSyntax SymbolAttribute(SymbolSymbolAttributeSyntax symbolSymbolAttribute)
+		{
+		    if (symbolSymbolAttribute == null) throw new ArgumentNullException(nameof(symbolSymbolAttribute));
+		    return (SymbolAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SymbolAttribute((Syntax.InternalSyntax.SymbolSymbolAttributeGreen)symbolSymbolAttribute.Green).CreateRed();
+		}
+		
+		public SymbolAttributeSyntax SymbolAttribute(ExpressionSymbolAttributeSyntax expressionSymbolAttribute)
+		{
+		    if (expressionSymbolAttribute == null) throw new ArgumentNullException(nameof(expressionSymbolAttribute));
+		    return (SymbolAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SymbolAttribute((Syntax.InternalSyntax.ExpressionSymbolAttributeGreen)expressionSymbolAttribute.Green).CreateRed();
+		}
+		
+		public SymbolAttributeSyntax SymbolAttribute(StatementSymbolTypeAttributeSyntax statementSymbolTypeAttribute)
+		{
+		    if (statementSymbolTypeAttribute == null) throw new ArgumentNullException(nameof(statementSymbolTypeAttribute));
+		    return (SymbolAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SymbolAttribute((Syntax.InternalSyntax.StatementSymbolTypeAttributeGreen)statementSymbolTypeAttribute.Green).CreateRed();
+		}
+		
+		public SymbolAttributeSyntax SymbolAttribute(TypeSymbolTypeAttributeSyntax typeSymbolTypeAttribute)
+		{
+		    if (typeSymbolTypeAttribute == null) throw new ArgumentNullException(nameof(typeSymbolTypeAttribute));
+		    return (SymbolAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SymbolAttribute((Syntax.InternalSyntax.TypeSymbolTypeAttributeGreen)typeSymbolTypeAttribute.Green).CreateRed();
+		}
+		
+		public SymbolSymbolAttributeSyntax SymbolSymbolAttribute(SyntaxToken tOpenBracket, SyntaxToken kSymbol, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
 		{
 		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
 		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
@@ -8878,12 +9584,69 @@ namespace MetaDslx.Languages.Meta
 		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
 		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
 		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
-		    return (SymbolTypeAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SymbolTypeAttribute((InternalSyntaxToken)tOpenBracket.Node, (InternalSyntaxToken)kSymbol.Node, (InternalSyntaxToken)tColon.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		    return (SymbolSymbolAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SymbolSymbolAttribute((InternalSyntaxToken)tOpenBracket.Node, (InternalSyntaxToken)kSymbol.Node, (InternalSyntaxToken)tColon.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
 		}
 		
-		public SymbolTypeAttributeSyntax SymbolTypeAttribute(QualifierSyntax qualifier)
+		public SymbolSymbolAttributeSyntax SymbolSymbolAttribute(QualifierSyntax qualifier)
 		{
-			return this.SymbolTypeAttribute(this.Token(MetaSyntaxKind.TOpenBracket), this.Token(MetaSyntaxKind.KSymbol), this.Token(MetaSyntaxKind.TColon), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
+			return this.SymbolSymbolAttribute(this.Token(MetaSyntaxKind.TOpenBracket), this.Token(MetaSyntaxKind.KSymbol), this.Token(MetaSyntaxKind.TColon), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
+		}
+		
+		public ExpressionSymbolAttributeSyntax ExpressionSymbolAttribute(SyntaxToken tOpenBracket, SyntaxToken kExpression, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+		{
+		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
+		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
+		    if (kExpression == null) throw new ArgumentNullException(nameof(kExpression));
+		    if (kExpression.GetKind() != MetaSyntaxKind.KExpression) throw new ArgumentException(nameof(kExpression));
+		    if (tColon == null) throw new ArgumentNullException(nameof(tColon));
+		    if (tColon.GetKind() != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
+		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
+		    return (ExpressionSymbolAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExpressionSymbolAttribute((InternalSyntaxToken)tOpenBracket.Node, (InternalSyntaxToken)kExpression.Node, (InternalSyntaxToken)tColon.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		}
+		
+		public ExpressionSymbolAttributeSyntax ExpressionSymbolAttribute(QualifierSyntax qualifier)
+		{
+			return this.ExpressionSymbolAttribute(this.Token(MetaSyntaxKind.TOpenBracket), this.Token(MetaSyntaxKind.KExpression), this.Token(MetaSyntaxKind.TColon), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
+		}
+		
+		public StatementSymbolTypeAttributeSyntax StatementSymbolTypeAttribute(SyntaxToken tOpenBracket, SyntaxToken kStatement, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+		{
+		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
+		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
+		    if (kStatement == null) throw new ArgumentNullException(nameof(kStatement));
+		    if (kStatement.GetKind() != MetaSyntaxKind.KStatement) throw new ArgumentException(nameof(kStatement));
+		    if (tColon == null) throw new ArgumentNullException(nameof(tColon));
+		    if (tColon.GetKind() != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
+		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
+		    return (StatementSymbolTypeAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.StatementSymbolTypeAttribute((InternalSyntaxToken)tOpenBracket.Node, (InternalSyntaxToken)kStatement.Node, (InternalSyntaxToken)tColon.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		}
+		
+		public StatementSymbolTypeAttributeSyntax StatementSymbolTypeAttribute(QualifierSyntax qualifier)
+		{
+			return this.StatementSymbolTypeAttribute(this.Token(MetaSyntaxKind.TOpenBracket), this.Token(MetaSyntaxKind.KStatement), this.Token(MetaSyntaxKind.TColon), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
+		}
+		
+		public TypeSymbolTypeAttributeSyntax TypeSymbolTypeAttribute(SyntaxToken tOpenBracket, SyntaxToken kType, SyntaxToken tColon, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+		{
+		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
+		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
+		    if (kType == null) throw new ArgumentNullException(nameof(kType));
+		    if (kType.GetKind() != MetaSyntaxKind.KType) throw new ArgumentException(nameof(kType));
+		    if (tColon == null) throw new ArgumentNullException(nameof(tColon));
+		    if (tColon.GetKind() != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
+		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
+		    return (TypeSymbolTypeAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.TypeSymbolTypeAttribute((InternalSyntaxToken)tOpenBracket.Node, (InternalSyntaxToken)kType.Node, (InternalSyntaxToken)tColon.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		}
+		
+		public TypeSymbolTypeAttributeSyntax TypeSymbolTypeAttribute(QualifierSyntax qualifier)
+		{
+			return this.TypeSymbolTypeAttribute(this.Token(MetaSyntaxKind.TOpenBracket), this.Token(MetaSyntaxKind.KType), this.Token(MetaSyntaxKind.TColon), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
 		public ClassBodySyntax ClassBody(SyntaxToken tOpenBrace, Microsoft.CodeAnalysis.SyntaxList<ClassMemberDeclarationSyntax> classMemberDeclaration, SyntaxToken tCloseBrace)
@@ -8938,23 +9701,23 @@ namespace MetaDslx.Languages.Meta
 			return this.FieldDeclaration(default, default, default, default, typeReference, name, default, default, this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
-		public FieldSymbolPropertyAttributeSyntax FieldSymbolPropertyAttribute(SyntaxToken tOpenBracket, SyntaxToken kSymbol, SyntaxToken tColon, IdentifierSyntax identifier, SyntaxToken tCloseBracket)
+		public FieldSymbolPropertyAttributeSyntax FieldSymbolPropertyAttribute(SyntaxToken tOpenBracket, SyntaxToken kProperty, SyntaxToken tColon, IdentifierSyntax identifier, SyntaxToken tCloseBracket)
 		{
 		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
 		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
-		    if (kSymbol == null) throw new ArgumentNullException(nameof(kSymbol));
-		    if (kSymbol.GetKind() != MetaSyntaxKind.KSymbol) throw new ArgumentException(nameof(kSymbol));
+		    if (kProperty == null) throw new ArgumentNullException(nameof(kProperty));
+		    if (kProperty.GetKind() != MetaSyntaxKind.KProperty) throw new ArgumentException(nameof(kProperty));
 		    if (tColon == null) throw new ArgumentNullException(nameof(tColon));
 		    if (tColon.GetKind() != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
 		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
-		    return (FieldSymbolPropertyAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldSymbolPropertyAttribute((InternalSyntaxToken)tOpenBracket.Node, (InternalSyntaxToken)kSymbol.Node, (InternalSyntaxToken)tColon.Node, (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		    return (FieldSymbolPropertyAttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldSymbolPropertyAttribute((InternalSyntaxToken)tOpenBracket.Node, (InternalSyntaxToken)kProperty.Node, (InternalSyntaxToken)tColon.Node, (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
 		}
 		
 		public FieldSymbolPropertyAttributeSyntax FieldSymbolPropertyAttribute(IdentifierSyntax identifier)
 		{
-			return this.FieldSymbolPropertyAttribute(this.Token(MetaSyntaxKind.TOpenBracket), this.Token(MetaSyntaxKind.KSymbol), this.Token(MetaSyntaxKind.TColon), identifier, this.Token(MetaSyntaxKind.TCloseBracket));
+			return this.FieldSymbolPropertyAttribute(this.Token(MetaSyntaxKind.TOpenBracket), this.Token(MetaSyntaxKind.KProperty), this.Token(MetaSyntaxKind.TColon), identifier, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
 		public FieldContainmentSyntax FieldContainment(SyntaxToken kContainment)
@@ -9379,7 +10142,11 @@ namespace MetaDslx.Languages.Meta
 				typeof(EnumValueSyntax),
 				typeof(EnumMemberDeclarationSyntax),
 				typeof(ClassDeclarationSyntax),
-				typeof(SymbolTypeAttributeSyntax),
+				typeof(SymbolAttributeSyntax),
+				typeof(SymbolSymbolAttributeSyntax),
+				typeof(ExpressionSymbolAttributeSyntax),
+				typeof(StatementSymbolTypeAttributeSyntax),
+				typeof(TypeSymbolTypeAttributeSyntax),
 				typeof(ClassBodySyntax),
 				typeof(ClassAncestorsSyntax),
 				typeof(ClassAncestorSyntax),

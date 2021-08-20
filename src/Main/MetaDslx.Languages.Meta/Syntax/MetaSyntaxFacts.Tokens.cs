@@ -80,7 +80,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KFalse:
 				case MetaTokensSyntaxKind.KVoid:
 				case MetaTokensSyntaxKind.KObject:
-				case MetaTokensSyntaxKind.KSymbol:
 				case MetaTokensSyntaxKind.KString:
 				case MetaTokensSyntaxKind.KInt:
 				case MetaTokensSyntaxKind.KLong:
@@ -105,11 +104,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSubsets:
 				case MetaTokensSyntaxKind.KReadonly:
 				case MetaTokensSyntaxKind.KLazy:
-				case MetaTokensSyntaxKind.KSynthetized:
-				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
 				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KBuilder:
+				case MetaTokensSyntaxKind.KSymbol:
+				case MetaTokensSyntaxKind.KExpression:
+				case MetaTokensSyntaxKind.KStatement:
+				case MetaTokensSyntaxKind.KType:
+				case MetaTokensSyntaxKind.KProperty:
 				case MetaTokensSyntaxKind.KStatic:
 				case MetaTokensSyntaxKind.TSemicolon:
 				case MetaTokensSyntaxKind.TColon:
@@ -206,7 +208,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KFalse:
 				case MetaTokensSyntaxKind.KVoid:
 				case MetaTokensSyntaxKind.KObject:
-				case MetaTokensSyntaxKind.KSymbol:
 				case MetaTokensSyntaxKind.KString:
 				case MetaTokensSyntaxKind.KInt:
 				case MetaTokensSyntaxKind.KLong:
@@ -231,11 +232,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSubsets:
 				case MetaTokensSyntaxKind.KReadonly:
 				case MetaTokensSyntaxKind.KLazy:
-				case MetaTokensSyntaxKind.KSynthetized:
-				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
 				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KBuilder:
+				case MetaTokensSyntaxKind.KSymbol:
+				case MetaTokensSyntaxKind.KExpression:
+				case MetaTokensSyntaxKind.KStatement:
+				case MetaTokensSyntaxKind.KType:
+				case MetaTokensSyntaxKind.KProperty:
 				case MetaTokensSyntaxKind.KStatic:
 				case MetaTokensSyntaxKind.TSemicolon:
 				case MetaTokensSyntaxKind.TColon:
@@ -332,8 +336,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KVoid;
 				case "object":
 					return MetaTokensSyntaxKind.KObject;
-				case "symbol":
-					return MetaTokensSyntaxKind.KSymbol;
 				case "string":
 					return MetaTokensSyntaxKind.KString;
 				case "int":
@@ -382,16 +384,22 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KReadonly;
 				case "lazy":
 					return MetaTokensSyntaxKind.KLazy;
-				case "synthetized":
-					return MetaTokensSyntaxKind.KSynthetized;
-				case "inherited":
-					return MetaTokensSyntaxKind.KInherited;
 				case "derived":
 					return MetaTokensSyntaxKind.KDerived;
 				case "union":
 					return MetaTokensSyntaxKind.KUnion;
 				case "builder":
 					return MetaTokensSyntaxKind.KBuilder;
+				case "symbol":
+					return MetaTokensSyntaxKind.KSymbol;
+				case "expression":
+					return MetaTokensSyntaxKind.KExpression;
+				case "statement":
+					return MetaTokensSyntaxKind.KStatement;
+				case "type":
+					return MetaTokensSyntaxKind.KType;
+				case "property":
+					return MetaTokensSyntaxKind.KProperty;
 				case "static":
 					return MetaTokensSyntaxKind.KStatic;
 				case ";":
@@ -537,8 +545,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "void";
 				case MetaTokensSyntaxKind.KObject:
 					return "object";
-				case MetaTokensSyntaxKind.KSymbol:
-					return "symbol";
 				case MetaTokensSyntaxKind.KString:
 					return "string";
 				case MetaTokensSyntaxKind.KInt:
@@ -587,16 +593,22 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "readonly";
 				case MetaTokensSyntaxKind.KLazy:
 					return "lazy";
-				case MetaTokensSyntaxKind.KSynthetized:
-					return "synthetized";
-				case MetaTokensSyntaxKind.KInherited:
-					return "inherited";
 				case MetaTokensSyntaxKind.KDerived:
 					return "derived";
 				case MetaTokensSyntaxKind.KUnion:
 					return "union";
 				case MetaTokensSyntaxKind.KBuilder:
 					return "builder";
+				case MetaTokensSyntaxKind.KSymbol:
+					return "symbol";
+				case MetaTokensSyntaxKind.KExpression:
+					return "expression";
+				case MetaTokensSyntaxKind.KStatement:
+					return "statement";
+				case MetaTokensSyntaxKind.KType:
+					return "type";
+				case MetaTokensSyntaxKind.KProperty:
+					return "property";
 				case MetaTokensSyntaxKind.KStatic:
 					return "static";
 				case MetaTokensSyntaxKind.TSemicolon:
@@ -729,7 +741,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KFalse:
 				case MetaTokensSyntaxKind.KVoid:
 				case MetaTokensSyntaxKind.KObject:
-				case MetaTokensSyntaxKind.KSymbol:
 				case MetaTokensSyntaxKind.KString:
 				case MetaTokensSyntaxKind.KInt:
 				case MetaTokensSyntaxKind.KLong:
@@ -754,11 +765,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSubsets:
 				case MetaTokensSyntaxKind.KReadonly:
 				case MetaTokensSyntaxKind.KLazy:
-				case MetaTokensSyntaxKind.KSynthetized:
-				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
 				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KBuilder:
+				case MetaTokensSyntaxKind.KSymbol:
+				case MetaTokensSyntaxKind.KExpression:
+				case MetaTokensSyntaxKind.KStatement:
+				case MetaTokensSyntaxKind.KType:
+				case MetaTokensSyntaxKind.KProperty:
 				case MetaTokensSyntaxKind.KStatic:
 					return MetaTokenKind.ReservedKeyword;
 				case MetaTokensSyntaxKind.IdentifierNormal:
@@ -865,7 +879,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KFalse:
 				case MetaTokensSyntaxKind.KVoid:
 				case MetaTokensSyntaxKind.KObject:
-				case MetaTokensSyntaxKind.KSymbol:
 				case MetaTokensSyntaxKind.KString:
 				case MetaTokensSyntaxKind.KInt:
 				case MetaTokensSyntaxKind.KLong:
@@ -890,11 +903,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSubsets:
 				case MetaTokensSyntaxKind.KReadonly:
 				case MetaTokensSyntaxKind.KLazy:
-				case MetaTokensSyntaxKind.KSynthetized:
-				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
 				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KBuilder:
+				case MetaTokensSyntaxKind.KSymbol:
+				case MetaTokensSyntaxKind.KExpression:
+				case MetaTokensSyntaxKind.KStatement:
+				case MetaTokensSyntaxKind.KType:
+				case MetaTokensSyntaxKind.KProperty:
 				case MetaTokensSyntaxKind.KStatic:
 					return true;
 				default:
@@ -922,7 +938,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				yield return MetaTokensSyntaxKind.KFalse;
 				yield return MetaTokensSyntaxKind.KVoid;
 				yield return MetaTokensSyntaxKind.KObject;
-				yield return MetaTokensSyntaxKind.KSymbol;
 				yield return MetaTokensSyntaxKind.KString;
 				yield return MetaTokensSyntaxKind.KInt;
 				yield return MetaTokensSyntaxKind.KLong;
@@ -947,11 +962,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 				yield return MetaTokensSyntaxKind.KSubsets;
 				yield return MetaTokensSyntaxKind.KReadonly;
 				yield return MetaTokensSyntaxKind.KLazy;
-				yield return MetaTokensSyntaxKind.KSynthetized;
-				yield return MetaTokensSyntaxKind.KInherited;
 				yield return MetaTokensSyntaxKind.KDerived;
 				yield return MetaTokensSyntaxKind.KUnion;
 				yield return MetaTokensSyntaxKind.KBuilder;
+				yield return MetaTokensSyntaxKind.KSymbol;
+				yield return MetaTokensSyntaxKind.KExpression;
+				yield return MetaTokensSyntaxKind.KStatement;
+				yield return MetaTokensSyntaxKind.KType;
+				yield return MetaTokensSyntaxKind.KProperty;
 				yield return MetaTokensSyntaxKind.KStatic;
         }
 
@@ -995,8 +1013,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KVoid;
 				case "object":
 					return MetaTokensSyntaxKind.KObject;
-				case "symbol":
-					return MetaTokensSyntaxKind.KSymbol;
 				case "string":
 					return MetaTokensSyntaxKind.KString;
 				case "int":
@@ -1045,16 +1061,22 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KReadonly;
 				case "lazy":
 					return MetaTokensSyntaxKind.KLazy;
-				case "synthetized":
-					return MetaTokensSyntaxKind.KSynthetized;
-				case "inherited":
-					return MetaTokensSyntaxKind.KInherited;
 				case "derived":
 					return MetaTokensSyntaxKind.KDerived;
 				case "union":
 					return MetaTokensSyntaxKind.KUnion;
 				case "builder":
 					return MetaTokensSyntaxKind.KBuilder;
+				case "symbol":
+					return MetaTokensSyntaxKind.KSymbol;
+				case "expression":
+					return MetaTokensSyntaxKind.KExpression;
+				case "statement":
+					return MetaTokensSyntaxKind.KStatement;
+				case "type":
+					return MetaTokensSyntaxKind.KType;
+				case "property":
+					return MetaTokensSyntaxKind.KProperty;
 				case "static":
 					return MetaTokensSyntaxKind.KStatic;
 				default:

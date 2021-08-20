@@ -36,11 +36,35 @@ namespace MetaDslx.Languages.Meta.Binding
         }
 
 
-        protected virtual void BeginSymbolType(SyntaxNodeOrToken syntax)
+        protected virtual void BeginSymbolSymbol(SyntaxNodeOrToken syntax)
         {
         }
 
-        protected virtual void EndSymbolType(SyntaxNodeOrToken syntax)
+        protected virtual void EndSymbolSymbol(SyntaxNodeOrToken syntax)
+        {
+        }
+
+        protected virtual void BeginExpressionSymbol(SyntaxNodeOrToken syntax)
+        {
+        }
+
+        protected virtual void EndExpressionSymbol(SyntaxNodeOrToken syntax)
+        {
+        }
+
+        protected virtual void BeginStatementSymbol(SyntaxNodeOrToken syntax)
+        {
+        }
+
+        protected virtual void EndStatementSymbol(SyntaxNodeOrToken syntax)
+        {
+        }
+
+        protected virtual void BeginTypeSymbol(SyntaxNodeOrToken syntax)
+        {
+        }
+
+        protected virtual void EndTypeSymbol(SyntaxNodeOrToken syntax)
         {
         }
 
@@ -527,9 +551,9 @@ namespace MetaDslx.Languages.Meta.Binding
 						        this.Visit(child);
 							}
 						}
-						if (node.SymbolTypeAttribute != null)
+						if (node.SymbolAttribute != null)
 						{
-						    this.Visit(node.SymbolTypeAttribute);
+						    this.Visit(node.SymbolAttribute);
 						}
 						if (node.KAbstract.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
 						{
@@ -580,27 +604,95 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
-		public virtual void VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node)
+		public virtual void VisitSymbolAttribute(SymbolAttributeSyntax node)
 		{
 			this.BeginProperty(node, name: "SymbolType");
 			try
 			{
-				this.BeginSymbolType(node);
-				try
+				if (node.SymbolSymbolAttribute != null)
 				{
-					if (node.Qualifier != null)
-					{
-					    this.Visit(node.Qualifier);
-					}
+				    this.Visit(node.SymbolSymbolAttribute);
 				}
-				finally
+				if (node.ExpressionSymbolAttribute != null)
 				{
-					this.EndSymbolType(node);
+				    this.Visit(node.ExpressionSymbolAttribute);
+				}
+				if (node.StatementSymbolTypeAttribute != null)
+				{
+				    this.Visit(node.StatementSymbolTypeAttribute);
+				}
+				if (node.TypeSymbolTypeAttribute != null)
+				{
+				    this.Visit(node.TypeSymbolTypeAttribute);
 				}
 			}
 			finally
 			{
 				this.EndProperty(node, name: "SymbolType");
+			}
+		}
+		
+		public virtual void VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax node)
+		{
+			this.BeginSymbolSymbol(node);
+			try
+			{
+				if (node.Qualifier != null)
+				{
+				    this.Visit(node.Qualifier);
+				}
+			}
+			finally
+			{
+				this.EndSymbolSymbol(node);
+			}
+		}
+		
+		public virtual void VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax node)
+		{
+			this.BeginExpressionSymbol(node);
+			try
+			{
+				if (node.Qualifier != null)
+				{
+				    this.Visit(node.Qualifier);
+				}
+			}
+			finally
+			{
+				this.EndExpressionSymbol(node);
+			}
+		}
+		
+		public virtual void VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax node)
+		{
+			this.BeginStatementSymbol(node);
+			try
+			{
+				if (node.Qualifier != null)
+				{
+				    this.Visit(node.Qualifier);
+				}
+			}
+			finally
+			{
+				this.EndStatementSymbol(node);
+			}
+		}
+		
+		public virtual void VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax node)
+		{
+			this.BeginTypeSymbol(node);
+			try
+			{
+				if (node.Qualifier != null)
+				{
+				    this.Visit(node.Qualifier);
+				}
+			}
+			finally
+			{
+				this.EndTypeSymbol(node);
 			}
 		}
 		
