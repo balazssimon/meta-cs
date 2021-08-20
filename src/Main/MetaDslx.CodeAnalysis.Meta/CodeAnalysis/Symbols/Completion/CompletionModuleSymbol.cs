@@ -16,10 +16,9 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-    public partial class CompletionModuleSymbol : NonMissingModuleSymbol
+    public abstract partial class CompletionModuleSymbol : NonMissingModuleSymbol
     {
         private AssemblySymbol _owningAssembly;
-        private CompletionGlobalNamespaceSymbol _globalNamespace;
         private object _model;
         private readonly int _ordinal;
 
@@ -42,22 +41,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         public override int Ordinal => _ordinal;
 
         public override bool HasUnifiedReferences => false;
-
-        public override NamespaceSymbol GlobalNamespace
-        {
-            get
-            {
-                if (_globalNamespace == null)
-                {
-                    Interlocked.CompareExchange(ref _globalNamespace, new CompletionGlobalNamespaceSymbol(this), null);
-                }
-                return _globalNamespace;
-            }
-        }
-
-        public override ICollection<string> TypeNames => _globalNamespace.TypeNames;
-
-        public override ICollection<string> NamespaceNames => _globalNamespace.NamespaceNames;
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 

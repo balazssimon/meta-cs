@@ -85,7 +85,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private DeclaredSymbol ResolveAliasTarget(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol>(this, nameof(Target), diagnostics, cancellationToken);
+            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol>(this, nameof(Target), diagnostics, cancellationToken, out var result);
+            return result;
         }
 
         public override bool Equals(object obj)

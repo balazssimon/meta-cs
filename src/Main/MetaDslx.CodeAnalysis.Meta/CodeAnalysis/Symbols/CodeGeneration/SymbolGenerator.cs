@@ -2146,21 +2146,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.Write("        }"); //404:1
                     __out.AppendLine(false); //404:10
                 }
-                __out.AppendLine(true); //406:1
-                __out.Write("        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;"); //407:1
-                __out.AppendLine(false); //407:112
-                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations")) //408:10
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations")) //406:10
                 {
-                    __out.AppendLine(true); //409:1
-                    __out.Write("        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;"); //410:1
-                    __out.AppendLine(false); //410:95
+                    __out.AppendLine(true); //407:1
+                    __out.Write("        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;"); //408:1
+                    __out.AppendLine(false); //408:95
                 }
-                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //412:10
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //410:10
                 {
-                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;"); //413:1
-                    __out.AppendLine(false); //413:124
+                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;"); //411:1
+                    __out.AppendLine(false); //411:124
                 }
             }
+            __out.AppendLine(true); //414:1
+            __out.Write("        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;"); //415:1
+            __out.AppendLine(false); //415:112
             __out.AppendLine(true); //416:1
             if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //417:10
             {
@@ -2703,87 +2703,87 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.Write("		}"); //562:1
                     __out.AppendLine(false); //562:4
                 }
-                __out.AppendLine(true); //564:1
-                __out.Write("        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;"); //565:1
-                __out.AppendLine(false); //565:110
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration")) //566:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration")) //564:10
                 {
-                    __out.AppendLine(true); //567:1
-                    __out.Write("        public MergedDeclaration MergedDeclaration => _declaration;"); //568:1
-                    __out.AppendLine(false); //568:68
+                    __out.AppendLine(true); //565:1
+                    __out.Write("        public MergedDeclaration MergedDeclaration => _declaration;"); //566:1
+                    __out.AppendLine(false); //566:68
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations")) //570:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations")) //568:10
                 {
-                    __out.AppendLine(true); //571:1
-                    __out.Write("        public override ImmutableArray<Location> Locations => _declaration.NameLocations;"); //572:1
-                    __out.AppendLine(false); //572:90
+                    __out.AppendLine(true); //569:1
+                    __out.Write("        public override ImmutableArray<Location> Locations => _declaration.NameLocations;"); //570:1
+                    __out.AppendLine(false); //570:90
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //574:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //572:10
                 {
-                    __out.AppendLine(true); //575:1
-                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;"); //576:1
-                    __out.AppendLine(false); //576:116
+                    __out.AppendLine(true); //573:1
+                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;"); //574:1
+                    __out.AppendLine(false); //574:116
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder")) //578:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder")) //576:10
                 {
-                    __out.AppendLine(true); //579:1
-                    __out.Write("        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)"); //580:1
-                    __out.AppendLine(false); //580:81
-                    __out.Write("        {"); //581:1
-                    __out.AppendLine(false); //581:10
-                    __out.Write("            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));"); //582:1
-                    __out.AppendLine(false); //582:78
-                    __out.Write("            return FindBinders.FindSymbolBinder(this, reference);"); //583:1
-                    __out.AppendLine(false); //583:66
-                    __out.Write("        }"); //584:1
-                    __out.AppendLine(false); //584:10
+                    __out.AppendLine(true); //577:1
+                    __out.Write("        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)"); //578:1
+                    __out.AppendLine(false); //578:81
+                    __out.Write("        {"); //579:1
+                    __out.AppendLine(false); //579:10
+                    __out.Write("            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));"); //580:1
+                    __out.AppendLine(false); //580:78
+                    __out.Write("            return FindBinders.FindSymbolBinder(this, reference);"); //581:1
+                    __out.AppendLine(false); //581:66
+                    __out.Write("        }"); //582:1
+                    __out.AppendLine(false); //582:10
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol")) //586:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol")) //584:10
                 {
-                    __out.AppendLine(true); //587:1
-                    __out.Write("        public Symbol GetChildSymbol(SyntaxReference syntax)"); //588:1
-                    __out.AppendLine(false); //588:61
-                    __out.Write("        {"); //589:1
-                    __out.AppendLine(false); //589:10
-                    __out.Write("            foreach (var child in this.ChildSymbols)"); //590:1
-                    __out.AppendLine(false); //590:53
-                    __out.Write("            {"); //591:1
-                    __out.AppendLine(false); //591:14
-                    __out.Write("                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))"); //592:1
-                    __out.AppendLine(false); //592:105
-                    __out.Write("                {"); //593:1
+                    __out.AppendLine(true); //585:1
+                    __out.Write("        public Symbol GetChildSymbol(SyntaxReference syntax)"); //586:1
+                    __out.AppendLine(false); //586:61
+                    __out.Write("        {"); //587:1
+                    __out.AppendLine(false); //587:10
+                    __out.Write("            foreach (var child in this.ChildSymbols)"); //588:1
+                    __out.AppendLine(false); //588:53
+                    __out.Write("            {"); //589:1
+                    __out.AppendLine(false); //589:14
+                    __out.Write("                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))"); //590:1
+                    __out.AppendLine(false); //590:105
+                    __out.Write("                {"); //591:1
+                    __out.AppendLine(false); //591:18
+                    __out.Write("                    return child;"); //592:1
+                    __out.AppendLine(false); //592:34
+                    __out.Write("                }"); //593:1
                     __out.AppendLine(false); //593:18
-                    __out.Write("                    return child;"); //594:1
-                    __out.AppendLine(false); //594:34
-                    __out.Write("                }"); //595:1
-                    __out.AppendLine(false); //595:18
-                    __out.Write("            }"); //596:1
-                    __out.AppendLine(false); //596:14
-                    __out.Write("            return null;"); //597:1
-                    __out.AppendLine(false); //597:25
-                    __out.Write("        }"); //598:1
-                    __out.AppendLine(false); //598:10
+                    __out.Write("            }"); //594:1
+                    __out.AppendLine(false); //594:14
+                    __out.Write("            return null;"); //595:1
+                    __out.AppendLine(false); //595:25
+                    __out.Write("        }"); //596:1
+                    __out.AppendLine(false); //596:10
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey")) //600:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey")) //598:10
                 {
-                    __out.Write("        public override LexicalSortKey GetLexicalSortKey()"); //601:1
-                    __out.AppendLine(false); //601:59
-                    __out.Write("        {"); //602:1
-                    __out.AppendLine(false); //602:10
-                    __out.Write("            if (!_lazyLexicalSortKey.IsInitialized)"); //603:1
-                    __out.AppendLine(false); //603:52
-                    __out.Write("            {"); //604:1
+                    __out.Write("        public override LexicalSortKey GetLexicalSortKey()"); //599:1
+                    __out.AppendLine(false); //599:59
+                    __out.Write("        {"); //600:1
+                    __out.AppendLine(false); //600:10
+                    __out.Write("            if (!_lazyLexicalSortKey.IsInitialized)"); //601:1
+                    __out.AppendLine(false); //601:52
+                    __out.Write("            {"); //602:1
+                    __out.AppendLine(false); //602:14
+                    __out.Write("                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));"); //603:1
+                    __out.AppendLine(false); //603:114
+                    __out.Write("            }"); //604:1
                     __out.AppendLine(false); //604:14
-                    __out.Write("                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));"); //605:1
-                    __out.AppendLine(false); //605:114
-                    __out.Write("            }"); //606:1
-                    __out.AppendLine(false); //606:14
-                    __out.Write("            return _lazyLexicalSortKey;"); //607:1
-                    __out.AppendLine(false); //607:40
-                    __out.Write("        }"); //608:1
-                    __out.AppendLine(false); //608:10
+                    __out.Write("            return _lazyLexicalSortKey;"); //605:1
+                    __out.AppendLine(false); //605:40
+                    __out.Write("        }"); //606:1
+                    __out.AppendLine(false); //606:10
                 }
             }
+            __out.AppendLine(true); //609:1
+            __out.Write("        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;"); //610:1
+            __out.AppendLine(false); //610:110
             __out.AppendLine(true); //611:1
             if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //612:10
             {

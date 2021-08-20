@@ -11,6 +11,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         private readonly LanguageCompilation _compilation;
         private readonly ImmutableArray<MetadataLocation> _metadataLocation;
+        private GlobalNamespaceSymbol _globalNamespace;
 
         public MetadataModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal, LanguageCompilation? compilation = null)
             : base(owningAssembly, model, ordinal)
@@ -30,6 +31,23 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 return _metadataLocation.Cast<MetadataLocation, Location>();
             }
         }
+
+        public override NamespaceSymbol GlobalNamespace
+        {
+            get
+            {
+                if (_globalNamespace == null)
+                {
+                    Interlocked.CompareExchange(ref _globalNamespace, new GlobalNamespaceSymbol(this), null);
+                }
+                return _globalNamespace;
+            }
+        }
+
+        public override ICollection<string> TypeNames => ((GlobalNamespaceSymbol)GlobalNamespace).TypeNames;
+
+        public override ICollection<string> NamespaceNames => ((GlobalNamespaceSymbol)GlobalNamespace).NamespaceNames;
+
 
     }
 }

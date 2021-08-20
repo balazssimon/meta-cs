@@ -403,8 +403,6 @@ namespace [symbol.NamespaceName].Metadata
         {
         }
         [end if]
-^
-        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations"))]
 ^
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
@@ -413,6 +411,8 @@ namespace [symbol.NamespaceName].Metadata
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
         [end if]
         [end if]
+^
+        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         public partial class Error : Metadata[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
@@ -561,8 +561,6 @@ namespace [symbol.NamespaceName].Source
             _declaration = declaration;
 		}
         [end if]
-^
-        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
         [if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration"))]
 ^
         public MergedDeclaration MergedDeclaration => _declaration;
@@ -608,6 +606,8 @@ namespace [symbol.NamespaceName].Source
         }
         [end if]
         [end if]
+^
+        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         public partial class Error : Source[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol

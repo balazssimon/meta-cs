@@ -5,24 +5,27 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols.Completion;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Completion
+namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public class CompletionGlobalNamespaceSymbol : CompletionNamespaceSymbol
+    public class GlobalNamespaceSymbol : CompletionNamespaceSymbol
     {
         private CompletionModuleSymbol _module;
         private ImmutableArray<string> _lazyTypeNames;
         private ImmutableArray<string> _lazyNamespaceNames;
 
-        public CompletionGlobalNamespaceSymbol(CompletionModuleSymbol module)
+        public GlobalNamespaceSymbol(CompletionModuleSymbol module)
             : base(module)
         {
             _module = module;
         }
+
+        protected override ISymbolImplementation SymbolImplementation => throw new NotImplementedException();
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 
@@ -87,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return MetadataSymbolImplementation.MakeGlobalSymbols(this, null, diagnostics, cancellationToken);
+            return SymbolImplementation.MakeGlobalSymbols(this, null, diagnostics, cancellationToken);
         }
 
         protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

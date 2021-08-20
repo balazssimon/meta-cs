@@ -10,9 +10,11 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public static class MetadataSymbolImplementation
+    public class MetadataSymbolImplementation : ISymbolImplementation
     {
-        public static ImmutableArray<Symbol> MakeGlobalSymbols(Symbol rootSymbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public static readonly MetadataSymbolImplementation Instance = new MetadataSymbolImplementation();
+
+        public ImmutableArray<Symbol> MakeGlobalSymbols(Symbol rootSymbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var module = rootSymbol.ContainingSymbol as MetadataModuleSymbol;
             if (module is null) throw new ArgumentException("Containing symbol of the root symbol must be a MetadataModuleSymbol.");
@@ -28,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return result.ToImmutableAndFree();
         }
 
-        public static ImmutableArray<Symbol> MakeChildSymbols(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public ImmutableArray<Symbol> MakeChildSymbols(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             if (symbol is MetadataModuleSymbol mms) return ImmutableArray.Create<Symbol>(mms.GlobalNamespace);
             var msymbol = symbol as IModelSymbol;
@@ -54,23 +56,35 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return result.ToImmutableAndFree();
         }
 
-        public static T? AssignSymbolPropertyValue<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public bool AssignSymbolPropertyValue<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken, out T? result)
         {
-            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return default;
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol)
+            {
+                result = default;
+                return false;
+            }
             if (symbolPropertyName == SymbolConstants.NameProperty)
             {
-                return (T)(object)AssignNameProperty(symbol, diagnostics);
+                throw new NotImplementedException("Call AssignNameProperty to assign the Name property of a symbol.");
             }
             if (symbolPropertyName == SymbolConstants.MetadataNameProperty)
             {
-                return (T)(object)AssignMetadataNameProperty(symbol, diagnostics);
+                throw new NotImplementedException("Call AssignMetadataNameProperty to assign the MetadataName property of a symbol.");
             }
             var values = ArrayBuilder<T>.GetInstance();
             try
             {
                 AssignSymbolProperty(symbol, symbolPropertyName, values, true, diagnostics, cancellationToken);
-                if (values.Count > 0) return values[0];
-                else return default;
+                if (values.Count > 0)
+                {
+                    result = values[0];
+                    return true;
+                }
+                else
+                {
+                    result = default;
+                    return false;
+                }
             }
             finally
             {
@@ -78,15 +92,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             }
         }
 
-        public static ImmutableArray<T> AssignSymbolPropertyValues<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public bool AssignSymbolPropertyValues<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken, out ImmutableArray<T> result)
         {
-            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return ImmutableArray<T>.Empty;
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol)
+            {
+                result = default;
+                return false;
+            }
             var values = ArrayBuilder<T>.GetInstance();
             AssignSymbolProperty<T>(symbol, symbolPropertyName, values, false, diagnostics, cancellationToken);
-            return values.ToImmutableAndFree();
+            result = values.ToImmutableAndFree();
+            return result.Length > 0;
         }
 
-        private static string AssignNameProperty(Symbol symbol, DiagnosticBag diagnostics)
+        public string AssignNameProperty(Symbol symbol, DiagnosticBag diagnostics)
         {
             if (symbol is IModelSymbol msymbol && msymbol.ModelObject != null)
             {
@@ -96,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return string.Empty;
         }
 
-        private static string AssignMetadataNameProperty(Symbol symbol, DiagnosticBag diagnostics)
+        public string AssignMetadataNameProperty(Symbol symbol, DiagnosticBag diagnostics)
         {
             if (symbol is IModelSymbol msymbol && msymbol.ModelObject != null)
             {
@@ -139,6 +158,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             {
                 result.Add((T)value);
             }
+        }
+
+        public void CompleteImports(Symbol symbol, Location locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AssignNonSymbolProperties(Symbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

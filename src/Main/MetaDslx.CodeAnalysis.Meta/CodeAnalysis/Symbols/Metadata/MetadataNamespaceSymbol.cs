@@ -7,6 +7,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
     public partial class MetadataNamespaceSymbol
     {
+
         public partial class Error
         {
             public override NamespaceExtent Extent
