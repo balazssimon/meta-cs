@@ -13,8 +13,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [Symbol]
     public abstract partial class BinaryExpressionSymbol : ExpressionSymbol
     {
-        private BinaryOperatorAnalysisResult _analysisResult;
-
         /// <summary>
         /// Kind of binary operation.
         /// </summary>
@@ -51,51 +49,126 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// created to work on the <see cref="System.Nullable{T}" /> versions of those
         /// value types.
         /// </summary>
-        [SymbolProperty]
-        public virtual bool IsLifted { get; }
+        public abstract bool IsLifted { get; }
 
         /// <summary>
         /// The conversion to be applied to the left operand before performing the operation.
         /// </summary>
-        public virtual Conversion LeftConversion
-        {
-            get
-            {
-                //ForceComplete(CompletionParts.FinishBindOperator, null, default);
-                return _analysisResult.LeftConversion;
-            }
-        }
+        public abstract Conversion LeftConversion { get; }
 
         /// <summary>
         /// The conversion to be applied to the right operand before performing the operation.
         /// </summary>
-        public virtual Conversion RightConversion
-        {
-            get
-            {
-                //ForceComplete(CompletionParts.FinishBindOperator, null, default);
-                return _analysisResult.RightConversion;
-            }
-        }
+        public abstract Conversion RightConversion { get; }
 
-        protected virtual void BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+    }
+
+
+    namespace Completion
+    {
+        public partial class CompletionBinaryExpressionSymbol
         {
-            var compilation = this.DeclaringCompilation;
-            if (compilation is null) return;
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            var result = BinaryOperatorOverloadResolutionResult.GetInstance();
-            compilation.OverloadResolution.BinaryOperatorOverloadResolution(this.OperatorKind, this.LeftOperand, this.RightOperand, result, ref useSiteDiagnostics);
-            _analysisResult = result.Best;
-            result.Free();
-            if (useSiteDiagnostics is not null)
+            private BinaryOperatorAnalysisResult _analysisResult;
+
+            protected virtual BinaryOperatorSymbol? CompleteSymbolProperty_OperatorMethod(DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
-                var location = this.Locations.FirstOrNone();
-                foreach (var diag in useSiteDiagnostics)
+                if (SymbolImplementation.AssignSymbolPropertyValue<BinaryOperatorSymbol>(this, nameof(OperatorMethod), diagnostics, cancellationToken, out var result))
                 {
-                    diagnostics.Add(diag.ToDiagnostic(location));
+                    _analysisResult = BindMetadataOperator(result, diagnostics, cancellationToken);
+                }
+                else
+                {
+                    _analysisResult = BindSourceOperator(diagnostics, cancellationToken);
+                }
+                return _analysisResult.Signature.Method as BinaryOperatorSymbol;
+            }
+
+            public override bool IsLifted
+            {
+                get
+                {
+                    ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
+                    return _analysisResult.Signature.IsLifted;
                 }
             }
-        }
 
+            public override Conversion LeftConversion
+            {
+                get
+                {
+                    ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
+                    return _analysisResult.LeftConversion;
+                }
+            }
+
+            public override Conversion RightConversion
+            {
+                get
+                {
+                    ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
+                    return _analysisResult.LeftConversion;
+                }
+            }
+
+            protected virtual BinaryOperatorAnalysisResult BindMetadataOperator(BinaryOperatorSymbol? result, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                BinaryOperatorAnalysisResult analysisResult;
+                var leftType = LeftOperand?.Type;
+                var rightType = RightOperand?.Type;
+                var isLifted = false;
+                if (leftType is NullableTypeSymbol leftNullableType)
+                {
+                    isLifted = true;
+                    leftType = leftNullableType.InnerType;
+                }
+                if (rightType is NullableTypeSymbol rightNullableType)
+                {
+                    isLifted = true;
+                    rightType = rightNullableType.InnerType;
+                }
+                var returnType = result?.ReturnType;
+                if (result is not null && result.Parameters.Length >= 2)
+                {
+                    var leftParamType = result.Parameters[0].Type;
+                    var rightParamType = result.Parameters[1].Type;
+                    HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
+                    if (this.DeclaringCompilation is not null)
+                    {
+                        var leftConversion = leftType is not null && leftParamType is not null ? this.DeclaringCompilation.Conversions.ClassifyConversionFromType(leftType, leftParamType, ref useSiteDiagnostics) : Conversions.NoConversion;
+                        var rightConversion = rightType is not null && rightParamType is not null ? this.DeclaringCompilation.Conversions.ClassifyConversionFromType(rightType, rightParamType, ref useSiteDiagnostics) : Conversions.NoConversion;
+                        if (this.AddSymbolDiagnostics(useSiteDiagnostics) || leftConversion == Conversions.NoConversion || rightConversion == Conversions.NoConversion)
+                        {
+                            analysisResult = BinaryOperatorAnalysisResult.Inapplicable(new BinaryOperatorSignature(OperatorKind, leftType, rightType, returnType, isLifted, result), leftConversion, rightConversion);
+                        }
+                        else
+                        {
+                            analysisResult = BinaryOperatorAnalysisResult.Applicable(new BinaryOperatorSignature(OperatorKind, leftType, rightType, returnType, isLifted, result), leftConversion, rightConversion);
+                        }
+                    }
+                    else
+                    {
+                        analysisResult = BinaryOperatorAnalysisResult.Inapplicable(new BinaryOperatorSignature(OperatorKind, leftType, rightType, returnType, isLifted, result), Conversions.NoConversion, Conversions.NoConversion);
+                    }
+                }
+                else
+                {
+                    analysisResult = BinaryOperatorAnalysisResult.Inapplicable(new BinaryOperatorSignature(OperatorKind, leftType, rightType, returnType, isLifted, result), Conversions.NoConversion, Conversions.NoConversion);
+                }
+                return analysisResult;
+            }
+
+            protected virtual BinaryOperatorAnalysisResult BindSourceOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                var compilation = this.DeclaringCompilation;
+                if (compilation is null) return default;
+                HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
+                var result = BinaryOperatorOverloadResolutionResult.GetInstance();
+                compilation.OverloadResolution.BinaryOperatorOverloadResolution(this.OperatorKind, this.LeftOperand, this.RightOperand, result, ref useSiteDiagnostics);
+                var analysisResult = result.Best;
+                result.Free();
+                this.AddSymbolDiagnostics(useSiteDiagnostics);
+                return analysisResult;
+            }
+        }
     }
 }

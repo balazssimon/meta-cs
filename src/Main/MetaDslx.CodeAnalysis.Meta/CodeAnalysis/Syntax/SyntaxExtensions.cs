@@ -108,6 +108,15 @@ namespace MetaDslx.CodeAnalysis
             return node.Language.SyntaxFacts.IsStatement(node);
         }
 
+        public static SyntaxNodeOrToken GetSyntax(this SourceLocation location)
+        {
+            var tree = location.SourceTree;
+            var root = tree.GetRoot();
+            var token = root.FindToken(location.SourceSpan.Start);
+            if (token.Span == location.SourceSpan) return token;
+            return root.FindNode(location.SourceSpan, findInsideTrivia: false, getInnermostNodeForTie: true);
+        }
+
         public static TNode WithAnnotations<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : LanguageSyntaxNode
         {
             return (TNode)node.Green.SetAnnotations(annotations).CreateRed();

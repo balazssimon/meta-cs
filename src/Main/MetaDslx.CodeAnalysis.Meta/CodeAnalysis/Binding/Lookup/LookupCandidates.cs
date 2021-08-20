@@ -55,7 +55,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static readonly ObjectPool<LookupCandidates> s_poolInstance = CreatePool();
 
         // if someone needs to create a pool
-        public static ObjectPool<LookupCandidates> CreatePool()
+        private static ObjectPool<LookupCandidates> CreatePool()
         {
             ObjectPool<LookupCandidates> pool = null;
             pool = new ObjectPool<LookupCandidates>(() => new LookupCandidates(pool), 128); // we rarely need more than 10

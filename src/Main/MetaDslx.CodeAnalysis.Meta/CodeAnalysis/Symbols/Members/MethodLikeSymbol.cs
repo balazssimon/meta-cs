@@ -11,7 +11,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a method or method-like symbol (including constructor,
     /// destructor, operator, or property/event accessor).
     /// </summary>
-    public abstract partial class MethodLikeSymbol : MemberSymbol
+    public abstract partial class MethodLikeSymbol : MemberSymbol, IInvocableMember
     {
         [SymbolProperty]
         public virtual bool IsAsync => false;

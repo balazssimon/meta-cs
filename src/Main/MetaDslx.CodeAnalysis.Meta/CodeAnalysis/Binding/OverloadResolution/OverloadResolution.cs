@@ -80,7 +80,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         // Perform overload resolution on the given method group, with the given arguments and
         // names. The names can be null if no names were supplied to any arguments.
-        public void ObjectCreationOverloadResolution(ImmutableArray<MethodSymbol> constructors, AnalyzedArguments arguments, OverloadResolutionResult<MethodSymbol> result, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public void ObjectCreationOverloadResolution(ImmutableArray<ConstructorSymbol> constructors, AnalyzedArguments arguments, OverloadResolutionResult<ConstructorSymbol> result, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             var results = result.ResultsBuilder;
 
@@ -95,16 +95,16 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        // Perform overload resolution on the given method group, with the given arguments and
+        // Perform overload resolution on the given method or property group, with the given arguments and
         // names. The names can be null if no names were supplied to any arguments.
         public void MethodInvocationOverloadResolution(
-            ArrayBuilder<MethodSymbol> methods,
+            ArrayBuilder<MethodLikeSymbol> methods,
             ArrayBuilder<TypeWithAnnotations> typeArguments,
             ExpressionSymbol receiver,
             AnalyzedArguments arguments,
             NamedTypeSymbol containingType,
             bool isStaticContext,
-            OverloadResolutionResult<MethodSymbol> result,
+            OverloadResolutionResult<MethodLikeSymbol> result,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics,
             bool isMethodGroupConversion = false,
             bool allowRefOmittedArguments = false,
@@ -121,13 +121,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         // Perform overload resolution on the given property group, with the given arguments and
         // names. The names can be null if no names were supplied to any arguments.
-        public void PropertyOverloadResolution(
-            ArrayBuilder<PropertySymbol> indexers,
+        public void IndexerOverloadResolution(
+            ArrayBuilder<IndexerSymbol> indexers,
             ExpressionSymbol receiverOpt,
             AnalyzedArguments arguments,
             NamedTypeSymbol containingType,
             bool isStaticContext,
-            OverloadResolutionResult<PropertySymbol> result,
+            OverloadResolutionResult<IndexerSymbol> result,
             bool allowRefOmittedArguments,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
@@ -153,7 +153,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             bool allowUnexpandedForm = true,
             RefKind returnRefKind = default,
             TypeSymbol returnType = null)
-            where TMember : MemberSymbol
+            where TMember : MemberSymbol, IInvocableMember
         {
             var results = result.ResultsBuilder;
 
@@ -299,7 +299,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             ArrayBuilder<MemberResolutionResult<TMember>> results,
             AnalyzedArguments arguments,
             bool isStaticContext,
-            ExpressionSymbol receiverOpt) where TMember : MemberSymbol
+            ExpressionSymbol receiverOpt) 
+            where TMember : MemberSymbol
         {
             // When the feature 'ImprovedOverloadCandidates' is enabled, we do not include instance members when the receiver
             // is a type, or static members when the receiver is an instance. This does not apply to extension method invocations,
@@ -322,7 +323,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             RemoveStaticInstanceMismatches(results, keepStatic);
         }
 
-        private static void RemoveStaticInstanceMismatches<TMember>(ArrayBuilder<MemberResolutionResult<TMember>> results, bool requireStatic) where TMember : MemberSymbol
+        private static void RemoveStaticInstanceMismatches<TMember>(ArrayBuilder<MemberResolutionResult<TMember>> results, bool requireStatic) 
+            where TMember : MemberSymbol
         {
             for (int f = 0; f < results.Count; ++f)
             {
@@ -335,7 +337,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private static void RemoveMethodsNotDeclaredStatic<TMember>(ArrayBuilder<MemberResolutionResult<TMember>> results) where TMember : MemberSymbol
+        private static void RemoveMethodsNotDeclaredStatic<TMember>(ArrayBuilder<MemberResolutionResult<TMember>> results)
+            where TMember : MemberSymbol
         {
             // RemoveStaticInstanceMismatches allows methods that do not need a receiver but are not declared static,
             // such as a local function that is not declared static. This eliminates methods that are not actually
@@ -351,7 +354,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private void RemoveConstraintViolations<TMember>(ArrayBuilder<MemberResolutionResult<TMember>> results) where TMember : MemberSymbol
+        private void RemoveConstraintViolations<TMember>(ArrayBuilder<MemberResolutionResult<TMember>> results)
+            where TMember : MemberSymbol
         {
             // When the feature 'ImprovedOverloadCandidates' is enabled, we do not include methods for which the type arguments
             // violate the constraints of the method's type parameters.
@@ -425,7 +429,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             ArrayBuilder<MemberResolutionResult<TMember>> results,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics,
             RefKind? returnRefKind,
-            TypeSymbol returnType) where TMember : MemberSymbol
+            TypeSymbol returnType) 
+            where TMember : MemberSymbol
         {
             // When the feature 'ImprovedOverloadCandidates' is enabled, then a delegate conversion overload resolution
             // rejects candidates that have the wrong return ref kind or return type.
@@ -496,7 +501,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private void AddConstructorToCandidateSet(MethodSymbol constructor, ArrayBuilder<MemberResolutionResult<MethodSymbol>> results,
+        private void AddConstructorToCandidateSet(ConstructorSymbol constructor, ArrayBuilder<MemberResolutionResult<ConstructorSymbol>> results,
             AnalyzedArguments arguments, bool completeResults, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             // Filter out constructors with unsupported metadata.
@@ -505,7 +510,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 Debug.Assert(!MemberAnalysisResult.UnsupportedMetadata().HasUseSiteDiagnosticToReportFor(constructor));
                 if (completeResults)
                 {
-                    results.Add(new MemberResolutionResult<MethodSymbol>(constructor, constructor, MemberAnalysisResult.UnsupportedMetadata()));
+                    results.Add(new MemberResolutionResult<ConstructorSymbol>(constructor, constructor, MemberAnalysisResult.UnsupportedMetadata()));
                 }
                 return;
             }
@@ -527,12 +532,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             // If the constructor has a use site diagnostic, we don't want to discard it because we'll have to report the diagnostic later.
             if (result.IsValid || completeResults || result.HasUseSiteDiagnosticToReportFor(constructor))
             {
-                results.Add(new MemberResolutionResult<MethodSymbol>(constructor, constructor, result));
+                results.Add(new MemberResolutionResult<ConstructorSymbol>(constructor, constructor, result));
             }
         }
 
         private MemberAnalysisResult IsConstructorApplicableInNormalForm(
-            MethodSymbol constructor,
+            ConstructorSymbol constructor,
             AnalyzedArguments arguments,
             bool completeResults,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -569,7 +574,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         private MemberAnalysisResult IsConstructorApplicableInExpandedForm(
-            MethodSymbol constructor,
+            ConstructorSymbol constructor,
             AnalyzedArguments arguments,
             bool completeResults,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -1139,8 +1144,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         // completeResults is false, then invalid results don't have to be stored. The results will
         // still contain all possible successful resolution.
         private void PerformObjectCreationOverloadResolution(
-            ArrayBuilder<MemberResolutionResult<MethodSymbol>> results,
-            ImmutableArray<MethodSymbol> constructors,
+            ArrayBuilder<MemberResolutionResult<ConstructorSymbol>> results,
+            ImmutableArray<ConstructorSymbol> constructors,
             AnalyzedArguments arguments,
             bool completeResults,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -1151,7 +1156,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // SPEC: to A (7.5.3.1). If the set of candidate instance constructors is empty, or if a 
             // SPEC: single best instance constructor cannot be identified, a binding-time error occurs.
 
-            foreach (MethodSymbol constructor in constructors)
+            foreach (ConstructorSymbol constructor in constructors)
             {
                 AddConstructorToCandidateSet(constructor, results, arguments, completeResults, ref useSiteDiagnostics);
             }
@@ -1490,8 +1495,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             // implicit conversion from EX to PX, and for at least one argument, the conversion from
             // EX to PX is better than the conversion from EX to QX.
 
-            var m1LeastOverriddenParameters = GetParameters(m1.LeastOverriddenMember);
-            var m2LeastOverriddenParameters = GetParameters(m2.LeastOverriddenMember);
+            var m1LeastOverriddenParameters = ((IInvocableMember)m1.LeastOverriddenMember).Parameters;
+            var m2LeastOverriddenParameters = ((IInvocableMember)m2.LeastOverriddenMember).Parameters;
 
             bool allSame = true; // Are all parameter types equivalent by identify conversions, ignoring Task-like differences?
             int i;
@@ -1800,8 +1805,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             var uninst1 = ArrayBuilder<TypeSymbol>.GetInstance();
             var uninst2 = ArrayBuilder<TypeSymbol>.GetInstance();
-            var m1Original = GetParameters((TMember)m1.LeastOverriddenMember.OriginalDefinition);
-            var m2Original = GetParameters((TMember)m2.LeastOverriddenMember.OriginalDefinition);
+            var m1Original = ((IInvocableMember)m1.LeastOverriddenMember.OriginalDefinition).Parameters;
+            var m2Original = ((IInvocableMember)m2.LeastOverriddenMember.OriginalDefinition).Parameters;
             for (i = 0; i < arguments.Count; ++i)
             {
                 // If these are both applicable varargs methods and we're looking at the __arglist argument
@@ -1909,9 +1914,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             return valOverInPreference;
         }
 
-        private static void GetParameterCounts<TMember>(MemberResolutionResult<TMember> m, ArrayBuilder<ArgumentSymbol> arguments, out int declaredParameterCount, out int parametersUsedIncludingExpansionAndOptional) where TMember : MemberSymbol
+        private static void GetParameterCounts<TMember>(MemberResolutionResult<TMember> m, ArrayBuilder<ArgumentSymbol> arguments, out int declaredParameterCount, out int parametersUsedIncludingExpansionAndOptional) 
+            where TMember : MemberSymbol
         {
-            declaredParameterCount = GetParameters(m.Member).Length;
+            declaredParameterCount = ((IInvocableMember)m.Member).Parameters.Length;
 
             if (m.Result.Kind == MemberResolutionKind.ApplicableInExpandedForm)
             {
@@ -2803,8 +2809,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             out bool hasAnyRefOmittedArgument) where TMember : MemberSymbol
         {
             hasAnyRefOmittedArgument = false;
-            var parameters = GetParameters(member);
-            var isVarArg = IsVarArg(member);
+            var parameters = ((IInvocableMember)member).Parameters;
+            var isVarArg = ((IInvocableMember)member).IsVarArg;
 
             // We simulate an extra parameter for vararg methods
             int parameterCount = parameters.Length + (isVarArg ? 1 : 0);
@@ -2902,7 +2908,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var types = ArrayBuilder<TypeWithAnnotations>.GetInstance();
             var refs = ArrayBuilder<RefKind>.GetInstance();
             bool anyRef = false;
-            var parameters = GetParameters(member);
+            var parameters = ((IInvocableMember)member).Parameters;
             hasAnyRefOmittedArgument = false;
 
             for (int arg = 0; arg < arguments.Arguments.Count; ++arg)
@@ -3207,7 +3213,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 effectiveParameters,
                 arguments,
                 argsToParamsMap,
-                isVararg: IsVarArg(member),
+                isVararg: ((IInvocableMember)member).IsVarArg,
                 hasAnyRefOmittedArgument: hasAnyRefOmittedArgument,
                 ignoreOpenTypes: ignoreOpenTypes,
                 completeResults: completeResults,
@@ -3499,33 +3505,21 @@ namespace MetaDslx.CodeAnalysis.Binding
             return final.IsVarArg && ((ParameterSymbol)final.OriginalDefinition).Type is ArrayTypeSymbol;
         }
 
-        private static ImmutableArray<ParameterSymbol> GetParameters(MemberSymbol member)
+        private static ImmutableArray<TypeWithAnnotations> GetParameterTypes<TMember>(TMember member)
+            where TMember: MemberSymbol
         {
-            if (member is MethodLikeSymbol method) return method.Parameters; 
-            return ImmutableArray<ParameterSymbol>.Empty;
+            return ((IInvocableMember)member).Parameters.Select(p => p.TypeWithAnnotations).ToImmutableArray();
         }
 
-        private static ImmutableArray<TypeWithAnnotations> GetParameterTypes(MemberSymbol member)
+        private static ImmutableArray<RefKind> GetParameterRefKinds<TMember>(TMember member)
+            where TMember : MemberSymbol
         {
-            if (member is MethodLikeSymbol method) return method.Parameters.Select(p => p.TypeWithAnnotations).ToImmutableArray();
-            return ImmutableArray<TypeWithAnnotations>.Empty;
-        }
-
-        private static ImmutableArray<RefKind> GetParameterRefKinds(MemberSymbol member)
-        {
-            if (member is MethodLikeSymbol method) return method.Parameters.Select(p => p.RefKind).ToImmutableArray();
-            return ImmutableArray<RefKind>.Empty;
+            return ((IInvocableMember)member).Parameters.Select(p => p.RefKind).ToImmutableArray();
         }
 
         private static ImmutableArray<TypeSymbol> GetTypeArguments(MemberSymbol member)
         {
             return ImmutableArray<TypeSymbol>.Empty;
-        }
-
-        private static bool IsVarArg(MemberSymbol member)
-        {
-            if (member is MethodLikeSymbol method) return method.IsVarArg;
-            return false;
         }
 
         private bool ContainsTypeParameter(TypeSymbol parameterType, MethodSymbol parameterContainer)

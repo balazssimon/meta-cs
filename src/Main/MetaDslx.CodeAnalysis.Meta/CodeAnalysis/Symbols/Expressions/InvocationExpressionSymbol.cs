@@ -9,7 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents an invocation of a method.
     /// </summary>
     [Symbol]
-    public abstract partial class InvocationExpressionSymbol : ExpressionSymbol
+    public abstract partial class InvocationExpressionSymbol : ExpressionSymbol, IInvocationExpressionSymbol
     {
         /// <summary>
         /// The method or operation to be invoked.
@@ -26,5 +26,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </remarks>
         [SymbolProperty]
         public abstract ImmutableArray<ArgumentSymbol> Arguments { get; }
+
+        public bool IsMethodInvocation => true;
+
+        public bool IsPropertyInvocation => false;
     }
 }

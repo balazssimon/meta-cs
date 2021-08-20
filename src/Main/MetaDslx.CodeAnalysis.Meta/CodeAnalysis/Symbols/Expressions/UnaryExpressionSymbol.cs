@@ -50,66 +50,25 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual Conversion OperandConversion { get; }
 
-        protected UnaryOperatorAnalysisResult BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            var compilation = this.DeclaringCompilation;
-            if (compilation is null) return default;
-            HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
-            var result = UnaryOperatorOverloadResolutionResult.GetInstance();
-            compilation.OverloadResolution.UnaryOperatorOverloadResolution(this.OperatorKind, this.Operand, result, ref useSiteDiagnostics);
-            var analysisResult = result.Best;
-            result.Free();
-            this.AddSymbolDiagnostics(useSiteDiagnostics);
-            return analysisResult;
-        }
     }
 
-    namespace Source
+    namespace Completion
     {
-        public partial class SourceUnaryExpressionSymbol
+        public partial class CompletionUnaryExpressionSymbol
         {
             private UnaryOperatorAnalysisResult _analysisResult;
 
-            protected override UnaryOperatorSymbol? CompleteSymbolProperty_OperatorMethod(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            protected virtual UnaryOperatorSymbol? CompleteSymbolProperty_OperatorMethod(DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
                 if (SymbolImplementation.AssignSymbolPropertyValue<UnaryOperatorSymbol>(this, nameof(OperatorMethod), diagnostics, cancellationToken, out var result))
                 {
-                    if (result is not null && result.Parameters.Length > 0)
-                    {
-                        var returnType = result.ReturnType;
-                        var operandType = Operand?.Type;
-                        var paramType = result.Parameters[0].Type;
-                        var isLifted = false;
-                        HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
-                        if (operandType is NullableTypeSymbol nullableType)
-                        {
-                            isLifted = true;
-                            operandType = nullableType.InnerType;
-                        }
-                        if (this.DeclaringCompilation is not null)
-                        {
-                            var conversion = operandType is not null && paramType is not null ? this.DeclaringCompilation.Conversions.ClassifyConversionFromType(operandType, paramType, ref useSiteDiagnostics) : Conversions.NoConversion;
-                            if (this.AddSymbolDiagnostics(useSiteDiagnostics) || conversion == Conversions.NoConversion)
-                            {
-                                _analysisResult = UnaryOperatorAnalysisResult.Inapplicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), conversion);
-                            }
-                            else
-                            {
-                                _analysisResult = UnaryOperatorAnalysisResult.Applicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), conversion);
-                            }
-                        }
-                        else
-                        {
-                            _analysisResult = UnaryOperatorAnalysisResult.Inapplicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), Conversions.NoConversion);
-                        }
-                    }
+                    _analysisResult = BindMetadataOperator(result, diagnostics, cancellationToken);
                 }
                 else
                 {
-                    _analysisResult = BindOperator(diagnostics, cancellationToken);
-                    result = _analysisResult.Signature.Method as UnaryOperatorSymbol;
+                    _analysisResult = BindSourceOperator(diagnostics, cancellationToken);
                 }
-                return result;
+                return _analysisResult.Signature.Method as UnaryOperatorSymbol;
             }
 
             public override bool IsLifted
@@ -128,6 +87,58 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
                     return _analysisResult.Conversion;
                 }
+            }
+
+            protected UnaryOperatorAnalysisResult BindMetadataOperator(UnaryOperatorSymbol? result, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                UnaryOperatorAnalysisResult analysisResult;
+                var returnType = result?.ReturnType;
+                var operandType = Operand?.Type;
+                var isLifted = false;
+                if (operandType is NullableTypeSymbol nullableType)
+                {
+                    isLifted = true;
+                    operandType = nullableType.InnerType;
+                }
+                if (result is not null && result.Parameters.Length >= 1)
+                {
+                    var paramType = result.Parameters[0].Type;
+                    HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
+                    if (this.DeclaringCompilation is not null)
+                    {
+                        var conversion = operandType is not null && paramType is not null ? this.DeclaringCompilation.Conversions.ClassifyConversionFromType(operandType, paramType, ref useSiteDiagnostics) : Conversions.NoConversion;
+                        if (this.AddSymbolDiagnostics(useSiteDiagnostics) || conversion == Conversions.NoConversion)
+                        {
+                            analysisResult = UnaryOperatorAnalysisResult.Inapplicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), conversion);
+                        }
+                        else
+                        {
+                            analysisResult = UnaryOperatorAnalysisResult.Applicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), conversion);
+                        }
+                    }
+                    else
+                    {
+                        analysisResult = UnaryOperatorAnalysisResult.Inapplicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), Conversions.NoConversion);
+                    }
+                }
+                else
+                {
+                    analysisResult = UnaryOperatorAnalysisResult.Inapplicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), Conversions.NoConversion);
+                }
+                return analysisResult;
+            }
+
+            protected UnaryOperatorAnalysisResult BindSourceOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                var compilation = this.DeclaringCompilation;
+                if (compilation is null) return default;
+                HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
+                var result = UnaryOperatorOverloadResolutionResult.GetInstance();
+                compilation.OverloadResolution.UnaryOperatorOverloadResolution(this.OperatorKind, this.Operand, result, ref useSiteDiagnostics);
+                var analysisResult = result.Best;
+                result.Free();
+                this.AddSymbolDiagnostics(useSiteDiagnostics);
+                return analysisResult;
             }
         }
     }

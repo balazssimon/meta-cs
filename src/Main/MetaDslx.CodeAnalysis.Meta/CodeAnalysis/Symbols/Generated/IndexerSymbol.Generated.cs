@@ -240,33 +240,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-        public override bool IsAsync
-        {
-            get
-            {
-                this.ForceComplete(CompletionParts.FinishComputingProperty_IsAsync, null, default);
-                return _isAsync;
-            }
-        }
-
-        public override global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol ReturnType
-        {
-            get
-            {
-                this.ForceComplete(CompletionParts.FinishComputingProperty_ReturnType, null, default);
-                return _returnType;
-            }
-        }
-
-        public override global::Microsoft.CodeAnalysis.RefKind ReturnRefKind
-        {
-            get
-            {
-                this.ForceComplete(CompletionParts.FinishComputingProperty_ReturnRefKind, null, default);
-                return _returnRefKind;
-            }
-        }
-
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> Parameters
         {
             get
@@ -276,14 +249,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol Body
-        {
-            get
-            {
-                this.ForceComplete(CompletionParts.FinishComputingProperty_Body, null, default);
-                return _body;
-            }
-        }
+        public override TypeSymbol Type => throw new NotImplementedException();
 
         #region Completion
 
@@ -436,39 +402,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_IsSealed);
                     }
                 }
-                else if (incompletePart == CompletionParts.StartComputingProperty_IsAsync || incompletePart == CompletionParts.FinishComputingProperty_IsAsync)
-                {
-                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_IsAsync))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        _isAsync = CompleteSymbolProperty_IsAsync(diagnostics, cancellationToken);
-                        AddSymbolDiagnostics(diagnostics);
-                        diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_IsAsync);
-                    }
-                }
-                else if (incompletePart == CompletionParts.StartComputingProperty_ReturnType || incompletePart == CompletionParts.FinishComputingProperty_ReturnType)
-                {
-                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ReturnType))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        _returnType = CompleteSymbolProperty_ReturnType(diagnostics, cancellationToken);
-                        AddSymbolDiagnostics(diagnostics);
-                        diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ReturnType);
-                    }
-                }
-                else if (incompletePart == CompletionParts.StartComputingProperty_ReturnRefKind || incompletePart == CompletionParts.FinishComputingProperty_ReturnRefKind)
-                {
-                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ReturnRefKind))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        _returnRefKind = CompleteSymbolProperty_ReturnRefKind(diagnostics, cancellationToken);
-                        AddSymbolDiagnostics(diagnostics);
-                        diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ReturnRefKind);
-                    }
-                }
                 else if (incompletePart == CompletionParts.StartComputingProperty_Parameters || incompletePart == CompletionParts.FinishComputingProperty_Parameters)
                 {
                     if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Parameters))
@@ -478,17 +411,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Parameters);
-                    }
-                }
-                else if (incompletePart == CompletionParts.StartComputingProperty_Body || incompletePart == CompletionParts.FinishComputingProperty_Body)
-                {
-                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Body))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        _body = CompleteSymbolProperty_Body(diagnostics, cancellationToken);
-                        AddSymbolDiagnostics(diagnostics);
-                        diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_Body);
                     }
                 }
                 else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)
@@ -650,33 +572,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return result;
         }
 
-        protected virtual bool CompleteSymbolProperty_IsAsync(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            SymbolImplementation.AssignSymbolPropertyValue<bool>(this, nameof(IsAsync), diagnostics, cancellationToken, out var result);
-            return result;
-        }
-
-        protected virtual global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol CompleteSymbolProperty_ReturnType(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(ReturnType), diagnostics, cancellationToken, out var result);
-            return result;
-        }
-
-        protected virtual global::Microsoft.CodeAnalysis.RefKind CompleteSymbolProperty_ReturnRefKind(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            SymbolImplementation.AssignSymbolPropertyValue<global::Microsoft.CodeAnalysis.RefKind>(this, nameof(ReturnRefKind), diagnostics, cancellationToken, out var result);
-            return result;
-        }
-
         protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> CompleteSymbolProperty_Parameters(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol>(this, nameof(Parameters), diagnostics, cancellationToken, out var result);
-            return result;
-        }
-
-        protected virtual global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol CompleteSymbolProperty_Body(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol>(this, nameof(Body), diagnostics, cancellationToken, out var result);
             return result;
         }
 
