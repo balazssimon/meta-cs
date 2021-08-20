@@ -7,12 +7,14 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class ScriptSymbol : ImplicitNamedTypeSymbol
+    public sealed class ScriptSymbol : SourceNamedTypeSymbol
     {
         protected ScriptSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, object modelObject) 
             : base(containingSymbol, declaration, modelObject)
         {
         }
+
+        public override bool IsImplicitlyDeclared => true;
 
         /// <summary>
         /// Returns null for a submission class.

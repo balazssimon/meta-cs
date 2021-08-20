@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis
         private readonly Lazy<Imports> _globalImports;
         private readonly Lazy<Imports> _previousSubmissionImports;
         private readonly Lazy<AliasSymbol> _globalNamespaceAlias;  // alias symbol used to resolve "global::".
-        private readonly Lazy<ImplicitNamedTypeSymbol?> _scriptClass;
+        private readonly Lazy<ScriptSymbol?> _scriptClass;
 
         // The type of host object model if available.
         private TypeSymbol? _lazyHostObjectTypeSymbol;
@@ -297,7 +297,7 @@ namespace MetaDslx.CodeAnalysis
 
             _options = options;
             _language = _options.Language;
-            _scriptClass = new Lazy<ImplicitNamedTypeSymbol?>(BindScriptClass);
+            _scriptClass = new Lazy<ScriptSymbol?>(BindScriptClass);
             _globalImports = new Lazy<Imports>(BindGlobalImports);
             _previousSubmissionImports = new Lazy<Imports>(ExpandPreviousSubmissionImports);
             _globalNamespaceAlias = new Lazy<AliasSymbol>(CreateGlobalNamespaceAlias);
@@ -1326,9 +1326,10 @@ namespace MetaDslx.CodeAnalysis
         /// full name of the container class stored in <see cref="CompilationOptions.ScriptClassName"/> to find the symbol.
         /// </summary>
         /// <returns>The Script class symbol or null if it is not defined.</returns>
-        private ImplicitNamedTypeSymbol? BindScriptClass()
+        private ScriptSymbol? BindScriptClass()
         {
-            return (ImplicitNamedTypeSymbol?)CommonBindScriptClass();
+            throw new NotImplementedException();
+            //return (ScriptSymbol?)CommonBindScriptClass();
         }
 
         internal bool IsSubmissionSyntaxTree(SyntaxTree tree)

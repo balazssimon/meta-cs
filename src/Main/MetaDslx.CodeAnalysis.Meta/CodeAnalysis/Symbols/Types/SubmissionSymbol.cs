@@ -7,12 +7,14 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class SubmissionSymbol : ImplicitNamedTypeSymbol
+    public sealed class SubmissionSymbol : SourceNamedTypeSymbol
     {
         public SubmissionSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, object modelObject) 
             : base(containingSymbol, declaration, modelObject)
         {
         }
+
+        public override bool IsImplicitlyDeclared => true;
 
         /// <summary>
         /// Returns null for a submission class.
