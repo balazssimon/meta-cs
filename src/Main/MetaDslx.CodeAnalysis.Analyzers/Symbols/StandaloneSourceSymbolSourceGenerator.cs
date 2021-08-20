@@ -19,19 +19,20 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
         public void Execute(StandaloneGeneratorExecutionContext context)
         {
             var generator = new SymbolGenerator();
-            var symbols = new List<SymbolGenerationInfo>();
+            var concreteSymbols = new List<SymbolGenerationInfo>();
             foreach (var symbol in GeneratorUtils.GetNamedTypeSymbols(context.Compilation).Where(s => s.DeclaringSyntaxReferences.Length > 0))
             {
-                var info = GetSymbolGenerationInfo(symbol);
-                if (info != null)
-                {
-                    symbols.Add(info);
-                    Debug.WriteLine($"Generating source symbol for: {info.NamespaceName}.{info.Name}");
-                    var symbolCode = generator.GenerateSymbol(info);
-                    context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
-                }
+                GetSymbolGenerationInfo(symbol);
             }
-            var symbolsByNamespace = symbols.GroupBy(s => s.NamespaceName);
+            foreach (var symbol in _info.Keys)
+            {
+                var info = _info[symbol];
+                if (!info.IsAbstract) concreteSymbols.Add(info);
+                Debug.WriteLine($"Generating source symbol for: {info.NamespaceName}.{info.Name}");
+                var symbolCode = generator.GenerateSymbol(info);
+                context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
+            }
+            var symbolsByNamespace = concreteSymbols.GroupBy(s => s.NamespaceName);
             foreach (var sns in symbolsByNamespace)
             {
                 Debug.WriteLine($"Generating symbol factory for: {sns.Key}");
@@ -43,11 +44,13 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             }
         }
 
-        private SymbolGenerationInfo? GetSymbolGenerationInfo(INamedTypeSymbol symbol)
+        private SymbolGenerationInfo? GetSymbolGenerationInfo(INamedTypeSymbol symbol, bool baseAccess = false)
         {
             if (_info.TryGetValue(symbol, out var info)) return info;
             var isAbstract = !GeneratorUtils.IsAnnotatedSymbol(symbol, out var symbolAttribute);
-            var ns = GeneratorUtils.GetFullName(symbol.ContainingNamespace);
+            if (isAbstract && !baseAccess) return null;
+            if (symbol.SpecialType == SpecialType.System_Object) return null;
+            var ns = symbol.ContainingNamespace.GetFullName();
             var symbolParts = SymbolParts.None;
             var modelObjectOption = ParameterOption.Disabled;
             if (!isAbstract)
@@ -68,14 +71,17 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             }
             var baseSymbol = symbol.BaseType;
             SymbolGenerationInfo? parentInfo = null;
-            while (baseSymbol is not null)
+            if (symbol.GetFullName() != "MetaDslx.CodeAnalysis.Symbols.Symbol")
             {
-                parentInfo = GetSymbolGenerationInfo(baseSymbol);
-                if (parentInfo is not null) break;
-                baseSymbol = baseSymbol.BaseType;
+                while (baseSymbol is not null)
+                {
+                    parentInfo = GetSymbolGenerationInfo(baseSymbol, true);
+                    if (parentInfo is not null) break;
+                    baseSymbol = baseSymbol.BaseType;
+                }
             }
             var cpgi = GetCompletionPartGenerationInfos(symbol);
-            return
+            info =
                 new SymbolGenerationInfo(symbol.Name, ns, parentInfo)
                 {
                     IsAbstract = isAbstract,
@@ -88,11 +94,13 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     ExistingMetadataTypeInfo = cpgi.metadataTypeInfo,
                     ExistingSourceTypeInfo = cpgi.sourceTypeInfo,
                 };
+            _info.Add(symbol, info);
+            return info;
         }
 
         private (List<CompletionPartGenerationInfo> completionParts, ExistingTypeInfo typeInfo, ExistingTypeInfo errorTypeInfo, ExistingTypeInfo completionTypeInfo, ExistingTypeInfo metadataTypeInfo, ExistingTypeInfo sourceTypeInfo) GetCompletionPartGenerationInfos(INamedTypeSymbol symbol)
         {
-            var symbolName = symbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            var symbolName = (symbol.ContainingSymbol as INamespaceOrTypeSymbol)?.GetFullName();
             var errorName = GetSymbolName(symbol, ".Error.Error");
             var completionName = GetSymbolName(symbol, ".Completion.Completion");
             var metadataName = GetSymbolName(symbol, ".Metadata.Metadata");
@@ -134,17 +142,17 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             string? baseType = null;
             var memberNames = new HashSet<string>();
             CollectMemberNames(originalSymbol, symbol, memberNames);
-            if (symbol is not null)
+            if (symbol is not null && symbol.BaseType.SpecialType != SpecialType.System_Object)
             {
-                var baseTypeName = symbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                if (baseTypeName != "object" && baseTypeName != expectedBaseTypeName) baseType = baseTypeName;
+                var baseTypeName = symbol.BaseType.GetFullName();
+                if (baseTypeName != expectedBaseTypeName) baseType = baseTypeName;
             }
             return new ExistingTypeInfo(symbol?.IsSealed ?? false, baseType, memberNames);
         }
 
         private string GetSymbolName(INamedTypeSymbol symbol, string namePrefix)
         {
-            return symbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Substring(8) + namePrefix + symbol.Name;
+            return (symbol.ContainingSymbol as INamespaceOrTypeSymbol)?.GetFullName() + namePrefix + symbol.Name;
         }
 
         private void CollectMemberNames(INamedTypeSymbol originalSymbol, INamedTypeSymbol symbol, HashSet<string> memberNames)
@@ -180,15 +188,15 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     var completeMethodParameters = CompleteMethodParameters.None;
                     foreach (var param in method.Parameters)
                     {
-                        if (param.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::Microsoft.CodeAnalysis.SourceLocation")
+                        if (param.Type.GetFullName() == "Microsoft.CodeAnalysis.SourceLocation")
                         {
                             completeMethodParameters |= CompleteMethodParameters.LocationOpt;
                         }
-                        if (param.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::Microsoft.CodeAnalysis.DiagnosticBag")
+                        if (param.Type.GetFullName() == "Microsoft.CodeAnalysis.DiagnosticBag")
                         {
                             completeMethodParameters |= CompleteMethodParameters.Diagnostics;
                         }
-                        if (param.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::System.Threading.CancellationToken")
+                        if (param.Type.GetFullName() == "System.Threading.CancellationToken")
                         {
                             completeMethodParameters |= CompleteMethodParameters.CancellationToken;
                         }
@@ -201,7 +209,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                             locked = (bool)arg.Value.Value!;
                         }
                     }
-                    return new SymbolMethodGenerationInfo(method.ContainingType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat), method.Name, completeMethodParameters, locked);
+                    return new SymbolMethodGenerationInfo(method.ContainingType.GetFullName(), method.Name, completeMethodParameters, locked);
                 }
             }
             return null;
@@ -240,7 +248,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                             completeMethodParameters = (CompleteMethodParameters)arg.Value.Value!;
                         }
                     }
-                    return new SymbolPropertyGenerationInfo(prop.ContainingType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat), prop.Name, type, itemType, prop.IsAbstract, isSymbol, completeMethodParameters, true);
+                    return new SymbolPropertyGenerationInfo(prop.ContainingType.GetFullName(), prop.Name, type, itemType, prop.IsAbstract, isSymbol, completeMethodParameters, true);
                 }
             }
             return null;

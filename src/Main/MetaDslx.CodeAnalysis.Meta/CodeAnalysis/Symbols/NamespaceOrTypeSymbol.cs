@@ -10,7 +10,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class NamespaceOrTypeSymbol : DeclaredSymbol
+    public abstract partial class NamespaceOrTypeSymbol : DeclaredSymbol
     {
         public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
 

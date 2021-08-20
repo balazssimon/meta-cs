@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class NonDeclaredSymbol : Symbol
+    public abstract partial class NonDeclaredSymbol : Symbol
     {
 
         /// <summary>

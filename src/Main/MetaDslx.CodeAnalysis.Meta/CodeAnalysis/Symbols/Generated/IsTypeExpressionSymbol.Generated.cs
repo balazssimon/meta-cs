@@ -21,6 +21,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class IsTypeExpressionSymbol
 	{
+        public static new class CompletionParts
+        {
+            public static readonly CompletionPart StartComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.StartComputingProperty_Attributes;
+            public static readonly CompletionPart FinishComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.FinishComputingProperty_Attributes;
+            public static readonly CompletionPart StartComputingProperty_ValueOperand = new CompletionPart(nameof(StartComputingProperty_ValueOperand));
+            public static readonly CompletionPart FinishComputingProperty_ValueOperand = new CompletionPart(nameof(FinishComputingProperty_ValueOperand));
+            public static readonly CompletionPart StartComputingProperty_TypeOperand = new CompletionPart(nameof(StartComputingProperty_TypeOperand));
+            public static readonly CompletionPart FinishComputingProperty_TypeOperand = new CompletionPart(nameof(FinishComputingProperty_TypeOperand));
+            public static readonly CompletionPart StartComputingProperty_IsNegated = new CompletionPart(nameof(StartComputingProperty_IsNegated));
+            public static readonly CompletionPart FinishComputingProperty_IsNegated = new CompletionPart(nameof(FinishComputingProperty_IsNegated));
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_ValueOperand, FinishComputingProperty_ValueOperand, StartComputingProperty_TypeOperand, FinishComputingProperty_TypeOperand, StartComputingProperty_IsNegated, FinishComputingProperty_IsNegated, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_ValueOperand, FinishComputingProperty_ValueOperand, StartComputingProperty_TypeOperand, FinishComputingProperty_TypeOperand, StartComputingProperty_IsNegated, FinishComputingProperty_IsNegated, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_ValueOperand, FinishComputingProperty_ValueOperand, StartComputingProperty_TypeOperand, FinishComputingProperty_TypeOperand, StartComputingProperty_IsNegated, FinishComputingProperty_IsNegated, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+        }
+
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);
@@ -44,21 +59,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
 	public abstract partial class CompletionIsTypeExpressionSymbol : MetaDslx.CodeAnalysis.Symbols.IsTypeExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
 	{
-        public static class CompletionParts
-        {
-            public static readonly CompletionPart StartComputingProperty_Attributes = new CompletionPart(nameof(StartComputingProperty_Attributes));
-            public static readonly CompletionPart FinishComputingProperty_Attributes = new CompletionPart(nameof(FinishComputingProperty_Attributes));
-            public static readonly CompletionPart StartComputingProperty_ValueOperand = new CompletionPart(nameof(StartComputingProperty_ValueOperand));
-            public static readonly CompletionPart FinishComputingProperty_ValueOperand = new CompletionPart(nameof(FinishComputingProperty_ValueOperand));
-            public static readonly CompletionPart StartComputingProperty_TypeOperand = new CompletionPart(nameof(StartComputingProperty_TypeOperand));
-            public static readonly CompletionPart FinishComputingProperty_TypeOperand = new CompletionPart(nameof(FinishComputingProperty_TypeOperand));
-            public static readonly CompletionPart StartComputingProperty_IsNegated = new CompletionPart(nameof(StartComputingProperty_IsNegated));
-            public static readonly CompletionPart FinishComputingProperty_IsNegated = new CompletionPart(nameof(FinishComputingProperty_IsNegated));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_ValueOperand, FinishComputingProperty_ValueOperand, StartComputingProperty_TypeOperand, FinishComputingProperty_TypeOperand, StartComputingProperty_IsNegated, FinishComputingProperty_IsNegated, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_ValueOperand, FinishComputingProperty_ValueOperand, StartComputingProperty_TypeOperand, FinishComputingProperty_TypeOperand, StartComputingProperty_IsNegated, FinishComputingProperty_IsNegated, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_ValueOperand, FinishComputingProperty_ValueOperand, StartComputingProperty_TypeOperand, FinishComputingProperty_TypeOperand, StartComputingProperty_IsNegated, FinishComputingProperty_IsNegated, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-        }
-
         private readonly Symbol _container;
         private readonly object? _modelObject;
         private readonly CompletionState _state;

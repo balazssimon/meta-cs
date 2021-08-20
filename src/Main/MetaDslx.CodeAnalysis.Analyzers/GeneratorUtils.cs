@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers
             return false;
         }
 
-        public static string GetFullName(INamespaceOrTypeSymbol namedType)
+        public static string GetFullName(this INamespaceOrTypeSymbol namedType)
         {
             return namedType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Substring(8);
         }

@@ -50,6 +50,7 @@ namespace [symbol.NamespaceName]
             public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
             public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
         }
+        [if (!symbol.IsAbstract)]
 ^
         public [if (symbol.IsSymbolClass)]virtual[else]override[end if] void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
@@ -67,6 +68,7 @@ namespace [symbol.NamespaceName]
             if (visitor is ISymbolVisitor<TArgument, TResult> isv) return isv.Visit(this, argument);
             else return default(TResult);
         }
+        [end if]
 	}
 }
 end template
@@ -858,21 +860,21 @@ namespace [namespaceName]
 {
 	public interface ISymbolVisitor
 	{
-        [loop (symbol: symbols)]
+        [loop (symbol: symbols where !symbol.IsAbstract)]
         void Visit([symbol.Name] symbol);
         [end loop]
 	}
 ^
 	public interface ISymbolVisitor<TResult>
 	{
-        [loop (symbol: symbols)]
+        [loop (symbol: symbols where !symbol.IsAbstract)]
         TResult Visit([symbol.Name] symbol);
         [end loop]
 	}
 ^
 	public interface ISymbolVisitor<TArgument, TResult>
 	{
-        [loop (symbol: symbols)]
+        [loop (symbol: symbols where !symbol.IsAbstract)]
         TResult Visit([symbol.Name] symbol, TArgument argument);
         [end loop]
 	}
@@ -895,7 +897,7 @@ using MetaDslx.CodeAnalysis.Declarations;
 ^
 namespace [namespaceName].Factory
 {
-    [loop (symbol: symbols where symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol" && symbol.SymbolParts != SymbolParts.None)]
+    [loop (symbol: symbols where !symbol.IsAbstract && symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol" && symbol.SymbolParts != SymbolParts.None)]
 	public class [symbol.Name]Factory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)

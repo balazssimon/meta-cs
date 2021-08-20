@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 
         private string GetCompletionPartValue(string? containingTypeFullName, string name)
         {
-            if (containingTypeFullName is not null) return containingTypeFullName + ".CompletionParts." + name;
+            if (containingTypeFullName is not null && containingTypeFullName != NamespaceName + "." + Name) return containingTypeFullName + ".CompletionParts." + name;
             else return $"new CompletionPart(nameof({name}))";
         }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class FieldLikeSymbol : MemberSymbol
+    public abstract partial class FieldLikeSymbol : MemberSymbol
     {
         [SymbolProperty]
         public abstract TypeSymbol Type { get; }

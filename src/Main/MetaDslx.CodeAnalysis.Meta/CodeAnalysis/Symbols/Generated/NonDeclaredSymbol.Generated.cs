@@ -19,7 +19,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-	public abstract partial class StatementSymbol
+	public abstract partial class NonDeclaredSymbol
 	{
         public static new class CompletionParts
         {
@@ -28,23 +28,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
             public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
             public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-        }
-
-        public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
-        {
-            if (visitor is ISymbolVisitor isv) isv.Visit(this);
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor<TResult> visitor)
-        {
-            if (visitor is ISymbolVisitor<TResult> isv) return isv.Visit(this);
-            else return default(TResult);
-        }
-
-        public override TResult Accept<TArgument, TResult>(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            if (visitor is ISymbolVisitor<TArgument, TResult> isv) return isv.Visit(this, argument);
-            else return default(TResult);
         }
 	}
 }

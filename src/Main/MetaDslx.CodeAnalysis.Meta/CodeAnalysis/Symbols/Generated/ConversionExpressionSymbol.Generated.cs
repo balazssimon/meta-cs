@@ -21,6 +21,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class ConversionExpressionSymbol
 	{
+        public static new class CompletionParts
+        {
+            public static readonly CompletionPart StartComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.StartComputingProperty_Attributes;
+            public static readonly CompletionPart FinishComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.FinishComputingProperty_Attributes;
+            public static readonly CompletionPart StartComputingProperty_Operand = new CompletionPart(nameof(StartComputingProperty_Operand));
+            public static readonly CompletionPart FinishComputingProperty_Operand = new CompletionPart(nameof(FinishComputingProperty_Operand));
+            public static readonly CompletionPart StartComputingProperty_TargetType = new CompletionPart(nameof(StartComputingProperty_TargetType));
+            public static readonly CompletionPart FinishComputingProperty_TargetType = new CompletionPart(nameof(FinishComputingProperty_TargetType));
+            public static readonly CompletionPart StartComputingProperty_IsTryCast = new CompletionPart(nameof(StartComputingProperty_IsTryCast));
+            public static readonly CompletionPart FinishComputingProperty_IsTryCast = new CompletionPart(nameof(FinishComputingProperty_IsTryCast));
+            public static readonly CompletionPart StartComputingProperty_IsChecked = new CompletionPart(nameof(StartComputingProperty_IsChecked));
+            public static readonly CompletionPart FinishComputingProperty_IsChecked = new CompletionPart(nameof(FinishComputingProperty_IsChecked));
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Operand, FinishComputingProperty_Operand, StartComputingProperty_TargetType, FinishComputingProperty_TargetType, StartComputingProperty_IsTryCast, FinishComputingProperty_IsTryCast, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Operand, FinishComputingProperty_Operand, StartComputingProperty_TargetType, FinishComputingProperty_TargetType, StartComputingProperty_IsTryCast, FinishComputingProperty_IsTryCast, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Operand, FinishComputingProperty_Operand, StartComputingProperty_TargetType, FinishComputingProperty_TargetType, StartComputingProperty_IsTryCast, FinishComputingProperty_IsTryCast, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+        }
+
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);
@@ -44,23 +61,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
 	public abstract partial class CompletionConversionExpressionSymbol : MetaDslx.CodeAnalysis.Symbols.ConversionExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
 	{
-        public static class CompletionParts
-        {
-            public static readonly CompletionPart StartComputingProperty_Attributes = new CompletionPart(nameof(StartComputingProperty_Attributes));
-            public static readonly CompletionPart FinishComputingProperty_Attributes = new CompletionPart(nameof(FinishComputingProperty_Attributes));
-            public static readonly CompletionPart StartComputingProperty_Operand = new CompletionPart(nameof(StartComputingProperty_Operand));
-            public static readonly CompletionPart FinishComputingProperty_Operand = new CompletionPart(nameof(FinishComputingProperty_Operand));
-            public static readonly CompletionPart StartComputingProperty_TargetType = new CompletionPart(nameof(StartComputingProperty_TargetType));
-            public static readonly CompletionPart FinishComputingProperty_TargetType = new CompletionPart(nameof(FinishComputingProperty_TargetType));
-            public static readonly CompletionPart StartComputingProperty_IsTryCast = new CompletionPart(nameof(StartComputingProperty_IsTryCast));
-            public static readonly CompletionPart FinishComputingProperty_IsTryCast = new CompletionPart(nameof(FinishComputingProperty_IsTryCast));
-            public static readonly CompletionPart StartComputingProperty_IsChecked = new CompletionPart(nameof(StartComputingProperty_IsChecked));
-            public static readonly CompletionPart FinishComputingProperty_IsChecked = new CompletionPart(nameof(FinishComputingProperty_IsChecked));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Operand, FinishComputingProperty_Operand, StartComputingProperty_TargetType, FinishComputingProperty_TargetType, StartComputingProperty_IsTryCast, FinishComputingProperty_IsTryCast, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Operand, FinishComputingProperty_Operand, StartComputingProperty_TargetType, FinishComputingProperty_TargetType, StartComputingProperty_IsTryCast, FinishComputingProperty_IsTryCast, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Operand, FinishComputingProperty_Operand, StartComputingProperty_TargetType, FinishComputingProperty_TargetType, StartComputingProperty_IsTryCast, FinishComputingProperty_IsTryCast, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-        }
-
         private readonly Symbol _container;
         private readonly object? _modelObject;
         private readonly CompletionState _state;
