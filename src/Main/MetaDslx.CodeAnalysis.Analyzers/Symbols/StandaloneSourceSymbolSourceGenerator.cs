@@ -195,7 +195,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                             locked = (bool)arg.Value.Value!;
                         }
                     }
-                    return new SymbolMethodGenerationInfo(method.Name, completeMethodParameters, locked);
+                    return new SymbolMethodGenerationInfo(method.ContainingType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat), method.Name, completeMethodParameters, locked);
                 }
             }
             return null;
@@ -234,7 +234,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                             completeMethodParameters = (CompleteMethodParameters)arg.Value.Value!;
                         }
                     }
-                    return new SymbolPropertyGenerationInfo(prop.Name, type, itemType, prop.IsAbstract, isSymbol, completeMethodParameters, true);
+                    return new SymbolPropertyGenerationInfo(prop.ContainingType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat), prop.Name, type, itemType, prop.IsAbstract, isSymbol, completeMethodParameters, true);
                 }
             }
             return null;

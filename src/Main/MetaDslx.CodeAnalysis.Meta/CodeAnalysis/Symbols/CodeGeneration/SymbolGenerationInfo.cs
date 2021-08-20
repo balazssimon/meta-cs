@@ -48,6 +48,28 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
             }
         }
 
+        public string GetCompletionPartValue(string name)
+        {
+            foreach (var part in this.CompletionParts)
+            {
+                if (part.IsLocked)
+                {
+                    if (name == part.StartCompletionPartName || name == part.FinishCompletionPartName) return GetCompletionPartValue(part.ContainingTypeFullName, name);
+                }
+                else
+                {
+                    if (name == part.CompletionPartName) return GetCompletionPartValue(part.ContainingTypeFullName, name);
+                }
+            }
+            return name;
+        }
+
+        private string GetCompletionPartValue(string? containingTypeFullName, string name)
+        {
+            if (containingTypeFullName is not null) return containingTypeFullName + "." + name;
+            else return $"new CompletionPart(nameof({name}))";
+        }
+
         public IEnumerable<string> GetOrderedCompletionParts(bool withLocation)
         {
             yield return "CompletionGraph.StartInitializing";

@@ -7,8 +7,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 {
     public class CompletionPartGenerationInfo
     {
-        public CompletionPartGenerationInfo(string name, string completeMethodName, CompleteMethodParameters completeMethodParameters, bool generateCompleteMethod, bool locked)
+        public CompletionPartGenerationInfo(string containingTypeFullName, string name, string completeMethodName, CompleteMethodParameters completeMethodParameters, bool generateCompleteMethod, bool locked)
         {
+            this.ContainingTypeFullName = containingTypeFullName;
             this.CompletionPartName = name;
             this.CompleteMethodName = completeMethodName;
             this.CompleteMethodParameters = completeMethodParameters;
@@ -16,6 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
             this.IsLocked = locked;
         }
 
+        public string ContainingTypeFullName { get; private set; }
         public string CompletionPartName { get; private set; }
         public string StartCompletionPartName => this.IsLocked ? "Start" + CompletionPartName : CompletionPartName;
         public string FinishCompletionPartName => this.IsLocked ? "Finish" + CompletionPartName : CompletionPartName;

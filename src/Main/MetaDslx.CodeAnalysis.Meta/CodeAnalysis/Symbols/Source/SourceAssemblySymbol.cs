@@ -154,12 +154,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (metadata is ModelMetadata modelMetadata)
                     {
                         var model = modelMetadata.Model;
-                        moduleBuilder.Add(new MetadataModuleSymbol(this, model, moduleBuilder.Count));
+                        var module = new MetadataModuleSymbol(this, model, moduleBuilder.Count);
+                        moduleBuilder.Add(module);
                     }
                     if (metadata is ModelGroupMetadata modelGroupMetadata)
                     {
                         var modelGroup = modelGroupMetadata.ModelGroup;
-                        moduleBuilder.Add(new MetadataModuleSymbol(this, modelGroup, moduleBuilder.Count));
+                        var module = new MetadataModuleSymbol(this, modelGroup, moduleBuilder.Count);
+                        moduleBuilder.Add(module);
                     }
                 }
             }

@@ -1,7 +1,10 @@
-﻿using System;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -49,5 +52,48 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override bool IsInstanceReceiver => Receiver?.IsInstanceReceiver ?? !(ReferencedSymbol is TypeSymbol);
 
         public override bool IsStaticReceiver => ReferencedSymbol is TypeSymbol;
+
+
+        [SymbolCompletionPart]
+        protected virtual void BindReferencedSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+
+        }
+        /*{
+            var compilation = this.DeclaringCompilation;
+            if (compilation is null) return;
+            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            var result = OverloadResolutionResult<MethodLikeSymbol>.GetInstance();
+            compilation.OverloadResolution.MethodInvocationOverloadResolution();
+            if (result.SingleValid())
+            {
+                var bestResult = result.Best;
+            }
+            if (useSiteDiagnostics is not null)
+            {
+                var location = this.Locations.FirstOrNone();
+                foreach (var diag in useSiteDiagnostics)
+                {
+                    diagnostics.Add(diag.ToDiagnostic(location));
+                }
+            }
+            result.Free();
+        }*/
+    }
+
+    public class A
+    {
+        public static class C
+        {
+            public const string X = "X";
+        }
+    }
+
+    public class B : A
+    {
+        public static new class C
+        {
+            public const string X = A.C.X;
+        }
     }
 }

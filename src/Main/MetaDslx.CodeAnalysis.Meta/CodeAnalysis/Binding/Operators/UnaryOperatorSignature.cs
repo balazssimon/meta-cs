@@ -15,13 +15,13 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         public static UnaryOperatorSignature Error = default(UnaryOperatorSignature);
 
-        public readonly MethodSymbol Method;
+        public readonly MethodLikeSymbol Method;
         public readonly TypeSymbol OperandType;
         public readonly TypeSymbol ReturnType;
         public readonly UnaryOperatorKind Kind;
         public readonly bool IsLifted;
 
-        public UnaryOperatorSignature(UnaryOperatorKind kind, TypeSymbol operandType, TypeSymbol returnType, bool isLifted = false, MethodSymbol method = null)
+        public UnaryOperatorSignature(UnaryOperatorKind kind, TypeSymbol operandType, TypeSymbol returnType, bool isLifted = false, MethodLikeSymbol method = null)
         {
             this.Kind = kind;
             this.OperandType = operandType;

@@ -121,7 +121,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// For a source assembly, the associated compilation.
         /// For any other assembly, null.
-        /// For a source module, the DeclaringCompilation of the associated source assembly.
+        /// For a source module and modules from embedded references, the DeclaringCompilation of the associated source assembly.
         /// For any other module, null.
         /// For any other symbol, the DeclaringCompilation of the associated module.
         /// </summary>

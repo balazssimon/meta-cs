@@ -19,11 +19,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         public readonly TypeSymbol LeftType;
         public readonly TypeSymbol RightType;
         public readonly TypeSymbol ReturnType;
-        public readonly MethodSymbol Method;
+        public readonly MethodLikeSymbol Method;
         public readonly BinaryOperatorKind Kind;
         public readonly bool IsLifted;
 
-        public BinaryOperatorSignature(BinaryOperatorKind kind, TypeSymbol leftType, TypeSymbol rightType, TypeSymbol returnType, bool isLifted = false, MethodSymbol method = null)
+        public BinaryOperatorSignature(BinaryOperatorKind kind, TypeSymbol leftType, TypeSymbol rightType, TypeSymbol returnType, bool isLifted = false, MethodLikeSymbol method = null)
         {
             this.Kind = kind;
             this.LeftType = leftType;

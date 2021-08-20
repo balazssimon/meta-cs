@@ -317,6 +317,10 @@ namespace MetaDslx.CodeAnalysis
             var csharpReferences = ReferenceManager.CSharpReferences(references);
             CSharpCompilationForReferenceManager = CSharpCompilation.Create(assemblyName, null, csharpReferences, options.ToCSharp());
 
+            // Can't reuse reference manager if there are embedded references
+            var customReferences = ReferenceManager.CustomReferences(references);
+            if (customReferences.Any(cr => cr.EmbedInCompilation)) reuseReferenceManager = false;
+
             if (reuseReferenceManager)
             {
                 if (referenceManager is null)

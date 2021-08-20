@@ -7,8 +7,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 {
     public class SymbolPropertyGenerationInfo : CompletionPartGenerationInfo
     {
-        public SymbolPropertyGenerationInfo(string name, string type, string itemType, bool isAbstract, bool isSymbol, CompleteMethodParameters completeMethodParameters, bool generateCompleteMethod)
-            : base("ComputingProperty_" + name, "CompleteSymbolProperty_" + name, completeMethodParameters, generateCompleteMethod, true)
+        public SymbolPropertyGenerationInfo(string containingTypeFullName, string name, string type, string itemType, bool isAbstract, bool isSymbol, CompleteMethodParameters completeMethodParameters, bool generateCompleteMethod)
+            : base(containingTypeFullName, "ComputingProperty_" + name, "CompleteSymbolProperty_" + name, completeMethodParameters, generateCompleteMethod, true)
         {
             this.Name = name;
             this.FieldName = "_"+name.ToCamelCase();

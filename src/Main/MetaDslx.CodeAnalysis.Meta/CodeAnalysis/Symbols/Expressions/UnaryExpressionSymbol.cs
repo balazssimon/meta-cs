@@ -1,6 +1,9 @@
-﻿using System;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -40,5 +43,48 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Operator method used by the operation, null if the operation does not use an operator method.
         /// </summary>
         public virtual UnaryOperatorSymbol? OperatorMethod { get; }
+
+
+        [SymbolCompletionPart]
+        protected abstract void BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+    }
+
+    namespace Completion
+    {
+        public partial class CompletionUnaryExpressionSymbol
+        {
+            private UnaryOperatorAnalysisResult _analysisResult;
+
+            public override UnaryOperatorSymbol? OperatorMethod
+            {
+                get
+                {
+                    //ForceComplete(CompletionParts.FinishComputing_BindOperator);
+                    return _analysisResult.Signature.Method as UnaryOperatorSymbol;
+                }
+            }
+
+            protected override void BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                var compilation = this.DeclaringCompilation;
+                if (compilation is null) return;
+                HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+                var result = UnaryOperatorOverloadResolutionResult.GetInstance();
+                compilation.OverloadResolution.UnaryOperatorOverloadResolution(this.OperatorKind, this.Operand, result, ref useSiteDiagnostics);
+                if (result.SingleValid())
+                {
+                    _analysisResult = result.Best;
+                }
+                if (useSiteDiagnostics is not null)
+                {
+                    var location = this.Locations.FirstOrNone();
+                    foreach (var diag in useSiteDiagnostics)
+                    {
+                        diagnostics.Add(diag.ToDiagnostic(location));
+                    }
+                }
+                result.Free();
+            }
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿using System;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -46,5 +49,28 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Operator method used by the operation, null if the operation does not use an operator method.
         /// </summary>
         public virtual BinaryOperatorSymbol? OperatorMethod { get; }
+
+        [SymbolCompletionPart]
+        protected void BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            var compilation = this.DeclaringCompilation;
+            if (compilation is null) return;
+            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            var result = BinaryOperatorOverloadResolutionResult.GetInstance();
+            compilation.OverloadResolution.BinaryOperatorOverloadResolution(this.OperatorKind, this.LeftOperand, this.RightOperand, result, ref useSiteDiagnostics);
+            if (result.SingleValid())
+            {
+                var bestResult = result.Best;
+            }
+            if (useSiteDiagnostics is not null)
+            {
+                var location = this.Locations.FirstOrNone();
+                foreach (var diag in useSiteDiagnostics)
+                {
+                    diagnostics.Add(diag.ToDiagnostic(location));
+                }
+            }
+            result.Free();
+        }
     }
 }

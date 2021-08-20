@@ -22,13 +22,15 @@ namespace MetaDslx.CodeAnalysis
         private readonly string _display;
         private readonly string _filePath;
         private readonly DocumentationProvider _documentation;
+        private readonly bool _embedInCompilation;
 
-        internal CustomReference(MetadataReferenceProperties properties, DocumentationProvider documentation, string filePath, string display)
+        internal CustomReference(MetadataReferenceProperties properties, DocumentationProvider documentation, string filePath, string display, bool embedInCompilation)
             : base(properties)
         {
             _display = display;
             _filePath = filePath;
             _documentation = documentation ?? DocumentationProvider.Default;
+            _embedInCompilation = embedInCompilation;
         }
 
         /// <summary>
@@ -45,6 +47,15 @@ namespace MetaDslx.CodeAnalysis
         public string FilePath
         {
             get { return _filePath; }
+        }
+
+        /// <summary>
+        /// Indicates whether the metadata reference should be embedded into the compilation,
+        /// i.e., its symbols are validated and emitted by the compilation.
+        /// </summary>
+        public bool EmbedInCompilation
+        {
+            get { return _embedInCompilation; }
         }
 
         /// <summary>
@@ -84,12 +95,21 @@ namespace MetaDslx.CodeAnalysis
                 return this;
             }
 
-            return (CustomReference)WithPropertiesImpl(properties);
+            return (CustomReference)Update(properties, this.EmbedInCompilation);
         }
 
         internal sealed override MetadataReference WithPropertiesImplReturningMetadataReference(MetadataReferenceProperties properties)
         {
-            return WithPropertiesImpl(properties);
+            return Update(properties, this.EmbedInCompilation);
+        }
+
+        public CustomReference WithEmbedInCompilation(bool embed)
+        {
+            if (embed == this.EmbedInCompilation)
+            {
+                return this;
+            }
+            return Update(this.Properties, embed);
         }
 
         /// <summary>
@@ -98,7 +118,7 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="properties">The new properties for the reference.</param>
         /// <exception cref="NotSupportedException">Specified values not supported.</exception> 
         /// <remarks>Only invoked if the properties changed.</remarks>
-        protected abstract CustomReference WithPropertiesImpl(MetadataReferenceProperties properties);
+        protected abstract CustomReference Update(MetadataReferenceProperties properties, bool embedInCompilation);
 
         /// <summary>
         /// Get metadata representation for the PE file.
@@ -187,7 +207,12 @@ namespace MetaDslx.CodeAnalysis
 
             if (Properties.EmbedInteropTypes)
             {
-                sb.Append(" Embed");
+                sb.Append(" EmbedInteropTypes");
+            }
+
+            if (EmbedInCompilation)
+            {
+                sb.Append(" EmbedInCompilation");
             }
 
             if (FilePath != null)

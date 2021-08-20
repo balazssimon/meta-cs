@@ -41,6 +41,16 @@ namespace [symbol.NamespaceName]
 {
 	public [if (!symbol.ExistingTypeInfo.IsSealed)]abstract [end if]partial class [symbol.Name]
 	{
+        public static[if (!symbol.IsSymbolClass)] new[end if] class CompletionParts
+        {
+            [loop (partName:symbol.GetCompletionPartNames())]
+            public static readonly CompletionPart [partName] = [symbol.GetCompletionPartValue(partName)];
+            [end loop]
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(true); separator comma = ", ")][partName][comma][end loop]);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
+        }
+^
         public [if (symbol.IsSymbolClass)]virtual[else]override[end if] void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);
@@ -66,16 +76,6 @@ namespace [symbol.NamespaceName].Completion
 {
 	public abstract partial class Completion[symbol.Name][if (symbol.ExistingCompletionTypeInfo.BaseType == null)] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if][end if]
 	{
-        public static class CompletionParts
-        {
-            [loop (partName:symbol.GetCompletionPartNames())]
-            public static readonly CompletionPart [partName] = new CompletionPart(nameof([partName]));
-            [end loop]
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(true); separator comma = ", ")][partName][comma][end loop]);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
-        }
-^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         private readonly Symbol _container;
         [end if]
