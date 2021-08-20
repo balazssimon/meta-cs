@@ -116,7 +116,7 @@ namespace MetaDslx.VisualStudio.Classification
                 }
             }
 
-            if (currentWord == null || currentSymbol == null || currentSymbol.Kind == SymbolKind.ErrorType)
+            if (currentWord == null || currentSymbol == null || currentSymbol.IsError)
             {
                 //If we couldn't find a word, clear out the existing markers
                 SynchronousUpdate(currentRequest, null, null, null);

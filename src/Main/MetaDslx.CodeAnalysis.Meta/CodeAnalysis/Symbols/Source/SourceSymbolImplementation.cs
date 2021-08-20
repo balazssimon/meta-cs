@@ -400,15 +400,38 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static void SetPropertyValue<T>(object? value, Location? location, ArrayBuilder<T> result, bool singleValue, Symbol symbol, string symbolPropertyName, object modelObjectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            if (symbol is IModelSymbol msymbol && msymbol.ModelObject != null && modelObjectProperty != null)
+            if (symbol is IModelSymbol msymbol && msymbol.ModelObject is not null && modelObjectProperty is not null)
             {
                 symbol.Language.SymbolFacts.SetOrAddPropertyValue(msymbol.ModelObject, modelObjectProperty, value, location, diagnostics, cancellationToken);
             }
-            if (result != null)
+            if (result is not null)
             {
-                if (value != null && !typeof(T).IsAssignableFrom(value.GetType()))
+                if (value is not null && !typeof(T).IsAssignableFrom(value.GetType()))
                 {
-                    diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value, symbolPropertyName, symbol, typeof(T).ToString(), value.GetType().ToString()));
+                    if (typeof(Symbol).IsAssignableFrom(typeof(T)) && value is not Symbol)
+                    {
+                        var symbolFactory = symbol.ContainingModule.SymbolFactory;
+                        var valueSymbol = symbolFactory.ResolveSymbol(value);
+                        if (valueSymbol is not null)
+                        {
+                            if (!typeof(T).IsAssignableFrom(valueSymbol.GetType()))
+                            {
+                                diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, valueSymbol.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), valueSymbol.GetType().ToString()));
+                            }
+                            else
+                            {
+                                result.Add((T)(object)valueSymbol);
+                            }
+                        }
+                        else
+                        {
+                            diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), value.GetType().ToString()));
+                        }
+                    }
+                    else
+                    {
+                        diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), value.GetType().ToString()));
+                    }
                 }
                 else if (value != null)
                 {

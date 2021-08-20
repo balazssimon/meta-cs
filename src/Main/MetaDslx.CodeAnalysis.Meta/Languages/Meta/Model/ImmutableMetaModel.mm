@@ -51,7 +51,7 @@
 	{
 		bool ConformsTo(MetaType type);
 	}
-
+	
 	[type: Named]
 	class MetaNamedType : MetaType, MetaDeclaration
 	{
@@ -60,7 +60,7 @@
 	class MetaAttribute : MetaNamedType
 	{
 	}
-
+	
 	abstract class MetaDeclaration : MetaNamedElement
 	{
 		MetaNamespace Namespace;
