@@ -46,19 +46,24 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
         private SymbolGenerationInfo? GetSymbolGenerationInfo(INamedTypeSymbol symbol)
         {
             if (_info.TryGetValue(symbol, out var info)) return info;
-            if (!GeneratorUtils.IsAnnotatedSymbol(symbol, out var symbolAttribute)) return null;
+            var isAbstract = !GeneratorUtils.IsAnnotatedSymbol(symbol, out var symbolAttribute);
             var ns = GeneratorUtils.GetFullName(symbol.ContainingNamespace);
-            SymbolParts symbolParts = SymbolParts.All;
-            ParameterOption modelObjectOption = ParameterOption.Required;
-            foreach (var arg in symbolAttribute.NamedArguments)
+            var symbolParts = SymbolParts.None;
+            var modelObjectOption = ParameterOption.Disabled;
+            if (!isAbstract)
             {
-                if (arg.Key == "SymbolParts")
+                symbolParts = SymbolParts.All;
+                modelObjectOption = ParameterOption.Required;
+                foreach (var arg in symbolAttribute.NamedArguments)
                 {
-                    symbolParts = (SymbolParts)arg.Value.Value;
-                }
-                if (arg.Key == "ModelObjectOption")
-                {
-                    modelObjectOption = (ParameterOption)arg.Value.Value;
+                    if (arg.Key == "SymbolParts")
+                    {
+                        symbolParts = (SymbolParts)arg.Value.Value;
+                    }
+                    if (arg.Key == "ModelObjectOption")
+                    {
+                        modelObjectOption = (ParameterOption)arg.Value.Value;
+                    }
                 }
             }
             var baseSymbol = symbol.BaseType;
@@ -73,6 +78,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             return
                 new SymbolGenerationInfo(symbol.Name, ns, parentInfo)
                 {
+                    IsAbstract = isAbstract,
                     SymbolParts = symbolParts,
                     ModelObjectOption = modelObjectOption,
                     CompletionParts = cpgi.completionParts,

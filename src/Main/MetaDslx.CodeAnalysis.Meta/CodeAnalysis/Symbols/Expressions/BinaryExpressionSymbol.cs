@@ -13,6 +13,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [Symbol]
     public abstract partial class BinaryExpressionSymbol : ExpressionSymbol
     {
+        private BinaryOperatorAnalysisResult _analysisResult;
+
         /// <summary>
         /// Kind of binary operation.
         /// </summary>
@@ -32,14 +34,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract ExpressionSymbol RightOperand { get; }
 
         /// <summary>
-        /// <see langword="true" /> if this is a 'lifted' binary operator.  When there is an
-        /// operator that is defined to work on a value type, 'lifted' operators are
-        /// created to work on the <see cref="System.Nullable{T}" /> versions of those
-        /// value types.
-        /// </summary>
-        public virtual bool IsLifted { get; }
-
-        /// <summary>
         /// <see langword="true" /> if this is a 'checked' binary operator.
         /// </summary>
         [SymbolProperty]
@@ -48,20 +42,51 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Operator method used by the operation, null if the operation does not use an operator method.
         /// </summary>
+        [SymbolProperty]
         public virtual BinaryOperatorSymbol? OperatorMethod { get; }
 
-        [SymbolCompletionPart]
-        protected void BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        /// <summary>
+        /// <see langword="true" /> if this is a 'lifted' unary operator.  When there is an
+        /// operator that is defined to work on a value type, 'lifted' operators are
+        /// created to work on the <see cref="System.Nullable{T}" /> versions of those
+        /// value types.
+        /// </summary>
+        [SymbolProperty]
+        public virtual bool IsLifted { get; }
+
+        /// <summary>
+        /// The conversion to be applied to the left operand before performing the operation.
+        /// </summary>
+        public virtual Conversion LeftConversion
+        {
+            get
+            {
+                //ForceComplete(CompletionParts.FinishBindOperator, null, default);
+                return _analysisResult.LeftConversion;
+            }
+        }
+
+        /// <summary>
+        /// The conversion to be applied to the right operand before performing the operation.
+        /// </summary>
+        public virtual Conversion RightConversion
+        {
+            get
+            {
+                //ForceComplete(CompletionParts.FinishBindOperator, null, default);
+                return _analysisResult.RightConversion;
+            }
+        }
+
+        protected virtual void BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var compilation = this.DeclaringCompilation;
             if (compilation is null) return;
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             var result = BinaryOperatorOverloadResolutionResult.GetInstance();
             compilation.OverloadResolution.BinaryOperatorOverloadResolution(this.OperatorKind, this.LeftOperand, this.RightOperand, result, ref useSiteDiagnostics);
-            if (result.SingleValid())
-            {
-                var bestResult = result.Best;
-            }
+            _analysisResult = result.Best;
+            result.Free();
             if (useSiteDiagnostics is not null)
             {
                 var location = this.Locations.FirstOrNone();
@@ -70,7 +95,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     diagnostics.Add(diag.ToDiagnostic(location));
                 }
             }
-            result.Free();
         }
+
     }
 }

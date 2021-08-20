@@ -13,10 +13,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
             this.Name = name;
             this.NamespaceName = namespaceName;
             this.ParentSymbol = parentSymbol;
-            this.IsSymbolClass = this.Name == "Symbol" && parentSymbol == null;
+            this.IsSymbolClass = name == "Symbol" && parentSymbol == null;
         }
 
         public bool IsSymbolClass { get; private set; }
+        public bool IsAbstract { get; init; }
         public SymbolParts SymbolParts { get; init; }
         public ParameterOption ModelObjectOption { get; init; }
         public string Name { get; private set; }
@@ -66,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 
         private string GetCompletionPartValue(string? containingTypeFullName, string name)
         {
-            if (containingTypeFullName is not null) return containingTypeFullName + "." + name;
+            if (containingTypeFullName is not null) return containingTypeFullName + ".CompletionParts." + name;
             else return $"new CompletionPart(nameof({name}))";
         }
 

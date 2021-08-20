@@ -9,16 +9,15 @@ using System.Threading;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     /// <summary>
-    /// Represents a non-member-access reference to a declared symbol.
+    /// Represents a qualified or unqualified reference to a type, a member or a varialble symbol.
     /// </summary>
-    [Symbol]
     public abstract partial class ReferenceExpressionSymbol : ExpressionSymbol
     {
         /// <summary>
-        /// If the reference is a member access, this is the type or instance of which the member is accessed.
+        /// If the reference is a qualified access, this is the qualifier.
         /// </summary>
         [SymbolProperty]
-        public abstract ExpressionSymbol? Receiver { get; }
+        public abstract ExpressionSymbol? Qualifier { get; }
 
         /// <summary>
         /// Indicates whether member access is null conditional (?. operator)
@@ -42,25 +41,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Referenced symbol (e.g., a type, a variable or a member).
         /// </summary>
+        [SymbolProperty]
         public virtual DeclaredSymbol ReferencedSymbol { get; }
 
         /// <summary>
-        /// The containing type of the referenced member, if different from type of the <see cref="Receiver" />.
+        /// The containing type of the referenced member, if different from type of the <see cref="Qualifier" />.
         /// </summary>
+        [SymbolProperty]
         public virtual TypeSymbol? ContainingType { get; }
 
-        public override bool IsInstanceReceiver => Receiver?.IsInstanceReceiver ?? !(ReferencedSymbol is TypeSymbol);
+        public override bool IsInstanceReceiver => !IsStaticReceiver;
 
-        public override bool IsStaticReceiver => ReferencedSymbol is TypeSymbol;
+        public override bool IsStaticReceiver => (ReferencedSymbol is TypeSymbol) || ReferencedSymbol.IsStatic;
 
 
-        [SymbolCompletionPart]
         protected virtual void BindReferencedSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-
-        }
-        /*{
-            var compilation = this.DeclaringCompilation;
+           /* var compilation = this.DeclaringCompilation;
             if (compilation is null) return;
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             var result = OverloadResolutionResult<MethodLikeSymbol>.GetInstance();
@@ -77,23 +74,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     diagnostics.Add(diag.ToDiagnostic(location));
                 }
             }
-            result.Free();
-        }*/
-    }
-
-    public class A
-    {
-        public static class C
-        {
-            public const string X = "X";
+            result.Free();*/
         }
     }
 
-    public class B : A
-    {
-        public static new class C
-        {
-            public const string X = A.C.X;
-        }
-    }
 }
