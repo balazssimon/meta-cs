@@ -405,14 +405,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 
         protected virtual string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken, out var result);
-            return result;
+            return SymbolImplementation.AssignNameProperty(this, diagnostics);
         }
 
         protected virtual string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(MetadataName), diagnostics, cancellationToken, out var result);
-            return result;
+            return SymbolImplementation.AssignMetadataNameProperty(this, diagnostics);
         }
 
         protected virtual void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)

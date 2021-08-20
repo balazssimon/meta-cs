@@ -330,16 +330,14 @@ namespace [symbol.NamespaceName].Completion
 ^
         protected virtual string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken, out var result);
-            return result;
+            return SymbolImplementation.AssignNameProperty(this, diagnostics);
         }
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
 ^
         protected virtual string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(MetadataName), diagnostics, cancellationToken, out var result);
-            return result;
+            return SymbolImplementation.AssignMetadataNameProperty(this, diagnostics);
         }
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteInitializingSymbol"))]

@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _module = module;
         }
 
-        protected override ISymbolImplementation SymbolImplementation => throw new NotImplementedException();
+        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 

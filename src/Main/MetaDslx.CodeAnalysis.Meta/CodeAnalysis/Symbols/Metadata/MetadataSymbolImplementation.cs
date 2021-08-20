@@ -162,12 +162,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public void CompleteImports(Symbol symbol, Location locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
         }
 
         public void AssignNonSymbolProperties(Symbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
         }
     }
 }

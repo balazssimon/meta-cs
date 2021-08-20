@@ -52,11 +52,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(ConversionOperatorSymbol symbol);
         void Visit(DestructorSymbol symbol);
         void Visit(FieldSymbol symbol);
+        void Visit(PropertySymbol symbol);
         void Visit(IndexerSymbol symbol);
         void Visit(LambdaSymbol symbol);
         void Visit(MethodSymbol symbol);
         void Visit(ParameterSymbol symbol);
-        void Visit(PropertySymbol symbol);
         void Visit(UnaryOperatorSymbol symbol);
         void Visit(AliasSymbol symbol);
         void Visit(NamespaceSymbol symbol);
@@ -137,11 +137,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(ConversionOperatorSymbol symbol);
         TResult Visit(DestructorSymbol symbol);
         TResult Visit(FieldSymbol symbol);
+        TResult Visit(PropertySymbol symbol);
         TResult Visit(IndexerSymbol symbol);
         TResult Visit(LambdaSymbol symbol);
         TResult Visit(MethodSymbol symbol);
         TResult Visit(ParameterSymbol symbol);
-        TResult Visit(PropertySymbol symbol);
         TResult Visit(UnaryOperatorSymbol symbol);
         TResult Visit(AliasSymbol symbol);
         TResult Visit(NamespaceSymbol symbol);
@@ -222,11 +222,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(ConversionOperatorSymbol symbol, TArgument argument);
         TResult Visit(DestructorSymbol symbol, TArgument argument);
         TResult Visit(FieldSymbol symbol, TArgument argument);
+        TResult Visit(PropertySymbol symbol, TArgument argument);
         TResult Visit(IndexerSymbol symbol, TArgument argument);
         TResult Visit(LambdaSymbol symbol, TArgument argument);
         TResult Visit(MethodSymbol symbol, TArgument argument);
         TResult Visit(ParameterSymbol symbol, TArgument argument);
-        TResult Visit(PropertySymbol symbol, TArgument argument);
         TResult Visit(UnaryOperatorSymbol symbol, TArgument argument);
         TResult Visit(AliasSymbol symbol, TArgument argument);
         TResult Visit(NamespaceSymbol symbol, TArgument argument);
