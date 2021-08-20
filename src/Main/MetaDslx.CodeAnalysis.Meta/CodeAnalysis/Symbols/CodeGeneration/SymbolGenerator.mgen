@@ -106,8 +106,6 @@ namespace [symbol.NamespaceName].Completion
             _state = CompletionParts.CompletionGraph.CreateState();
         }
         [end if]
-^
-        protected abstract ISymbolImplementation SymbolImplementation { get; }
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language"))]
 ^
         public override Language Language => ContainingModule.Language;
@@ -131,6 +129,8 @@ namespace [symbol.NamespaceName].Completion
         public override Symbol ContainingSymbol => _container;
         [end if]
         [end if]
+^
+        protected abstract ISymbolImplementation SymbolImplementation { get; }
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ChildSymbols"))]
 ^
         public override ImmutableArray<Symbol> ChildSymbols 

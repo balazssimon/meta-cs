@@ -840,43 +840,43 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.Write("        }"); //107:1
                     __out.AppendLine(false); //107:10
                 }
-                __out.AppendLine(true); //109:1
-                __out.Write("        protected abstract ISymbolImplementation SymbolImplementation { get; }"); //110:1
-                __out.AppendLine(false); //110:79
-                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language")) //111:10
+                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language")) //109:10
                 {
-                    __out.AppendLine(true); //112:1
-                    __out.Write("        public override Language Language => ContainingModule.Language;"); //113:1
-                    __out.AppendLine(false); //113:72
+                    __out.AppendLine(true); //110:1
+                    __out.Write("        public override Language Language => ContainingModule.Language;"); //111:1
+                    __out.AppendLine(false); //111:72
                 }
-                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SymbolFactory")) //115:10
+                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SymbolFactory")) //113:10
                 {
-                    __out.AppendLine(true); //116:1
-                    __out.Write("        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;"); //117:1
-                    __out.AppendLine(false); //117:78
+                    __out.AppendLine(true); //114:1
+                    __out.Write("        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;"); //115:1
+                    __out.AppendLine(false); //115:78
                 }
-                if (symbol.ModelObjectOption != ParameterOption.Disabled) //119:10
+                if (symbol.ModelObjectOption != ParameterOption.Disabled) //117:10
                 {
-                    if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObject")) //120:14
+                    if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObject")) //118:14
                     {
-                        __out.AppendLine(true); //121:1
-                        __out.Write("        public object ModelObject => _modelObject;"); //122:1
-                        __out.AppendLine(false); //122:51
+                        __out.AppendLine(true); //119:1
+                        __out.Write("        public object ModelObject => _modelObject;"); //120:1
+                        __out.AppendLine(false); //120:51
                     }
-                    if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObjectType")) //124:14
+                    if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObjectType")) //122:14
                     {
-                        __out.AppendLine(true); //125:1
-                        __out.Write("        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;"); //126:1
-                        __out.AppendLine(false); //126:128
+                        __out.AppendLine(true); //123:1
+                        __out.Write("        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;"); //124:1
+                        __out.AppendLine(false); //124:128
                     }
                 }
-                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol")) //129:10
+                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol")) //127:10
                 {
-                    __out.AppendLine(true); //130:1
-                    __out.Write("        public override Symbol ContainingSymbol => _container;"); //131:1
-                    __out.AppendLine(false); //131:63
+                    __out.AppendLine(true); //128:1
+                    __out.Write("        public override Symbol ContainingSymbol => _container;"); //129:1
+                    __out.AppendLine(false); //129:63
                 }
             }
+            __out.AppendLine(true); //132:1
+            __out.Write("        protected abstract ISymbolImplementation SymbolImplementation { get; }"); //133:1
+            __out.AppendLine(false); //133:79
             if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ChildSymbols")) //134:10
             {
                 __out.AppendLine(true); //135:1

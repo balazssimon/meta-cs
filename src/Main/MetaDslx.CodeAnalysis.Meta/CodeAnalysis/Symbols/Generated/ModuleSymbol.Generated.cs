@@ -266,6 +266,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
 	public partial class MetadataModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionModuleSymbol
 	{
+
         protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
 
     }
@@ -275,7 +276,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
 	public partial class SourceModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionModuleSymbol
 	{
+
         protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
 
-    }
+	}
 }

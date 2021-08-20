@@ -78,8 +78,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
-        protected abstract ISymbolImplementation SymbolImplementation { get; }
-
         public override Language Language => ContainingModule.Language;
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
@@ -89,6 +87,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
         public override Symbol ContainingSymbol => _container;
+
+        protected abstract ISymbolImplementation SymbolImplementation { get; }
 
         public override ImmutableArray<Symbol> ChildSymbols 
         {
@@ -378,10 +378,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
         }
 
-        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
-
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
+        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
 
         public partial class Error : MetadataForEachLoopStatementSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
@@ -518,8 +518,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _declaration = declaration;
 		}
 
-        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
-
         public MergedDeclaration MergedDeclaration => _declaration;
 
         public override ImmutableArray<Location> Locations => _declaration.NameLocations;
@@ -551,6 +549,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
             return _lazyLexicalSortKey;
         }
+
+        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
 
         public partial class Error : SourceForEachLoopStatementSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {

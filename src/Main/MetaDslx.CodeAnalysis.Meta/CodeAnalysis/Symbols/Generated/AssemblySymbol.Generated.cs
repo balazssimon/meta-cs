@@ -284,7 +284,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
 	public partial class SourceAssemblySymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionAssemblySymbol
 	{
+
         protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
 
-    }
+	}
 }
