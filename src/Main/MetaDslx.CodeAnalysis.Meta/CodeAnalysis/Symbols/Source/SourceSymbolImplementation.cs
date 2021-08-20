@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public static class SourceSymbolImplementation
+    public class SourceSymbolImplementation 
     {
         public static void CompleteImports(Symbol symbol, Location locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

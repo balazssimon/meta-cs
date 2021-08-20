@@ -20,6 +20,7 @@ using Roslyn.Utilities;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -243,7 +244,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        protected void AddSymbolDiagnostics(DiagnosticBag diagnostics)
+        protected bool AddSymbolDiagnostics(DiagnosticBag diagnostics)
         {
             if (!diagnostics.IsEmptyWithoutResolution)
             {
@@ -251,9 +252,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 //Debug.Assert(compilation != null);
                 var symbolDiagnostics = s_diagnostics.GetOrCreateValue(this);
                 symbolDiagnostics.AddRange(diagnostics);
+                return true;
             }
+            return false;
         }
 
+        protected bool AddSymbolDiagnostics(HashSet<DiagnosticInfo>? diagnostics)
+        {
+            if (diagnostics is not null && diagnostics.Count > 0)
+            {
+                //LanguageCompilation compilation = this.DeclaringCompilation;
+                //Debug.Assert(compilation != null);
+                var symbolDiagnostics = s_diagnostics.GetOrCreateValue(this);
+                symbolDiagnostics.AddRange(diagnostics.Select(diag => diag.ToDiagnostic(this.Locations.FirstOrNone())));
+                return true;
+            }
+            return false;
+        }
+
+        protected virtual void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
 
         /// <summary>
         /// <para>

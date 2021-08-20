@@ -184,7 +184,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return _state.HasComplete(part);
         }
 
-        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation? locationOpt, CancellationToken cancellationToken)
         {
             if (completionPart != null && _state.HasComplete(completionPart)) return;
             if (completionPart != null && !CompletionParts.All.Contains(completionPart)) throw new ArgumentException(nameof(completionPart));
@@ -629,14 +629,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override bool CompleteSymbolProperty_IsChecked(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<bool>(this, nameof(IsChecked), diagnostics, cancellationToken);
-        }
-        protected override global::MetaDslx.CodeAnalysis.Symbols.UnaryOperatorSymbol CompleteSymbolProperty_OperatorMethod(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.UnaryOperatorSymbol>(this, nameof(OperatorMethod), diagnostics, cancellationToken);
-        }
-        protected override bool CompleteSymbolProperty_IsLifted(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return SourceSymbolImplementation.AssignSymbolPropertyValue<bool>(this, nameof(IsLifted), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

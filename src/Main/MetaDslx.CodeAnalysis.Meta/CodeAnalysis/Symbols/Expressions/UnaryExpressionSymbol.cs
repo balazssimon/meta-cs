@@ -13,8 +13,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [Symbol]
     public abstract partial class UnaryExpressionSymbol : ExpressionSymbol
     {
-        private UnaryOperatorAnalysisResult _analysisResult;
-
         /// <summary>
         /// Kind of unary operation.
         /// </summary>
@@ -51,33 +49,82 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// The conversion to be applied to the operand before performing the operation.
         /// </summary>
-        public virtual Conversion OperandConversion
-        {
-            get
-            {
-                //ForceComplete(CompletionParts.FinishBindOperator, null, default);
-                return _analysisResult.Conversion;
-            }
-        }
+        public abstract Conversion OperandConversion { get; }
 
-        protected virtual void BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected UnaryOperatorAnalysisResult BindOperator(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var compilation = this.DeclaringCompilation;
-            if (compilation is null) return;
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            if (compilation is null) return default;
+            HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
             var result = UnaryOperatorOverloadResolutionResult.GetInstance();
             compilation.OverloadResolution.UnaryOperatorOverloadResolution(this.OperatorKind, this.Operand, result, ref useSiteDiagnostics);
-            _analysisResult = result.Best;
+            var analysisResult = result.Best;
             result.Free();
-            if (useSiteDiagnostics is not null)
+            this.AddSymbolDiagnostics(useSiteDiagnostics);
+            return analysisResult;
+        }
+    }
+
+    namespace Source
+    {
+        public partial class SourceUnaryExpressionSymbol
+        {
+            private UnaryOperatorAnalysisResult _analysisResult;
+
+            protected override UnaryOperatorSymbol? CompleteSymbolProperty_OperatorMethod(DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
-                var location = this.Locations.FirstOrNone();
-                foreach (var diag in useSiteDiagnostics)
+                var result = SourceSymbolImplementation.AssignSymbolPropertyValue<UnaryOperatorSymbol>(this, nameof(OperatorMethod), diagnostics, cancellationToken);
+                if (result is null)
                 {
-                    diagnostics.Add(diag.ToDiagnostic(location));
+                    _analysisResult = BindOperator(diagnostics, cancellationToken);
+                    result = _analysisResult.Signature.Method as UnaryOperatorSymbol;
+                }
+                else
+                {
+                    var returnType = result.ReturnType;
+                    if (result.Parameters.Length > 0)
+                    {
+                        var operandType = Operand?.Type;
+                        var paramType = result.Parameters[0].Type;
+                        var isLifted = false;
+                        HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
+                        if (operandType is NullableTypeSymbol nullableType)
+                        {
+                            isLifted = true;
+                            operandType = nullableType.InnerType;
+                        }
+                        var conversion = operandType is not null && paramType is not null ? this.DeclaringCompilation.Conversions.ClassifyConversionFromType(operandType, paramType, ref useSiteDiagnostics) : Conversions.NoConversion;
+                        if (this.AddSymbolDiagnostics(useSiteDiagnostics) || conversion == Conversions.NoConversion)
+                        {
+                            _analysisResult = UnaryOperatorAnalysisResult.Inapplicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), conversion);
+                        }
+                        else
+                        {
+                            _analysisResult = UnaryOperatorAnalysisResult.Applicable(new UnaryOperatorSignature(OperatorKind, operandType, returnType, isLifted, result), conversion);
+                        }
+                    }
+                }
+                return result;
+            }
+
+            protected override bool CompleteSymbolProperty_IsLifted(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                var result = SourceSymbolImplementation.AssignSymbolPropertyValue<bool?>(this, nameof(IsLifted), diagnostics, cancellationToken);
+                if (result is null)
+                {
+                    if (_analysisResult.IsValid) result = _analysisResult.Signature.IsLifted;
+                }
+                return result ?? false;
+            }
+
+            public override Conversion OperandConversion
+            {
+                get
+                {
+                    ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
+                    return _analysisResult.Conversion;
                 }
             }
         }
     }
-
 }

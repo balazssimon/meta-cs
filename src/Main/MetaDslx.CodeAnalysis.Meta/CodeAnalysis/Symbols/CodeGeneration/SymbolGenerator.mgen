@@ -106,6 +106,8 @@ namespace [symbol.NamespaceName].Completion
             _state = CompletionParts.CompletionGraph.CreateState();
         }
         [end if]
+^
+        protected abstract ISymbolImplementation SymbolImplementation { get; }
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language"))]
 ^
         public override Language Language => ContainingModule.Language;
@@ -185,7 +187,7 @@ namespace [symbol.NamespaceName].Completion
             return _state.HasComplete(part);
         }
 ^
-        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation? locationOpt, CancellationToken cancellationToken)
         {
             if (completionPart != null && _state.HasComplete(completionPart)) return;
             if (completionPart != null && !CompletionParts.All.Contains(completionPart)) throw new ArgumentException(nameof(completionPart));
@@ -296,6 +298,17 @@ namespace [symbol.NamespaceName].Completion
                     // We've completed all members, proceed to the next iteration.
                     _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
+                else if (incompletePart == CompletionGraph.StartValidatingSymbol || incompletePart == CompletionGraph.FinishValidatingSymbol)
+                {
+                    if (_state.NotePartComplete(CompletionGraph.StartValidatingSymbol))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CompleteValidatingSymbol(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionGraph.FinishValidatingSymbol);
+                    }
+                }
                 else if (incompletePart == null)
                 {
                     return;
@@ -314,27 +327,64 @@ namespace [symbol.NamespaceName].Completion
         }
 ^
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_Name"))]
-        protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+^
+        protected virtual string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken, out var result);
+            return result;
+        }
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
-        protected abstract string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+^
+        protected virtual string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(MetadataName), diagnostics, cancellationToken, out var result);
+            return result;
+        }
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteInitializingSymbol"))]
-        protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+^
+        protected virtual void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteCreatingChildSymbols"))]
-        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+^
+        protected virtual ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
+        }
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteImports"))]
-        protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+^
+        protected virtual void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
+        }
         [end if]
         [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
             [if (!symbol.ExistingCompletionTypeInfo.Members.Contains(part.CompleteMethodName))]
-        protected abstract [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList]);
+^
+        protected virtual [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
+        {
+            [if (part is SymbolPropertyGenerationInfo)]
+                [var prop = (SymbolPropertyGenerationInfo)part]
+                [if (prop.IsCollection)]
+            SymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken, out var result);
+                [else]
+            SymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken, out var result);
+                [end if]
+            [end if]
+            return result;
+        }
             [end if]
         [end loop]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteNonSymbolProperties"))]
-        protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+^
+        protected virtual void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
+        }
         [end if]
         #endregion
     }
@@ -353,6 +403,8 @@ namespace [symbol.NamespaceName].Metadata
         {
         }
         [end if]
+^
+        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations"))]
 ^
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
@@ -360,61 +412,6 @@ namespace [symbol.NamespaceName].Metadata
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
         [end if]
-        [end if]
-        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteSymbolProperty_Name"))]
-^
-        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return MetadataSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
-        }
-        [end if]
-        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
-^
-        protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return MetadataSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(MetadataName), diagnostics, cancellationToken);
-        }
-        [end if]
-        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteInitializingSymbol"))]
-^
-        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-        }
-        [end if]
-        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteCreatingChildSymbols"))]
-^
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return MetadataSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
-        }
-        [end if]
-        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteImports"))]
-^
-        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-        }
-        [end if]
-        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
-            [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(part.CompleteMethodName))]
-^
-        protected override [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
-        {
-            [if (part is SymbolPropertyGenerationInfo)]
-                [var prop = (SymbolPropertyGenerationInfo)part]
-                [if (prop.IsCollection)]
-            return MetadataSymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
-                [else]
-            return MetadataSymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
-                [end if]
-            [end if]
-        }
-            [end if]
-        [end loop]
-        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteNonSymbolProperties"))]
-^
-        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-        }
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
@@ -534,6 +531,11 @@ namespace [symbol.NamespaceName].Metadata
             {
                 return _name;
             }
+^
+            protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _metadataName;
+            }
         }
         [end if]
     }
@@ -559,6 +561,8 @@ namespace [symbol.NamespaceName].Source
             _declaration = declaration;
 		}
         [end if]
+^
+        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
         [if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration"))]
 ^
         public MergedDeclaration MergedDeclaration => _declaration;
@@ -603,63 +607,6 @@ namespace [symbol.NamespaceName].Source
             return _lazyLexicalSortKey;
         }
         [end if]
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteInitializingSymbol"))]
-^
-        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-        }
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteCreatingChildSymbols"))]
-^
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return SourceSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
-        }
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteImports"))]
-^
-        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
-        }
-^
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteSymbolProperty_Name"))]
-        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
-        }
-^
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
-        protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(MetadataName), diagnostics, cancellationToken);
-        }
-^
-        [end if]
-        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
-            [if (!symbol.ExistingSourceTypeInfo.Members.Contains(part.CompleteMethodName))]
-        protected override [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
-        {
-            [if (part is SymbolPropertyGenerationInfo)]
-                [var prop = (SymbolPropertyGenerationInfo)part]
-                [if (prop.IsCollection)]
-            return SourceSymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
-                [else]
-            return SourceSymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
-                [end if]
-            [end if]
-        }
-            [end if]
-        [end loop]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteNonSymbolProperties"))]
-^
-        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
-        }
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
@@ -780,6 +727,11 @@ namespace [symbol.NamespaceName].Source
             protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
                 return _name;
+            }
+^
+            protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _metadataName;
             }
         }
         [end if]

@@ -42,9 +42,9 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public LanguageCompilation Compilation => _compilation;
 
-        public abstract Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics);
+        public abstract Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo>? useSiteDiagnostics);
 
-        public virtual Conversion ClassifyImplicitConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public virtual Conversion ClassifyImplicitConversionFromType(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo>? useSiteDiagnostics)
         {
             var kind = ClassifyConversionFromType(source, target, ref useSiteDiagnostics);
             if (kind.IsImplicit) return kind;
@@ -53,14 +53,14 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public virtual bool HasIdentityConversion(TypeSymbol source, TypeSymbol target)
         {
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
             var kind = ClassifyConversionFromType(source, target, ref useSiteDiagnostics);
             return kind == Identity;
         }
 
-        public abstract Conversion ClassifyConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics);
+        public abstract Conversion ClassifyConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo>? useSiteDiagnostics);
 
-        public virtual Conversion ClassifyImplicitConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public virtual Conversion ClassifyImplicitConversionFromExpression(ExpressionSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo>? useSiteDiagnostics)
         {
             var kind = ClassifyConversionFromExpression(source, target, ref useSiteDiagnostics);
             if (kind.IsImplicit) return kind;
@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         // Spec 7.6.5.2: "An extension method ... is eligible if ... [an] implicit identity, reference,
         // or boxing conversion exists from expr to the type of the first parameter"
-        public Conversion ClassifyImplicitExtensionMethodThisArgConversion(ExpressionSymbol sourceExpressionOpt, TypeSymbol sourceType, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public Conversion ClassifyImplicitExtensionMethodThisArgConversion(ExpressionSymbol sourceExpressionOpt, TypeSymbol sourceType, TypeSymbol destination, ref HashSet<DiagnosticInfo>? useSiteDiagnostics)
         {
             Debug.Assert(sourceExpressionOpt == null || (object)sourceExpressionOpt.Type == sourceType);
             Debug.Assert((object)destination != null);

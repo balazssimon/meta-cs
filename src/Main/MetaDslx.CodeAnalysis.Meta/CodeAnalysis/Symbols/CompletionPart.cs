@@ -44,6 +44,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart ChildrenCompleted = new CompletionPart(nameof(ChildrenCompleted));
         public static readonly CompletionPart StartComputingNonSymbolProperties = new CompletionPart(nameof(StartComputingNonSymbolProperties));
         public static readonly CompletionPart FinishComputingNonSymbolProperties = new CompletionPart(nameof(FinishComputingNonSymbolProperties));
+        public static readonly CompletionPart StartValidatingSymbol = new CompletionPart(nameof(StartValidatingSymbol));
+        public static readonly CompletionPart FinishValidatingSymbol = new CompletionPart(nameof(FinishValidatingSymbol));
 
         public static readonly CompletionPart StartCustomBinders = new CompletionPart(nameof(StartCustomBinders));
         public static readonly CompletionPart FinishCustomBinders = new CompletionPart(nameof(FinishCustomBinders));

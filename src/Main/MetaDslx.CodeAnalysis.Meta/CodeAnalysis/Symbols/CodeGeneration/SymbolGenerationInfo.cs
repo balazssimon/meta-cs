@@ -94,6 +94,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
             if (!withLocation)
             {
                 yield return "CompletionGraph.ChildrenCompleted";
+                yield return "CompletionGraph.StartValidatingSymbol";
+                yield return "CompletionGraph.FinishValidatingSymbol";
             }
         }
     }
