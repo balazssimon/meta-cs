@@ -66,15 +66,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.MainContext _Antlr4ParseMain()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.MainContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseMain(CurrentNode as MainSyntax))
+		        cached = IsIncremental && CanReuseMain(CurrentNode as MainSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.MainContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -85,6 +85,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.MainContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -112,15 +117,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.NameContext _Antlr4ParseName()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.NameContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseName(CurrentNode as NameSyntax))
+		        cached = IsIncremental && CanReuseName(CurrentNode as NameSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.NameContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -131,6 +136,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.NameContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -158,15 +168,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.QualifiedNameContext _Antlr4ParseQualifiedName()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.QualifiedNameContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseQualifiedName(CurrentNode as QualifiedNameSyntax))
+		        cached = IsIncremental && CanReuseQualifiedName(CurrentNode as QualifiedNameSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.QualifiedNameContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -177,6 +187,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.QualifiedNameContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -204,15 +219,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.QualifierContext _Antlr4ParseQualifier()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.QualifierContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseQualifier(CurrentNode as QualifierSyntax))
+		        cached = IsIncremental && CanReuseQualifier(CurrentNode as QualifierSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.QualifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -223,6 +238,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.QualifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -250,15 +270,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.AttributeContext _Antlr4ParseAttribute()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.AttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseAttribute(CurrentNode as AttributeSyntax))
+		        cached = IsIncremental && CanReuseAttribute(CurrentNode as AttributeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.AttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -269,6 +289,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.AttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -296,15 +321,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.UsingNamespaceContext _Antlr4ParseUsingNamespace()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.UsingNamespaceContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseUsingNamespace(CurrentNode as UsingNamespaceSyntax))
+		        cached = IsIncremental && CanReuseUsingNamespace(CurrentNode as UsingNamespaceSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.UsingNamespaceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -315,6 +340,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.UsingNamespaceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -342,15 +372,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.NamespaceDeclarationContext _Antlr4ParseNamespaceDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.NamespaceDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseNamespaceDeclaration(CurrentNode as NamespaceDeclarationSyntax))
+		        cached = IsIncremental && CanReuseNamespaceDeclaration(CurrentNode as NamespaceDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.NamespaceDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -361,6 +391,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.NamespaceDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -388,15 +423,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.NamespaceBodyContext _Antlr4ParseNamespaceBody()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.NamespaceBodyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseNamespaceBody(CurrentNode as NamespaceBodySyntax))
+		        cached = IsIncremental && CanReuseNamespaceBody(CurrentNode as NamespaceBodySyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.NamespaceBodyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -407,6 +442,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.NamespaceBodyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -434,15 +474,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.MetamodelDeclarationContext _Antlr4ParseMetamodelDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.MetamodelDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseMetamodelDeclaration(CurrentNode as MetamodelDeclarationSyntax))
+		        cached = IsIncremental && CanReuseMetamodelDeclaration(CurrentNode as MetamodelDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.MetamodelDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -453,6 +493,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.MetamodelDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -480,15 +525,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.MetamodelPropertyListContext _Antlr4ParseMetamodelPropertyList()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.MetamodelPropertyListContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseMetamodelPropertyList(CurrentNode as MetamodelPropertyListSyntax))
+		        cached = IsIncremental && CanReuseMetamodelPropertyList(CurrentNode as MetamodelPropertyListSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.MetamodelPropertyListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -499,6 +544,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.MetamodelPropertyListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -526,15 +576,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.MetamodelPropertyContext _Antlr4ParseMetamodelProperty()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.MetamodelPropertyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseMetamodelProperty(CurrentNode as MetamodelPropertySyntax))
+		        cached = IsIncremental && CanReuseMetamodelProperty(CurrentNode as MetamodelPropertySyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.MetamodelPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -545,6 +595,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.MetamodelPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -572,15 +627,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.MetamodelUriPropertyContext _Antlr4ParseMetamodelUriProperty()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.MetamodelUriPropertyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseMetamodelUriProperty(CurrentNode as MetamodelUriPropertySyntax))
+		        cached = IsIncremental && CanReuseMetamodelUriProperty(CurrentNode as MetamodelUriPropertySyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.MetamodelUriPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -591,6 +646,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.MetamodelUriPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -618,15 +678,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.MetamodelPrefixPropertyContext _Antlr4ParseMetamodelPrefixProperty()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.MetamodelPrefixPropertyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseMetamodelPrefixProperty(CurrentNode as MetamodelPrefixPropertySyntax))
+		        cached = IsIncremental && CanReuseMetamodelPrefixProperty(CurrentNode as MetamodelPrefixPropertySyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.MetamodelPrefixPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -637,6 +697,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.MetamodelPrefixPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -664,15 +729,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.DeclarationContext _Antlr4ParseDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.DeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseDeclaration(CurrentNode as DeclarationSyntax))
+		        cached = IsIncremental && CanReuseDeclaration(CurrentNode as DeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.DeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -683,6 +748,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.DeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -710,15 +780,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.EnumDeclarationContext _Antlr4ParseEnumDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.EnumDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseEnumDeclaration(CurrentNode as EnumDeclarationSyntax))
+		        cached = IsIncremental && CanReuseEnumDeclaration(CurrentNode as EnumDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.EnumDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -729,6 +799,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.EnumDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -756,15 +831,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.EnumBodyContext _Antlr4ParseEnumBody()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.EnumBodyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseEnumBody(CurrentNode as EnumBodySyntax))
+		        cached = IsIncremental && CanReuseEnumBody(CurrentNode as EnumBodySyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.EnumBodyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -775,6 +850,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.EnumBodyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -802,15 +882,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.EnumValuesContext _Antlr4ParseEnumValues()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.EnumValuesContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseEnumValues(CurrentNode as EnumValuesSyntax))
+		        cached = IsIncremental && CanReuseEnumValues(CurrentNode as EnumValuesSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.EnumValuesContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -821,6 +901,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.EnumValuesContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -848,15 +933,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.EnumValueContext _Antlr4ParseEnumValue()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.EnumValueContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseEnumValue(CurrentNode as EnumValueSyntax))
+		        cached = IsIncremental && CanReuseEnumValue(CurrentNode as EnumValueSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.EnumValueContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -867,6 +952,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.EnumValueContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -894,15 +984,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.EnumMemberDeclarationContext _Antlr4ParseEnumMemberDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.EnumMemberDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseEnumMemberDeclaration(CurrentNode as EnumMemberDeclarationSyntax))
+		        cached = IsIncremental && CanReuseEnumMemberDeclaration(CurrentNode as EnumMemberDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.EnumMemberDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -913,6 +1003,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.EnumMemberDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -940,15 +1035,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ClassDeclarationContext _Antlr4ParseClassDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ClassDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseClassDeclaration(CurrentNode as ClassDeclarationSyntax))
+		        cached = IsIncremental && CanReuseClassDeclaration(CurrentNode as ClassDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ClassDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -959,6 +1054,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ClassDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -986,15 +1086,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.SymbolAttributeContext _Antlr4ParseSymbolAttribute()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.SymbolAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseSymbolAttribute(CurrentNode as SymbolAttributeSyntax))
+		        cached = IsIncremental && CanReuseSymbolAttribute(CurrentNode as SymbolAttributeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.SymbolAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1005,6 +1105,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.SymbolAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1032,15 +1137,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.SymbolSymbolAttributeContext _Antlr4ParseSymbolSymbolAttribute()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.SymbolSymbolAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseSymbolSymbolAttribute(CurrentNode as SymbolSymbolAttributeSyntax))
+		        cached = IsIncremental && CanReuseSymbolSymbolAttribute(CurrentNode as SymbolSymbolAttributeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.SymbolSymbolAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1051,6 +1156,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.SymbolSymbolAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1078,15 +1188,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ExpressionSymbolAttributeContext _Antlr4ParseExpressionSymbolAttribute()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ExpressionSymbolAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseExpressionSymbolAttribute(CurrentNode as ExpressionSymbolAttributeSyntax))
+		        cached = IsIncremental && CanReuseExpressionSymbolAttribute(CurrentNode as ExpressionSymbolAttributeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ExpressionSymbolAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1097,6 +1207,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ExpressionSymbolAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1124,15 +1239,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.StatementSymbolTypeAttributeContext _Antlr4ParseStatementSymbolTypeAttribute()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.StatementSymbolTypeAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseStatementSymbolTypeAttribute(CurrentNode as StatementSymbolTypeAttributeSyntax))
+		        cached = IsIncremental && CanReuseStatementSymbolTypeAttribute(CurrentNode as StatementSymbolTypeAttributeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.StatementSymbolTypeAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1143,6 +1258,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.StatementSymbolTypeAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1170,15 +1290,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.TypeSymbolTypeAttributeContext _Antlr4ParseTypeSymbolTypeAttribute()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.TypeSymbolTypeAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseTypeSymbolTypeAttribute(CurrentNode as TypeSymbolTypeAttributeSyntax))
+		        cached = IsIncremental && CanReuseTypeSymbolTypeAttribute(CurrentNode as TypeSymbolTypeAttributeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.TypeSymbolTypeAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1189,6 +1309,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.TypeSymbolTypeAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1216,15 +1341,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ClassBodyContext _Antlr4ParseClassBody()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ClassBodyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseClassBody(CurrentNode as ClassBodySyntax))
+		        cached = IsIncremental && CanReuseClassBody(CurrentNode as ClassBodySyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ClassBodyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1235,6 +1360,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ClassBodyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1262,15 +1392,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ClassAncestorsContext _Antlr4ParseClassAncestors()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ClassAncestorsContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseClassAncestors(CurrentNode as ClassAncestorsSyntax))
+		        cached = IsIncremental && CanReuseClassAncestors(CurrentNode as ClassAncestorsSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ClassAncestorsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1281,6 +1411,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ClassAncestorsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1308,15 +1443,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ClassAncestorContext _Antlr4ParseClassAncestor()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ClassAncestorContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseClassAncestor(CurrentNode as ClassAncestorSyntax))
+		        cached = IsIncremental && CanReuseClassAncestor(CurrentNode as ClassAncestorSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ClassAncestorContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1327,6 +1462,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ClassAncestorContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1354,15 +1494,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ClassMemberDeclarationContext _Antlr4ParseClassMemberDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ClassMemberDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseClassMemberDeclaration(CurrentNode as ClassMemberDeclarationSyntax))
+		        cached = IsIncremental && CanReuseClassMemberDeclaration(CurrentNode as ClassMemberDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ClassMemberDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1373,6 +1513,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ClassMemberDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1400,15 +1545,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.FieldDeclarationContext _Antlr4ParseFieldDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.FieldDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseFieldDeclaration(CurrentNode as FieldDeclarationSyntax))
+		        cached = IsIncremental && CanReuseFieldDeclaration(CurrentNode as FieldDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.FieldDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1419,6 +1564,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.FieldDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1446,15 +1596,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.FieldSymbolPropertyAttributeContext _Antlr4ParseFieldSymbolPropertyAttribute()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.FieldSymbolPropertyAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseFieldSymbolPropertyAttribute(CurrentNode as FieldSymbolPropertyAttributeSyntax))
+		        cached = IsIncremental && CanReuseFieldSymbolPropertyAttribute(CurrentNode as FieldSymbolPropertyAttributeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.FieldSymbolPropertyAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1465,6 +1615,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.FieldSymbolPropertyAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1492,15 +1647,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.FieldContainmentContext _Antlr4ParseFieldContainment()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.FieldContainmentContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseFieldContainment(CurrentNode as FieldContainmentSyntax))
+		        cached = IsIncremental && CanReuseFieldContainment(CurrentNode as FieldContainmentSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.FieldContainmentContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1511,6 +1666,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.FieldContainmentContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1538,15 +1698,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.FieldModifierContext _Antlr4ParseFieldModifier()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.FieldModifierContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseFieldModifier(CurrentNode as FieldModifierSyntax))
+		        cached = IsIncremental && CanReuseFieldModifier(CurrentNode as FieldModifierSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.FieldModifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1557,6 +1717,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.FieldModifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1584,15 +1749,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.DefaultValueContext _Antlr4ParseDefaultValue()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.DefaultValueContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseDefaultValue(CurrentNode as DefaultValueSyntax))
+		        cached = IsIncremental && CanReuseDefaultValue(CurrentNode as DefaultValueSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.DefaultValueContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1603,6 +1768,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.DefaultValueContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1630,15 +1800,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.RedefinitionsOrSubsettingsContext _Antlr4ParseRedefinitionsOrSubsettings()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.RedefinitionsOrSubsettingsContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseRedefinitionsOrSubsettings(CurrentNode as RedefinitionsOrSubsettingsSyntax))
+		        cached = IsIncremental && CanReuseRedefinitionsOrSubsettings(CurrentNode as RedefinitionsOrSubsettingsSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.RedefinitionsOrSubsettingsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1649,6 +1819,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.RedefinitionsOrSubsettingsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1676,15 +1851,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.RedefinitionsContext _Antlr4ParseRedefinitions()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.RedefinitionsContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseRedefinitions(CurrentNode as RedefinitionsSyntax))
+		        cached = IsIncremental && CanReuseRedefinitions(CurrentNode as RedefinitionsSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.RedefinitionsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1695,6 +1870,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.RedefinitionsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1722,15 +1902,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.SubsettingsContext _Antlr4ParseSubsettings()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.SubsettingsContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseSubsettings(CurrentNode as SubsettingsSyntax))
+		        cached = IsIncremental && CanReuseSubsettings(CurrentNode as SubsettingsSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.SubsettingsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1741,6 +1921,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.SubsettingsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1768,15 +1953,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.NameUseListContext _Antlr4ParseNameUseList()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.NameUseListContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseNameUseList(CurrentNode as NameUseListSyntax))
+		        cached = IsIncremental && CanReuseNameUseList(CurrentNode as NameUseListSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.NameUseListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1787,6 +1972,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.NameUseListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1814,15 +2004,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ConstDeclarationContext _Antlr4ParseConstDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ConstDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseConstDeclaration(CurrentNode as ConstDeclarationSyntax))
+		        cached = IsIncremental && CanReuseConstDeclaration(CurrentNode as ConstDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ConstDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1833,6 +2023,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ConstDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1860,15 +2055,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ConstValueContext _Antlr4ParseConstValue()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ConstValueContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseConstValue(CurrentNode as ConstValueSyntax))
+		        cached = IsIncremental && CanReuseConstValue(CurrentNode as ConstValueSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ConstValueContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1879,6 +2074,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ConstValueContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1906,15 +2106,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ReturnTypeContext _Antlr4ParseReturnType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ReturnTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseReturnType(CurrentNode as ReturnTypeSyntax))
+		        cached = IsIncremental && CanReuseReturnType(CurrentNode as ReturnTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ReturnTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1925,6 +2125,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ReturnTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1952,15 +2157,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.TypeOfReferenceContext _Antlr4ParseTypeOfReference()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.TypeOfReferenceContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseTypeOfReference(CurrentNode as TypeOfReferenceSyntax))
+		        cached = IsIncremental && CanReuseTypeOfReference(CurrentNode as TypeOfReferenceSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.TypeOfReferenceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -1971,6 +2176,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.TypeOfReferenceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -1998,15 +2208,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.TypeReferenceContext _Antlr4ParseTypeReference()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.TypeReferenceContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseTypeReference(CurrentNode as TypeReferenceSyntax))
+		        cached = IsIncremental && CanReuseTypeReference(CurrentNode as TypeReferenceSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.TypeReferenceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2017,6 +2227,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.TypeReferenceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2044,15 +2259,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.SimpleTypeContext _Antlr4ParseSimpleType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.SimpleTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseSimpleType(CurrentNode as SimpleTypeSyntax))
+		        cached = IsIncremental && CanReuseSimpleType(CurrentNode as SimpleTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.SimpleTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2063,6 +2278,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.SimpleTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2090,15 +2310,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ClassTypeContext _Antlr4ParseClassType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ClassTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseClassType(CurrentNode as ClassTypeSyntax))
+		        cached = IsIncremental && CanReuseClassType(CurrentNode as ClassTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ClassTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2109,6 +2329,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ClassTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2136,15 +2361,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ObjectTypeContext _Antlr4ParseObjectType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ObjectTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseObjectType(CurrentNode as ObjectTypeSyntax))
+		        cached = IsIncremental && CanReuseObjectType(CurrentNode as ObjectTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ObjectTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2155,6 +2380,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ObjectTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2182,15 +2412,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.PrimitiveTypeContext _Antlr4ParsePrimitiveType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.PrimitiveTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReusePrimitiveType(CurrentNode as PrimitiveTypeSyntax))
+		        cached = IsIncremental && CanReusePrimitiveType(CurrentNode as PrimitiveTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.PrimitiveTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2201,6 +2431,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.PrimitiveTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2228,15 +2463,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.VoidTypeContext _Antlr4ParseVoidType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.VoidTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseVoidType(CurrentNode as VoidTypeSyntax))
+		        cached = IsIncremental && CanReuseVoidType(CurrentNode as VoidTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.VoidTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2247,6 +2482,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.VoidTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2274,15 +2514,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.NullableTypeContext _Antlr4ParseNullableType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.NullableTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseNullableType(CurrentNode as NullableTypeSyntax))
+		        cached = IsIncremental && CanReuseNullableType(CurrentNode as NullableTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.NullableTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2293,6 +2533,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.NullableTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2320,15 +2565,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.CollectionTypeContext _Antlr4ParseCollectionType()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.CollectionTypeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseCollectionType(CurrentNode as CollectionTypeSyntax))
+		        cached = IsIncremental && CanReuseCollectionType(CurrentNode as CollectionTypeSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.CollectionTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2339,6 +2584,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.CollectionTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2366,15 +2616,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.CollectionKindContext _Antlr4ParseCollectionKind()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.CollectionKindContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseCollectionKind(CurrentNode as CollectionKindSyntax))
+		        cached = IsIncremental && CanReuseCollectionKind(CurrentNode as CollectionKindSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.CollectionKindContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2385,6 +2635,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.CollectionKindContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2412,15 +2667,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.OperationDeclarationContext _Antlr4ParseOperationDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.OperationDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseOperationDeclaration(CurrentNode as OperationDeclarationSyntax))
+		        cached = IsIncremental && CanReuseOperationDeclaration(CurrentNode as OperationDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.OperationDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2431,6 +2686,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.OperationDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2458,15 +2718,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.OperationModifierContext _Antlr4ParseOperationModifier()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.OperationModifierContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseOperationModifier(CurrentNode as OperationModifierSyntax))
+		        cached = IsIncremental && CanReuseOperationModifier(CurrentNode as OperationModifierSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.OperationModifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2477,6 +2737,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.OperationModifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2504,15 +2769,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.OperationModifierBuilderContext _Antlr4ParseOperationModifierBuilder()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.OperationModifierBuilderContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseOperationModifierBuilder(CurrentNode as OperationModifierBuilderSyntax))
+		        cached = IsIncremental && CanReuseOperationModifierBuilder(CurrentNode as OperationModifierBuilderSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.OperationModifierBuilderContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2523,6 +2788,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.OperationModifierBuilderContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2550,15 +2820,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.OperationModifierReadonlyContext _Antlr4ParseOperationModifierReadonly()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.OperationModifierReadonlyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseOperationModifierReadonly(CurrentNode as OperationModifierReadonlySyntax))
+		        cached = IsIncremental && CanReuseOperationModifierReadonly(CurrentNode as OperationModifierReadonlySyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.OperationModifierReadonlyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2569,6 +2839,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.OperationModifierReadonlyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2596,15 +2871,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ParameterListContext _Antlr4ParseParameterList()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ParameterListContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseParameterList(CurrentNode as ParameterListSyntax))
+		        cached = IsIncremental && CanReuseParameterList(CurrentNode as ParameterListSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ParameterListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2615,6 +2890,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ParameterListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2642,15 +2922,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ParameterContext _Antlr4ParseParameter()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ParameterContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseParameter(CurrentNode as ParameterSyntax))
+		        cached = IsIncremental && CanReuseParameter(CurrentNode as ParameterSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ParameterContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2661,6 +2941,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ParameterContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2688,15 +2973,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.AssociationDeclarationContext _Antlr4ParseAssociationDeclaration()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.AssociationDeclarationContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseAssociationDeclaration(CurrentNode as AssociationDeclarationSyntax))
+		        cached = IsIncremental && CanReuseAssociationDeclaration(CurrentNode as AssociationDeclarationSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.AssociationDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2707,6 +2992,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.AssociationDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2734,15 +3024,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.IdentifierContext _Antlr4ParseIdentifier()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.IdentifierContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseIdentifier(CurrentNode as IdentifierSyntax))
+		        cached = IsIncremental && CanReuseIdentifier(CurrentNode as IdentifierSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.IdentifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2753,6 +3043,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.IdentifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2780,15 +3075,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.LiteralContext _Antlr4ParseLiteral()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.LiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseLiteral(CurrentNode as LiteralSyntax))
+		        cached = IsIncremental && CanReuseLiteral(CurrentNode as LiteralSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.LiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2799,6 +3094,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.LiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2826,15 +3126,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.NullLiteralContext _Antlr4ParseNullLiteral()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.NullLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseNullLiteral(CurrentNode as NullLiteralSyntax))
+		        cached = IsIncremental && CanReuseNullLiteral(CurrentNode as NullLiteralSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.NullLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2845,6 +3145,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.NullLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2872,15 +3177,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.BooleanLiteralContext _Antlr4ParseBooleanLiteral()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.BooleanLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseBooleanLiteral(CurrentNode as BooleanLiteralSyntax))
+		        cached = IsIncremental && CanReuseBooleanLiteral(CurrentNode as BooleanLiteralSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.BooleanLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2891,6 +3196,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.BooleanLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2918,15 +3228,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.IntegerLiteralContext _Antlr4ParseIntegerLiteral()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.IntegerLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseIntegerLiteral(CurrentNode as IntegerLiteralSyntax))
+		        cached = IsIncremental && CanReuseIntegerLiteral(CurrentNode as IntegerLiteralSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.IntegerLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2937,6 +3247,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.IntegerLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -2964,15 +3279,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.DecimalLiteralContext _Antlr4ParseDecimalLiteral()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.DecimalLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseDecimalLiteral(CurrentNode as DecimalLiteralSyntax))
+		        cached = IsIncremental && CanReuseDecimalLiteral(CurrentNode as DecimalLiteralSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.DecimalLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -2983,6 +3298,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.DecimalLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -3010,15 +3330,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.ScientificLiteralContext _Antlr4ParseScientificLiteral()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.ScientificLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseScientificLiteral(CurrentNode as ScientificLiteralSyntax))
+		        cached = IsIncremental && CanReuseScientificLiteral(CurrentNode as ScientificLiteralSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.ScientificLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -3029,6 +3349,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ScientificLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
@@ -3056,15 +3381,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		internal MetaParser.StringLiteralContext _Antlr4ParseStringLiteral()
 		{
 			BeginNode();
+		    bool cached = false;
 		    MetaParser.StringLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseStringLiteral(CurrentNode as StringLiteralSyntax))
+		        cached = IsIncremental && CanReuseStringLiteral(CurrentNode as StringLiteralSyntax);
+				if (cached)
 				{
 					green = EatNode();
-					context = new MetaParser.StringLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
@@ -3075,6 +3400,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    finally
 		    {
 		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.StringLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;

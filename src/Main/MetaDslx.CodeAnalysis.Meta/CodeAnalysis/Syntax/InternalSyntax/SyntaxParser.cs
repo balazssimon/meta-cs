@@ -21,7 +21,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private bool _hasStateManager;
         private ParserStateManager? _stateManager;
-        private LanguageSyntaxNode? _oldRoot;
         private BlendedNode _currentNode;
         private InternalSyntaxToken? _currentToken;
         private GreenNode _prevTokenTrailingTrivia;
@@ -30,7 +29,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _errorIndex;
         private LexerState? _lexerState;
         private SyntaxListBuilder _skippedTokens;
-        private ParseData? _oldParseData;
         private ParseData? _parseData;
         private ConditionalWeakTable<GreenNode, IncrementalNodeData>? _incrementalData;
 
@@ -43,6 +41,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _maxTokenLookahead;
         private int _minLookahead;
         private int _maxLookahead;
+        private int _oldMinLexerLookahead;
+        private int _oldMaxLexerLookahead;
 
         protected SyntaxParser(
             Language language,
@@ -65,8 +65,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             if (IsIncremental)
             {
                 _blendedTokens = new SlidingBuffer<BlendedNode>(this, new BlendedNode(null, null, null, new Blender(this, oldTree, oldParseData, changes)));
-                _oldRoot = oldTree;
-                _oldParseData = oldParseData;
+                _oldMinLexerLookahead = oldParseData?.MinLexerLookahead ?? int.MaxValue;
+                _oldMaxLexerLookahead = oldParseData?.MaxLexerLookahead ?? int.MinValue;
                 _version = oldParseData != null ? oldParseData.Version + 1 : 1;
                 _incrementalData = oldParseData?.IncrementalData != null ? oldParseData.IncrementalData : new ConditionalWeakTable<GreenNode, IncrementalNodeData>();
                 if (oldParseData?.LexerStateManager != null) Lexer.StateManager?.InternalSetCache(oldParseData.LexerStateManager);
@@ -87,8 +87,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public bool IsScript => Options != null && Options.Kind == SourceCodeKind.Script;
 
         public ParseData? ParseData => _parseData;
-
-        public LanguageSyntaxNode OldRoot => _oldRoot;
 
         public LanguageParseOptions Options => Lexer.Options;
 
@@ -159,8 +157,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var directives = ((InternalSyntaxNode)root).ApplyDirectives(DirectiveStack.Empty);
             if (IsIncremental)
             {
-                var minLookahead = Math.Min(Lexer.MinLookahead, _oldParseData?.MinLexerLookahead ?? int.MaxValue);
-                var maxLookahead = Math.Max(Lexer.MaxLookahead, _oldParseData?.MaxLexerLookahead ?? int.MinValue);
+                var minLookahead = Math.Min(Lexer.MinLookahead, _oldMinLexerLookahead);
+                var maxLookahead = Math.Max(Lexer.MaxLookahead, _oldMaxLexerLookahead);
                 _parseData = new ParseData(_version, Lexer.StateManager, this.StateManager, directives, minLookahead, maxLookahead, _incrementalData);
             }
             else

@@ -147,7 +147,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             public bool HasParent => CurrentNodeOrToken.Parent != null;
 
-            public bool HasChildren => CurrentNodeOrToken.IsNode && CurrentNodeOrToken.AsNode().SlotCount > 0;
+            public bool HasChildren => !CurrentNodeOrToken.IsMissing && CurrentNodeOrToken.IsNode && CurrentNodeOrToken.AsNode().SlotCount > 0;
 
             public Cursor MoveToNextSibling()
             {

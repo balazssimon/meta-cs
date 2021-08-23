@@ -13,18 +13,21 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         public static BinderPosition<Binder> FindCompilationUnitRootBinder(BinderPosition origin)
         {
+            if (origin.Syntax.IsMissing) return default;
             return new FindCompilationUnitRoot(origin).FindOne(includeSelf: true);
         }
 
         public static BinderPosition<SymbolBinder> FindSymbolBinder(Symbol symbol, SyntaxReference reference)
         {
             var origin = reference.ToBinderPosition(symbol.DeclaringCompilation);
+            if (origin.Syntax.IsMissing) return default;
             return new FindSymbol(origin, symbol).FindOne(includeSelf: true);
         }
 
         public static BinderPosition<SymbolBinder> FindFirstOrDefaultSymbolBinder(Symbol symbol, SyntaxReference reference)
         {
             var origin = reference.ToBinderPosition(symbol.DeclaringCompilation);
+            if (origin.Syntax.IsMissing) return default;
             var result = new FindSymbol(origin, symbol).FindAll(includeSelf: true);
             if (result.Length == 0) return default;
             else return result[0];

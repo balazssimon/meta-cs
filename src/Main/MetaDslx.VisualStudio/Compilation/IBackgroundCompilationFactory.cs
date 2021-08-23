@@ -14,7 +14,7 @@ namespace MetaDslx.VisualStudio.Compilation
     public interface IBackgroundCompilationFactory
     {
         Language Language { get; }
-        ICompilation CreateCompilation(BackgroundCompilation backgroundCompilation, IEnumerable<LanguageSyntaxTree> syntaxTrees, CancellationToken cancellationToken);
+        ICompilation CreateCompilation(BackgroundCompilation backgroundCompilation, ICompilation oldCompilation, IEnumerable<LanguageSyntaxTree> syntaxTrees, CancellationToken cancellationToken);
         IEnumerable<IBackgroundCompilationStep> CreateCompilationSteps(BackgroundCompilation backgroundCompilation);
     }
 }

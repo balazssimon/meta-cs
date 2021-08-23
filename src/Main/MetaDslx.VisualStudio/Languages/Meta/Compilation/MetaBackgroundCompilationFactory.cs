@@ -26,17 +26,26 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Compilation
     {
         public Language Language => MetaLanguage.Instance;
 
-        public ICompilation CreateCompilation(BackgroundCompilation backgroundCompilation, IEnumerable<LanguageSyntaxTree> syntaxTrees, CancellationToken cancellationToken)
+        public ICompilation CreateCompilation(BackgroundCompilation backgroundCompilation, ICompilation oldCompilation, IEnumerable<LanguageSyntaxTree> syntaxTrees, CancellationToken cancellationToken)
         {
-            var metaModelReference = ModelReference.CreateFromModel(MetaInstance.MModel);
-            var symbolsReference = MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location);
-            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
-            BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
-            binderFlags = binderFlags.UnionWith(binderFlags2);
-            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule,
-                deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags);
-            var compilation = MetaCompilation.Create("MetaBackgroundCompilation").AddReferences(symbolsReference, metaModelReference).AddSyntaxTrees(syntaxTrees).WithOptions(options);
-            return compilation;
+            if (oldCompilation != null)
+            {
+                var compilation = (MetaCompilation)oldCompilation;
+                compilation = compilation.RemoveAllSyntaxTrees().AddSyntaxTrees(syntaxTrees);
+                return compilation;
+            }
+            else
+            {
+                var metaModelReference = ModelReference.CreateFromModel(MetaInstance.MModel);
+                var symbolsReference = MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location);
+                BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+                BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+                binderFlags = binderFlags.UnionWith(binderFlags2);
+                MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule,
+                    deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags);
+                var compilation = MetaCompilation.Create("MetaBackgroundCompilation").AddReferences(symbolsReference, metaModelReference).AddSyntaxTrees(syntaxTrees).WithOptions(options);
+                return compilation;
+            }
         }
 
         public IEnumerable<IBackgroundCompilationStep> CreateCompilationSteps(BackgroundCompilation backgroundCompilation)

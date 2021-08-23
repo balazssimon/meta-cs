@@ -268,12 +268,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
             var parentProp = declaration.ModelObjectType is null ? declaration.ParentProperty : symbolFacts.GetProperty(parent.ModelObjectType, declaration.ParentProperty);
             var isContainment = declaration.ModelObjectType is null || parentProp is null || symbolFacts.IsContainmentProperty(parentProp);
-            if (declaration.Names.Count == 0)
-            {
-                SingleDeclaration anonymousDeclaration = new SingleDeclaration(string.Empty, string.Empty, declaration.SymbolType, declaration.ModelObjectType, declaration.Syntax.GetReference(), new SourceLocation(declaration.Syntax), false, declaration.HasImports, false, declaration.ParentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
-                parent.Members.Add(anonymousDeclaration);
-                return anonymousDeclaration;
-            }
             foreach (var qualifier in declaration.Names)
             {
                 int count = qualifier.Count;
@@ -293,8 +287,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
                     return deepestDecl;
                 }
             }
-            Debug.Assert(false);
-            return null;
+            SingleDeclaration anonymousDeclaration = new SingleDeclaration(string.Empty, string.Empty, declaration.SymbolType, declaration.ModelObjectType, declaration.Syntax.GetReference(), new SourceLocation(declaration.Syntax), false, declaration.HasImports, false, declaration.ParentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
+            parent.Members.Add(anonymousDeclaration);
+            return anonymousDeclaration;
         }
         
     }

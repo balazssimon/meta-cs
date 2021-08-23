@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             var module = rootSymbol.ContainingSymbol as MetadataModuleSymbol;
             if (module is null) throw new ArgumentException("Containing symbol of the root symbol must be a MetadataModuleSymbol.");
-            if (rootSymbol.ContainingModule is null) return ImmutableArray<Symbol>.Empty;
+            if (rootSymbol.ContainingModule is null || module.Model is null) return ImmutableArray<Symbol>.Empty;
             var location = rootSymbol.ContainingModule.Locations.FirstOrDefault();
             var symbolFactory = rootSymbol.ContainingModule.SymbolFactory;
             var result = ArrayBuilder<Symbol>.GetInstance();
@@ -36,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             if (symbol is MetadataModuleSymbol mms) return ImmutableArray.Create<Symbol>(mms.GlobalNamespace);
             var msymbol = symbol as IModelSymbol;
             if (msymbol is null) throw new ArgumentException("Symbol must implement IModelSymbol.");
-            if (symbol.ContainingModule is null) return ImmutableArray<Symbol>.Empty;
+            if (symbol.ContainingModule is null || msymbol.ModelObject is null) return ImmutableArray<Symbol>.Empty;
             var location = symbol.ContainingModule.Locations.FirstOrDefault();
             var symbolFacts = symbol.Language.SymbolFacts;
             var symbolFactory = symbol.ContainingModule.SymbolFactory;
@@ -131,7 +131,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             var msymbol = symbol as IModelSymbol;
             if (msymbol == null) return;
-            if (symbol.ContainingModule is null) return;
+            if (symbol.ContainingModule is null || msymbol.ModelObject is null) return;
             var language = symbol.Language;
             var location = symbol.ContainingModule.Locations.FirstOrDefault();
             var symbolFactory = symbol.ContainingModule.SymbolFactory;

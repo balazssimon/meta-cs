@@ -225,10 +225,10 @@ namespace MetaDslx.Modeling
 
         private void InitializeFlags()
         {
-            if (this.state == ModelPropertyInitState.Initialized) return;
+            if (this.state != ModelPropertyInitState.None) return;
             lock (ModelProperty.lockObject)
             {
-                if (this.state == ModelPropertyInitState.Initialized) return;
+                if (this.state != ModelPropertyInitState.None) return;
                 foreach (var annot in this.annotations)
                 {
                     if (annot is ReadonlyAttribute)

@@ -243,7 +243,7 @@ namespace MetaDslx.VisualStudio.Compilation
                 var compilationSnapshot = _compilationSnapshot;
                 if (factory != null)
                 {
-                    var compilation = factory.CreateCompilation(this, ImmutableArray.Create(compilationSnapshot.SyntaxTree), cancellationToken);
+                    var compilation = factory.CreateCompilation(this, compilationSnapshot.Compilation, ImmutableArray.Create(compilationSnapshot.SyntaxTree), cancellationToken);
                     if (compilationSnapshot == null || compilation != null)
                     {
                         if (cancellationToken.IsCancellationRequested) return;

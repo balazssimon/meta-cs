@@ -65,7 +65,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             Console.WriteLine("Diagnostics: " + (diagsOk ? "OK" : "mismatch"));
             Console.WriteLine("Source: " + (sourceOk ? "OK" : "mismatch"));
             Console.WriteLine("=====================");
-            if (onlyIfMismatch) Console.ReadLine();
+            //if (onlyIfMismatch) Console.ReadLine();
         }
     }
 }
