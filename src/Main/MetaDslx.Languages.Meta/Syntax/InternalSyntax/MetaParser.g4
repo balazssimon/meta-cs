@@ -51,9 +51,9 @@ metamodelUriProperty : IUri TAssign        stringLiteral;
                  
 metamodelPrefixProperty : IPrefix TAssign        stringLiteral;
 
-                        
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
+                       
                  
                         
               
@@ -67,6 +67,7 @@ enumValues : enumValue (TComma enumValue)*;
 enumValue : attribute* name;
 enumMemberDeclaration :                       operationDeclaration;
 
+                       
                   
                         
               
@@ -117,6 +118,7 @@ subsettings : KSubsets                                nameUseList?;
                   
 nameUseList : qualifier (TComma qualifier)*;
 
+                       
                      
 constDeclaration : KConst                 typeReference name constValue? TSemicolon;
                      

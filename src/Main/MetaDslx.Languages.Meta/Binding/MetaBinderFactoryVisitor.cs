@@ -63,7 +63,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseQualifiedName = new object();
 		public static object UseNamespaceBody = new object();
 		public static object UseMetamodelDeclaration = new object();
-		public static object UseDeclaration = new object();
 		public static object UseName = new object();
 		public static object UseMetamodelUriProperty = new object();
 		public static object UseMetamodelPrefixProperty = new object();
@@ -97,6 +96,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseIntegerLiteral = new object();
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
+		public static object UseDeclaration = new object();
 		public static object UseMetamodelProperty = new object();
 		public static object UseEnumMemberDeclaration = new object();
 		public static object UseClassMemberDeclaration = new object();
@@ -410,7 +410,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -427,6 +426,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateDefineBinder(resultBinder, parent, type: typeof(MetaEnum));
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Documentation");
 				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
@@ -537,6 +537,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateDefineBinder(resultBinder, parent, type: typeof(MetaClass));
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Documentation");
 				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
@@ -966,6 +967,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateDefineBinder(resultBinder, parent, type: typeof(MetaConstant));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseTypeReference)

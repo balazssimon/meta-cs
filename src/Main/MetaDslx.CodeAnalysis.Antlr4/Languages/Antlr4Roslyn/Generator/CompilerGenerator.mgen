@@ -1192,15 +1192,15 @@ protected virtual bool CanReuse[rule.PlainName()]([rule.RedName()] node)
 internal [lang]Parser.[rule.PlainName()]Context _Antlr4Parse[rule.PlainName()]([rule.IsRecursive ? "int precedence" : ""])
 {
 	BeginNode();
+    bool cached = false;
     [lang]Parser.[rule.PlainName()]Context context = null;
     GreenNode green = null;
     try
     {
-		if (IsIncremental && CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()]))
+        cached = IsIncremental && CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()]);
+		if (cached)
 		{
 			green = EatNode();
-			context = new [lang]Parser.[rule.PlainName()]Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-			this.Antlr4Parser.Context.AddChild(context);
 		}
 		else
 		{
@@ -1211,6 +1211,11 @@ internal [lang]Parser.[rule.PlainName()]Context _Antlr4Parse[rule.PlainName()]([
     finally
     {
         EndNode(ref green);
+        if (cached)
+        {
+			context = new [lang]Parser.[rule.PlainName()]Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+			this.Antlr4Parser.Context.AddChild(context);
+        }
         CacheGreenNode(context, green);
     }
     return context;

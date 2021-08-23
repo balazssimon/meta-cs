@@ -131,22 +131,22 @@ $Use(types=(MetaClass,MetaEnum,MetaConstant))
 classType : qualifier;
 
 objectType 
-	: $Value(MetaInstance.Object) KObject 
-	| $Value(MetaInstance.ModelObject) KSymbol
-	| $Value(MetaInstance.String) KString
+	: $Value(TestIncrementalCompilationInstance.Object) KObject 
+	| $Value(TestIncrementalCompilationInstance.ModelObject) KSymbol
+	| $Value(TestIncrementalCompilationInstance.String) KString
 	;
 
 primitiveType 
-	: $Value(MetaInstance.Int) KInt 
-	| $Value(MetaInstance.Long) KLong 
-	| $Value(MetaInstance.Float) KFloat 
-	| $Value(MetaInstance.Double) KDouble 
-	| $Value(MetaInstance.Byte) KByte 
-	| $Value(MetaInstance.Bool) KBool
+	: $Value(TestIncrementalCompilationInstance.Int) KInt 
+	| $Value(TestIncrementalCompilationInstance.Long) KLong 
+	| $Value(TestIncrementalCompilationInstance.Float) KFloat 
+	| $Value(TestIncrementalCompilationInstance.Double) KDouble 
+	| $Value(TestIncrementalCompilationInstance.Byte) KByte 
+	| $Value(TestIncrementalCompilationInstance.Bool) KBool
 	;
 
 voidType 
-	: $Value(MetaInstance.Void) KVoid
+	: $Value(TestIncrementalCompilationInstance.Void) KVoid
 	;
 
 $Define(MetaNullableType)
@@ -177,7 +177,7 @@ parameterList : parameter (TComma parameter)*;
 $Define(MetaParameter)
 parameter : attribute* $Property(Type) typeReference name;
 
-$Symbol(AssociationSymbol)
+$Opposite
 associationDeclaration : attribute* KAssociation $Use(MetaProperty) source=qualifier KWith $Use(MetaProperty) target=qualifier TSemicolon;
 
 

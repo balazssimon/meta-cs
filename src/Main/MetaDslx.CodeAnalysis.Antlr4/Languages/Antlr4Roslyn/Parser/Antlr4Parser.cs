@@ -19,8 +19,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public override void NotifyErrorListeners(IToken offendingToken, string msg, RecognitionException e)
         {
-            if (_incrementalParser == null && e is NoViableAltException nvae) base.NotifyErrorListeners(nvae.StartToken, msg, e); 
-            else base.NotifyErrorListeners(offendingToken, msg, e);
+            /*if (_incrementalParser == null && e is NoViableAltException nvae) base.NotifyErrorListeners(nvae.StartToken, msg, e); 
+            else*/ base.NotifyErrorListeners(offendingToken, msg, e);
         }
     }
 }

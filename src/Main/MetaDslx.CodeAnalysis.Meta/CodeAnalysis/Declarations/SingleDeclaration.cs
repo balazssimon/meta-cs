@@ -176,7 +176,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
-                return Hash.Combine(thisDecl.SymbolType.GetHashCode(), Hash.Combine(thisDecl.MetadataName?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0));
+                return Hash.Combine(thisDecl.SymbolType?.GetHashCode() ?? 0, Hash.Combine(thisDecl.MetadataName?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0));
             }
         }
     }

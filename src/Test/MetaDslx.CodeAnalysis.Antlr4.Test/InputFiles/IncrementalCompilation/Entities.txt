@@ -4,11 +4,11 @@
 	
 	abstract class NamedElement
 	{
-		[Name]
+		[property: Name]
 		string Name;
 	}
 
-	[Type]
+	[symbol: TypeSymbol]
 	abstract class EType
 	{
 	}
@@ -18,7 +18,7 @@
 		Namespace Namespace;
 	}
 	
-	[Scope]
+	[symbol: Namespace]
 	class Namespace : Declaration
 	{
 		containment list<Declaration> Declarations;
@@ -38,18 +38,18 @@
 		PrimitiveTypeKind Kind;
 	}
 
-	[Scope]
+	[symbol: Class]
 	class Entity : Declaration, EType
 	{
 		bool IsAbstract;
-		[BaseScope]
+		[property: BaseTypes]
 		list<Entity> BaseEntities;
 		containment list<Field> Fields;
 	}
 	
 	class Field : NamedElement
 	{
-		[Type]
+		[property: Type]
 		EType Type;
 		Entity Entity;
 		set<Field> Opposite;

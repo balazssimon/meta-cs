@@ -51,9 +51,9 @@ metamodelUriProperty : IUri TAssign $Value stringLiteral;
 $Property(Prefix)
 metamodelPrefixProperty : IPrefix TAssign $Value stringLiteral;
 
-$Property(Declarations) 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
+$Property(Declarations)
 $Define(MetaEnum)
 $Property(Documentation)
 $Documentation
@@ -67,6 +67,7 @@ $Documentation
 enumValue : attribute* name;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
+$Property(Declarations)
 $Define(MetaClass)
 $Property(Documentation)
 $Documentation
@@ -117,6 +118,7 @@ subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
 $Use(MetaProperty)
 nameUseList : qualifier (TComma qualifier)*;
 
+$Property(Declarations)
 $Define(MetaConstant)
 constDeclaration : KConst $Property(Type) typeReference name constValue? TSemicolon;
 $Property(DotNetName)

@@ -205,9 +205,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IAntlrErrorListener<IToken>.SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            var offset = offendingSymbol.StartIndex - this.Position;
-            var width = Math.Max(offendingSymbol.StopIndex - offendingSymbol.StartIndex + 1, 0);
-            this.AddErrorToCurrentToken(offset, width, Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            IToken startToken;
+            IToken endToken;
+            if (e is NoViableAltException nvae)
+            {
+                startToken = nvae.StartToken;
+                endToken = nvae.OffendingToken;
+            }
+            else
+            {
+                startToken = offendingSymbol;
+                endToken = offendingSymbol;
+            }
+            var greenStart = ((IncrementalToken)startToken).GreenToken;
+            var greenEnd = ((IncrementalToken)endToken).GreenToken;
+            var position = startToken.StartIndex;
+            var width = Math.Max(endToken.StopIndex - startToken.StartIndex + 1, 0);
+            this.AddError(position, width, Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             CallLogger.Instance.Log("  Parser error: " + msg);
         }
 

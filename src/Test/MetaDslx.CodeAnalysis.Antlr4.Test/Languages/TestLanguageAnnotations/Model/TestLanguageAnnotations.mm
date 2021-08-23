@@ -7,7 +7,7 @@
 	[symbol: DeclaredSymbol]
 	class NamedElement
 	{
-		[symbol: Name]
+		[property: Name]
 		string Name;
 	}
 
@@ -45,7 +45,7 @@
 	[symbol: NamedTypeSymbol]
 	class Class : Type, NamedDeclaration, Scope
 	{
-		[symbol: Members]
+		[property: Members]
 		containment list<Property> Properties subsets Declaration.Declarations;
 	}
 

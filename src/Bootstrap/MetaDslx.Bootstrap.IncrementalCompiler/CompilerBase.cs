@@ -40,21 +40,27 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             var sourceOk = source.ToString() == syntaxTree.GetRoot().ToFullString();
             if (onlyIfMismatch && diagsOk && sourceOk) return;
             if (title != null) Console.WriteLine(title);
-            Console.WriteLine("==== diagnostics ====");
-            var formatter = new DiagnosticFormatter();
-            foreach (var diag in antlr4Diags)
+            if (!diagsOk)
             {
-                Console.WriteLine(formatter.Format(diag));
+                Console.WriteLine("==== diagnostics ====");
+                var formatter = new DiagnosticFormatter();
+                foreach (var diag in antlr4Diags)
+                {
+                    Console.WriteLine(formatter.Format(diag));
+                }
+                Console.WriteLine("------ actual -------");
+                foreach (var diag in diags)
+                {
+                    Console.WriteLine(formatter.Format(diag));
+                }
             }
-            Console.WriteLine("------ actual -------");
-            foreach (var diag in diags)
+            if (!sourceOk)
             {
-                Console.WriteLine(formatter.Format(diag));
+                Console.WriteLine("====== source =======");
+                Console.WriteLine(source.ToString());
+                Console.WriteLine("------ actual -------");
+                Console.WriteLine(syntaxTree.GetRoot().ToFullString());
             }
-            Console.WriteLine("====== source =======");
-            Console.WriteLine(source.ToString());
-            Console.WriteLine("------ actual -------");
-            Console.WriteLine(syntaxTree.GetRoot().ToFullString());
             Console.WriteLine("====== result =======");
             Console.WriteLine("Diagnostics: " + (diagsOk ? "OK" : "mismatch"));
             Console.WriteLine("Source: " + (sourceOk ? "OK" : "mismatch"));

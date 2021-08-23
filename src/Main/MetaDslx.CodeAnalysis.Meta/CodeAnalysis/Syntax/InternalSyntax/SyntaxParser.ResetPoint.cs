@@ -13,16 +13,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             public readonly ParserState? ParserState;
             public readonly int Index;
             public readonly int Position;
+            public readonly int ErrorIndex;
             public readonly GreenNode[] SkippedTokens;
             public readonly GreenNode PrevTokenTrailingTrivia;
 
-            internal ResetPoint(int resetCount, LexerState? lexerState, ParserState? parserState, int index, int position, GreenNode[] skippedTokens, GreenNode prevTokenTrailingTrivia)
+            internal ResetPoint(int resetCount, LexerState? lexerState, ParserState? parserState, int index, int position, int errorIndex, GreenNode[] skippedTokens, GreenNode prevTokenTrailingTrivia)
             {
                 this.ResetCount = resetCount;
                 this.LexerState = lexerState;
                 this.ParserState = parserState;
                 this.Index = index;
                 this.Position = position;
+                this.ErrorIndex = errorIndex;
                 this.SkippedTokens = skippedTokens;
                 this.PrevTokenTrailingTrivia = prevTokenTrailingTrivia;
             }

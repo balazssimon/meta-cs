@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         public readonly Language Language;
         private readonly List<SyntaxDiagnosticInfo> _errors;
+        private readonly List<SyntaxDiagnosticInfo> _unprocessedErrors;
 
         public AbstractParser(Language language)
         {
             Language = language;
             _errors = new List<SyntaxDiagnosticInfo>();
+            _unprocessedErrors = new List<SyntaxDiagnosticInfo>();
         }
 
         internal protected abstract int TokenIndex { get; }
@@ -24,18 +27,51 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected abstract InternalSyntaxToken CurrentToken { get; }
         protected abstract GreenNode PrevTokenTrailingTrivia { get; }
 
-        protected GreenNode WithCurrentSyntaxErrors(GreenNode green, int offset)
+        protected void ResetErrorIndex(int errorIndex)
         {
-            if (_errors.Count > 0)
+            /*if (errorIndex >= 0 && errorIndex < _errors.Count)
             {
-                /*var start = position;
-                var end = position + width;
-                var currentErrors = _errors.Where(err => err.Offset >= start && err.Offset + err.Width <= end).Select(err => err.WithOffset(err.Offset - start)).ToArray();
-                if (currentErrors.Length > 0)
+                for (int i = errorIndex; i < _errors.Count; i++)
                 {
-                    return WithAdditionalDiagnostics(green, currentErrors);
-                }*/
-                if (offset > 0)
+                    var error = _errors[i];
+                    if (_unprocessedErrors.Any(err => error.Equals(err) && err.ErrorCode == error.ErrorCode && err.Offset == error.Offset && err.Width == error.Width)) continue;
+                    _unprocessedErrors.Add(error);
+                }
+            }*/
+        }
+
+        protected GreenNode WithCurrentSyntaxErrors(GreenNode green, int position, int width, ref int errorIndex)
+        {
+            if (_unprocessedErrors.Count > 0)
+            {
+                var start = position;
+                var end = position + width;
+                var offset = position;
+                SyntaxDiagnosticInfo? lastError = null;
+                var currentErrors = ArrayBuilder<SyntaxDiagnosticInfo>.GetInstance();
+                for (int i = 0; i < _unprocessedErrors.Count; i++)
+                {
+                    var err = _unprocessedErrors[i];
+                    if (err.Offset >= start && err.Offset + err.Width <= end)
+                    {
+                        currentErrors.Add(err.WithOffset(err.Offset - offset));
+                        _unprocessedErrors.RemoveAt(i);
+                        lastError = err;
+                    }
+                }
+                if (lastError is not null)
+                {
+                    errorIndex = _errors.IndexOf(lastError) + 1;
+                }
+                if (currentErrors.Count > 0)
+                {
+                    return WithAdditionalDiagnostics(green, currentErrors.ToArrayAndFree());
+                }
+                else
+                {
+                    currentErrors.Free();
+                }
+                /*if (offset > 0)
                 {
                     var array = new SyntaxDiagnosticInfo[_errors.Count];
                     for (int i = 0; i < _errors.Count; i++)
@@ -51,7 +87,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     var array = _errors.ToArray();
                     _errors.Clear();
                     return WithAdditionalDiagnostics(green, array);
-                }
+                }*/
             }
             return green;
         }
@@ -140,170 +176,19 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        /*protected void AddError(int position, int width, ErrorCode code, params object[] args)
-        {
-            //Debug.Assert(position <= _position);
-            this.AddSyntaxError(MakeError(position, width, code, args));
-        }
-
-        protected void AddError(int position, int width, ErrorCode code)
-        {
-            this.AddSyntaxError(MakeError(position, width, code));
-        }
-
-        protected void AddError(int position, int width, ErrorCode code, params object[] args)
-        {
-            this.AddSyntaxError(MakeError(position, width, code, args));
-        }
-        */
-        /*
-        protected void AddErrorToCurrentToken(int position, int width, ErrorCode code)
-        {
-            this.AddErrorToCurrentToken(MakeError(position, width, code));
-        }
-
-        protected void AddErrorToCurrentToken(ErrorCode code)
-        {
-            this.AddErrorToCurrentToken(MakeError(CurrentToken, code));
-        }
-        */
-
-        protected void AddErrorToCurrentToken(int offset, int width, ErrorCode code, params object[] args)
+        protected void AddError(int offset, int width, ErrorCode code, params object[] args)
         {
             this.AddSyntaxError(MakeError(offset, width, code, args));
         }
 
-        protected void AddErrorToCurrentToken(ErrorCode code, params object[] args)
-        {
-            this.AddSyntaxError(MakeError(CurrentToken, code, args));
-        }
-
-        /*protected void AddErrorToPreviousTokenEnd(ErrorCode code, params object[] args)
-        {
-            this.AddSyntaxError(MakeError(_prevTokenTrailingTrivia != null ? -_prevTokenTrailingTrivia.FullWidth : 0, 1, code, args));
-        }
-        */
         protected void AddSyntaxError(SyntaxDiagnosticInfo error)
         {
             if (error != null)
             {
                 if (_errors.Any(err => error.Equals(err) && err.ErrorCode == error.ErrorCode && err.Offset == error.Offset && err.Width == error.Width)) return;
                 _errors.Add(error);
+                _unprocessedErrors.Add(error);
             }
-        }
-
-        protected TNode AddError<TNode>(TNode node, ErrorCode code) where TNode : GreenNode
-        {
-            return AddError(node, code, Array.Empty<object>());
-        }
-
-        protected TNode AddError<TNode>(TNode node, ErrorCode code, params object[] args) where TNode : GreenNode
-        {
-            if (!node.IsMissing)
-            {
-                return WithAdditionalDiagnostics(node, MakeError(node, code, args));
-            }
-
-            int offset, width;
-
-            InternalSyntaxToken token = node as InternalSyntaxToken;
-            if (token != null && token.ContainsSkippedText)
-            {
-                // This code exists to clean up an anti-pattern:
-                //   1) an undesirable token is parsed,
-                //   2) a desirable missing token is created and the parsed token is appended as skipped text,
-                //   3) an error is attached to the missing token describing the problem.
-                // If this occurs, then this.previousTokenTrailingTrivia is still populated with the trivia 
-                // of the undesirable token (now skipped text).  Since the trivia no longer precedes the
-                // node to which the error is to be attached, the computed offset will be incorrect.
-
-                offset = token.GetLeadingTriviaWidth(); // Should always be zero, but at least we'll do something sensible if it's not.
-                Debug.Assert(offset == 0, "Why are we producing a missing token that has both skipped text and leading trivia?");
-
-                width = 0;
-                bool seenSkipped = false;
-                foreach (var trivia in token.TrailingTrivia)
-                {
-                    if (trivia.Kind == SyntaxKind.SkippedTokensTrivia)
-                    {
-                        seenSkipped = true;
-                        width += trivia.Width;
-                    }
-                    else if (seenSkipped)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        offset += trivia.Width;
-                    }
-                }
-            }
-            else
-            {
-                this.GetDiagnosticSpanForMissingToken(out offset, out width);
-            }
-
-            return WithAdditionalDiagnostics(node, MakeError(offset, width, code, args));
-        }
-
-        protected TNode AddError<TNode>(TNode node, int offset, int length, ErrorCode code, params object[] args) where TNode : InternalSyntaxNode
-        {
-            return WithAdditionalDiagnostics(node, MakeError(offset, length, code, args));
-        }
-
-        protected TNode AddError<TNode>(TNode node, InternalSyntaxNode location, ErrorCode code, params object[] args) where TNode : InternalSyntaxNode
-        {
-            // assumes non-terminals will at most appear once in sub-tree
-            int offset;
-            FindOffset(node, location, out offset);
-            return WithAdditionalDiagnostics(node, MakeError(offset, location.Width, code, args));
-        }
-
-        protected TNode AddErrorToFirstToken<TNode>(TNode node, ErrorCode code) where TNode : InternalSyntaxNode
-        {
-            var firstToken = node.GetFirstToken();
-            return WithAdditionalDiagnostics(node, MakeError(firstToken.GetLeadingTriviaWidth(), firstToken.Width, code));
-        }
-
-        protected TNode AddErrorToFirstToken<TNode>(TNode node, ErrorCode code, params object[] args) where TNode : InternalSyntaxNode
-        {
-            var firstToken = node.GetFirstToken();
-            return WithAdditionalDiagnostics(node, MakeError(firstToken.GetLeadingTriviaWidth(), firstToken.Width, code, args));
-        }
-
-        protected TNode AddErrorToLastToken<TNode>(TNode node, ErrorCode code) where TNode : InternalSyntaxNode
-        {
-            int offset;
-            int width;
-            GetOffsetAndWidthForLastToken(node, out offset, out width);
-            return WithAdditionalDiagnostics(node, MakeError(offset, width, code));
-        }
-
-        protected TNode AddErrorToLastToken<TNode>(TNode node, ErrorCode code, params object[] args) where TNode : InternalSyntaxNode
-        {
-            int offset;
-            int width;
-            GetOffsetAndWidthForLastToken(node, out offset, out width);
-            return WithAdditionalDiagnostics(node, MakeError(offset, width, code, args));
-        }
-
-        private static void GetOffsetAndWidthForLastToken<TNode>(TNode node, out int offset, out int width) where TNode : InternalSyntaxNode
-        {
-            var lastToken = node.GetLastNonmissingToken();
-            offset = node.FullWidth; //advance to end of entire node
-            width = 0;
-            if (lastToken != null) //will be null if all tokens are missing
-            {
-                offset -= lastToken.FullWidth; //rewind past last token
-                offset += lastToken.GetLeadingTriviaWidth(); //advance past last token leading trivia - now at start of last token
-                width += lastToken.Width;
-            }
-        }
-
-        protected static SyntaxDiagnosticInfo MakeError(int offset, int width, ErrorCode code)
-        {
-            return new SyntaxDiagnosticInfo(offset, width, code);
         }
 
         protected static SyntaxDiagnosticInfo MakeError(int offset, int width, ErrorCode code, params object[] args)
@@ -314,43 +199,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected static SyntaxDiagnosticInfo MakeError(GreenNode node, ErrorCode code, params object[] args)
         {
             return new SyntaxDiagnosticInfo(node.GetLeadingTriviaWidth(), node.Width, code, args);
-        }
-
-        protected static SyntaxDiagnosticInfo MakeError(ErrorCode code, params object[] args)
-        {
-            return new SyntaxDiagnosticInfo(code, args);
-        }
-
-        protected TNode AddLeadingSkippedSyntax<TNode>(TNode node, GreenNode skippedSyntax) where TNode : InternalSyntaxNode
-        {
-            var oldToken = node as InternalSyntaxToken ?? node.GetFirstToken();
-            var newToken = AddSkippedSyntax(oldToken, skippedSyntax, trailing: false);
-            return SyntaxFirstTokenReplacer.Replace(node, oldToken, newToken, skippedSyntax.FullWidth);
-        }
-
-        protected void AddTrailingSkippedSyntax(SyntaxListBuilder list, GreenNode skippedSyntax)
-        {
-            list[list.Count - 1] = AddTrailingSkippedSyntax((InternalSyntaxNode)list[list.Count - 1], skippedSyntax);
-        }
-
-        protected void AddTrailingSkippedSyntax<TNode>(SyntaxListBuilder<TNode> list, GreenNode skippedSyntax) where TNode : InternalSyntaxNode
-        {
-            list[list.Count - 1] = AddTrailingSkippedSyntax(list[list.Count - 1], skippedSyntax);
-        }
-
-        protected TNode AddTrailingSkippedSyntax<TNode>(TNode node, GreenNode skippedSyntax) where TNode : InternalSyntaxNode
-        {
-            var token = node as InternalSyntaxToken;
-            if (token != null)
-            {
-                return (TNode)(object)AddSkippedSyntax(token, skippedSyntax, trailing: true);
-            }
-            else
-            {
-                var lastToken = node.GetLastToken();
-                var newToken = AddSkippedSyntax(lastToken, skippedSyntax, trailing: true);
-                return SyntaxLastTokenReplacer.Replace(node, newToken);
-            }
         }
 
         /// <summary>

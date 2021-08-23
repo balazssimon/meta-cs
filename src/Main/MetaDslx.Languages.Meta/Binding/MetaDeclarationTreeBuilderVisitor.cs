@@ -367,72 +367,72 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitDeclaration(DeclarationSyntax node)
 		{
-			this.BeginProperty(node, name: "Declarations");
-			try
+			if (node.EnumDeclaration != null)
 			{
-				if (node.EnumDeclaration != null)
-				{
-				    this.Visit(node.EnumDeclaration);
-				}
-				if (node.ClassDeclaration != null)
-				{
-				    this.Visit(node.ClassDeclaration);
-				}
-				if (node.AssociationDeclaration != null)
-				{
-				    this.Visit(node.AssociationDeclaration);
-				}
-				if (node.ConstDeclaration != null)
-				{
-				    this.Visit(node.ConstDeclaration);
-				}
+			    this.Visit(node.EnumDeclaration);
 			}
-			finally
+			if (node.ClassDeclaration != null)
 			{
-				this.EndProperty(node, name: "Declarations");
+			    this.Visit(node.ClassDeclaration);
+			}
+			if (node.AssociationDeclaration != null)
+			{
+			    this.Visit(node.AssociationDeclaration);
+			}
+			if (node.ConstDeclaration != null)
+			{
+			    this.Visit(node.ConstDeclaration);
 			}
 		}
 		
 		public virtual void VisitEnumDeclaration(EnumDeclarationSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(MetaEnum));
+			this.BeginProperty(node, name: "Declarations");
 			try
 			{
-				this.BeginProperty(node, name: "Documentation");
+				this.BeginDefine(node, type: typeof(MetaEnum));
 				try
 				{
-					this.BeginDocumentation(node);
+					this.BeginProperty(node, name: "Documentation");
 					try
 					{
-						if (node.Attribute != null)
+						this.BeginDocumentation(node);
+						try
 						{
-							foreach (var child in node.Attribute)
+							if (node.Attribute != null)
 							{
-						        this.Visit(child);
+								foreach (var child in node.Attribute)
+								{
+							        this.Visit(child);
+								}
+							}
+							if (node.Name != null)
+							{
+							    this.Visit(node.Name);
+							}
+							if (node.EnumBody != null)
+							{
+							    this.Visit(node.EnumBody);
 							}
 						}
-						if (node.Name != null)
+						finally
 						{
-						    this.Visit(node.Name);
-						}
-						if (node.EnumBody != null)
-						{
-						    this.Visit(node.EnumBody);
+							this.EndDocumentation(node);
 						}
 					}
 					finally
 					{
-						this.EndDocumentation(node);
+						this.EndProperty(node, name: "Documentation");
 					}
 				}
 				finally
 				{
-					this.EndProperty(node, name: "Documentation");
+					this.EndDefine(node, type: typeof(MetaEnum));
 				}
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(MetaEnum));
+				this.EndProperty(node, name: "Declarations");
 			}
 		}
 		
@@ -535,72 +535,80 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitClassDeclaration(ClassDeclarationSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(MetaClass));
+			this.BeginProperty(node, name: "Declarations");
 			try
 			{
-				this.BeginProperty(node, name: "Documentation");
+				this.BeginDefine(node, type: typeof(MetaClass));
 				try
 				{
-					this.BeginDocumentation(node);
+					this.BeginProperty(node, name: "Documentation");
 					try
 					{
-						if (node.Attribute != null)
+						this.BeginDocumentation(node);
+						try
 						{
-							foreach (var child in node.Attribute)
+							if (node.Attribute != null)
 							{
-						        this.Visit(child);
+								foreach (var child in node.Attribute)
+								{
+							        this.Visit(child);
+								}
+							}
+							if (node.SymbolAttribute != null)
+							{
+							    this.Visit(node.SymbolAttribute);
+							}
+							if (node.KAbstract.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+							{
+							    this.BeginProperty(node.KAbstract, name: "IsAbstract", value: true);
+							    try
+							    {
+							    	this.Visit(node.KAbstract);
+							    }
+							    finally
+							    {
+							    	this.EndProperty(node.KAbstract, name: "IsAbstract", value: true);
+							    }
+							}
+							if (node.Name != null)
+							{
+							    this.Visit(node.Name);
+							}
+							if (node.ClassAncestors != null)
+							{
+							    this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
+							    try
+							    {
+							    	this.Visit(node.ClassAncestors);
+							    }
+							    finally
+							    {
+							    	this.EndProperty(node.ClassAncestors, name: "SuperClasses");
+							    }
+							}
+							if (node.ClassBody != null)
+							{
+							    this.Visit(node.ClassBody);
 							}
 						}
-						if (node.SymbolAttribute != null)
+						finally
 						{
-						    this.Visit(node.SymbolAttribute);
-						}
-						if (node.KAbstract.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
-						{
-						    this.BeginProperty(node.KAbstract, name: "IsAbstract", value: true);
-						    try
-						    {
-						    	this.Visit(node.KAbstract);
-						    }
-						    finally
-						    {
-						    	this.EndProperty(node.KAbstract, name: "IsAbstract", value: true);
-						    }
-						}
-						if (node.Name != null)
-						{
-						    this.Visit(node.Name);
-						}
-						if (node.ClassAncestors != null)
-						{
-						    this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
-						    try
-						    {
-						    	this.Visit(node.ClassAncestors);
-						    }
-						    finally
-						    {
-						    	this.EndProperty(node.ClassAncestors, name: "SuperClasses");
-						    }
-						}
-						if (node.ClassBody != null)
-						{
-						    this.Visit(node.ClassBody);
+							this.EndDocumentation(node);
 						}
 					}
 					finally
 					{
-						this.EndDocumentation(node);
+						this.EndProperty(node, name: "Documentation");
 					}
 				}
 				finally
 				{
-					this.EndProperty(node, name: "Documentation");
+					this.EndDefine(node, type: typeof(MetaClass));
 				}
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(MetaClass));
+				this.EndProperty(node, name: "Declarations");
 			}
 		}
 		
@@ -1033,33 +1041,41 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitConstDeclaration(ConstDeclarationSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(MetaConstant));
+			this.BeginProperty(node, name: "Declarations");
 			try
 			{
-				if (node.TypeReference != null)
+				this.BeginDefine(node, type: typeof(MetaConstant));
+				try
 				{
-				    this.BeginProperty(node.TypeReference, name: "Type");
-				    try
-				    {
-				    	this.Visit(node.TypeReference);
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.TypeReference, name: "Type");
-				    }
+					if (node.TypeReference != null)
+					{
+					    this.BeginProperty(node.TypeReference, name: "Type");
+					    try
+					    {
+					    	this.Visit(node.TypeReference);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.TypeReference, name: "Type");
+					    }
+					}
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+					if (node.ConstValue != null)
+					{
+					    this.Visit(node.ConstValue);
+					}
 				}
-				if (node.Name != null)
+				finally
 				{
-				    this.Visit(node.Name);
-				}
-				if (node.ConstValue != null)
-				{
-				    this.Visit(node.ConstValue);
+					this.EndDefine(node, type: typeof(MetaConstant));
 				}
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(MetaConstant));
+				this.EndProperty(node, name: "Declarations");
 			}
 		}
 		

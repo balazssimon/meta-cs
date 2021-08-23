@@ -32,11 +32,11 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
 
             var syntaxTree = TestIncrementalCompilationLanguage.Instance.ParseSyntaxTree(source);
             var antlr4Diags = Antlr4Parse(source);
-            PrintResults(source, syntaxTree, antlr4Diags);
+            PrintResults(source, syntaxTree, antlr4Diags, false);
 
             if (semanticCheck)
             {
-
+                Compile(syntaxTree);
             }
         }
 

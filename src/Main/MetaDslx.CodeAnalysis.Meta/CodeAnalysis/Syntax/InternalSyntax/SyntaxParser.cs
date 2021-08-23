@@ -27,6 +27,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private GreenNode _prevTokenTrailingTrivia;
         private int _resetCount;
         private int _position;
+        private int _errorIndex;
         private LexerState? _lexerState;
         private SyntaxListBuilder _skippedTokens;
         private ParseData? _oldParseData;
@@ -193,6 +194,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                 if (green != null)
                 {
+                    var skippedTokensWidth = GetSkippedTokensWidth();
+                    green = WithCurrentSyntaxErrors(green, incrementalState.position - skippedTokensWidth, green.FullWidth + skippedTokensWidth, ref _errorIndex);
                     var lookaheadBefore = minLookahead - incrementalState.position;
                     var lookaheadAfter = maxLookahead - incrementalState.position - green.FullWidth;
                     var exists = this.TryGetIncrementalData(green, out var existingData);
@@ -219,6 +222,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     _incrementalStateStack.Push((_minTokenLookahead, _maxTokenLookahead, _minLookahead, _maxLookahead, parentState.position, parentState.lexerState, parentState.state));
                 }
             }
+            else
+            {
+                green = WithCurrentSyntaxErrors(green, _position - green.FullWidth, green.FullWidth, ref _errorIndex);
+            }
         }
 
         protected void RestoreParserState(ParserState? state)
@@ -235,12 +242,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else _lexedTokens.MarkResetPoint();
             }
             _resetCount++;
-            return new ResetPoint(_resetCount, _lexerState, this.State, index, _position, _skippedTokens.ToArray(), _prevTokenTrailingTrivia);
+            return new ResetPoint(_resetCount, _lexerState, this.State, index, _position, _errorIndex, _skippedTokens.ToArray(), _prevTokenTrailingTrivia);
         }
 
         protected void Reset(ref ResetPoint point)
         {
             _position = point.Position;
+            _errorIndex = point.ErrorIndex;
+            ResetErrorIndex(_errorIndex);
             _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
             _skippedTokens.Clear();
             _skippedTokens.AddRange(point.SkippedTokens);
@@ -306,7 +315,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             Debug.Assert(_blendedTokens != null);
 
             // remember result
-            var result = WithCurrentSyntaxErrors(CurrentNode.Green, 0);
+            //var result = WithCurrentSyntaxErrors(CurrentNode.Green, _position, _position + _currentNode.Node.FullWidth, ref _errorIndex);
+            var result = CurrentNode.Green;
             var currentNode = _currentNode;
             var newParserState = StateManager?.State;
 
@@ -381,18 +391,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     var token = _blendedTokens.LastCreatedItem.Blender.ReadToken();
                     if (token.Token == null) return false;
-                    /*if (token.Token.Kind == SyntaxKind.Eof)
-                    {
-                        if (_blendedTokens.LastCreatedItem.Token == null || _blendedTokens.LastCreatedItem.Token.Kind != SyntaxKind.Eof)
-                        {
-                            _blendedTokens.AddItem(token);
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }*/
                     _blendedTokens.AddItem(token);
                     return true;
                 }
@@ -491,7 +489,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private InternalSyntaxToken EatCurrentTokenWithAndErrors(bool skip = false)
         {
             var ct = this.CurrentToken;
-            ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, 0);
+            //ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, _position, ct.FullWidth, ref _errorIndex);
             if (ct.ContainsDiagnostics)
             {
                 if (_blendedTokens != null)
@@ -518,6 +516,19 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _skippedTokens.Clear();
             }
             return ct;
+        }
+
+        protected int GetSkippedTokensWidth()
+        {
+            var skippedTokensWidth = 0;
+            if (_skippedTokens.Count > 0)
+            {
+                for (int i = 0; i < _skippedTokens.Count; ++i)
+                {
+                    skippedTokensWidth += _skippedTokens[i].FullWidth;
+                }
+            }
+            return skippedTokensWidth;
         }
 
         protected void MoveToNextToken()
