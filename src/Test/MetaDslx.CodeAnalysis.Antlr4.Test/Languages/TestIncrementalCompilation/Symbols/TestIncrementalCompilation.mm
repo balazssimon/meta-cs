@@ -5,26 +5,28 @@
 	/**
 	Represents the MetaModel.
 	*/
-	metamodel TestIncrementalCompilation(Uri="http://metadslx.core/1.0"); 
+	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
-	const MetaPrimitiveType Object = "object";
-	const MetaPrimitiveType String = "string";
-	const MetaPrimitiveType Int = "int";
-	const MetaPrimitiveType Long = "long";
-	const MetaPrimitiveType Float = "float";
-	const MetaPrimitiveType Double = "double";
-	const MetaPrimitiveType Byte = "byte";
-	const MetaPrimitiveType Bool = "bool";
-	const MetaPrimitiveType Void = "void";
-	const MetaPrimitiveType SystemType = "global::System.Type";
-	const MetaPrimitiveType ModelObject = "global::MetaDslx.Modeling.IModelObject";
+	const MetaPrimitiveType Object = "System.Object";
+	const MetaPrimitiveType String = "System.String";
+	const MetaPrimitiveType Int = "System.Int32";
+	const MetaPrimitiveType Long = "System.Int64";
+	const MetaPrimitiveType Float = "System.Single";
+	const MetaPrimitiveType Double = "System.Double";
+	const MetaPrimitiveType Byte = "System.Byte";
+	const MetaPrimitiveType Bool = "System.Boolean";
+	const MetaPrimitiveType Void = "System.Void";
+	const MetaPrimitiveType SystemType = "System.Type";
+	const MetaPrimitiveType ModelObject = "MetaDslx.Modeling.IModelObject";
 	
 	/**
 	Represents an element.
 	*/
+	[symbol: Symbol]
 	abstract class MetaElement
 	{
 		// List of attributes
+		[property: Attributes]
 		list<MetaAttribute> Attributes; 
 	}
 
@@ -33,10 +35,9 @@
 		string Documentation;
 	}
 
-	[symbol: MemberSymbol]
 	abstract class MetaNamedElement : MetaDocumentedElement
 	{
-		[symbol: Name]
+		[property: Name]
 		string Name;
 	}
 
@@ -45,13 +46,13 @@
 		MetaType Type;
 	}
 
-	[symbol: TypeSymbol]
+	[type: TypeSymbol]
 	abstract class MetaType
 	{
 		bool ConformsTo(MetaType type);
 	}
-
-	[symbol: NamedTypeSymbol]
+	
+	[type: Named]
 	class MetaNamedType : MetaType, MetaDeclaration
 	{
 	}
@@ -59,7 +60,7 @@
 	class MetaAttribute : MetaNamedType
 	{
 	}
-
+	
 	abstract class MetaDeclaration : MetaNamedElement
 	{
 		MetaNamespace Namespace;
@@ -67,17 +68,18 @@
 		derived string FullName;
 	}
 	
-	[symbol: NamespaceSymbol]
+	[symbol: Namespace]
 	class MetaNamespace : MetaDeclaration
 	{
-		[symbol: Members]
+		[property: Members]
 		containment MetaModel DefinedMetaModel;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaDeclaration> Declarations;
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
 
+	[type: Named]
 	class MetaModel : MetaNamedElement
 	{
 		string Uri;
@@ -95,34 +97,39 @@
 		MultiSet
 	}
 
-	[symbol: NamedTypeSymbol]
+	[type: Array]
 	class MetaCollectionType : MetaType
 	{
 		MetaCollectionKind Kind;
+		[property: ElementType]
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
 
-	[symbol: NamedTypeSymbol]
+	[type: Nullable]
 	class MetaNullableType : MetaType
 	{
+		[property: InnerType]
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
 
 	class MetaPrimitiveType : MetaNamedType
 	{
+		string DotNetName;
 		bool ConformsTo(MetaType type);
 	}
 
+	[type: Enum]
 	class MetaEnum : MetaNamedType
 	{
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaEnumLiteral> EnumLiterals;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaOperation> Operations;
 	}
 
+	[symbol: EnumLiteral]
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
 	{
 		MetaEnum Enum redefines MetaTypedElement.Type;
@@ -137,15 +144,17 @@
 		bool ConformsTo(MetaType type);
 	}
 
+	[type: Class]
 	class MetaClass : MetaNamedType
 	{
+		[property: Attributes]
 		SystemType SymbolType;
 		bool IsAbstract;
-		[symbol: DeclaredBaseTypes]
+		[property: BaseTypes]
 		list<MetaClass> SuperClasses;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaProperty> Properties;
-		[symbol: Members]
+		[property: Members]
 		containment list<MetaOperation> Operations;
 		bool ConformsTo(MetaType type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
@@ -157,13 +166,16 @@
 		list<MetaOperation> GetAllFinalOperations();
 	}
 	
+	[symbol: Method]
 	class MetaOperation : MetaNamedElement
 	{
 		MetaClass Class;
 		MetaEnum Enum;
 		bool IsBuilder;
 		bool IsReadonly;
+		[property: Members]
 		containment list<MetaParameter> Parameters;
+		[property: ReturnType]
 		MetaType ReturnType;
 		bool ConformsTo(MetaOperation operation);
 	}
@@ -171,6 +183,7 @@
 	association MetaOperation.Class with MetaClass.Operations;
 	association MetaOperation.Enum with MetaEnum.Operations;
 
+	[symbol: Parameter]
 	class MetaParameter : MetaNamedElement, MetaTypedElement
 	{
 		MetaOperation Operation;
@@ -187,6 +200,7 @@
 		DerivedUnion
 	}
 
+	[symbol: Property]
 	class MetaProperty : MetaNamedElement, MetaTypedElement
 	{
 		string SymbolProperty;
@@ -207,3 +221,4 @@
 	association MetaProperty.SubsettedProperties with MetaProperty.SubsettingProperties;
 	association MetaProperty.RedefinedProperties with MetaProperty.RedefiningProperties;
 }
+

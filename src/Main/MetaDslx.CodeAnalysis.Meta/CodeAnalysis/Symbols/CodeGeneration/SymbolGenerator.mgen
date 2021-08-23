@@ -108,11 +108,11 @@ namespace [symbol.NamespaceName].Completion
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language"))]
 ^
-        public override Language Language => ContainingModule.Language;
+        public override Language Language => ContainingModule?.Language ?? Language.None;
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SymbolFactory"))]
 ^
-        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+        public SymbolFactory? SymbolFactory => ContainingModule?.SymbolFactory;
         [end if]
         [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
             [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObject"))]
@@ -403,7 +403,7 @@ namespace [symbol.NamespaceName].Metadata
         [end if]
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations"))]
 ^
-        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
+        public override ImmutableArray<Location> Locations => this.ContainingModule?.Locations ?? ImmutableArray<Location>.Empty;
         [end if]
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
@@ -427,8 +427,8 @@ namespace [symbol.NamespaceName].Metadata
                 : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
                 Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
-                _name = name;
-                _metadataName = metadataName;
+                _name = name ?? string.Empty;
+                _metadataName = metadataName ?? _name;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
@@ -622,8 +622,8 @@ namespace [symbol.NamespaceName].Source
                 : base(container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
                 Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
-                _name = declaration.Name;
-                _metadataName = declaration.MetadataName;
+                _name = declaration.Name ?? string.Empty;;
+                _metadataName = declaration.MetadataName ?? _name;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;

@@ -108,9 +108,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
-        public override Language Language => ContainingModule.Language;
+        public override Language Language => ContainingModule?.Language ?? Language.None;
 
-        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+        public SymbolFactory? SymbolFactory => ContainingModule?.SymbolFactory;
 
         public object ModelObject => _modelObject;
 
@@ -666,7 +666,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
         }
 
-        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
+        public override ImmutableArray<Location> Locations => this.ContainingModule?.Locations ?? ImmutableArray<Location>.Empty;
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
@@ -684,8 +684,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 : base(container, modelObject, true)
             {
                 Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
-                _name = name;
-                _metadataName = metadataName;
+                _name = name ?? string.Empty;
+                _metadataName = metadataName ?? _name;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;
@@ -853,8 +853,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 : base(container, declaration, modelObject, true)
             {
                 Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
-                _name = declaration.Name;
-                _metadataName = declaration.MetadataName;
+                _name = declaration.Name ?? string.Empty;;
+                _metadataName = declaration.MetadataName ?? _name;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;

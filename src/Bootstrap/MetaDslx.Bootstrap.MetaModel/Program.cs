@@ -45,6 +45,8 @@ namespace MetaDslx.Bootstrap.MetaModel
             //string text = File.ReadAllText(@"..\..\..\Error3.mm");
             //string text = File.ReadAllText(@"..\..\..\Error4.mm");
             //string text = File.ReadAllText(@"..\..\..\Error5.mm");
+            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModelTest02.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestIncrementalCompilation\Symbols\TestIncrementalCompilation.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree(tree, MetaLanguage.Instance.SymbolFacts, "Script", false);

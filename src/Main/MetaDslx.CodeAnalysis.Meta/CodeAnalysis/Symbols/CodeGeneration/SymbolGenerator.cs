@@ -843,14 +843,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language")) //109:10
                 {
                     __out.AppendLine(true); //110:1
-                    __out.Write("        public override Language Language => ContainingModule.Language;"); //111:1
-                    __out.AppendLine(false); //111:72
+                    __out.Write("        public override Language Language => ContainingModule?.Language ?? Language.None;"); //111:1
+                    __out.AppendLine(false); //111:90
                 }
                 if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SymbolFactory")) //113:10
                 {
                     __out.AppendLine(true); //114:1
-                    __out.Write("        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;"); //115:1
-                    __out.AppendLine(false); //115:78
+                    __out.Write("        public SymbolFactory? SymbolFactory => ContainingModule?.SymbolFactory;"); //115:1
+                    __out.AppendLine(false); //115:80
                 }
                 if (symbol.ModelObjectOption != ParameterOption.Disabled) //117:10
                 {
@@ -2145,8 +2145,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations")) //404:10
                 {
                     __out.AppendLine(true); //405:1
-                    __out.Write("        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;"); //406:1
-                    __out.AppendLine(false); //406:95
+                    __out.Write("        public override ImmutableArray<Location> Locations => this.ContainingModule?.Locations ?? ImmutableArray<Location>.Empty;"); //406:1
+                    __out.AppendLine(false); //406:130
                 }
                 if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //408:10
                 {
@@ -2228,10 +2228,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.AppendLine(false); //428:14
                     __out.Write("                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);"); //429:1
                     __out.AppendLine(false); //429:126
-                    __out.Write("                _name = name;"); //430:1
-                    __out.AppendLine(false); //430:30
-                    __out.Write("                _metadataName = metadataName;"); //431:1
-                    __out.AppendLine(false); //431:46
+                    __out.Write("                _name = name ?? string.Empty;"); //430:1
+                    __out.AppendLine(false); //430:46
+                    __out.Write("                _metadataName = metadataName ?? _name;"); //431:1
+                    __out.AppendLine(false); //431:55
                     __out.Write("                _kind = kind;"); //432:1
                     __out.AppendLine(false); //432:30
                     __out.Write("                _errorInfo = errorInfo;"); //433:1
@@ -2851,10 +2851,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.AppendLine(false); //623:14
                     __out.Write("                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);"); //624:1
                     __out.AppendLine(false); //624:126
-                    __out.Write("                _name = declaration.Name;"); //625:1
-                    __out.AppendLine(false); //625:42
-                    __out.Write("                _metadataName = declaration.MetadataName;"); //626:1
-                    __out.AppendLine(false); //626:58
+                    __out.Write("                _name = declaration.Name ?? string.Empty;;"); //625:1
+                    __out.AppendLine(false); //625:59
+                    __out.Write("                _metadataName = declaration.MetadataName ?? _name;"); //626:1
+                    __out.AppendLine(false); //626:67
                     __out.Write("                _kind = kind;"); //627:1
                     __out.AppendLine(false); //627:30
                     __out.Write("                _errorInfo = errorInfo;"); //628:1

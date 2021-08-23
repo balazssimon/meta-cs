@@ -2581,10 +2581,7 @@ namespace MetaDslx.CodeAnalysis
         private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             this.ForceComplete(cancellationToken);
-            foreach (var syntaxTree in this.SyntaxTrees)
-            {
-                this.GetDiagnosticsForSymbolsInTree(syntaxTree, null, diagnostics, cancellationToken);
-            }
+            this.GetDiagnosticsForSymbolsInTree(null, null, diagnostics, cancellationToken);
             this.ReportUnusedImports(filterTree: null, diagnostics, cancellationToken);
         }
 
@@ -2609,7 +2606,7 @@ namespace MetaDslx.CodeAnalysis
             return false;
         }
 
-        private void GetDiagnosticsForSymbolsInTree(SyntaxTree tree, TextSpan? span, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void GetDiagnosticsForSymbolsInTree(SyntaxTree? tree, TextSpan? span, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var rootSymbol = GlobalNamespace;
             var queue = new List<Symbol>();
@@ -2618,19 +2615,16 @@ namespace MetaDslx.CodeAnalysis
             while (index < queue.Count)
             {
                 var symbol = queue[index];
-                if (symbol is ISourceSymbol sourceSymbol)
+                foreach (var diagnostic in symbol.Diagnostics)
                 {
-                    foreach (var diagnostic in sourceSymbol.Diagnostics)
+                    if ((tree is null || diagnostic.Location.SourceTree == tree) && (!span.HasValue || span.Value.IntersectsWith(diagnostic.Location.SourceSpan)))
                     {
-                        if (diagnostic.Location.SourceTree == tree && (!span.HasValue || span.Value.IntersectsWith(diagnostic.Location.SourceSpan)))
-                        {
-                            diagnostics.Add(diagnostic);
-                        }
+                        diagnostics.Add(diagnostic);
                     }
                 }
                 foreach (var child in symbol.ChildSymbols)
                 {
-                    if (child.DeclaringSyntaxReferences.Any(sr => sr.SyntaxTree == tree && (!span.HasValue || span.Value.IntersectsWith(sr.Span))))
+                    if ((tree is null && child.DeclaringCompilation is not null) || child.DeclaringSyntaxReferences.Any(sr => (sr.SyntaxTree == tree) && (!span.HasValue || span.Value.IntersectsWith(sr.Span))))
                     {
                         if (!queue.Contains(child)) queue.Add(child);
                     }
@@ -2640,7 +2634,7 @@ namespace MetaDslx.CodeAnalysis
 
             // Report unused directives only if computing diagnostics for the entire tree.
             // Otherwise we cannot determine if a particular directive is used outside of the given sub-span within the tree.
-            if (!span.HasValue || span.Value == tree.GetRoot(cancellationToken).FullSpan)
+            if (tree is null || !span.HasValue || span.Value == tree.GetRoot(cancellationToken).FullSpan)
             {
                 ReportUnusedImports(tree, diagnostics, cancellationToken);
             }

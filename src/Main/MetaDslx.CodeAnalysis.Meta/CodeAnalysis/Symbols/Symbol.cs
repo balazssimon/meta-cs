@@ -226,7 +226,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public ImmutableArray<Diagnostic> Diagnostics
+        public virtual ImmutableArray<Diagnostic> Diagnostics
         {
             get
             {
@@ -595,13 +595,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (format == SymbolDisplayFormat.QualifiedNameOnlyFormat)
             {
                 var container = this.ContainingDeclaration;
-                if (container is not null && container.ContainingSymbol is not ModuleSymbol) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
+                if (container is not null && !string.IsNullOrEmpty(container.MetadataName)) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
                 else return this.MetadataName;
             }
             if (format == SymbolDisplayFormat.FullyQualifiedFormat)
             {
                 var container = this.ContainingDeclaration;
-                if (container is not null && container.ContainingSymbol is not ModuleSymbol) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
+                if (container is not null && !string.IsNullOrEmpty(container.MetadataName)) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
                 else return "global::" + this.MetadataName;
             }
             return this.MetadataName + " (" + GetKindText() + ")";
@@ -609,15 +609,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public string GetKindText()
         {
-            var typeName = this.GetType().Name;
+            var type = this.GetType();
+            var typeName = type.Name;
+            bool error = false;
+            if (typeName == "Error" && type.DeclaringType != null)
+            {
+                error = true;
+                typeName = type.DeclaringType.Name;
+            }
             if (typeName.StartsWith("Source")) typeName = typeName.Substring(6);
             if (typeName.StartsWith("Metadata")) typeName = typeName.Substring(8);
-            return typeName;
+            if (typeName.EndsWith("Symbol")) typeName = typeName.Substring(0, typeName.Length - 6);
+            if (error) return "Error:" + typeName;
+            else return typeName;
         }
 
         private string GetDebuggerDisplay()
         {
-            return this.MetadataName + " (" + this.GetType().Name + ")";
+            return this.ToDisplayString();
         }
 
         string IFormattable.ToString(string format, IFormatProvider formatProvider)

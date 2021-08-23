@@ -16,6 +16,42 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private readonly NamespaceKind _kind;
         private readonly object _symbolOrCompilation;
 
+        public Language Language
+        {
+            get
+            {
+                switch (_kind)
+                {
+                    case NamespaceKind.Module:
+                        return this.Module.Language;
+                    case NamespaceKind.Assembly:
+                        return this.Assembly.Language;
+                    case NamespaceKind.Compilation:
+                        return this.Compilation.Language;
+                    default:
+                        return Language.None;
+                }
+            }
+        }
+
+        public LanguageCompilation? DeclaringCompilation
+        {
+            get
+            {
+                switch (_kind)
+                {
+                    case NamespaceKind.Module:
+                        return this.Module.DeclaringCompilation;
+                    case NamespaceKind.Assembly:
+                        return this.Assembly.DeclaringCompilation;
+                    case NamespaceKind.Compilation:
+                        return this.Compilation;
+                    default:
+                        return null;
+                }
+            }
+        }
+
         /// <summary>
         /// Returns what kind of extent: Module, Assembly, or Compilation.
         /// </summary>

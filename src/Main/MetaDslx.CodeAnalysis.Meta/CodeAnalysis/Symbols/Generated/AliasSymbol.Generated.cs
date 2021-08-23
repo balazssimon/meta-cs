@@ -81,9 +81,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
-        public override Language Language => ContainingModule.Language;
+        public override Language Language => ContainingModule?.Language ?? Language.None;
 
-        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+        public SymbolFactory? SymbolFactory => ContainingModule?.SymbolFactory;
 
         public override Symbol ContainingSymbol => _container;
 
@@ -583,8 +583,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 : base(container, declaration, true)
             {
                 Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
-                _name = declaration.Name;
-                _metadataName = declaration.MetadataName;
+                _name = declaration.Name ?? string.Empty;;
+                _metadataName = declaration.MetadataName ?? _name;
                 _kind = kind;
                 _errorInfo = errorInfo;
                 _candidateSymbols = candidateSymbols;

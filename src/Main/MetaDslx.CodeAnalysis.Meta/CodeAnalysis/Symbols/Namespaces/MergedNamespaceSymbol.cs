@@ -36,6 +36,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // used when this namespace is constructed as the result of an extern alias directive
         private readonly string _nameOpt;
 
+        private ImmutableArray<Symbol> _allChildSymbols;
+
         // GetMembers() is repeatedly called on merged namespaces in some IDE scenarios.
         // This caches the result that is built by asking the 'cachedLookup' for a concatenated
         // view of all of its values.
@@ -95,6 +97,29 @@ namespace MetaDslx.CodeAnalysis.Symbols
 #endif
         }
 
+        public override Language Language => _extent.Language;
+
+        public override LanguageCompilation? DeclaringCompilation => _extent.DeclaringCompilation;
+
+        public override ModuleSymbol ContainingModule
+        {
+            get
+            {
+                switch (_extent.Kind)
+                {
+                    case NamespaceKind.Module:
+                        return _extent.Module;
+                    case NamespaceKind.Assembly:
+                        break;
+                    case NamespaceKind.Compilation:
+                        return _extent.Compilation.SourceModule;
+                    default:
+                        break;
+                }
+                return null;
+            }
+        }
+
         internal NamespaceSymbol GetConstituentForCompilation(LanguageCompilation compilation)
         {
             //return namespacesToMerge.FirstOrDefault(n => n.IsFromSource);
@@ -118,6 +143,68 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        public override ImmutableArray<Symbol> ChildSymbols
+        {
+            get
+            {
+                if (_allChildSymbols.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _allChildSymbols, SlowGetAllChildren());
+                }
+                return _allChildSymbols;
+            }
+        }
+
+        private ImmutableArray<Symbol> SlowGetAllChildren()
+        {
+            var memberNames = new HashSet<string>();
+            // Accumulate all the child namespace and type names.
+            foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
+            {
+                memberNames.UnionWith(namespaceSymbol.MemberNames);
+            }
+
+            var childSymbols = ArrayBuilder<Symbol>.GetInstance();
+
+            foreach (var name in memberNames)
+            {
+                ArrayBuilder<NamespaceSymbol> namespaceSymbols = null;
+                // Accumulate all the child namespaces and types.
+                foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
+                {
+                    foreach (var childSymbol in namespaceSymbol.ChildSymbols)
+                    {
+                        if (childSymbol is not DeclaredSymbol declaredSymbol || declaredSymbol.Name != name) continue;
+                        if (declaredSymbol is NamespaceSymbol ns)
+                        {
+                            namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
+                            namespaceSymbols.Add(ns);
+                        }
+                        else
+                        {
+                            childSymbols.Add(declaredSymbol);
+                        }
+                    }
+                }
+
+                if (namespaceSymbols != null)
+                {
+                    childSymbols.Add(MergedNamespaceSymbol.Create(_extent, this, namespaceSymbols.ToImmutableAndFree()));
+                }
+            }
+            foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
+            {
+                foreach (Symbol childSymbol in namespaceSymbol.ChildSymbols)
+                {
+                    if (childSymbol is not DeclaredSymbol)
+                    {
+                        childSymbols.Add(childSymbol);
+                    }
+                }
+            }
+            return childSymbols.ToImmutableAndFree();
+        }
+
         private ImmutableArray<DeclaredSymbol> SlowGetAllMembers()
         {
             var memberNames = new HashSet<string>();
@@ -135,17 +222,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 // Accumulate all the child namespaces and types.
                 foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
                 {
-                    foreach (Symbol childSymbol in namespaceSymbol.ChildSymbols)
+                    foreach (var memberSymbol in namespaceSymbol.Members)
                     {
-                        if (childSymbol is not DeclaredSymbol declaredSymbol || childSymbol.Name != name) continue;
-                        if (declaredSymbol is NamespaceSymbol ns)
+                        if (memberSymbol.Name != name) continue;
+                        if (memberSymbol is NamespaceSymbol ns)
                         {
                             namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
                             namespaceSymbols.Add(ns);
                         }
                         else
                         {
-                            memberSymbols.Add(declaredSymbol);
+                            memberSymbols.Add(memberSymbol);
                         }
                     }
                 }
@@ -182,7 +269,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return _namespacesToMerge;
             }
         }
-
+        
         public override ImmutableArray<DeclaredSymbol> Members
         {
             get
@@ -247,5 +334,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        public override ImmutableArray<Diagnostic> Diagnostics
+        {
+            get
+            {
+                return _namespacesToMerge.SelectMany(namespaceSymbol => namespaceSymbol.Diagnostics).AsImmutable();
+            }
+        }
     }
 }

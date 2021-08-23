@@ -1,8 +1,13 @@
 ﻿using Antlr4.Runtime;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Syntax;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+using MetaDslx.Languages.Meta.Model;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
@@ -17,7 +22,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
 {
     public class TestMetaCompiler : CompilerBase
     {
-        public static void Compile(string fileName)
+        public static void NoEdit(string fileName, bool semanticCheck = true)
         {
             var source = SourceText.From(File.ReadAllText(@"..\..\..\" + fileName));
 
@@ -28,9 +33,14 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             var syntaxTree = TestIncrementalCompilationLanguage.Instance.ParseSyntaxTree(source);
             var antlr4Diags = Antlr4Parse(source);
             PrintResults(source, syntaxTree, antlr4Diags);
+
+            if (semanticCheck)
+            {
+
+            }
         }
 
-        public static void Type(string fileName)
+        public static void Type(string fileName, bool semanticCheck = true)
         {
             var options = TestIncrementalCompilationLanguage.Instance.DefaultParseOptions.WithIncremental(true);
             var code = File.ReadAllText(@"..\..\..\" + fileName);
@@ -51,7 +61,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             }
         }
 
-        public static void SerialEdit(string fileName)
+        public static void SerialEdit(string fileName, bool semanticCheck = true)
         {
             var options = TestIncrementalCompilationLanguage.Instance.DefaultParseOptions.WithIncremental(true);
             var code = File.ReadAllText(@"..\..\..\" + fileName);
@@ -70,7 +80,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             }
         }
 
-        public static void RandomEdit(string fileName)
+        public static void RandomEdit(string fileName, bool semanticCheck = true)
         {
             var rnd = new Random(13);
             var count = 1000;
@@ -122,5 +132,26 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             return result;
         }
 
+        private static void Compile(SyntaxTree syntaxTree)
+        {
+            ImmutableModel coreModel = MetaInstance.MModel;
+            var coreAssembly = typeof(object).Assembly.Location;
+            var assemblyPath = Path.GetDirectoryName(coreAssembly);
+            var coreRef = MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll"));
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+            binderFlags = binderFlags.UnionWith(binderFlags2);
+            TestIncrementalCompilationCompilationOptions options = new TestIncrementalCompilationCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags);
+            //MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: false, concurrentBuild: true).WithTopLevelBinderFlags(binderFlags);
+            var compilation = TestIncrementalCompilationCompilation.
+                Create("MetaTest").
+                AddSyntaxTrees(syntaxTree).
+                AddReferences(coreRef).
+                AddReferences(ModelReference.CreateFromModel(coreModel)).
+                AddReferences(MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location)).
+                WithOptions(options);
+            var compiledModel = compilation.Model as MutableModel;
+            Console.WriteLine(compiledModel);
+        }
     }
 }

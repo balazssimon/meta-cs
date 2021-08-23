@@ -11,6 +11,10 @@ channels
 	WHITESPACE
 }
 
+@lexer::members {
+    public int _brackets = 0;
+}
+
 // Keywords
 $Token(first=KNamespace,last=KStatic,kind=ReservedKeyword)
 KNamespace : 'namespace';
@@ -31,7 +35,6 @@ KTrue : 'true';
 KFalse : 'false';
 KVoid : 'void';
 KObject : 'object';
-KSymbol : 'symbol';
 KString : 'string';
 KInt : 'int';
 KLong : 'long';
@@ -56,11 +59,14 @@ KRedefines : 'redefines';
 KSubsets : 'subsets';
 KReadonly : 'readonly';
 KLazy : 'lazy';
-KSynthetized : 'synthetized';
-KInherited : 'inherited';
 KDerived : 'derived';
 KUnion : 'union';
 KBuilder : 'builder';
+KSymbol : 'symbol' { Type= _brackets > 0 ? KSymbol : IdentifierNormal; };
+KExpression : 'expression' { Type= _brackets > 0 ? KExpression : IdentifierNormal; };
+KStatement : 'statement' { Type= _brackets > 0 ? KStatement : IdentifierNormal; };
+KType : 'type' { Type= _brackets > 0 ? KType : IdentifierNormal; };
+KProperty : 'property' { Type= _brackets > 0 ? KProperty : IdentifierNormal; };
 KStatic : 'static';
 
 // Tokens
@@ -72,8 +78,8 @@ TComma : ',';
 TAssign : '=';
 TOpenParen : '(';
 TCloseParen : ')';
-TOpenBracket : '[';
-TCloseBracket : ']';
+TOpenBracket : '[' { _brackets++; };
+TCloseBracket : ']' { _brackets--; };
 TOpenBrace : '{';
 TCloseBrace : '}';
 TLessThan : '<';
