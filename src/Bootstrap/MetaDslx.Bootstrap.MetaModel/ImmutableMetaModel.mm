@@ -5,7 +5,7 @@
 	/**
 	Represents the MetaModel.
 	*/
-	metamodel Meta(Uri="http://metadslx.core/1.0"); 
+	metamodel Meta(Uri="http://metadslx.core/1.0");
 
 	const MetaPrimitiveType Object = "System.Object";
 	const MetaPrimitiveType String = "System.String";

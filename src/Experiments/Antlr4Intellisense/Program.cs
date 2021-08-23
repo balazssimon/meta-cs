@@ -81,7 +81,7 @@ namespace Antlr4Intellisense
 
             //*/
 
-            /*/
+            //*/
 
             EmptyFile();
             AfterVar();
@@ -202,51 +202,48 @@ namespace Antlr4Intellisense
                 }
             }
         }
-        /*
+
+        private static void Intellisense(string title, string code, int position)
+        {
+            Console.WriteLine(title);
+            Console.WriteLine("  "+code);
+            var tree = SandySyntaxTree.ParseText(code);
+            var completion = tree.LookupTokens(position);
+            Console.WriteLine("Position: " + position);
+            foreach (var item in completion)
+            {
+                if (item != SyntaxKind.None)
+                {
+                    Console.WriteLine("  " + item.GetValue() + " (" + item.GetName() + ")");
+                }
+            }
+        }
+        //*/
         private static void EmptyFile()
         {
-            var code = "var a = 1 + 2";
-            var completion = new Antlr4CompletionSource(code, 0).GetTokenSuggestions();
-            PrintResult("EmptyFile", completion);
+            Intellisense("EmptyFile", "var a = 1 + 2", 0);
         }
 
         private static void AfterVar()
         {
-            var code = "var a = 1 + 2";
-            var completion = new Antlr4CompletionSource(code, 4).GetTokenSuggestions();
-            PrintResult("AfterVar", completion);
+            Intellisense("AfterVar", "var a = 1 + 2", 4);
         }
 
         private static void AfterEquals()
         {
-            var code = "var a = 1 + 2";
-            var completion = new Antlr4CompletionSource(code, 7).GetTokenSuggestions();
-            PrintResult("AfterEquals", completion);
+            Intellisense("AfterEquals", "var a = 1 + 2", 7);
         }
 
         private static void AfterLiteral()
         {
-            var code = "var a = 1 + 2";
-            var completion = new Antlr4CompletionSource(code, 9).GetTokenSuggestions();
-            PrintResult("AfterLiteral", completion);
+            Intellisense("AfterLiteral", "var a = 1 + 2", 9);
         }
 
         private static void AfterAddition()
         {
-            var code = "var a = 1 + 2";
-            var completion = new Antlr4CompletionSource(code, 11).GetTokenSuggestions();
-            PrintResult("AfterAddition", completion);
+            Intellisense("AfterAddition", "var a = 1 + 2", 11);
         }
 
-        private static void PrintResult(string name, HashSet<int> completion)
-        {
-            var vocabulary = SandyLexer.DefaultVocabulary;
-            Console.WriteLine(name);
-            foreach (var tokenType in completion)
-            {
-                //Console.WriteLine("  "+(char)tokenType);
-                Console.WriteLine("  " + tokenType + " (" + vocabulary.GetDisplayName(tokenType) + ": " + vocabulary.GetSymbolicName(tokenType) + ")");
-            }
-        }*/
+        //*/
     }
 }
