@@ -116,7 +116,8 @@ namespace MetaDslx.VisualStudio.Compilation
         {
             if (_compilationSteps == null)
             {
-                var steps = GetCompilationFactory().CreateCompilationSteps(this).ToList();
+                var factory = GetCompilationFactory();
+                var steps = factory != null ? factory.CreateCompilationSteps(this).ToList() : new List<IBackgroundCompilationStep>();
                 Interlocked.CompareExchange(ref _compilationSteps, steps, null);
             }
             return _compilationSteps;

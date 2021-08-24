@@ -36,7 +36,8 @@ namespace MetaDslx.VisualStudio.Compilation
         public object Execute(ICompilation compilation, CancellationToken cancellationToken)
         {
             var result = new CollectSymbolsResult();
-            var languageCompilation = (LanguageCompilation)compilation;
+            var languageCompilation = compilation as LanguageCompilation;
+            if (languageCompilation == null) return result;
             SyntaxTree syntaxTree = languageCompilation.SyntaxTrees.FirstOrDefault();
             if (syntaxTree == null || _taggers.Count == 0) return result;
             SyntaxNode root;

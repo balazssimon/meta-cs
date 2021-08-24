@@ -91,6 +91,12 @@
     <Compile Include="Intellisense\IntellisenseController.cs" />
     <Compile Include="Intellisense\StandardIcons.cs" />
     <Compile Include="Intellisense\SymbolQuickInfoSource.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynTaggerProvider.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Compilation\Antlr4RoslynBackgroundCompilationFactory.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Compilation\Antlr4RoslynCompilation.cs" />
+    <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorTaggerProvider.cs" />
+    <Compile Include="Languages\MetaGenerator\Compilation\MetaGeneratorBackgroundCompilationFactory.cs" />
+    <Compile Include="Languages\MetaGenerator\Compilation\MetaGeneratorCompilation.cs" />
     <Compile Include="Languages\Meta\Compilation\MetaBackgroundCompilationFactory.cs" />
     <Compile Include="Utilities\MetaDslxMefServices.cs" />
     <Compile Include="Editor\MetaDslxTextViewCreationListener.cs" />
