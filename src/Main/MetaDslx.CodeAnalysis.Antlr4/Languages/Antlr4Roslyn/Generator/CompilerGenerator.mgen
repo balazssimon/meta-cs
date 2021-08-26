@@ -5274,8 +5274,15 @@ using [Properties.DefaultNamespace].Symbols;
 ^
 namespace [Properties.DefaultNamespace].Binding
 {
-    public class [Properties.LanguageName]CompletionBinderFactoryVisitor : CompletionBinderFactoryVisitor
+    public class [Properties.LanguageName]CompletionBinderFactoryVisitor : CompletionBinderFactoryVisitor, I[Properties.LanguageName]SyntaxVisitor
     {
+		public static object UnassignedUse = new object();
+		public static object FinishedUse = new object();
+		[loop (use:Instances.ParserRuleElemUses)]
+		public static object Use[use] = new object();
+		[end loop]
+^
+        private bool["[]"] _visited = new bool["["][Instances.ParserRules.Count]["]"];
 ^
         public [Properties.LanguageName]CompletionBinderFactoryVisitor(BinderFactory binderFactory)
 			: base(binderFactory)
@@ -5294,6 +5301,11 @@ namespace [Properties.DefaultNamespace].Binding
 		[GenerateCompletionBinderFactoryVisit(rule)]
 			[end if]
 		[end loop]
+^
+        public void VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node)
+        {
+            
+        }
     }
 }
 end template
@@ -5301,68 +5313,110 @@ end template
 
 template GenerateCompletionBinderFactoryVisit(Antlr4ParserRule rule)
 ^
-public void Visit[rule.PlainName()]([rule.RedName()] parent)
+public void Visit[rule.PlainName()]([rule.RedName()] parent) // [rule.RuleIndex]
 {
-    var searchLeft = LeftPosition == SearchSpan.Start;
-    var searchRight = RightPosition == SearchSpan.End;
-    if (!(searchLeft || searchRight) || !parent.FullSpan.Contains(this.Position)) return;
+    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
     var position = parent.FullSpan.Start;
     var operation = CompletionSearchFlags.None;
-    if (VisitChildren)
-    {
-        [GenerateCompletionBinderFactoryVisitChildren(rule)]
-    }
-    else
-    {
-        [GenerateCompletionBinderFactoryVisitParent(rule)]
-    }
+    [GenerateCompletionBinderFactoryVisitBody(rule)]
 }
 end template
 
 
-template GenerateCompletionBinderFactoryVisitParent(Antlr4ParserRule rule)
+template GenerateCompletionBinderFactoryVisitBody(Antlr4ParserRule rule)
 [loop (elem:rule.AllElements)]
-    [if (elem.IsList)]
-foreach (var item: parent.[elem.RedName()][if (elem.IsSeparated)].GetWithSeparators()[end if])
+    [if (elem.ContainsBinderAnnotations)]
+        [if (elem.IsList)]
+if (parent.[elem.RedName()].FullSpan.IntersectsWith(SearchSpan))
 {
-    operation = this.GetOperation(ref position, item, searchLeft, searchRight);
-    if (operation != CompletionSearchFlags.None)
+    foreach (var item in parent.[elem.RedName()][if (elem.IsSeparated)].GetWithSeparators()[end if])
     {
-        AddResults(parent, item, operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
+        operation = GetOperation(ref position, item);
+        if (operation != CompletionSearchFlags.None)
+        {
+            if (item.IsToken) AddBinderOrToken(item, operation);
+            else VisitCore(item.AsNode());
+        }
     }
 }
-    [else]
-operation = this.GetOperation(ref position, parent.[elem.RedName()], searchLeft, searchRight);
+else
+{
+    position += parent.[elem.RedName()].FullSpan.Length;
+}
+        [else if (elem.IsFixedTokenAltBlock)]
+operation = this.GetOperation(ref position, parent.[elem.RedName()]);
 if (operation != CompletionSearchFlags.None)
 {
-    AddResults(parent, parent.[elem.RedName()], operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
+    AddResultsFor[rule.PlainName()](Use[elem.RedName()], operation, Compilation.GetBinder(parent));
 }
+        [else if (elem.IsToken)]
+operation = this.GetOperation(ref position, parent.[elem.RedName()]);
+if (operation != CompletionSearchFlags.None)
+{
+    if (parent.[elem.RedName()].GetKind() == SyntaxKind.None) AddResultsFor[rule.PlainName()](Use[elem.RedName()], operation, Compilation.GetBinder(parent));
+    else AddBinderOrToken(parent.[elem.RedName()], operation);
+}
+        [else]
+operation = this.GetOperation(ref position, parent.[elem.RedName()]);
+if (operation != CompletionSearchFlags.None)
+{
+    if (parent.[elem.RedName()] == null) AddResultsFor[rule.PlainName()](Use[elem.RedName()], operation, Compilation.GetBinder(parent));
+    else VisitCore(parent.[elem.RedName()]);
+}
+        [end if]
+    [else]
+        [if (elem.IsToken || elem.IsList || !elem.IsOptional)]
+position += parent.[elem.RedName()].FullSpan.Length;
+        [else]
+if (parent.[elem.RedName()] != null) position += parent.[elem.RedName()].FullSpan.Length;
+        [end if]
     [end if]
 [end loop]
-if (parent.FullSpan.Start < LeftPosition) LeftPosition = parent.FullSpan.Start;
-if (parent.FullSpan.End > RightPosition) RightPosition = parent.FullSpan.End;
-VisitParent(parent);
 end template
 
 
-template GenerateCompletionBinderFactoryVisitChildren(Antlr4ParserRule rule)
-[loop (elem:rule.AllElements)]
+template GenerateCompletionBinderFactoryAddResults(Antlr4ParserRule rule)
+^
+public void AddResultsFor[rule.PlainName()](object use, CompletionSearchFlags operation, Binder parentBinder) // [rule.RuleIndex]
+{
+    if (_visited["["][rule.RuleIndex]["]"]) return;
+    _visited["["][rule.RuleIndex]["]"] = true;
+    [GenerateCompletionBinderFactoryAddResultsBody(rule)]
+    _visited["["][rule.RuleIndex]["]"] = false;
+}
+end template
+
+template GenerateCompletionBinderFactoryAddResultsBody(Antlr4ParserRule rule)
+[loop (elem:rule.AllElements where elem.ContainsBinderAnnotations)]
+if (use == UnassignedUse || use == Use[elem.RedName()])
+{
+    [loop (annot:elem.Annotations.BinderAnnotations)]
+		[if (elem.IsList)]
+	binder = this.BinderFactory.Create[annot.Name]Binder(binder, null[annot.GetAnnotationParams()]);
+		[else]
+	binder = this.BinderFactory.Create[annot.Name]Binder(binder, null[annot.GetAnnotationParams()]);
+		[end if]
+	[end loop]
     [if (elem.IsList)]
-foreach (var item: parent.[elem.RedName()][if (elem.IsSeparated)].GetWithSeparators()[end if])
-{
-    operation = this.GetOperation(ref position, item, searchLeft, searchRight);
-    if (operation != CompletionSearchFlags.None)
-    {
-        AddResults(parent, item, operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
-    }
-}
+    AddResultsFor[elem.TypeRule.PlainName()](UnassignedUse, operation, binder);
+    [else if (elem.IsFixedTokenAltBlock)]
+		[loop (alt:elem.BlockItems)]
+	var [alt.RedName()]Binder = binder;
+			[loop (annot:alt.Annotations.BinderAnnotations)]
+	[alt.RedName()]Binder = this.BinderFactory.Create[annot.Name]Binder([alt.RedName()]Binder, null[annot.GetAnnotationParams()]);
+			[end loop]
+	AddBinder([alt.RedName()]Binder, ([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[alt.RedName()] operation);
+		[end loop]
+    [else if (elem.IsToken)]
+	AddBinder(binder, operation);
+    AddToken(([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[elem.Type]);
     [else]
-operation = this.GetOperation(ref position, parent.[elem.RedName()], searchLeft, searchRight);
-if (operation != CompletionSearchFlags.None)
-{
-    AddResults(parent, parent.[elem.RedName()], operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
-}
+    AddResultsFor[elem.TypeRule.PlainName()](UnassignedUse, operation, binder);
     [end if]
+    [if (!elem.IsOptional)]
+    use = FinishedUse;
+    [end if]
+}
 [end loop]
 end template
 

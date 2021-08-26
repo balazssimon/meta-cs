@@ -2191,6 +2191,11 @@ namespace MetaDslx.CodeAnalysis
             return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
         }
 
+        public ImmutableArray<(object BinderOrTokenKind, TextSpan TextSpan)> GetCompletionBinders(LanguageSyntaxTree syntaxTree, int position)
+        {
+            return GetBinderFactory(syntaxTree).GetCompletionBinders(position);
+        }
+
         // Bound trees containing computed semantic information.
         // We store them using weak references so that GC pressure will cause them to be recycled.
         private WeakReference<BoundTree>[]? _boundTrees;

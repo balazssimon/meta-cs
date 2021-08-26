@@ -1,6 +1,8 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
@@ -65,7 +67,7 @@ namespace MetaDslx.VisualStudio.Intellisense
             SyntaxNode root;
             if (syntaxTree.TryGetRoot(out root))
             {
-                var completionTexts = new HashSet<string>();
+                /*var completionTexts = new HashSet<string>();
                 var tokenSuggestions = syntaxTree.LookupTokens(triggerPoint.Position);
                 var syntaxFacts = language.SyntaxFacts;
                 var hasIdentifier = tokenSuggestions.Any(kind => syntaxFacts.IsIdentifier(kind));
@@ -74,7 +76,7 @@ namespace MetaDslx.VisualStudio.Intellisense
 
                 if (hasIdentifier)
                 {
-                    /*SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
+                    SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
                     INamespaceOrTypeSymbol container = null;
                     var characterAtCaret = this.GetCharacterAtCaret(triggerPoint);
                     if (characterAtCaret.GetChar() == '.')
@@ -101,7 +103,7 @@ namespace MetaDslx.VisualStudio.Intellisense
                             }
                         }
                     }
-                    var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);*/
+                    var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);
                     var contextToken = root.FindToken(triggerPoint.Position);
                     var contextNode = contextToken.Node;
                     var identifierToken = language.SyntaxFactory.Identifier(SyntaxTriviaList.Empty, language.SyntaxFacts.DefaultIdentifierKind, string.Empty, string.Empty, SyntaxTriviaList.Empty);
@@ -114,10 +116,35 @@ namespace MetaDslx.VisualStudio.Intellisense
                     var symbols = candidates.Symbols.Where(symbol => symbol.CanBeReferencedByName && !string.IsNullOrWhiteSpace(symbol.Name));
                     completionTexts.UnionWith(symbols.Select(symbol => symbol.Name));
                     candidates.Free();
+                }*/
+                var completions = new List<Completion>();
+                var symbols = new HashSet<Symbol>();
+                var completionBinders = compilation.GetCompletionBinders(syntaxTree, triggerPoint.Position);
+                foreach (var completionBinder in completionBinders)
+                {
+                    var tokenKind = completionBinder.BinderOrTokenKind as SyntaxKind;
+                    if (tokenKind != null)
+                    {
+                        var text = language.SyntaxFacts.GetText(tokenKind);
+                        completions.Add(new Completion(text));
+                    }
+                    else
+                    {
+                        var binder = completionBinder.BinderOrTokenKind as Binder;
+                        var candidates = LookupCandidates.GetInstance();
+                        var constraints = new LookupConstraints(binder);
+                        binder.AddLookupCandidateSymbols(candidates, constraints);
+                        var lookupResults = candidates.Symbols.Where(symbol => symbol.CanBeReferencedByName && !string.IsNullOrWhiteSpace(symbol.Name));
+                        symbols.UnionWith(lookupResults);
+                        candidates.Free();
+                    }
+                }
+                foreach (var symbol in symbols)
+                {
+                    completions.Add(new Completion(symbol.Name));
                 }
                 SnapshotPoint start = triggerPoint;
                 var applicableTo = FindTokenSpanAtPosition(triggerPoint, session);
-                var completions = completionTexts.OrderBy(name => name).Select(name => new Completion(name, name, null, null, null));
                 completionSets.Add(new CompletionSet("All", "All", applicableTo, completions, Enumerable.Empty<Completion>()));
             }
         }

@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.Binders;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -68,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return result;
         }
 
-        public ImmutableArray<(object BinderOrTokenKind, CompletionSearchFlags Operation)> GetCompletionBinders(int position)
+        public ImmutableArray<(object BinderOrTokenKind, TextSpan TextSpan)> GetCompletionBinders(int position)
         {
             CompletionBinderFactoryVisitor visitor = _completionPool.Allocate();
             visitor.Initialize(position);

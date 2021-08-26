@@ -13,14 +13,15 @@ namespace MetaDslx.CodeAnalysis.Binding
     public class CompletionBinderFactoryVisitor : SyntaxVisitor
     {
         private readonly BinderFactory _factory;
-        private readonly ArrayBuilder<(object, CompletionSearchFlags)> _results;
+        private readonly ArrayBuilder<(object, TextSpan)> _results;
+        private int _position;
         private CompletionLookup _lookup;
         private SyntaxNode? _currentNode;
 
         public CompletionBinderFactoryVisitor(BinderFactory binderFactory)
         {
             _factory = binderFactory;
-            _results = new ArrayBuilder<(object, CompletionSearchFlags)>();
+            _results = new ArrayBuilder<(object, TextSpan)>();
         }
 
         protected Language Language => _factory.Language;
@@ -39,6 +40,12 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected TextSpan SearchSpan => _lookup.SearchSpan;
 
+        protected TextSpan LeftSpan => _lookup.LeftToken.Span;
+
+        protected TextSpan RightSpan => _lookup.RightToken.Span;
+
+        protected TextSpan InsertionSpan => TextSpan.FromBounds(_position, _position);
+
         protected int LeftPosition { get; set; }
 
         protected int RightPosition { get; set; }
@@ -48,7 +55,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         internal void Initialize(int position)
         {
             _results.Clear();
-            _lookup = CompletionLookup.GetLookup(SyntaxTree, position);
+            _position = position;
+            _lookup = CompletionLookup.GetLookup(SyntaxTree, _position);
         }
 
         protected CompletionSearchFlags GetOperation(ref int position, SyntaxNodeOrToken syntax, bool searchLeft, bool searchRight)
@@ -71,34 +79,57 @@ namespace MetaDslx.CodeAnalysis.Binding
             return result;
         }
 
+        protected TextSpan GetOperationSpan(CompletionSearchFlags operation)
+        {
+            if (operation == CompletionSearchFlags.ReplaceLeft) return LeftSpan;
+            if (operation == CompletionSearchFlags.ReplaceRight) return RightSpan;
+            return InsertionSpan;
+        }
+
         protected void AddResults(SyntaxNode parent, SyntaxNodeOrToken syntax, CompletionSearchFlags operation, params SyntaxKind[] expectedKinds)
         {
+            var span = GetOperationSpan(operation);
             if (syntax.IsToken)
             {
+                bool hasResult = false;
                 var syntaxFacts = Language.SyntaxFacts;
                 foreach (var tokenKind in expectedKinds)
                 {
                     if (syntaxFacts.IsFixedToken(tokenKind))
                     {
-                        _results.Add((tokenKind, operation));
+                        _results.Add((tokenKind, span));
+                        hasResult = true;
                     }
                 }
                 if (syntaxFacts.IsIdentifier(syntax.GetKind()))
                 {
                     var binder = Compilation.GetBinder(syntax);
-                    _results.Add((binder, operation));
+                    _results.Add((binder, span));
+                    hasResult = true;
+                }
+                if (!hasResult)
+                {
+                    var binder = Compilation.GetBinder(parent);
+                    _results.Add((binder, span));
                 }
                 return;
             }
             else if (syntax.IsNull)
             {
+                bool hasResult = false;
                 var syntaxFacts = Language.SyntaxFacts;
                 foreach (var tokenKind in expectedKinds)
                 {
                     if (syntaxFacts.IsFixedToken(tokenKind))
                     {
-                        _results.Add((tokenKind, operation));
+                        _results.Add((tokenKind, span));
+                        hasResult = true;
                     }
+                }
+                if (!hasResult)
+                {
+                    var binder = Compilation.GetBinder(parent);
+                    _results.Add((binder, span));
                 }
                 return;
             }
@@ -133,9 +164,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public ImmutableArray<(object BinderOrTokenKind, CompletionSearchFlags Operation)> CollectBinders()
+        public ImmutableArray<(object BinderOrTokenKind, TextSpan TextSpan)> CollectBinders()
         {
-            if (_lookup.Search == CompletionSearchFlags.None) return ImmutableArray<(object, CompletionSearchFlags)>.Empty;
+            if (_lookup.Search == CompletionSearchFlags.None) return ImmutableArray<(object, TextSpan)>.Empty;
             var parent = _lookup.LeftToken.Parent;
             if (parent is not null)
             {
