@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         private ImmutableDictionary<LanguageSyntaxNode, MemberSemanticModel> _memberModels = ImmutableDictionary<LanguageSyntaxNode, MemberSemanticModel>.Empty;
 
-        private readonly BinderCache _binderFactory;
+        private readonly BinderFactory _binderFactory;
         private Func<LanguageSyntaxNode, MemberSemanticModel> _createMemberModelFunction;
         private readonly bool _ignoresAccessibility;
 

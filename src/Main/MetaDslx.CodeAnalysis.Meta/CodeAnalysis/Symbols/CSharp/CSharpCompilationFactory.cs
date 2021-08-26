@@ -15,12 +15,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         protected override Language LanguageCore => CSharpLanguage.Instance;
 
-        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderCache binderFactory)
+        public override BinderFactory CreateBinderFactory(BinderCache binderCache)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
             throw new NotImplementedException();
         }
 
         public override LanguageCompilation CreateCompilation(string assemblyName, IEnumerable<SyntaxTree> syntaxTrees = null, IEnumerable<MetadataReference> references = null, LanguageCompilationOptions options = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override CompletionBinderFactoryVisitor CreateCompletionBinderFactoryVisitor(BinderFactory binderFactory)
         {
             throw new NotImplementedException();
         }
