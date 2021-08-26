@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         protected override Language LanguageCore => CSharpLanguage.Instance;
 
-        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderCache binderFactory)
         {
             throw new NotImplementedException();
         }

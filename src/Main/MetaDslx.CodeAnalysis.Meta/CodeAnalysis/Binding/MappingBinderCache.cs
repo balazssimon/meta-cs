@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal sealed class MappingBinderFactory : BinderFactory
+    internal sealed class MappingBinderCache : BinderCache
     {
         private ConcurrentDictionary<BinderCacheKey, Binder> _map;
 
-        internal MappingBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree, bool ignoreAccessibility) 
+        internal MappingBinderCache(LanguageCompilation compilation, LanguageSyntaxTree syntaxTree, bool ignoreAccessibility) 
             : base(compilation, syntaxTree)
         {
             _map = new ConcurrentDictionary<BinderCacheKey, Binder>();

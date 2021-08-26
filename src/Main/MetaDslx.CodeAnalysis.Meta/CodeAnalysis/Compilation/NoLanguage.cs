@@ -381,7 +381,7 @@ namespace MetaDslx.CodeAnalysis
 
             protected override Language LanguageCore => NoLanguage.Instance;
 
-            public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+            public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderCache binderFactory)
             {
                 throw new NotImplementedException();
             }

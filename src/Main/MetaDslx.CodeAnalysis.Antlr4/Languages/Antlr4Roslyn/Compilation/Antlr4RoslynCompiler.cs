@@ -71,7 +71,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string GeneratedScriptCompilationInfo { get; private set; }
 
         public string GeneratedDeclarationTreeBuilder { get; private set; }
+        public string GeneratedBinderFactory { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
+        public string GeneratedCompletionBinderFactoryVisitor { get; private set; }
         public string GeneratedBoundKind { get; private set; }
         public string GeneratedBoundNodeFactoryVisitor { get; private set; }
         public string GeneratedIsBindableNodeVisitor { get; private set; }
@@ -318,7 +320,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
             if (this.IsParser)
             {
-                this.FindFirstNonAbstractAlternatives();
+                this.FindConcreteAlternatives();
                 this.CollectCustomAnnotations();
                 this.CollectHasAnnotationFlags();
             }
@@ -480,7 +482,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.GeneratedScriptCompilationInfo = generator.GenerateScriptCompilationInfo();
 
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
+            this.GeneratedBinderFactory = generator.GenerateBinderFactory();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
+            this.GeneratedCompletionBinderFactoryVisitor = generator.GenerateCompletionBinderFactoryVisitor();
 
             if (this.AutomaticOutputDirectory == null || this.ManualOutputDirectory == null) return;
 
@@ -508,7 +512,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"LanguageServicesBase.cs"), this.GeneratedLanguageServicesBase);
                 this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"LanguageServices.cs"), this.GeneratedLanguageServices, automatic: false);
                 this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
+                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BinderFactory.cs"), this.GeneratedBinderFactory);
                 this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
+                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"CompletionBinderFactoryVisitor.cs"), this.GeneratedCompletionBinderFactoryVisitor);
                 /*this.WriteOutputFile(Path.Combine(this.AutomaticManualOutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
                 this.WriteOutputFile(Path.Combine(this.AutomaticManualOutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);*/
             }
@@ -520,30 +526,41 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             //this.ReferenceCustomAnnotations();
         }
 
-        private void FindFirstNonAbstractAlternatives()
+        private void FindConcreteAlternatives()
         {
             foreach (var rule in this.Grammar.ParserRules)
             {
-                if (rule.Alternatives.Count > 0 && rule.FirstNonAbstractAlternative == null)
+                if (rule.Alternatives.Count > 0)
                 {
-                    FindFirstNonAbstractAlternative(rule);
+                    if (rule.FirstNonAbstractAlternative == null)
+                    {
+                        FindConcreteAlternatives(rule);
+                        rule.FirstNonAbstractAlternative = rule.AllConcreteAlternatives.FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    rule.AllConcreteAlternatives.Add(rule);
                 }
             }
         }
 
-        private void FindFirstNonAbstractAlternative(Antlr4ParserRule rule)
+        private void FindConcreteAlternatives(Antlr4ParserRule rule)
         {
-            rule.FirstNonAbstractAlternative = rule.Alternatives.Where(alt => alt.Alternatives.Count == 0).FirstOrDefault();
-            if (rule.FirstNonAbstractAlternative == null)
+            foreach (var alt in rule.Alternatives)
             {
-                foreach (var alt in rule.Alternatives)
+                if (alt.Alternatives.Count > 0)
                 {
-                    if (alt.Alternatives.Count > 0 && alt.FirstNonAbstractAlternative == null)
+                    if (rule.FirstNonAbstractAlternative == null)
                     {
-                        FindFirstNonAbstractAlternative(alt);
+                        FindConcreteAlternatives(alt);
+                        rule.FirstNonAbstractAlternative = rule.AllConcreteAlternatives.FirstOrDefault();
                     }
                 }
-                rule.FirstNonAbstractAlternative = rule.Alternatives.Where(alt => alt.FirstNonAbstractAlternative != null).FirstOrDefault()?.FirstNonAbstractAlternative;
+                else
+                {
+                    rule.AllConcreteAlternatives.Add(alt);
+                }
             }
         }
 
@@ -1982,6 +1999,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string Name { get; set; }
         public List<Antlr4ParserRuleElement> Elements { get; private set; }
         public List<Antlr4ParserRule> Alternatives { get; private set; }
+        public List<Antlr4ParserRule> AllConcreteAlternatives { get; private set; }
         public Antlr4ParserRule FirstNonAbstractAlternative { get; internal set; }
         public bool IsSimpleAlt { get; internal set; }
         public bool IsRecursive { get; internal set; }
@@ -2012,6 +2030,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             return this.Name;
         }
+
+        public string AsSyntaxKinds(string syntaxKind, bool forBinders)
+        {
+            var sb = new StringBuilder();
+            IEnumerable<Antlr4ParserRule> rules = this.AllConcreteAlternatives;
+            if (forBinders) rules = rules.Where(r => r.ContainsBinderAnnotations);
+            foreach (var alt in rules)
+            {
+                sb.Append(", ");
+                sb.Append(syntaxKind);
+                sb.Append(".");
+                sb.Append(alt.RedName());
+            }
+            return sb.ToString();
+        }
+
     }
     public class Antlr4ParserRuleElement : Antlr4AnnotatedObject
     {
@@ -2086,6 +2120,39 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
             }
             return false;
+        }
+
+        public string AsSyntaxKinds(string syntaxKind, bool forBinders)
+        {
+            var sb = new StringBuilder();
+            IEnumerable<Antlr4ParserRule> rules;
+            if (this.IsList)
+            {
+                var alts = new HashSet<Antlr4ParserRule>(this.Rule.AllConcreteAlternatives);
+                if (this.Separator?.Rule != null) alts.UnionWith(this.Separator.Rule.AllConcreteAlternatives);
+                rules = alts;
+            }
+            else if (this.IsFixedTokenAltBlock)
+            {
+                rules = this.BlockItems.Select(elem => elem.Rule);
+            }
+            else if (this.IsBlock)
+            {
+                rules = this.BlockItems.SelectMany(elem => elem.Rule.AllConcreteAlternatives).Distinct();
+            }
+            else
+            {
+                rules = this.Rule.AllConcreteAlternatives;
+            }
+            if (forBinders) rules = rules.Where(r => r.ContainsBinderAnnotations);
+            foreach (var alt in rules)
+            {
+                sb.Append(", ");
+                sb.Append(syntaxKind);
+                sb.Append(".");
+                sb.Append(alt.RedName());
+            }
+            return sb.ToString();
         }
 
         public override string ToString()

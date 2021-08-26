@@ -76,9 +76,19 @@ namespace MetaDslx.Languages.Meta
             return MetaCompilation.CreateScriptCompilation(assemblyName, syntaxTree, references, (MetaCompilationOptions)options, (MetaCompilation)previousScriptCompilation, returnType, globalsType);
         }
 
+        public override BinderFactory CreateBinderFactory(BinderCache binderCache)
+        {
+            return new MetaBinderFactory(binderCache);
+        }
+
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
-            return new MetaBinderFactoryVisitor(binderFactory);
+            return new MetaBinderFactoryVisitor((MetaBinderFactory)binderFactory);
+        }
+
+        public override CompletionBinderFactoryVisitor CreateCompletionBinderFactoryVisitor(BinderFactory binderFactory)
+        {
+            return new MetaCompletionBinderFactoryVisitor((MetaBinderFactory)binderFactory);
         }
 
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)

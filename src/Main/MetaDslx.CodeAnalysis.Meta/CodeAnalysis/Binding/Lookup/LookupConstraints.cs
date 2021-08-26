@@ -202,15 +202,21 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual bool IsViable(DeclaredSymbol symbol)
         {
             if (symbol == null) return false;
-            if (this.IsAutomaticNameLookup)
+            if (this.Name != null)
             {
-                if (!_viableNames.Contains(symbol.Name)) return false;
+                if (this.IsAutomaticNameLookup)
+                {
+                    if (!_viableNames.Contains(symbol.Name)) return false;
+                }
+                else
+                {
+                    if (symbol.Name != this.Name) return false;
+                }
             }
-            else
+            if (this.MetadataName != null)
             {
-                if (symbol.Name != this.Name) return false;
+                if (symbol.MetadataName != this.MetadataName) return false;
             }
-            if (this.MetadataName != null && symbol.MetadataName != this.MetadataName) return false;
             if (!this.Validators.IsDefaultOrEmpty)
             {
                 foreach (var validator in this.Validators)

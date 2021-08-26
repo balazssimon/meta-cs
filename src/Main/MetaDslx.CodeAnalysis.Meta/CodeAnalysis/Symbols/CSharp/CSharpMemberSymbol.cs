@@ -30,6 +30,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override string MetadataName => _csharpSymbol.MetadataName;
 
+        public override bool CanBeReferencedByName => _csharpSymbol.CanBeReferencedByName;
+
         public override Symbol ContainingSymbol => CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
 
         public override ImmutableArray<Location> Locations => _csharpSymbol.Locations;

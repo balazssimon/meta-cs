@@ -30,8 +30,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly Binder _next;
         internal readonly int _index;
         private BoundNode _boundNode;
-        private Conversions _lazyConversions;
-        private OverloadResolution _lazyOverloadResolution;
 
         public readonly BinderFlags Flags;
 
@@ -94,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             if (obj is Binder other)
             {
-                return Syntax == other.Syntax && _index == other._index;
+                return this.GetType() == other.GetType() && Syntax == other.Syntax && _index == other._index;
             }
             return false;
         }
@@ -103,7 +101,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             var syntaxHash = 0;
             if (Syntax != null) syntaxHash = Syntax.GetHashCode();
-            return Hash.Combine(syntaxHash, _index.GetHashCode());
+            return Hash.Combine(Hash.Combine(this.GetType().GetHashCode(), syntaxHash), _index.GetHashCode());
         }
 
         public bool IsSemanticModelBinder => this.Flags.Includes(BinderFlags.SemanticModel);

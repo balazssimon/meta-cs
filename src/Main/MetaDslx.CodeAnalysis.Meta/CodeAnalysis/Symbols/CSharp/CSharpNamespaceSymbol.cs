@@ -32,6 +32,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override string MetadataName => _csharpSymbol.MetadataName;
 
+        public override bool CanBeReferencedByName => _csharpSymbol.CanBeReferencedByName;
+
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 
         public override Symbol ContainingSymbol => _csharpSymbol.ContainingSymbol is CSharpSymbols.ModuleSymbol ? _module : CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);

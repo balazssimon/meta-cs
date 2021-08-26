@@ -804,25 +804,25 @@ namespace [Properties.DefaultNamespace]
             return [lang]Compilation.CreateScriptCompilation(assemblyName, syntaxTree, references, ([lang]CompilationOptions)options, ([lang]Compilation)previousScriptCompilation, returnType, globalsType);
         }
 ^
+        public override BinderFactory CreateBinderFactory(BinderCache binderCache)
+        {
+            return new [Properties.LanguageName]BinderFactory(binderCache);
+        }
+^
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
-            return new [Properties.LanguageName]BinderFactoryVisitor(binderFactory);
+            return new [Properties.LanguageName]BinderFactoryVisitor(([Properties.LanguageName]BinderFactory)binderFactory);
+        }
+^
+        public override BinderFactoryVisitor CreateCompletionBinderFactoryVisitor(BinderFactory binderFactory)
+        {
+            return new [Properties.LanguageName]CompletionBinderFactoryVisitor(([Properties.LanguageName]BinderFactory)binderFactory);
         }
 ^
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, this.Language.SymbolFacts, scriptClassName, isSubmission);
         }
-^
-        /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
-        {
-            return new [Properties.LanguageName]ScriptCompilationInfo(([Properties.LanguageName]Compilation)previousSubmission, submissionReturnType, hostObjectType);
-        }
-^
-        public override SymbolBuilder CreateSymbolBuilder(CompilationBase compilation)
-        {
-            return new [Properties.LanguageName]SymbolBuilder(([Properties.LanguageName]Compilation)compilation);
-        }*/
     }
 }
 end template
@@ -5074,6 +5074,35 @@ switch ([elemName].GetKind().Switch())
 	[end if]
 end template
 
+template GenerateBinderFactory()
+using MetaDslx.CodeAnalysis.Binding;
+using Microsoft.CodeAnalysis;
+using System;
+using System.Collections.Generic;
+using System.Text;
+[Instances.ParserHeader]
+^
+namespace [Properties.DefaultNamespace].Binding
+{
+    public class [Properties.LanguageName]BinderFactory : BinderFactory
+    {
+        public [Properties.LanguageName]BinderFactory(BinderCache cache) 
+            : base(cache)
+        {
+        }
+^
+		[loop(annot:Instances.CustomAnnotations)]
+^
+        public virtual Binder Create[annot.Name]Binder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        {
+            return new [annot.Name]Binder(parentBinder, syntax);
+        }
+		[end loop]
+    }
+}
+end template
+
+
 template GenerateBinderFactoryVisitor()
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -5098,23 +5127,13 @@ namespace [Properties.DefaultNamespace].Binding
 		public static object Use[use] = new object();
 		[end loop]
 ^
-        public [Properties.LanguageName]BinderFactoryVisitor(BinderFactory symbolBuilder)
-			: base(symbolBuilder)
+        public [Properties.LanguageName]BinderFactoryVisitor([Properties.LanguageName]BinderFactory binderFactory)
+			: base(binderFactory)
         {
 ^
         }
-		[loop(annot:Instances.CustomAnnotations)]
 ^
-        protected virtual Binder Create[annot.Name]Binder(Binder parentBinder, SyntaxNodeOrToken syntax)
-        {
-            return this.Create[annot.Name]BinderCore(parentBinder, syntax);
-        }
-^
-        protected virtual Binder Create[annot.Name]BinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
-        {
-            return new [annot.Name]Binder(parentBinder, syntax);
-        }
-		[end loop]
+		public new [Properties.LanguageName]BinderFactory BinderFactory => ([Properties.LanguageName]BinderFactory)base.BinderFactory;
 ^
         public Binder VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax parent)
         {
@@ -5139,27 +5158,31 @@ template GenerateBinderFactoryVisit(Antlr4ParserRule rule)
 ^
 public Binder Visit[rule.PlainName()]([rule.RedName()] parent)
 {
-    [if (rule == Instances.MainRule())]
-	return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
-	[else]
     if (!parent.FullSpan.Contains(this.Position))
     {
+        [if (rule == Instances.MainRule())]
+	    return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+	    [else]
         return VisitParent(parent);
+        [end if]
     }
 	object use = null;
 	[GenerateBinderFactoryVisitElemUses(rule)]
 	Binder resultBinder = null;
 	if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 	{
+        [if (rule == Instances.MainRule())]
+	    resultBinder = this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+	    [else]
 		resultBinder = VisitParent(parent);
+        [end if]
 		[loop (annot:rule.Annotations.BinderAnnotations)]
-		resultBinder = this.Create[annot.Name]Binder(resultBinder, parent[annot.GetAnnotationParams()]);
+		resultBinder = this.BinderFactory.Create[annot.Name]Binder(resultBinder, parent[annot.GetAnnotationParams()]);
 		[end loop]
 		this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 		[GenerateBinderFactoryVisitBody(rule)]
 	}
 	return resultBinder;
-	[end if]
 }
 end template
 
@@ -5186,9 +5209,9 @@ if (use == Use[elem.RedName()])
 {
     [loop (annot:elem.Annotations.BinderAnnotations)]
 		[if (elem.IsList)]
-	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()].Node[annot.GetAnnotationParams()]);
+	resultBinder = this.BinderFactory.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()].Node[annot.GetAnnotationParams()]);
 		[else]
-	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][annot.GetAnnotationParams()]);
+	resultBinder = this.BinderFactory.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][annot.GetAnnotationParams()]);
 		[end if]
 	[end loop]
 	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
@@ -5205,7 +5228,7 @@ if (use == Use[elem.RedName()])
 			[loop (alt:elem.BlockItems)]
 		case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
 				[loop (annot:alt.Annotations.BinderAnnotations)]
-			resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][annot.GetAnnotationParams()]);
+			resultBinder = this.BinderFactory.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][annot.GetAnnotationParams()]);
 				[end loop]
 			break;
 			[end loop]
@@ -5231,6 +5254,119 @@ if (this.ForChild)
 }
 [end if]
 end template
+
+
+template GenerateCompletionBinderFactoryVisitor()
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Syntax;
+using [Properties.DefaultNamespace];
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Symbols;
+[Instances.ParserHeader]
+^
+namespace [Properties.DefaultNamespace].Binding
+{
+    public class [Properties.LanguageName]CompletionBinderFactoryVisitor : CompletionBinderFactoryVisitor
+    {
+^
+        public [Properties.LanguageName]CompletionBinderFactoryVisitor(BinderFactory binderFactory)
+			: base(binderFactory)
+        {
+^
+        }
+^
+		public new [Properties.LanguageName]BinderFactory BinderFactory => ([Properties.LanguageName]BinderFactory)base.BinderFactory;
+^		
+		[loop(rule:Instances.ParserRules)]
+			[if (rule.Alternatives.Count > 0)]
+				[loop(alt:rule.Alternatives)]
+		[GenerateCompletionBinderFactoryVisit(alt)]
+				[end loop]
+			[else]
+		[GenerateCompletionBinderFactoryVisit(rule)]
+			[end if]
+		[end loop]
+    }
+}
+end template
+
+
+template GenerateCompletionBinderFactoryVisit(Antlr4ParserRule rule)
+^
+public void Visit[rule.PlainName()]([rule.RedName()] parent)
+{
+    var searchLeft = LeftPosition == SearchSpan.Start;
+    var searchRight = RightPosition == SearchSpan.End;
+    if (!(searchLeft || searchRight) || !parent.FullSpan.Contains(this.Position)) return;
+    var position = parent.FullSpan.Start;
+    var operation = CompletionSearchFlags.None;
+    if (VisitChildren)
+    {
+        [GenerateCompletionBinderFactoryVisitChildren(rule)]
+    }
+    else
+    {
+        [GenerateCompletionBinderFactoryVisitParent(rule)]
+    }
+}
+end template
+
+
+template GenerateCompletionBinderFactoryVisitParent(Antlr4ParserRule rule)
+[loop (elem:rule.AllElements)]
+    [if (elem.IsList)]
+foreach (var item: parent.[elem.RedName()][if (elem.IsSeparated)].GetWithSeparators()[end if])
+{
+    operation = this.GetOperation(ref position, item, searchLeft, searchRight);
+    if (operation != CompletionSearchFlags.None)
+    {
+        AddResults(parent, item, operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
+    }
+}
+    [else]
+operation = this.GetOperation(ref position, parent.[elem.RedName()], searchLeft, searchRight);
+if (operation != CompletionSearchFlags.None)
+{
+    AddResults(parent, parent.[elem.RedName()], operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
+}
+    [end if]
+[end loop]
+if (parent.FullSpan.Start < LeftPosition) LeftPosition = parent.FullSpan.Start;
+if (parent.FullSpan.End > RightPosition) RightPosition = parent.FullSpan.End;
+VisitParent(parent);
+end template
+
+
+template GenerateCompletionBinderFactoryVisitChildren(Antlr4ParserRule rule)
+[loop (elem:rule.AllElements)]
+    [if (elem.IsList)]
+foreach (var item: parent.[elem.RedName()][if (elem.IsSeparated)].GetWithSeparators()[end if])
+{
+    operation = this.GetOperation(ref position, item, searchLeft, searchRight);
+    if (operation != CompletionSearchFlags.None)
+    {
+        AddResults(parent, item, operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
+    }
+}
+    [else]
+operation = this.GetOperation(ref position, parent.[elem.RedName()], searchLeft, searchRight);
+if (operation != CompletionSearchFlags.None)
+{
+    AddResults(parent, parent.[elem.RedName()], operation[elem.AsSyntaxKinds(Properties.LanguageName+"SyntaxKind", true)]);
+}
+    [end if]
+[end loop]
+end template
+
+
 
 template GenerateSymbolFacts()
 using System;

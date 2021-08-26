@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal sealed class CachingBinderFactory : BinderFactory
+    internal sealed class CachingBinderCache : BinderCache
     {
         // This dictionary stores contexts so we don't have to recreate them, which can be
         // expensive. 
         private readonly ConcurrentCache<BinderCacheKey, Binder> _binderCache;
 
-        internal CachingBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree, bool ignoreAccessibility)
+        internal CachingBinderCache(LanguageCompilation compilation, LanguageSyntaxTree syntaxTree, bool ignoreAccessibility)
             : base(compilation, syntaxTree)
         {
             // 50 is more or less a guess, but it seems to work fine for scenarios that I tried.

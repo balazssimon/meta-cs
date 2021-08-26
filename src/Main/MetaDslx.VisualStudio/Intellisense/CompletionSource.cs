@@ -1,4 +1,6 @@
 using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
@@ -59,19 +61,20 @@ namespace MetaDslx.VisualStudio.Intellisense
             var syntaxTree = (LanguageSyntaxTree)compilation.SyntaxTrees.FirstOrDefault();
             if (syntaxTree == null) return;
 
+            var language = compilation.Language;
             SyntaxNode root;
             if (syntaxTree.TryGetRoot(out root))
             {
                 var completionTexts = new HashSet<string>();
                 var tokenSuggestions = syntaxTree.LookupTokens(triggerPoint.Position);
-                var syntaxFacts = compilation.Language.SyntaxFacts;
+                var syntaxFacts = language.SyntaxFacts;
                 var hasIdentifier = tokenSuggestions.Any(kind => syntaxFacts.IsIdentifier(kind));
                 var fixedTokens = tokenSuggestions.Where(kind => syntaxFacts.IsFixedToken(kind)).Select(kind => syntaxFacts.GetText(kind));
                 completionTexts.UnionWith(fixedTokens);
 
                 if (hasIdentifier)
                 {
-                    SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
+                    /*SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
                     INamespaceOrTypeSymbol container = null;
                     var characterAtCaret = this.GetCharacterAtCaret(triggerPoint);
                     if (characterAtCaret.GetChar() == '.')
@@ -98,8 +101,19 @@ namespace MetaDslx.VisualStudio.Intellisense
                             }
                         }
                     }
-                    var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);
-                    completionTexts.UnionWith(symbols.Where(symbol => !string.IsNullOrWhiteSpace(symbol.Name)).Select(symbol => symbol.Name));
+                    var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);*/
+                    var contextToken = root.FindToken(triggerPoint.Position);
+                    var contextNode = contextToken.Node;
+                    var identifierToken = language.SyntaxFactory.Identifier(SyntaxTriviaList.Empty, language.SyntaxFacts.DefaultIdentifierKind, string.Empty, string.Empty, SyntaxTriviaList.Empty);
+                    //contextNode.replace...
+                    var binder = compilation.GetBinder(contextToken);
+                    binder = new UseBinder(binder, default, ImmutableArray<Type>.Empty, null, null);
+                    var candidates = LookupCandidates.GetInstance();
+                    var constraints = new LookupConstraints(binder);
+                    binder.AddLookupCandidateSymbols(candidates, constraints);
+                    var symbols = candidates.Symbols.Where(symbol => symbol.CanBeReferencedByName && !string.IsNullOrWhiteSpace(symbol.Name));
+                    completionTexts.UnionWith(symbols.Select(symbol => symbol.Name));
+                    candidates.Free();
                 }
                 SnapshotPoint start = triggerPoint;
                 var applicableTo = FindTokenSpanAtPosition(triggerPoint, session);
