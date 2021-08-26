@@ -7042,8 +7042,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Write("        }"); //815:1
             __out.AppendLine(false); //815:10
             __out.AppendLine(true); //816:1
-            __out.Write("        public override BinderFactoryVisitor CreateCompletionBinderFactoryVisitor(BinderFactory binderFactory)"); //817:1
-            __out.AppendLine(false); //817:111
+            __out.Write("        public override CompletionBinderFactoryVisitor CreateCompletionBinderFactoryVisitor(BinderFactory binderFactory)"); //817:1
+            __out.AppendLine(false); //817:121
             __out.Write("        {"); //818:1
             __out.AppendLine(false); //818:10
             bool __tmp94_outputWritten = false;

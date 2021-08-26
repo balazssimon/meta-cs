@@ -95,16 +95,6 @@ namespace MetaDslx.Languages.Meta
         {
             return MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)syntaxTree, this.Language.SymbolFacts, scriptClassName, isSubmission);
         }
-
-        /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
-        {
-            return new MetaScriptCompilationInfo((MetaCompilation)previousSubmission, submissionReturnType, hostObjectType);
-        }
-
-        public override SymbolBuilder CreateSymbolBuilder(CompilationBase compilation)
-        {
-            return new MetaSymbolBuilder((MetaCompilation)compilation);
-        }*/
     }
 }
 

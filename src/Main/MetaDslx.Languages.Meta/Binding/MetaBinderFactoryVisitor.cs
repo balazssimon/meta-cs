@@ -116,7 +116,7 @@ namespace MetaDslx.Languages.Meta.Binding
 
 		public new MetaBinderFactory BinderFactory => (MetaBinderFactory)base.BinderFactory;
 
-		public Binder VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax parent)
+        public Binder VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax parent)
         {
             return null;
         }
@@ -124,7 +124,18 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public Binder VisitMain(MainSyntax parent)
 		{
-			return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+			    return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+			    resultBinder = this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
 		}
 		
 		public Binder VisitName(NameSyntax parent)

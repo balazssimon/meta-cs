@@ -1465,7 +1465,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 int skip = this.IsRoslynRuleElement(elems[i], i + 1 < elems.Length ? elems[i + 1] : null, i + 2 < elems.Length ? elems[i + 2] : null, true, ref reportedErrors, out element);
                 if (skip > 0)
                 {
-                    element.Rule = rule;
+                    element.ContainingRule = rule;
                     rule.Elements.Add(element);
                     i += skip - 1;
                 }
@@ -1603,7 +1603,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             {
                 var ruleRef = ((Antlr4RoslynParser.ParserRuleSpecContext)(context.Parent)).RULE_REF();
                 blockElem = new Antlr4ParserRuleElement(context, this.GetLocation(ruleRef));
-                blockElem.Rule = rule;
+                blockElem.ContainingRule = rule;
                 blockElem.Name = ruleRef.GetText();
                 blockElem.IsFixedTokenAltBlock = true;
                 blockElem.IsBlock = true;
@@ -1622,7 +1622,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     }
                     else
                     {
-                        element.Rule = rule;
+                        element.ContainingRule = rule;
                         rule.Elements.Add(element);
                     }
                 }
@@ -1993,6 +1993,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.Grammar = grammar;
             this.Elements = new List<Antlr4ParserRuleElement>();
             this.Alternatives = new List<Antlr4ParserRule>();
+            this.AllConcreteAlternatives = new List<Antlr4ParserRule>();
         }
         public Antlr4Grammar Grammar { get; private set; }
         public Antlr4ParserRule ParentRule { get; internal set; }
@@ -2059,16 +2060,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             get
             {
-                if (this.Rule != null) return this.Rule.Grammar;
+                if (this.ContainingRule != null) return this.ContainingRule.Grammar;
                 if (this.ParentBlock != null) return this.ParentBlock.Grammar;
                 return null;
             }
         }
-        public Antlr4ParserRule Rule { get; internal set; }
+        public Antlr4ParserRule ContainingRule { get; internal set; }
         public Antlr4ParserRuleElement ParentBlock { get; internal set; }
         public object Node { get; private set; }
         public string Name { get; set; }
         public string Type { get; set; }
+        public Antlr4ParserRule TypeRule => this.Grammar?.FindParserRule(this.Type);
         public string OriginalType { get; set; }
         public bool IsOptional { get; set; }
         public bool IsFixedToken
@@ -2125,32 +2127,36 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string AsSyntaxKinds(string syntaxKind, bool forBinders)
         {
             var sb = new StringBuilder();
-            IEnumerable<Antlr4ParserRule> rules;
-            if (this.IsList)
+            if (this.TypeRule != null)
             {
-                var alts = new HashSet<Antlr4ParserRule>(this.Rule.AllConcreteAlternatives);
-                if (this.Separator?.Rule != null) alts.UnionWith(this.Separator.Rule.AllConcreteAlternatives);
-                rules = alts;
-            }
-            else if (this.IsFixedTokenAltBlock)
-            {
-                rules = this.BlockItems.Select(elem => elem.Rule);
-            }
-            else if (this.IsBlock)
-            {
-                rules = this.BlockItems.SelectMany(elem => elem.Rule.AllConcreteAlternatives).Distinct();
-            }
-            else
-            {
-                rules = this.Rule.AllConcreteAlternatives;
-            }
-            if (forBinders) rules = rules.Where(r => r.ContainsBinderAnnotations);
-            foreach (var alt in rules)
-            {
-                sb.Append(", ");
-                sb.Append(syntaxKind);
-                sb.Append(".");
-                sb.Append(alt.RedName());
+                IEnumerable<Antlr4ParserRule> rules;
+                if (this.IsList)
+                {
+                    var alts = new HashSet<Antlr4ParserRule>(this.ContainingRule.AllConcreteAlternatives);
+                    if (this.Separator?.TypeRule != null) alts.UnionWith(this.Separator.ContainingRule.AllConcreteAlternatives);
+                    rules = alts;
+                }
+                else if (this.IsFixedTokenAltBlock)
+                {
+                    rules = this.BlockItems.Select(elem => elem.TypeRule);
+                }
+                else if (this.IsBlock)
+                {
+                    rules = this.BlockItems.SelectMany(elem => elem.TypeRule.AllConcreteAlternatives).Distinct();
+                }
+                else
+                {
+                    rules = this.TypeRule.AllConcreteAlternatives;
+                }
+                rules = rules.Where(r => r != null);
+                if (forBinders) rules = rules.Where(r => r.ContainsBinderAnnotations);
+                foreach (var alt in rules)
+                {
+                    sb.Append(", ");
+                    sb.Append(syntaxKind);
+                    sb.Append(".");
+                    sb.Append(alt.RedName());
+                }
             }
             return sb.ToString();
         }

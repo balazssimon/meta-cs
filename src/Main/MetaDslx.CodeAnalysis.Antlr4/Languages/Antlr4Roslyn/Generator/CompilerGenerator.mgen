@@ -814,7 +814,7 @@ namespace [Properties.DefaultNamespace]
             return new [Properties.LanguageName]BinderFactoryVisitor(([Properties.LanguageName]BinderFactory)binderFactory);
         }
 ^
-        public override BinderFactoryVisitor CreateCompletionBinderFactoryVisitor(BinderFactory binderFactory)
+        public override CompletionBinderFactoryVisitor CreateCompletionBinderFactoryVisitor(BinderFactory binderFactory)
         {
             return new [Properties.LanguageName]CompletionBinderFactoryVisitor(([Properties.LanguageName]BinderFactory)binderFactory);
         }
