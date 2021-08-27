@@ -4,15 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class EnumValueBinder : ValueBinder
     {
         private readonly Type _enumType;
         private readonly string _enumLiteral;
 
-        public EnumValueBinder(Binder next, SyntaxNodeOrToken syntax, string enumLiteral, Type enumType)
-            : base(next, syntax)
+        public EnumValueBinder(Binder next, SyntaxNodeOrToken syntax, string enumLiteral, Type enumType, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             _enumType = enumType;
             _enumLiteral = enumLiteral;

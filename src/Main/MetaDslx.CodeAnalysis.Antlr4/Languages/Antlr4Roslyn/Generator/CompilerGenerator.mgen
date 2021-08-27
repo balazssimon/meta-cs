@@ -5093,9 +5093,9 @@ namespace [Properties.DefaultNamespace].Binding
 ^
 		[loop(annot:Instances.CustomAnnotations)]
 ^
-        public virtual Binder Create[annot.Name]Binder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        public virtual Binder Create[annot.Name]Binder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
         {
-            return new [annot.Name]Binder(parentBinder, syntax);
+            return new [annot.Name]Binder(parentBinder, syntax, forCompletion);
         }
 		[end loop]
     }
@@ -5278,8 +5278,18 @@ namespace [Properties.DefaultNamespace].Binding
     {
 		public static object UnassignedUse = new object();
 		public static object FinishedUse = new object();
-		[loop (use:Instances.ParserRuleElemUses)]
-		public static object Use[use] = new object();
+		[loop(rule:Instances.ParserRules)]
+			[if (rule.Alternatives.Count > 0)]
+				[loop(alt:rule.Alternatives)]
+                    [loop(elem:alt.AllElements where elem.ContainsBinderAnnotations)]
+		public static object Use_[alt.PlainName()]_[elem.RedName()] = new object();
+                    [end loop]
+				[end loop]
+			[else]
+                [loop(elem:rule.AllElements where elem.ContainsBinderAnnotations)]
+		public static object Use_[rule.PlainName()]_[elem.RedName()] = new object();
+                [end loop]
+			[end if]
 		[end loop]
 ^
         private bool["[]"] _visited = new bool["["][Instances.ParserRules.Count]["]"];
@@ -5306,6 +5316,10 @@ namespace [Properties.DefaultNamespace].Binding
         {
             
         }
+^
+        [loop(rule:Instances.ParserRules)]
+        [GenerateCompletionBinderFactoryAddResults(rule)]
+        [end loop]
     }
 }
 end template
@@ -5325,7 +5339,7 @@ end template
 
 template GenerateCompletionBinderFactoryVisitBody(Antlr4ParserRule rule)
 [loop (elem:rule.AllElements)]
-    [if (elem.ContainsBinderAnnotations)]
+    [if (elem.ContainsBinderAnnotations || elem.IsFixedToken)]
         [if (elem.IsList)]
 if (parent.[elem.RedName()].FullSpan.IntersectsWith(SearchSpan))
 {
@@ -5334,8 +5348,14 @@ if (parent.[elem.RedName()].FullSpan.IntersectsWith(SearchSpan))
         operation = GetOperation(ref position, item);
         if (operation != CompletionSearchFlags.None)
         {
-            if (item.IsToken) AddBinderOrToken(item, operation);
+            [if (elem.IsSeparated)]
+            if (item.IsToken) AddBinder(item, operation);
             else VisitCore(item.AsNode());
+            [else if (elem.IsToken)]
+            AddBinder(item, operation);
+            [else]
+            VisitCore(item);
+            [end if]
         }
     }
 }
@@ -5347,20 +5367,24 @@ else
 operation = this.GetOperation(ref position, parent.[elem.RedName()]);
 if (operation != CompletionSearchFlags.None)
 {
-    AddResultsFor[rule.PlainName()](Use[elem.RedName()], operation, Compilation.GetBinder(parent));
+    AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
 }
         [else if (elem.IsToken)]
 operation = this.GetOperation(ref position, parent.[elem.RedName()]);
 if (operation != CompletionSearchFlags.None)
 {
-    if (parent.[elem.RedName()].GetKind() == SyntaxKind.None) AddResultsFor[rule.PlainName()](Use[elem.RedName()], operation, Compilation.GetBinder(parent));
-    else AddBinderOrToken(parent.[elem.RedName()], operation);
+    [if (elem.ContainsBinderAnnotations)]
+    if (parent.[elem.RedName()].GetKind() == SyntaxKind.None) AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
+    else AddBinder(parent.[elem.RedName()], operation);
+    [else]
+    AddBinder(parent.[elem.RedName()], operation);
+    [end if]
 }
         [else]
 operation = this.GetOperation(ref position, parent.[elem.RedName()]);
 if (operation != CompletionSearchFlags.None)
 {
-    if (parent.[elem.RedName()] == null) AddResultsFor[rule.PlainName()](Use[elem.RedName()], operation, Compilation.GetBinder(parent));
+    if (parent.[elem.RedName()] == null) AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
     else VisitCore(parent.[elem.RedName()]);
 }
         [end if]
@@ -5381,20 +5405,36 @@ public void AddResultsFor[rule.PlainName()](object use, CompletionSearchFlags op
 {
     if (_visited["["][rule.RuleIndex]["]"]) return;
     _visited["["][rule.RuleIndex]["]"] = true;
+    [if (rule.Alternatives.Count > 0)]
+        object altUse;
+        [loop (alt:rule.Alternatives where alt.ContainsBinderAnnotations)]
+            [if (hasloop(elem:alt.AllElements where elem.ContainsBinderAnnotations))]
+        if ([loop(elem:alt.AllElements where elem.ContainsBinderAnnotations; separator delim = " || ")]use == Use_[alt.PlainName()]_[elem.RedName()][end loop]) altUse = use;
+        else altUse = UnassignedUse;
+            [end if]
+        AddResultsFor[alt.PlainName()](altUse, operation, parentBinder);
+        [end loop]
+    [else]
     [GenerateCompletionBinderFactoryAddResultsBody(rule)]
+    [end if]
     _visited["["][rule.RuleIndex]["]"] = false;
 }
 end template
 
 template GenerateCompletionBinderFactoryAddResultsBody(Antlr4ParserRule rule)
-[loop (elem:rule.AllElements where elem.ContainsBinderAnnotations)]
-if (use == UnassignedUse || use == Use[elem.RedName()])
+var ruleBinder = parentBinder;
+[loop (annot:rule.Annotations.BinderAnnotations)]
+ruleBinder = this.BinderFactory.Create[annot.Name]Binder(ruleBinder, null[annot.GetAnnotationParams()], forCompletion: true);
+[end loop]
+[loop (elem:rule.AllElements)]
+if (use == UnassignedUse[if (elem.ContainsBinderAnnotations)] || use == Use_[rule.PlainName()]_[elem.RedName()][end if])
 {
+    var binder = ruleBinder;
     [loop (annot:elem.Annotations.BinderAnnotations)]
 		[if (elem.IsList)]
-	binder = this.BinderFactory.Create[annot.Name]Binder(binder, null[annot.GetAnnotationParams()]);
+	binder = this.BinderFactory.Create[annot.Name]Binder(binder, null[annot.GetAnnotationParams()], forCompletion: true);
 		[else]
-	binder = this.BinderFactory.Create[annot.Name]Binder(binder, null[annot.GetAnnotationParams()]);
+	binder = this.BinderFactory.Create[annot.Name]Binder(binder, null[annot.GetAnnotationParams()], forCompletion: true);
 		[end if]
 	[end loop]
     [if (elem.IsList)]
@@ -5403,13 +5443,16 @@ if (use == UnassignedUse || use == Use[elem.RedName()])
 		[loop (alt:elem.BlockItems)]
 	var [alt.RedName()]Binder = binder;
 			[loop (annot:alt.Annotations.BinderAnnotations)]
-	[alt.RedName()]Binder = this.BinderFactory.Create[annot.Name]Binder([alt.RedName()]Binder, null[annot.GetAnnotationParams()]);
+	[alt.RedName()]Binder = this.BinderFactory.Create[annot.Name]Binder([alt.RedName()]Binder, this.SyntaxFactory.MissingToken(([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[alt.RedName()])[annot.GetAnnotationParams()], forCompletion: true);
 			[end loop]
-	AddBinder([alt.RedName()]Binder, ([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[alt.RedName()] operation);
+	AddBinder([alt.RedName()]Binder, ([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[alt.RedName()], operation);
 		[end loop]
     [else if (elem.IsToken)]
-	AddBinder(binder, operation);
-    AddToken(([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[elem.Type]);
+        [if (elem.Type == "EOF")]
+	AddBinder(binder, ([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.Eof, operation);
+        [else]
+	AddBinder(binder, ([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[elem.Type], operation);
+        [end if]
     [else]
     AddResultsFor[elem.TypeRule.PlainName()](UnassignedUse, operation, binder);
     [end if]

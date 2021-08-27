@@ -1,7 +1,4 @@
-using MetaDslx.CodeAnalysis.Binding.Binders.Find;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,20 +6,20 @@ using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class ValueBinder : Binder, IValueBoundary
     {
         private Lazy<object> _lazyValue;
 
-        public ValueBinder(Binder next, SyntaxNodeOrToken syntax, object value)
-            : base(next, syntax)
+        public ValueBinder(Binder next, SyntaxNodeOrToken syntax, object value, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             _lazyValue = new Lazy<object>(() => value);
         }
 
-        protected ValueBinder(Binder next, SyntaxNodeOrToken syntax)
-            : base(next, syntax)
+        protected ValueBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             _lazyValue = new Lazy<object>(this.ComputeValue, true);
         }

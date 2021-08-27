@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
+namespace MetaDslx.CodeAnalysis.Binding
 {
-    public class FindPhases : FindBinderDescendants<PhaseBinder>
+    internal class FindPhases : FindBinderDescendants<PhaseBinder>
     {
         private CompletionPart _startPhase;
         private CompletionPart _finishPhase;

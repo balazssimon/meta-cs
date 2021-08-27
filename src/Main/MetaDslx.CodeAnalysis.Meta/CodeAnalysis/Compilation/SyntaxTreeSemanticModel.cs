@@ -15,8 +15,6 @@ using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.FlowAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {

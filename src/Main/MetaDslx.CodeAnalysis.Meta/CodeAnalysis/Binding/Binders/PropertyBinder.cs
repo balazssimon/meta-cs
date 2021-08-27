@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class PropertyBinder : ValueBinder
     {
@@ -15,8 +15,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private SymbolPropertyOwner _owner;
         private Type _ownerType;
 
-        public PropertyBinder(Binder next, SyntaxNodeOrToken syntax, string propertyName, Optional<object> propertyValueOpt, SymbolPropertyOwner owner, Type ownerType)
-            : base(next, syntax)
+        public PropertyBinder(Binder next, SyntaxNodeOrToken syntax, string propertyName, Optional<object> propertyValueOpt, SymbolPropertyOwner owner, Type ownerType, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             _propertyName = propertyName;
             _propertyValueOpt = propertyValueOpt;

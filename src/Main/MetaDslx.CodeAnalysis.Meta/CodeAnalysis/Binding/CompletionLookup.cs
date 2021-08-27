@@ -11,9 +11,10 @@ namespace MetaDslx.CodeAnalysis.Binding
     public enum CompletionSearchFlags
     {
         None,
-        ReplaceLeft = 1,
-        ReplaceRight = 2,
-        Insert = 4,
+        StepInto = 1,
+        ReplaceLeft = 2,
+        ReplaceRight = 4,
+        Insert = 8,
         All = ReplaceLeft | ReplaceRight | Insert
     }
 

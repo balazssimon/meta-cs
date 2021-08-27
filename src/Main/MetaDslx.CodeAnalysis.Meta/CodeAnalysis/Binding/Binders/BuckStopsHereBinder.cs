@@ -9,7 +9,7 @@ using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     /// <summary>
     /// A binder that knows no symbols and will not delegate further.

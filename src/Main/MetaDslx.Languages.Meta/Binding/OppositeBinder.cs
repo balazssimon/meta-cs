@@ -1,8 +1,5 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Binding.Binders.Find;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
@@ -16,8 +13,8 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class OppositeBinder : CustomBinder, IValueBoundary, ISymbolBoundary
     {
-        public OppositeBinder(Binder next, SyntaxNodeOrToken syntax) 
-            : base(next, syntax)
+        public OppositeBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion) 
+            : base(next, syntax, forCompletion)
         {
         }
 

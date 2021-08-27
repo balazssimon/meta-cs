@@ -13,7 +13,6 @@ using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Internal;
 using MetaDslx.CodeAnalysis.Symbols;

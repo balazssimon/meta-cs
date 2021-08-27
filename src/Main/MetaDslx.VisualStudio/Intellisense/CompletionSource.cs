@@ -128,9 +128,10 @@ namespace MetaDslx.VisualStudio.Intellisense
                         var text = language.SyntaxFacts.GetText(tokenKind);
                         completions.Add(new Completion(text));
                     }
-                    else
+                    else 
                     {
                         var binder = completionBinder.BinderOrTokenKind as Binder;
+                        if (binder is not ValueBinder) continue;
                         var candidates = LookupCandidates.GetInstance();
                         var constraints = new LookupConstraints(binder);
                         binder.AddLookupCandidateSymbols(candidates, constraints);

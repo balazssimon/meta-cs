@@ -1,5 +1,3 @@
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -8,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class QualifierBinder : ValueBinder
     {
         private ImmutableArray<SyntaxNodeOrToken> _identifiers;
 
-        public QualifierBinder(Binder next, SyntaxNodeOrToken syntax) 
-            : base(next, syntax)
+        public QualifierBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion) 
+            : base(next, syntax, forCompletion)
         {
         }
 

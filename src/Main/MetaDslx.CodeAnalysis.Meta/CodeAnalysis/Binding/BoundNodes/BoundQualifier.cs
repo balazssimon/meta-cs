@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Linq;
 
-namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class BoundQualifier : BoundSymbol
     {

@@ -1,6 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Binding.Binders.Find;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using System;
@@ -11,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class SymbolBinder : ValueBinder, ISymbolBoundary
     {
@@ -20,8 +18,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private Imports _lazyImports;
         private ImportChain _lazyImportChain;
 
-        public SymbolBinder(Binder next, SyntaxNodeOrToken syntax, Type symbolType, Type modelObjectType)
-            : base(next, syntax)
+        public SymbolBinder(Binder next, SyntaxNodeOrToken syntax, Type symbolType, Type modelObjectType, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             _symbolType = symbolType;
             _modelObjectType = modelObjectType;

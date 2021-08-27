@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public interface ISymbolBoundary
     {

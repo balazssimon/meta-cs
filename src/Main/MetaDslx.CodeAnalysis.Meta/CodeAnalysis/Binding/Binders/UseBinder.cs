@@ -13,7 +13,7 @@ using System.Text;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class UseBinder : Binder
     {
@@ -21,8 +21,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private readonly string _autoPrefix;
         private readonly string _autoSuffix;
 
-        public UseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, string autoPrefix, string autoSuffix)
-            : base(next, syntax)
+        public UseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, string autoPrefix, string autoSuffix, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             _types = types;
             _autoPrefix = autoPrefix;

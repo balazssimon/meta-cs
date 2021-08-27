@@ -4,15 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public abstract class PhaseBinder : Binder
     {
         private CompletionPart _startPhase;
         private CompletionPart _finishPhase;
 
-        public PhaseBinder(Binder next, SyntaxNodeOrToken syntax, CompletionPart startPhase, CompletionPart finishPhase)
-            : base(next, syntax)
+        public PhaseBinder(Binder next, SyntaxNodeOrToken syntax, CompletionPart startPhase, CompletionPart finishPhase, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             _startPhase = startPhase;
             _finishPhase = finishPhase;

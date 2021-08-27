@@ -1,10 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
 using Microsoft.CodeAnalysis;
@@ -28,7 +25,7 @@ namespace MetaDslx.Languages.Meta.Symbols
         [SymbolCompletionPart]
         protected virtual void CompleteAssociation(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            var assoc = this.DeclaringSyntaxReferences[0].GetSyntax() as AssociationDeclarationSyntax;
+            /*var assoc = this.DeclaringSyntaxReferences[0].GetSyntax() as AssociationDeclarationSyntax;
             var compilation = this.DeclaringCompilation;
             var sourceBinder = compilation.GetBinder(assoc.Source);
             var targetBinder = compilation.GetBinder(assoc.Target);
@@ -38,6 +35,12 @@ namespace MetaDslx.Languages.Meta.Symbols
             {
                 var sourceProp = (MetaPropertyBuilder)(source.Symbols[0] as IModelSymbol).ModelObject;
                 var targetProp = (MetaPropertyBuilder)(target.Symbols[0] as IModelSymbol).ModelObject;
+                sourceProp.OppositeProperties.Add(targetProp);
+            }*/
+            if (Left is IModelSymbol left && Right is IModelSymbol right)
+            {
+                var sourceProp = (MetaPropertyBuilder)left.ModelObject;
+                var targetProp = (MetaPropertyBuilder)right.ModelObject;
                 sourceProp.OppositeProperties.Add(targetProp);
             }
         }

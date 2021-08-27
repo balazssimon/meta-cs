@@ -7,14 +7,14 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class ScopeBinder : Binder
     {
         private DeclaredSymbol _container;
 
-        public ScopeBinder(Binder next, SyntaxNodeOrToken syntax)
-            : base(next, syntax)
+        public ScopeBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
             Debug.Assert(!syntax.IsNull);
         }

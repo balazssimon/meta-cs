@@ -6,12 +6,12 @@ using System.Diagnostics;
 using System.Text;
 using System.Collections.Immutable;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class SpecialSymbolBinder : Binder
     {
         public SpecialSymbolBinder(Binder next, SyntaxNodeOrToken syntax) 
-            : base(next, syntax)
+            : base(next, syntax, false)
         {
         }
 

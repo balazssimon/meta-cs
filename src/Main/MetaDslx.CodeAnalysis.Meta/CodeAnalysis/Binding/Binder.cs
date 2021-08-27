@@ -1,6 +1,4 @@
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -44,14 +42,15 @@ namespace MetaDslx.CodeAnalysis.Binding
             _index = 0;
         }
 
-        public Binder(Binder next, SyntaxNodeOrToken syntax)
+        public Binder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
         {
             Debug.Assert(next != null);
             if (syntax.IsNull) _syntax = next.Syntax;
             else _syntax = syntax;
             _index = next._index + 1;
             _next = next;
-            this.Flags = next.Flags;
+            if (forCompletion) this.Flags = next.Flags | BinderFlags.Completion;
+            else this.Flags = next.Flags;
             _compilation = next._compilation;
         }
 
@@ -104,12 +103,16 @@ namespace MetaDslx.CodeAnalysis.Binding
             return Hash.Combine(Hash.Combine(this.GetType().GetHashCode(), syntaxHash), _index.GetHashCode());
         }
 
-        public bool IsSemanticModelBinder => this.Flags.Includes(BinderFlags.SemanticModel);
-
         /// <summary>
         /// Get the next binder in which to look up a name, if not found by this binder.
         /// </summary>
         public Binder Next => _next;
+
+        public bool IsSemanticModelBinder => this.Flags.Includes(BinderFlags.SemanticModel);
+
+        public bool IsCompletionBinder => this.Flags.Includes(BinderFlags.Completion);
+
+        public virtual bool IsValidCompletionBinder => true;
 
         public BinderPosition GetBinderPosition()
         {

@@ -1,5 +1,4 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
@@ -12,8 +11,8 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class ExpressionSymbolBinder : UseBinder
     {
-        public ExpressionSymbolBinder(Binder next, SyntaxNodeOrToken syntax)
-            : base(next, syntax, ImmutableArray.Create(typeof(ExpressionSymbol)), null, "ExpressionSymbol")
+        public ExpressionSymbolBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
+            : base(next, syntax, ImmutableArray.Create(typeof(ExpressionSymbol)), null, "ExpressionSymbol", forCompletion)
         {
         }
 

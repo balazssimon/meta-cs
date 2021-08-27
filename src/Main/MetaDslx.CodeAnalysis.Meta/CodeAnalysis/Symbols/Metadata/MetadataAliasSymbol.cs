@@ -1,7 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols.Completion;
-using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -50,9 +48,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             // symbol. If it is an extern alias then find the target in the list of metadata references.
             var newDiagnostics = DiagnosticBag.GetInstance();
 
-            DeclaredSymbol symbol = this.IsExtern ?
-                ResolveExternAliasTarget(newDiagnostics) :
-                ResolveAliasTarget(_binder, _aliasTargetName, newDiagnostics, null);
+            if (_aliasTarget == null)
+            {
+                DeclaredSymbol symbol = this.IsExtern ?
+                    ResolveExternAliasTarget(newDiagnostics) :
+                    ResolveAliasTarget(_binder, _aliasTargetName, newDiagnostics, null);
+                Interlocked.CompareExchange(ref _aliasTarget, symbol, null);
+            }
 
             // Note: It's important that we don't call newDiagnosticsToReadOnlyAndFree here. That call
             // can force the prompt evaluation of lazy initialized diagnostics.  That in turn can 
@@ -60,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             bool won = Interlocked.Exchange(ref _aliasTargetDiagnostics, newDiagnostics) == null;
             Debug.Assert(won, "Only one thread can win the alias target CompareExchange");
 
-            return symbol;
+            return _aliasTarget;
         }
 
         protected override bool CompleteSymbolProperty_IsExtern(DiagnosticBag diagnostics, CancellationToken cancellationToken)

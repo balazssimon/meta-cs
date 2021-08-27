@@ -1,6 +1,4 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Declarations;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;

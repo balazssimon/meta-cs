@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
+namespace MetaDslx.CodeAnalysis.Binding
 {
-    public class FindImports : FindBinderDescendants<ImportBinder>
+    internal class FindImports : FindBinderDescendants<ImportBinder>
     {
         public FindImports(BinderPosition origin)
             : base(origin)

@@ -7,12 +7,12 @@ using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using Microsoft.CodeAnalysis;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class DocumentationBinder : ValueBinder
     {
-        public DocumentationBinder(Binder next, SyntaxNodeOrToken syntax)
-            : base(next, syntax)
+        public DocumentationBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
         }
 

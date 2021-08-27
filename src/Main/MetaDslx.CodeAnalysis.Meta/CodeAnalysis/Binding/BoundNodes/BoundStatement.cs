@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class BoundStatement : BoundNode
     {

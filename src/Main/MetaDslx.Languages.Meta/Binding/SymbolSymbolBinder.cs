@@ -1,6 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols;
 using System;
 using System.Collections.Generic;
@@ -12,8 +11,8 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class SymbolSymbolBinder : UseBinder
     {
-        public SymbolSymbolBinder(Binder next, SyntaxNodeOrToken syntax) 
-            : base(next, syntax, ImmutableArray.Create(typeof(Symbol)), null, "Symbol")
+        public SymbolSymbolBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion) 
+            : base(next, syntax, ImmutableArray.Create(typeof(Symbol)), null, "Symbol", forCompletion)
         {
         }
 

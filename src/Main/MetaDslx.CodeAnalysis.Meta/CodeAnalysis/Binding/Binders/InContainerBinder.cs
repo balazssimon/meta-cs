@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System.Collections.Immutable;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     /// <summary>
     /// A binder that places the members of a symbol in scope.  If there is a container declaration
@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// retrieved from <paramref name="declarationSyntax"/>.
         /// </summary>
         public InContainerBinder(Binder next, DeclaredSymbol container, LanguageSyntaxNode declarationSyntax, bool inUsing)
-            : base(next, null)
+            : base(next, null, false)
         {
             Debug.Assert((object)container != null);
             Debug.Assert(declarationSyntax != null);
@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// Creates a binder with given imports.
         /// </summary>
         public InContainerBinder(DeclaredSymbol container, Binder next, Imports imports = null)
-            : base(next, null)
+            : base(next, null, false)
         {
             Debug.Assert((object)container != null || imports != null);
 
@@ -54,7 +54,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// Creates a binder with given import computation function.
         /// </summary>
         public InContainerBinder(Binder next, Func<LookupConstraints, Imports> computeImports)
-            : base(next, null)
+            : base(next, null, false)
         {
             Debug.Assert(computeImports != null);
 

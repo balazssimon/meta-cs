@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class BoundIdentifier : BoundSymbol
     {

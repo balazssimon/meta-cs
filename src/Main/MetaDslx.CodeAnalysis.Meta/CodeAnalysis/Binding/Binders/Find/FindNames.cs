@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
+namespace MetaDslx.CodeAnalysis.Binding
 {
-    public class FindNames : FindBinderDescendants<NameBinder>
+    internal class FindNames : FindBinderDescendants<NameBinder>
     {
         public FindNames(BinderPosition origin)
             : base(origin)

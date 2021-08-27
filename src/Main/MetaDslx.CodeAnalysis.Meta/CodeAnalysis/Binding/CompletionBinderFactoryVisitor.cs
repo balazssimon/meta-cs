@@ -1,5 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Syntax;
+﻿using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
@@ -36,6 +35,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected BinderFactory BinderFactory => _factory;
 
+        protected SyntaxFactory SyntaxFactory => Language.SyntaxFactory;
+
         protected CompletionSearchFlags Search => _lookup.Search;
 
         protected TextSpan SearchSpan => _lookup.SearchSpan;
@@ -46,12 +47,6 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected TextSpan InsertionSpan => TextSpan.FromBounds(_position, _position);
 
-        protected int LeftPosition { get; set; }
-
-        protected int RightPosition { get; set; }
-
-        protected bool VisitChildren { get; set; }
-
         internal void Initialize(int position)
         {
             _results.Clear();
@@ -59,7 +54,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _lookup = CompletionLookup.GetLookup(SyntaxTree, _position);
         }
 
-        protected CompletionSearchFlags GetOperation(ref int position, SyntaxNodeOrToken syntax, bool searchLeft, bool searchRight)
+        protected CompletionSearchFlags GetOperation(ref int position, SyntaxNodeOrToken syntax)
         {
             var result = CompletionSearchFlags.None;
             if (syntax.IsNull || syntax.IsMissing)
@@ -72,11 +67,52 @@ namespace MetaDslx.CodeAnalysis.Binding
                 var endPosition = position + syntax.FullWidth;
                 var leftPosition = position + syntax.UnderlyingNode!.GetLeadingTriviaWidth();
                 var rightPosition = endPosition - syntax.UnderlyingNode!.GetTrailingTriviaWidth();
-                if (searchLeft && startPosition < rightPosition && rightPosition == _lookup.SearchSpan.Start && _lookup.Search.HasFlag(CompletionSearchFlags.ReplaceLeft)) result = CompletionSearchFlags.ReplaceLeft;
-                if (searchRight && leftPosition < endPosition && leftPosition == _lookup.SearchSpan.End && _lookup.Search.HasFlag(CompletionSearchFlags.ReplaceRight)) result = CompletionSearchFlags.ReplaceRight;
-                position += syntax.FullWidth;
+                if (startPosition < rightPosition && rightPosition == _lookup.SearchSpan.Start && _lookup.Search.HasFlag(CompletionSearchFlags.ReplaceLeft)) result = CompletionSearchFlags.ReplaceLeft;
+                if (leftPosition < endPosition && leftPosition == _lookup.SearchSpan.End && _lookup.Search.HasFlag(CompletionSearchFlags.ReplaceRight)) result = CompletionSearchFlags.ReplaceRight;
+                if (result == CompletionSearchFlags.None)
+                {
+                    if (syntax.FullSpan.IntersectsWith(SearchSpan)) result = CompletionSearchFlags.StepInto;
+                }
+                else
+                {
+                    position += syntax.FullWidth;
+                }
             }
             return result;
+        }
+
+        protected void AddBinder(Binder binder, SyntaxKind tokenKind, CompletionSearchFlags operation)
+        {
+            var span = GetOperationSpan(operation);
+            if (Language.SyntaxFacts.IsFixedToken(tokenKind))
+            {
+                _results.Add((tokenKind, span));
+            }
+            else
+            {
+                if (binder.Syntax.GetKind() == tokenKind)
+                {
+                    _results.Add((binder, span));
+                }
+            }
+        }
+
+        protected void AddBinder(SyntaxNodeOrToken syntax, CompletionSearchFlags operation)
+        {
+            var span = GetOperationSpan(operation);
+            var binder = Compilation.GetBinder(syntax);
+            var tokenKind = syntax.GetKind();
+            if (Language.SyntaxFacts.IsFixedToken(tokenKind))
+            {
+                _results.Add((tokenKind, span));
+            }
+            else
+            {
+                if (binder.Syntax == syntax)
+                {
+                    _results.Add((binder, span));
+                }
+            }
         }
 
         protected TextSpan GetOperationSpan(CompletionSearchFlags operation)
@@ -133,21 +169,6 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
                 return;
             }
-            if (VisitChildren)
-            {
-                var node = syntax.AsNode();
-                VisitCore(node);
-            }
-            else
-            {
-                VisitChildren = true;
-                var node = syntax.AsNode();
-                if (node != _currentNode)
-                {
-                    VisitCore(node);
-                }
-                VisitChildren = false;
-            }
         }
 
         protected void VisitCore(SyntaxNode node)
@@ -167,22 +188,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ImmutableArray<(object BinderOrTokenKind, TextSpan TextSpan)> CollectBinders()
         {
             if (_lookup.Search == CompletionSearchFlags.None) return ImmutableArray<(object, TextSpan)>.Empty;
-            var parent = _lookup.LeftToken.Parent;
-            if (parent is not null)
-            {
-                this.VisitChildren = false;
-                this.LeftPosition = _lookup.SearchSpan.Start;
-                this.RightPosition = _lookup.SearchSpan.End;
-                this.Visit(parent);
-            }
-            parent = _lookup.RightToken.Parent;
-            if (parent is not null)
-            {
-                this.VisitChildren = false;
-                this.LeftPosition = _lookup.SearchSpan.Start;
-                this.RightPosition = _lookup.SearchSpan.End;
-                this.Visit(parent);
-            }
+            VisitCore(_factory.SyntaxTree.GetRoot());
             return _results.ToImmutable();
         }
 

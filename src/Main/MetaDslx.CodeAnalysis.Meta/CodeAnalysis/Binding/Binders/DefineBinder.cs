@@ -10,15 +10,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis.Binding.Binders.Find;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class DefineBinder : SymbolBinder
     {
-        public DefineBinder(Binder next, SyntaxNodeOrToken syntax, Type modelObjectType) 
-            : base(next, syntax, null, modelObjectType)
+        public DefineBinder(Binder next, SyntaxNodeOrToken syntax, Type modelObjectType, bool forCompletion) 
+            : base(next, syntax, null, modelObjectType, forCompletion)
         {
         }
 

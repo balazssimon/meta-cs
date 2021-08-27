@@ -31,6 +31,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </remarks>
         public const string SemanticModel = nameof(SemanticModel);
 
+        public const string Completion = nameof(Completion);
+
         public const string EarlyAttributeBinding = nameof(EarlyAttributeBinding);
         public const string IgnoreAccessibility = nameof(IgnoreAccessibility);
 
@@ -87,6 +89,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (this.Includes(IgnoreCorLibraryDuplicatedTypes)) result |= CSharpBinderFlags.IgnoreCorLibraryDuplicatedTypes;
             if (this.Includes(IgnoreMetaLibraryDuplicatedTypes)) result |= CSharpBinderFlags.IgnoreCorLibraryDuplicatedTypes;
             if (this.Includes(SemanticModel)) result |= CSharpBinderFlags.SemanticModel;
+            if (this.Includes(Completion)) result |= CSharpBinderFlags.SemanticModel;
             if (this.Includes(EarlyAttributeBinding)) result |= CSharpBinderFlags.EarlyAttributeBinding;
             if (this.Includes(IgnoreAccessibility)) result |= CSharpBinderFlags.IgnoreAccessibility;
             if (this.Includes(InScriptUsing)) result |= CSharpBinderFlags.InScriptUsing;

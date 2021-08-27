@@ -5,14 +5,14 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class BoundTreeRootBinder : Binder
     {
         private BoundNode _boundRoot;
 
         public BoundTreeRootBinder(Binder next, SyntaxNodeOrToken syntax, BoundNode boundRoot) 
-            : base(next, syntax)
+            : base(next, syntax, false)
         {
             Debug.Assert(boundRoot != null);
             _boundRoot = boundRoot;

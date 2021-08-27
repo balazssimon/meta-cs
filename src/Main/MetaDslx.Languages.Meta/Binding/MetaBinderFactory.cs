@@ -20,29 +20,29 @@ namespace MetaDslx.Languages.Meta.Binding
         }
 
 
-        public virtual Binder CreateSymbolSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        public virtual Binder CreateSymbolSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
         {
-            return new SymbolSymbolBinder(parentBinder, syntax);
+            return new SymbolSymbolBinder(parentBinder, syntax, forCompletion);
         }
 
-        public virtual Binder CreateExpressionSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        public virtual Binder CreateExpressionSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
         {
-            return new ExpressionSymbolBinder(parentBinder, syntax);
+            return new ExpressionSymbolBinder(parentBinder, syntax, forCompletion);
         }
 
-        public virtual Binder CreateStatementSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        public virtual Binder CreateStatementSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
         {
-            return new StatementSymbolBinder(parentBinder, syntax);
+            return new StatementSymbolBinder(parentBinder, syntax, forCompletion);
         }
 
-        public virtual Binder CreateTypeSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        public virtual Binder CreateTypeSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
         {
-            return new TypeSymbolBinder(parentBinder, syntax);
+            return new TypeSymbolBinder(parentBinder, syntax, forCompletion);
         }
 
-        public virtual Binder CreateSymbolPropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        public virtual Binder CreateSymbolPropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
         {
-            return new SymbolPropertyBinder(parentBinder, syntax);
+            return new SymbolPropertyBinder(parentBinder, syntax, forCompletion);
         }
     }
 }

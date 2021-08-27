@@ -1,6 +1,4 @@
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.CodeAnalysis;
@@ -11,10 +9,8 @@ using System.Diagnostics;
 using System.Text;
 using Roslyn.Utilities;
 using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Binding.Binders.Find;
 using System.Threading;
 
 namespace MetaDslx.Languages.Meta.Binding
@@ -23,7 +19,8 @@ namespace MetaDslx.Languages.Meta.Binding
     {
         private DeclaredSymbol _symbolType;
 
-        public SymbolPropertyBinder(Binder next, SyntaxNodeOrToken syntax) : base(next, syntax, ImmutableArray<Type>.Empty, null, null)
+        public SymbolPropertyBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion) 
+            : base(next, syntax, ImmutableArray<Type>.Empty, null, null, forCompletion)
         {
         }
 

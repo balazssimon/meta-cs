@@ -1,6 +1,3 @@
-using MetaDslx.CodeAnalysis.Binding.Binders.Find;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -10,15 +7,15 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public class IdentifierBinder : ValueBinder, IIdentifierBoundary
     {
         private string _name;
         private string _metadataName;
 
-        public IdentifierBinder(Binder next, SyntaxNodeOrToken syntax)
-            : base(next, syntax)
+        public IdentifierBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
+            : base(next, syntax, forCompletion)
         {
         }
 

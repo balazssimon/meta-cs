@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public abstract class BoundValue : BoundNode
     {

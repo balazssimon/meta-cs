@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
+namespace MetaDslx.CodeAnalysis.Binding
 {
-    public class FindSymbol : FindBinderAncestors<SymbolBinder>
+    internal class FindSymbol : FindBinderAncestors<SymbolBinder>
     {
         private Symbol _symbol;
 
