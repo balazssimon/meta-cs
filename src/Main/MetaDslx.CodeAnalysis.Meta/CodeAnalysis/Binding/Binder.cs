@@ -49,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             else _syntax = syntax;
             _index = next._index + 1;
             _next = next;
-            if (forCompletion) this.Flags = next.Flags | BinderFlags.Completion;
+            if (forCompletion) this.Flags = next.Flags.UnionWith((BinderFlags)BinderFlags.Completion);
             else this.Flags = next.Flags;
             _compilation = next._compilation;
         }
@@ -251,7 +251,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public BoundNode Bind(DiagnosticBag diagnostics = null, CancellationToken cancellationToken = default)
         {
-            if (this.Syntax.IsNull) return null;
+            if (this.IsCompletionBinder || this.Syntax.IsNull) return null;
             if (_boundNode == null)
             {
                 var boundNodeDiagnostics = DiagnosticBag.GetInstance();

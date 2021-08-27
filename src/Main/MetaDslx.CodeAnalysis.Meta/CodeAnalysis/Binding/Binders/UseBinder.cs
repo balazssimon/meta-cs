@@ -18,15 +18,31 @@ namespace MetaDslx.CodeAnalysis.Binding
     public class UseBinder : Binder
     {
         private readonly ImmutableArray<Type> _types;
+        private readonly bool _allowOnlyModelObjects;
         private readonly string _autoPrefix;
         private readonly string _autoSuffix;
 
-        public UseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, string autoPrefix, string autoSuffix, bool forCompletion)
+        public UseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, bool allowOnlyModelObjects, string autoPrefix, string autoSuffix, bool forCompletion)
             : base(next, syntax, forCompletion)
         {
             _types = types;
+            _allowOnlyModelObjects = allowOnlyModelObjects;
             _autoPrefix = autoPrefix;
             _autoSuffix = autoSuffix;
+        }
+
+        public override bool IsValidCompletionBinder
+        {
+            get
+            {
+                var binder = this.Next;
+                while (binder != null)
+                {
+                    if ((binder is ISymbolBoundary) && binder.IsCompletionBinder) return false;
+                    binder = binder.Next;
+                }
+                return true;
+            }
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
@@ -36,6 +52,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 if (!string.IsNullOrEmpty(_autoPrefix) || !string.IsNullOrEmpty(_autoSuffix)) result = result.WithAutomaticName(_autoPrefix, _autoSuffix);
                 result = result.WithAdditionalValidators(this);
+            }
+            if (_allowOnlyModelObjects)
+            {
+                result = result.WithAdditionalValidators(LookupValidators.MustBeModelObject);
             }
             return result;
         }

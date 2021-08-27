@@ -34,6 +34,7 @@ namespace MetaDslx.CodeAnalysis
         public static SyntaxKind GetKind(this SyntaxNode node)
         {
             if (node == null || (object)node.Green == null) return SyntaxKind.None;
+            if (node.RawKind == ((SyntaxKind)SyntaxKind.List).GetValue()) return SyntaxKind.List;
             return ((Syntax.InternalSyntax.InternalSyntaxNode)node.Green).Kind;
         }
 

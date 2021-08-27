@@ -12,7 +12,7 @@ namespace MetaDslx.Languages.Meta.Binding
     public class SymbolSymbolBinder : UseBinder
     {
         public SymbolSymbolBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion) 
-            : base(next, syntax, ImmutableArray.Create(typeof(Symbol)), null, "Symbol", forCompletion)
+            : base(next, syntax, ImmutableArray.Create(typeof(Symbol)), false, null, "Symbol", forCompletion)
         {
         }
 

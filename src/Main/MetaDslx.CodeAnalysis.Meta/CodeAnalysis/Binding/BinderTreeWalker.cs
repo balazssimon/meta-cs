@@ -47,14 +47,15 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (_binder != null && _cursor.CurrentNodeOrToken != _binder.Syntax)
             {
                 _cursor = Cursor.FromRoot(_binder.Syntax);
-                _lowestBinder = GetLowestBinder(_cursor.CurrentNodeOrToken);
+                if (_binder.IsCompletionBinder) _lowestBinder = _binder;
+                else _lowestBinder = GetLowestBinder(_cursor.CurrentNodeOrToken);
             }
             return _binder != null;
         }
 
         public bool MoveToNextDescendant()
         {
-            if (_binder == null || _cursor.CurrentNodeOrToken.IsNull) return false;
+            if (_binder == null || _binder.IsCompletionBinder || _cursor.CurrentNodeOrToken.IsNull) return false;
             if (!_binder.Equals(_lowestBinder))
             {
                 MoveToPreviousBinder();

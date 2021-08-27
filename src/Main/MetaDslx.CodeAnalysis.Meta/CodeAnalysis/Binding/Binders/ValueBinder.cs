@@ -26,6 +26,21 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public virtual ImmutableArray<object> Values => ImmutableArray.Create(_lazyValue.Value);
 
+
+        public override bool IsValidCompletionBinder
+        {
+            get
+            {
+                var binder = this.Next;
+                while (binder != null)
+                {
+                    if ((binder is ISymbolBoundary) && binder.IsCompletionBinder) return false;
+                    binder = binder.Next;
+                }
+                return true;
+            }
+        }
+
         protected virtual object ComputeValue()
         {
             return Language.SyntaxFacts.ExtractValue(this.Syntax);

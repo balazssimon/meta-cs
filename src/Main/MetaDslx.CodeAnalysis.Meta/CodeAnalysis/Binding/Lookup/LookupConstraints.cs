@@ -173,7 +173,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public LanguageCompilation Compilation => this.OriginalBinder.Compilation;
         public SymbolFactory SymbolFactory => Compilation.SourceModule.SymbolFactory;
-        public SyntaxNodeOrToken Syntax => this.OriginalBinder.Syntax;
+        public SyntaxNodeOrToken Syntax => this.OriginalBinder.IsCompletionBinder ? default : this.OriginalBinder.Syntax;
 
         public virtual bool AreValid()
         {

@@ -148,69 +148,118 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public void VisitMain(MainSyntax parent) // 0
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.UsingNamespace.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.UsingNamespace.Node == null || parent.UsingNamespace.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.UsingNamespace.Node == null || !parent.UsingNamespace.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.UsingNamespace.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMain(Use_Main_UsingNamespace, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.UsingNamespace)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.UsingNamespace.FullSpan.Length;
+		    if (parent.NamespaceDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.UsingNamespace.FullSpan.Length;
+		        if (!parent.NamespaceDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NamespaceDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMain(Use_Main_NamespaceDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NamespaceDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NamespaceDeclaration == null || parent.NamespaceDeclaration.IsMissing) AddResultsForMain(Use_Main_NamespaceDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NamespaceDeclaration);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.NamespaceDeclaration);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        if (parent.NamespaceDeclaration == null) AddResultsForMain(Use_Main_NamespaceDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.NamespaceDeclaration);
-		    }
+		    position += parent.NamespaceDeclaration.FullSpan.Length;
 		    position += parent.EndOfFileToken.FullSpan.Length;
 		}
 		
 		public void VisitName(NameSyntax parent) // 1
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.Identifier);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.Identifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Identifier == null) AddResultsForName(Use_Name_Identifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Identifier);
+		        if (!parent.Identifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Identifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForName(Use_Name_Identifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Identifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Identifier == null || parent.Identifier.IsMissing) AddResultsForName(Use_Name_Identifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Identifier);
+		        }
 		    }
+		    position += parent.Identifier.FullSpan.Length;
 		}
 		
 		public void VisitQualifiedName(QualifiedNameSyntax parent) // 2
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForQualifiedName(Use_QualifiedName_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForQualifiedName(Use_QualifiedName_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForQualifiedName(Use_QualifiedName_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
+		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
 		public void VisitQualifier(QualifierSyntax parent) // 3
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Identifier.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Identifier.Node == null || parent.Identifier.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Identifier.Node == null || !parent.Identifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Identifier.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForQualifier(Use_Qualifier_Identifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Identifier.GetWithSeparators())
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                if (item.IsToken) AddBinder(item, operation);
@@ -218,214 +267,367 @@ namespace MetaDslx.Languages.Meta.Binding
 		            }
 		        }
 		    }
-		    else
-		    {
-		        position += parent.Identifier.FullSpan.Length;
-		    }
+		    position += parent.Identifier.FullSpan.Length;
 		}
 		
 		public void VisitAttribute(AttributeSyntax parent) // 4
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBracket, operation);
+		        operation = this.GetOperation(position, parent.TOpenBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBracket, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenBracket.FullSpan.Length;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForAttribute(Use_Attribute_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForAttribute(Use_Attribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForAttribute(Use_Attribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Qualifier.FullSpan.Length;
+		    if (parent.TCloseBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseBracket, operation);
+		        operation = this.GetOperation(position, parent.TCloseBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBracket, operation);
+		        }
 		    }
+		    position += parent.TCloseBracket.FullSpan.Length;
 		}
 		
 		public void VisitUsingNamespace(UsingNamespaceSyntax parent) // 5
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KUsing);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KUsing.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KUsing, operation);
+		        operation = this.GetOperation(position, parent.KUsing);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KUsing, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KUsing.FullSpan.Length;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForUsingNamespace(Use_UsingNamespace_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForUsingNamespace(Use_UsingNamespace_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForUsingNamespace(Use_UsingNamespace_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TSemicolon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Qualifier.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TSemicolon, operation);
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
 		    }
+		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
 		public void VisitNamespaceDeclaration(NamespaceDeclarationSyntax parent) // 6
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.KNamespace.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.KNamespace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KNamespace, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KNamespace);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KNamespace.FullSpan.Length;
+		    if (parent.QualifiedName.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KNamespace, operation);
+		        if (!parent.QualifiedName.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.QualifiedName);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_QualifiedName, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.QualifiedName);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.QualifiedName == null || parent.QualifiedName.IsMissing) AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_QualifiedName, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.QualifiedName);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.QualifiedName);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.QualifiedName.FullSpan.Length;
+		    if (parent.NamespaceBody.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.QualifiedName == null) AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_QualifiedName, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.QualifiedName);
+		        if (!parent.NamespaceBody.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NamespaceBody);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_NamespaceBody, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NamespaceBody);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NamespaceBody == null || parent.NamespaceBody.IsMissing) AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_NamespaceBody, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NamespaceBody);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.NamespaceBody);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        if (parent.NamespaceBody == null) AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_NamespaceBody, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.NamespaceBody);
-		    }
+		    position += parent.NamespaceBody.FullSpan.Length;
 		}
 		
 		public void VisitNamespaceBody(NamespaceBodySyntax parent) // 7
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBrace);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBrace.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBrace, operation);
+		        operation = this.GetOperation(position, parent.TOpenBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBrace, operation);
+		        }
 		    }
-		    if (parent.UsingNamespace.FullSpan.IntersectsWith(SearchSpan))
+		    position += parent.TOpenBrace.FullSpan.Length;
+		    if (parent.UsingNamespace.Node == null || parent.UsingNamespace.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.UsingNamespace.Node == null || !parent.UsingNamespace.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.UsingNamespace.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceBody(Use_NamespaceBody_UsingNamespace, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.UsingNamespace)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.UsingNamespace.FullSpan.Length;
+		    if (parent.MetamodelDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.UsingNamespace.FullSpan.Length;
+		        if (!parent.MetamodelDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.MetamodelDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceBody(Use_NamespaceBody_MetamodelDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.MetamodelDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.MetamodelDeclaration == null || parent.MetamodelDeclaration.IsMissing) AddResultsForNamespaceBody(Use_NamespaceBody_MetamodelDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.MetamodelDeclaration);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.MetamodelDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.MetamodelDeclaration.FullSpan.Length;
+		    if (parent.Declaration.Node == null || parent.Declaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.MetamodelDeclaration == null) AddResultsForNamespaceBody(Use_NamespaceBody_MetamodelDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.MetamodelDeclaration);
-		    }
-		    if (parent.Declaration.FullSpan.IntersectsWith(SearchSpan))
-		    {
+		        if (parent.Declaration.Node == null || !parent.Declaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Declaration.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceBody(Use_NamespaceBody_Declaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Declaration)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Declaration.FullSpan.Length;
+		    if (parent.TCloseBrace.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Declaration.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.TCloseBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBrace, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBrace);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        AddBinder(parent.TCloseBrace, operation);
-		    }
+		    position += parent.TCloseBrace.FullSpan.Length;
 		}
 		
 		public void VisitMetamodelDeclaration(MetamodelDeclarationSyntax parent) // 8
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelDeclaration(Use_MetamodelDeclaration_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.KMetamodel.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.KMetamodel);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KMetamodel, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KMetamodel);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KMetamodel.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KMetamodel, operation);
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelDeclaration(Use_MetamodelDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForMetamodelDeclaration(Use_MetamodelDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Name == null) AddResultsForMetamodelDeclaration(Use_MetamodelDeclaration_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TOpenParen);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.MetamodelPropertyList == null || parent.MetamodelPropertyList.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenParen, operation);
+		        if (parent.MetamodelPropertyList == null || !parent.MetamodelPropertyList.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.MetamodelPropertyList);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelDeclaration(Use_MetamodelDeclaration_MetamodelPropertyList, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.MetamodelPropertyList);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.MetamodelPropertyList == null || parent.MetamodelPropertyList.IsMissing) AddResultsForMetamodelDeclaration(Use_MetamodelDeclaration_MetamodelPropertyList, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.MetamodelPropertyList);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.MetamodelPropertyList);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.MetamodelPropertyList != null) position += parent.MetamodelPropertyList.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.MetamodelPropertyList == null) AddResultsForMetamodelDeclaration(Use_MetamodelDeclaration_MetamodelPropertyList, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.MetamodelPropertyList);
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseParen);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseParen, operation);
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TSemicolon);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        AddBinder(parent.TSemicolon, operation);
-		    }
+		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
 		public void VisitMetamodelPropertyList(MetamodelPropertyListSyntax parent) // 9
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.MetamodelProperty.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.MetamodelProperty.Node == null || parent.MetamodelProperty.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.MetamodelProperty.Node == null || !parent.MetamodelProperty.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.MetamodelProperty.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelPropertyList(Use_MetamodelPropertyList_MetamodelProperty, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.MetamodelProperty.GetWithSeparators())
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                if (item.IsToken) AddBinder(item, operation);
@@ -433,200 +635,379 @@ namespace MetaDslx.Languages.Meta.Binding
 		            }
 		        }
 		    }
-		    else
-		    {
-		        position += parent.MetamodelProperty.FullSpan.Length;
-		    }
+		    position += parent.MetamodelProperty.FullSpan.Length;
 		}
 		
 		public void VisitMetamodelProperty(MetamodelPropertySyntax parent) // 10
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.MetamodelUriProperty);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.MetamodelUriProperty == null || parent.MetamodelUriProperty.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.MetamodelUriProperty == null) AddResultsForMetamodelProperty(Use_MetamodelProperty_MetamodelUriProperty, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.MetamodelUriProperty);
+		        if (parent.MetamodelUriProperty == null || !parent.MetamodelUriProperty.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.MetamodelUriProperty);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelProperty(Use_MetamodelProperty_MetamodelUriProperty, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.MetamodelUriProperty);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.MetamodelUriProperty == null || parent.MetamodelUriProperty.IsMissing) AddResultsForMetamodelProperty(Use_MetamodelProperty_MetamodelUriProperty, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.MetamodelUriProperty);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.MetamodelPrefixProperty);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.MetamodelUriProperty != null) position += parent.MetamodelUriProperty.FullSpan.Length;
+		    if (parent.MetamodelPrefixProperty == null || parent.MetamodelPrefixProperty.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.MetamodelPrefixProperty == null) AddResultsForMetamodelProperty(Use_MetamodelProperty_MetamodelPrefixProperty, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.MetamodelPrefixProperty);
+		        if (parent.MetamodelPrefixProperty == null || !parent.MetamodelPrefixProperty.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.MetamodelPrefixProperty);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelProperty(Use_MetamodelProperty_MetamodelPrefixProperty, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.MetamodelPrefixProperty);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.MetamodelPrefixProperty == null || parent.MetamodelPrefixProperty.IsMissing) AddResultsForMetamodelProperty(Use_MetamodelProperty_MetamodelPrefixProperty, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.MetamodelPrefixProperty);
+		        }
 		    }
+		    if (parent.MetamodelPrefixProperty != null) position += parent.MetamodelPrefixProperty.FullSpan.Length;
 		}
 		
 		public void VisitMetamodelUriProperty(MetamodelUriPropertySyntax parent) // 11
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.IUri);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.IUri.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.IUri, operation);
+		        operation = this.GetOperation(position, parent.IUri);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.IUri, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TAssign);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.IUri.FullSpan.Length;
+		    if (parent.TAssign.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TAssign, operation);
+		        operation = this.GetOperation(position, parent.TAssign);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TAssign, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.StringLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TAssign.FullSpan.Length;
+		    if (parent.StringLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.StringLiteral == null) AddResultsForMetamodelUriProperty(Use_MetamodelUriProperty_StringLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.StringLiteral);
+		        if (!parent.StringLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.StringLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelUriProperty(Use_MetamodelUriProperty_StringLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.StringLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.StringLiteral == null || parent.StringLiteral.IsMissing) AddResultsForMetamodelUriProperty(Use_MetamodelUriProperty_StringLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.StringLiteral);
+		        }
 		    }
+		    position += parent.StringLiteral.FullSpan.Length;
 		}
 		
 		public void VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax parent) // 12
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.IPrefix);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.IPrefix.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.IPrefix, operation);
+		        operation = this.GetOperation(position, parent.IPrefix);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.IPrefix, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TAssign);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.IPrefix.FullSpan.Length;
+		    if (parent.TAssign.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TAssign, operation);
+		        operation = this.GetOperation(position, parent.TAssign);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TAssign, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.StringLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TAssign.FullSpan.Length;
+		    if (parent.StringLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.StringLiteral == null) AddResultsForMetamodelPrefixProperty(Use_MetamodelPrefixProperty_StringLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.StringLiteral);
+		        if (!parent.StringLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.StringLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMetamodelPrefixProperty(Use_MetamodelPrefixProperty_StringLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.StringLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.StringLiteral == null || parent.StringLiteral.IsMissing) AddResultsForMetamodelPrefixProperty(Use_MetamodelPrefixProperty_StringLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.StringLiteral);
+		        }
 		    }
+		    position += parent.StringLiteral.FullSpan.Length;
 		}
 		
 		public void VisitDeclaration(DeclarationSyntax parent) // 13
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.EnumDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.EnumDeclaration == null || parent.EnumDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.EnumDeclaration == null) AddResultsForDeclaration(Use_Declaration_EnumDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.EnumDeclaration);
+		        if (parent.EnumDeclaration == null || !parent.EnumDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.EnumDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForDeclaration(Use_Declaration_EnumDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.EnumDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.EnumDeclaration == null || parent.EnumDeclaration.IsMissing) AddResultsForDeclaration(Use_Declaration_EnumDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.EnumDeclaration);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ClassDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.EnumDeclaration != null) position += parent.EnumDeclaration.FullSpan.Length;
+		    if (parent.ClassDeclaration == null || parent.ClassDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ClassDeclaration == null) AddResultsForDeclaration(Use_Declaration_ClassDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ClassDeclaration);
+		        if (parent.ClassDeclaration == null || !parent.ClassDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ClassDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForDeclaration(Use_Declaration_ClassDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ClassDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ClassDeclaration == null || parent.ClassDeclaration.IsMissing) AddResultsForDeclaration(Use_Declaration_ClassDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ClassDeclaration);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.AssociationDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ClassDeclaration != null) position += parent.ClassDeclaration.FullSpan.Length;
+		    if (parent.AssociationDeclaration == null || parent.AssociationDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.AssociationDeclaration == null) AddResultsForDeclaration(Use_Declaration_AssociationDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.AssociationDeclaration);
+		        if (parent.AssociationDeclaration == null || !parent.AssociationDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.AssociationDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForDeclaration(Use_Declaration_AssociationDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.AssociationDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.AssociationDeclaration == null || parent.AssociationDeclaration.IsMissing) AddResultsForDeclaration(Use_Declaration_AssociationDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.AssociationDeclaration);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ConstDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.AssociationDeclaration != null) position += parent.AssociationDeclaration.FullSpan.Length;
+		    if (parent.ConstDeclaration == null || parent.ConstDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ConstDeclaration == null) AddResultsForDeclaration(Use_Declaration_ConstDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ConstDeclaration);
+		        if (parent.ConstDeclaration == null || !parent.ConstDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ConstDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForDeclaration(Use_Declaration_ConstDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ConstDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ConstDeclaration == null || parent.ConstDeclaration.IsMissing) AddResultsForDeclaration(Use_Declaration_ConstDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ConstDeclaration);
+		        }
 		    }
+		    if (parent.ConstDeclaration != null) position += parent.ConstDeclaration.FullSpan.Length;
 		}
 		
 		public void VisitEnumDeclaration(EnumDeclarationSyntax parent) // 14
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumDeclaration(Use_EnumDeclaration_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.KEnum.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.KEnum);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KEnum, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KEnum);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KEnum.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KEnum, operation);
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumDeclaration(Use_EnumDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForEnumDeclaration(Use_EnumDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.EnumBody.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Name == null) AddResultsForEnumDeclaration(Use_EnumDeclaration_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
+		        if (!parent.EnumBody.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.EnumBody);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumDeclaration(Use_EnumDeclaration_EnumBody, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.EnumBody);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.EnumBody == null || parent.EnumBody.IsMissing) AddResultsForEnumDeclaration(Use_EnumDeclaration_EnumBody, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.EnumBody);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.EnumBody);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        if (parent.EnumBody == null) AddResultsForEnumDeclaration(Use_EnumDeclaration_EnumBody, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.EnumBody);
-		    }
+		    position += parent.EnumBody.FullSpan.Length;
 		}
 		
 		public void VisitEnumBody(EnumBodySyntax parent) // 15
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBrace);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBrace.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBrace, operation);
+		        operation = this.GetOperation(position, parent.TOpenBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBrace, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.EnumValues);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenBrace.FullSpan.Length;
+		    if (parent.EnumValues.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.EnumValues == null) AddResultsForEnumBody(Use_EnumBody_EnumValues, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.EnumValues);
+		        if (!parent.EnumValues.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.EnumValues);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumBody(Use_EnumBody_EnumValues, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.EnumValues);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.EnumValues == null || parent.EnumValues.IsMissing) AddResultsForEnumBody(Use_EnumBody_EnumValues, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.EnumValues);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TSemicolon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.EnumValues.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TSemicolon, operation);
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
 		    }
-		    if (parent.EnumMemberDeclaration.FullSpan.IntersectsWith(SearchSpan))
+		    position += parent.TSemicolon.FullSpan.Length;
+		    if (parent.EnumMemberDeclaration.Node == null || parent.EnumMemberDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.EnumMemberDeclaration.Node == null || !parent.EnumMemberDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.EnumMemberDeclaration.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumBody(Use_EnumBody_EnumMemberDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.EnumMemberDeclaration)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.EnumMemberDeclaration.FullSpan.Length;
+		    if (parent.TCloseBrace.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.EnumMemberDeclaration.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.TCloseBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBrace, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBrace);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        AddBinder(parent.TCloseBrace, operation);
-		    }
+		    position += parent.TCloseBrace.FullSpan.Length;
 		}
 		
 		public void VisitEnumValues(EnumValuesSyntax parent) // 16
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.EnumValue.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.EnumValue.Node == null || parent.EnumValue.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.EnumValue.Node == null || !parent.EnumValue.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.EnumValue.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumValues(Use_EnumValues_EnumValue, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.EnumValue.GetWithSeparators())
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                if (item.IsToken) AddBinder(item, operation);
@@ -634,320 +1015,600 @@ namespace MetaDslx.Languages.Meta.Binding
 		            }
 		        }
 		    }
-		    else
-		    {
-		        position += parent.EnumValue.FullSpan.Length;
-		    }
+		    position += parent.EnumValue.FullSpan.Length;
 		}
 		
 		public void VisitEnumValue(EnumValueSyntax parent) // 17
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumValue(Use_EnumValue_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumValue(Use_EnumValue_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForEnumValue(Use_EnumValue_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        if (parent.Name == null) AddResultsForEnumValue(Use_EnumValue_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
-		    }
+		    position += parent.Name.FullSpan.Length;
 		}
 		
 		public void VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax parent) // 18
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.OperationDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.OperationDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.OperationDeclaration == null) AddResultsForEnumMemberDeclaration(Use_EnumMemberDeclaration_OperationDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.OperationDeclaration);
+		        if (!parent.OperationDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.OperationDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForEnumMemberDeclaration(Use_EnumMemberDeclaration_OperationDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.OperationDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.OperationDeclaration == null || parent.OperationDeclaration.IsMissing) AddResultsForEnumMemberDeclaration(Use_EnumMemberDeclaration_OperationDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.OperationDeclaration);
+		        }
 		    }
+		    position += parent.OperationDeclaration.FullSpan.Length;
 		}
 		
 		public void VisitClassDeclaration(ClassDeclarationSyntax parent) // 19
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassDeclaration(Use_ClassDeclaration_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.SymbolAttribute == null || parent.SymbolAttribute.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        if (parent.SymbolAttribute == null || !parent.SymbolAttribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.SymbolAttribute);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassDeclaration(Use_ClassDeclaration_SymbolAttribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.SymbolAttribute);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.SymbolAttribute == null || parent.SymbolAttribute.IsMissing) AddResultsForClassDeclaration(Use_ClassDeclaration_SymbolAttribute, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.SymbolAttribute);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.SymbolAttribute);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.SymbolAttribute != null) position += parent.SymbolAttribute.FullSpan.Length;
+		    if (parent.KAbstract.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.SymbolAttribute == null) AddResultsForClassDeclaration(Use_ClassDeclaration_SymbolAttribute, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.SymbolAttribute);
+		        if (!parent.KAbstract.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.KAbstract);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassDeclaration(Use_ClassDeclaration_KAbstract, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.KAbstract);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.KAbstract.GetKind() == SyntaxKind.None || parent.KAbstract.IsMissing) AddResultsForClassDeclaration(Use_ClassDeclaration_KAbstract, operation, Compilation.GetBinder(parent));
+		            else AddBinder(parent.KAbstract, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KAbstract);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KAbstract.FullSpan.Length;
+		    if (parent.KClass.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.KAbstract.GetKind() == SyntaxKind.None) AddResultsForClassDeclaration(Use_ClassDeclaration_KAbstract, operation, Compilation.GetBinder(parent));
-		        else AddBinder(parent.KAbstract, operation);
+		        operation = this.GetOperation(position, parent.KClass);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KClass, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KClass);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KClass.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KClass, operation);
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassDeclaration(Use_ClassDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForClassDeclaration(Use_ClassDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Name == null) AddResultsForClassDeclaration(Use_ClassDeclaration_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TColon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.ClassAncestors == null || parent.ClassAncestors.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TColon, operation);
+		        if (parent.ClassAncestors == null || !parent.ClassAncestors.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ClassAncestors);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassDeclaration(Use_ClassDeclaration_ClassAncestors, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ClassAncestors);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ClassAncestors == null || parent.ClassAncestors.IsMissing) AddResultsForClassDeclaration(Use_ClassDeclaration_ClassAncestors, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ClassAncestors);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ClassAncestors);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ClassAncestors != null) position += parent.ClassAncestors.FullSpan.Length;
+		    if (parent.ClassBody.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ClassAncestors == null) AddResultsForClassDeclaration(Use_ClassDeclaration_ClassAncestors, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ClassAncestors);
+		        if (!parent.ClassBody.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ClassBody);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassDeclaration(Use_ClassDeclaration_ClassBody, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ClassBody);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ClassBody == null || parent.ClassBody.IsMissing) AddResultsForClassDeclaration(Use_ClassDeclaration_ClassBody, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ClassBody);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ClassBody);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        if (parent.ClassBody == null) AddResultsForClassDeclaration(Use_ClassDeclaration_ClassBody, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ClassBody);
-		    }
+		    position += parent.ClassBody.FullSpan.Length;
 		}
 		
 		public void VisitSymbolAttribute(SymbolAttributeSyntax parent) // 20
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.SymbolSymbolAttribute);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.SymbolSymbolAttribute == null || parent.SymbolSymbolAttribute.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.SymbolSymbolAttribute == null) AddResultsForSymbolAttribute(Use_SymbolAttribute_SymbolSymbolAttribute, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.SymbolSymbolAttribute);
+		        if (parent.SymbolSymbolAttribute == null || !parent.SymbolSymbolAttribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.SymbolSymbolAttribute);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSymbolAttribute(Use_SymbolAttribute_SymbolSymbolAttribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.SymbolSymbolAttribute);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.SymbolSymbolAttribute == null || parent.SymbolSymbolAttribute.IsMissing) AddResultsForSymbolAttribute(Use_SymbolAttribute_SymbolSymbolAttribute, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.SymbolSymbolAttribute);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ExpressionSymbolAttribute);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.SymbolSymbolAttribute != null) position += parent.SymbolSymbolAttribute.FullSpan.Length;
+		    if (parent.ExpressionSymbolAttribute == null || parent.ExpressionSymbolAttribute.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ExpressionSymbolAttribute == null) AddResultsForSymbolAttribute(Use_SymbolAttribute_ExpressionSymbolAttribute, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ExpressionSymbolAttribute);
+		        if (parent.ExpressionSymbolAttribute == null || !parent.ExpressionSymbolAttribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ExpressionSymbolAttribute);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSymbolAttribute(Use_SymbolAttribute_ExpressionSymbolAttribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ExpressionSymbolAttribute);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ExpressionSymbolAttribute == null || parent.ExpressionSymbolAttribute.IsMissing) AddResultsForSymbolAttribute(Use_SymbolAttribute_ExpressionSymbolAttribute, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ExpressionSymbolAttribute);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.StatementSymbolTypeAttribute);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ExpressionSymbolAttribute != null) position += parent.ExpressionSymbolAttribute.FullSpan.Length;
+		    if (parent.StatementSymbolTypeAttribute == null || parent.StatementSymbolTypeAttribute.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.StatementSymbolTypeAttribute == null) AddResultsForSymbolAttribute(Use_SymbolAttribute_StatementSymbolTypeAttribute, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.StatementSymbolTypeAttribute);
+		        if (parent.StatementSymbolTypeAttribute == null || !parent.StatementSymbolTypeAttribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.StatementSymbolTypeAttribute);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSymbolAttribute(Use_SymbolAttribute_StatementSymbolTypeAttribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.StatementSymbolTypeAttribute);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.StatementSymbolTypeAttribute == null || parent.StatementSymbolTypeAttribute.IsMissing) AddResultsForSymbolAttribute(Use_SymbolAttribute_StatementSymbolTypeAttribute, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.StatementSymbolTypeAttribute);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TypeSymbolTypeAttribute);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.StatementSymbolTypeAttribute != null) position += parent.StatementSymbolTypeAttribute.FullSpan.Length;
+		    if (parent.TypeSymbolTypeAttribute == null || parent.TypeSymbolTypeAttribute.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.TypeSymbolTypeAttribute == null) AddResultsForSymbolAttribute(Use_SymbolAttribute_TypeSymbolTypeAttribute, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.TypeSymbolTypeAttribute);
+		        if (parent.TypeSymbolTypeAttribute == null || !parent.TypeSymbolTypeAttribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TypeSymbolTypeAttribute);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSymbolAttribute(Use_SymbolAttribute_TypeSymbolTypeAttribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TypeSymbolTypeAttribute);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TypeSymbolTypeAttribute == null || parent.TypeSymbolTypeAttribute.IsMissing) AddResultsForSymbolAttribute(Use_SymbolAttribute_TypeSymbolTypeAttribute, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.TypeSymbolTypeAttribute);
+		        }
 		    }
+		    if (parent.TypeSymbolTypeAttribute != null) position += parent.TypeSymbolTypeAttribute.FullSpan.Length;
 		}
 		
 		public void VisitSymbolSymbolAttribute(SymbolSymbolAttributeSyntax parent) // 21
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBracket, operation);
+		        operation = this.GetOperation(position, parent.TOpenBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBracket, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KSymbol);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenBracket.FullSpan.Length;
+		    if (parent.KSymbol.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KSymbol, operation);
+		        operation = this.GetOperation(position, parent.KSymbol);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KSymbol, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TColon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KSymbol.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TColon, operation);
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForSymbolSymbolAttribute(Use_SymbolSymbolAttribute_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSymbolSymbolAttribute(Use_SymbolSymbolAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForSymbolSymbolAttribute(Use_SymbolSymbolAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Qualifier.FullSpan.Length;
+		    if (parent.TCloseBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseBracket, operation);
+		        operation = this.GetOperation(position, parent.TCloseBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBracket, operation);
+		        }
 		    }
+		    position += parent.TCloseBracket.FullSpan.Length;
 		}
 		
 		public void VisitExpressionSymbolAttribute(ExpressionSymbolAttributeSyntax parent) // 22
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBracket, operation);
+		        operation = this.GetOperation(position, parent.TOpenBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBracket, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KExpression);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenBracket.FullSpan.Length;
+		    if (parent.KExpression.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KExpression, operation);
+		        operation = this.GetOperation(position, parent.KExpression);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KExpression, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TColon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KExpression.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TColon, operation);
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForExpressionSymbolAttribute(Use_ExpressionSymbolAttribute_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForExpressionSymbolAttribute(Use_ExpressionSymbolAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForExpressionSymbolAttribute(Use_ExpressionSymbolAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Qualifier.FullSpan.Length;
+		    if (parent.TCloseBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseBracket, operation);
+		        operation = this.GetOperation(position, parent.TCloseBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBracket, operation);
+		        }
 		    }
+		    position += parent.TCloseBracket.FullSpan.Length;
 		}
 		
 		public void VisitStatementSymbolTypeAttribute(StatementSymbolTypeAttributeSyntax parent) // 23
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBracket, operation);
+		        operation = this.GetOperation(position, parent.TOpenBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBracket, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KStatement);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenBracket.FullSpan.Length;
+		    if (parent.KStatement.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KStatement, operation);
+		        operation = this.GetOperation(position, parent.KStatement);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KStatement, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TColon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KStatement.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TColon, operation);
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForStatementSymbolTypeAttribute(Use_StatementSymbolTypeAttribute_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForStatementSymbolTypeAttribute(Use_StatementSymbolTypeAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForStatementSymbolTypeAttribute(Use_StatementSymbolTypeAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Qualifier.FullSpan.Length;
+		    if (parent.TCloseBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseBracket, operation);
+		        operation = this.GetOperation(position, parent.TCloseBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBracket, operation);
+		        }
 		    }
+		    position += parent.TCloseBracket.FullSpan.Length;
 		}
 		
 		public void VisitTypeSymbolTypeAttribute(TypeSymbolTypeAttributeSyntax parent) // 24
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBracket, operation);
+		        operation = this.GetOperation(position, parent.TOpenBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBracket, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KType);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenBracket.FullSpan.Length;
+		    if (parent.KType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KType, operation);
+		        operation = this.GetOperation(position, parent.KType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KType, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TColon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KType.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TColon, operation);
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForTypeSymbolTypeAttribute(Use_TypeSymbolTypeAttribute_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTypeSymbolTypeAttribute(Use_TypeSymbolTypeAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForTypeSymbolTypeAttribute(Use_TypeSymbolTypeAttribute_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Qualifier.FullSpan.Length;
+		    if (parent.TCloseBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseBracket, operation);
+		        operation = this.GetOperation(position, parent.TCloseBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBracket, operation);
+		        }
 		    }
+		    position += parent.TCloseBracket.FullSpan.Length;
 		}
 		
 		public void VisitClassBody(ClassBodySyntax parent) // 25
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBrace);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBrace.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBrace, operation);
+		        operation = this.GetOperation(position, parent.TOpenBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBrace, operation);
+		        }
 		    }
-		    if (parent.ClassMemberDeclaration.FullSpan.IntersectsWith(SearchSpan))
+		    position += parent.TOpenBrace.FullSpan.Length;
+		    if (parent.ClassMemberDeclaration.Node == null || parent.ClassMemberDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.ClassMemberDeclaration.Node == null || !parent.ClassMemberDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ClassMemberDeclaration.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassBody(Use_ClassBody_ClassMemberDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.ClassMemberDeclaration)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.ClassMemberDeclaration.FullSpan.Length;
+		    if (parent.TCloseBrace.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.ClassMemberDeclaration.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.TCloseBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBrace, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBrace);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        AddBinder(parent.TCloseBrace, operation);
-		    }
+		    position += parent.TCloseBrace.FullSpan.Length;
 		}
 		
 		public void VisitClassAncestors(ClassAncestorsSyntax parent) // 26
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.ClassAncestor.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.ClassAncestor.Node == null || parent.ClassAncestor.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.ClassAncestor.Node == null || !parent.ClassAncestor.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ClassAncestor.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassAncestors(Use_ClassAncestors_ClassAncestor, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.ClassAncestor.GetWithSeparators())
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                if (item.IsToken) AddBinder(item, operation);
@@ -955,262 +1616,505 @@ namespace MetaDslx.Languages.Meta.Binding
 		            }
 		        }
 		    }
-		    else
-		    {
-		        position += parent.ClassAncestor.FullSpan.Length;
-		    }
+		    position += parent.ClassAncestor.FullSpan.Length;
 		}
 		
 		public void VisitClassAncestor(ClassAncestorSyntax parent) // 27
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForClassAncestor(Use_ClassAncestor_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassAncestor(Use_ClassAncestor_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForClassAncestor(Use_ClassAncestor_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
+		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
 		public void VisitClassMemberDeclaration(ClassMemberDeclarationSyntax parent) // 28
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.FieldDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.FieldDeclaration == null || parent.FieldDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.FieldDeclaration == null) AddResultsForClassMemberDeclaration(Use_ClassMemberDeclaration_FieldDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.FieldDeclaration);
+		        if (parent.FieldDeclaration == null || !parent.FieldDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.FieldDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassMemberDeclaration(Use_ClassMemberDeclaration_FieldDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.FieldDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.FieldDeclaration == null || parent.FieldDeclaration.IsMissing) AddResultsForClassMemberDeclaration(Use_ClassMemberDeclaration_FieldDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.FieldDeclaration);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.OperationDeclaration);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.FieldDeclaration != null) position += parent.FieldDeclaration.FullSpan.Length;
+		    if (parent.OperationDeclaration == null || parent.OperationDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.OperationDeclaration == null) AddResultsForClassMemberDeclaration(Use_ClassMemberDeclaration_OperationDeclaration, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.OperationDeclaration);
+		        if (parent.OperationDeclaration == null || !parent.OperationDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.OperationDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassMemberDeclaration(Use_ClassMemberDeclaration_OperationDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.OperationDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.OperationDeclaration == null || parent.OperationDeclaration.IsMissing) AddResultsForClassMemberDeclaration(Use_ClassMemberDeclaration_OperationDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.OperationDeclaration);
+		        }
 		    }
+		    if (parent.OperationDeclaration != null) position += parent.OperationDeclaration.FullSpan.Length;
 		}
 		
 		public void VisitFieldDeclaration(FieldDeclarationSyntax parent) // 29
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.FieldSymbolPropertyAttribute == null || parent.FieldSymbolPropertyAttribute.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        if (parent.FieldSymbolPropertyAttribute == null || !parent.FieldSymbolPropertyAttribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.FieldSymbolPropertyAttribute);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldSymbolPropertyAttribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.FieldSymbolPropertyAttribute);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.FieldSymbolPropertyAttribute == null || parent.FieldSymbolPropertyAttribute.IsMissing) AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldSymbolPropertyAttribute, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.FieldSymbolPropertyAttribute);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.FieldSymbolPropertyAttribute);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.FieldSymbolPropertyAttribute != null) position += parent.FieldSymbolPropertyAttribute.FullSpan.Length;
+		    if (parent.FieldContainment == null || parent.FieldContainment.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.FieldSymbolPropertyAttribute == null) AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldSymbolPropertyAttribute, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.FieldSymbolPropertyAttribute);
+		        if (parent.FieldContainment == null || !parent.FieldContainment.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.FieldContainment);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldContainment, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.FieldContainment);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.FieldContainment == null || parent.FieldContainment.IsMissing) AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldContainment, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.FieldContainment);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.FieldContainment);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.FieldContainment != null) position += parent.FieldContainment.FullSpan.Length;
+		    if (parent.FieldModifier == null || parent.FieldModifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.FieldContainment == null) AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldContainment, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.FieldContainment);
+		        if (parent.FieldModifier == null || !parent.FieldModifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.FieldModifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldModifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.FieldModifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.FieldModifier == null || parent.FieldModifier.IsMissing) AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldModifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.FieldModifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.FieldModifier);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.FieldModifier != null) position += parent.FieldModifier.FullSpan.Length;
+		    if (parent.TypeReference.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.FieldModifier == null) AddResultsForFieldDeclaration(Use_FieldDeclaration_FieldModifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.FieldModifier);
+		        if (!parent.TypeReference.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TypeReference);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_TypeReference, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TypeReference);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TypeReference == null || parent.TypeReference.IsMissing) AddResultsForFieldDeclaration(Use_FieldDeclaration_TypeReference, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.TypeReference);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TypeReference);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TypeReference.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.TypeReference == null) AddResultsForFieldDeclaration(Use_FieldDeclaration_TypeReference, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.TypeReference);
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForFieldDeclaration(Use_FieldDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.DefaultValue == null || parent.DefaultValue.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Name == null) AddResultsForFieldDeclaration(Use_FieldDeclaration_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
+		        if (parent.DefaultValue == null || !parent.DefaultValue.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.DefaultValue);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_DefaultValue, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.DefaultValue);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.DefaultValue == null || parent.DefaultValue.IsMissing) AddResultsForFieldDeclaration(Use_FieldDeclaration_DefaultValue, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.DefaultValue);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.DefaultValue);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.DefaultValue != null) position += parent.DefaultValue.FullSpan.Length;
+		    if (parent.RedefinitionsOrSubsettings.Node == null || parent.RedefinitionsOrSubsettings.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.DefaultValue == null) AddResultsForFieldDeclaration(Use_FieldDeclaration_DefaultValue, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.DefaultValue);
-		    }
-		    if (parent.RedefinitionsOrSubsettings.FullSpan.IntersectsWith(SearchSpan))
-		    {
+		        if (parent.RedefinitionsOrSubsettings.Node == null || !parent.RedefinitionsOrSubsettings.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.RedefinitionsOrSubsettings.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldDeclaration(Use_FieldDeclaration_RedefinitionsOrSubsettings, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.RedefinitionsOrSubsettings)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.RedefinitionsOrSubsettings.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.RedefinitionsOrSubsettings.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TSemicolon);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        AddBinder(parent.TSemicolon, operation);
-		    }
+		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
 		public void VisitFieldSymbolPropertyAttribute(FieldSymbolPropertyAttributeSyntax parent) // 30
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TOpenBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TOpenBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenBracket, operation);
+		        operation = this.GetOperation(position, parent.TOpenBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBracket, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KProperty);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenBracket.FullSpan.Length;
+		    if (parent.KProperty.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KProperty, operation);
+		        operation = this.GetOperation(position, parent.KProperty);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KProperty, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TColon);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KProperty.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TColon, operation);
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Identifier);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.Identifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Identifier == null) AddResultsForFieldSymbolPropertyAttribute(Use_FieldSymbolPropertyAttribute_Identifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Identifier);
+		        if (!parent.Identifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Identifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldSymbolPropertyAttribute(Use_FieldSymbolPropertyAttribute_Identifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Identifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Identifier == null || parent.Identifier.IsMissing) AddResultsForFieldSymbolPropertyAttribute(Use_FieldSymbolPropertyAttribute_Identifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Identifier);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseBracket);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Identifier.FullSpan.Length;
+		    if (parent.TCloseBracket.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseBracket, operation);
+		        operation = this.GetOperation(position, parent.TCloseBracket);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBracket, operation);
+		        }
 		    }
+		    position += parent.TCloseBracket.FullSpan.Length;
 		}
 		
 		public void VisitFieldContainment(FieldContainmentSyntax parent) // 31
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KContainment);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KContainment.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KContainment, operation);
+		        operation = this.GetOperation(position, parent.KContainment);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KContainment, operation);
+		        }
 		    }
+		    position += parent.KContainment.FullSpan.Length;
 		}
 		
 		public void VisitFieldModifier(FieldModifierSyntax parent) // 32
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.FieldModifier);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.FieldModifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddResultsForFieldModifier(Use_FieldModifier_FieldModifier, operation, Compilation.GetBinder(parent));
+		        if (!parent.FieldModifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.FieldModifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFieldModifier(Use_FieldModifier_FieldModifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.FieldModifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddResultsForFieldModifier(Use_FieldModifier_FieldModifier, operation, Compilation.GetBinder(parent));
+		        }
 		    }
+		    position += parent.FieldModifier.FullSpan.Length;
 		}
 		
 		public void VisitDefaultValue(DefaultValueSyntax parent) // 33
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TAssign);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TAssign.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TAssign, operation);
+		        operation = this.GetOperation(position, parent.TAssign);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TAssign, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.StringLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TAssign.FullSpan.Length;
+		    if (parent.StringLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.StringLiteral == null) AddResultsForDefaultValue(Use_DefaultValue_StringLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.StringLiteral);
+		        if (!parent.StringLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.StringLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForDefaultValue(Use_DefaultValue_StringLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.StringLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.StringLiteral == null || parent.StringLiteral.IsMissing) AddResultsForDefaultValue(Use_DefaultValue_StringLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.StringLiteral);
+		        }
 		    }
+		    position += parent.StringLiteral.FullSpan.Length;
 		}
 		
 		public void VisitRedefinitionsOrSubsettings(RedefinitionsOrSubsettingsSyntax parent) // 34
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.Redefinitions);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.Redefinitions == null || parent.Redefinitions.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Redefinitions == null) AddResultsForRedefinitionsOrSubsettings(Use_RedefinitionsOrSubsettings_Redefinitions, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Redefinitions);
+		        if (parent.Redefinitions == null || !parent.Redefinitions.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Redefinitions);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForRedefinitionsOrSubsettings(Use_RedefinitionsOrSubsettings_Redefinitions, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Redefinitions);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Redefinitions == null || parent.Redefinitions.IsMissing) AddResultsForRedefinitionsOrSubsettings(Use_RedefinitionsOrSubsettings_Redefinitions, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Redefinitions);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Subsettings);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.Redefinitions != null) position += parent.Redefinitions.FullSpan.Length;
+		    if (parent.Subsettings == null || parent.Subsettings.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Subsettings == null) AddResultsForRedefinitionsOrSubsettings(Use_RedefinitionsOrSubsettings_Subsettings, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Subsettings);
+		        if (parent.Subsettings == null || !parent.Subsettings.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Subsettings);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForRedefinitionsOrSubsettings(Use_RedefinitionsOrSubsettings_Subsettings, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Subsettings);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Subsettings == null || parent.Subsettings.IsMissing) AddResultsForRedefinitionsOrSubsettings(Use_RedefinitionsOrSubsettings_Subsettings, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Subsettings);
+		        }
 		    }
+		    if (parent.Subsettings != null) position += parent.Subsettings.FullSpan.Length;
 		}
 		
 		public void VisitRedefinitions(RedefinitionsSyntax parent) // 35
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KRedefines);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KRedefines.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KRedefines, operation);
+		        operation = this.GetOperation(position, parent.KRedefines);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KRedefines, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.NameUseList);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KRedefines.FullSpan.Length;
+		    if (parent.NameUseList == null || parent.NameUseList.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.NameUseList == null) AddResultsForRedefinitions(Use_Redefinitions_NameUseList, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.NameUseList);
+		        if (parent.NameUseList == null || !parent.NameUseList.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NameUseList);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForRedefinitions(Use_Redefinitions_NameUseList, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NameUseList);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NameUseList == null || parent.NameUseList.IsMissing) AddResultsForRedefinitions(Use_Redefinitions_NameUseList, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NameUseList);
+		        }
 		    }
+		    if (parent.NameUseList != null) position += parent.NameUseList.FullSpan.Length;
 		}
 		
 		public void VisitSubsettings(SubsettingsSyntax parent) // 36
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KSubsets);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KSubsets.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KSubsets, operation);
+		        operation = this.GetOperation(position, parent.KSubsets);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KSubsets, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.NameUseList);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KSubsets.FullSpan.Length;
+		    if (parent.NameUseList == null || parent.NameUseList.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.NameUseList == null) AddResultsForSubsettings(Use_Subsettings_NameUseList, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.NameUseList);
+		        if (parent.NameUseList == null || !parent.NameUseList.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NameUseList);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSubsettings(Use_Subsettings_NameUseList, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NameUseList);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NameUseList == null || parent.NameUseList.IsMissing) AddResultsForSubsettings(Use_Subsettings_NameUseList, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NameUseList);
+		        }
 		    }
+		    if (parent.NameUseList != null) position += parent.NameUseList.FullSpan.Length;
 		}
 		
 		public void VisitNameUseList(NameUseListSyntax parent) // 37
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Qualifier.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Qualifier.Node == null || parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Qualifier.Node == null || !parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNameUseList(Use_NameUseList_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Qualifier.GetWithSeparators())
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                if (item.IsToken) AddBinder(item, operation);
@@ -1218,379 +2122,750 @@ namespace MetaDslx.Languages.Meta.Binding
 		            }
 		        }
 		    }
-		    else
-		    {
-		        position += parent.Qualifier.FullSpan.Length;
-		    }
+		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
 		public void VisitConstDeclaration(ConstDeclarationSyntax parent) // 38
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KConst);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KConst.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KConst, operation);
+		        operation = this.GetOperation(position, parent.KConst);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KConst, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TypeReference);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KConst.FullSpan.Length;
+		    if (parent.TypeReference.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.TypeReference == null) AddResultsForConstDeclaration(Use_ConstDeclaration_TypeReference, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.TypeReference);
+		        if (!parent.TypeReference.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TypeReference);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForConstDeclaration(Use_ConstDeclaration_TypeReference, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TypeReference);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TypeReference == null || parent.TypeReference.IsMissing) AddResultsForConstDeclaration(Use_ConstDeclaration_TypeReference, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.TypeReference);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TypeReference.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Name == null) AddResultsForConstDeclaration(Use_ConstDeclaration_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForConstDeclaration(Use_ConstDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForConstDeclaration(Use_ConstDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ConstValue);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.ConstValue == null || parent.ConstValue.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ConstValue == null) AddResultsForConstDeclaration(Use_ConstDeclaration_ConstValue, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ConstValue);
+		        if (parent.ConstValue == null || !parent.ConstValue.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ConstValue);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForConstDeclaration(Use_ConstDeclaration_ConstValue, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ConstValue);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ConstValue == null || parent.ConstValue.IsMissing) AddResultsForConstDeclaration(Use_ConstDeclaration_ConstValue, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ConstValue);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TSemicolon);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ConstValue != null) position += parent.ConstValue.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TSemicolon, operation);
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
 		    }
+		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
 		public void VisitConstValue(ConstValueSyntax parent) // 39
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TAssign);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TAssign.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TAssign, operation);
+		        operation = this.GetOperation(position, parent.TAssign);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TAssign, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.StringLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TAssign.FullSpan.Length;
+		    if (parent.StringLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.StringLiteral == null) AddResultsForConstValue(Use_ConstValue_StringLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.StringLiteral);
+		        if (!parent.StringLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.StringLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForConstValue(Use_ConstValue_StringLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.StringLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.StringLiteral == null || parent.StringLiteral.IsMissing) AddResultsForConstValue(Use_ConstValue_StringLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.StringLiteral);
+		        }
 		    }
+		    position += parent.StringLiteral.FullSpan.Length;
 		}
 		
 		public void VisitReturnType(ReturnTypeSyntax parent) // 40
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TypeReference);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TypeReference == null || parent.TypeReference.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.TypeReference == null) AddResultsForReturnType(Use_ReturnType_TypeReference, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.TypeReference);
+		        if (parent.TypeReference == null || !parent.TypeReference.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TypeReference);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForReturnType(Use_ReturnType_TypeReference, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TypeReference);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TypeReference == null || parent.TypeReference.IsMissing) AddResultsForReturnType(Use_ReturnType_TypeReference, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.TypeReference);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.VoidType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TypeReference != null) position += parent.TypeReference.FullSpan.Length;
+		    if (parent.VoidType == null || parent.VoidType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.VoidType == null) AddResultsForReturnType(Use_ReturnType_VoidType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.VoidType);
+		        if (parent.VoidType == null || !parent.VoidType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.VoidType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForReturnType(Use_ReturnType_VoidType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.VoidType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.VoidType == null || parent.VoidType.IsMissing) AddResultsForReturnType(Use_ReturnType_VoidType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.VoidType);
+		        }
 		    }
+		    if (parent.VoidType != null) position += parent.VoidType.FullSpan.Length;
 		}
 		
 		public void VisitTypeOfReference(TypeOfReferenceSyntax parent) // 41
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.TypeReference);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.TypeReference.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.TypeReference == null) AddResultsForTypeOfReference(Use_TypeOfReference_TypeReference, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.TypeReference);
+		        if (!parent.TypeReference.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TypeReference);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTypeOfReference(Use_TypeOfReference_TypeReference, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TypeReference);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TypeReference == null || parent.TypeReference.IsMissing) AddResultsForTypeOfReference(Use_TypeOfReference_TypeReference, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.TypeReference);
+		        }
 		    }
+		    position += parent.TypeReference.FullSpan.Length;
 		}
 		
 		public void VisitTypeReference(TypeReferenceSyntax parent) // 42
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.CollectionType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.CollectionType == null || parent.CollectionType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.CollectionType == null) AddResultsForTypeReference(Use_TypeReference_CollectionType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.CollectionType);
+		        if (parent.CollectionType == null || !parent.CollectionType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.CollectionType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTypeReference(Use_TypeReference_CollectionType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.CollectionType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.CollectionType == null || parent.CollectionType.IsMissing) AddResultsForTypeReference(Use_TypeReference_CollectionType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.CollectionType);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.SimpleType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.CollectionType != null) position += parent.CollectionType.FullSpan.Length;
+		    if (parent.SimpleType == null || parent.SimpleType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.SimpleType == null) AddResultsForTypeReference(Use_TypeReference_SimpleType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.SimpleType);
+		        if (parent.SimpleType == null || !parent.SimpleType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.SimpleType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTypeReference(Use_TypeReference_SimpleType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.SimpleType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.SimpleType == null || parent.SimpleType.IsMissing) AddResultsForTypeReference(Use_TypeReference_SimpleType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.SimpleType);
+		        }
 		    }
+		    if (parent.SimpleType != null) position += parent.SimpleType.FullSpan.Length;
 		}
 		
 		public void VisitSimpleType(SimpleTypeSyntax parent) // 43
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.PrimitiveType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.PrimitiveType == null || parent.PrimitiveType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.PrimitiveType == null) AddResultsForSimpleType(Use_SimpleType_PrimitiveType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.PrimitiveType);
+		        if (parent.PrimitiveType == null || !parent.PrimitiveType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.PrimitiveType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSimpleType(Use_SimpleType_PrimitiveType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.PrimitiveType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.PrimitiveType == null || parent.PrimitiveType.IsMissing) AddResultsForSimpleType(Use_SimpleType_PrimitiveType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.PrimitiveType);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ObjectType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.PrimitiveType != null) position += parent.PrimitiveType.FullSpan.Length;
+		    if (parent.ObjectType == null || parent.ObjectType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ObjectType == null) AddResultsForSimpleType(Use_SimpleType_ObjectType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ObjectType);
+		        if (parent.ObjectType == null || !parent.ObjectType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ObjectType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSimpleType(Use_SimpleType_ObjectType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ObjectType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ObjectType == null || parent.ObjectType.IsMissing) AddResultsForSimpleType(Use_SimpleType_ObjectType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ObjectType);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.NullableType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ObjectType != null) position += parent.ObjectType.FullSpan.Length;
+		    if (parent.NullableType == null || parent.NullableType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.NullableType == null) AddResultsForSimpleType(Use_SimpleType_NullableType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.NullableType);
+		        if (parent.NullableType == null || !parent.NullableType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NullableType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSimpleType(Use_SimpleType_NullableType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NullableType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NullableType == null || parent.NullableType.IsMissing) AddResultsForSimpleType(Use_SimpleType_NullableType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NullableType);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ClassType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.NullableType != null) position += parent.NullableType.FullSpan.Length;
+		    if (parent.ClassType == null || parent.ClassType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ClassType == null) AddResultsForSimpleType(Use_SimpleType_ClassType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ClassType);
+		        if (parent.ClassType == null || !parent.ClassType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ClassType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSimpleType(Use_SimpleType_ClassType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ClassType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ClassType == null || parent.ClassType.IsMissing) AddResultsForSimpleType(Use_SimpleType_ClassType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ClassType);
+		        }
 		    }
+		    if (parent.ClassType != null) position += parent.ClassType.FullSpan.Length;
 		}
 		
 		public void VisitClassType(ClassTypeSyntax parent) // 44
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.Qualifier);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Qualifier == null) AddResultsForClassType(Use_ClassType_Qualifier, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Qualifier);
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForClassType(Use_ClassType_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForClassType(Use_ClassType_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
 		    }
+		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
 		public void VisitObjectType(ObjectTypeSyntax parent) // 45
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.ObjectType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ObjectType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddResultsForObjectType(Use_ObjectType_ObjectType, operation, Compilation.GetBinder(parent));
+		        if (!parent.ObjectType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ObjectType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForObjectType(Use_ObjectType_ObjectType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ObjectType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddResultsForObjectType(Use_ObjectType_ObjectType, operation, Compilation.GetBinder(parent));
+		        }
 		    }
+		    position += parent.ObjectType.FullSpan.Length;
 		}
 		
 		public void VisitPrimitiveType(PrimitiveTypeSyntax parent) // 46
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.PrimitiveType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.PrimitiveType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddResultsForPrimitiveType(Use_PrimitiveType_PrimitiveType, operation, Compilation.GetBinder(parent));
+		        if (!parent.PrimitiveType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.PrimitiveType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForPrimitiveType(Use_PrimitiveType_PrimitiveType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.PrimitiveType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddResultsForPrimitiveType(Use_PrimitiveType_PrimitiveType, operation, Compilation.GetBinder(parent));
+		        }
 		    }
+		    position += parent.PrimitiveType.FullSpan.Length;
 		}
 		
 		public void VisitVoidType(VoidTypeSyntax parent) // 47
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KVoid);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KVoid.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.KVoid.GetKind() == SyntaxKind.None) AddResultsForVoidType(Use_VoidType_KVoid, operation, Compilation.GetBinder(parent));
-		        else AddBinder(parent.KVoid, operation);
+		        if (!parent.KVoid.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.KVoid);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVoidType(Use_VoidType_KVoid, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.KVoid);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.KVoid.GetKind() == SyntaxKind.None || parent.KVoid.IsMissing) AddResultsForVoidType(Use_VoidType_KVoid, operation, Compilation.GetBinder(parent));
+		            else AddBinder(parent.KVoid, operation);
+		        }
 		    }
+		    position += parent.KVoid.FullSpan.Length;
 		}
 		
 		public void VisitNullableType(NullableTypeSyntax parent) // 48
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.PrimitiveType);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.PrimitiveType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.PrimitiveType == null) AddResultsForNullableType(Use_NullableType_PrimitiveType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.PrimitiveType);
+		        if (!parent.PrimitiveType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.PrimitiveType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNullableType(Use_NullableType_PrimitiveType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.PrimitiveType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.PrimitiveType == null || parent.PrimitiveType.IsMissing) AddResultsForNullableType(Use_NullableType_PrimitiveType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.PrimitiveType);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TQuestion);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.PrimitiveType.FullSpan.Length;
+		    if (parent.TQuestion.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TQuestion, operation);
+		        operation = this.GetOperation(position, parent.TQuestion);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TQuestion, operation);
+		        }
 		    }
+		    position += parent.TQuestion.FullSpan.Length;
 		}
 		
 		public void VisitCollectionType(CollectionTypeSyntax parent) // 49
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.CollectionKind);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.CollectionKind.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.CollectionKind == null) AddResultsForCollectionType(Use_CollectionType_CollectionKind, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.CollectionKind);
+		        if (!parent.CollectionKind.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.CollectionKind);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCollectionType(Use_CollectionType_CollectionKind, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.CollectionKind);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.CollectionKind == null || parent.CollectionKind.IsMissing) AddResultsForCollectionType(Use_CollectionType_CollectionKind, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.CollectionKind);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TLessThan);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.CollectionKind.FullSpan.Length;
+		    if (parent.TLessThan.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TLessThan, operation);
+		        operation = this.GetOperation(position, parent.TLessThan);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TLessThan, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.SimpleType);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TLessThan.FullSpan.Length;
+		    if (parent.SimpleType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.SimpleType == null) AddResultsForCollectionType(Use_CollectionType_SimpleType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.SimpleType);
+		        if (!parent.SimpleType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.SimpleType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCollectionType(Use_CollectionType_SimpleType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.SimpleType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.SimpleType == null || parent.SimpleType.IsMissing) AddResultsForCollectionType(Use_CollectionType_SimpleType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.SimpleType);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TGreaterThan);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.SimpleType.FullSpan.Length;
+		    if (parent.TGreaterThan.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TGreaterThan, operation);
+		        operation = this.GetOperation(position, parent.TGreaterThan);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TGreaterThan, operation);
+		        }
 		    }
+		    position += parent.TGreaterThan.FullSpan.Length;
 		}
 		
 		public void VisitCollectionKind(CollectionKindSyntax parent) // 50
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.CollectionKind);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.CollectionKind.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddResultsForCollectionKind(Use_CollectionKind_CollectionKind, operation, Compilation.GetBinder(parent));
+		        if (!parent.CollectionKind.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.CollectionKind);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCollectionKind(Use_CollectionKind_CollectionKind, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.CollectionKind);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddResultsForCollectionKind(Use_CollectionKind_CollectionKind, operation, Compilation.GetBinder(parent));
+		        }
 		    }
+		    position += parent.CollectionKind.FullSpan.Length;
 		}
 		
 		public void VisitOperationDeclaration(OperationDeclarationSyntax parent) // 51
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForOperationDeclaration(Use_OperationDeclaration_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.OperationModifier.Node == null || parent.OperationModifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
-		    }
-		    if (parent.OperationModifier.FullSpan.IntersectsWith(SearchSpan))
-		    {
+		        if (parent.OperationModifier.Node == null || !parent.OperationModifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.OperationModifier.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForOperationDeclaration(Use_OperationDeclaration_OperationModifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.OperationModifier)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.OperationModifier.FullSpan.Length;
+		    if (parent.ReturnType.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.OperationModifier.FullSpan.Length;
+		        if (!parent.ReturnType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ReturnType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForOperationDeclaration(Use_OperationDeclaration_ReturnType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ReturnType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ReturnType == null || parent.ReturnType.IsMissing) AddResultsForOperationDeclaration(Use_OperationDeclaration_ReturnType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ReturnType);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ReturnType);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.ReturnType.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ReturnType == null) AddResultsForOperationDeclaration(Use_OperationDeclaration_ReturnType, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ReturnType);
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForOperationDeclaration(Use_OperationDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForOperationDeclaration(Use_OperationDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Name == null) AddResultsForOperationDeclaration(Use_OperationDeclaration_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TOpenParen);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.ParameterList == null || parent.ParameterList.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TOpenParen, operation);
+		        if (parent.ParameterList == null || !parent.ParameterList.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ParameterList);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForOperationDeclaration(Use_OperationDeclaration_ParameterList, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ParameterList);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ParameterList == null || parent.ParameterList.IsMissing) AddResultsForOperationDeclaration(Use_OperationDeclaration_ParameterList, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ParameterList);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ParameterList);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ParameterList != null) position += parent.ParameterList.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ParameterList == null) AddResultsForOperationDeclaration(Use_OperationDeclaration_ParameterList, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ParameterList);
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TCloseParen);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.TCloseParen, operation);
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TSemicolon);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        AddBinder(parent.TSemicolon, operation);
-		    }
+		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
 		public void VisitOperationModifier(OperationModifierSyntax parent) // 52
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.OperationModifierBuilder);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.OperationModifierBuilder == null || parent.OperationModifierBuilder.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.OperationModifierBuilder == null) AddResultsForOperationModifier(Use_OperationModifier_OperationModifierBuilder, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.OperationModifierBuilder);
+		        if (parent.OperationModifierBuilder == null || !parent.OperationModifierBuilder.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.OperationModifierBuilder);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForOperationModifier(Use_OperationModifier_OperationModifierBuilder, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.OperationModifierBuilder);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.OperationModifierBuilder == null || parent.OperationModifierBuilder.IsMissing) AddResultsForOperationModifier(Use_OperationModifier_OperationModifierBuilder, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.OperationModifierBuilder);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.OperationModifierReadonly);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.OperationModifierBuilder != null) position += parent.OperationModifierBuilder.FullSpan.Length;
+		    if (parent.OperationModifierReadonly == null || parent.OperationModifierReadonly.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.OperationModifierReadonly == null) AddResultsForOperationModifier(Use_OperationModifier_OperationModifierReadonly, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.OperationModifierReadonly);
+		        if (parent.OperationModifierReadonly == null || !parent.OperationModifierReadonly.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.OperationModifierReadonly);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForOperationModifier(Use_OperationModifier_OperationModifierReadonly, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.OperationModifierReadonly);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.OperationModifierReadonly == null || parent.OperationModifierReadonly.IsMissing) AddResultsForOperationModifier(Use_OperationModifier_OperationModifierReadonly, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.OperationModifierReadonly);
+		        }
 		    }
+		    if (parent.OperationModifierReadonly != null) position += parent.OperationModifierReadonly.FullSpan.Length;
 		}
 		
 		public void VisitOperationModifierBuilder(OperationModifierBuilderSyntax parent) // 53
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KBuilder);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KBuilder.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KBuilder, operation);
+		        operation = this.GetOperation(position, parent.KBuilder);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KBuilder, operation);
+		        }
 		    }
+		    position += parent.KBuilder.FullSpan.Length;
 		}
 		
 		public void VisitOperationModifierReadonly(OperationModifierReadonlySyntax parent) // 54
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KReadonly);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KReadonly.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KReadonly, operation);
+		        operation = this.GetOperation(position, parent.KReadonly);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KReadonly, operation);
+		        }
 		    }
+		    position += parent.KReadonly.FullSpan.Length;
 		}
 		
 		public void VisitParameterList(ParameterListSyntax parent) // 55
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Parameter.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Parameter.Node == null || parent.Parameter.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Parameter.Node == null || !parent.Parameter.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Parameter.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForParameterList(Use_ParameterList_Parameter, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Parameter.GetWithSeparators())
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                if (item.IsToken) AddBinder(item, operation);
@@ -1598,98 +2873,165 @@ namespace MetaDslx.Languages.Meta.Binding
 		            }
 		        }
 		    }
-		    else
-		    {
-		        position += parent.Parameter.FullSpan.Length;
-		    }
+		    position += parent.Parameter.FullSpan.Length;
 		}
 		
 		public void VisitParameter(ParameterSyntax parent) // 56
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForParameter(Use_Parameter_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.TypeReference.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        if (!parent.TypeReference.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TypeReference);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForParameter(Use_Parameter_TypeReference, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TypeReference);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TypeReference == null || parent.TypeReference.IsMissing) AddResultsForParameter(Use_Parameter_TypeReference, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.TypeReference);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TypeReference);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.TypeReference.FullSpan.Length;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.TypeReference == null) AddResultsForParameter(Use_Parameter_TypeReference, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.TypeReference);
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForParameter(Use_Parameter_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForParameter(Use_Parameter_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Name);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        if (parent.Name == null) AddResultsForParameter(Use_Parameter_Name, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Name);
-		    }
+		    position += parent.Name.FullSpan.Length;
 		}
 		
 		public void VisitAssociationDeclaration(AssociationDeclarationSyntax parent) // 57
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Attribute.FullSpan.IntersectsWith(SearchSpan))
+		    if (parent.Attribute.Node == null || parent.Attribute.FullSpan.IntersectsWith(FullSpan))
 		    {
+		        if (parent.Attribute.Node == null || !parent.Attribute.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Attribute.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForAssociationDeclaration(Use_AssociationDeclaration_Attribute, operation, Compilation.GetBinder(parent));
+		            }
+		        }
 		        foreach (var item in parent.Attribute)
 		        {
-		            operation = GetOperation(ref position, item);
+		            operation = GetOperation(position, item);
 		            if (operation != CompletionSearchFlags.None)
 		            {
 		                VisitCore(item);
 		            }
 		        }
 		    }
-		    else
+		    position += parent.Attribute.FullSpan.Length;
+		    if (parent.KAssociation.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        position += parent.Attribute.FullSpan.Length;
+		        operation = this.GetOperation(position, parent.KAssociation);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KAssociation, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KAssociation);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KAssociation.FullSpan.Length;
+		    if (parent.Source.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KAssociation, operation);
+		        if (!parent.Source.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Source);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForAssociationDeclaration(Use_AssociationDeclaration_Source, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Source);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Source == null || parent.Source.IsMissing) AddResultsForAssociationDeclaration(Use_AssociationDeclaration_Source, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Source);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Source);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Source.FullSpan.Length;
+		    if (parent.KWith.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Source == null) AddResultsForAssociationDeclaration(Use_AssociationDeclaration_Source, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Source);
+		        operation = this.GetOperation(position, parent.KWith);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KWith, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.KWith);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.KWith.FullSpan.Length;
+		    if (parent.Target.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KWith, operation);
+		        if (!parent.Target.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Target);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForAssociationDeclaration(Use_AssociationDeclaration_Target, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Target);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Target == null || parent.Target.IsMissing) AddResultsForAssociationDeclaration(Use_AssociationDeclaration_Target, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Target);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.Target);
-		    if (operation != CompletionSearchFlags.None)
+		    position += parent.Target.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.Target == null) AddResultsForAssociationDeclaration(Use_AssociationDeclaration_Target, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.Target);
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.TSemicolon);
-		    if (operation != CompletionSearchFlags.None)
-		    {
-		        AddBinder(parent.TSemicolon, operation);
-		    }
+		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
 		public void VisitIdentifier(IdentifierSyntax parent) // 58
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
 		    position += parent.Identifier.FullSpan.Length;
@@ -1697,62 +3039,138 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public void VisitLiteral(LiteralSyntax parent) // 59
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.NullLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.NullLiteral == null || parent.NullLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.NullLiteral == null) AddResultsForLiteral(Use_Literal_NullLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.NullLiteral);
+		        if (parent.NullLiteral == null || !parent.NullLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NullLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLiteral(Use_Literal_NullLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NullLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NullLiteral == null || parent.NullLiteral.IsMissing) AddResultsForLiteral(Use_Literal_NullLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NullLiteral);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.BooleanLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.NullLiteral != null) position += parent.NullLiteral.FullSpan.Length;
+		    if (parent.BooleanLiteral == null || parent.BooleanLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.BooleanLiteral == null) AddResultsForLiteral(Use_Literal_BooleanLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.BooleanLiteral);
+		        if (parent.BooleanLiteral == null || !parent.BooleanLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.BooleanLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLiteral(Use_Literal_BooleanLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.BooleanLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.BooleanLiteral == null || parent.BooleanLiteral.IsMissing) AddResultsForLiteral(Use_Literal_BooleanLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.BooleanLiteral);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.IntegerLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.BooleanLiteral != null) position += parent.BooleanLiteral.FullSpan.Length;
+		    if (parent.IntegerLiteral == null || parent.IntegerLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.IntegerLiteral == null) AddResultsForLiteral(Use_Literal_IntegerLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.IntegerLiteral);
+		        if (parent.IntegerLiteral == null || !parent.IntegerLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.IntegerLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLiteral(Use_Literal_IntegerLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.IntegerLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.IntegerLiteral == null || parent.IntegerLiteral.IsMissing) AddResultsForLiteral(Use_Literal_IntegerLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.IntegerLiteral);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.DecimalLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.IntegerLiteral != null) position += parent.IntegerLiteral.FullSpan.Length;
+		    if (parent.DecimalLiteral == null || parent.DecimalLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.DecimalLiteral == null) AddResultsForLiteral(Use_Literal_DecimalLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.DecimalLiteral);
+		        if (parent.DecimalLiteral == null || !parent.DecimalLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.DecimalLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLiteral(Use_Literal_DecimalLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.DecimalLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.DecimalLiteral == null || parent.DecimalLiteral.IsMissing) AddResultsForLiteral(Use_Literal_DecimalLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.DecimalLiteral);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.ScientificLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.DecimalLiteral != null) position += parent.DecimalLiteral.FullSpan.Length;
+		    if (parent.ScientificLiteral == null || parent.ScientificLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.ScientificLiteral == null) AddResultsForLiteral(Use_Literal_ScientificLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.ScientificLiteral);
+		        if (parent.ScientificLiteral == null || !parent.ScientificLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ScientificLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLiteral(Use_Literal_ScientificLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ScientificLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ScientificLiteral == null || parent.ScientificLiteral.IsMissing) AddResultsForLiteral(Use_Literal_ScientificLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ScientificLiteral);
+		        }
 		    }
-		    operation = this.GetOperation(ref position, parent.StringLiteral);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.ScientificLiteral != null) position += parent.ScientificLiteral.FullSpan.Length;
+		    if (parent.StringLiteral == null || parent.StringLiteral.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (parent.StringLiteral == null) AddResultsForLiteral(Use_Literal_StringLiteral, operation, Compilation.GetBinder(parent));
-		        else VisitCore(parent.StringLiteral);
+		        if (parent.StringLiteral == null || !parent.StringLiteral.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.StringLiteral);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLiteral(Use_Literal_StringLiteral, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.StringLiteral);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.StringLiteral == null || parent.StringLiteral.IsMissing) AddResultsForLiteral(Use_Literal_StringLiteral, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.StringLiteral);
+		        }
 		    }
+		    if (parent.StringLiteral != null) position += parent.StringLiteral.FullSpan.Length;
 		}
 		
 		public void VisitNullLiteral(NullLiteralSyntax parent) // 60
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    operation = this.GetOperation(ref position, parent.KNull);
-		    if (operation != CompletionSearchFlags.None)
+		    if (parent.KNull.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        AddBinder(parent.KNull, operation);
+		        operation = this.GetOperation(position, parent.KNull);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KNull, operation);
+		        }
 		    }
+		    position += parent.KNull.FullSpan.Length;
 		}
 		
 		public void VisitBooleanLiteral(BooleanLiteralSyntax parent) // 61
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
 		    position += parent.BooleanLiteral.FullSpan.Length;
@@ -1760,7 +3178,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public void VisitIntegerLiteral(IntegerLiteralSyntax parent) // 62
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
 		    position += parent.LInteger.FullSpan.Length;
@@ -1768,7 +3186,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public void VisitDecimalLiteral(DecimalLiteralSyntax parent) // 63
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
 		    position += parent.LDecimal.FullSpan.Length;
@@ -1776,7 +3194,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public void VisitScientificLiteral(ScientificLiteralSyntax parent) // 64
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
 		    position += parent.LScientific.FullSpan.Length;
@@ -1784,7 +3202,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public void VisitStringLiteral(StringLiteralSyntax parent) // 65
 		{
-		    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
 		    position += parent.LRegularString.FullSpan.Length;
@@ -2062,13 +3480,11 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForMetamodelUriProperty(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_MetamodelProperty_MetamodelPrefixProperty)
             {
                 var binder = ruleBinder;
                 AddResultsForMetamodelPrefixProperty(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[10] = false;
         }
@@ -2138,25 +3554,21 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForEnumDeclaration(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Declaration_ClassDeclaration)
             {
                 var binder = ruleBinder;
                 AddResultsForClassDeclaration(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Declaration_AssociationDeclaration)
             {
                 var binder = ruleBinder;
                 AddResultsForAssociationDeclaration(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Declaration_ConstDeclaration)
             {
                 var binder = ruleBinder;
                 AddResultsForConstDeclaration(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[13] = false;
         }
@@ -2352,25 +3764,21 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForSymbolSymbolAttribute(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_SymbolAttribute_ExpressionSymbolAttribute)
             {
                 var binder = ruleBinder;
                 AddResultsForExpressionSymbolAttribute(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_SymbolAttribute_StatementSymbolTypeAttribute)
             {
                 var binder = ruleBinder;
                 AddResultsForStatementSymbolTypeAttribute(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_SymbolAttribute_TypeSymbolTypeAttribute)
             {
                 var binder = ruleBinder;
                 AddResultsForTypeSymbolTypeAttribute(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[20] = false;
         }
@@ -2596,14 +4004,12 @@ namespace MetaDslx.Languages.Meta.Binding
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Properties", forCompletion: true);
                 AddResultsForFieldDeclaration(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_ClassMemberDeclaration_OperationDeclaration)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Operations", forCompletion: true);
                 AddResultsForOperationDeclaration(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[28] = false;
         }
@@ -2780,13 +4186,11 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForRedefinitions(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_RedefinitionsOrSubsettings_Subsettings)
             {
                 var binder = ruleBinder;
                 AddResultsForSubsettings(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[34] = false;
         }
@@ -2918,13 +4322,11 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForTypeReference(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_ReturnType_VoidType)
             {
                 var binder = ruleBinder;
                 AddResultsForVoidType(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[40] = false;
         }
@@ -2954,13 +4356,11 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForCollectionType(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_TypeReference_SimpleType)
             {
                 var binder = ruleBinder;
                 AddResultsForSimpleType(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[42] = false;
         }
@@ -2975,25 +4375,21 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForPrimitiveType(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_SimpleType_ObjectType)
             {
                 var binder = ruleBinder;
                 AddResultsForObjectType(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_SimpleType_NullableType)
             {
                 var binder = ruleBinder;
                 AddResultsForNullableType(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_SimpleType_ClassType)
             {
                 var binder = ruleBinder;
                 AddResultsForClassType(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[43] = false;
         }
@@ -3230,13 +4626,11 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForOperationModifierBuilder(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_OperationModifier_OperationModifierReadonly)
             {
                 var binder = ruleBinder;
                 AddResultsForOperationModifierReadonly(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[52] = false;
         }
@@ -3389,37 +4783,31 @@ namespace MetaDslx.Languages.Meta.Binding
             {
                 var binder = ruleBinder;
                 AddResultsForNullLiteral(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Literal_BooleanLiteral)
             {
                 var binder = ruleBinder;
                 AddResultsForBooleanLiteral(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Literal_IntegerLiteral)
             {
                 var binder = ruleBinder;
                 AddResultsForIntegerLiteral(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Literal_DecimalLiteral)
             {
                 var binder = ruleBinder;
                 AddResultsForDecimalLiteral(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Literal_ScientificLiteral)
             {
                 var binder = ruleBinder;
                 AddResultsForScientificLiteral(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_Literal_StringLiteral)
             {
                 var binder = ruleBinder;
                 AddResultsForStringLiteral(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             _visited[59] = false;
         }

@@ -109,7 +109,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public virtual Binder CreateUseBinder(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, string autoPrefix = null, string autoSuffix = null, bool forCompletion = false)
         {
-            return new UseBinder(parentBinder, syntax, types, autoPrefix, autoSuffix, forCompletion);
+            return new UseBinder(parentBinder, syntax, types, true, autoPrefix, autoSuffix, forCompletion);
         }
 
         public virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null, bool forCompletion = false)

@@ -86,13 +86,21 @@ namespace MetaDslx.CodeAnalysis.Binding
             candidates.Free();
         }
 
+        public void AddCompletionSymbols(LookupCandidates result, LookupConstraints? constraints = null)
+        {
+            if (constraints is null) constraints = new LookupConstraints(this, diagnose: false);
+            this.AddLookupCandidateSymbols(result, constraints);
+        }
+
+        protected virtual bool ContinueLookup => true;
+
         /// <summary>
         /// Look for names in scope
         /// </summary>
         public void AddLookupCandidateSymbols(LookupCandidates result, LookupConstraints constraints)
         {
             constraints = this.AdjustConstraints(constraints);
-            for (var scope = this; scope != null; scope = scope.Next)
+            for (var scope = this; scope != null && scope.ContinueLookup; scope = scope.Next)
             {
                 scope.AddLookupCandidateSymbolsInSingleBinder(result, constraints);
             }

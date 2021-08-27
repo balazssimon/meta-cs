@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ScopeBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
             : base(next, syntax, forCompletion)
         {
-            Debug.Assert(!syntax.IsNull);
+            Debug.Assert(forCompletion || !syntax.IsNull);
         }
 
         public DeclaredSymbol Container

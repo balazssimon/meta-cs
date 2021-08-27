@@ -5329,7 +5329,7 @@ template GenerateCompletionBinderFactoryVisit(Antlr4ParserRule rule)
 ^
 public void Visit[rule.PlainName()]([rule.RedName()] parent) // [rule.RuleIndex]
 {
-    if (!parent.FullSpan.IntersectsWith(SearchSpan)) return;
+    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
     var position = parent.FullSpan.Start;
     var operation = CompletionSearchFlags.None;
     [GenerateCompletionBinderFactoryVisitBody(rule)]
@@ -5340,12 +5340,22 @@ end template
 template GenerateCompletionBinderFactoryVisitBody(Antlr4ParserRule rule)
 [loop (elem:rule.AllElements)]
     [if (elem.ContainsBinderAnnotations || elem.IsFixedToken)]
-        [if (elem.IsList)]
-if (parent.[elem.RedName()].FullSpan.IntersectsWith(SearchSpan))
+if ([if (!elem.IsList && !elem.IsToken && !elem.IsFixedTokenAltBlock && (elem.IsOptional || rule.IsSimpleAlt))]parent.[elem.RedName()] == null || [else if (elem.IsList)]parent.[elem.RedName()].Node == null || [end if]parent.[elem.RedName()].FullSpan.IntersectsWith(FullSpan))
 {
+        [if (elem.ContainsBinderAnnotations)]
+    if ([if (!elem.IsList && !elem.IsToken && !elem.IsFixedTokenAltBlock && (elem.IsOptional || rule.IsSimpleAlt))]parent.[elem.RedName()] == null || [else if (elem.IsList)]parent.[elem.RedName()].Node == null || [end if]!parent.[elem.RedName()].Span.Contains(Span))
+    {
+        operation = GetOperation(position, parent.[elem.RedName()][if (elem.IsList)].Node[end if]);
+        if (operation != CompletionSearchFlags.None)
+        {
+            AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
+        }
+    }
+        [end if]
+        [if (elem.IsList)]
     foreach (var item in parent.[elem.RedName()][if (elem.IsSeparated)].GetWithSeparators()[end if])
     {
-        operation = GetOperation(ref position, item);
+        operation = GetOperation(position, item);
         if (operation != CompletionSearchFlags.None)
         {
             [if (elem.IsSeparated)]
@@ -5358,42 +5368,31 @@ if (parent.[elem.RedName()].FullSpan.IntersectsWith(SearchSpan))
             [end if]
         }
     }
+        [else]
+    operation = this.GetOperation(position, parent.[elem.RedName()]);
+    if (operation != CompletionSearchFlags.None)
+    {
+            [if (elem.IsFixedTokenAltBlock)]
+        AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
+            [else if (elem.IsToken)]
+                [if (elem.ContainsBinderAnnotations)]
+        if (parent.[elem.RedName()].GetKind() == SyntaxKind.None || parent.[elem.RedName()].IsMissing) AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
+        else AddBinder(parent.[elem.RedName()], operation);
+                [else]
+        AddBinder(parent.[elem.RedName()], operation);
+                [end if]
+            [else]
+        if (parent.[elem.RedName()] == null || parent.[elem.RedName()].IsMissing) AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
+        else VisitCore(parent.[elem.RedName()]);
+            [end if]
+    }
+        [end if]
 }
-else
-{
-    position += parent.[elem.RedName()].FullSpan.Length;
-}
-        [else if (elem.IsFixedTokenAltBlock)]
-operation = this.GetOperation(ref position, parent.[elem.RedName()]);
-if (operation != CompletionSearchFlags.None)
-{
-    AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
-}
-        [else if (elem.IsToken)]
-operation = this.GetOperation(ref position, parent.[elem.RedName()]);
-if (operation != CompletionSearchFlags.None)
-{
-    [if (elem.ContainsBinderAnnotations)]
-    if (parent.[elem.RedName()].GetKind() == SyntaxKind.None) AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
-    else AddBinder(parent.[elem.RedName()], operation);
-    [else]
-    AddBinder(parent.[elem.RedName()], operation);
     [end if]
-}
-        [else]
-operation = this.GetOperation(ref position, parent.[elem.RedName()]);
-if (operation != CompletionSearchFlags.None)
-{
-    if (parent.[elem.RedName()] == null) AddResultsFor[rule.PlainName()](Use_[rule.PlainName()]_[elem.RedName()], operation, Compilation.GetBinder(parent));
-    else VisitCore(parent.[elem.RedName()]);
-}
-        [end if]
-    [else]
-        [if (elem.IsToken || elem.IsList || !elem.IsOptional)]
+    [if (elem.IsList || elem.IsToken || elem.IsFixedTokenAltBlock || !elem.IsOptional && !rule.IsSimpleAlt)]
 position += parent.[elem.RedName()].FullSpan.Length;
-        [else]
+    [else]
 if (parent.[elem.RedName()] != null) position += parent.[elem.RedName()].FullSpan.Length;
-        [end if]
     [end if]
 [end loop]
 end template
@@ -5456,7 +5455,7 @@ if (use == UnassignedUse[if (elem.ContainsBinderAnnotations)] || use == Use_[rul
     [else]
     AddResultsFor[elem.TypeRule.PlainName()](UnassignedUse, operation, binder);
     [end if]
-    [if (!elem.IsOptional)]
+    [if (!elem.IsOptional && !rule.IsSimpleAlt)]
     use = FinishedUse;
     [end if]
 }

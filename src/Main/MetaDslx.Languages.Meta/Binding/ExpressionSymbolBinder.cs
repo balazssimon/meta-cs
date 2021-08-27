@@ -12,7 +12,7 @@ namespace MetaDslx.Languages.Meta.Binding
     public class ExpressionSymbolBinder : UseBinder
     {
         public ExpressionSymbolBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion)
-            : base(next, syntax, ImmutableArray.Create(typeof(ExpressionSymbol)), null, "ExpressionSymbol", forCompletion)
+            : base(next, syntax, ImmutableArray.Create(typeof(ExpressionSymbol)), false, null, "ExpressionSymbol", forCompletion)
         {
         }
 

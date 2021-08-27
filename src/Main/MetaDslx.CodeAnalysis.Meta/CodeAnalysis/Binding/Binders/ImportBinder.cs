@@ -20,5 +20,18 @@ namespace MetaDslx.CodeAnalysis.Binding
         public bool IsExtern => _isExtern;
         public bool IsStatic => _isStatic;
 
+        public override bool IsValidCompletionBinder
+        {
+            get
+            {
+                var binder = this.Next;
+                while (binder != null)
+                {
+                    if ((binder is ISymbolBoundary) && binder.IsCompletionBinder) return false;
+                    binder = binder.Next;
+                }
+                return true;
+            }
+        }
     }
 }

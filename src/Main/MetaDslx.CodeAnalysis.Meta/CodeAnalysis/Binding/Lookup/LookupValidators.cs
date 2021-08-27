@@ -9,6 +9,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static readonly MustBeInstanceLookupValidator MustBeInstance = new MustBeInstanceLookupValidator();
         public static readonly MustNotBeNamespaceLookupValidator MustNotBeNamespace = new MustNotBeNamespaceLookupValidator();
         public static readonly NamespaceOrTypeLookupValidator NamespaceOrType = new NamespaceOrTypeLookupValidator();
+        public static readonly MustBeModelObjectLookupValidator MustBeModelObject = new MustBeModelObjectLookupValidator();
 
     }
 }
