@@ -33,7 +33,7 @@ namespace MetaDslx.Bootstrap.SourceGenerators
             }
             Console.WriteLine("===============================");
 
-            var generator = new StandaloneSourceSymbolSourceGenerator();
+            var generator = new StandaloneSymbolSourceGenerator();
             var context = StandaloneGeneratorExecutionContext.FromParams(preCompilation);
             generator.Execute(context);
             foreach (var hs in context.GeneratedSources)

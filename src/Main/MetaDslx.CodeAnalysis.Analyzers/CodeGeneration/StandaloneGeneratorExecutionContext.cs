@@ -1,12 +1,11 @@
-﻿using Microsoft.CodeAnalysis;
+﻿extern alias msca;
+using msca::Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Analyzers.CodeGeneration
 {
-    using Compilation = Microsoft.CodeAnalysis.Compilation;
-
     public abstract class StandaloneGeneratorExecutionContext
     {
         private readonly List<(string HintName, string Source)> _generatedSources;

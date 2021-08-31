@@ -1,0 +1,924 @@
+﻿namespace MetaDslx.CodeAnalysis.Analyzers.Symbols;
+generator SymbolGenerator;
+
+using MetaDslx.CodeAnalysis.Symbols;
+
+template GenerateSymbol(SymbolGenerationInfo symbol)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using Roslyn.Utilities;
+^
+#nullable enable
+^
+[GeneratePartialSymbol(symbol)]
+[if (symbol.SymbolParts != SymbolParts.None)]
+^
+[GenerateCompletionSymbol(symbol)]
+[if (symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+^
+[GenerateMetadataSymbol(symbol)]
+[end if]
+[if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+^
+[GenerateSourceSymbol(symbol)]
+[end if]
+[end if]
+end template
+
+template GeneratePartialSymbol(SymbolGenerationInfo symbol)
+namespace [symbol.NamespaceName]
+{
+	public [if (!symbol.ExistingTypeInfo.IsSealed)]abstract [end if]partial class [symbol.Name]
+	{
+        public static[if (!symbol.IsSymbolClass)] new[end if] class CompletionParts
+        {
+            [loop (partName:symbol.GetCompletionPartNames())]
+            public static readonly CompletionPart [partName] = [symbol.GetCompletionPartValue(partName)];
+            [end loop]
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(true); separator comma = ", ")][partName][comma][end loop]);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
+        }
+        [if (!symbol.IsAbstract)]
+^
+        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
+        {
+            if (visitor is ISymbolVisitor isv) isv.Visit(this);
+        }
+^
+        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TResult>(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor<TResult> visitor)
+        {
+            if (visitor is ISymbolVisitor<TResult> isv) return isv.Visit(this);
+            else return default(TResult);
+        }
+^
+        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TArgument, TResult>(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            if (visitor is ISymbolVisitor<TArgument, TResult> isv) return isv.Visit(this, argument);
+            else return default(TResult);
+        }
+        [end if]
+	}
+}
+end template
+
+template GenerateCompletionSymbol(SymbolGenerationInfo symbol)
+namespace [symbol.NamespaceName].Completion
+{
+	public abstract partial class Completion[symbol.Name][if (symbol.ExistingCompletionTypeInfo.BaseType == null)] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if][end if]
+	{
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        private readonly Symbol _container;
+        [end if]
+        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
+        private readonly object? _modelObject;
+        [end if]
+        private readonly CompletionState _state;
+        private ImmutableArray<Symbol> _childSymbols;
+        private string _name;
+        private string _metadataName;
+        [loop (prop:symbol.Properties)]
+        private [prop.Type] [prop.FieldName];
+        [end loop]
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains(".ctor"))]
+^
+        public Completion[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError = false)
+        {
+            _container = container;
+            [if(symbol.ModelObjectOption == ParameterOption.Required)]
+            if (!isError && modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            [end if]
+            [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
+            _modelObject = modelObject;
+            [end if]
+            _state = CompletionParts.CompletionGraph.CreateState();
+        }
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language"))]
+^
+        public override Language Language => ContainingModule?.Language ?? Language.None;
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SymbolFactory"))]
+^
+        public SymbolFactory? SymbolFactory => ContainingModule?.SymbolFactory;
+        [end if]
+        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
+            [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObject"))]
+^
+        public object ModelObject => _modelObject;
+            [end if]
+            [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObjectType"))]
+^
+        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
+            [end if]
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol"))]
+^
+        public override Symbol ContainingSymbol => _container;
+        [end if]
+        [end if]
+^
+        protected abstract ISymbolImplementation SymbolImplementation { get; }
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ChildSymbols"))]
+^
+        public override ImmutableArray<Symbol> ChildSymbols 
+        {
+            get
+            {
+                this.ForceComplete(CompletionGraph.FinishCreatingChildren, null, default);
+                return _childSymbols;
+            }
+        }
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Name"))]
+^
+        public override string Name 
+        {
+            get
+            {
+                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);
+                return _name;
+            }
+        }
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("MetadataName"))]
+^
+        public override string MetadataName 
+        {
+            get
+            {
+                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);
+                return _metadataName;
+            }
+        }
+        [end if]
+        [loop (prop:symbol.Properties)]
+            [if (!symbol.ExistingCompletionTypeInfo.Members.Contains(prop.Name))]
+^
+        public override [prop.Type] [prop.Name]
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.[prop.FinishCompletionPartName], null, default);
+                return [prop.FieldName];
+            }
+        }
+            [end if]
+        [end loop]
+^
+        #region Completion
+^
+        public sealed override bool RequiresCompletion => true;
+^
+        public sealed override bool HasComplete(CompletionPart part)
+        {
+            return _state.HasComplete(part);
+        }
+^
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation? locationOpt, CancellationToken cancellationToken)
+        {
+            if (completionPart != null && _state.HasComplete(completionPart)) return;
+            if (completionPart != null && !CompletionParts.All.Contains(completionPart)) throw new ArgumentException(nameof(completionPart));
+            while (true)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var incompletePart = _state.NextIncompletePart;
+                if (incompletePart == CompletionGraph.StartInitializing || incompletePart == CompletionGraph.FinishInitializing)
+                {
+                    if (_state.NotePartComplete(CompletionGraph.StartInitializing))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _name = CompleteSymbolProperty_Name(diagnostics, cancellationToken);
+                        _metadataName = CompleteSymbolProperty_MetadataName(diagnostics, cancellationToken);
+                        CompleteInitializingSymbol(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionGraph.FinishInitializing);
+                    }
+                }
+                else if (incompletePart == CompletionGraph.StartCreatingChildren || incompletePart == CompletionGraph.FinishCreatingChildren)
+                {
+                    if (_state.NotePartComplete(CompletionGraph.StartCreatingChildren))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _childSymbols = CompleteCreatingChildSymbols(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionGraph.FinishCreatingChildren);
+                    }
+                }
+                [loop (part:symbol.CompletionParts)]
+                    [if (part.IsLocked)]
+                else if (incompletePart == CompletionParts.[part.StartCompletionPartName] || incompletePart == CompletionParts.[part.FinishCompletionPartName])
+                {
+                    if (_state.NotePartComplete(CompletionParts.[part.StartCompletionPartName]))
+                    {
+                        [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        [end if]
+                        [if (part is SymbolPropertyGenerationInfo)][((SymbolPropertyGenerationInfo)part).FieldName] = [end if][part.CompleteMethodName]([part.CompleteMethodArgList]);
+                        [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        [end if]
+                        _state.NotePartComplete(CompletionParts.[part.FinishCompletionPartName]);
+                    }
+                }
+                    [else]
+                else if (incompletePart == CompletionParts.[part.CompletionPartName])
+                {
+                    [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
+                    var diagnostics = DiagnosticBag.GetInstance();
+                    [end if]
+                    [part.CompleteMethodName]([part.CompleteMethodArgList]);
+                    [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
+                    AddSymbolDiagnostics(diagnostics);
+                    diagnostics.Free();
+                    [end if]
+                    _state.NotePartComplete(CompletionParts.[part.CompletionPartName]);
+                }
+                    [end if]
+                [end loop]
+                else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)
+                {
+                    if (_state.NotePartComplete(CompletionGraph.StartComputingNonSymbolProperties))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CompleteNonSymbolProperties(locationOpt, diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionGraph.FinishComputingNonSymbolProperties);
+                    }
+                }
+                else if (incompletePart == CompletionGraph.ChildrenCompleted)
+                {
+                    var diagnostics = DiagnosticBag.GetInstance();
+                    CompleteImports(locationOpt, diagnostics, cancellationToken);
+                    AddSymbolDiagnostics(diagnostics);
+                    diagnostics.Free();
+
+                    bool allCompleted = true;
+                    if (locationOpt == null)
+                    {
+                        foreach (var child in _childSymbols)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            child.ForceComplete(null, locationOpt, cancellationToken);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var child in _childSymbols)
+                        {
+                            ForceCompleteChildByLocation(locationOpt, child, cancellationToken);
+                            allCompleted = allCompleted && child.HasComplete(CompletionGraph.All);
+                        }
+                    }
+
+                    if (!allCompleted)
+                    {
+                        // We did not complete all members, so just kick out now.
+                        var allParts = CompletionParts.AllWithLocation;
+                        _state.SpinWaitComplete(allParts, cancellationToken);
+                        return;
+                    }
+
+                    // We've completed all members, proceed to the next iteration.
+                    _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
+                }
+                else if (incompletePart == CompletionGraph.StartValidatingSymbol || incompletePart == CompletionGraph.FinishValidatingSymbol)
+                {
+                    if (_state.NotePartComplete(CompletionGraph.StartValidatingSymbol))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CompleteValidatingSymbol(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionGraph.FinishValidatingSymbol);
+                    }
+                }
+                else if (incompletePart == null)
+                {
+                    return;
+                }
+                else
+                {
+                    // This assert will trigger if we forgot to handle any of the completion parts
+                    Debug.Assert(!CompletionParts.All.Contains(incompletePart));
+                    // any other values are completion parts intended for other kinds of symbols
+                    _state.NotePartComplete(incompletePart);
+                }
+                if (completionPart != null && _state.HasComplete(completionPart)) return;
+                _state.SpinWaitComplete(incompletePart, cancellationToken);
+            }
+            throw ExceptionUtilities.Unreachable;
+        }
+^
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_Name"))]
+^
+        protected virtual string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SymbolImplementation.AssignNameProperty(this, diagnostics);
+        }
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_MetadataName"))]
+^
+        protected virtual string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SymbolImplementation.AssignMetadataNameProperty(this, diagnostics);
+        }
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteInitializingSymbol"))]
+^
+        protected virtual void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteCreatingChildSymbols"))]
+^
+        protected virtual ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
+        }
+        [end if]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteImports"))]
+^
+        protected virtual void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
+        }
+        [end if]
+        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
+            [if (!symbol.ExistingCompletionTypeInfo.Members.Contains(part.CompleteMethodName))]
+^
+        protected virtual [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
+        {
+            [if (part is SymbolPropertyGenerationInfo)]
+                [var prop = (SymbolPropertyGenerationInfo)part]
+                [if (prop.IsCollection)]
+            SymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken, out var result);
+                [else]
+            SymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken, out var result);
+                [end if]
+            [end if]
+            return result;
+        }
+            [end if]
+        [end loop]
+        [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteNonSymbolProperties"))]
+^
+        protected virtual void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
+        }
+        [end if]
+        #endregion
+    }
+}
+end template
+
+template GenerateMetadataSymbol(SymbolGenerationInfo symbol)
+namespace [symbol.NamespaceName].Metadata
+{
+	public partial class Metadata[symbol.Name][if (symbol.ExistingMetadataTypeInfo.BaseType == null)] : [symbol.NamespaceName].Completion.Completion[symbol.Name][end if]
+	{
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+        public Metadata[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError = false)
+            : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], isError)
+        {
+        }
+        [end if]
+        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations"))]
+^
+        public override ImmutableArray<Location> Locations => this.ContainingModule?.Locations ?? ImmutableArray<Location>.Empty;
+        [end if]
+        [if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+        [end if]
+        [end if]
+^
+        protected override ISymbolImplementation SymbolImplementation => MetadataSymbolImplementation.Instance;
+^
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        public partial class Error : Metadata[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
+        {
+            private readonly string _name;
+            private readonly string _metadataName;
+            private DiagnosticInfo _errorInfo;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags _flags;
+            private ImmutableArray<Symbol> _candidateSymbols;
+^
+            [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            private Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
+                : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
+            {
+                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
+                _name = name ?? string.Empty;
+                _metadataName = metadataName ?? _name;
+                _kind = kind;
+                _errorInfo = errorInfo;
+                _candidateSymbols = candidateSymbols;
+                _flags = flags;
+            }
+
+            public Error(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.None[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
+            {
+            }
+
+            public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(wrappedSymbol.ContainingSymbol, wrappedSymbol.Name, wrappedSymbol.MetadataName, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject : (wrappedSymbol as IModelSymbol)?.ModelObject[end if])
+            {
+            }
+^
+            protected virtual Error Update(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
+            {
+                return new Error(container, name, metadataName, kind, errorInfo, candidateSymbols, flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            }
+            [end if]
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsUnreported(DiagnosticInfo? errorInfo = null)
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsReported(DiagnosticInfo? errorInfo = null)
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, _name, _metadataName, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags & ~MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
+            {
+                return _kind == kind ? this :
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, CandidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<MetaDslx.CodeAnalysis.Symbols.Symbol> candidateSymbols)
+            {
+                return _kind == kind && CandidateSymbols == candidateSymbols ? this :
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, ErrorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<MetaDslx.CodeAnalysis.Symbols.Symbol> candidateSymbols)
+            {
+                return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
+                    Update(this.ContainingSymbol, _name, _metadataName, kind, errorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public override string Name => _name;
+^
+            public override string MetadataName => _metadataName;
+^
+            public sealed override bool IsError => true;
+^
+            public bool IsUnreported => _flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported);
+^
+            public MetaDslx.CodeAnalysis.Symbols.ErrorKind ErrorKind => _kind;
+^
+            public ImmutableArray<Symbol> CandidateSymbols
+            {
+                get
+                {
+                    if (_candidateSymbols.IsDefault)
+                    {
+                        System.Collections.Immutable.ImmutableInterlocked.InterlockedInitialize(ref _candidateSymbols, MakeCandidateSymbols());
+                    }
+                    return _candidateSymbols;
+                }
+            }
+^
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+^
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return ErrorSymbolImplementation.MakeErrorInfo(this);
+            }
+^
+            protected virtual ImmutableArray<Symbol> MakeCandidateSymbols()
+            {
+                return ErrorSymbolImplementation.MakeCandidateSymbols(this);
+            }
+^
+            protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _name;
+            }
+^
+            protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _metadataName;
+            }
+        }
+        [end if]
+    }
+}
+end template
+
+template GenerateSourceSymbol(SymbolGenerationInfo symbol)
+namespace [symbol.NamespaceName].Source
+{
+	public partial class Source[symbol.Name][if (symbol.ExistingSourceTypeInfo.BaseType == null)] : [symbol.NamespaceName].Completion.Completion[symbol.Name][if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol[end if][end if]
+	{
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        private readonly MergedDeclaration _declaration;
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey"))]
+        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+^
+		public Source[symbol.Name](Symbol containingSymbol, MergedDeclaration declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError = false)
+            : base(containingSymbol[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], isError)
+        {
+            if (declaration is null) throw new ArgumentNullException(nameof(declaration));
+            _declaration = declaration;
+		}
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration"))]
+^
+        public MergedDeclaration MergedDeclaration => _declaration;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations"))]
+^
+        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
+^
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder"))]
+^
+        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)
+        {
+            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));
+            return FindBinders.FindSymbolBinder(this, reference);
+        }
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol"))]
+^
+        public Symbol GetChildSymbol(SyntaxReference syntax)
+        {
+            foreach (var child in this.ChildSymbols)
+            {
+                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))
+                {
+                    return child;
+                }
+            }
+            return null;
+        }
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey"))]
+        public override LexicalSortKey GetLexicalSortKey()
+        {
+            if (!_lazyLexicalSortKey.IsInitialized)
+            {
+                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));
+            }
+            return _lazyLexicalSortKey;
+        }
+        [end if]
+        [end if]
+^
+        protected override ISymbolImplementation SymbolImplementation => SourceSymbolImplementation.Instance;
+^
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        public partial class Error : Source[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
+        {
+            private readonly string _name;
+            private readonly string _metadataName;
+            private DiagnosticInfo _errorInfo;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorKind _kind;
+            private readonly MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags _flags;
+            private ImmutableArray<Symbol> _candidateSymbols;
+^
+            [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            private Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
+                : base(container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
+            {
+                Debug.Assert(!flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported) || errorInfo != null);
+                _name = declaration.Name ?? string.Empty;;
+                _metadataName = declaration.MetadataName ?? _name;
+                _kind = kind;
+                _errorInfo = errorInfo;
+                _candidateSymbols = candidateSymbols;
+                _flags = flags;
+            }
+
+            public Error(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(container, declaration, kind, errorInfo, candidateSymbols, unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.None[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
+            {
+            }
+
+            public Error(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : this(wrappedSymbol.ContainingSymbol, (wrappedSymbol as ISourceSymbol).MergedDeclaration, kind, errorInfo, ImmutableArray.Create<Symbol>(wrappedSymbol), unreported ? MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.UnreportedWrapped : MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Wrapped[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject is not null ? modelObject :  (wrappedSymbol as IModelSymbol)?.ModelObject[end if])
+            {
+            }
+^
+            protected virtual Error Update(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[end if])
+            {
+                return new Error(container, declaration, kind, errorInfo, candidateSymbols, flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            }
+            [end if]
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsReported(DiagnosticInfo? errorInfo = null)
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags & ~MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsUnreported(DiagnosticInfo? errorInfo = null)
+            {
+                return this.IsUnreported ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, _kind, errorInfo is null ? ErrorInfo : errorInfo, CandidateSymbols, _flags | MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind)
+            {
+                return _kind == kind ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, CandidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, ImmutableArray<MetaDslx.CodeAnalysis.Symbols.Symbol> candidateSymbols)
+            {
+                return _kind == kind && CandidateSymbols == candidateSymbols ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, ErrorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public MetaDslx.CodeAnalysis.Symbols.Symbol AsKind(MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo errorInfo, ImmutableArray<MetaDslx.CodeAnalysis.Symbols.Symbol> candidateSymbols)
+            {
+                return _kind == kind && ErrorInfo == errorInfo && CandidateSymbols == candidateSymbols ? this :
+                    Update(this.ContainingSymbol, this.MergedDeclaration, kind, errorInfo, candidateSymbols, _flags[if(symbol.ModelObjectOption != ParameterOption.Disabled)], this.ModelObject[end if]);
+            }
+^
+            public override string Name => _name;
+^
+            public override string MetadataName => _metadataName;
+^
+            public sealed override bool IsError => true;
+^
+            public bool IsUnreported => _flags.HasFlag(MetaDslx.CodeAnalysis.Symbols.ErrorSymbolFlags.Unreported);
+^
+            public MetaDslx.CodeAnalysis.Symbols.ErrorKind ErrorKind => _kind;
+^
+            public ImmutableArray<Symbol> CandidateSymbols
+            {
+                get
+                {
+                    if (_candidateSymbols.IsDefault)
+                    {
+                        System.Collections.Immutable.ImmutableInterlocked.InterlockedInitialize(ref _candidateSymbols, MakeCandidateSymbols());
+                    }
+                    return _candidateSymbols;
+                }
+            }
+^
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+^
+            public DiagnosticInfo? UseSiteDiagnosticInfo => IsUnreported ? ErrorInfo : null;
+^
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
+^
+            protected virtual ImmutableArray<Symbol> MakeCandidateSymbols()
+            {
+                return ImmutableArray<Symbol>.Empty;
+            }
+^
+            protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _name;
+            }
+^
+            protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+            {
+                return _metadataName;
+            }
+        }
+        [end if]
+	}
+}
+end template
+
+template GenerateWrappedSymbol(SymbolGenerationInfo symbol)
+namespace [symbol.NamespaceName].Wrapped
+{
+	public partial class Wrapped[symbol.Name] : [symbol.NamespaceName].Completion.Completion[symbol.Name]
+	{
+        private readonly [symbol.NamespaceName].[symbol.Name] _wrappedSymbol;
+
+        public Wrapped[symbol.Name]([symbol.NamespaceName].[symbol.Name] wrappedSymbol)
+            : base(wrappedSymbol.ContainingSymbol[if(symbol.ModelObjectOption != ParameterOption.Disabled)], ((IModelSymbol)wrappedSymbol).ModelObject[end if], wrappedSymbol.IsError)
+        {
+            _wrappedSymbol = wrappedSymbol;
+        }
+^
+        public override ImmutableArray<Location> Locations => _wrappedSymbol.Locations;
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _wrappedSymbol.DeclaringSyntaxReferences;
+^
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return _wrappedSymbol.Name;
+        }
+^
+        protected override string CompleteSymbolProperty_MetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return _wrappedSymbol.MetadataName;
+        }
+^
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            _wrappedSymbol.CompleteInitializingSymbol(diagnostics, cancellationToken);
+        }
+^
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return _wrappedSymbol.CompleteCreatingChildSymbols(diagnostics, cancellationToken);
+        }
+^
+        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            _wrappedSymbol.CompleteImports(locationOpt, diagnostics, cancellationToken);
+        }
+        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
+^
+        protected override [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
+        {
+            [if (part.CompleteMethodReturnType != "void")]return [end if]_wrappedSymbol.[part.CompleteMethodName]([part.CompleteMethodArgList]);
+        }
+        [end loop]
+^
+        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            _wrappedSymbol.CompleteNonSymbolProperties(locationOpt, diagnostics, cancellationToken);
+        }
+    }
+}
+end template
+
+template GenerateVisitor(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
+^
+#nullable enable
+^
+namespace [namespaceName]
+{
+	public interface ISymbolVisitor
+	{
+        [loop (symbol: symbols where !symbol.IsAbstract)]
+        void Visit([symbol.Name] symbol);
+        [end loop]
+	}
+^
+	public interface ISymbolVisitor<TResult>
+	{
+        [loop (symbol: symbols where !symbol.IsAbstract)]
+        TResult Visit([symbol.Name] symbol);
+        [end loop]
+	}
+^
+	public interface ISymbolVisitor<TArgument, TResult>
+	{
+        [loop (symbol: symbols where !symbol.IsAbstract)]
+        TResult Visit([symbol.Name] symbol, TArgument argument);
+        [end loop]
+	}
+}
+end template
+
+template GenerateFactory(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
+using MetaDslx.CodeAnalysis.Declarations;
+^
+#nullable enable
+^
+namespace [namespaceName].Factory
+{
+    [loop (symbol: symbols where !symbol.IsAbstract && symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol" && symbol.SymbolParts != SymbolParts.None)]
+	public class [symbol.Name]Factory : IGeneratedSymbolFactory
+	{
+        public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+            throw new NotImplementedException("There is no Metadata[symbol.Name] implemented.");
+            [else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateMetadataSymbol for Metadata[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Metadata.Metadata[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, string name, string metadataName, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+            throw new NotImplementedException("There is no Metadata[symbol.Name] implemented.");
+            [else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateMetadataSymbol for Metadata[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Metadata.Metadata[symbol.Name].Error(container, name, metadataName, kind, errorInfo, candidateSymbols, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateMetadataErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+            throw new NotImplementedException("There is no Metadata[symbol.Name] implemented.");
+            [else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateMetadataSymbol for Metadata[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Metadata.Metadata[symbol.Name].Error(wrappedSymbol, kind, errorInfo, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+            throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
+            [else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Source.Source[symbol.Name](container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, ImmutableArray<Symbol> candidateSymbols, bool unreported, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+            throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
+            [else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Source.Source[symbol.Name].Error(container, declaration, kind, errorInfo, candidateSymbols, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateSourceErrorSymbol(Symbol wrappedSymbol, MetaDslx.CodeAnalysis.Symbols.ErrorKind kind, DiagnosticInfo? errorInfo, bool unreported, object? modelObject)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+            throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
+            [else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Source.Source[symbol.Name].Error(wrappedSymbol, kind, errorInfo, unreported[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+	}
+^
+    [end loop]
+}
+end template
+

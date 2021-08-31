@@ -35,7 +35,11 @@
     <!--PackageReference Include="MetaDslx.CodeAnalysis" Version="$(VersionPrefix)" PrivateAssets="all" /-->
     <!--PackageReference Include="MetaDslx.BuildTools" Version="$(VersionPrefix)" PrivateAssets="all" /-->
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <None Include="..\MetaDslx.CodeAnalysis.Analyzers\$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="MetaDslx.ProjectItemsSchema.xml" Pack="true" PackagePath="build\Rules" CopyToOutputDirectory="PreserveNewest" />
     <None Include="MetaGenerator.xml" Pack="true" PackagePath="build\Rules" CopyToOutputDirectory="PreserveNewest" />

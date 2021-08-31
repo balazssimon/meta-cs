@@ -20,7 +20,7 @@ namespace MetaDslx.CodeGeneration
         }
 
         public bool EndOfStream => _code.Length == 0;
-
+        
         public ReadOnlySpan<char> ReadLine()
         {
             int indexR = _code.IndexOf('\r');

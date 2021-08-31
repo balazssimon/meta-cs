@@ -7,7 +7,7 @@
   <PropertyGroup>
     <MajorVersion>0</MajorVersion>
     <MinorVersion>11</MinorVersion>
-    <PatchVersion>56</PatchVersion>
+    <PatchVersion>64</PatchVersion>
     <PreReleaseVersionLabel>0</PreReleaseVersionLabel>
     <VersionPrefix>$(MajorVersion).$(MinorVersion).$(PatchVersion)</VersionPrefix>
     <!--
@@ -15,7 +15,7 @@
       Keep the setting conditional. The toolset sets the assembly version to 42.42.42.42 if not set explicitly.
     -->
     <AssemblyVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(MajorVersion).$(MinorVersion).0.0</AssemblyVersion>
-    <BootstrapVersion>0.11.55</BootstrapVersion>
+    <BootstrapVersion>0.11.63</BootstrapVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -35,7 +35,7 @@
     <Antlr4RuntimeStandardVersion>4.9.1</Antlr4RuntimeStandardVersion>
     <MicrosoftDependencyInjectionVersion>5.0.1</MicrosoftDependencyInjectionVersion>
     <MicrosoftBuildVersion>16.8.0</MicrosoftBuildVersion>
-    <MicrosoftCodeAnalysisCSharpVersion>3.9.0</MicrosoftCodeAnalysisCSharpVersion>
+    <MicrosoftCodeAnalysisCSharpVersion>3.8.0</MicrosoftCodeAnalysisCSharpVersion>
     <MicrosoftCodeAnalysisAnalyzersVersion>3.3.2</MicrosoftCodeAnalysisAnalyzersVersion>
     <MicrosoftSourceLinkGitHubVersion>1.0.0</MicrosoftSourceLinkGitHubVersion>
     <MicrosoftNetDskTestVersion>16.6.1</MicrosoftNetDskTestVersion>

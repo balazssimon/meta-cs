@@ -9,13 +9,13 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <IsPackable>false</IsPackable>
     <MetaDslxDisableAntlr4RoslynGenerator>true</MetaDslxDisableAntlr4RoslynGenerator>
+    <MetaDslxDisableSymbolSourceGenerator>false</MetaDslxDisableSymbolSourceGenerator>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Remove="Binding\BoundDocumentation.cs" />
-    <Compile Remove="Binding\BoundOpposite.cs" />
-    <Compile Remove="Binding\MetaBoundKind.cs" />
-    <Compile Remove="Binding\MetaBoundNodeFactoryVisitor.cs" />
-    <Compile Remove="Binding\MetaIsBindableNodeVisitor.cs" />
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/*/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>

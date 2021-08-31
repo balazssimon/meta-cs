@@ -31,23 +31,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(MicrosoftCodeAnalysisCSharpVersion)" PrivateAssets="all">
+      <Aliases>msca</Aliases>
+    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisCSharpVersion)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(MicrosoftCodeAnalysisAnalyzersVersion)" PrivateAssets="all" />
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="$(Antlr4RuntimeStandardVersion)" PrivateAssets="all" GeneratePathProperty="true" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Meta.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="license.txt" Pack="true" PackagePath="" />
-  </ItemGroup>  
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeGeneration\CodeBuilder.cs" />
+    <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeGeneration\CodeBuilderExtensions.cs" />
+    <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeGeneration\CodeReader.cs" />
+    <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols\CodeGeneration\SymbolParts.cs" />
+    <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols\CodeGeneration\ParameterOption.cs" />
+    <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols\CodeGeneration\CompleteMethodParameters.cs" />
+    <Compile Include="..\..\Roslyn\PooledObjects\ObjectPool`1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MetaGenerator Update="Symbols\SymbolGenerator.mgen">
+      <AutomaticOutputLocation></AutomaticOutputLocation>
+    </MetaGenerator>
+  </ItemGroup>
+  
 </Project>
