@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Analyzers.CodeGeneration
+namespace MetaDslx.CodeAnalysis.Analyzers.Standalone
 {
     public abstract class StandaloneGeneratorExecutionContext
     {

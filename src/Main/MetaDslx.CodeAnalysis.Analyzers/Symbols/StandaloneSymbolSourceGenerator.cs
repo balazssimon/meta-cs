@@ -1,7 +1,7 @@
 ﻿extern alias msca;
 using msca::Microsoft.CodeAnalysis;
 
-using MetaDslx.CodeAnalysis.Analyzers.CodeGeneration;
+using MetaDslx.CodeAnalysis.Analyzers.Standalone;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

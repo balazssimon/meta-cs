@@ -3,31 +3,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>MetaDslx.CodeAnalysis.Analyzers</RootNamespace>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <NoStdLib>true</NoStdLib>
-    <ApplyNgenOptimization>partial</ApplyNgenOptimization>
-
-    <!-- NuGet -->
-    <IsPackable>true</IsPackable>
-    <Authors>Balazs Simon</Authors>
-    <PackageId>MetaDslx.CodeAnalysis.Analyzers</PackageId>
-    <PackageDescription>
-      Code analyzers for the MetaDslx metamodeling platform.
-    </PackageDescription>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
-    <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
-    <!-- This is useful if you generate files during the build -->
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,14 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="license.txt" Pack="true" PackagePath="" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeGeneration\CodeBuilder.cs" />
     <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeGeneration\CodeBuilderExtensions.cs" />
     <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeGeneration\CodeReader.cs" />
@@ -55,12 +23,6 @@
     <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols\CodeGeneration\ParameterOption.cs" />
     <Compile Include="..\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols\CodeGeneration\CompleteMethodParameters.cs" />
     <Compile Include="..\..\Roslyn\PooledObjects\ObjectPool`1.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <MetaGenerator Update="Symbols\SymbolGenerator.mgen">
-      <AutomaticOutputLocation></AutomaticOutputLocation>
-    </MetaGenerator>
   </ItemGroup>
   
 </Project>

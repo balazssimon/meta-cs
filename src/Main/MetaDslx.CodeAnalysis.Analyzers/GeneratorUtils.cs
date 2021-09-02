@@ -8,6 +8,8 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Analyzers
 {
+    using INamedTypeSymbol = msca::Microsoft.CodeAnalysis.INamedTypeSymbol;
+
     internal static class GeneratorUtils
     {
         private const string SourceItemGroupMetadata = "build_metadata.AdditionalFiles.SourceItemGroup";

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
-using MetaDslx.CodeAnalysis.Analyzers.CodeGeneration;
+using MetaDslx.CodeAnalysis.Analyzers.Standalone;
 
 namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
 {
