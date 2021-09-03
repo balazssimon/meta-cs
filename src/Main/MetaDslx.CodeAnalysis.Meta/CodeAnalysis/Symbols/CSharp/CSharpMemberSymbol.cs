@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
 
-        internal CSharpSymbol CSharpSymbol => _csharpSymbol;
+        public ISymbol CSharpSymbol => _csharpSymbol.ISymbol;
 
         public override string Name => _csharpSymbol.Name;
 

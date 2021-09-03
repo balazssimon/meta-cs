@@ -1781,6 +1781,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPrimitiveTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaPrimitiveType
 		{
@@ -9078,7 +9079,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaPrimitiveType.Documentation = null;
 			MetaPrimitiveType.Name = "MetaPrimitiveType";
 			MetaPrimitiveType.SetNamespaceLazy(() => __tmp4);
-			MetaPrimitiveType.SymbolType = null;
+			MetaPrimitiveType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol);
 			MetaPrimitiveType.IsAbstract = false;
 			MetaPrimitiveType.SuperClasses.AddLazy(() => MetaNamedType);
 			MetaPrimitiveType.Properties.AddLazy(() => MetaPrimitiveType_DotNetName);

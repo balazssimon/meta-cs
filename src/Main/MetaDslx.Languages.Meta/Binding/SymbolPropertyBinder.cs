@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Symbols;
 using System.Threading;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
@@ -20,7 +21,7 @@ namespace MetaDslx.Languages.Meta.Binding
         private DeclaredSymbol _symbolType;
 
         public SymbolPropertyBinder(Binder next, SyntaxNodeOrToken syntax, bool forCompletion) 
-            : base(next, syntax, ImmutableArray<Type>.Empty, false, null, null, forCompletion)
+            : base(next, syntax, ImmutableArray.Create(typeof(CSharpMemberSymbol)), false, null, null, forCompletion)
         {
         }
 
@@ -94,5 +95,20 @@ namespace MetaDslx.Languages.Meta.Binding
             return base.AdjustConstraints(constraints).WithQualifier(symbolType).WithAdditionalValidators(LookupValidators.MustBeInstance);
         }
 
+        protected override bool IsViable(DeclaredSymbol symbol, LookupConstraints constraints)
+        {
+            var csProp = (symbol as CSharpMemberSymbol)?.CSharpSymbol;
+            if (csProp is not null && csProp.Kind == SymbolKind.Property)
+            {
+                foreach (var attr in csProp.GetAttributes())
+                {
+                    if (attr.AttributeClass is not null && "global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute".Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

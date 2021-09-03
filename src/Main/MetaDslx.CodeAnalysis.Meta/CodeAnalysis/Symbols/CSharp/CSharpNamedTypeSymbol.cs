@@ -39,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override ImmutableArray<DeclaredSymbol> Members => CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers());
 
-        internal CSharpSymbols.NamedTypeSymbol CSharpSymbol => _csharpSymbol;
+        public INamedTypeSymbol CSharpSymbol => (INamedTypeSymbol)_csharpSymbol.ISymbol;
 
         public override Symbol ContainingSymbol => CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
 

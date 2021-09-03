@@ -25,11 +25,9 @@ namespace MetaDslx.Languages.Meta.Symbols
         [SymbolCompletionPart]
         protected virtual void CompleteAssociation(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            if (Left is IModelSymbol left && Right is IModelSymbol right)
+            if (Left is IModelSymbol left && Right is IModelSymbol right && left.ModelObject is MetaPropertyBuilder leftProp && right.ModelObject is MetaPropertyBuilder rightProp)
             {
-                var sourceProp = (MetaPropertyBuilder)left.ModelObject;
-                var targetProp = (MetaPropertyBuilder)right.ModelObject;
-                sourceProp.OppositeProperties.Add(targetProp);
+                leftProp.OppositeProperties.Add(rightProp);
             }
         }
     }

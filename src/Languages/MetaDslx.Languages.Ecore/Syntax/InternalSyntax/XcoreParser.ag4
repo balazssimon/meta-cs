@@ -1,0 +1,323 @@
+﻿parser grammar XcoreParser;
+
+@header 
+{
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Ecore.Model;
+}
+
+options
+{
+    tokenVocab = XcoreLexer; 
+	generateCompiler=true;
+}
+
+main: package EOF;
+
+$Define(type=EPackage,nestingProperty=ESubPackages,merge=true)
+package:
+	$Property(EAnnotations) annotation*
+	KPackage $Name qualifiedName
+	importDirective*
+	annotationDirective*
+	$Property(EClassifiers) classifier*
+;
+
+$Use(EAnnotation)
+annotation:
+	TAt $Property(Source) $Use(EAnnotationDirective) source=validID
+	(TOpenParen $Property(Details) details=stringToStringMapEntryList TCloseParen)?
+;
+
+stringToStringMapEntryList: stringToStringMapEntry (TComma stringToStringMapEntry)*;
+
+$Define(EStringToStringMapEntry)
+stringToStringMapEntry:
+	$Property(Key) qualifiedName
+	TAssign
+	$Property(Value) $Value value=LRegularString
+;
+
+$Import
+importDirective:
+	KImport importReference
+;
+
+importReference:
+	$Use(EPackage) qualifiedNameWithWildcard | $Use(EObject) qualifiedName;
+
+qualifiedNameWithWildcard:
+  qualifiedName TQualifierWildcard
+;
+
+annotationDirective:
+	KAnnotation sourceURI=LRegularString KAs name=validID
+;
+
+classifier:
+	class |
+	dataType |
+	enum
+;
+
+$Define(EDataType)
+dataType:
+	$Property(EAnnotations) annotation*
+	KType $Name name=ID 
+	(TLessThan typeParameters=typeParameterList TGreaterThan)?
+	KWraps $Property(InstanceClass) jvmTypeReference
+//	(
+//	  /*
+//	   * In scope for create should be what's visible in XyzFactoryImpl and 'this' will denote the literal value.
+//	   * The block expression must yield null or an instance of the wrapped type.
+//	   */
+//	  ($Property(name=Serializable,value=true) serializable=KCreate? createBody=XBlockExpression)?
+//	  /*
+//	   * In scope for create should be what's visible in XyzFactoryImpl 
+//	   * and 'this' will denote an instance of the wrapped type.
+//	   * The block expression must yield a java.lang.String.
+//	   */
+//	  ($Property(name=Serializable,value=false) KConvert convertBody=XBlockExpression)?
+//	)
+;
+
+$Property(ETypeParameters) 
+typeParameterList: typeParameter (TComma typeParameter)*;
+
+$Define(EEnum)
+enum:
+	$Property(EAnnotations) annotation*
+	KEnum $Name name=ID
+	TOpenBrace
+	  (literals=enumLiteral (TComma? literals=enumLiteral)*)?
+	TCloseBrace
+;
+
+$Define(EEnumLiteral)
+enumLiteral:
+	$Property(EAnnotations) annotation*
+    $Name name=ID 
+    (KAs literal=LRegularString)? 
+    (TAssign $Property(Value) value=LInteger)?
+;
+
+$Define(EClass)
+class:
+	$Property(EAnnotations) annotation*
+	classOrInterface 
+	$Name name=ID
+	(TLessThan typeParameters=typeParameterList TGreaterThan)?
+	(KExtends superTypes=superTypeList)?
+	(KWraps instanceType=jvmTypeReference) ?
+	TOpenBrace
+	   member*
+	TCloseBrace
+;
+
+$Property(ESuperTypes)
+superTypeList: genericType (TComma genericType)*;
+
+classOrInterface
+	: $Property(name=Abstract,value=true) KAbstract? KClass #classDefinition
+	| $Property(name=Interface,value=true) KInterface #interfaceDefinition
+	;
+
+member:
+	operation |
+	reference |
+	attribute
+;
+
+$Property(EStructuralFeatures)
+$Define(EAttribute)
+attribute:
+	$Property(EAnnotations) annotation*
+	(
+	  $Property(name=Ordered,value=false) KUnordered?
+	  $Property(name=Unique,value=true) KUnique?
+	  $Property(name=Readonly,value=true) KReadonly?
+	  $Property(name=Transient,value=true) KTransient?
+	  $Property(name=Volatile,value=true) KVolatile?
+	  $Property(name=Unsettable,value=true) KUnsettable?
+	  $Property(name=Derived,value=true) KDerived?
+	  $Property(name=ID,value=true) KId?
+	)
+    $Property(Type) attributeType
+    $Name name=ID
+    (TAssign defaultValueLiteral=LRegularString)?
+	/*
+	 * In scope for getBody should be what's visible in AbcImpl
+	 * and 'this' will denote an instance of the feature's type.
+	 * The block expression must yield a value of the feature's type.
+	 */
+	KGet getBody=blockExpression?
+	KSet setBody=blockExpression?
+	KIsSet isSetBody=blockExpression?
+	KUnset unsetBody=blockExpression?
+;
+
+attributeType
+	: type=genericType multiplicity? #attributeTypeWithMultiplicity
+	| KVoid #attributeTypeVoid
+	;
+
+$Property(EStructuralFeatures)
+$Define(EReference)
+reference:
+	$Property(EAnnotations) annotation*
+	referenceKind
+	(
+	  $Property(name=Ordered,value=false) KUnordered?
+	  $Property(name=Unique,value=true) KUnique?
+	  $Property(name=Readonly,value=true) KReadonly?
+	  $Property(name=Transient,value=true) KTransient?
+	  $Property(name=Volatile,value=true) KVolatile?
+	  $Property(name=Unsettable,value=true) KUnsettable?
+	  $Property(name=Derived,value=true) KDerived?
+	)
+	$Property(Type) type=genericType
+	multiplicity
+    $Name name=ID
+    (
+      KOpposite $Property(Opposite) $Use(EStructuralFeature) opposite=validID
+    )?
+    (
+      KKeys $Property(Keys) $Use(EStructuralFeature) keys=keyList
+    )?
+	/*
+	 * In scope for getBody should be what's visible in AbcImpl
+	 * and 'this' will denote an instance of the feature's type.
+	 * The block expression must yield a value of the feature's type.
+	 */
+	KGet getBody=blockExpression?
+	KSet setBody=blockExpression?
+	KIsSet isSetBody=blockExpression?
+	KUnset unsetBody=blockExpression?
+;
+
+referenceKind
+	: $Property(name=ResolveProxies,value=true) KResolving? containmentKind=($Property(name=Containment,value=true) KContains | $Property(name=Container,value=true) KContainer) #containmentReference
+	| $Property(name=Local,value=true) KLocal? KRefers	#nonContainmentReference
+	;	
+
+keyList: validID (TComma validID)*;
+
+$Property(EOperations)
+$Define(EOperation)
+operation:
+	$Property(Annotations) annotation*
+	KOp
+	(
+	  $Property(name=Ordered,value=false) KUnordered?
+	  $Property(name=Unique,value=true) KUnique?
+	)?
+	(TLessThan typeParameters=typeParameterList TGreaterThan)?
+	$Property(Type) operationType
+	multiplicity?
+	$Name name=ID 
+	TOpenParen parameters=parameterList? TCloseParen
+	(KThrows exceptions=exceptionList)?
+	/*
+	 * This is the logic for the operation.
+	 * How are we going to resolve all references that are in scope for Xbase language?
+	 * Will things like variables that are actually there in generated in the Impl class be accessible directly?
+	 */
+	body=blockExpression?
+;
+
+operationType
+	: type=genericType #operationTypeWithMultiplicity
+	| KVoid #operationTypeVoid
+	;
+
+$Property(EParameters)
+parameterList: parameter (TComma parameter)*;
+
+$Property(EExceptions)
+exceptionList: genericType (TComma genericType)*;
+
+$Define(EParameter)
+parameter:
+	$Property(Annotations) annotation*
+	(
+	  $Property(name=Ordered,value=false) KUnordered?
+	  $Property(name=Unique,value=true) KUnique?
+	)?
+    $Property(Type) type=genericType 
+    multiplicity?
+    $Name name=ID
+;
+
+$Define(ETypeParameter)
+typeParameter:
+	$Property(Annotations) annotation*
+	$Name name=ID (KExtends bounds=boundsList)?
+;
+
+$Property(EBounds)
+boundsList: genericType (TAmpersand genericType)*;
+
+multiplicity:
+	TOpenBracket multiplicityValue? TCloseBracket;
+
+multiplicityValue: simpleMultiplicity | multiplicityRange;
+
+simpleMultiplicity:
+	$Property(name=LowerBound,value=0) $Property(name=UpperBound,value=1) TQuestion | 
+	$Property(name=LowerBound,value=0) $Property(name=UpperBound,value=-1) TAsterisk | 
+	$Property(name=LowerBound,value=1) $Property(name=UpperBound,value=-1) TPlus;
+
+multiplicityRange:
+	$Property(LowerBound) $Value lowerBound=INT (TDotDot upperBound=($Property(UpperBound) $Value INT | $Property(name=UpperBound,value=1) TQuestion | $Property(name=UpperBound,value=-1) TAsterisk))?;
+
+blockExpression:
+ TOpenBrace
+  // (expressions=expressionInsideBlock TSemicolon?)*
+ TCloseBrace
+;
+
+$Define(EGenericType)
+genericType:
+  $Property(Type) $Use(EClass) type=qualifiedName (TLessThan typeArguments=typeArgumentList TGreaterThan)?
+;
+
+$Property(TypeArguments)
+typeArgumentList: genericTypeArgument (TComma genericTypeArgument)*;
+
+genericTypeArgument:
+	genericType |
+	genericWildcardTypeArgument
+;
+
+$Define(EGenericType)
+genericWildcardTypeArgument:
+   TQuestion wildcardTypeArgument?
+;
+
+wildcardTypeArgument: extendsTypeArgument | superTypeArgument;
+
+$Property(UpperBound)
+extendsTypeArgument: KExtends genericType;
+
+$Property(LowerBound)
+superTypeArgument: KSuper genericType;
+
+$Use(System.Type)
+jvmTypeReference: qualifiedName;
+
+$Qualifier
+qualifiedName:
+	identifier (TDot identifier)*
+;
+
+$Identifier
+identifier:
+	ID | KGet | KSet | KIsUnSet | KIsSet
+;
+
+$Identifier
+validID:
+	identifier | void
+;
+
+void: KVoid;

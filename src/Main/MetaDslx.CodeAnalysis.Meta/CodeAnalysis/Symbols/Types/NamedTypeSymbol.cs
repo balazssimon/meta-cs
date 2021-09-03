@@ -27,6 +27,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual bool IsSealed => false;
 
+        [SymbolProperty]
+        public virtual ImmutableArray<TypeSymbol> TypeArguments => ImmutableArray<TypeSymbol>.Empty;
+
         public override bool IsStatic => false;
 
         public virtual ImmutableArray<DeclaredSymbol> GetNonTypeMembers(string name)

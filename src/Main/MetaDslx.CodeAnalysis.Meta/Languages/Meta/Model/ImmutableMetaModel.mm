@@ -114,6 +114,7 @@
 		bool ConformsTo(MetaType type);
 	}
 
+	[type: Named]
 	class MetaPrimitiveType : MetaNamedType
 	{
 		string DotNetName;

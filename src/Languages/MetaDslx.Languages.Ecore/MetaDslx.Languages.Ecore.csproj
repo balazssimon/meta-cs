@@ -30,8 +30,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(VersionPrefix)" PrivateAssets="all" />
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(VersionPrefix)" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
     <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
   </ItemGroup>
   
