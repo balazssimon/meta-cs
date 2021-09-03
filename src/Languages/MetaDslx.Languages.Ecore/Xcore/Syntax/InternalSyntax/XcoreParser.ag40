@@ -55,15 +55,15 @@ annotationDirective:
 ;
 
 classifier:
-	class |
+	classType |
 	dataType |
-	enum
+	enumType
 ;
 
 $Define(EDataType)
 dataType:
 	$Property(EAnnotations) annotation*
-	KType $Name name=ID 
+	KType $Name name=id
 	(TLessThan typeParameters=typeParameterList TGreaterThan)?
 	KWraps $Property(InstanceClass) jvmTypeReference
 //	(
@@ -85,27 +85,32 @@ $Property(ETypeParameters)
 typeParameterList: typeParameter (TComma typeParameter)*;
 
 $Define(EEnum)
-enum:
+enumType:
 	$Property(EAnnotations) annotation*
-	KEnum $Name name=ID
+	KEnum $Name name=id
 	TOpenBrace
-	  (literals=enumLiteral (TComma? literals=enumLiteral)*)?
+	  enumLiteralList?
 	TCloseBrace
 ;
+
+enumLiteralList: separatedEnumLiteralList | nonSeparatedEnumLiteralList;
+
+separatedEnumLiteralList: enumLiteral (TComma enumLiteral)*;
+nonSeparatedEnumLiteralList: enumLiteral+;
 
 $Define(EEnumLiteral)
 enumLiteral:
 	$Property(EAnnotations) annotation*
-    $Name name=ID 
+    $Name name=id 
     (KAs literal=LRegularString)? 
     (TAssign $Property(Value) value=LInteger)?
 ;
 
 $Define(EClass)
-class:
+classType:
 	$Property(EAnnotations) annotation*
 	classOrInterface 
-	$Name name=ID
+	$Name name=id
 	(TLessThan typeParameters=typeParameterList TGreaterThan)?
 	(KExtends superTypes=superTypeList)?
 	(KWraps instanceType=jvmTypeReference) ?
@@ -140,10 +145,10 @@ attribute:
 	  $Property(name=Volatile,value=true) KVolatile?
 	  $Property(name=Unsettable,value=true) KUnsettable?
 	  $Property(name=Derived,value=true) KDerived?
-	  $Property(name=ID,value=true) KId?
+	  $Property(name=id,value=true) KId?
 	)
     $Property(Type) attributeType
-    $Name name=ID
+    $Name name=id
     (TAssign defaultValueLiteral=LRegularString)?
 	/*
 	 * In scope for getBody should be what's visible in AbcImpl
@@ -158,7 +163,7 @@ attribute:
 
 attributeType
 	: type=genericType multiplicity? #attributeTypeWithMultiplicity
-	| KVoid #attributeTypeVoid
+	| voidType #attributeTypeVoid
 	;
 
 $Property(EStructuralFeatures)
@@ -177,12 +182,12 @@ reference:
 	)
 	$Property(Type) type=genericType
 	multiplicity
-    $Name name=ID
+    $Name name=id
     (
       KOpposite $Property(Opposite) $Use(EStructuralFeature) opposite=validID
     )?
     (
-      KKeys $Property(Keys) $Use(EStructuralFeature) keys=keyList
+      KKeys $Property(Keys) $Use(EStructuralFeature) keyList
     )?
 	/*
 	 * In scope for getBody should be what's visible in AbcImpl
@@ -214,7 +219,7 @@ operation:
 	(TLessThan typeParameters=typeParameterList TGreaterThan)?
 	$Property(Type) operationType
 	multiplicity?
-	$Name name=ID 
+	$Name name=id 
 	TOpenParen parameters=parameterList? TCloseParen
 	(KThrows exceptions=exceptionList)?
 	/*
@@ -226,8 +231,8 @@ operation:
 ;
 
 operationType
-	: type=genericType #operationTypeWithMultiplicity
-	| KVoid #operationTypeVoid
+	: genericType
+	| voidType
 	;
 
 $Property(EParameters)
@@ -245,13 +250,13 @@ parameter:
 	)?
     $Property(Type) type=genericType 
     multiplicity?
-    $Name name=ID
+    $Name name=id
 ;
 
 $Define(ETypeParameter)
 typeParameter:
 	$Property(Annotations) annotation*
-	$Name name=ID (KExtends bounds=boundsList)?
+	$Name name=id (KExtends bounds=boundsList)?
 ;
 
 $Property(EBounds)
@@ -268,7 +273,7 @@ simpleMultiplicity:
 	$Property(name=LowerBound,value=1) $Property(name=UpperBound,value=-1) TPlus;
 
 multiplicityRange:
-	$Property(LowerBound) $Value lowerBound=INT (TDotDot upperBound=($Property(UpperBound) $Value INT | $Property(name=UpperBound,value=1) TQuestion | $Property(name=UpperBound,value=-1) TAsterisk))?;
+	$Property(LowerBound) $Value lowerBound=LInteger (TDotDot upperBound=($Property(UpperBound) $Value LInteger | $Property(name=UpperBound,value=1) TQuestion | $Property(name=UpperBound,value=-1) TAsterisk))?;
 
 blockExpression:
  TOpenBrace
@@ -311,13 +316,16 @@ qualifiedName:
 ;
 
 $Identifier
+id : IdentifierNormal | IdentifierVerbatim;
+
+$Identifier
 identifier:
-	ID | KGet | KSet | KIsUnSet | KIsSet
+	IdentifierNormal | IdentifierVerbatim | KGet | KSet | KIsUnSet | KIsSet
 ;
 
 $Identifier
 validID:
-	identifier | void
+	identifier | voidType
 ;
 
-void: KVoid;
+voidType: KVoid;

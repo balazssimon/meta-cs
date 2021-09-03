@@ -5,15 +5,15 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.Languages.Ecore;
-using MetaDslx.Languages.Ecore.Symbols;
-using MetaDslx.Languages.Ecore.Syntax;
-using MetaDslx.Languages.Ecore.Syntax.InternalSyntax;
+using MetaDslx.Languages.Xcore;
+using MetaDslx.Languages.Xcore.Symbols;
+using MetaDslx.Languages.Xcore.Syntax;
+using MetaDslx.Languages.Xcore.Syntax.InternalSyntax;
 
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Ecore.Model;
 
-namespace MetaDslx.Languages.Ecore
+namespace MetaDslx.Languages.Xcore
 {
     public class XcoreLanguageServices : XcoreLanguageServicesBase
     {

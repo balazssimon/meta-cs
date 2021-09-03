@@ -2,7 +2,7 @@
   <Import Project="..\..\Versions.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>MetaDslx.Languages.Ecore</RootNamespace>
+    <RootNamespace>MetaDslx.Languages</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netstandard2.0</TargetFramework>
     <NoStdLib>true</NoStdLib>
@@ -34,6 +34,11 @@
     <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
     <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Xcore\Compilation\" />
+  </ItemGroup>
+
   
   <!--ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
@@ -42,8 +47,4 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
   </ItemGroup-->
   
-  <!--ItemGroup>
-    <Folder Include="Generator\" />
-  </ItemGroup-->
-
 </Project>

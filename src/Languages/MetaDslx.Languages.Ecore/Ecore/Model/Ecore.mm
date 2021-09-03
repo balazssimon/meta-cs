@@ -189,6 +189,7 @@
 	class EDataType : EClassifier
 	{
 		bool Serializable = "true";
+		string DotNetName; // TODO:MetaDslx remove???
 	}
 
 	[type: Enum]
