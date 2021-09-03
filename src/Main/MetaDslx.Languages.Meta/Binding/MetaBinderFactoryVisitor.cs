@@ -1408,11 +1408,13 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseSource)
 				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Source, name: "Left");
 					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Source, types: ImmutableArray.Create(typeof(MetaProperty)));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 				if (use == UseTarget)
 				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Target, name: "Right");
 					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Target, types: ImmutableArray.Create(typeof(MetaProperty)));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}

@@ -1624,26 +1624,42 @@ namespace MetaDslx.Languages.Meta.Binding
 				}
 				if (node.Source != null)
 				{
-				    this.BeginUse(node.Source, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    this.BeginProperty(node.Source, name: "Left");
 				    try
 				    {
-				    	this.Visit(node.Source);
+				    	this.BeginUse(node.Source, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    	try
+				    	{
+				    		this.Visit(node.Source);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.Source, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    	}
 				    }
 				    finally
 				    {
-				    	this.EndUse(node.Source, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    	this.EndProperty(node.Source, name: "Left");
 				    }
 				}
 				if (node.Target != null)
 				{
-				    this.BeginUse(node.Target, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    this.BeginProperty(node.Target, name: "Right");
 				    try
 				    {
-				    	this.Visit(node.Target);
+				    	this.BeginUse(node.Target, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    	try
+				    	{
+				    		this.Visit(node.Target);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.Target, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    	}
 				    }
 				    finally
 				    {
-				    	this.EndUse(node.Target, types: ImmutableArray.Create(typeof(MetaProperty)));
+				    	this.EndProperty(node.Target, name: "Right");
 				    }
 				}
 			}

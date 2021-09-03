@@ -4726,6 +4726,7 @@ namespace MetaDslx.Languages.Meta.Binding
             if (use == UnassignedUse || use == Use_AssociationDeclaration_Source)
             {
                 var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Left", forCompletion: true);
             	binder = this.BinderFactory.CreateUseBinder(binder, null, types: ImmutableArray.Create(typeof(MetaProperty)), forCompletion: true);
                 AddResultsForQualifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
@@ -4739,6 +4740,7 @@ namespace MetaDslx.Languages.Meta.Binding
             if (use == UnassignedUse || use == Use_AssociationDeclaration_Target)
             {
                 var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Right", forCompletion: true);
             	binder = this.BinderFactory.CreateUseBinder(binder, null, types: ImmutableArray.Create(typeof(MetaProperty)), forCompletion: true);
                 AddResultsForQualifier(UnassignedUse, operation, binder);
                 use = FinishedUse;

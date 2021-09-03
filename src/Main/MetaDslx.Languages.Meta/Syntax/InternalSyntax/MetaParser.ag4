@@ -184,7 +184,7 @@ $Define(MetaParameter)
 parameter : attribute* $Property(Type) typeReference name;
 
 $Symbol(AssociationSymbol)
-associationDeclaration : attribute* KAssociation $Use(MetaProperty) source=qualifier KWith $Use(MetaProperty) target=qualifier TSemicolon;
+associationDeclaration : attribute* KAssociation $Property(Left) $Use(MetaProperty) source=qualifier KWith $Property(Right) $Use(MetaProperty) target=qualifier TSemicolon;
 
 
 // Additional rules for lexer:

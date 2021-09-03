@@ -25,18 +25,6 @@ namespace MetaDslx.Languages.Meta.Symbols
         [SymbolCompletionPart]
         protected virtual void CompleteAssociation(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            /*var assoc = this.DeclaringSyntaxReferences[0].GetSyntax() as AssociationDeclarationSyntax;
-            var compilation = this.DeclaringCompilation;
-            var sourceBinder = compilation.GetBinder(assoc.Source);
-            var targetBinder = compilation.GetBinder(assoc.Target);
-            var source = (BoundSymbol)sourceBinder.Bind(diagnostics, cancellationToken);
-            var target = (BoundSymbol)targetBinder.Bind(diagnostics, cancellationToken);
-            if (!diagnostics.HasAnyErrors())
-            {
-                var sourceProp = (MetaPropertyBuilder)(source.Symbols[0] as IModelSymbol).ModelObject;
-                var targetProp = (MetaPropertyBuilder)(target.Symbols[0] as IModelSymbol).ModelObject;
-                sourceProp.OppositeProperties.Add(targetProp);
-            }*/
             if (Left is IModelSymbol left && Right is IModelSymbol right)
             {
                 var sourceProp = (MetaPropertyBuilder)left.ModelObject;

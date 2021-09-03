@@ -78,10 +78,10 @@ namespace MetaDslx.CodeAnalysis.Analyzers
             return namedType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Substring(8);
         }
 
-        public static IEnumerable<INamedTypeSymbol> GetNamedTypeSymbols(Compilation compilation)
+        public static IEnumerable<INamedTypeSymbol> GetSourceNamedTypeSymbols(Compilation compilation)
         {
             var stack = new Stack<INamespaceSymbol>();
-            stack.Push(compilation.GlobalNamespace);
+            stack.Push(compilation.SourceModule.GlobalNamespace);
 
             while (stack.Count > 0)
             {
@@ -99,6 +99,21 @@ namespace MetaDslx.CodeAnalysis.Analyzers
                     }
                 }
             }
+        }
+
+        public static bool IsExportedSymbol(INamedTypeSymbol namedType, out AttributeData attribute)
+        {
+            attribute = null;
+            if (!IsSymbol(namedType)) return false;
+            foreach (var attr in namedType.GetAttributes())
+            {
+                if (attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::System.ComponentModel.Composition.ExportAttribute")
+                {
+                    attribute = attr;
+                    return true;
+                }
+            }
+            return false;
         }
 
 
