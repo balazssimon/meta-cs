@@ -226,7 +226,7 @@
 	{
 		EClass EContainingClass;
 		[property: Type]
-		EClassifier EType redefines ETypedElement.EType;
+		EClassifier EType subsets ETypedElement.EType;
 		bool Changeable = "true";
 		bool Volatile;
 		bool Transient;
@@ -250,7 +250,7 @@
 		derived bool Container;
 		bool ResolveProxies = "true";
 		EReference EOpposite;
-		EClass EReferenceType redefines EStructuralFeature.EType; // TODO: match with EType
+		EClass EReferenceType; // TODO: match with EType
 	}
 
 	[symbol: Method]

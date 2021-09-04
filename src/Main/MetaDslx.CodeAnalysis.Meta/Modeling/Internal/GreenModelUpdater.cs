@@ -942,25 +942,25 @@ namespace MetaDslx.Modeling.Internal
             if (!this.CheckOldValue(objectRef, slot, reassign, oldValue)) return false;
             this.CheckNewValue(objectRef, slot, ref value);
             var plainOldValue = GreenObject.ExtractValue(oldValue);
+            var plainValue = GreenObject.ExtractValue(value);
             if (plainOldValue != null && plainOldValue != GreenObject.Unassigned)
             {
                 if (plainOldValue is ObjectId)
                 {
                     this.RemoveReferenceCore(objectRef, slot, (ObjectId)plainOldValue);
                 }
-                else if ((plainOldValue is LazyValue) && !(plainOldValue is LazyValue))
+                else if ((plainOldValue is LazyValue) && !(plainValue is LazyValue))
                 {
                     this.RemoveLazyPropertyCore(objectRef, slot);
                 }
             }
-            var plainValue = GreenObject.ExtractValue(value);
             if (plainValue != null && plainValue != GreenObject.Unassigned)
             {
                 if (plainValue is ObjectId)
                 {
                     this.AddReferenceCore(objectRef, slot, (ObjectId)plainValue);
                 }
-                else if ((plainValue is LazyValue) && !(plainValue is LazyValue))
+                else if ((plainValue is LazyValue) && !(plainOldValue is LazyValue))
                 {
                     this.AddLazyPropertyCore(objectRef, slot);
                 }

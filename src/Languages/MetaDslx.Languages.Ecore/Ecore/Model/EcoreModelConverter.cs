@@ -226,6 +226,7 @@ namespace MetaDslx.Languages.Ecore.Model
 
         private MetaTypeBuilder GetType(ETypedElement ete)
         {
+            if (ete.EType == null) return null;
             if (_map.TryGetValue(ete.EType, out var mobj))
             {
                 var mtype = (MetaTypeBuilder)mobj;

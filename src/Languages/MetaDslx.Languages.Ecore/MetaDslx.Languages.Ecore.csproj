@@ -30,21 +30,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
+    <!--PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
     <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Xbase\Compilation\" />
     <Folder Include="Xcore\Compilation\" />
+    <Folder Include="Xtext\Compilation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MetaModel Update="Ecore\Model\Ecore.mm">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </MetaModel>
   </ItemGroup>
 
   
-  <!--ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
-    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
-    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
-  </ItemGroup-->
+  </ItemGroup>
   
 </Project>
