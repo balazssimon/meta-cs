@@ -6,7 +6,7 @@
 	Represents the MetaModel.
 	*/
 	metamodel Meta(Uri="http://MetaDslx.Languages.Meta/1.0",MajorVersion=1,MinorVersion=0); 
-
+	
 	const MetaPrimitiveType Object = "System.Object";
 	const MetaPrimitiveType String = "System.String";
 	const MetaPrimitiveType Int = "System.Int32";

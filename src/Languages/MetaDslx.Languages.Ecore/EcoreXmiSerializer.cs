@@ -22,17 +22,17 @@ namespace MetaDslx.Languages.Ecore
         {
             this.RequireXmiRoot = false;
             this.XmiNamespaces.Add("http://www.omg.org/XMI");
-            this.NamespaceToMetadataMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
-            this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
+            this.NamespaceToMetadataMap.Add(EcoreInstance.MMetadata.Uri, EcoreInstance.MMetadata);
+            this.UriToModelMap.Add(EcoreInstance.MMetadata.Uri, EcoreInstance.MModel);
         }
 
-        public EcoreXmiReadOptions(IMetaModel metaModel)
-            : base(metaModel)
+        public EcoreXmiReadOptions(ModelMetadata metadata)
+            : base(metadata)
         {
             this.RequireXmiRoot = false;
             this.XmiNamespaces.Add("http://www.omg.org/XMI");
-            this.NamespaceToMetadataMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
-            this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
+            this.NamespaceToMetadataMap.Add(EcoreInstance.MMetadata.Uri, EcoreInstance.MMetadata);
+            this.UriToModelMap.Add(EcoreInstance.MMetadata.Uri, EcoreInstance.MModel);
         }
     }
 
@@ -43,7 +43,7 @@ namespace MetaDslx.Languages.Ecore
             this.RequireXmiRoot = false;
             this.PreferReferenceByName = true;
             this.XmiNamespace = "http://www.omg.org/XMI";
-            this.ModelToUriMap.Add(EcoreInstance.MModel, EcoreInstance.MMetaModel.Uri);
+            this.ModelToUriMap.Add(EcoreInstance.MModel, EcoreInstance.MMetadata.Uri);
         }
     }
 
@@ -51,11 +51,11 @@ namespace MetaDslx.Languages.Ecore
     {
         private XmiSerializer _xmiSerializer = new XmiSerializer();
 
-        public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel)
+        public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
-            return _xmiSerializer.ReadModel(xmiCode, new EcoreXmiReadOptions(metaModel));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            return _xmiSerializer.ReadModel(xmiCode, new EcoreXmiReadOptions(metadata));
         }
 
         public ImmutableModel ReadModel(string xmiCode, EcoreXmiReadOptions options = null)
@@ -64,11 +64,11 @@ namespace MetaDslx.Languages.Ecore
             return _xmiSerializer.ReadModel(xmiCode, options ?? new EcoreXmiReadOptions());
         }
 
-        public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel)
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
-            return _xmiSerializer.ReadModelFromFile(xmiFilePath, new EcoreXmiReadOptions(metaModel));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            return _xmiSerializer.ReadModelFromFile(xmiFilePath, new EcoreXmiReadOptions(metadata));
         }
 
         public ImmutableModel ReadModelFromFile(string xmiFilePath, EcoreXmiReadOptions options = null)
@@ -77,9 +77,9 @@ namespace MetaDslx.Languages.Ecore
             return _xmiSerializer.ReadModelFromFile(xmiFilePath, options ?? new EcoreXmiReadOptions());
         }
 
-        public ImmutableModelGroup ReadModelGroup(string xmiCode, IMetaModel metaModel)
+        public ImmutableModelGroup ReadModelGroup(string xmiCode, ModelMetadata metadata)
         {
-            return this.ReadModel(xmiCode, metaModel).ModelGroup;
+            return this.ReadModel(xmiCode, metadata).ModelGroup;
         }
 
         public ImmutableModelGroup ReadModelGroup(string xmiCode, EcoreXmiReadOptions options = null)
@@ -87,9 +87,9 @@ namespace MetaDslx.Languages.Ecore
             return this.ReadModel(xmiCode, options).ModelGroup;
         }
 
-        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, IMetaModel metaModel)
+        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, ModelMetadata metadata)
         {
-            return this.ReadModelFromFile(xmiFilePath, metaModel).ModelGroup;
+            return this.ReadModelFromFile(xmiFilePath, metadata).ModelGroup;
         }
 
         public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, EcoreXmiReadOptions options = null)

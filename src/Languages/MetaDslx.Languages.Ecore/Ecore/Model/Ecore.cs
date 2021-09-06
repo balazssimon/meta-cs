@@ -1,6 +1,3 @@
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,44 +11,36 @@ namespace MetaDslx.Languages.Ecore.Model
 {
 	using global::MetaDslx.Languages.Ecore.Model.Internal;
 
-	internal class EcoreMetaModel : global::MetaDslx.Modeling.IMetaModel
+	public class EcoreMetadata : global::MetaDslx.Modeling.ModelMetadata
 	{
-		internal EcoreMetaModel()
+		public EcoreMetadata(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
+			: base(name, version, uri, prefix, namespaceName)
 		{
 		}
-	
-		public global::MetaDslx.Modeling.ModelId Id => EcoreInstance.MModel.Id;
-		public string Name => "Ecore";
-		public global::MetaDslx.Modeling.ModelVersion Version => EcoreInstance.MModel.Version;
-		public global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> Objects => EcoreInstance.MModel.Objects;
-		public string Uri => "http://www.eclipse.org/emf/2002/Ecore";
-		public string Prefix => "";
-		public global::MetaDslx.Modeling.IModelGroup ModelGroup => EcoreInstance.MModel.ModelGroup;
-		public string Namespace => "MetaDslx.Languages.Ecore.Model";
-	
-		public global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
+
+		protected override global::MetaDslx.Modeling.ModelMetadata Create(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
+		{
+			return new EcoreMetadata(name, version, uri, prefix, namespaceName);
+		}
+
+		public override global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
 		{
 			return new EcoreFactory(model, flags);
 		}
-	
-	    public override string ToString()
-	    {
-	        return $"{Name} ({Version})";
-	    }
 	}
 
 	public class EcoreInstance
 	{
 		private static bool initialized;
-	
+
 		public static bool IsInitialized
 		{
 			get { return EcoreInstance.initialized; }
 		}
-	
-		public static readonly global::MetaDslx.Modeling.IMetaModel MMetaModel;
+
+		public static readonly global::MetaDslx.Languages.Ecore.Model.EcoreMetadata MMetadata;
 		public static readonly global::MetaDslx.Modeling.ImmutableModel MModel;
-	
+
 		public static readonly EDataType EJavaObject;
 		public static readonly EDataType EJavaClass;
 		public static readonly EDataType EBoolean;
@@ -81,7 +70,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		public static readonly EDataType EEList;
 		public static readonly EDataType EEnumerator;
 		public static readonly EDataType ETreeIterator;
-	
+
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass EObject;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass EModelElement;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty EModelElement_EAnnotations;
@@ -184,14 +173,14 @@ namespace MetaDslx.Languages.Ecore.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ETypeParameter;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ETypeParameter_EGenericTypes;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ETypeParameter_EBounds;
-	
+
 		static EcoreInstance()
 		{
 			EcoreBuilderInstance.instance.Create();
 			EcoreBuilderInstance.instance.EvaluateLazyValues();
-			MMetaModel = new EcoreMetaModel();
+			MMetadata = EcoreBuilderInstance.instance.MMetadata;
 			MModel = EcoreBuilderInstance.instance.MModel.ToImmutable();
-	
+
 			EJavaObject = EcoreBuilderInstance.instance.EJavaObject.ToImmutable(MModel);
 			EJavaClass = EcoreBuilderInstance.instance.EJavaClass.ToImmutable(MModel);
 			EBoolean = EcoreBuilderInstance.instance.EBoolean.ToImmutable(MModel);
@@ -221,7 +210,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			EEList = EcoreBuilderInstance.instance.EEList.ToImmutable(MModel);
 			EEnumerator = EcoreBuilderInstance.instance.EEnumerator.ToImmutable(MModel);
 			ETreeIterator = EcoreBuilderInstance.instance.ETreeIterator.ToImmutable(MModel);
-	
+
 			EObject = EcoreBuilderInstance.instance.EObject.ToImmutable(MModel);
 			EModelElement = EcoreBuilderInstance.instance.EModelElement.ToImmutable(MModel);
 			EModelElement_EAnnotations = EcoreBuilderInstance.instance.EModelElement_EAnnotations.ToImmutable(MModel);
@@ -324,7 +313,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			ETypeParameter = EcoreBuilderInstance.instance.ETypeParameter.ToImmutable(MModel);
 			ETypeParameter_EGenericTypes = EcoreBuilderInstance.instance.ETypeParameter_EGenericTypes.ToImmutable(MModel);
 			ETypeParameter_EBounds = EcoreBuilderInstance.instance.ETypeParameter_EBounds.ToImmutable(MModel);
-	
+
 			EcoreInstance.initialized = true;
 		}
 	}
@@ -339,9 +328,9 @@ namespace MetaDslx.Languages.Ecore.Model
 		{
 			EcoreDescriptor.Initialize();
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel;
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
 		public override global::MetaDslx.Modeling.MutableObject Create(string type)
 		{
 			switch (type)
@@ -368,7 +357,7 @@ namespace MetaDslx.Languages.Ecore.Model
 					throw new global::MetaDslx.Modeling.ModelException(global::MetaDslx.Modeling.ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(type));
 			}
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EObject.
 		/// </summary>
@@ -377,7 +366,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EObjectId());
 			return (EObjectBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EFactory.
 		/// </summary>
@@ -386,7 +375,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EFactoryId());
 			return (EFactoryBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EAnnotation.
 		/// </summary>
@@ -395,7 +384,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EAnnotationId());
 			return (EAnnotationBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EStringToStringMapEntry.
 		/// </summary>
@@ -404,7 +393,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EStringToStringMapEntryId());
 			return (EStringToStringMapEntryBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EPackage.
 		/// </summary>
@@ -413,7 +402,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EPackageId());
 			return (EPackageBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EClassifier.
 		/// </summary>
@@ -422,7 +411,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EClassifierId());
 			return (EClassifierBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EClass.
 		/// </summary>
@@ -431,7 +420,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EClassId());
 			return (EClassBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EDataType.
 		/// </summary>
@@ -440,7 +429,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EDataTypeId());
 			return (EDataTypeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EEnum.
 		/// </summary>
@@ -449,7 +438,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EEnumId());
 			return (EEnumBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EEnumLiteral.
 		/// </summary>
@@ -458,7 +447,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EEnumLiteralId());
 			return (EEnumLiteralBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of ETypedElement.
 		/// </summary>
@@ -467,7 +456,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new ETypedElementId());
 			return (ETypedElementBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EStructuralFeature.
 		/// </summary>
@@ -476,7 +465,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EStructuralFeatureId());
 			return (EStructuralFeatureBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EAttribute.
 		/// </summary>
@@ -485,7 +474,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EAttributeId());
 			return (EAttributeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EReference.
 		/// </summary>
@@ -494,7 +483,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EReferenceId());
 			return (EReferenceBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EOperation.
 		/// </summary>
@@ -503,7 +492,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EOperationId());
 			return (EOperationBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EParameter.
 		/// </summary>
@@ -512,7 +501,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EParameterId());
 			return (EParameterBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of EGenericType.
 		/// </summary>
@@ -521,7 +510,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EGenericTypeId());
 			return (EGenericTypeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of ETypeParameter.
 		/// </summary>
@@ -532,10 +521,10 @@ namespace MetaDslx.Languages.Ecore.Model
 		}
 	}
 
-	
+
 	public interface EObject : global::MetaDslx.Modeling.ImmutableObject
 	{
-	
+
 		EClass EClass();
 		bool EIsProxy();
 		MetaDslx.Modeling.IModel EResource();
@@ -550,7 +539,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		object ESet(EStructuralFeature feature, object newValue);
 		bool EIsSet(EStructuralFeature feature);
 		void EUnset(EStructuralFeature feature);
-	
+
 		/// <summary>
 		/// Convert the <see cref="EObject"/> object to a builder <see cref="EObjectBuilder"/> object.
 		/// </summary>
@@ -562,10 +551,10 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EObjectBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EObjectBuilder : global::MetaDslx.Modeling.MutableObject
 	{
-	
+
 		EClassBuilder EClass();
 		bool EIsProxy();
 		MetaDslx.Modeling.IModel EResource();
@@ -580,7 +569,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		object ESet(EStructuralFeatureBuilder feature, object newValue);
 		bool EIsSet(EStructuralFeatureBuilder feature);
 		void EUnset(EStructuralFeatureBuilder feature);
-	
+
 		/// <summary>
 		/// Convert the <see cref="EObjectBuilder"/> object to an immutable <see cref="EObject"/> object.
 		/// </summary>
@@ -592,13 +581,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EObject ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EModelElement : EObject
 	{
 		global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations { get; }
-	
-		EAnnotation GetEAnnotation(String source);
-	
+
+		EAnnotation GetEAnnotation(string source);
+
 		/// <summary>
 		/// Convert the <see cref="EModelElement"/> object to a builder <see cref="EModelElementBuilder"/> object.
 		/// </summary>
@@ -610,13 +599,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EModelElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EModelElementBuilder : EObjectBuilder
 	{
 		global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations { get; }
-	
-		EAnnotationBuilder GetEAnnotation(String source);
-	
+
+		EAnnotationBuilder GetEAnnotation(string source);
+
 		/// <summary>
 		/// Convert the <see cref="EModelElementBuilder"/> object to an immutable <see cref="EModelElement"/> object.
 		/// </summary>
@@ -628,15 +617,15 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EModelElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EFactory : EModelElement
 	{
 		EPackage EPackage { get; }
-	
+
 		EObject Create(EClass eClass);
-		EObject CreateFromString(EDataType eDataType, String literalValue);
-		String ConvertToString(EDataType eDataType, object instanceValue);
-	
+		EObject CreateFromString(EDataType eDataType, string literalValue);
+		string ConvertToString(EDataType eDataType, object instanceValue);
+
 		/// <summary>
 		/// Convert the <see cref="EFactory"/> object to a builder <see cref="EFactoryBuilder"/> object.
 		/// </summary>
@@ -648,18 +637,18 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EFactoryBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EFactoryBuilder : EModelElementBuilder
 	{
 		EPackageBuilder EPackage { get; set; }
 		void SetEPackageLazy(global::System.Func<EPackageBuilder> lazy);
 		void SetEPackageLazy(global::System.Func<EFactoryBuilder, EPackageBuilder> lazy);
 		void SetEPackageLazy(global::System.Func<EFactory, EPackage> immutableLazy, global::System.Func<EFactoryBuilder, EPackageBuilder> mutableLazy);
-	
+
 		EObjectBuilder Create(EClassBuilder eClass);
-		EObjectBuilder CreateFromString(EDataTypeBuilder eDataType, String literalValue);
-		String ConvertToString(EDataTypeBuilder eDataType, object instanceValue);
-	
+		EObjectBuilder CreateFromString(EDataTypeBuilder eDataType, string literalValue);
+		string ConvertToString(EDataTypeBuilder eDataType, object instanceValue);
+
 		/// <summary>
 		/// Convert the <see cref="EFactoryBuilder"/> object to an immutable <see cref="EFactory"/> object.
 		/// </summary>
@@ -671,12 +660,12 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EFactory ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface ENamedElement : EModelElement
 	{
-		String Name { get; }
-	
-	
+		string Name { get; }
+
+
 		/// <summary>
 		/// Convert the <see cref="ENamedElement"/> object to a builder <see cref="ENamedElementBuilder"/> object.
 		/// </summary>
@@ -688,15 +677,15 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new ENamedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface ENamedElementBuilder : EModelElementBuilder
 	{
-		String Name { get; set; }
-		void SetNameLazy(global::System.Func<String> lazy);
-		void SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy);
-		void SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy);
-	
-	
+		string Name { get; set; }
+		void SetNameLazy(global::System.Func<string> lazy);
+		void SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy);
+		void SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy);
+
+
 		/// <summary>
 		/// Convert the <see cref="ENamedElementBuilder"/> object to an immutable <see cref="ENamedElement"/> object.
 		/// </summary>
@@ -708,16 +697,16 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new ENamedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EAnnotation : EModelElement
 	{
 		EModelElement EModelElement { get; }
-		String Source { get; }
+		string Source { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EStringToStringMapEntry> Details { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EObject> Contents { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EObject> References { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EAnnotation"/> object to a builder <see cref="EAnnotationBuilder"/> object.
 		/// </summary>
@@ -729,22 +718,22 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EAnnotationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EAnnotationBuilder : EModelElementBuilder
 	{
 		EModelElementBuilder EModelElement { get; set; }
 		void SetEModelElementLazy(global::System.Func<EModelElementBuilder> lazy);
 		void SetEModelElementLazy(global::System.Func<EAnnotationBuilder, EModelElementBuilder> lazy);
 		void SetEModelElementLazy(global::System.Func<EAnnotation, EModelElement> immutableLazy, global::System.Func<EAnnotationBuilder, EModelElementBuilder> mutableLazy);
-		String Source { get; set; }
-		void SetSourceLazy(global::System.Func<String> lazy);
-		void SetSourceLazy(global::System.Func<EAnnotationBuilder, String> lazy);
-		void SetSourceLazy(global::System.Func<EAnnotation, String> immutableLazy, global::System.Func<EAnnotationBuilder, String> mutableLazy);
+		string Source { get; set; }
+		void SetSourceLazy(global::System.Func<string> lazy);
+		void SetSourceLazy(global::System.Func<EAnnotationBuilder, string> lazy);
+		void SetSourceLazy(global::System.Func<EAnnotation, string> immutableLazy, global::System.Func<EAnnotationBuilder, string> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<EStringToStringMapEntryBuilder> Details { get; }
 		global::MetaDslx.Modeling.MutableModelList<EObjectBuilder> Contents { get; }
 		global::MetaDslx.Modeling.MutableModelList<EObjectBuilder> References { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EAnnotationBuilder"/> object to an immutable <see cref="EAnnotation"/> object.
 		/// </summary>
@@ -756,13 +745,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EAnnotation ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EStringToStringMapEntry : global::MetaDslx.Modeling.ImmutableObject
 	{
-		String Key { get; }
-		String Value { get; }
-	
-	
+		string Key { get; }
+		string Value { get; }
+
+
 		/// <summary>
 		/// Convert the <see cref="EStringToStringMapEntry"/> object to a builder <see cref="EStringToStringMapEntryBuilder"/> object.
 		/// </summary>
@@ -774,19 +763,19 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EStringToStringMapEntryBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EStringToStringMapEntryBuilder : global::MetaDslx.Modeling.MutableObject
 	{
-		String Key { get; set; }
-		void SetKeyLazy(global::System.Func<String> lazy);
-		void SetKeyLazy(global::System.Func<EStringToStringMapEntryBuilder, String> lazy);
-		void SetKeyLazy(global::System.Func<EStringToStringMapEntry, String> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, String> mutableLazy);
-		String Value { get; set; }
-		void SetValueLazy(global::System.Func<String> lazy);
-		void SetValueLazy(global::System.Func<EStringToStringMapEntryBuilder, String> lazy);
-		void SetValueLazy(global::System.Func<EStringToStringMapEntry, String> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, String> mutableLazy);
-	
-	
+		string Key { get; set; }
+		void SetKeyLazy(global::System.Func<string> lazy);
+		void SetKeyLazy(global::System.Func<EStringToStringMapEntryBuilder, string> lazy);
+		void SetKeyLazy(global::System.Func<EStringToStringMapEntry, string> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, string> mutableLazy);
+		string Value { get; set; }
+		void SetValueLazy(global::System.Func<string> lazy);
+		void SetValueLazy(global::System.Func<EStringToStringMapEntryBuilder, string> lazy);
+		void SetValueLazy(global::System.Func<EStringToStringMapEntry, string> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, string> mutableLazy);
+
+
 		/// <summary>
 		/// Convert the <see cref="EStringToStringMapEntryBuilder"/> object to an immutable <see cref="EStringToStringMapEntry"/> object.
 		/// </summary>
@@ -798,18 +787,18 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EStringToStringMapEntry ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EPackage : ENamedElement
 	{
-		String NsURI { get; }
-		String NsPrefix { get; }
+		string NsURI { get; }
+		string NsPrefix { get; }
 		EPackage ESuperPackage { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EPackage> ESubPackages { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EClassifier> EClassifiers { get; }
 		EFactory EFactoryInstance { get; }
-	
-		EClassifier GetEClassifier(String name);
-	
+
+		EClassifier GetEClassifier(string name);
+
 		/// <summary>
 		/// Convert the <see cref="EPackage"/> object to a builder <see cref="EPackageBuilder"/> object.
 		/// </summary>
@@ -821,17 +810,17 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EPackageBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EPackageBuilder : ENamedElementBuilder
 	{
-		String NsURI { get; set; }
-		void SetNsURILazy(global::System.Func<String> lazy);
-		void SetNsURILazy(global::System.Func<EPackageBuilder, String> lazy);
-		void SetNsURILazy(global::System.Func<EPackage, String> immutableLazy, global::System.Func<EPackageBuilder, String> mutableLazy);
-		String NsPrefix { get; set; }
-		void SetNsPrefixLazy(global::System.Func<String> lazy);
-		void SetNsPrefixLazy(global::System.Func<EPackageBuilder, String> lazy);
-		void SetNsPrefixLazy(global::System.Func<EPackage, String> immutableLazy, global::System.Func<EPackageBuilder, String> mutableLazy);
+		string NsURI { get; set; }
+		void SetNsURILazy(global::System.Func<string> lazy);
+		void SetNsURILazy(global::System.Func<EPackageBuilder, string> lazy);
+		void SetNsURILazy(global::System.Func<EPackage, string> immutableLazy, global::System.Func<EPackageBuilder, string> mutableLazy);
+		string NsPrefix { get; set; }
+		void SetNsPrefixLazy(global::System.Func<string> lazy);
+		void SetNsPrefixLazy(global::System.Func<EPackageBuilder, string> lazy);
+		void SetNsPrefixLazy(global::System.Func<EPackage, string> immutableLazy, global::System.Func<EPackageBuilder, string> mutableLazy);
 		EPackageBuilder ESuperPackage { get; set; }
 		void SetESuperPackageLazy(global::System.Func<EPackageBuilder> lazy);
 		void SetESuperPackageLazy(global::System.Func<EPackageBuilder, EPackageBuilder> lazy);
@@ -842,9 +831,9 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetEFactoryInstanceLazy(global::System.Func<EFactoryBuilder> lazy);
 		void SetEFactoryInstanceLazy(global::System.Func<EPackageBuilder, EFactoryBuilder> lazy);
 		void SetEFactoryInstanceLazy(global::System.Func<EPackage, EFactory> immutableLazy, global::System.Func<EPackageBuilder, EFactoryBuilder> mutableLazy);
-	
-		EClassifierBuilder GetEClassifier(String name);
-	
+
+		EClassifierBuilder GetEClassifier(string name);
+
 		/// <summary>
 		/// Convert the <see cref="EPackageBuilder"/> object to an immutable <see cref="EPackage"/> object.
 		/// </summary>
@@ -856,21 +845,21 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EPackage ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EClassifier : ENamedElement
 	{
-		String InstanceClassName { get; }
+		string InstanceClassName { get; }
 		EPackage EPackage { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> ETypeParameters { get; }
 		System.Type InstanceClass { get; }
 		object DefaultValue { get; }
-	
+
 		/// <summary>
 		/// Returns whether the object is an instance of this classifier.
 		/// </summary>
 		bool IsInstance(object @object);
 		int GetClassifierID();
-	
+
 		/// <summary>
 		/// Convert the <see cref="EClassifier"/> object to a builder <see cref="EClassifierBuilder"/> object.
 		/// </summary>
@@ -882,13 +871,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EClassifierBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EClassifierBuilder : ENamedElementBuilder
 	{
-		String InstanceClassName { get; set; }
-		void SetInstanceClassNameLazy(global::System.Func<String> lazy);
-		void SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, String> lazy);
-		void SetInstanceClassNameLazy(global::System.Func<EClassifier, String> immutableLazy, global::System.Func<EClassifierBuilder, String> mutableLazy);
+		string InstanceClassName { get; set; }
+		void SetInstanceClassNameLazy(global::System.Func<string> lazy);
+		void SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, string> lazy);
+		void SetInstanceClassNameLazy(global::System.Func<EClassifier, string> immutableLazy, global::System.Func<EClassifierBuilder, string> mutableLazy);
 		EPackageBuilder EPackage { get; set; }
 		void SetEPackageLazy(global::System.Func<EPackageBuilder> lazy);
 		void SetEPackageLazy(global::System.Func<EClassifierBuilder, EPackageBuilder> lazy);
@@ -902,13 +891,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetDefaultValueLazy(global::System.Func<object> lazy);
 		void SetDefaultValueLazy(global::System.Func<EClassifierBuilder, object> lazy);
 		void SetDefaultValueLazy(global::System.Func<EClassifier, object> immutableLazy, global::System.Func<EClassifierBuilder, object> mutableLazy);
-	
+
 		/// <summary>
 		/// Returns whether the object is an instance of this classifier.
 		/// </summary>
 		bool IsInstance(object @object);
 		int GetClassifierID();
-	
+
 		/// <summary>
 		/// Convert the <see cref="EClassifierBuilder"/> object to an immutable <see cref="EClassifier"/> object.
 		/// </summary>
@@ -920,7 +909,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EClassifier ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EClass : EClassifier
 	{
 		bool Abstract { get; }
@@ -939,11 +928,11 @@ namespace MetaDslx.Languages.Ecore.Model
 		EAttribute EIDAttribute { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EGenericSuperTypes { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EAllGenericSuperTypes { get; }
-	
+
 		bool IsSuperTypeOf(EClass someClass);
 		EStructuralFeature GetStructuralFeature(int featureID);
-		EStructuralFeature GetStructuralFeature(String featureName);
-	
+		EStructuralFeature GetStructuralFeature(string featureName);
+
 		/// <summary>
 		/// Convert the <see cref="EClass"/> object to a builder <see cref="EClassBuilder"/> object.
 		/// </summary>
@@ -955,7 +944,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EClassBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EClassBuilder : EClassifierBuilder
 	{
 		bool Abstract { get; set; }
@@ -983,11 +972,11 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetEIDAttributeLazy(global::System.Func<EClass, EAttribute> immutableLazy, global::System.Func<EClassBuilder, EAttributeBuilder> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EGenericSuperTypes { get; }
 		global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EAllGenericSuperTypes { get; }
-	
+
 		bool IsSuperTypeOf(EClassBuilder someClass);
 		EStructuralFeatureBuilder GetStructuralFeature(int featureID);
-		EStructuralFeatureBuilder GetStructuralFeature(String featureName);
-	
+		EStructuralFeatureBuilder GetStructuralFeature(string featureName);
+
 		/// <summary>
 		/// Convert the <see cref="EClassBuilder"/> object to an immutable <see cref="EClass"/> object.
 		/// </summary>
@@ -999,13 +988,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EClass ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EDataType : EClassifier
 	{
 		bool Serializable { get; }
-		String DotNetName { get; }
-	
-	
+		string DotNetName { get; }
+
+
 		/// <summary>
 		/// Convert the <see cref="EDataType"/> object to a builder <see cref="EDataTypeBuilder"/> object.
 		/// </summary>
@@ -1017,19 +1006,19 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EDataTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EDataTypeBuilder : EClassifierBuilder
 	{
 		bool Serializable { get; set; }
 		void SetSerializableLazy(global::System.Func<bool> lazy);
 		void SetSerializableLazy(global::System.Func<EDataTypeBuilder, bool> lazy);
 		void SetSerializableLazy(global::System.Func<EDataType, bool> immutableLazy, global::System.Func<EDataTypeBuilder, bool> mutableLazy);
-		String DotNetName { get; set; }
-		void SetDotNetNameLazy(global::System.Func<String> lazy);
-		void SetDotNetNameLazy(global::System.Func<EDataTypeBuilder, String> lazy);
-		void SetDotNetNameLazy(global::System.Func<EDataType, String> immutableLazy, global::System.Func<EDataTypeBuilder, String> mutableLazy);
-	
-	
+		string DotNetName { get; set; }
+		void SetDotNetNameLazy(global::System.Func<string> lazy);
+		void SetDotNetNameLazy(global::System.Func<EDataTypeBuilder, string> lazy);
+		void SetDotNetNameLazy(global::System.Func<EDataType, string> immutableLazy, global::System.Func<EDataTypeBuilder, string> mutableLazy);
+
+
 		/// <summary>
 		/// Convert the <see cref="EDataTypeBuilder"/> object to an immutable <see cref="EDataType"/> object.
 		/// </summary>
@@ -1041,14 +1030,14 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EDataType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EEnum : EDataType
 	{
 		global::MetaDslx.Modeling.ImmutableModelList<EEnumLiteral> ELiterals { get; }
-	
-		EEnumLiteral GetEEnumLiteral(String name);
+
+		EEnumLiteral GetEEnumLiteral(string name);
 		EEnumLiteral GetEEnumLiteral(int value);
-	
+
 		/// <summary>
 		/// Convert the <see cref="EEnum"/> object to a builder <see cref="EEnumBuilder"/> object.
 		/// </summary>
@@ -1060,14 +1049,14 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EEnumBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EEnumBuilder : EDataTypeBuilder
 	{
 		global::MetaDslx.Modeling.MutableModelList<EEnumLiteralBuilder> ELiterals { get; }
-	
-		EEnumLiteralBuilder GetEEnumLiteral(String name);
+
+		EEnumLiteralBuilder GetEEnumLiteral(string name);
 		EEnumLiteralBuilder GetEEnumLiteral(int value);
-	
+
 		/// <summary>
 		/// Convert the <see cref="EEnumBuilder"/> object to an immutable <see cref="EEnum"/> object.
 		/// </summary>
@@ -1079,14 +1068,14 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EEnum ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EEnumLiteral : ENamedElement
 	{
 		EEnum EEnum { get; }
 		int Value { get; }
 		System.Collections.IEnumerator Instance { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EEnumLiteral"/> object to a builder <see cref="EEnumLiteralBuilder"/> object.
 		/// </summary>
@@ -1098,7 +1087,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EEnumLiteralBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EEnumLiteralBuilder : ENamedElementBuilder
 	{
 		EEnumBuilder EEnum { get; set; }
@@ -1113,8 +1102,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetInstanceLazy(global::System.Func<System.Collections.IEnumerator> lazy);
 		void SetInstanceLazy(global::System.Func<EEnumLiteralBuilder, System.Collections.IEnumerator> lazy);
 		void SetInstanceLazy(global::System.Func<EEnumLiteral, System.Collections.IEnumerator> immutableLazy, global::System.Func<EEnumLiteralBuilder, System.Collections.IEnumerator> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EEnumLiteralBuilder"/> object to an immutable <see cref="EEnumLiteral"/> object.
 		/// </summary>
@@ -1126,7 +1115,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EEnumLiteral ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface ETypedElement : ENamedElement
 	{
 		EClassifier EType { get; }
@@ -1137,8 +1126,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		bool Many { get; }
 		bool Required { get; }
 		EGenericType EGenericType { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="ETypedElement"/> object to a builder <see cref="ETypedElementBuilder"/> object.
 		/// </summary>
@@ -1150,7 +1139,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new ETypedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface ETypedElementBuilder : ENamedElementBuilder
 	{
 		EClassifierBuilder EType { get; set; }
@@ -1185,8 +1174,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetEGenericTypeLazy(global::System.Func<EGenericTypeBuilder> lazy);
 		void SetEGenericTypeLazy(global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> lazy);
 		void SetEGenericTypeLazy(global::System.Func<ETypedElement, EGenericType> immutableLazy, global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="ETypedElementBuilder"/> object to an immutable <see cref="ETypedElement"/> object.
 		/// </summary>
@@ -1198,7 +1187,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new ETypedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EStructuralFeature : ETypedElement
 	{
 		EClass EContainingClass { get; }
@@ -1206,14 +1195,14 @@ namespace MetaDslx.Languages.Ecore.Model
 		bool Changeable { get; }
 		bool Volatile { get; }
 		bool Transient { get; }
-		String DefaultValueLiteral { get; }
+		string DefaultValueLiteral { get; }
 		object DefaultValue { get; }
 		bool Unsettable { get; }
 		bool Derived { get; }
-	
+
 		int GetFeatureID();
 		System.Type GetContainerClass();
-	
+
 		/// <summary>
 		/// Convert the <see cref="EStructuralFeature"/> object to a builder <see cref="EStructuralFeatureBuilder"/> object.
 		/// </summary>
@@ -1225,7 +1214,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EStructuralFeatureBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EStructuralFeatureBuilder : ETypedElementBuilder
 	{
 		EClassBuilder EContainingClass { get; set; }
@@ -1248,10 +1237,10 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetTransientLazy(global::System.Func<bool> lazy);
 		void SetTransientLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy);
 		void SetTransientLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy);
-		String DefaultValueLiteral { get; set; }
-		void SetDefaultValueLiteralLazy(global::System.Func<String> lazy);
-		void SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, String> lazy);
-		void SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, String> immutableLazy, global::System.Func<EStructuralFeatureBuilder, String> mutableLazy);
+		string DefaultValueLiteral { get; set; }
+		void SetDefaultValueLiteralLazy(global::System.Func<string> lazy);
+		void SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, string> lazy);
+		void SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, string> immutableLazy, global::System.Func<EStructuralFeatureBuilder, string> mutableLazy);
 		object DefaultValue { get; set; }
 		void SetDefaultValueLazy(global::System.Func<object> lazy);
 		void SetDefaultValueLazy(global::System.Func<EStructuralFeatureBuilder, object> lazy);
@@ -1264,10 +1253,10 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetDerivedLazy(global::System.Func<bool> lazy);
 		void SetDerivedLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy);
 		void SetDerivedLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy);
-	
+
 		int GetFeatureID();
 		System.Type GetContainerClass();
-	
+
 		/// <summary>
 		/// Convert the <see cref="EStructuralFeatureBuilder"/> object to an immutable <see cref="EStructuralFeature"/> object.
 		/// </summary>
@@ -1279,13 +1268,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EStructuralFeature ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EAttribute : EStructuralFeature
 	{
 		bool ID { get; }
 		EDataType EAttributeType { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EAttribute"/> object to a builder <see cref="EAttributeBuilder"/> object.
 		/// </summary>
@@ -1297,7 +1286,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EAttributeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EAttributeBuilder : EStructuralFeatureBuilder
 	{
 		bool ID { get; set; }
@@ -1308,8 +1297,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetEAttributeTypeLazy(global::System.Func<EDataTypeBuilder> lazy);
 		void SetEAttributeTypeLazy(global::System.Func<EAttributeBuilder, EDataTypeBuilder> lazy);
 		void SetEAttributeTypeLazy(global::System.Func<EAttribute, EDataType> immutableLazy, global::System.Func<EAttributeBuilder, EDataTypeBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EAttributeBuilder"/> object to an immutable <see cref="EAttribute"/> object.
 		/// </summary>
@@ -1321,7 +1310,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EAttribute ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EReference : EStructuralFeature
 	{
 		bool Containment { get; }
@@ -1329,8 +1318,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		bool ResolveProxies { get; }
 		EReference EOpposite { get; }
 		EClass EReferenceType { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EReference"/> object to a builder <see cref="EReferenceBuilder"/> object.
 		/// </summary>
@@ -1342,7 +1331,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EReferenceBuilder : EStructuralFeatureBuilder
 	{
 		bool Containment { get; set; }
@@ -1365,8 +1354,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetEReferenceTypeLazy(global::System.Func<EClassBuilder> lazy);
 		void SetEReferenceTypeLazy(global::System.Func<EReferenceBuilder, EClassBuilder> lazy);
 		void SetEReferenceTypeLazy(global::System.Func<EReference, EClass> immutableLazy, global::System.Func<EReferenceBuilder, EClassBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EReferenceBuilder"/> object to an immutable <see cref="EReference"/> object.
 		/// </summary>
@@ -1378,7 +1367,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EOperation : ETypedElement
 	{
 		EClass EContainingClass { get; }
@@ -1387,8 +1376,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		global::MetaDslx.Modeling.ImmutableModelList<EClassifier> EExceptions { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> ETypeParameters { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EGenericExceptions { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EOperation"/> object to a builder <see cref="EOperationBuilder"/> object.
 		/// </summary>
@@ -1400,7 +1389,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EOperationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EOperationBuilder : ETypedElementBuilder
 	{
 		EClassBuilder EContainingClass { get; set; }
@@ -1415,8 +1404,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		global::MetaDslx.Modeling.MutableModelList<EClassifierBuilder> EExceptions { get; }
 		global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> ETypeParameters { get; }
 		global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EGenericExceptions { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EOperationBuilder"/> object to an immutable <see cref="EOperation"/> object.
 		/// </summary>
@@ -1428,12 +1417,12 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EOperation ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EParameter : ETypedElement
 	{
 		EOperation EOperation { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EParameter"/> object to a builder <see cref="EParameterBuilder"/> object.
 		/// </summary>
@@ -1445,15 +1434,15 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EParameterBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EParameterBuilder : ETypedElementBuilder
 	{
 		EOperationBuilder EOperation { get; set; }
 		void SetEOperationLazy(global::System.Func<EOperationBuilder> lazy);
 		void SetEOperationLazy(global::System.Func<EParameterBuilder, EOperationBuilder> lazy);
 		void SetEOperationLazy(global::System.Func<EParameter, EOperation> immutableLazy, global::System.Func<EParameterBuilder, EOperationBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EParameterBuilder"/> object to an immutable <see cref="EParameter"/> object.
 		/// </summary>
@@ -1465,7 +1454,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EParameter ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface EGenericType : global::MetaDslx.Modeling.ImmutableObject
 	{
 		EClassifier EClassifier { get; }
@@ -1474,8 +1463,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		EGenericType ELowerBound { get; }
 		EGenericType EUpperBound { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EGenericType> ETypeArguments { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EGenericType"/> object to a builder <see cref="EGenericTypeBuilder"/> object.
 		/// </summary>
@@ -1487,7 +1476,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new EGenericTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface EGenericTypeBuilder : global::MetaDslx.Modeling.MutableObject
 	{
 		EClassifierBuilder EClassifier { get; set; }
@@ -1511,8 +1500,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		void SetEUpperBoundLazy(global::System.Func<EGenericTypeBuilder, EGenericTypeBuilder> lazy);
 		void SetEUpperBoundLazy(global::System.Func<EGenericType, EGenericType> immutableLazy, global::System.Func<EGenericTypeBuilder, EGenericTypeBuilder> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> ETypeArguments { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="EGenericTypeBuilder"/> object to an immutable <see cref="EGenericType"/> object.
 		/// </summary>
@@ -1524,13 +1513,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new EGenericType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface ETypeParameter : ENamedElement
 	{
 		global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EGenericTypes { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EBounds { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="ETypeParameter"/> object to a builder <see cref="ETypeParameterBuilder"/> object.
 		/// </summary>
@@ -1542,13 +1531,13 @@ namespace MetaDslx.Languages.Ecore.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new ETypeParameterBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface ETypeParameterBuilder : ENamedElementBuilder
 	{
 		global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EGenericTypes { get; }
 		global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EBounds { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="ETypeParameterBuilder"/> object to an immutable <see cref="ETypeParameter"/> object.
 		/// </summary>
@@ -1564,7 +1553,7 @@ namespace MetaDslx.Languages.Ecore.Model
 	public static class EcoreDescriptor
 	{
 		private static global::System.Collections.Generic.List<global::MetaDslx.Modeling.ModelProperty> properties;
-	
+
 		static EcoreDescriptor()
 		{
 			properties = new global::System.Collections.Generic.List<global::MetaDslx.Modeling.ModelProperty>();
@@ -1671,1230 +1660,1230 @@ namespace MetaDslx.Languages.Ecore.Model
 			properties.Add(EcoreDescriptor.ETypeParameter.EGenericTypesProperty);
 			properties.Add(EcoreDescriptor.ETypeParameter.EBoundsProperty);
 		}
-	
+
 		public static void Initialize()
 		{
 		}
-	
+
 		public const string MUri = "http://www.eclipse.org/emf/2002/Ecore";
 		public const string MPrefix = "";
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.Symbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EObjectId), typeof(global::MetaDslx.Languages.Ecore.Model.EObject), typeof(global::MetaDslx.Languages.Ecore.Model.EObjectBuilder))]
 		public static class EObject
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EObject()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EObject));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EObject; }
 			}
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EModelElementId), typeof(global::MetaDslx.Languages.Ecore.Model.EModelElement), typeof(global::MetaDslx.Languages.Ecore.Model.EModelElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EObject) })]
 		public static class EModelElement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EModelElement()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EModelElement));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EModelElement; }
 			}
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EAnnotation), "EModelElement")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAnnotationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EModelElement), name: "EAnnotations",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAnnotation),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAnnotationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EModelElement), name: "EAnnotations",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAnnotation),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAnnotationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EModelElement_EAnnotations,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EFactoryId), typeof(global::MetaDslx.Languages.Ecore.Model.EFactory), typeof(global::MetaDslx.Languages.Ecore.Model.EFactoryBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EModelElement) })]
 		public static class EFactory
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EFactory()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EFactory));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EFactory; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty EPackageProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EFactory), name: "EPackage",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EFactory), name: "EPackage",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EFactory_EPackage,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.ENamedElementId), typeof(global::MetaDslx.Languages.Ecore.Model.ENamedElement), typeof(global::MetaDslx.Languages.Ecore.Model.ENamedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EModelElement) })]
 		public static class ENamedElement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static ENamedElement()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ENamedElement));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ENamedElement; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Name")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ENamedElement), name: "Name",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ENamedElement), name: "Name",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ENamedElement_Name,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EAnnotationId), typeof(global::MetaDslx.Languages.Ecore.Model.EAnnotation), typeof(global::MetaDslx.Languages.Ecore.Model.EAnnotationBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EModelElement) })]
 		public static class EAnnotation
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EAnnotation()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EAnnotation));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAnnotation; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EModelElement), "EAnnotations")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EModelElementProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "EModelElement",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EModelElement),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EModelElementBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "EModelElement",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EModelElement),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EModelElementBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAnnotation_EModelElement,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty SourceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "Source",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "Source",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAnnotation_Source,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty DetailsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "Details",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStringToStringMapEntry),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStringToStringMapEntryBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "Details",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStringToStringMapEntry),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStringToStringMapEntryBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAnnotation_Details,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ContentsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "Contents",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObject),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObjectBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "Contents",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObject),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObjectBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAnnotation_Contents,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ReferencesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "References",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObject),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObjectBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAnnotation), name: "References",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObject),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EObjectBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAnnotation_References,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EStringToStringMapEntryId), typeof(global::MetaDslx.Languages.Ecore.Model.EStringToStringMapEntry), typeof(global::MetaDslx.Languages.Ecore.Model.EStringToStringMapEntryBuilder))]
 		public static class EStringToStringMapEntry
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EStringToStringMapEntry()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EStringToStringMapEntry));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStringToStringMapEntry; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty KeyProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStringToStringMapEntry), name: "Key",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStringToStringMapEntry), name: "Key",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStringToStringMapEntry_Key,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty ValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStringToStringMapEntry), name: "Value",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStringToStringMapEntry), name: "Value",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStringToStringMapEntry_Value,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamespaceSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EPackageId), typeof(global::MetaDslx.Languages.Ecore.Model.EPackage), typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ENamedElement) })]
 		public static class EPackage
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EPackage()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EPackage));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EPackage; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty NsURIProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "NsURI",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "NsURI",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EPackage_NsURI,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty NsPrefixProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "NsPrefix",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "NsPrefix",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EPackage_NsPrefix,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EPackage), "ESubPackages")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ESuperPackageProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "ESuperPackage",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "ESuperPackage",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EPackage_ESuperPackage,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EPackage), "ESuperPackage")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ESubPackagesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "ESubPackages",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "ESubPackages",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EPackage_ESubPackages,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EClassifier), "EPackage")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EClassifiersProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "EClassifiers",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "EClassifiers",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EPackage_EClassifiers,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty EFactoryInstanceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "EFactoryInstance",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EFactory),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EFactoryBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EPackage), name: "EFactoryInstance",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EFactory),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EFactoryBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EPackage_EFactoryInstance,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EClassifierId), typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier), typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ENamedElement) })]
 		public static class EClassifier
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EClassifier()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EClassifier));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClassifier; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty InstanceClassNameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "InstanceClassName",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "InstanceClassName",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClassifier_InstanceClassName,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EPackage), "EClassifiers")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EPackageProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "EPackage",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "EPackage",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackage),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EPackageBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClassifier_EPackage,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TypeParameters")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ETypeParametersProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "ETypeParameters",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameter),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameterBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "ETypeParameters",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameter),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameterBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClassifier_ETypeParameters,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty InstanceClassProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "InstanceClass",
-			        immutableType: typeof(System.Type),
-			        mutableType: typeof(System.Type),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "InstanceClass",
+					immutableType: typeof(System.Type),
+					mutableType: typeof(System.Type),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClassifier_InstanceClass,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefaultValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "DefaultValue",
-			        immutableType: typeof(object),
-			        mutableType: typeof(object),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClassifier), name: "DefaultValue",
+					immutableType: typeof(object),
+					mutableType: typeof(object),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClassifier_DefaultValue,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ClassTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EClassId), typeof(global::MetaDslx.Languages.Ecore.Model.EClass), typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EClassifier) })]
 		public static class EClass
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EClass()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EClass));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsAbstract")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty AbstractProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "Abstract",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "Abstract",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_Abstract,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty InterfaceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "Interface",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "Interface",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_Interface,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("BaseTypes")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ESuperTypesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "ESuperTypes",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "ESuperTypes",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_ESuperTypes,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAllSuperTypesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllSuperTypes",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllSuperTypes",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAllSuperTypes,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EStructuralFeature), "EContainingClass")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EStructuralFeaturesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EStructuralFeatures",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeature),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeatureBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EStructuralFeatures",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeature),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeatureBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EStructuralFeatures,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAllStructuralFeaturesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllStructuralFeatures",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeature),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeatureBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllStructuralFeatures",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeature),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeatureBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAllStructuralFeatures,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EOperation), "EContainingClass")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EOperationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EOperations",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperation),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EOperations",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperation),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EOperations,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAllOperationProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllOperation",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperation),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllOperation",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperation),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAllOperation,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EReferencesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EReferences",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EReferences",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EReferences,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAllReferencesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllReferences",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllReferences",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAllReferences,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAllContainmentsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllContainments",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllContainments",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAllContainments,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAttributesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAttributes",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttribute),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttributeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAttributes",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttribute),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttributeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAttributes,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAllAttributesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllAttributes",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttribute),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttributeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllAttributes",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttribute),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttributeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAllAttributes,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EIDAttributeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EIDAttribute",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttribute),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttributeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EIDAttribute",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttribute),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EAttributeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EIDAttribute,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EGenericSuperTypesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EGenericSuperTypes",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EGenericSuperTypes",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EGenericSuperTypes,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAllGenericSuperTypesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllGenericSuperTypes",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EClass), name: "EAllGenericSuperTypes",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EClass_EAllGenericSuperTypes,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EDataTypeId), typeof(global::MetaDslx.Languages.Ecore.Model.EDataType), typeof(global::MetaDslx.Languages.Ecore.Model.EDataTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EClassifier) })]
 		public static class EDataType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EDataType()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EDataType));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EDataType; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty SerializableProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EDataType), name: "Serializable",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EDataType), name: "Serializable",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EDataType_Serializable,
 					defaultValue: true);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DotNetNameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EDataType), name: "DotNetName",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EDataType), name: "DotNetName",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EDataType_DotNetName,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.EnumTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EEnumId), typeof(global::MetaDslx.Languages.Ecore.Model.EEnum), typeof(global::MetaDslx.Languages.Ecore.Model.EEnumBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EDataType) })]
 		public static class EEnum
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EEnum()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EEnum));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EEnum; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EEnumLiteral), "EEnum")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ELiteralsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnum), name: "ELiterals",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnumLiteral),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnumLiteralBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnum), name: "ELiterals",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnumLiteral),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnumLiteralBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EEnum_ELiterals,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.EnumLiteralSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EEnumLiteralId), typeof(global::MetaDslx.Languages.Ecore.Model.EEnumLiteral), typeof(global::MetaDslx.Languages.Ecore.Model.EEnumLiteralBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ENamedElement) })]
 		public static class EEnumLiteral
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EEnumLiteral()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EEnumLiteral));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EEnumLiteral; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EEnum), "ELiterals")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EEnumProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnumLiteral), name: "EEnum",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnum),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnumBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnumLiteral), name: "EEnum",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnum),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EEnumBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EEnumLiteral_EEnum,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty ValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnumLiteral), name: "Value",
-			        immutableType: typeof(int),
-			        mutableType: typeof(int),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnumLiteral), name: "Value",
+					immutableType: typeof(int),
+					mutableType: typeof(int),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EEnumLiteral_Value,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty InstanceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnumLiteral), name: "Instance",
-			        immutableType: typeof(System.Collections.IEnumerator),
-			        mutableType: typeof(System.Collections.IEnumerator),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EEnumLiteral), name: "Instance",
+					immutableType: typeof(System.Collections.IEnumerator),
+					mutableType: typeof(System.Collections.IEnumerator),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EEnumLiteral_Instance,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.ETypedElementId), typeof(global::MetaDslx.Languages.Ecore.Model.ETypedElement), typeof(global::MetaDslx.Languages.Ecore.Model.ETypedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ENamedElement) })]
 		public static class ETypedElement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static ETypedElement()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ETypedElement));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty ETypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "EType",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "EType",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_EType,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty OrderedProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Ordered",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Ordered",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_Ordered,
 					defaultValue: true);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty UniqueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Unique",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Unique",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_Unique,
 					defaultValue: true);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty LowerBoundProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "LowerBound",
-			        immutableType: typeof(int),
-			        mutableType: typeof(int),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "LowerBound",
+					immutableType: typeof(int),
+					mutableType: typeof(int),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_LowerBound,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty UpperBoundProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "UpperBound",
-			        immutableType: typeof(int),
-			        mutableType: typeof(int),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "UpperBound",
+					immutableType: typeof(int),
+					mutableType: typeof(int),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_UpperBound,
 					defaultValue: 1);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ManyProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Many",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Many",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_Many,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty RequiredProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Required",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "Required",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_Required,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EGenericTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "EGenericType",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypedElement), name: "EGenericType",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypedElement_EGenericType,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.PropertySymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EStructuralFeatureId), typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeature), typeof(global::MetaDslx.Languages.Ecore.Model.EStructuralFeatureBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ETypedElement) })]
 		public static class EStructuralFeature
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EStructuralFeature()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EStructuralFeature));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EClass), "EStructuralFeatures")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EContainingClassProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "EContainingClass",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "EContainingClass",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_EContainingClass,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Type")]
 			[global::MetaDslx.Modeling.SubsetsAttribute(typeof(EcoreDescriptor.ETypedElement), "EType")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ETypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "EType",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "EType",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_EType,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty ChangeableProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Changeable",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Changeable",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_Changeable,
 					defaultValue: true);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty VolatileProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Volatile",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Volatile",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_Volatile,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty TransientProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Transient",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Transient",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_Transient,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefaultValueLiteralProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "DefaultValueLiteral",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "DefaultValueLiteral",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_DefaultValueLiteral,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefaultValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "DefaultValue",
-			        immutableType: typeof(object),
-			        mutableType: typeof(object),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "DefaultValue",
+					immutableType: typeof(object),
+					mutableType: typeof(object),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_DefaultValue,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty UnsettableProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Unsettable",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Unsettable",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_Unsettable,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DerivedProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Derived",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EStructuralFeature), name: "Derived",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EStructuralFeature_Derived,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EAttributeId), typeof(global::MetaDslx.Languages.Ecore.Model.EAttribute), typeof(global::MetaDslx.Languages.Ecore.Model.EAttributeBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EStructuralFeature) })]
 		public static class EAttribute
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EAttribute()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EAttribute));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAttribute; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty IDProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAttribute), name: "ID",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAttribute), name: "ID",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAttribute_ID,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EAttributeTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAttribute), name: "EAttributeType",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EDataType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EDataTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EAttribute), name: "EAttributeType",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EDataType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EDataTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EAttribute_EAttributeType,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EReferenceId), typeof(global::MetaDslx.Languages.Ecore.Model.EReference), typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.EStructuralFeature) })]
 		public static class EReference
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EReference()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EReference));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EReference; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty ContainmentProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "Containment",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "Containment",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EReference_Containment,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ContainerProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "Container",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "Container",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EReference_Container,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty ResolveProxiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "ResolveProxies",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "ResolveProxies",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EReference_ResolveProxies,
 					defaultValue: true);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty EOppositeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "EOpposite",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "EOpposite",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReference),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EReferenceBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EReference_EOpposite,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty EReferenceTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "EReferenceType",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EReference), name: "EReferenceType",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EReference_EReferenceType,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MethodSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EOperationId), typeof(global::MetaDslx.Languages.Ecore.Model.EOperation), typeof(global::MetaDslx.Languages.Ecore.Model.EOperationBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ETypedElement) })]
 		public static class EOperation
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EOperation()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EOperation));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EOperation; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EClass), "EOperations")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EContainingClassProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EContainingClass",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EContainingClass",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClass),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EOperation_EContainingClass,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReturnType")]
 			[global::MetaDslx.Modeling.RedefinesAttribute(typeof(EcoreDescriptor.ETypedElement), "EType")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ETypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EType",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EType",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EOperation_EType,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Parameters")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EParameter), "EOperation")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EParametersProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EParameters",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EParameter),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EParameterBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EParameters",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EParameter),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EParameterBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EOperation_EParameters,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EExceptionsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EExceptions",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EExceptions",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EOperation_EExceptions,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TypeParameters")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ETypeParametersProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "ETypeParameters",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameter),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameterBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "ETypeParameters",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameter),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameterBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EOperation_ETypeParameters,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EGenericExceptionsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EGenericExceptions",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EOperation), name: "EGenericExceptions",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EOperation_EGenericExceptions,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ParameterSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EParameterId), typeof(global::MetaDslx.Languages.Ecore.Model.EParameter), typeof(global::MetaDslx.Languages.Ecore.Model.EParameterBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ETypedElement) })]
 		public static class EParameter
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EParameter()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EParameter));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EParameter; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EOperation), "EParameters")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EOperationProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EParameter), name: "EOperation",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperation),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EParameter), name: "EOperation",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperation),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EOperationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EParameter_EOperation,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EGenericTypeId), typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType), typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder))]
 		public static class EGenericType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static EGenericType()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EGenericType));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EGenericType; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty EClassifierProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "EClassifier",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "EClassifier",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EGenericType_EClassifier,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty ERawTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ERawType",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ERawType",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EGenericType_ERawType,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.ETypeParameter), "EGenericTypes")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ETypeParameterProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ETypeParameter",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameter),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameterBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ETypeParameter",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameter),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameterBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EGenericType_ETypeParameter,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ELowerBoundProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ELowerBound",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ELowerBound",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EGenericType_ELowerBound,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EUpperBoundProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "EUpperBound",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "EUpperBound",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EGenericType_EUpperBound,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TypeArguments")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ETypeArgumentsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ETypeArguments",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(EGenericType), name: "ETypeArguments",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.EGenericType_ETypeArguments,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.TypeParameterSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.ETypeParameterId), typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameter), typeof(global::MetaDslx.Languages.Ecore.Model.ETypeParameterBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ENamedElement) })]
 		public static class ETypeParameter
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static ETypeParameter()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ETypeParameter));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypeParameter; }
 			}
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(EcoreDescriptor.EGenericType), "ETypeParameter")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EGenericTypesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypeParameter), name: "EGenericTypes",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypeParameter), name: "EGenericTypes",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypeParameter_EGenericTypes,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EBoundsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypeParameter), name: "EBounds",
-			        immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
-			        mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ETypeParameter), name: "EBounds",
+					immutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericType),
+					mutableType: typeof(global::MetaDslx.Languages.Ecore.Model.EGenericTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.ETypeParameter_EBounds,
 					defaultValue: null);
 		}
@@ -2903,1283 +2892,1235 @@ namespace MetaDslx.Languages.Ecore.Model
 
 namespace MetaDslx.Languages.Ecore.Model.Internal
 {
-	
+
 	internal class EObjectId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EObject.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EObjectImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EObjectBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EObjectImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EObject
 	{
-	
+
 		internal EObjectImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EObject; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EObject;
+
 		public new EObjectBuilder ToMutable()
 		{
 			return (EObjectBuilder)base.ToMutable();
 		}
-	
+
 		public new EObjectBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EObjectBuilder)base.ToMutable(model);
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
 	}
-	
+
 	internal class EObjectBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EObjectBuilder
 	{
-	
+
 		internal EObjectBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EObject(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EObject; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EObject;
+
 		public new EObject ToImmutable()
 		{
 			return (EObject)base.ToImmutable();
 		}
-	
+
 		public new EObject ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EObject)base.ToImmutable(model);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
 	}
-	
+
 	internal class EModelElementId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EModelElementImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EModelElementBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EModelElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EModelElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
-	
+
 		internal EModelElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EModelElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EModelElement;
+
 		public new EModelElementBuilder ToMutable()
 		{
 			return (EModelElementBuilder)base.ToMutable();
 		}
-	
+
 		public new EModelElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EModelElementBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EModelElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EModelElementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal EModelElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EModelElement(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EModelElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EModelElement;
+
 		public new EModelElement ToImmutable()
 		{
 			return (EModelElement)base.ToImmutable();
 		}
-	
+
 		public new EModelElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EModelElement)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EFactoryId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EFactory.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EFactoryImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EFactoryBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EFactoryImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EFactory
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EPackage ePackage0;
-	
+
 		internal EFactoryImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EFactory; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EFactory;
+
 		public new EFactoryBuilder ToMutable()
 		{
 			return (EFactoryBuilder)base.ToMutable();
 		}
-	
+
 		public new EFactoryBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EFactoryBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
+
+
 		public EPackage EPackage
 		{
-		    get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EFactory.EPackageProperty, ref ePackage0); }
+			get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EFactory.EPackageProperty, ref ePackage0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		EObject EFactory.Create(EClass eClass)
 		{
-		    return EcoreImplementationProvider.Implementation.EFactory_Create(this, eClass);
+			return EcoreImplementationProvider.Implementation.EFactory_Create(this, eClass);
 		}
-	
-		
-		EObject EFactory.CreateFromString(EDataType eDataType, String literalValue)
+
+
+		EObject EFactory.CreateFromString(EDataType eDataType, string literalValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EFactory_CreateFromString(this, eDataType, literalValue);
+			return EcoreImplementationProvider.Implementation.EFactory_CreateFromString(this, eDataType, literalValue);
 		}
-	
-		
-		String EFactory.ConvertToString(EDataType eDataType, object instanceValue)
+
+
+		string EFactory.ConvertToString(EDataType eDataType, object instanceValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EFactory_ConvertToString(this, eDataType, instanceValue);
+			return EcoreImplementationProvider.Implementation.EFactory_ConvertToString(this, eDataType, instanceValue);
 		}
 	}
-	
+
 	internal class EFactoryBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EFactoryBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal EFactoryBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EFactory(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EFactory; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EFactory;
+
 		public new EFactory ToImmutable()
 		{
 			return (EFactory)base.ToImmutable();
 		}
-	
+
 		public new EFactory ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EFactory)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
+
+
 		public EPackageBuilder EPackage
 		{
 			get { return this.GetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EFactory.EPackageProperty); }
 			set { this.SetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EFactory.EPackageProperty, value); }
 		}
-		
+
 		void EFactoryBuilder.SetEPackageLazy(global::System.Func<EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EFactory.EPackageProperty, lazy);
 		}
-		
+
 		void EFactoryBuilder.SetEPackageLazy(global::System.Func<EFactoryBuilder, EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EFactory.EPackageProperty, lazy);
 		}
-		
+
 		void EFactoryBuilder.SetEPackageLazy(global::System.Func<EFactory, EPackage> immutableLazy, global::System.Func<EFactoryBuilder, EPackageBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EFactory.EPackageProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		EObjectBuilder EFactoryBuilder.Create(EClassBuilder eClass)
 		{
-		    return EcoreImplementationProvider.Implementation.EFactory_Create(this, eClass);
+			return EcoreImplementationProvider.Implementation.EFactory_Create(this, eClass);
 		}
-	
-		
-		EObjectBuilder EFactoryBuilder.CreateFromString(EDataTypeBuilder eDataType, String literalValue)
+
+
+		EObjectBuilder EFactoryBuilder.CreateFromString(EDataTypeBuilder eDataType, string literalValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EFactory_CreateFromString(this, eDataType, literalValue);
+			return EcoreImplementationProvider.Implementation.EFactory_CreateFromString(this, eDataType, literalValue);
 		}
-	
-		
-		String EFactoryBuilder.ConvertToString(EDataTypeBuilder eDataType, object instanceValue)
+
+
+		string EFactoryBuilder.ConvertToString(EDataTypeBuilder eDataType, object instanceValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EFactory_ConvertToString(this, eDataType, instanceValue);
+			return EcoreImplementationProvider.Implementation.EFactory_ConvertToString(this, eDataType, instanceValue);
 		}
 	}
-	
+
 	internal class ENamedElementId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new ENamedElementImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new ENamedElementBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class ENamedElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ENamedElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
-	
+		private string name0;
+
 		internal ENamedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.ENamedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.ENamedElement;
+
 		public new ENamedElementBuilder ToMutable()
 		{
 			return (ENamedElementBuilder)base.ToMutable();
 		}
-	
+
 		public new ENamedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (ENamedElementBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class ENamedElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ENamedElementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal ENamedElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.ENamedElement(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.ENamedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.ENamedElement;
+
 		public new ENamedElement ToImmutable()
 		{
 			return (ENamedElement)base.ToImmutable();
 		}
-	
+
 		public new ENamedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (ENamedElement)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EAnnotationId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EAnnotationImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EAnnotationBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EAnnotationImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EAnnotation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4187,565 +4128,541 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EModelElement eModelElement0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String source0;
+		private string source0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EStringToStringMapEntry> details0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EObject> contents0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EObject> references0;
-	
+
 		internal EAnnotationImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EAnnotation; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EAnnotation;
+
 		public new EAnnotationBuilder ToMutable()
 		{
 			return (EAnnotationBuilder)base.ToMutable();
 		}
-	
+
 		public new EAnnotationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EAnnotationBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
+
+
 		public EModelElement EModelElement
 		{
-		    get { return this.GetReference<EModelElement>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.EModelElementProperty, ref eModelElement0); }
+			get { return this.GetReference<EModelElement>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.EModelElementProperty, ref eModelElement0); }
 		}
-	
-		
-		public String Source
+
+
+		public string Source
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.SourceProperty, ref source0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.SourceProperty, ref source0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EStringToStringMapEntry> Details
 		{
-		    get { return this.GetList<EStringToStringMapEntry>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.DetailsProperty, ref details0); }
+			get { return this.GetList<EStringToStringMapEntry>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.DetailsProperty, ref details0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EObject> Contents
 		{
-		    get { return this.GetList<EObject>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.ContentsProperty, ref contents0); }
+			get { return this.GetList<EObject>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.ContentsProperty, ref contents0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EObject> References
 		{
-		    get { return this.GetList<EObject>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.ReferencesProperty, ref references0); }
+			get { return this.GetList<EObject>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.ReferencesProperty, ref references0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EAnnotationBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EAnnotationBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<EStringToStringMapEntryBuilder> details0;
 		private global::MetaDslx.Modeling.MutableModelList<EObjectBuilder> contents0;
 		private global::MetaDslx.Modeling.MutableModelList<EObjectBuilder> references0;
-	
+
 		internal EAnnotationBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EAnnotation(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EAnnotation; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EAnnotation;
+
 		public new EAnnotation ToImmutable()
 		{
 			return (EAnnotation)base.ToImmutable();
 		}
-	
+
 		public new EAnnotation ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EAnnotation)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
+
+
 		public EModelElementBuilder EModelElement
 		{
 			get { return this.GetReference<EModelElementBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.EModelElementProperty); }
 			set { this.SetReference<EModelElementBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.EModelElementProperty, value); }
 		}
-		
+
 		void EAnnotationBuilder.SetEModelElementLazy(global::System.Func<EModelElementBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAnnotation.EModelElementProperty, lazy);
 		}
-		
+
 		void EAnnotationBuilder.SetEModelElementLazy(global::System.Func<EAnnotationBuilder, EModelElementBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAnnotation.EModelElementProperty, lazy);
 		}
-		
+
 		void EAnnotationBuilder.SetEModelElementLazy(global::System.Func<EAnnotation, EModelElement> immutableLazy, global::System.Func<EAnnotationBuilder, EModelElementBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAnnotation.EModelElementProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Source
+
+
+		public string Source
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.SourceProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.SourceProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.SourceProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.SourceProperty, value); }
 		}
-		
-		void EAnnotationBuilder.SetSourceLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EAnnotation.SourceProperty, lazy);
-		}
-		
-		void EAnnotationBuilder.SetSourceLazy(global::System.Func<EAnnotationBuilder, String> lazy)
+
+		void EAnnotationBuilder.SetSourceLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAnnotation.SourceProperty, lazy);
 		}
-		
-		void EAnnotationBuilder.SetSourceLazy(global::System.Func<EAnnotation, String> immutableLazy, global::System.Func<EAnnotationBuilder, String> mutableLazy)
+
+		void EAnnotationBuilder.SetSourceLazy(global::System.Func<EAnnotationBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EAnnotation.SourceProperty, lazy);
+		}
+
+		void EAnnotationBuilder.SetSourceLazy(global::System.Func<EAnnotation, string> immutableLazy, global::System.Func<EAnnotationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAnnotation.SourceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EStringToStringMapEntryBuilder> Details
 		{
 			get { return this.GetList<EStringToStringMapEntryBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.DetailsProperty, ref details0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EObjectBuilder> Contents
 		{
 			get { return this.GetList<EObjectBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.ContentsProperty, ref contents0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EObjectBuilder> References
 		{
 			get { return this.GetList<EObjectBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAnnotation.ReferencesProperty, ref references0); }
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EStringToStringMapEntryId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EStringToStringMapEntryImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EStringToStringMapEntryBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EStringToStringMapEntryImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EStringToStringMapEntry
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String key0;
+		private string key0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String value0;
-	
+		private string value0;
+
 		internal EStringToStringMapEntryImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EStringToStringMapEntry; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EStringToStringMapEntry;
+
 		public new EStringToStringMapEntryBuilder ToMutable()
 		{
 			return (EStringToStringMapEntryBuilder)base.ToMutable();
 		}
-	
+
 		public new EStringToStringMapEntryBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EStringToStringMapEntryBuilder)base.ToMutable(model);
 		}
-	
-		
-		public String Key
+
+
+		public string Key
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.KeyProperty, ref key0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.KeyProperty, ref key0); }
 		}
-	
-		
-		public String Value
+
+
+		public string Value
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.ValueProperty, ref value0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.ValueProperty, ref value0); }
 		}
 	}
-	
+
 	internal class EStringToStringMapEntryBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EStringToStringMapEntryBuilder
 	{
-	
+
 		internal EStringToStringMapEntryBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EStringToStringMapEntry(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EStringToStringMapEntry; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EStringToStringMapEntry;
+
 		public new EStringToStringMapEntry ToImmutable()
 		{
 			return (EStringToStringMapEntry)base.ToImmutable();
 		}
-	
+
 		public new EStringToStringMapEntry ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EStringToStringMapEntry)base.ToImmutable(model);
 		}
-	
-		
-		public String Key
+
+
+		public string Key
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.KeyProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.KeyProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.KeyProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.KeyProperty, value); }
 		}
-		
-		void EStringToStringMapEntryBuilder.SetKeyLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.KeyProperty, lazy);
-		}
-		
-		void EStringToStringMapEntryBuilder.SetKeyLazy(global::System.Func<EStringToStringMapEntryBuilder, String> lazy)
+
+		void EStringToStringMapEntryBuilder.SetKeyLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.KeyProperty, lazy);
 		}
-		
-		void EStringToStringMapEntryBuilder.SetKeyLazy(global::System.Func<EStringToStringMapEntry, String> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, String> mutableLazy)
+
+		void EStringToStringMapEntryBuilder.SetKeyLazy(global::System.Func<EStringToStringMapEntryBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.KeyProperty, lazy);
+		}
+
+		void EStringToStringMapEntryBuilder.SetKeyLazy(global::System.Func<EStringToStringMapEntry, string> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.KeyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Value
+
+
+		public string Value
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.ValueProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.ValueProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.ValueProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStringToStringMapEntry.ValueProperty, value); }
 		}
-		
-		void EStringToStringMapEntryBuilder.SetValueLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.ValueProperty, lazy);
-		}
-		
-		void EStringToStringMapEntryBuilder.SetValueLazy(global::System.Func<EStringToStringMapEntryBuilder, String> lazy)
+
+		void EStringToStringMapEntryBuilder.SetValueLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.ValueProperty, lazy);
 		}
-		
-		void EStringToStringMapEntryBuilder.SetValueLazy(global::System.Func<EStringToStringMapEntry, String> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, String> mutableLazy)
+
+		void EStringToStringMapEntryBuilder.SetValueLazy(global::System.Func<EStringToStringMapEntryBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.ValueProperty, lazy);
+		}
+
+		void EStringToStringMapEntryBuilder.SetValueLazy(global::System.Func<EStringToStringMapEntry, string> immutableLazy, global::System.Func<EStringToStringMapEntryBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStringToStringMapEntry.ValueProperty, immutableLazy, mutableLazy);
 		}
 	}
-	
+
 	internal class EPackageId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EPackageImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EPackageBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EPackageImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EPackage
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String nsURI0;
+		private string nsURI0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String nsPrefix0;
+		private string nsPrefix0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EPackage eSuperPackage0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4754,521 +4671,509 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private global::MetaDslx.Modeling.ImmutableModelList<EClassifier> eClassifiers0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EFactory eFactoryInstance0;
-	
+
 		internal EPackageImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EPackage; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EPackage;
+
 		public new EPackageBuilder ToMutable()
 		{
 			return (EPackageBuilder)base.ToMutable();
 		}
-	
+
 		public new EPackageBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EPackageBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
-		public String NsURI
+
+
+		public string NsURI
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsURIProperty, ref nsURI0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsURIProperty, ref nsURI0); }
 		}
-	
-		
-		public String NsPrefix
+
+
+		public string NsPrefix
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsPrefixProperty, ref nsPrefix0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsPrefixProperty, ref nsPrefix0); }
 		}
-	
-		
+
+
 		public EPackage ESuperPackage
 		{
-		    get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.ESuperPackageProperty, ref eSuperPackage0); }
+			get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.ESuperPackageProperty, ref eSuperPackage0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EPackage> ESubPackages
 		{
-		    get { return this.GetList<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.ESubPackagesProperty, ref eSubPackages0); }
+			get { return this.GetList<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.ESubPackagesProperty, ref eSubPackages0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EClassifier> EClassifiers
 		{
-		    get { return this.GetList<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.EClassifiersProperty, ref eClassifiers0); }
+			get { return this.GetList<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.EClassifiersProperty, ref eClassifiers0); }
 		}
-	
-		
+
+
 		public EFactory EFactoryInstance
 		{
-		    get { return this.GetReference<EFactory>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.EFactoryInstanceProperty, ref eFactoryInstance0); }
+			get { return this.GetReference<EFactory>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.EFactoryInstanceProperty, ref eFactoryInstance0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
-		EClassifier EPackage.GetEClassifier(String name)
+
+
+		EClassifier EPackage.GetEClassifier(string name)
 		{
-		    return EcoreImplementationProvider.Implementation.EPackage_GetEClassifier(this, name);
+			return EcoreImplementationProvider.Implementation.EPackage_GetEClassifier(this, name);
 		}
 	}
-	
+
 	internal class EPackageBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EPackageBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<EPackageBuilder> eSubPackages0;
 		private global::MetaDslx.Modeling.MutableModelList<EClassifierBuilder> eClassifiers0;
-	
+
 		internal EPackageBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EPackage(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EPackage; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EPackage;
+
 		public new EPackage ToImmutable()
 		{
 			return (EPackage)base.ToImmutable();
 		}
-	
+
 		public new EPackage ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EPackage)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String NsURI
+
+
+		public string NsURI
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsURIProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsURIProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsURIProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsURIProperty, value); }
 		}
-		
-		void EPackageBuilder.SetNsURILazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EPackage.NsURIProperty, lazy);
-		}
-		
-		void EPackageBuilder.SetNsURILazy(global::System.Func<EPackageBuilder, String> lazy)
+
+		void EPackageBuilder.SetNsURILazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.NsURIProperty, lazy);
 		}
-		
-		void EPackageBuilder.SetNsURILazy(global::System.Func<EPackage, String> immutableLazy, global::System.Func<EPackageBuilder, String> mutableLazy)
+
+		void EPackageBuilder.SetNsURILazy(global::System.Func<EPackageBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EPackage.NsURIProperty, lazy);
+		}
+
+		void EPackageBuilder.SetNsURILazy(global::System.Func<EPackage, string> immutableLazy, global::System.Func<EPackageBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.NsURIProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String NsPrefix
+
+
+		public string NsPrefix
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsPrefixProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsPrefixProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsPrefixProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.NsPrefixProperty, value); }
 		}
-		
-		void EPackageBuilder.SetNsPrefixLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EPackage.NsPrefixProperty, lazy);
-		}
-		
-		void EPackageBuilder.SetNsPrefixLazy(global::System.Func<EPackageBuilder, String> lazy)
+
+		void EPackageBuilder.SetNsPrefixLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.NsPrefixProperty, lazy);
 		}
-		
-		void EPackageBuilder.SetNsPrefixLazy(global::System.Func<EPackage, String> immutableLazy, global::System.Func<EPackageBuilder, String> mutableLazy)
+
+		void EPackageBuilder.SetNsPrefixLazy(global::System.Func<EPackageBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EPackage.NsPrefixProperty, lazy);
+		}
+
+		void EPackageBuilder.SetNsPrefixLazy(global::System.Func<EPackage, string> immutableLazy, global::System.Func<EPackageBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.NsPrefixProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EPackageBuilder ESuperPackage
 		{
 			get { return this.GetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.ESuperPackageProperty); }
 			set { this.SetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.ESuperPackageProperty, value); }
 		}
-		
+
 		void EPackageBuilder.SetESuperPackageLazy(global::System.Func<EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.ESuperPackageProperty, lazy);
 		}
-		
+
 		void EPackageBuilder.SetESuperPackageLazy(global::System.Func<EPackageBuilder, EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.ESuperPackageProperty, lazy);
 		}
-		
+
 		void EPackageBuilder.SetESuperPackageLazy(global::System.Func<EPackage, EPackage> immutableLazy, global::System.Func<EPackageBuilder, EPackageBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.ESuperPackageProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EPackageBuilder> ESubPackages
 		{
 			get { return this.GetList<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.ESubPackagesProperty, ref eSubPackages0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EClassifierBuilder> EClassifiers
 		{
 			get { return this.GetList<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.EClassifiersProperty, ref eClassifiers0); }
 		}
-	
-		
+
+
 		public EFactoryBuilder EFactoryInstance
 		{
 			get { return this.GetReference<EFactoryBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.EFactoryInstanceProperty); }
 			set { this.SetReference<EFactoryBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EPackage.EFactoryInstanceProperty, value); }
 		}
-		
+
 		void EPackageBuilder.SetEFactoryInstanceLazy(global::System.Func<EFactoryBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.EFactoryInstanceProperty, lazy);
 		}
-		
+
 		void EPackageBuilder.SetEFactoryInstanceLazy(global::System.Func<EPackageBuilder, EFactoryBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.EFactoryInstanceProperty, lazy);
 		}
-		
+
 		void EPackageBuilder.SetEFactoryInstanceLazy(global::System.Func<EPackage, EFactory> immutableLazy, global::System.Func<EPackageBuilder, EFactoryBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EPackage.EFactoryInstanceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
-		EClassifierBuilder EPackageBuilder.GetEClassifier(String name)
+
+
+		EClassifierBuilder EPackageBuilder.GetEClassifier(string name)
 		{
-		    return EcoreImplementationProvider.Implementation.EPackage_GetEClassifier(this, name);
+			return EcoreImplementationProvider.Implementation.EPackage_GetEClassifier(this, name);
 		}
 	}
-	
+
 	internal class EClassifierId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EClassifierImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EClassifierBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EClassifierImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EClassifier
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String instanceClassName0;
+		private string instanceClassName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EPackage ePackage0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5277,520 +5182,508 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private System.Type instanceClass0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object defaultValue0;
-	
+
 		internal EClassifierImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EClassifier; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EClassifier;
+
 		public new EClassifierBuilder ToMutable()
 		{
 			return (EClassifierBuilder)base.ToMutable();
 		}
-	
+
 		public new EClassifierBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EClassifierBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
 		}
-	
-		
+
+
 		public EPackage EPackage
 		{
-		    get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
+			get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> ETypeParameters
 		{
-		    get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
+			get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
-		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
-		    get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifier.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifier.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
 	}
-	
+
 	internal class EClassifierBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EClassifierBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
-	
+
 		internal EClassifierBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EClassifier(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EClassifier; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EClassifier;
+
 		public new EClassifier ToImmutable()
 		{
 			return (EClassifier)base.ToImmutable();
 		}
-	
+
 		public new EClassifier ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EClassifier)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
-		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, String> lazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, String> immutableLazy, global::System.Func<EClassifierBuilder, String> mutableLazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
+		}
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, string> immutableLazy, global::System.Func<EClassifierBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EPackageBuilder EPackage
 		{
 			get { return this.GetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty); }
 			set { this.SetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifierBuilder, EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifier, EPackage> immutableLazy, global::System.Func<EClassifierBuilder, EPackageBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> ETypeParameters
 		{
 			get { return this.GetList<ETypeParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
 			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty); }
 			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifierBuilder, System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifier, System.Type> immutableLazy, global::System.Func<EClassifierBuilder, System.Type> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty); }
 			set { this.SetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifierBuilder, object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifier, object> immutableLazy, global::System.Func<EClassifierBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifierBuilder.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifierBuilder.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
 	}
-	
+
 	internal class EClassId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EClassImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EClassBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EClassImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EClass
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String instanceClassName0;
+		private string instanceClassName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EPackage ePackage0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5831,331 +5724,325 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private global::MetaDslx.Modeling.ImmutableModelList<EGenericType> eGenericSuperTypes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EGenericType> eAllGenericSuperTypes0;
-	
+
 		internal EClassImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EClass; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EClass;
+
 		public new EClassBuilder ToMutable()
 		{
 			return (EClassBuilder)base.ToMutable();
 		}
-	
+
 		public new EClassBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EClassBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EClassifierBuilder EClassifier.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EClassifierBuilder EClassifier.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
 		}
-	
-		
+
+
 		public EPackage EPackage
 		{
-		    get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
+			get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> ETypeParameters
 		{
-		    get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
+			get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
-		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
-		    get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		public bool Abstract
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.AbstractProperty, ref abstract0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.AbstractProperty, ref abstract0); }
 		}
-	
-		
+
+
 		public bool Interface
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.InterfaceProperty, ref interface0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.InterfaceProperty, ref interface0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EClass> ESuperTypes
 		{
-		    get { return this.GetList<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.ESuperTypesProperty, ref eSuperTypes0); }
+			get { return this.GetList<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.ESuperTypesProperty, ref eSuperTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EClass> EAllSuperTypes
 		{
-		    get { return this.GetList<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllSuperTypesProperty, ref eAllSuperTypes0); }
+			get { return this.GetList<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllSuperTypesProperty, ref eAllSuperTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EStructuralFeature> EStructuralFeatures
 		{
-		    get { return this.GetList<EStructuralFeature>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EStructuralFeaturesProperty, ref eStructuralFeatures0); }
+			get { return this.GetList<EStructuralFeature>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EStructuralFeaturesProperty, ref eStructuralFeatures0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EStructuralFeature> EAllStructuralFeatures
 		{
-		    get { return this.GetList<EStructuralFeature>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllStructuralFeaturesProperty, ref eAllStructuralFeatures0); }
+			get { return this.GetList<EStructuralFeature>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllStructuralFeaturesProperty, ref eAllStructuralFeatures0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EOperation> EOperations
 		{
-		    get { return this.GetList<EOperation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EOperationsProperty, ref eOperations0); }
+			get { return this.GetList<EOperation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EOperationsProperty, ref eOperations0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EOperation> EAllOperation
 		{
-		    get { return this.GetList<EOperation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllOperationProperty, ref eAllOperation0); }
+			get { return this.GetList<EOperation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllOperationProperty, ref eAllOperation0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EReference> EReferences
 		{
-		    get { return this.GetList<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EReferencesProperty, ref eReferences0); }
+			get { return this.GetList<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EReferencesProperty, ref eReferences0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EReference> EAllReferences
 		{
-		    get { return this.GetList<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllReferencesProperty, ref eAllReferences0); }
+			get { return this.GetList<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllReferencesProperty, ref eAllReferences0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EReference> EAllContainments
 		{
-		    get { return this.GetList<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllContainmentsProperty, ref eAllContainments0); }
+			get { return this.GetList<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllContainmentsProperty, ref eAllContainments0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAttribute> EAttributes
 		{
-		    get { return this.GetList<EAttribute>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAttributesProperty, ref eAttributes0); }
+			get { return this.GetList<EAttribute>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAttributesProperty, ref eAttributes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAttribute> EAllAttributes
 		{
-		    get { return this.GetList<EAttribute>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllAttributesProperty, ref eAllAttributes0); }
+			get { return this.GetList<EAttribute>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllAttributesProperty, ref eAllAttributes0); }
 		}
-	
-		
+
+
 		public EAttribute EIDAttribute
 		{
-		    get { return this.GetReference<EAttribute>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EIDAttributeProperty, ref eIDAttribute0); }
+			get { return this.GetReference<EAttribute>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EIDAttributeProperty, ref eIDAttribute0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EGenericSuperTypes
 		{
-		    get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EGenericSuperTypesProperty, ref eGenericSuperTypes0); }
+			get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EGenericSuperTypesProperty, ref eGenericSuperTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EAllGenericSuperTypes
 		{
-		    get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllGenericSuperTypesProperty, ref eAllGenericSuperTypes0); }
+			get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllGenericSuperTypesProperty, ref eAllGenericSuperTypes0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifier.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifier.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
-	
-		
+
+
 		bool EClass.IsSuperTypeOf(EClass someClass)
 		{
-		    return EcoreImplementationProvider.Implementation.EClass_IsSuperTypeOf(this, someClass);
+			return EcoreImplementationProvider.Implementation.EClass_IsSuperTypeOf(this, someClass);
 		}
-	
-		
+
+
 		EStructuralFeature EClass.GetStructuralFeature(int featureID)
 		{
-		    return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureID);
+			return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureID);
 		}
-	
-		
-		EStructuralFeature EClass.GetStructuralFeature(String featureName)
+
+
+		EStructuralFeature EClass.GetStructuralFeature(string featureName)
 		{
-		    return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureName);
+			return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureName);
 		}
 	}
-	
+
 	internal class EClassBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EClassBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
@@ -6173,486 +6060,480 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private global::MetaDslx.Modeling.MutableModelList<EAttributeBuilder> eAllAttributes0;
 		private global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> eGenericSuperTypes0;
 		private global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> eAllGenericSuperTypes0;
-	
+
 		internal EClassBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EClass(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EClass; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EClass;
+
 		public new EClass ToImmutable()
 		{
 			return (EClass)base.ToImmutable();
 		}
-	
+
 		public new EClass ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EClass)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EClassifier EClassifierBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EClassifier EClassifierBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
-		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, String> lazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, String> immutableLazy, global::System.Func<EClassifierBuilder, String> mutableLazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
+		}
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, string> immutableLazy, global::System.Func<EClassifierBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EPackageBuilder EPackage
 		{
 			get { return this.GetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty); }
 			set { this.SetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifierBuilder, EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifier, EPackage> immutableLazy, global::System.Func<EClassifierBuilder, EPackageBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> ETypeParameters
 		{
 			get { return this.GetList<ETypeParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
 			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty); }
 			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifierBuilder, System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifier, System.Type> immutableLazy, global::System.Func<EClassifierBuilder, System.Type> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty); }
 			set { this.SetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifierBuilder, object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifier, object> immutableLazy, global::System.Func<EClassifierBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Abstract
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.AbstractProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.AbstractProperty, value); }
 		}
-		
+
 		void EClassBuilder.SetAbstractLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EClass.AbstractProperty, lazy);
 		}
-		
+
 		void EClassBuilder.SetAbstractLazy(global::System.Func<EClassBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EClass.AbstractProperty, lazy);
 		}
-		
+
 		void EClassBuilder.SetAbstractLazy(global::System.Func<EClass, bool> immutableLazy, global::System.Func<EClassBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EClass.AbstractProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Interface
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.InterfaceProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.InterfaceProperty, value); }
 		}
-		
+
 		void EClassBuilder.SetInterfaceLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EClass.InterfaceProperty, lazy);
 		}
-		
+
 		void EClassBuilder.SetInterfaceLazy(global::System.Func<EClassBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EClass.InterfaceProperty, lazy);
 		}
-		
+
 		void EClassBuilder.SetInterfaceLazy(global::System.Func<EClass, bool> immutableLazy, global::System.Func<EClassBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EClass.InterfaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EClassBuilder> ESuperTypes
 		{
 			get { return this.GetList<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.ESuperTypesProperty, ref eSuperTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EClassBuilder> EAllSuperTypes
 		{
 			get { return this.GetList<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllSuperTypesProperty, ref eAllSuperTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EStructuralFeatureBuilder> EStructuralFeatures
 		{
 			get { return this.GetList<EStructuralFeatureBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EStructuralFeaturesProperty, ref eStructuralFeatures0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EStructuralFeatureBuilder> EAllStructuralFeatures
 		{
 			get { return this.GetList<EStructuralFeatureBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllStructuralFeaturesProperty, ref eAllStructuralFeatures0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EOperationBuilder> EOperations
 		{
 			get { return this.GetList<EOperationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EOperationsProperty, ref eOperations0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EOperationBuilder> EAllOperation
 		{
 			get { return this.GetList<EOperationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllOperationProperty, ref eAllOperation0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EReferenceBuilder> EReferences
 		{
 			get { return this.GetList<EReferenceBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EReferencesProperty, ref eReferences0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EReferenceBuilder> EAllReferences
 		{
 			get { return this.GetList<EReferenceBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllReferencesProperty, ref eAllReferences0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EReferenceBuilder> EAllContainments
 		{
 			get { return this.GetList<EReferenceBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllContainmentsProperty, ref eAllContainments0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAttributeBuilder> EAttributes
 		{
 			get { return this.GetList<EAttributeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAttributesProperty, ref eAttributes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAttributeBuilder> EAllAttributes
 		{
 			get { return this.GetList<EAttributeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllAttributesProperty, ref eAllAttributes0); }
 		}
-	
-		
+
+
 		public EAttributeBuilder EIDAttribute
 		{
 			get { return this.GetReference<EAttributeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EIDAttributeProperty); }
 		}
-		
+
 		void EClassBuilder.SetEIDAttributeLazy(global::System.Func<EAttributeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClass.EIDAttributeProperty, lazy);
 		}
-		
+
 		void EClassBuilder.SetEIDAttributeLazy(global::System.Func<EClassBuilder, EAttributeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClass.EIDAttributeProperty, lazy);
 		}
-		
+
 		void EClassBuilder.SetEIDAttributeLazy(global::System.Func<EClass, EAttribute> immutableLazy, global::System.Func<EClassBuilder, EAttributeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClass.EIDAttributeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EGenericSuperTypes
 		{
 			get { return this.GetList<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EGenericSuperTypesProperty, ref eGenericSuperTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EAllGenericSuperTypes
 		{
 			get { return this.GetList<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClass.EAllGenericSuperTypesProperty, ref eAllGenericSuperTypes0); }
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifierBuilder.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifierBuilder.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
-	
-		
+
+
 		bool EClassBuilder.IsSuperTypeOf(EClassBuilder someClass)
 		{
-		    return EcoreImplementationProvider.Implementation.EClass_IsSuperTypeOf(this, someClass);
+			return EcoreImplementationProvider.Implementation.EClass_IsSuperTypeOf(this, someClass);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EClassBuilder.GetStructuralFeature(int featureID)
 		{
-		    return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureID);
+			return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureID);
 		}
-	
-		
-		EStructuralFeatureBuilder EClassBuilder.GetStructuralFeature(String featureName)
+
+
+		EStructuralFeatureBuilder EClassBuilder.GetStructuralFeature(string featureName)
 		{
-		    return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureName);
+			return EcoreImplementationProvider.Implementation.EClass_GetStructuralFeature(this, featureName);
 		}
 	}
-	
+
 	internal class EDataTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EDataTypeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EDataTypeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EDataTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EDataType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String instanceClassName0;
+		private string instanceClassName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EPackage ePackage0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6664,597 +6545,585 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool serializable0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String dotNetName0;
-	
+		private string dotNetName0;
+
 		internal EDataTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EDataType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EDataType;
+
 		public new EDataTypeBuilder ToMutable()
 		{
 			return (EDataTypeBuilder)base.ToMutable();
 		}
-	
+
 		public new EDataTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EDataTypeBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EClassifierBuilder EClassifier.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EClassifierBuilder EClassifier.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
 		}
-	
-		
+
+
 		public EPackage EPackage
 		{
-		    get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
+			get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> ETypeParameters
 		{
-		    get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
+			get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
-		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
-		    get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		public bool Serializable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty, ref serializable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty, ref serializable0); }
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, ref dotNetName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, ref dotNetName0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifier.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifier.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
 	}
-	
+
 	internal class EDataTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EDataTypeBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
-	
+
 		internal EDataTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EDataType(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EDataType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EDataType;
+
 		public new EDataType ToImmutable()
 		{
 			return (EDataType)base.ToImmutable();
 		}
-	
+
 		public new EDataType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EDataType)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EClassifier EClassifierBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EClassifier EClassifierBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
-		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, String> lazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, String> immutableLazy, global::System.Func<EClassifierBuilder, String> mutableLazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
+		}
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, string> immutableLazy, global::System.Func<EClassifierBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EPackageBuilder EPackage
 		{
 			get { return this.GetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty); }
 			set { this.SetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifierBuilder, EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifier, EPackage> immutableLazy, global::System.Func<EClassifierBuilder, EPackageBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> ETypeParameters
 		{
 			get { return this.GetList<ETypeParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
 			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty); }
 			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifierBuilder, System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifier, System.Type> immutableLazy, global::System.Func<EClassifierBuilder, System.Type> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty); }
 			set { this.SetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifierBuilder, object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifier, object> immutableLazy, global::System.Func<EClassifierBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Serializable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty, value); }
 		}
-		
+
 		void EDataTypeBuilder.SetSerializableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EDataType.SerializableProperty, lazy);
 		}
-		
+
 		void EDataTypeBuilder.SetSerializableLazy(global::System.Func<EDataTypeBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EDataType.SerializableProperty, lazy);
 		}
-		
+
 		void EDataTypeBuilder.SetSerializableLazy(global::System.Func<EDataType, bool> immutableLazy, global::System.Func<EDataTypeBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EDataType.SerializableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, value); }
 		}
-		
-		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, lazy);
-		}
-		
-		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataTypeBuilder, String> lazy)
+
+		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, lazy);
 		}
-		
-		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataType, String> immutableLazy, global::System.Func<EDataTypeBuilder, String> mutableLazy)
+
+		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, lazy);
+		}
+
+		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataType, string> immutableLazy, global::System.Func<EDataTypeBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifierBuilder.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifierBuilder.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
 	}
-	
+
 	internal class EEnumId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnum.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EEnumImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EEnumBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EEnumImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EEnum
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String instanceClassName0;
+		private string instanceClassName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EPackage ePackage0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7266,1107 +7135,1083 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool serializable0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String dotNetName0;
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EEnumLiteral> eLiterals0;
-	
+
 		internal EEnumImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EEnum; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EEnum;
+
 		public new EEnumBuilder ToMutable()
 		{
 			return (EEnumBuilder)base.ToMutable();
 		}
-	
+
 		public new EEnumBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EEnumBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EClassifierBuilder EClassifier.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EClassifierBuilder EClassifier.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EDataTypeBuilder EDataType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EDataTypeBuilder EDataType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, ref instanceClassName0); }
 		}
-	
-		
+
+
 		public EPackage EPackage
 		{
-		    get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
+			get { return this.GetReference<EPackage>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, ref ePackage0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> ETypeParameters
 		{
-		    get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
+			get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
-		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, ref instanceClass0); }
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
-		    get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		public bool Serializable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty, ref serializable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty, ref serializable0); }
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, ref dotNetName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, ref dotNetName0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EEnumLiteral> ELiterals
 		{
-		    get { return this.GetList<EEnumLiteral>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnum.ELiteralsProperty, ref eLiterals0); }
+			get { return this.GetList<EEnumLiteral>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnum.ELiteralsProperty, ref eLiterals0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifier.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifier.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
-	
-		
-		EEnumLiteral EEnum.GetEEnumLiteral(String name)
+
+
+		EEnumLiteral EEnum.GetEEnumLiteral(string name)
 		{
-		    return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, name);
+			return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, name);
 		}
-	
-		
+
+
 		EEnumLiteral EEnum.GetEEnumLiteral(int value)
 		{
-		    return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, value);
+			return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, value);
 		}
 	}
-	
+
 	internal class EEnumBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EEnumBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
 		private global::MetaDslx.Modeling.MutableModelList<EEnumLiteralBuilder> eLiterals0;
-	
+
 		internal EEnumBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EEnum(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EEnum; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EEnum;
+
 		public new EEnum ToImmutable()
 		{
 			return (EEnum)base.ToImmutable();
 		}
-	
+
 		public new EEnum ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EEnum)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EClassifier EClassifierBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EClassifier EClassifierBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EDataType EDataTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EDataType EDataTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String InstanceClassName
+
+
+		public string InstanceClassName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassNameProperty, value); }
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
-		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, String> lazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
 		}
-		
-		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, String> immutableLazy, global::System.Func<EClassifierBuilder, String> mutableLazy)
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifierBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, lazy);
+		}
+
+		void EClassifierBuilder.SetInstanceClassNameLazy(global::System.Func<EClassifier, string> immutableLazy, global::System.Func<EClassifierBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EPackageBuilder EPackage
 		{
 			get { return this.GetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty); }
 			set { this.SetReference<EPackageBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.EPackageProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifierBuilder, EPackageBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetEPackageLazy(global::System.Func<EClassifier, EPackage> immutableLazy, global::System.Func<EClassifierBuilder, EPackageBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.EPackageProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> ETypeParameters
 		{
 			get { return this.GetList<ETypeParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public System.Type InstanceClass
 		{
 			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty); }
 			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.InstanceClassProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifierBuilder, System.Type> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetInstanceClassLazy(global::System.Func<EClassifier, System.Type> immutableLazy, global::System.Func<EClassifierBuilder, System.Type> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.InstanceClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty); }
 			set { this.SetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EClassifier.DefaultValueProperty, value); }
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifierBuilder, object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, lazy);
 		}
-		
+
 		void EClassifierBuilder.SetDefaultValueLazy(global::System.Func<EClassifier, object> immutableLazy, global::System.Func<EClassifierBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EClassifier.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Serializable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.SerializableProperty, value); }
 		}
-		
+
 		void EDataTypeBuilder.SetSerializableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EDataType.SerializableProperty, lazy);
 		}
-		
+
 		void EDataTypeBuilder.SetSerializableLazy(global::System.Func<EDataTypeBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EDataType.SerializableProperty, lazy);
 		}
-		
+
 		void EDataTypeBuilder.SetSerializableLazy(global::System.Func<EDataType, bool> immutableLazy, global::System.Func<EDataTypeBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EDataType.SerializableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EDataType.DotNetNameProperty, value); }
 		}
-		
-		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, lazy);
-		}
-		
-		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataTypeBuilder, String> lazy)
+
+		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, lazy);
 		}
-		
-		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataType, String> immutableLazy, global::System.Func<EDataTypeBuilder, String> mutableLazy)
+
+		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, lazy);
+		}
+
+		void EDataTypeBuilder.SetDotNetNameLazy(global::System.Func<EDataType, string> immutableLazy, global::System.Func<EDataTypeBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EDataType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EEnumLiteralBuilder> ELiterals
 		{
 			get { return this.GetList<EEnumLiteralBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnum.ELiteralsProperty, ref eLiterals0); }
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		bool EClassifierBuilder.IsInstance(object @object)
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
+			return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
 		}
-	
-		
+
+
 		int EClassifierBuilder.GetClassifierID()
 		{
-		    return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
+			return EcoreImplementationProvider.Implementation.EClassifier_GetClassifierID(this);
 		}
-	
-		
-		EEnumLiteralBuilder EEnumBuilder.GetEEnumLiteral(String name)
+
+
+		EEnumLiteralBuilder EEnumBuilder.GetEEnumLiteral(string name)
 		{
-		    return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, name);
+			return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, name);
 		}
-	
-		
+
+
 		EEnumLiteralBuilder EEnumBuilder.GetEEnumLiteral(int value)
 		{
-		    return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, value);
+			return EcoreImplementationProvider.Implementation.EEnum_GetEEnumLiteral(this, value);
 		}
 	}
-	
+
 	internal class EEnumLiteralId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EEnumLiteralImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EEnumLiteralBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EEnumLiteralImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EEnumLiteral
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EEnum eEnum0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private int value0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private System.Collections.IEnumerator instance0;
-	
+
 		internal EEnumLiteralImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EEnumLiteral; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EEnumLiteral;
+
 		public new EEnumLiteralBuilder ToMutable()
 		{
 			return (EEnumLiteralBuilder)base.ToMutable();
 		}
-	
+
 		public new EEnumLiteralBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EEnumLiteralBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public EEnum EEnum
 		{
-		    get { return this.GetReference<EEnum>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.EEnumProperty, ref eEnum0); }
+			get { return this.GetReference<EEnum>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.EEnumProperty, ref eEnum0); }
 		}
-	
-		
+
+
 		public int Value
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.ValueProperty, ref value0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.ValueProperty, ref value0); }
 		}
-	
-		
+
+
 		public System.Collections.IEnumerator Instance
 		{
-		    get { return this.GetReference<System.Collections.IEnumerator>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.InstanceProperty, ref instance0); }
+			get { return this.GetReference<System.Collections.IEnumerator>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.InstanceProperty, ref instance0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EEnumLiteralBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EEnumLiteralBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal EEnumLiteralBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EEnumLiteral(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EEnumLiteral; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EEnumLiteral;
+
 		public new EEnumLiteral ToImmutable()
 		{
 			return (EEnumLiteral)base.ToImmutable();
 		}
-	
+
 		public new EEnumLiteral ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EEnumLiteral)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EEnumBuilder EEnum
 		{
 			get { return this.GetReference<EEnumBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.EEnumProperty); }
 			set { this.SetReference<EEnumBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.EEnumProperty, value); }
 		}
-		
+
 		void EEnumLiteralBuilder.SetEEnumLazy(global::System.Func<EEnumBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EEnumLiteral.EEnumProperty, lazy);
 		}
-		
+
 		void EEnumLiteralBuilder.SetEEnumLazy(global::System.Func<EEnumLiteralBuilder, EEnumBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EEnumLiteral.EEnumProperty, lazy);
 		}
-		
+
 		void EEnumLiteralBuilder.SetEEnumLazy(global::System.Func<EEnumLiteral, EEnum> immutableLazy, global::System.Func<EEnumLiteralBuilder, EEnumBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EEnumLiteral.EEnumProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int Value
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.ValueProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.ValueProperty, value); }
 		}
-		
+
 		void EEnumLiteralBuilder.SetValueLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EEnumLiteral.ValueProperty, lazy);
 		}
-		
+
 		void EEnumLiteralBuilder.SetValueLazy(global::System.Func<EEnumLiteralBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EEnumLiteral.ValueProperty, lazy);
 		}
-		
+
 		void EEnumLiteralBuilder.SetValueLazy(global::System.Func<EEnumLiteral, int> immutableLazy, global::System.Func<EEnumLiteralBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EEnumLiteral.ValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public System.Collections.IEnumerator Instance
 		{
 			get { return this.GetReference<System.Collections.IEnumerator>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.InstanceProperty); }
 			set { this.SetReference<System.Collections.IEnumerator>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EEnumLiteral.InstanceProperty, value); }
 		}
-		
+
 		void EEnumLiteralBuilder.SetInstanceLazy(global::System.Func<System.Collections.IEnumerator> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EEnumLiteral.InstanceProperty, lazy);
 		}
-		
+
 		void EEnumLiteralBuilder.SetInstanceLazy(global::System.Func<EEnumLiteralBuilder, System.Collections.IEnumerator> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EEnumLiteral.InstanceProperty, lazy);
 		}
-		
+
 		void EEnumLiteralBuilder.SetInstanceLazy(global::System.Func<EEnumLiteral, System.Collections.IEnumerator> immutableLazy, global::System.Func<EEnumLiteralBuilder, System.Collections.IEnumerator> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EEnumLiteral.InstanceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class ETypedElementId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new ETypedElementImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new ETypedElementBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class ETypedElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ETypedElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EClassifier eType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8383,591 +8228,579 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private bool required0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EGenericType eGenericType0;
-	
+
 		internal ETypedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.ETypedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.ETypedElement;
+
 		public new ETypedElementBuilder ToMutable()
 		{
 			return (ETypedElementBuilder)base.ToMutable();
 		}
-	
+
 		public new ETypedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (ETypedElementBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public EClassifier EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
 		}
-	
-		
+
+
 		public bool Ordered
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
 		}
-	
-		
+
+
 		public bool Unique
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
 		}
-	
-		
+
+
 		public int LowerBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
 		}
-	
-		
+
+
 		public int UpperBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
 		}
-	
-		
+
+
 		public bool Many
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
 		}
-	
-		
+
+
 		public bool Required
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
 		}
-	
-		
+
+
 		public EGenericType EGenericType
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class ETypedElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ETypedElementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal ETypedElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.ETypedElement(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.ETypedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.ETypedElement;
+
 		public new ETypedElement ToImmutable()
 		{
 			return (ETypedElement)base.ToImmutable();
 		}
-	
+
 		public new ETypedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (ETypedElement)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassifierBuilder EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElementBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElement, EClassifier> immutableLazy, global::System.Func<ETypedElementBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Ordered
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unique
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int LowerBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int UpperBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Many
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Required
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder EGenericType
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElement, EGenericType> immutableLazy, global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EStructuralFeatureId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EStructuralFeatureImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EStructuralFeatureBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EStructuralFeatureImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EStructuralFeature
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EClassifier eType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8995,896 +8828,884 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool transient0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String defaultValueLiteral0;
+		private string defaultValueLiteral0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object defaultValue0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool unsettable0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool derived0;
-	
+
 		internal EStructuralFeatureImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EStructuralFeature; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EStructuralFeature;
+
 		public new EStructuralFeatureBuilder ToMutable()
 		{
 			return (EStructuralFeatureBuilder)base.ToMutable();
 		}
-	
+
 		public new EStructuralFeatureBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EStructuralFeatureBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifier ETypedElement.EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
 		}
-	
-		
+
+
 		public bool Ordered
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
 		}
-	
-		
+
+
 		public bool Unique
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
 		}
-	
-		
+
+
 		public int LowerBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
 		}
-	
-		
+
+
 		public int UpperBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
 		}
-	
-		
+
+
 		public bool Many
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
 		}
-	
-		
+
+
 		public bool Required
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
 		}
-	
-		
+
+
 		public EGenericType EGenericType
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
 		}
-	
-		
+
+
 		public EClass EContainingClass
 		{
-		    get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, ref eContainingClass0); }
+			get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, ref eContainingClass0); }
 		}
-	
-		
+
+
 		public EClassifier EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, ref eType1); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, ref eType1); }
 		}
-	
-		
+
+
 		public bool Changeable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, ref changeable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, ref changeable0); }
 		}
-	
-		
+
+
 		public bool Volatile
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, ref volatile0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, ref volatile0); }
 		}
-	
-		
+
+
 		public bool Transient
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, ref transient0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, ref transient0); }
 		}
-	
-		
-		public String DefaultValueLiteral
+
+
+		public string DefaultValueLiteral
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, ref defaultValueLiteral0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, ref defaultValueLiteral0); }
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
-		    get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		public bool Unsettable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, ref unsettable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, ref unsettable0); }
 		}
-	
-		
+
+
 		public bool Derived
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, ref derived0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, ref derived0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		int EStructuralFeature.GetFeatureID()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
 		}
-	
-		
+
+
 		System.Type EStructuralFeature.GetContainerClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
 		}
 	}
-	
+
 	internal class EStructuralFeatureBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EStructuralFeatureBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal EStructuralFeatureBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EStructuralFeature(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EStructuralFeature; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EStructuralFeature;
+
 		public new EStructuralFeature ToImmutable()
 		{
 			return (EStructuralFeature)base.ToImmutable();
 		}
-	
+
 		public new EStructuralFeature ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EStructuralFeature)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifierBuilder ETypedElementBuilder.EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElementBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElement, EClassifier> immutableLazy, global::System.Func<ETypedElementBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Ordered
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unique
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int LowerBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int UpperBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Many
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Required
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder EGenericType
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElement, EGenericType> immutableLazy, global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassBuilder EContainingClass
 		{
 			get { return this.GetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty); }
 			set { this.SetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EStructuralFeatureBuilder, EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EStructuralFeature, EClass> immutableLazy, global::System.Func<EStructuralFeatureBuilder, EClassBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassifierBuilder EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EStructuralFeatureBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EStructuralFeature, EClassifier> immutableLazy, global::System.Func<EStructuralFeatureBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Changeable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Volatile
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Transient
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DefaultValueLiteral
+
+
+		public string DefaultValueLiteral
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, value); }
 		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
-		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, String> lazy)
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
 		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, String> immutableLazy, global::System.Func<EStructuralFeatureBuilder, String> mutableLazy)
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
+		}
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, string> immutableLazy, global::System.Func<EStructuralFeatureBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty); }
 			set { this.SetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<EStructuralFeatureBuilder, object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<EStructuralFeature, object> immutableLazy, global::System.Func<EStructuralFeatureBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unsettable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Derived
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		int EStructuralFeatureBuilder.GetFeatureID()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
 		}
-	
-		
+
+
 		System.Type EStructuralFeatureBuilder.GetContainerClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
 		}
 	}
-	
+
 	internal class EAttributeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EAttributeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EAttributeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EAttributeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EAttribute
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EClassifier eType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9912,7 +9733,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool transient0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String defaultValueLiteral0;
+		private string defaultValueLiteral0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object defaultValue0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9923,964 +9744,952 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private bool iD0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EDataType eAttributeType0;
-	
+
 		internal EAttributeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EAttribute; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EAttribute;
+
 		public new EAttributeBuilder ToMutable()
 		{
 			return (EAttributeBuilder)base.ToMutable();
 		}
-	
+
 		public new EAttributeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EAttributeBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EStructuralFeatureBuilder EStructuralFeature.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EStructuralFeatureBuilder EStructuralFeature.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifier ETypedElement.EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
 		}
-	
-		
+
+
 		public bool Ordered
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
 		}
-	
-		
+
+
 		public bool Unique
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
 		}
-	
-		
+
+
 		public int LowerBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
 		}
-	
-		
+
+
 		public int UpperBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
 		}
-	
-		
+
+
 		public bool Many
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
 		}
-	
-		
+
+
 		public bool Required
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
 		}
-	
-		
+
+
 		public EGenericType EGenericType
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
 		}
-	
-		
+
+
 		public EClass EContainingClass
 		{
-		    get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, ref eContainingClass0); }
+			get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, ref eContainingClass0); }
 		}
-	
-		
+
+
 		public EClassifier EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, ref eType1); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, ref eType1); }
 		}
-	
-		
+
+
 		public bool Changeable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, ref changeable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, ref changeable0); }
 		}
-	
-		
+
+
 		public bool Volatile
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, ref volatile0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, ref volatile0); }
 		}
-	
-		
+
+
 		public bool Transient
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, ref transient0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, ref transient0); }
 		}
-	
-		
-		public String DefaultValueLiteral
+
+
+		public string DefaultValueLiteral
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, ref defaultValueLiteral0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, ref defaultValueLiteral0); }
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
-		    get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		public bool Unsettable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, ref unsettable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, ref unsettable0); }
 		}
-	
-		
+
+
 		public bool Derived
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, ref derived0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, ref derived0); }
 		}
-	
-		
+
+
 		public bool ID
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.IDProperty, ref iD0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.IDProperty, ref iD0); }
 		}
-	
-		
+
+
 		public EDataType EAttributeType
 		{
-		    get { return this.GetReference<EDataType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.EAttributeTypeProperty, ref eAttributeType0); }
+			get { return this.GetReference<EDataType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.EAttributeTypeProperty, ref eAttributeType0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		int EStructuralFeature.GetFeatureID()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
 		}
-	
-		
+
+
 		System.Type EStructuralFeature.GetContainerClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
 		}
 	}
-	
+
 	internal class EAttributeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EAttributeBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal EAttributeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EAttribute(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EAttribute; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EAttribute;
+
 		public new EAttribute ToImmutable()
 		{
 			return (EAttribute)base.ToImmutable();
 		}
-	
+
 		public new EAttribute ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EAttribute)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EStructuralFeature EStructuralFeatureBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EStructuralFeature EStructuralFeatureBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifierBuilder ETypedElementBuilder.EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElementBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElement, EClassifier> immutableLazy, global::System.Func<ETypedElementBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Ordered
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unique
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int LowerBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int UpperBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Many
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Required
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder EGenericType
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElement, EGenericType> immutableLazy, global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassBuilder EContainingClass
 		{
 			get { return this.GetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty); }
 			set { this.SetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EStructuralFeatureBuilder, EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EStructuralFeature, EClass> immutableLazy, global::System.Func<EStructuralFeatureBuilder, EClassBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassifierBuilder EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EStructuralFeatureBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EStructuralFeature, EClassifier> immutableLazy, global::System.Func<EStructuralFeatureBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Changeable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Volatile
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Transient
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DefaultValueLiteral
+
+
+		public string DefaultValueLiteral
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, value); }
 		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
-		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, String> lazy)
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
 		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, String> immutableLazy, global::System.Func<EStructuralFeatureBuilder, String> mutableLazy)
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
+		}
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, string> immutableLazy, global::System.Func<EStructuralFeatureBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty); }
 			set { this.SetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<EStructuralFeatureBuilder, object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<EStructuralFeature, object> immutableLazy, global::System.Func<EStructuralFeatureBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unsettable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Derived
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool ID
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.IDProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.IDProperty, value); }
 		}
-		
+
 		void EAttributeBuilder.SetIDLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EAttribute.IDProperty, lazy);
 		}
-		
+
 		void EAttributeBuilder.SetIDLazy(global::System.Func<EAttributeBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EAttribute.IDProperty, lazy);
 		}
-		
+
 		void EAttributeBuilder.SetIDLazy(global::System.Func<EAttribute, bool> immutableLazy, global::System.Func<EAttributeBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EAttribute.IDProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EDataTypeBuilder EAttributeType
 		{
 			get { return this.GetReference<EDataTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EAttribute.EAttributeTypeProperty); }
 		}
-		
+
 		void EAttributeBuilder.SetEAttributeTypeLazy(global::System.Func<EDataTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAttribute.EAttributeTypeProperty, lazy);
 		}
-		
+
 		void EAttributeBuilder.SetEAttributeTypeLazy(global::System.Func<EAttributeBuilder, EDataTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAttribute.EAttributeTypeProperty, lazy);
 		}
-		
+
 		void EAttributeBuilder.SetEAttributeTypeLazy(global::System.Func<EAttribute, EDataType> immutableLazy, global::System.Func<EAttributeBuilder, EDataTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EAttribute.EAttributeTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		int EStructuralFeatureBuilder.GetFeatureID()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
 		}
-	
-		
+
+
 		System.Type EStructuralFeatureBuilder.GetContainerClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
 		}
 	}
-	
+
 	internal class EReferenceId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EReferenceImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EReferenceBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EReferenceImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EReference
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EClassifier eType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10908,7 +10717,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool transient0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String defaultValueLiteral0;
+		private string defaultValueLiteral0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object defaultValue0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10925,1048 +10734,1036 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private EReference eOpposite0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EClass eReferenceType0;
-	
+
 		internal EReferenceImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EReference; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EReference;
+
 		public new EReferenceBuilder ToMutable()
 		{
 			return (EReferenceBuilder)base.ToMutable();
 		}
-	
+
 		public new EReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EReferenceBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EStructuralFeatureBuilder EStructuralFeature.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EStructuralFeatureBuilder EStructuralFeature.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifier ETypedElement.EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
 		}
-	
-		
+
+
 		public bool Ordered
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
 		}
-	
-		
+
+
 		public bool Unique
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
 		}
-	
-		
+
+
 		public int LowerBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
 		}
-	
-		
+
+
 		public int UpperBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
 		}
-	
-		
+
+
 		public bool Many
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
 		}
-	
-		
+
+
 		public bool Required
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
 		}
-	
-		
+
+
 		public EGenericType EGenericType
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
 		}
-	
-		
+
+
 		public EClass EContainingClass
 		{
-		    get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, ref eContainingClass0); }
+			get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, ref eContainingClass0); }
 		}
-	
-		
+
+
 		public EClassifier EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, ref eType1); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, ref eType1); }
 		}
-	
-		
+
+
 		public bool Changeable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, ref changeable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, ref changeable0); }
 		}
-	
-		
+
+
 		public bool Volatile
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, ref volatile0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, ref volatile0); }
 		}
-	
-		
+
+
 		public bool Transient
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, ref transient0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, ref transient0); }
 		}
-	
-		
-		public String DefaultValueLiteral
+
+
+		public string DefaultValueLiteral
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, ref defaultValueLiteral0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, ref defaultValueLiteral0); }
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
-		    get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		public bool Unsettable
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, ref unsettable0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, ref unsettable0); }
 		}
-	
-		
+
+
 		public bool Derived
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, ref derived0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, ref derived0); }
 		}
-	
-		
+
+
 		public bool Containment
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ContainmentProperty, ref containment0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ContainmentProperty, ref containment0); }
 		}
-	
-		
+
+
 		public bool Container
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ContainerProperty, ref container0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ContainerProperty, ref container0); }
 		}
-	
-		
+
+
 		public bool ResolveProxies
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ResolveProxiesProperty, ref resolveProxies0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ResolveProxiesProperty, ref resolveProxies0); }
 		}
-	
-		
+
+
 		public EReference EOpposite
 		{
-		    get { return this.GetReference<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EOppositeProperty, ref eOpposite0); }
+			get { return this.GetReference<EReference>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EOppositeProperty, ref eOpposite0); }
 		}
-	
-		
+
+
 		public EClass EReferenceType
 		{
-		    get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EReferenceTypeProperty, ref eReferenceType0); }
+			get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EReferenceTypeProperty, ref eReferenceType0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		int EStructuralFeature.GetFeatureID()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
 		}
-	
-		
+
+
 		System.Type EStructuralFeature.GetContainerClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
 		}
 	}
-	
+
 	internal class EReferenceBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EReferenceBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal EReferenceBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EReference(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EReference; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EReference;
+
 		public new EReference ToImmutable()
 		{
 			return (EReference)base.ToImmutable();
 		}
-	
+
 		public new EReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EReference)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EStructuralFeature EStructuralFeatureBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EStructuralFeature EStructuralFeatureBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifierBuilder ETypedElementBuilder.EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElementBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElement, EClassifier> immutableLazy, global::System.Func<ETypedElementBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Ordered
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unique
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int LowerBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int UpperBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Many
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Required
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder EGenericType
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElement, EGenericType> immutableLazy, global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassBuilder EContainingClass
 		{
 			get { return this.GetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty); }
 			set { this.SetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.EContainingClassProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EStructuralFeatureBuilder, EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetEContainingClassLazy(global::System.Func<EStructuralFeature, EClass> immutableLazy, global::System.Func<EStructuralFeatureBuilder, EClassBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.EContainingClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassifierBuilder EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ETypeProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EStructuralFeatureBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetETypeLazy(global::System.Func<EStructuralFeature, EClassifier> immutableLazy, global::System.Func<EStructuralFeatureBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Changeable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.ChangeableProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetChangeableLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.ChangeableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Volatile
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.VolatileProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetVolatileLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.VolatileProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Transient
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.TransientProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetTransientLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.TransientProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DefaultValueLiteral
+
+
+		public string DefaultValueLiteral
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, value); }
 		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
-		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, String> lazy)
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
 		}
-		
-		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, String> immutableLazy, global::System.Func<EStructuralFeatureBuilder, String> mutableLazy)
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeatureBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, lazy);
+		}
+
+		void EStructuralFeatureBuilder.SetDefaultValueLiteralLazy(global::System.Func<EStructuralFeature, string> immutableLazy, global::System.Func<EStructuralFeatureBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueLiteralProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public object DefaultValue
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty); }
 			set { this.SetReference<object>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DefaultValueProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<EStructuralFeatureBuilder, object> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDefaultValueLazy(global::System.Func<EStructuralFeature, object> immutableLazy, global::System.Func<EStructuralFeatureBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EStructuralFeature.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unsettable
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.UnsettableProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetUnsettableLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.UnsettableProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Derived
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EStructuralFeature.DerivedProperty, value); }
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<EStructuralFeatureBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, lazy);
 		}
-		
+
 		void EStructuralFeatureBuilder.SetDerivedLazy(global::System.Func<EStructuralFeature, bool> immutableLazy, global::System.Func<EStructuralFeatureBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EStructuralFeature.DerivedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Containment
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ContainmentProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ContainmentProperty, value); }
 		}
-		
+
 		void EReferenceBuilder.SetContainmentLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ContainmentProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetContainmentLazy(global::System.Func<EReferenceBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ContainmentProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetContainmentLazy(global::System.Func<EReference, bool> immutableLazy, global::System.Func<EReferenceBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ContainmentProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Container
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ContainerProperty); }
 		}
-		
+
 		void EReferenceBuilder.SetContainerLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ContainerProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetContainerLazy(global::System.Func<EReferenceBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ContainerProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetContainerLazy(global::System.Func<EReference, bool> immutableLazy, global::System.Func<EReferenceBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ContainerProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool ResolveProxies
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ResolveProxiesProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.ResolveProxiesProperty, value); }
 		}
-		
+
 		void EReferenceBuilder.SetResolveProxiesLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ResolveProxiesProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetResolveProxiesLazy(global::System.Func<EReferenceBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ResolveProxiesProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetResolveProxiesLazy(global::System.Func<EReference, bool> immutableLazy, global::System.Func<EReferenceBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.EReference.ResolveProxiesProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EReferenceBuilder EOpposite
 		{
 			get { return this.GetReference<EReferenceBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EOppositeProperty); }
 			set { this.SetReference<EReferenceBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EOppositeProperty, value); }
 		}
-		
+
 		void EReferenceBuilder.SetEOppositeLazy(global::System.Func<EReferenceBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EReference.EOppositeProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetEOppositeLazy(global::System.Func<EReferenceBuilder, EReferenceBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EReference.EOppositeProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetEOppositeLazy(global::System.Func<EReference, EReference> immutableLazy, global::System.Func<EReferenceBuilder, EReferenceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EReference.EOppositeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassBuilder EReferenceType
 		{
 			get { return this.GetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EReferenceTypeProperty); }
 			set { this.SetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EReference.EReferenceTypeProperty, value); }
 		}
-		
+
 		void EReferenceBuilder.SetEReferenceTypeLazy(global::System.Func<EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EReference.EReferenceTypeProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetEReferenceTypeLazy(global::System.Func<EReferenceBuilder, EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EReference.EReferenceTypeProperty, lazy);
 		}
-		
+
 		void EReferenceBuilder.SetEReferenceTypeLazy(global::System.Func<EReference, EClass> immutableLazy, global::System.Func<EReferenceBuilder, EClassBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EReference.EReferenceTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
-	
-		
+
+
 		int EStructuralFeatureBuilder.GetFeatureID()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetFeatureID(this);
 		}
-	
-		
+
+
 		System.Type EStructuralFeatureBuilder.GetContainerClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
+			return EcoreImplementationProvider.Implementation.EStructuralFeature_GetContainerClass(this);
 		}
 	}
-	
+
 	internal class EOperationId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EOperationImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EOperationBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EOperationImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EOperation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EClassifier eType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -11995,260 +11792,254 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> eTypeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EGenericType> eGenericExceptions0;
-	
+
 		internal EOperationImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EOperation; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EOperation;
+
 		public new EOperationBuilder ToMutable()
 		{
 			return (EOperationBuilder)base.ToMutable();
 		}
-	
+
 		public new EOperationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EOperationBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifier ETypedElement.EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
 		}
-	
-		
+
+
 		public bool Ordered
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
 		}
-	
-		
+
+
 		public bool Unique
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
 		}
-	
-		
+
+
 		public int LowerBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
 		}
-	
-		
+
+
 		public int UpperBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
 		}
-	
-		
+
+
 		public bool Many
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
 		}
-	
-		
+
+
 		public bool Required
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
 		}
-	
-		
+
+
 		public EGenericType EGenericType
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
 		}
-	
-		
+
+
 		public EClass EContainingClass
 		{
-		    get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EContainingClassProperty, ref eContainingClass0); }
+			get { return this.GetReference<EClass>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EContainingClassProperty, ref eContainingClass0); }
 		}
-	
-		
+
+
 		public EClassifier EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.ETypeProperty, ref eType1); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.ETypeProperty, ref eType1); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EParameter> EParameters
 		{
-		    get { return this.GetList<EParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EParametersProperty, ref eParameters0); }
+			get { return this.GetList<EParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EParametersProperty, ref eParameters0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EClassifier> EExceptions
 		{
-		    get { return this.GetList<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EExceptionsProperty, ref eExceptions0); }
+			get { return this.GetList<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EExceptionsProperty, ref eExceptions0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<ETypeParameter> ETypeParameters
 		{
-		    get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.ETypeParametersProperty, ref eTypeParameters0); }
+			get { return this.GetList<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EGenericExceptions
 		{
-		    get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EGenericExceptionsProperty, ref eGenericExceptions0); }
+			get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EGenericExceptionsProperty, ref eGenericExceptions0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EOperationBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EOperationBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
@@ -12256,460 +12047,454 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private global::MetaDslx.Modeling.MutableModelList<EClassifierBuilder> eExceptions0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
 		private global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> eGenericExceptions0;
-	
+
 		internal EOperationBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EOperation(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EOperation; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EOperation;
+
 		public new EOperation ToImmutable()
 		{
 			return (EOperation)base.ToImmutable();
 		}
-	
+
 		public new EOperation ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EOperation)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		EClassifierBuilder ETypedElementBuilder.EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElementBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElement, EClassifier> immutableLazy, global::System.Func<ETypedElementBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Ordered
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unique
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int LowerBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int UpperBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Many
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Required
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder EGenericType
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElement, EGenericType> immutableLazy, global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassBuilder EContainingClass
 		{
 			get { return this.GetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EContainingClassProperty); }
 			set { this.SetReference<EClassBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EContainingClassProperty, value); }
 		}
-		
+
 		void EOperationBuilder.SetEContainingClassLazy(global::System.Func<EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EOperation.EContainingClassProperty, lazy);
 		}
-		
+
 		void EOperationBuilder.SetEContainingClassLazy(global::System.Func<EOperationBuilder, EClassBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EOperation.EContainingClassProperty, lazy);
 		}
-		
+
 		void EOperationBuilder.SetEContainingClassLazy(global::System.Func<EOperation, EClass> immutableLazy, global::System.Func<EOperationBuilder, EClassBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EOperation.EContainingClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassifierBuilder EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.ETypeProperty, value); }
 		}
-		
+
 		void EOperationBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EOperation.ETypeProperty, lazy);
 		}
-		
+
 		void EOperationBuilder.SetETypeLazy(global::System.Func<EOperationBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EOperation.ETypeProperty, lazy);
 		}
-		
+
 		void EOperationBuilder.SetETypeLazy(global::System.Func<EOperation, EClassifier> immutableLazy, global::System.Func<EOperationBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EOperation.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EParameterBuilder> EParameters
 		{
 			get { return this.GetList<EParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EParametersProperty, ref eParameters0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EClassifierBuilder> EExceptions
 		{
 			get { return this.GetList<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EExceptionsProperty, ref eExceptions0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> ETypeParameters
 		{
 			get { return this.GetList<ETypeParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.ETypeParametersProperty, ref eTypeParameters0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EGenericExceptions
 		{
 			get { return this.GetList<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EOperation.EGenericExceptionsProperty, ref eGenericExceptions0); }
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EParameterId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EParameter.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EParameterImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EParameterBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EParameterImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EParameter
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EClassifier eType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -12728,633 +12513,621 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private EGenericType eGenericType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private EOperation eOperation0;
-	
+
 		internal EParameterImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EParameter; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EParameter;
+
 		public new EParameterBuilder ToMutable()
 		{
 			return (EParameterBuilder)base.ToMutable();
 		}
-	
+
 		public new EParameterBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EParameterBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ETypedElementBuilder ETypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public EClassifier EType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, ref eType0); }
 		}
-	
-		
+
+
 		public bool Ordered
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, ref ordered0); }
 		}
-	
-		
+
+
 		public bool Unique
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, ref unique0); }
 		}
-	
-		
+
+
 		public int LowerBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, ref lowerBound0); }
 		}
-	
-		
+
+
 		public int UpperBound
 		{
-		    get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
+			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, ref upperBound0); }
 		}
-	
-		
+
+
 		public bool Many
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty, ref many0); }
 		}
-	
-		
+
+
 		public bool Required
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty, ref required0); }
 		}
-	
-		
+
+
 		public EGenericType EGenericType
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, ref eGenericType0); }
 		}
-	
-		
+
+
 		public EOperation EOperation
 		{
-		    get { return this.GetReference<EOperation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EParameter.EOperationProperty, ref eOperation0); }
+			get { return this.GetReference<EOperation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EParameter.EOperationProperty, ref eOperation0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EParameterBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EParameterBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
-	
+
 		internal EParameterBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EParameter(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EParameter; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EParameter;
+
 		public new EParameter ToImmutable()
 		{
 			return (EParameter)base.ToImmutable();
 		}
-	
+
 		public new EParameter ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EParameter)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ETypedElement ETypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassifierBuilder EType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ETypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElementBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetETypeLazy(global::System.Func<ETypedElement, EClassifier> immutableLazy, global::System.Func<ETypedElementBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.ETypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Ordered
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.OrderedProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetOrderedLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.OrderedProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Unique
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UniqueProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUniqueLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UniqueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int LowerBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.LowerBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetLowerBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.LowerBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public int UpperBound
 		{
 			get { return this.GetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty); }
 			set { this.SetValue<int>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.UpperBoundProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElementBuilder, int> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetUpperBoundLazy(global::System.Func<ETypedElement, int> immutableLazy, global::System.Func<ETypedElementBuilder, int> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.UpperBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Many
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.ManyProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetManyLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.ManyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool Required
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.RequiredProperty); }
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElementBuilder, bool> lazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetRequiredLazy(global::System.Func<ETypedElement, bool> immutableLazy, global::System.Func<ETypedElementBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(EcoreDescriptor.ETypedElement.RequiredProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder EGenericType
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypedElement.EGenericTypeProperty, value); }
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, lazy);
 		}
-		
+
 		void ETypedElementBuilder.SetEGenericTypeLazy(global::System.Func<ETypedElement, EGenericType> immutableLazy, global::System.Func<ETypedElementBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ETypedElement.EGenericTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EOperationBuilder EOperation
 		{
 			get { return this.GetReference<EOperationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EParameter.EOperationProperty); }
 			set { this.SetReference<EOperationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EParameter.EOperationProperty, value); }
 		}
-		
+
 		void EParameterBuilder.SetEOperationLazy(global::System.Func<EOperationBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EParameter.EOperationProperty, lazy);
 		}
-		
+
 		void EParameterBuilder.SetEOperationLazy(global::System.Func<EParameterBuilder, EOperationBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EParameter.EOperationProperty, lazy);
 		}
-		
+
 		void EParameterBuilder.SetEOperationLazy(global::System.Func<EParameter, EOperation> immutableLazy, global::System.Func<EParameterBuilder, EOperationBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EParameter.EOperationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class EGenericTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new EGenericTypeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new EGenericTypeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class EGenericTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EGenericType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -13369,622 +13142,599 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private EGenericType eUpperBound0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EGenericType> eTypeArguments0;
-	
+
 		internal EGenericTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EGenericType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EGenericType;
+
 		public new EGenericTypeBuilder ToMutable()
 		{
 			return (EGenericTypeBuilder)base.ToMutable();
 		}
-	
+
 		public new EGenericTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EGenericTypeBuilder)base.ToMutable(model);
 		}
-	
-		
+
+
 		public EClassifier EClassifier
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EClassifierProperty, ref eClassifier0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EClassifierProperty, ref eClassifier0); }
 		}
-	
-		
+
+
 		public EClassifier ERawType
 		{
-		    get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ERawTypeProperty, ref eRawType0); }
+			get { return this.GetReference<EClassifier>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ERawTypeProperty, ref eRawType0); }
 		}
-	
-		
+
+
 		public ETypeParameter ETypeParameter
 		{
-		    get { return this.GetReference<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ETypeParameterProperty, ref eTypeParameter0); }
+			get { return this.GetReference<ETypeParameter>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ETypeParameterProperty, ref eTypeParameter0); }
 		}
-	
-		
+
+
 		public EGenericType ELowerBound
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ELowerBoundProperty, ref eLowerBound0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ELowerBoundProperty, ref eLowerBound0); }
 		}
-	
-		
+
+
 		public EGenericType EUpperBound
 		{
-		    get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EUpperBoundProperty, ref eUpperBound0); }
+			get { return this.GetReference<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EUpperBoundProperty, ref eUpperBound0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EGenericType> ETypeArguments
 		{
-		    get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ETypeArgumentsProperty, ref eTypeArguments0); }
+			get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ETypeArgumentsProperty, ref eTypeArguments0); }
 		}
 	}
-	
+
 	internal class EGenericTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EGenericTypeBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> eTypeArguments0;
-	
+
 		internal EGenericTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.EGenericType(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.EGenericType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.EGenericType;
+
 		public new EGenericType ToImmutable()
 		{
 			return (EGenericType)base.ToImmutable();
 		}
-	
+
 		public new EGenericType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EGenericType)base.ToImmutable(model);
 		}
-	
-		
+
+
 		public EClassifierBuilder EClassifier
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EClassifierProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EClassifierProperty, value); }
 		}
-		
+
 		void EGenericTypeBuilder.SetEClassifierLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.EClassifierProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetEClassifierLazy(global::System.Func<EGenericTypeBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.EClassifierProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetEClassifierLazy(global::System.Func<EGenericType, EClassifier> immutableLazy, global::System.Func<EGenericTypeBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.EClassifierProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EClassifierBuilder ERawType
 		{
 			get { return this.GetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ERawTypeProperty); }
 			set { this.SetReference<EClassifierBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ERawTypeProperty, value); }
 		}
-		
+
 		void EGenericTypeBuilder.SetERawTypeLazy(global::System.Func<EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ERawTypeProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetERawTypeLazy(global::System.Func<EGenericTypeBuilder, EClassifierBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ERawTypeProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetERawTypeLazy(global::System.Func<EGenericType, EClassifier> immutableLazy, global::System.Func<EGenericTypeBuilder, EClassifierBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ERawTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public ETypeParameterBuilder ETypeParameter
 		{
 			get { return this.GetReference<ETypeParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ETypeParameterProperty); }
 			set { this.SetReference<ETypeParameterBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ETypeParameterProperty, value); }
 		}
-		
+
 		void EGenericTypeBuilder.SetETypeParameterLazy(global::System.Func<ETypeParameterBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ETypeParameterProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetETypeParameterLazy(global::System.Func<EGenericTypeBuilder, ETypeParameterBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ETypeParameterProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetETypeParameterLazy(global::System.Func<EGenericType, ETypeParameter> immutableLazy, global::System.Func<EGenericTypeBuilder, ETypeParameterBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ETypeParameterProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder ELowerBound
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ELowerBoundProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ELowerBoundProperty, value); }
 		}
-		
+
 		void EGenericTypeBuilder.SetELowerBoundLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ELowerBoundProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetELowerBoundLazy(global::System.Func<EGenericTypeBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ELowerBoundProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetELowerBoundLazy(global::System.Func<EGenericType, EGenericType> immutableLazy, global::System.Func<EGenericTypeBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.ELowerBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public EGenericTypeBuilder EUpperBound
 		{
 			get { return this.GetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EUpperBoundProperty); }
 			set { this.SetReference<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.EUpperBoundProperty, value); }
 		}
-		
+
 		void EGenericTypeBuilder.SetEUpperBoundLazy(global::System.Func<EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.EUpperBoundProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetEUpperBoundLazy(global::System.Func<EGenericTypeBuilder, EGenericTypeBuilder> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.EUpperBoundProperty, lazy);
 		}
-		
+
 		void EGenericTypeBuilder.SetEUpperBoundLazy(global::System.Func<EGenericType, EGenericType> immutableLazy, global::System.Func<EGenericTypeBuilder, EGenericTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.EGenericType.EUpperBoundProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> ETypeArguments
 		{
 			get { return this.GetList<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EGenericType.ETypeArgumentsProperty, ref eTypeArguments0); }
 		}
 	}
-	
+
 	internal class ETypeParameterId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypeParameter.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new ETypeParameterImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new ETypeParameterBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class ETypeParameterImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ETypeParameter
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EGenericType> eGenericTypes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EGenericType> eBounds0;
-	
+
 		internal ETypeParameterImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.ETypeParameter; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.ETypeParameter;
+
 		public new ETypeParameterBuilder ToMutable()
 		{
 			return (ETypeParameterBuilder)base.ToMutable();
 		}
-	
+
 		public new ETypeParameterBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (ETypeParameterBuilder)base.ToMutable(model);
 		}
-	
+
 		EObjectBuilder EObject.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EObjectBuilder EObject.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> EAnnotations
 		{
-		    get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
+			get { return this.GetList<EAnnotation>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EGenericTypes
 		{
-		    get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypeParameter.EGenericTypesProperty, ref eGenericTypes0); }
+			get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypeParameter.EGenericTypesProperty, ref eGenericTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<EGenericType> EBounds
 		{
-		    get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypeParameter.EBoundsProperty, ref eBounds0); }
+			get { return this.GetList<EGenericType>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypeParameter.EBoundsProperty, ref eBounds0); }
 		}
-	
-		
+
+
 		EClass EObject.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObject.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObject.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObject EObject.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeature EObject.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReference EObject.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObject.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObject.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObject.EGet(EStructuralFeature feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObject.ESet(EStructuralFeature feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObject.EIsSet(EStructuralFeature feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObject.EUnset(EStructuralFeature feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotation EModelElement.GetEAnnotation(String source)
+
+
+		EAnnotation EModelElement.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
-	
+
 	internal class ETypeParameterBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ETypeParameterBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> eGenericTypes0;
 		private global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> eBounds0;
-	
+
 		internal ETypeParameterBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			EcoreImplementationProvider.Implementation.ETypeParameter(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetaModel; }
-		}
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-		{
-			get { return EcoreInstance.ETypeParameter; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Ecore.Model.EcoreInstance.MMetadata;
+
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => EcoreInstance.ETypeParameter;
+
 		public new ETypeParameter ToImmutable()
 		{
 			return (ETypeParameter)base.ToImmutable();
 		}
-	
+
 		public new ETypeParameter ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (ETypeParameter)base.ToImmutable(model);
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EObject EObjectBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> EAnnotations
 		{
 			get { return this.GetList<EAnnotationBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.EModelElement.EAnnotationsProperty, ref eAnnotations0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ENamedElement.NameProperty, value); }
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
-		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, String> lazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
 		}
-		
-		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, String> immutableLazy, global::System.Func<ENamedElementBuilder, String> mutableLazy)
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, lazy);
+		}
+
+		void ENamedElementBuilder.SetNameLazy(global::System.Func<ENamedElement, string> immutableLazy, global::System.Func<ENamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(EcoreDescriptor.ENamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EGenericTypes
 		{
 			get { return this.GetList<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypeParameter.EGenericTypesProperty, ref eGenericTypes0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<EGenericTypeBuilder> EBounds
 		{
 			get { return this.GetList<EGenericTypeBuilder>(global::MetaDslx.Languages.Ecore.Model.EcoreDescriptor.ETypeParameter.EBoundsProperty, ref eBounds0); }
 		}
-	
-		
+
+
 		EClassBuilder EObjectBuilder.EClass()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EClass(this);
+			return EcoreImplementationProvider.Implementation.EObject_EClass(this);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsProxy()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
+			return EcoreImplementationProvider.Implementation.EObject_EIsProxy(this);
 		}
-	
-		
+
+
 		MetaDslx.Modeling.IModel EObjectBuilder.EResource()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EResource(this);
+			return EcoreImplementationProvider.Implementation.EObject_EResource(this);
 		}
-	
-		
+
+
 		EObjectBuilder EObjectBuilder.EContainer()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainer(this);
 		}
-	
-		
+
+
 		EStructuralFeatureBuilder EObjectBuilder.EContainingFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainingFeature(this);
 		}
-	
-		
+
+
 		EReferenceBuilder EObjectBuilder.EContainmentFeature()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContainmentFeature(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.EContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EContents(this);
 		}
-	
-		
+
+
 		System.Collections.IEnumerator EObjectBuilder.EAllContents()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
+			return EcoreImplementationProvider.Implementation.EObject_EAllContents(this);
 		}
-	
-		
+
+
 		System.Collections.Generic.IReadOnlyList<object> EObjectBuilder.ECrossReferences()
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
+			return EcoreImplementationProvider.Implementation.EObject_ECrossReferences(this);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature);
 		}
-	
-		
+
+
 		object EObjectBuilder.EGet(EStructuralFeatureBuilder feature, bool resolve)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
+			return EcoreImplementationProvider.Implementation.EObject_EGet(this, feature, resolve);
 		}
-	
-		
+
+
 		object EObjectBuilder.ESet(EStructuralFeatureBuilder feature, object newValue)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
+			return EcoreImplementationProvider.Implementation.EObject_ESet(this, feature, newValue);
 		}
-	
-		
+
+
 		bool EObjectBuilder.EIsSet(EStructuralFeatureBuilder feature)
 		{
-		    return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
+			return EcoreImplementationProvider.Implementation.EObject_EIsSet(this, feature);
 		}
-	
-		
+
+
 		void EObjectBuilder.EUnset(EStructuralFeatureBuilder feature)
 		{
-		EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
+			EcoreImplementationProvider.Implementation.EObject_EUnset(this, feature);
 		}
-	
-		
-		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(String source)
+
+
+		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
-		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+			return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
 		}
 	}
 
 	internal class EcoreBuilderInstance
 	{
 		internal static EcoreBuilderInstance instance = new EcoreBuilderInstance();
-	
+
 		private bool creating;
 		private bool created;
+		internal global::MetaDslx.Languages.Ecore.Model.EcoreMetadata MMetadata;
 		internal global::MetaDslx.Modeling.MutableModel MModel;
 		internal global::MetaDslx.Modeling.MutableModelGroup MModelGroup;
-	
+
 		internal EDataTypeBuilder EJavaObject = null;
 		internal EDataTypeBuilder EJavaClass = null;
 		internal EDataTypeBuilder EBoolean = null;
@@ -14014,7 +13764,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		internal EDataTypeBuilder EEList = null;
 		internal EDataTypeBuilder EEnumerator = null;
 		internal EDataTypeBuilder ETreeIterator = null;
-	
+
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp1;
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp2;
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp3;
@@ -14227,14 +13977,15 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp108;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp109;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp110;
-	
+
 		internal EcoreBuilderInstance()
 		{
+			this.MMetadata = new EcoreMetadata(name: "Ecore", version: new global::MetaDslx.Modeling.ModelVersion(0, 0), uri: "http://www.eclipse.org/emf/2002/Ecore", prefix: "Ecore", namespaceName: "MetaDslx.Languages.Ecore.Model");
 			this.MModelGroup = new global::MetaDslx.Modeling.MutableModelGroup();
-			this.MModelGroup.AddReference(global::MetaDslx.Languages.Meta.Model.MetaInstance.MModel.ToMutable(true));
-			this.MModel = this.MModelGroup.CreateModel("Ecore");
+			this.MModelGroup.AddReference(MetaDslx.Languages.Meta.Model.MetaInstance.MModel);
+			this.MModel = this.MModelGroup.CreateModel(this.MMetadata);
 		}
-	
+
 		internal void Create()
 		{
 			lock (this)
@@ -14244,27 +13995,27 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			}
 			this.CreateInstances();
 			EcoreImplementationProvider.Implementation.EcoreBuilderInstance(this);
-	        foreach (global::MetaDslx.Modeling.MutableObject obj in this.MModel.Objects)
-	        {
-	            obj.MMakeCreated();
-	        }
+			foreach (global::MetaDslx.Modeling.MutableObject obj in this.MModel.Objects)
+			{
+				obj.MMakeCreated();
+			}
 			lock (this)
 			{
 				this.created = true;
 			}
 		}
-	
+
 		internal void EvaluateLazyValues()
 		{
 			if (!this.created) return;
 			this.MModel.EvaluateLazyValues();
 		}
-	
+
 		private void CreateInstances()
 		{
 			global::MetaDslx.Languages.Meta.Model.MetaFactory factory = new global::MetaDslx.Languages.Meta.Model.MetaFactory(this.MModel, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
 			EcoreFactory constantFactory = new EcoreFactory(this.MModel, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
-	
+
 			EJavaObject = constantFactory.EDataType();
 			EJavaObject.MName = "EJavaObject";
 			EJavaObject.DotNetName = "System.Object";
@@ -14352,7 +14103,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			ETreeIterator = constantFactory.EDataType();
 			ETreeIterator.MName = "ETreeIterator";
 			ETreeIterator.DotNetName = "System.Collections.IEnumerator";
-	
+
 			__tmp1 = factory.MetaNamespace();
 			__tmp2 = factory.MetaNamespace();
 			__tmp3 = factory.MetaNamespace();
@@ -14565,7 +14316,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			__tmp108 = factory.MetaCollectionType();
 			__tmp109 = factory.MetaCollectionType();
 			__tmp110 = factory.MetaCollectionType();
-	
+
 			__tmp1.Documentation = null;
 			__tmp1.Name = "MetaDslx";
 			// __tmp1.Namespace = null;
@@ -14636,6 +14387,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			__tmp4.Declarations.AddLazy(() => ETypeParameter);
 			__tmp5.Documentation = null;
 			__tmp5.Name = "Ecore";
+			__tmp5.MajorVersion = 0;
+			__tmp5.MinorVersion = 0;
 			__tmp5.Uri = "http://www.eclipse.org/emf/2002/Ecore";
 			__tmp5.Prefix = null;
 			__tmp5.SetNamespaceLazy(() => __tmp4);
@@ -16084,7 +15837,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		internal virtual void EcoreBuilderInstance(EcoreBuilderInstance _this)
 		{
 		}
-	
+
 		/// <summary>
 		/// Implements the constructor: EObject()
 		/// </summary>
@@ -16092,16 +15845,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEObjectSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EObject
 		/// </summary>
 		protected virtual void CallEObjectSuperConstructors(EObjectBuilder _this)
 		{
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: EObject.EClass()
 		/// </summary>
@@ -16109,12 +15862,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EClass(_this.ToMutable()).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EClass()
 		/// </summary>
 		public abstract EClassBuilder EObject_EClass(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EIsProxy()
 		/// </summary>
@@ -16122,12 +15875,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EIsProxy(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EIsProxy()
 		/// </summary>
 		public abstract bool EObject_EIsProxy(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EResource()
 		/// </summary>
@@ -16135,12 +15888,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EResource(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EResource()
 		/// </summary>
 		public abstract MetaDslx.Modeling.IModel EObject_EResource(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EContainer()
 		/// </summary>
@@ -16148,12 +15901,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EContainer(_this.ToMutable()).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EContainer()
 		/// </summary>
 		public abstract EObjectBuilder EObject_EContainer(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EContainingFeature()
 		/// </summary>
@@ -16161,12 +15914,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EContainingFeature(_this.ToMutable()).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EContainingFeature()
 		/// </summary>
 		public abstract EStructuralFeatureBuilder EObject_EContainingFeature(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EContainmentFeature()
 		/// </summary>
@@ -16174,12 +15927,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EContainmentFeature(_this.ToMutable()).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EContainmentFeature()
 		/// </summary>
 		public abstract EReferenceBuilder EObject_EContainmentFeature(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EContents()
 		/// </summary>
@@ -16187,12 +15940,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EContents(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EContents()
 		/// </summary>
 		public abstract System.Collections.Generic.IReadOnlyList<object> EObject_EContents(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EAllContents()
 		/// </summary>
@@ -16200,12 +15953,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EAllContents(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EAllContents()
 		/// </summary>
 		public abstract System.Collections.IEnumerator EObject_EAllContents(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.ECrossReferences()
 		/// </summary>
@@ -16213,12 +15966,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_ECrossReferences(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.ECrossReferences()
 		/// </summary>
 		public abstract System.Collections.Generic.IReadOnlyList<object> EObject_ECrossReferences(EObjectBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EGet()
 		/// </summary>
@@ -16226,12 +15979,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EGet(_this.ToMutable(), feature.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EGet()
 		/// </summary>
 		public abstract object EObject_EGet(EObjectBuilder _this, EStructuralFeatureBuilder feature);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EGet()
 		/// </summary>
@@ -16239,12 +15992,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EGet(_this.ToMutable(), feature.ToMutable(), resolve);
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EGet()
 		/// </summary>
 		public abstract object EObject_EGet(EObjectBuilder _this, EStructuralFeatureBuilder feature, bool resolve);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.ESet()
 		/// </summary>
@@ -16252,12 +16005,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_ESet(_this.ToMutable(), feature.ToMutable(), newValue);
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.ESet()
 		/// </summary>
 		public abstract object EObject_ESet(EObjectBuilder _this, EStructuralFeatureBuilder feature, object newValue);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EIsSet()
 		/// </summary>
@@ -16265,26 +16018,26 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EObject_EIsSet(_this.ToMutable(), feature.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EIsSet()
 		/// </summary>
 		public abstract bool EObject_EIsSet(EObjectBuilder _this, EStructuralFeatureBuilder feature);
-	
+
 		/// <summary>
 		/// Implements the operation: EObject.EUnset()
 		/// </summary>
 		public virtual void EObject_EUnset(EObject _this, EStructuralFeature feature)
 		{
-	this.EObject_EUnset(_this.ToMutable(), feature.ToMutable());
+			this.EObject_EUnset(_this.ToMutable(), feature.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EObjectBuilder.EUnset()
 		/// </summary>
 		public abstract void EObject_EUnset(EObjectBuilder _this, EStructuralFeatureBuilder feature);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: EModelElement()
 		/// </summary>
@@ -16300,7 +16053,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEModelElementSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EModelElement
 		/// </summary>
@@ -16308,23 +16061,23 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.EObject(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: EModelElement.GetEAnnotation()
 		/// </summary>
-		public virtual EAnnotation EModelElement_GetEAnnotation(EModelElement _this, String source)
+		public virtual EAnnotation EModelElement_GetEAnnotation(EModelElement _this, string source)
 		{
 			return this.EModelElement_GetEAnnotation(_this.ToMutable(), source).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EModelElementBuilder.GetEAnnotation()
 		/// </summary>
-		public abstract EAnnotationBuilder EModelElement_GetEAnnotation(EModelElementBuilder _this, String source);
-	
-	
+		public abstract EAnnotationBuilder EModelElement_GetEAnnotation(EModelElementBuilder _this, string source);
+
+
 		/// <summary>
 		/// Implements the constructor: EFactory()
 		/// </summary>
@@ -16341,7 +16094,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEFactorySuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EFactory
 		/// </summary>
@@ -16350,9 +16103,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EObject(_this);
 			this.EModelElement(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: EFactory.Create()
 		/// </summary>
@@ -16360,39 +16113,39 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EFactory_Create(_this.ToMutable(), eClass.ToMutable()).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EFactoryBuilder.Create()
 		/// </summary>
 		public abstract EObjectBuilder EFactory_Create(EFactoryBuilder _this, EClassBuilder eClass);
-	
+
 		/// <summary>
 		/// Implements the operation: EFactory.CreateFromString()
 		/// </summary>
-		public virtual EObject EFactory_CreateFromString(EFactory _this, EDataType eDataType, String literalValue)
+		public virtual EObject EFactory_CreateFromString(EFactory _this, EDataType eDataType, string literalValue)
 		{
 			return this.EFactory_CreateFromString(_this.ToMutable(), eDataType.ToMutable(), literalValue).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EFactoryBuilder.CreateFromString()
 		/// </summary>
-		public abstract EObjectBuilder EFactory_CreateFromString(EFactoryBuilder _this, EDataTypeBuilder eDataType, String literalValue);
-	
+		public abstract EObjectBuilder EFactory_CreateFromString(EFactoryBuilder _this, EDataTypeBuilder eDataType, string literalValue);
+
 		/// <summary>
 		/// Implements the operation: EFactory.ConvertToString()
 		/// </summary>
-		public virtual String EFactory_ConvertToString(EFactory _this, EDataType eDataType, object instanceValue)
+		public virtual string EFactory_ConvertToString(EFactory _this, EDataType eDataType, object instanceValue)
 		{
 			return this.EFactory_ConvertToString(_this.ToMutable(), eDataType.ToMutable(), instanceValue);
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EFactoryBuilder.ConvertToString()
 		/// </summary>
-		public abstract String EFactory_ConvertToString(EFactoryBuilder _this, EDataTypeBuilder eDataType, object instanceValue);
-	
-	
+		public abstract string EFactory_ConvertToString(EFactoryBuilder _this, EDataTypeBuilder eDataType, object instanceValue);
+
+
 		/// <summary>
 		/// Implements the constructor: ENamedElement()
 		/// </summary>
@@ -16409,7 +16162,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallENamedElementSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of ENamedElement
 		/// </summary>
@@ -16418,10 +16171,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EObject(_this);
 			this.EModelElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: EAnnotation()
 		/// </summary>
@@ -16438,7 +16191,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEAnnotationSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EAnnotation
 		/// </summary>
@@ -16447,10 +16200,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EObject(_this);
 			this.EModelElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: EStringToStringMapEntry()
 		/// </summary>
@@ -16458,17 +16211,17 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEStringToStringMapEntrySuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EStringToStringMapEntry
 		/// </summary>
 		protected virtual void CallEStringToStringMapEntrySuperConstructors(EStringToStringMapEntryBuilder _this)
 		{
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: EPackage()
 		/// </summary>
@@ -16486,7 +16239,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEPackageSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EPackage
 		/// </summary>
@@ -16496,23 +16249,23 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EModelElement(_this);
 			this.ENamedElement(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: EPackage.GetEClassifier()
 		/// </summary>
-		public virtual EClassifier EPackage_GetEClassifier(EPackage _this, String name)
+		public virtual EClassifier EPackage_GetEClassifier(EPackage _this, string name)
 		{
 			return this.EPackage_GetEClassifier(_this.ToMutable(), name).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EPackageBuilder.GetEClassifier()
 		/// </summary>
-		public abstract EClassifierBuilder EPackage_GetEClassifier(EPackageBuilder _this, String name);
-	
-	
+		public abstract EClassifierBuilder EPackage_GetEClassifier(EPackageBuilder _this, string name);
+
+
 		/// <summary>
 		/// Implements the constructor: EClassifier()
 		/// </summary>
@@ -16530,7 +16283,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEClassifierSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EClassifier
 		/// </summary>
@@ -16540,9 +16293,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EModelElement(_this);
 			this.ENamedElement(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: EClassifier.IsInstance()
 		/// </summary>
@@ -16550,12 +16303,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EClassifier_IsInstance(_this.ToMutable(), @object);
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EClassifierBuilder.IsInstance()
 		/// </summary>
 		public abstract bool EClassifier_IsInstance(EClassifierBuilder _this, object @object);
-	
+
 		/// <summary>
 		/// Implements the operation: EClassifier.GetClassifierID()
 		/// </summary>
@@ -16563,13 +16316,13 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EClassifier_GetClassifierID(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EClassifierBuilder.GetClassifierID()
 		/// </summary>
 		public abstract int EClassifier_GetClassifierID(EClassifierBuilder _this);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: EClass()
 		/// </summary>
@@ -16611,7 +16364,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			_this.EAllStructuralFeatures.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllStructuralFeatures);
 			_this.EAllSuperTypes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllSuperTypes);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EClass
 		/// </summary>
@@ -16622,7 +16375,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 		}
-	
+
 		/// <summary>
 		/// Computes the value of the property: EClass.EAllSuperTypes
 		/// </summary	
@@ -16663,8 +16416,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// Computes the value of the property: EClass.EAllGenericSuperTypes
 		/// </summary	
 		public abstract global::System.Collections.Generic.IReadOnlyList<EGenericTypeBuilder> EClass_ComputeProperty_EAllGenericSuperTypes(EClassBuilder _this);
-	
-	
+
+
 		/// <summary>
 		/// Implements the operation: EClass.IsSuperTypeOf()
 		/// </summary>
@@ -16672,12 +16425,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EClass_IsSuperTypeOf(_this.ToMutable(), someClass.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EClassBuilder.IsSuperTypeOf()
 		/// </summary>
 		public abstract bool EClass_IsSuperTypeOf(EClassBuilder _this, EClassBuilder someClass);
-	
+
 		/// <summary>
 		/// Implements the operation: EClass.GetStructuralFeature()
 		/// </summary>
@@ -16685,26 +16438,26 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EClass_GetStructuralFeature(_this.ToMutable(), featureID).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EClassBuilder.GetStructuralFeature()
 		/// </summary>
 		public abstract EStructuralFeatureBuilder EClass_GetStructuralFeature(EClassBuilder _this, int featureID);
-	
+
 		/// <summary>
 		/// Implements the operation: EClass.GetStructuralFeature()
 		/// </summary>
-		public virtual EStructuralFeature EClass_GetStructuralFeature(EClass _this, String featureName)
+		public virtual EStructuralFeature EClass_GetStructuralFeature(EClass _this, string featureName)
 		{
 			return this.EClass_GetStructuralFeature(_this.ToMutable(), featureName).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EClassBuilder.GetStructuralFeature()
 		/// </summary>
-		public abstract EStructuralFeatureBuilder EClass_GetStructuralFeature(EClassBuilder _this, String featureName);
-	
-	
+		public abstract EStructuralFeatureBuilder EClass_GetStructuralFeature(EClassBuilder _this, string featureName);
+
+
 		/// <summary>
 		/// Implements the constructor: EDataType()
 		/// </summary>
@@ -16724,7 +16477,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.CallEDataTypeSuperConstructors(_this);
 			_this.SetSerializableLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EDataType
 		/// </summary>
@@ -16735,10 +16488,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: EEnum()
 		/// </summary>
@@ -16759,7 +16512,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.CallEEnumSuperConstructors(_this);
 			_this.SetSerializableLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EEnum
 		/// </summary>
@@ -16771,22 +16524,22 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EClassifier(_this);
 			this.EDataType(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: EEnum.GetEEnumLiteral()
 		/// </summary>
-		public virtual EEnumLiteral EEnum_GetEEnumLiteral(EEnum _this, String name)
+		public virtual EEnumLiteral EEnum_GetEEnumLiteral(EEnum _this, string name)
 		{
 			return this.EEnum_GetEEnumLiteral(_this.ToMutable(), name).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EEnumBuilder.GetEEnumLiteral()
 		/// </summary>
-		public abstract EEnumLiteralBuilder EEnum_GetEEnumLiteral(EEnumBuilder _this, String name);
-	
+		public abstract EEnumLiteralBuilder EEnum_GetEEnumLiteral(EEnumBuilder _this, string name);
+
 		/// <summary>
 		/// Implements the operation: EEnum.GetEEnumLiteral()
 		/// </summary>
@@ -16794,13 +16547,13 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EEnum_GetEEnumLiteral(_this.ToMutable(), value).ToImmutable();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EEnumBuilder.GetEEnumLiteral()
 		/// </summary>
 		public abstract EEnumLiteralBuilder EEnum_GetEEnumLiteral(EEnumBuilder _this, int value);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: EEnumLiteral()
 		/// </summary>
@@ -16818,7 +16571,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEEnumLiteralSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EEnumLiteral
 		/// </summary>
@@ -16828,10 +16581,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EModelElement(_this);
 			this.ENamedElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: ETypedElement()
 		/// </summary>
@@ -16859,7 +16612,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			_this.SetUniqueLazy(() => true);
 			_this.SetOrderedLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of ETypedElement
 		/// </summary>
@@ -16869,7 +16622,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EModelElement(_this);
 			this.ENamedElement(_this);
 		}
-	
+
 		/// <summary>
 		/// Computes the value of the property: ETypedElement.Many
 		/// </summary	
@@ -16878,9 +16631,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// Computes the value of the property: ETypedElement.Required
 		/// </summary	
 		public abstract bool ETypedElement_ComputeProperty_Required(ETypedElementBuilder _this);
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the constructor: EStructuralFeature()
 		/// </summary>
@@ -16905,7 +16658,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			_this.SetUniqueLazy(() => true);
 			_this.SetOrderedLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EStructuralFeature
 		/// </summary>
@@ -16916,9 +16669,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.ENamedElement(_this);
 			this.ETypedElement(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: EStructuralFeature.GetFeatureID()
 		/// </summary>
@@ -16926,12 +16679,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EStructuralFeature_GetFeatureID(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EStructuralFeatureBuilder.GetFeatureID()
 		/// </summary>
 		public abstract int EStructuralFeature_GetFeatureID(EStructuralFeatureBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: EStructuralFeature.GetContainerClass()
 		/// </summary>
@@ -16939,13 +16692,13 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			return this.EStructuralFeature_GetContainerClass(_this.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: EStructuralFeatureBuilder.GetContainerClass()
 		/// </summary>
 		public abstract System.Type EStructuralFeature_GetContainerClass(EStructuralFeatureBuilder _this);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: EAttribute()
 		/// </summary>
@@ -16976,7 +16729,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			_this.SetUniqueLazy(() => true);
 			_this.SetOrderedLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EAttribute
 		/// </summary>
@@ -16988,14 +16741,14 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.ETypedElement(_this);
 			this.EStructuralFeature(_this);
 		}
-	
+
 		/// <summary>
 		/// Computes the value of the property: EAttribute.EAttributeType
 		/// </summary	
 		public abstract EDataTypeBuilder EAttribute_ComputeProperty_EAttributeType(EAttributeBuilder _this);
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the constructor: EReference()
 		/// </summary>
@@ -17027,7 +16780,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			_this.SetUniqueLazy(() => true);
 			_this.SetOrderedLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EReference
 		/// </summary>
@@ -17039,14 +16792,14 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.ETypedElement(_this);
 			this.EStructuralFeature(_this);
 		}
-	
+
 		/// <summary>
 		/// Computes the value of the property: EReference.Container
 		/// </summary	
 		public abstract bool EReference_ComputeProperty_Container(EReferenceBuilder _this);
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the constructor: EOperation()
 		/// </summary>
@@ -17070,7 +16823,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			_this.SetUniqueLazy(() => true);
 			_this.SetOrderedLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EOperation
 		/// </summary>
@@ -17081,10 +16834,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.ENamedElement(_this);
 			this.ETypedElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: EParameter()
 		/// </summary>
@@ -17108,7 +16861,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			_this.SetUniqueLazy(() => true);
 			_this.SetOrderedLazy(() => true);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EParameter
 		/// </summary>
@@ -17119,10 +16872,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.ENamedElement(_this);
 			this.ETypedElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: EGenericType()
 		/// </summary>
@@ -17130,17 +16883,17 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEGenericTypeSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of EGenericType
 		/// </summary>
 		protected virtual void CallEGenericTypeSuperConstructors(EGenericTypeBuilder _this)
 		{
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: ETypeParameter()
 		/// </summary>
@@ -17158,7 +16911,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallETypeParameterSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of ETypeParameter
 		/// </summary>
@@ -17168,9 +16921,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			this.EModelElement(_this);
 			this.ENamedElement(_this);
 		}
-	
-	
-	
+
+
+
 	}
 
 	internal class EcoreImplementationProvider
@@ -17178,11 +16931,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		// If there is a compile error at this line, create a new class called EcoreImplementation
 		// which is a subclass of global::MetaDslx.Languages.Ecore.Model.EcoreImplementationBase:
 		private static EcoreImplementation implementation = new EcoreImplementation();
-	
+
 		public static EcoreImplementation Implementation
 		{
 			get { return implementation; }
 		}
 	}
 }
-
