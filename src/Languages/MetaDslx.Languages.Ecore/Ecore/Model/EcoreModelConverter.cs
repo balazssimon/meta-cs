@@ -92,7 +92,7 @@ namespace MetaDslx.Languages.Ecore.Model
                 metaModel.Uri = epkg.NsURI;
                 mns.DefinedMetaModel = metaModel;
             }
-            foreach (var childEpgk in epkg.ESubPackages)
+            foreach (var childEpgk in epkg.ESubpackages)
             {
                 ConvertPackage(mns, childEpgk);
             }
@@ -139,19 +139,16 @@ namespace MetaDslx.Languages.Ecore.Model
 
         private void ConvertDataType(MetaNamespaceBuilder parentNs, EDataType edt, MetaClassBuilder mdataType)
         {
-            if (edt != null && _map.TryGetValue(edt, out var mobj)) return;
-            /*var mpt = _factory.MetaPrimitiveType();
-            mpt.Name = edt.Name;
-            mpt.DotNetName = GetDotNetName(edt.InstanceClassName);
-            parentNs.Declarations.Add(mpt);
-            _map.Add(edt, mpt);*/
-            var mtype = GetMetaType(edt.Name);
+            if (edt == null) return;
+            if (_map.TryGetValue(edt, out var mobj)) return;
+
+            /*var mtype = GetMetaType(edt.Name);
             if (mtype != null)
             {
                 mobj = mtype.ToMutable();
                 _map.Add(edt, mobj);
             }
-            else
+            else*/
             {
                 var mcst = _factory.MetaConstant();
                 mcst.Name = edt.Name;
@@ -204,6 +201,7 @@ namespace MetaDslx.Languages.Ecore.Model
                 case "ELong": return "System.Int64";
                 case "EFloat": return "System.Single";
                 case "EDouble": return "System.Double";
+                case "EDate": return "System.DateTime";
                 case "EBooleanObject": return "bool?";
                 case "EByteObject": return "byte?";
                 case "ECharacterObject": return "char?";
@@ -214,11 +212,14 @@ namespace MetaDslx.Languages.Ecore.Model
                 case "EDoubleObject": return "double?";
                 case "EJavaObject": return "System.Object";
                 case "EJavaClass": return "System.Type";
-                //case "EResource": return "MetaDslx.Modeling.IModel";
-                //case "EResourceSet": return "MetaDslx.Modeling.IModelGroup";
-                //case "ETreeIterator": return "System.Collections.Generic.IEnumerable`1";
-                //case "EEnumerator": return "System.Collections.Generic.IEnumerable`1";
-                //case "EEList": return "System.Collections.Generic.IList`1";
+                case "EResource": return "MetaDslx.Modeling.IModel";
+                case "EResourceSet": return "MetaDslx.Modeling.IModelGroup";
+                case "ETreeIterator": return "System.Collections.Generic.IEnumerable`1";
+                case "EEnumerator": return "System.Collections.Generic.IEnumerable`1";
+                case "EEList": return "System.Collections.Generic.IList`1";
+                case "EMap": return "System.Collections.Generic.IDictionary`2";
+                case "EFeatureMap": return "System.Collections.Generic.IDictionary<EStructuralFeature,object>";
+                case "EFeatureMapEntry": return "System.Collections.Generic.KeyValuePair<EStructuralFeature,object>";
                 default:
                     break;
             }
@@ -264,8 +265,8 @@ namespace MetaDslx.Languages.Ecore.Model
             mcls.Properties.Add(mprop);
             _map.Add(eprop, mprop);
             if (eprop.Derived) mprop.Kind = MetaPropertyKind.Derived;
-            else if (eprop.Unsettable) mprop.Kind = MetaPropertyKind.Readonly;
-            else if (!eprop.Changeable) mprop.Kind = MetaPropertyKind.Lazy;
+            //else if (eprop.Unsettable) mprop.Kind = MetaPropertyKind.Readonly;
+            //else if (!eprop.Changeable) mprop.Kind = MetaPropertyKind.Lazy;
             mprop.DefaultValue = eprop.DefaultValueLiteral;
             if (eprop is EAttribute eattr)
             {
@@ -439,7 +440,7 @@ namespace MetaDslx.Languages.Ecore.Model
         {
             var epkg = _factory.EPackage();
             epkg.Name = mns.Name.ToCamelCase();
-            epkg.ESuperPackage = parentEpkg;
+            parentEpkg.ESubpackages.Add(epkg);
             _map.Add(mns, epkg);
             if (mns.DefinedMetaModel?.Uri != null)
             {
@@ -583,10 +584,12 @@ namespace MetaDslx.Languages.Ecore.Model
             if (mte.Type is MetaCollectionType mcoll)
             {
                 var innerType = mcoll.InnerType;
+                //ete.SetETypeLazy(() => ResolveType(parentEpkg, innerType));
                 ete.EType = ResolveType(parentEpkg, innerType);
                 if (innerType is MetaClass && ete is EReferenceBuilder eref)
                 {
-                    eref.EReferenceType = (EClassBuilder)ete.EType;
+                    eref.SetEReferenceTypeLazy(() => (EClassBuilder)ete.EType);
+                    //eref.EReferenceType = (EClassBuilder)ete.EType;
                 }
                 ete.Ordered = mcoll.Kind == MetaCollectionKind.List || mcoll.Kind == MetaCollectionKind.MultiList;
                 ete.Unique = mcoll.Kind == MetaCollectionKind.List || mcoll.Kind == MetaCollectionKind.Set;
@@ -595,10 +598,12 @@ namespace MetaDslx.Languages.Ecore.Model
             }
             else 
             {
+                //ete.SetETypeLazy(() => ResolveType(parentEpkg, mte.Type));
                 ete.EType = ResolveType(parentEpkg, mte.Type);
                 if (mte.Type is MetaClass && ete is EReferenceBuilder eref)
                 {
-                    eref.EReferenceType = (EClassBuilder)ete.EType;
+                    eref.SetEReferenceTypeLazy(() => (EClassBuilder)ete.EType);
+                    //eref.EReferenceType = (EClassBuilder)ete.EType;
                 }
             }
         }

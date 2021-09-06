@@ -389,6 +389,10 @@ namespace MetaDslx.Modeling
             ModelId mid = new ModelId();
             MutableModel model = new MutableModel(mid, this, false, null);
             this.models.Add(mid, model);
+            if (metadata == null)
+            {
+                metadata = new ModelMetadata(null, default, null, null, null);
+            }
             GreenModel greenModel;
             GreenModelUpdateContext ctx = null;
             try

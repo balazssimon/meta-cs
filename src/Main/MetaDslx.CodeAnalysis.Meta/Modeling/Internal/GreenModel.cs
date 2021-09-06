@@ -26,6 +26,8 @@ namespace MetaDslx.Modeling.Internal
 
         internal GreenModel(ModelId id, ModelMetadata metadata)
         {
+            Debug.Assert(id != null);
+            Debug.Assert(metadata != null);
             this.id = id;
             this.metadata = metadata;
             this.objects = ImmutableDictionary<ObjectId, GreenObject>.Empty;
@@ -42,6 +44,8 @@ namespace MetaDslx.Modeling.Internal
             ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties,
             ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> references)
         {
+            Debug.Assert(id != null);
+            Debug.Assert(metadata != null);
             Debug.Assert(objects != null);
             Debug.Assert(lazyProperties != null);
             Debug.Assert(references != null);

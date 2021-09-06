@@ -1,303 +1,253 @@
 ﻿namespace MetaDslx.Languages.Ecore.Model
 {
-	using MetaDslx.CodeAnalysis.Symbols;
+    using MetaDslx.CodeAnalysis.Symbols;
 
-	metamodel Ecore(Uri="http://www.eclipse.org/emf/2002/Ecore"); 
+    metamodel Ecore(Uri="http://www.eclipse.org/emf/2002/Ecore",Prefix="ecore"); 
 
-	/// EJavaObject is a type representing the object type. In Java it is java.lang.Object. In .NET it is System.Object.
-	const EDataType EJavaObject = "System.Object";
-	/// EJavaClass is a type representing the type concept. In Java it is java.lang.Class. In .NET it is System.Type.
-	const EDataType EJavaClass = "System.Type";
-	/// EBoolean is used for logical expressions, consisting of the predefined values true and false.
+    const EDataType EBigDecimal = "System.Decimal";
+    const EDataType EBigInteger = "System.Numerics.BigInteger";
+    const EDataType EBoolean = "System.Boolean";
+    const EDataType EBooleanObject = "bool?";
+    const EDataType EByte = "System.Byte";
+    const EDataType EByteArray = "byte[]";
+    const EDataType EByteObject = "byte?";
+    const EDataType EChar = "System.Char";
+    const EDataType ECharacterObject = "char?";
+    const EDataType EDate = "System.DateTime";
+    const EDataType EDiagnosticChain;
+    const EDataType EDouble = "System.Double";
+    const EDataType EDoubleObject = "double?";
+    const EDataType EEList = "System.Collections.Generic.IList`1";
+    const EDataType EEnumerator = "System.Collections.IEnumerable";
+    const EDataType EFeatureMap = "System.Collections.Generic.IDictionary<EStructuralFeature,object>";
+    const EDataType EFeatureMapEntry = "System.Collections.Generic.KeyValuePair<EStructuralFeature,object>";
+    const EDataType EFloat = "System.Single";
+    const EDataType EFloatObject = "float?";
+    const EDataType EInt = "System.Int32";
+    const EDataType EIntegerObject = "int?";
+    const EDataType EJavaClass = "System.Type";
+    const EDataType EJavaObject = "System.Object";
+    const EDataType ELong = "System.Int64";
+    const EDataType ELongObject = "long?";
+    const EDataType EMap = "System.Collections.Generic.IDictionary`2";
+    const EDataType EResource = "MetaDslx.Modeling.IModel";
+    const EDataType EResourceSet = "MetaDslx.Modeling.IModelGroup";
+    const EDataType EShort = "System.Int16";
+    const EDataType EShortObject = "short?";
+    const EDataType EString = "System.String";
+    const EDataType ETreeIterator = "System.Collections.IEnumerable";
+    const EDataType EInvocationTargetException;
 
-	const EDataType EBoolean = "System.Boolean";
-	/// EString is a sequence of characters in some suitable character set used to display information 
-	/// about the model. Character sets may include non-Roman alphabets and characters.
-	const EDataType EString = "System.String";
-	/// EByte is a primitive type representing byte values.
+    class EAttribute : EStructuralFeature
+    {
+    	EBoolean ID;
+    	derived EDataType EAttributeType;
+    }
 
-	const EDataType EByte = "System.Byte";
-	/// EByteArray is a primitive type representing a byte array.
-	const EDataType EByteArray = "byte[]";
-	/// EChar is a primitive type representing character values.
-	const EDataType EChar = "System.Char";
-	/// EShort is a primitive type representing short integer values.
-	const EDataType EShort = "System.Int16";
-	/// EInt is a primitive type representing integer values.
-	const EDataType EInt = "System.Int32";
-	/// ELong is a primitive type representing long integer values.
-	const EDataType ELong = "System.Int64";
-	/// EFloat is a primitive type representing the mathematical concept of real.
-	const EDataType EFloat = "System.Single";
-	/// EDouble is a primitive type representing the mathematical concept of real.
-	const EDataType EDouble = "System.Double";
+    class EAnnotation : EModelElement
+    {
+    	EString Source;
+    	containment list<EStringToStringMapEntry> Details;
+    	EModelElement EModelElement;
+    	containment list<EObject> Contents;
+    	list<EObject> References;
+    }
 
-	/// EByteObject is a reference type representing byte values.
-	const EDataType EByteObject = "byte?";
-	/// ECharObject is a reference type representing character values.
-	const EDataType ECharObject = "char?";
-	/// EShortObject is a reference type representing short integer values.
-	const EDataType EShortObject = "short?";
-	/// EIntObject is a reference type representing integer values.
-	const EDataType EIntObject = "int?";
-	/// ELongObject is a reference type representing long integer values.
-	const EDataType ELongObject = "long?";
-	/// EFloatObject is a reference type representing the mathematical concept of real.
-	const EDataType EFloatObject = "float?";
-	/// EDoubleObject is a reference type representing the mathematical concept of real.
-	const EDataType EDoubleObject = "double?";
+    class EClass : EClassifier
+    {
+    	EBoolean Abstract;
+    	EBoolean Interface;
+    	list<EClass> ESuperTypes;
+    	containment list<EOperation> EOperations;
+    	derived list<EAttribute> EAllAttributes;
+    	derived list<EReference> EAllReferences;
+    	derived list<EReference> EReferences;
+    	derived list<EAttribute> EAttributes;
+    	derived list<EReference> EAllContainments;
+    	derived list<EOperation> EAllOperations;
+    	derived list<EStructuralFeature> EAllStructuralFeatures;
+    	derived list<EClass> EAllSuperTypes;
+    	derived EAttribute EIDAttribute;
+    	containment list<EStructuralFeature> EStructuralFeatures;
+    	containment list<EGenericType> EGenericSuperTypes;
+    	derived list<EGenericType> EAllGenericSuperTypes;
+    	EBoolean IsSuperTypeOf(EClass someClass);
+    	EInt GetFeatureCount();
+    	EStructuralFeature GetEStructuralFeature(EInt featureID);
+    	EInt GetFeatureID(EStructuralFeature feature);
+    	EStructuralFeature GetEStructuralFeature(EString featureName);
+    	EInt GetOperationCount();
+    	EOperation GetEOperation(EInt operationID);
+    	EInt GetOperationID(EOperation operation);
+    	EOperation GetOverride(EOperation operation);
+    	EGenericType GetFeatureType(EStructuralFeature feature);
+    }
 
-	/// EDate is a reference type representing a date.
-	const EDataType EDate = "System.DateTime";
-	/// EBigInteger is a reference type representing an unlimited integer value.
-	const EDataType EBigInteger = "System.Numerics.BigInteger";
-	/// EBigDecimal is a reference type representing an unlimited decimal value.
-	const EDataType EBigDecimal = "System.Decimal";
+    abstract class EClassifier : ENamedElement
+    {
+        string DotNetName; // TODO:MetaDslx: replace with InstanceClassName
+    	EString InstanceClassName;
+    	derived EJavaClass InstanceClass;
+    	derived EJavaObject DefaultValue;
+    	EString InstanceTypeName;
+    	EPackage EPackage;
+    	containment list<ETypeParameter> ETypeParameters;
+    	EBoolean IsInstance(EJavaObject @object);
+    	EInt GetClassifierID();
+    }
 
-	/// EResource is a reference type representing a model. In Ecore it is org.eclipse.emf.ecore.resource.Resource. In MetaDslx it is MetaDslx.Modeling.IModel.
-	const EDataType EResource = "MetaDslx.Modeling.IModel";
-	/// EResourceSet is a reference type representing a model group. In Ecore it is org.eclipse.emf.ecore.resource.ResourceSet. In MetaDslx it is MetaDslx.Modeling.IModelGroup.
-	const EDataType EResourceSet = "MetaDslx.Modeling.IModelGroup";
+    class EDataType : EClassifier
+    {
+    	EBoolean Serializable = "true";
+    }
 
-	/// EFeatureMap is a reference type representing a feature map.
-	const EDataType EFeatureMap = "System.Collections.Generic.Dictionary<EStructuralFeature,object>";
-	/// EFeatureMapEntry is a reference type representing a feature map entry.
-	const EDataType EFeatureMapEntry = "System.Collections.Generic.KeyValuePair<EStructuralFeature,object>";
+    class EEnum : EDataType
+    {
+    	containment list<EEnumLiteral> ELiterals;
+    	EEnumLiteral GetEEnumLiteral(EString name);
+    	EEnumLiteral GetEEnumLiteral(EInt value);
+    	EEnumLiteral GetEEnumLiteralByLiteral(EString literal);
+    }
 
-	/// EEList is a reference type representing an ecore EList.
-	const EDataType EEList = "System.Collections.Generic.IReadOnlyList<object>";
-	/// EEnumerator is a reference type representing an enumerator.
-	const EDataType EEnumerator = "System.Collections.IEnumerator";
-	/// ETreeIterator is a reference type representing a tree iterator.
-	const EDataType ETreeIterator = "System.Collections.IEnumerator";
+    class EEnumLiteral : ENamedElement
+    {
+    	EInt Value;
+    	EEnumerator Instance;
+    	EString Literal;
+    	EEnum EEnum;
+    }
 
-	[symbol: Symbol]
-	class EObject
-	{
-		EClass EClass();
-		bool EIsProxy();
-		EResource EResource();
-		EObject EContainer();
-		EStructuralFeature EContainingFeature();
-		EReference EContainmentFeature();
-		EEList EContents();
-		ETreeIterator EAllContents();
-		EEList ECrossReferences();
-		EJavaObject EGet(EStructuralFeature feature);
-		EJavaObject EGet(EStructuralFeature feature, bool resolve);
-		EJavaObject ESet(EStructuralFeature feature, EJavaObject newValue);
-		bool EIsSet(EStructuralFeature feature);
-		void EUnset(EStructuralFeature feature);
-	}
+    class EFactory : EModelElement
+    {
+    	EPackage EPackage;
+    	EObject Create(EClass eClass);
+    	EJavaObject CreateFromString(EDataType eDataType, EString literalValue);
+    	EString ConvertToString(EDataType eDataType, EJavaObject instanceValue);
+    }
 
-	abstract class EModelElement : EObject
-	{
-		containment list<EAnnotation> EAnnotations;
-		readonly EAnnotation GetEAnnotation(string source);
-	}
+    abstract class EModelElement
+    {
+    	containment list<EAnnotation> EAnnotations;
+    	EAnnotation GetEAnnotation(EString source);
+    }
 
-	class EFactory : EModelElement
-	{
-		EPackage EPackage;
-		EObject Create(EClass eClass);
-		EObject CreateFromString(EDataType eDataType, string literalValue);
-		string ConvertToString(EDataType eDataType, EJavaObject instanceValue);
-	}
+    [symbol: DeclaredSymbol]
+    abstract class ENamedElement : EModelElement
+    {
+        [property: Name]
+    	EString Name;
+    }
 
-	abstract class ENamedElement : EModelElement
-	{
-		[property: Name]
-		string Name;
-	}
+    class EObject
+    {
+    	EClass EClass();
+    	EBoolean EIsProxy();
+    	EResource EResource();
+    	EObject EContainer();
+    	EStructuralFeature EContainingFeature();
+    	EReference EContainmentFeature();
+    	list<EObject> EContents();
+    	ETreeIterator EAllContents();
+    	list<EObject> ECrossReferences();
+    	EJavaObject EGet(EStructuralFeature feature);
+    	EJavaObject EGet(EStructuralFeature feature, EBoolean resolve);
+    	void ESet(EStructuralFeature feature, EJavaObject newValue);
+    	EBoolean EIsSet(EStructuralFeature feature);
+    	void EUnset(EStructuralFeature feature);
+    	EJavaObject EInvoke(EOperation operation, list<object> arguments);
+    }
 
-	class EAnnotation : EModelElement
-	{
-		EModelElement EModelElement;
-		string Source;
-		containment list<EStringToStringMapEntry> Details;
-		containment list<EObject> Contents;
-		list<EObject> References;
-	}
+    class EOperation : ETypedElement
+    {
+    	EClass EContainingClass;
+    	containment list<ETypeParameter> ETypeParameters;
+    	containment list<EParameter> EParameters;
+    	list<EClassifier> EExceptions;
+    	containment list<EGenericType> EGenericExceptions;
+    	EInt GetOperationID();
+    	EBoolean IsOverrideOf(EOperation someOperation);
+    }
 
-	class EStringToStringMapEntry
-	{
-		string Key;
-		string Value;
-	}
+    class EPackage : ENamedElement
+    {
+    	EString NsURI;
+    	EString NsPrefix;
+    	EFactory EFactoryInstance;
+    	containment list<EClassifier> EClassifiers;
+    	containment list<EPackage> ESubpackages;
+    	EPackage ESuperPackage;
+    	EClassifier GetEClassifier(EString name);
+    }
 
-	[symbol: Namespace]
-	class EPackage : ENamedElement
-	{
-		string NsURI;
-		string NsPrefix;
-		EPackage ESuperPackage;
-		[property: Members]
-		containment list<EPackage> ESubPackages;
-		[property: Members]
-		containment list<EClassifier> EClassifiers;
-		EFactory EFactoryInstance;
-		EClassifier GetEClassifier(string name);
-	}
+    class EParameter : ETypedElement
+    {
+    	EOperation EOperation;
+    }
 
-	[symbol: NamedType]
-	class EClassifier : ENamedElement
-	{
-		string InstanceClassName;
-		EPackage EPackage;
-		[property: TypeParameters]
-		containment list<ETypeParameter> ETypeParameters;
+    class EReference : EStructuralFeature
+    {
+    	EBoolean Containment;
+    	derived EBoolean Container;
+    	EBoolean ResolveProxies = "true";
+    	EReference EOpposite;
+    	derived EClass EReferenceType;
+    	list<EAttribute> EKeys;
+    }
 
-		EJavaClass InstanceClass;
-		EJavaObject DefaultValue;
-		/// <summary>
-		/// Returns whether the object is an instance of this classifier.
-		/// </summary>
-		bool IsInstance(EJavaObject @object);
-		int GetClassifierID();
-	}
+    abstract class EStructuralFeature : ETypedElement
+    {
+    	EBoolean Changeable = "true";
+    	EBoolean Volatile;
+    	EBoolean Transient;
+    	EString DefaultValueLiteral;
+    	derived EJavaObject DefaultValue;
+    	EBoolean Unsettable;
+    	EBoolean Derived;
+    	EClass EContainingClass;
+    	EInt GetFeatureID();
+    	EJavaClass GetContainerClass();
+    }
 
-	[type: Class]
-	class EClass : EClassifier
-	{
-		[property: IsAbstract]
-		bool Abstract;
-		bool Interface;
-		[property: BaseTypes]
-		list<EClass> ESuperTypes;
-		derived list<EClass> EAllSuperTypes;
-		[property: Members]
-		containment list<EStructuralFeature> EStructuralFeatures;
-		derived list<EStructuralFeature> EAllStructuralFeatures;
-		[property: Members]
-		containment list<EOperation> EOperations;
-		derived list<EOperation> EAllOperation;
-		derived list<EReference> EReferences;
-		derived list<EReference> EAllReferences;
-		derived list<EReference> EAllContainments;
-		derived list<EAttribute> EAttributes;
-		derived list<EAttribute> EAllAttributes;
-		derived EAttribute EIDAttribute;
-		containment list<EGenericType> EGenericSuperTypes;
-		derived list<EGenericType> EAllGenericSuperTypes;
+    abstract class ETypedElement : ENamedElement
+    {
+    	EBoolean Ordered = "true";
+    	EBoolean Unique = "true";
+    	EInt LowerBound;
+    	EInt UpperBound = "1";
+    	derived EBoolean Many;
+    	derived EBoolean Required;
+    	EClassifier EType;
+    	containment EGenericType EGenericType;
+    }
 
-		bool IsSuperTypeOf(EClass someClass);
-		EStructuralFeature GetStructuralFeature(int featureID);
-		EStructuralFeature GetStructuralFeature(string featureName);
-	}
+    class EStringToStringMapEntry
+    {
+    	EString Key;
+    	EString Value;
+    }
 
-	[type: Named]
-	class EDataType : EClassifier
-	{
-		bool Serializable = "true";
-		string DotNetName; // TODO:MetaDslx remove???
-	}
+    class EGenericType
+    {
+    	containment EGenericType EUpperBound;
+    	containment list<EGenericType> ETypeArguments;
+    	derived EClassifier ERawType;
+    	containment EGenericType ELowerBound;
+    	ETypeParameter ETypeParameter;
+    	EClassifier EClassifier;
+    	EBoolean IsInstance(EJavaObject @object);
+    }
 
-	[type: Enum]
-	class EEnum : EDataType
-	{
-		[property: Members]
-		containment list<EEnumLiteral> ELiterals;
-		EEnumLiteral GetEEnumLiteral(string name);
-		EEnumLiteral GetEEnumLiteral(int value);
-	}
+    class ETypeParameter : ENamedElement
+    {
+    	containment list<EGenericType> EBounds;
+    }
 
-	[symbol: EnumLiteral]
-	class EEnumLiteral : ENamedElement
-	{
-		EEnum EEnum;
-		int Value;
-		EEnumerator Instance;
-	}
-
-	class ETypedElement : ENamedElement
-	{
-		EClassifier EType;
-		bool Ordered = "true";
-		bool Unique = "true";
-		int LowerBound;
-		int UpperBound = "1";
-		derived bool Many;
-		derived bool Required;
-		containment EGenericType EGenericType;
-	}
-
-	[symbol: Property]
-	class EStructuralFeature : ETypedElement
-	{
-		EClass EContainingClass;
-		[property: Type]
-		EClassifier EType subsets ETypedElement.EType;
-		bool Changeable = "true";
-		bool Volatile;
-		bool Transient;
-		string DefaultValueLiteral;
-		EJavaObject DefaultValue;
-		bool Unsettable;
-		bool Derived;
-		int GetFeatureID();
-		EJavaClass GetContainerClass();
-	}
-
-	class EAttribute : EStructuralFeature
-	{
-		bool ID;
-		derived EDataType EAttributeType;
-	}
-
-	class EReference : EStructuralFeature
-	{
-		bool Containment;
-		derived bool Container;
-		bool ResolveProxies = "true";
-		EReference EOpposite;
-		EClass EReferenceType; // TODO: match with EType
-	}
-
-	[symbol: Method]
-	class EOperation : ETypedElement
-	{
-		EClass EContainingClass;
-		[property: ReturnType]
-		EClassifier EType redefines ETypedElement.EType;
-		[property: Parameters]
-		containment list<EParameter> EParameters;
-		list<EClassifier> EExceptions;
-		[property: TypeParameters]
-		containment list<ETypeParameter> ETypeParameters;
-		containment list<EGenericType> EGenericExceptions;
-	}
-
-	[symbol: Parameter]
-	class EParameter : ETypedElement
-	{
-		EOperation EOperation;
-	}
-
-	[type: Named]
-	class EGenericType
-	{
-		EClassifier EClassifier;
-		EClassifier ERawType;
-		ETypeParameter ETypeParameter;
-		containment EGenericType ELowerBound;
-		containment EGenericType EUpperBound;
-		[property: TypeArguments]
-		containment list<EGenericType> ETypeArguments;
-	}
-
-	[symbol: TypeParameter]
-	class ETypeParameter : ENamedElement
-	{
-		list<EGenericType> EGenericTypes;
-		containment list<EGenericType> EBounds;
-	}
-
-	association EModelElement.EAnnotations with EAnnotation.EModelElement;
-	association EPackage.ESuperPackage with EPackage.ESubPackages;
-	association EPackage.EClassifiers with EClassifier.EPackage;
-	association EEnum.ELiterals with EEnumLiteral.EEnum;
-	association EClass.EStructuralFeatures with EStructuralFeature.EContainingClass;
-	association EOperation.EParameters with EParameter.EOperation;
-	association EClass.EOperations with EOperation.EContainingClass;
-	association EGenericType.ETypeParameter with ETypeParameter.EGenericTypes;
+    association EAnnotation.EModelElement with EModelElement.EAnnotations;
+    association EClass.EOperations with EOperation.EContainingClass;
+    association EClass.EStructuralFeatures with EStructuralFeature.EContainingClass;
+    association EClassifier.EPackage with EPackage.EClassifiers;
+    association EEnum.ELiterals with EEnumLiteral.EEnum;
+    association EFactory.EPackage with EPackage.EFactoryInstance;
+    association EOperation.EParameters with EParameter.EOperation;
+    association EPackage.ESubpackages with EPackage.ESuperPackage;
 }

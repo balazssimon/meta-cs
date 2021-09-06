@@ -109,7 +109,7 @@ function string GenerateType(MetaType t)
 	else if (t is MetaEnum)
 		return ((MetaEnum)t).Name.EscapeName();
 	else if (t is MetaConstant)
-		return ((MetaConstant)t).DotNetName.ToCSharpAlias();
+		return ((MetaConstant)t).Name.EscapeName();
 	else
 		return "ERROR";
 	end if

@@ -1005,7 +1005,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             else if (t is MetaConstant) //111:2
             {
-                return ToCSharpAlias(((MetaConstant)t).DotNetName); //112:3
+                return EscapeName(((MetaConstant)t).Name); //112:3
             }
             else //113:2
             {
