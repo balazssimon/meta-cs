@@ -43,8 +43,7 @@ namespace MetaDslx.Modeling
         }
 
         public ModelId Id { get { return this.id; } }
-        public string Name { get { return this.green.Name; } }
-        public ModelVersion Version { get { return this.green.Version; } }
+        public ModelMetadata Metadata => this.green.Metadata;
         internal GreenModel Green { get { return this.green; } }
         public ImmutableModelGroup ModelGroup { get { return this.group; } }
         public IEnumerable<ImmutableObject> Objects
@@ -140,7 +139,7 @@ namespace MetaDslx.Modeling
             if (this.group != null)
             {
                 MutableModelGroup mutableGroup = this.group.ToMutable(createNew);
-                newModel = mutableGroup.GetModel(this.green.Id);
+                newModel = mutableGroup.GetModel(this.id);
             }
             else
             {

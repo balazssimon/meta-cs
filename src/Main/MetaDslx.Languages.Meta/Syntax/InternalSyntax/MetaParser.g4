@@ -12,7 +12,7 @@ options
 	                      
 }
 
-main: usingNamespace* namespaceDeclaration EOF;
+main: usingNamespaceOrMetamodel* namespaceDeclaration EOF;
 
      
 name : identifier;
@@ -27,14 +27,20 @@ qualifier : identifier (TDot identifier)*;
                    
 attribute : TOpenBracket qualifier TCloseBracket;
 
+usingNamespaceOrMetamodel: usingNamespace | usingMetamodel;
+
        
-usingNamespace: KUsing qualifier TSemicolon;
+usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
+
+                
+usingMetamodel: KUsing KMetamodel (name TAssign)? usingMetamodelReference TSemicolon;
+usingMetamodelReference: qualifier |        stringLiteral;
 
                                                                    
 namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
       
-namespaceBody : TOpenBrace usingNamespace* metamodelDeclaration declaration* TCloseBrace;
+namespaceBody : TOpenBrace usingNamespaceOrMetamodel* metamodelDeclaration declaration* TCloseBrace;
 
                            
                   

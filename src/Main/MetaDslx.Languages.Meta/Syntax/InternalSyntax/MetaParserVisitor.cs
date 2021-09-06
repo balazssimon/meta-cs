@@ -67,11 +67,29 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAttribute([NotNull] MetaParser.AttributeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.usingNamespaceOrMetamodel"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUsingNamespaceOrMetamodel([NotNull] MetaParser.UsingNamespaceOrMetamodelContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.usingNamespace"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitUsingNamespace([NotNull] MetaParser.UsingNamespaceContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.usingMetamodel"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUsingMetamodel([NotNull] MetaParser.UsingMetamodelContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.usingMetamodelReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUsingMetamodelReference([NotNull] MetaParser.UsingMetamodelReferenceContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.namespaceDeclaration"/>.
 	/// </summary>

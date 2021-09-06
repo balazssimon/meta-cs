@@ -48,6 +48,7 @@ namespace MetaDslx.Languages.Ecore.Model
     internal class EcoreToMetaConverter
     {
         private ImmutableModel _ecore;
+        private MutableModelGroup _modelGroup;
         private MutableModel _meta;
         private MetaFactory _factory;
         private DiagnosticBag _diagnostics;
@@ -56,7 +57,13 @@ namespace MetaDslx.Languages.Ecore.Model
         public EcoreToMetaConverter(ImmutableModel ecore)
         {
             _ecore = ecore;
-            _meta = new MutableModel();
+            _modelGroup = new MutableModelGroup();
+            _modelGroup.AddReference(MetaInstance.MModel);
+            if (ecore.ModelGroup != null)
+            {
+                _modelGroup.AddReference(ecore.ModelGroup.References);
+            }
+            _meta = _modelGroup.CreateModel();
             _factory = new MetaFactory(_meta);
             _diagnostics = new DiagnosticBag();
             _map = new Dictionary<ImmutableObject, MutableObject>();
@@ -89,32 +96,133 @@ namespace MetaDslx.Languages.Ecore.Model
             {
                 ConvertPackage(mns, childEpgk);
             }
+            MetaClassBuilder edataType = null;
             foreach (var childClsf in epkg.EClassifiers)
             {
-                ConvertClassifier(mns, childClsf);
+                if (childClsf is EClass ecls)
+                {
+                    ConvertClass(mns, ecls);
+                    if (childClsf.Name == "EDataType")
+                    {
+                        edataType = (MetaClassBuilder)_map[childClsf];
+                    }
+                }
+            }
+            if (edataType == null)
+            {
+                edataType = EcoreInstance.EDataType.ToMutable();
+            }
+            foreach (var childClsf in epkg.EClassifiers)
+            {
+                if (childClsf is EEnum eenm) ConvertEnum(mns, eenm);
+            }
+            foreach (var childClsf in epkg.EClassifiers)
+            {
+                if (childClsf is EDataType edt) ConvertDataType(mns, edt, edataType);
+            }
+            foreach (var childClsf in epkg.EClassifiers)
+            {
+                ConvertUnknownClassifier(mns, childClsf);
             }
             BindSuperClasses();
             BindTypedElements();
             CreateAssociations();
         }
 
-        private void ConvertClassifier(MetaNamespaceBuilder parentNs, EClassifier eclsf)
+        private void ConvertUnknownClassifier(MetaNamespaceBuilder parentNs, EClassifier eclsf)
         {
-            if (eclsf is EClass ecls) ConvertClass(parentNs, ecls);
-            else if (eclsf is EEnum eenm) ConvertEnum(parentNs, eenm);
-            else if (eclsf is EDataType edt) ConvertDataType(parentNs, edt);
+            if (eclsf is EClass) return;
+            else if (eclsf is EEnum) return;
+            else if (eclsf is EDataType) return;
             else _diagnostics.Add(ModelErrorCode.ERR_ModelConversionError.ToDiagnosticWithNoLocation(string.Format("Unknown EClassifier type: {0}", eclsf.GetType())));
         }
 
-        private void ConvertDataType(MetaNamespaceBuilder parentNs, EDataType edt)
+        private void ConvertDataType(MetaNamespaceBuilder parentNs, EDataType edt, MetaClassBuilder mdataType)
         {
-            /*var mcst = _factory.MetaConstant();
-            parentNs.Declarations.Add(mcst);
-            _map.Add(edt, mcst);*/
-            var mpt = _factory.MetaPrimitiveType();
+            if (edt != null && _map.TryGetValue(edt, out var mobj)) return;
+            /*var mpt = _factory.MetaPrimitiveType();
             mpt.Name = edt.Name;
+            mpt.DotNetName = GetDotNetName(edt.InstanceClassName);
             parentNs.Declarations.Add(mpt);
-            _map.Add(edt, mpt);
+            _map.Add(edt, mpt);*/
+            var mtype = GetMetaType(edt.Name);
+            if (mtype != null)
+            {
+                mobj = mtype.ToMutable();
+                _map.Add(edt, mobj);
+            }
+            else
+            {
+                var mcst = _factory.MetaConstant();
+                mcst.Name = edt.Name;
+                parentNs.Declarations.Add(mcst);
+                _map.Add(edt, mcst);
+                mcst.Type = mdataType;
+                mcst.DotNetName = GetDotNetName(edt.Name);
+            }
+        }
+
+        private MetaType GetMetaType(string ename)
+        {
+            switch (ename)
+            {
+                case "EString": return MetaInstance.String;
+                case "EBoolean": return MetaInstance.Bool;
+                case "EByte": return MetaInstance.Byte;
+                //case "EChar": return MetaInstance.Char;
+                //case "EShort": return "System.Int16";
+                case "EInt": return MetaInstance.Int;
+                case "ELong": return MetaInstance.Long;
+                case "EFloat": return MetaInstance.Float;
+                case "EDouble": return MetaInstance.Double;
+                case "EJavaObject": return MetaInstance.Object;
+                case "EJavaClass": return MetaInstance.SystemType;
+                case "EResource": return MetaInstance.Model;
+                //case "EResourceSet": return "MetaDslx.Modeling.IModelGroup";
+                //case "ETreeIterator": return "System.Collections.Generic.IEnumerable`1";
+                //case "EEnumerator": return "System.Collections.Generic.IEnumerable`1";
+                //case "EEList": return "System.Collections.Generic.IList`1";
+                default:
+                    break;
+            }
+            return null;
+        }
+
+        private string GetDotNetName(string ename)
+        {
+            switch (ename)
+            {
+                case "EString": return "System.String";
+                case "EBoolean": return "System.Boolean";
+                case "EBigInteger": return "System.Numerics.BigInteger";
+                case "EBigDecimal": return "System.Decimal";
+                case "EByte": return "System.Byte";
+                case "EByteArray": return "byte[]";
+                case "EChar": return "System.Char";
+                case "EShort": return "System.Int16";
+                case "EInt": return "System.Int32";
+                case "ELong": return "System.Int64";
+                case "EFloat": return "System.Single";
+                case "EDouble": return "System.Double";
+                case "EBooleanObject": return "bool?";
+                case "EByteObject": return "byte?";
+                case "ECharacterObject": return "char?";
+                case "EShortObject": return "short?";
+                case "EIntegerObject": return "int?";
+                case "ELongObject": return "long?";
+                case "EFloatObject": return "float?";
+                case "EDoubleObject": return "double?";
+                case "EJavaObject": return "System.Object";
+                case "EJavaClass": return "System.Type";
+                //case "EResource": return "MetaDslx.Modeling.IModel";
+                //case "EResourceSet": return "MetaDslx.Modeling.IModelGroup";
+                //case "ETreeIterator": return "System.Collections.Generic.IEnumerable`1";
+                //case "EEnumerator": return "System.Collections.Generic.IEnumerable`1";
+                //case "EEList": return "System.Collections.Generic.IList`1";
+                default:
+                    break;
+            }
+            return null;
         }
 
         private void ConvertEnum(MetaNamespaceBuilder parentNs, EEnum eenm)
@@ -226,21 +334,35 @@ namespace MetaDslx.Languages.Ecore.Model
 
         private MetaTypeBuilder GetType(ETypedElement ete)
         {
-            if (ete.EType == null) return null;
-            if (_map.TryGetValue(ete.EType, out var mobj))
+            MutableObject mobj = null;
+            var etype = ete.EGenericType != null ? ete.EGenericType.EClassifier : ete.EType;
+            var isCollection = ete.UpperBound < 0 || ete.UpperBound > 1;
+            var isOrdered = ete.Ordered;
+            var isUnique = ete.Unique;
+            if (ete.EGenericType != null && ete.EGenericType.EClassifier.Name == "EEList" && ete.EGenericType.ETypeArguments.Count == 1)
+            {
+                isCollection = true;
+                isOrdered = true;
+                etype = ete.EGenericType.ETypeArguments[0].EClassifier;
+                if (etype == null)
+                {
+                    mobj = MetaInstance.Object.ToMutable();
+                }
+            }
+            if (mobj != null || etype != null && _map.TryGetValue(etype, out mobj))
             {
                 var mtype = (MetaTypeBuilder)mobj;
-                if (ete.UpperBound < 0 || ete.UpperBound > 1)
+                if (isCollection)
                 {
                     MetaCollectionKind kind;
-                    if (ete.Unique)
+                    if (isUnique)
                     {
-                        if (ete.Ordered) kind = MetaCollectionKind.List;
+                        if (isOrdered) kind = MetaCollectionKind.List;
                         else kind = MetaCollectionKind.Set;
                     }
                     else
                     {
-                        if (ete.Ordered) kind = MetaCollectionKind.MultiList;
+                        if (isOrdered) kind = MetaCollectionKind.MultiList;
                         else kind = MetaCollectionKind.MultiSet;
                     }
                     var mcoll = _factory.MetaCollectionType();
@@ -253,7 +375,7 @@ namespace MetaDslx.Languages.Ecore.Model
                     return mtype;
                 }
             }
-            else if (ete.EType is EDataType edataType)
+            else if (etype is EDataType edataType)
             {
                 var mpt = _factory.MetaPrimitiveType();
                 mpt.Name = edataType.Name;

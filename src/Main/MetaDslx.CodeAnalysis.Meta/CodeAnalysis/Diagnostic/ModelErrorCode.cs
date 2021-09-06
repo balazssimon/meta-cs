@@ -90,5 +90,6 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_MustBeSymbolDefBound = new ModelErrorCode(49, "Must be SymbolDef bound", "Values of the containment property '{0}' must be bound by a SymbolDef binder.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotCreateSourceDeclaredSymbol = new ModelErrorCode(50, "Source declared symbol creation error", "Could not create declared source symbol '{0}' named '{1}' of type '{2}'", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotSetSymbolProperty = new ModelErrorCode(51, "Cannot set value to property", "Cannot assign value '{0}' to property '{1}' in symbol '{2}'. The expected type is '{3}'. The actual type is '{4}'.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_CannotResolveModelObject = new ModelErrorCode(52, "Cannot resolve model object", "Cannot resolve the model object '{0}' within the model or model group '{1}'. Are you missing a reference to the model '{2}'?", DiagnosticSeverity.Error);
     }
 }

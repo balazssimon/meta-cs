@@ -85,7 +85,7 @@ namespace MetaDslx.CodeAnalysis
         /// <exception cref="ObjectDisposedException">Module has been disposed.</exception>
         public string Name
         {
-            get { return Model.Name; }
+            get { return Model.Metadata.Name; }
         }
 
         /// <summary>

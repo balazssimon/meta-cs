@@ -20,6 +20,11 @@ namespace MetaDslx.Languages.Meta.Binding
         }
 
 
+        public virtual Binder CreateMetamodelImportBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
+        {
+            return new MetamodelImportBinder(parentBinder, syntax, forCompletion);
+        }
+
         public virtual Binder CreateSymbolSymbolBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
         {
             return new SymbolSymbolBinder(parentBinder, syntax, forCompletion);

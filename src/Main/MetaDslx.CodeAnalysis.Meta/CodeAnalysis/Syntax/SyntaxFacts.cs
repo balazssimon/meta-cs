@@ -75,16 +75,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return IsGeneralCommentTrivia(rawKind) || IsDocumentationCommentTrivia(rawKind);
         }
 
-        public virtual ImmutableArray<ExternAliasDirective> GetExternAliasDirectives(LanguageSyntaxNode declarationSyntax)
-        {
-            return ImmutableArray<ExternAliasDirective>.Empty;
-        }
-
-        public virtual ImmutableArray<UsingDirective> GetUsingDirectives(LanguageSyntaxNode declarationSyntax)
-        {
-            return ImmutableArray<UsingDirective>.Empty;
-        }
-
         public bool IsKeyword(SyntaxKind kind)
         {
             return IsReservedKeyword(kind) || IsContextualKeyword(kind);

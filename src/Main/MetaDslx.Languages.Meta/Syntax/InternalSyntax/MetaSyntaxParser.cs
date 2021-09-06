@@ -298,6 +298,57 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseUsingNamespaceOrMetamodel(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.usingNamespaceOrMetamodel();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseUsingNamespaceOrMetamodel(UsingNamespaceOrMetamodelSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.UsingNamespaceOrMetamodelContext _Antlr4ParseUsingNamespaceOrMetamodel()
+		{
+			BeginNode();
+		    bool cached = false;
+		    MetaParser.UsingNamespaceOrMetamodelContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseUsingNamespaceOrMetamodel(CurrentNode as UsingNamespaceOrMetamodelSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseUsingNamespaceOrMetamodel();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.UsingNamespaceOrMetamodelContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseUsingNamespace(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -343,6 +394,108 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		        if (cached)
 		        {
 					context = new MetaParser.UsingNamespaceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseUsingMetamodel(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.usingMetamodel();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseUsingMetamodel(UsingMetamodelSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.UsingMetamodelContext _Antlr4ParseUsingMetamodel()
+		{
+			BeginNode();
+		    bool cached = false;
+		    MetaParser.UsingMetamodelContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseUsingMetamodel(CurrentNode as UsingMetamodelSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseUsingMetamodel();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.UsingMetamodelContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseUsingMetamodelReference(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.usingMetamodelReference();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseUsingMetamodelReference(UsingMetamodelReferenceSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.UsingMetamodelReferenceContext _Antlr4ParseUsingMetamodelReference()
+		{
+			BeginNode();
+		    bool cached = false;
+		    MetaParser.UsingMetamodelReferenceContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseUsingMetamodelReference(CurrentNode as UsingMetamodelReferenceSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseUsingMetamodelReference();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.UsingMetamodelReferenceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -3492,20 +3645,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitMain(MetaParser.MainContext context)
 			{
 				if (context == null) return MainGreen.__Missing;
-			    MetaParser.UsingNamespaceContext[] usingNamespaceContext = context.usingNamespace();
-			    var usingNamespaceBuilder = _pool.Allocate<UsingNamespaceGreen>();
-			    for (int i = 0; i < usingNamespaceContext.Length; i++)
+			    MetaParser.UsingNamespaceOrMetamodelContext[] usingNamespaceOrMetamodelContext = context.usingNamespaceOrMetamodel();
+			    var usingNamespaceOrMetamodelBuilder = _pool.Allocate<UsingNamespaceOrMetamodelGreen>();
+			    for (int i = 0; i < usingNamespaceOrMetamodelContext.Length; i++)
 			    {
-			        usingNamespaceBuilder.Add((UsingNamespaceGreen)this.Visit(usingNamespaceContext[i]));
+			        usingNamespaceOrMetamodelBuilder.Add((UsingNamespaceOrMetamodelGreen)this.Visit(usingNamespaceOrMetamodelContext[i]));
 			    }
-				var usingNamespace = usingNamespaceBuilder.ToList();
-				_pool.Free(usingNamespaceBuilder);
+				var usingNamespaceOrMetamodel = usingNamespaceOrMetamodelBuilder.ToList();
+				_pool.Free(usingNamespaceOrMetamodelBuilder);
 				MetaParser.NamespaceDeclarationContext namespaceDeclarationContext = context.namespaceDeclaration();
 				NamespaceDeclarationGreen namespaceDeclaration = null;
 				if (namespaceDeclarationContext != null) namespaceDeclaration = (NamespaceDeclarationGreen)this.Visit(namespaceDeclarationContext);
 				if (namespaceDeclaration == null) namespaceDeclaration = NamespaceDeclarationGreen.__Missing;
 				InternalSyntaxToken eOF = (InternalSyntaxToken)this.VisitTerminal(context.Eof(), MetaSyntaxKind.Eof);
-				return _factory.Main(usingNamespace, namespaceDeclaration, eOF);
+				return _factory.Main(usingNamespaceOrMetamodel, namespaceDeclaration, eOF);
 			}
 			
 			public override GreenNode VisitName(MetaParser.NameContext context)
@@ -3559,16 +3712,69 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				return _factory.Attribute(tOpenBracket, qualifier, tCloseBracket);
 			}
 			
+			public override GreenNode VisitUsingNamespaceOrMetamodel(MetaParser.UsingNamespaceOrMetamodelContext context)
+			{
+				if (context == null) return UsingNamespaceOrMetamodelGreen.__Missing;
+				MetaParser.UsingNamespaceContext usingNamespaceContext = context.usingNamespace();
+				if (usingNamespaceContext != null) 
+				{
+					return _factory.UsingNamespaceOrMetamodel((UsingNamespaceGreen)this.Visit(usingNamespaceContext));
+				}
+				MetaParser.UsingMetamodelContext usingMetamodelContext = context.usingMetamodel();
+				if (usingMetamodelContext != null) 
+				{
+					return _factory.UsingNamespaceOrMetamodel((UsingMetamodelGreen)this.Visit(usingMetamodelContext));
+				}
+				return UsingNamespaceOrMetamodelGreen.__Missing;
+			}
+			
 			public override GreenNode VisitUsingNamespace(MetaParser.UsingNamespaceContext context)
 			{
 				if (context == null) return UsingNamespaceGreen.__Missing;
 				InternalSyntaxToken kUsing = (InternalSyntaxToken)this.VisitTerminal(context.KUsing(), MetaSyntaxKind.KUsing);
+				MetaParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				MetaParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
 				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				if (qualifier == null) qualifier = QualifierGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return _factory.UsingNamespace(kUsing, qualifier, tSemicolon);
+				return _factory.UsingNamespace(kUsing, name, tAssign, qualifier, tSemicolon);
+			}
+			
+			public override GreenNode VisitUsingMetamodel(MetaParser.UsingMetamodelContext context)
+			{
+				if (context == null) return UsingMetamodelGreen.__Missing;
+				InternalSyntaxToken kUsing = (InternalSyntaxToken)this.VisitTerminal(context.KUsing(), MetaSyntaxKind.KUsing);
+				InternalSyntaxToken kMetamodel = (InternalSyntaxToken)this.VisitTerminal(context.KMetamodel(), MetaSyntaxKind.KMetamodel);
+				MetaParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
+				MetaParser.UsingMetamodelReferenceContext usingMetamodelReferenceContext = context.usingMetamodelReference();
+				UsingMetamodelReferenceGreen usingMetamodelReference = null;
+				if (usingMetamodelReferenceContext != null) usingMetamodelReference = (UsingMetamodelReferenceGreen)this.Visit(usingMetamodelReferenceContext);
+				if (usingMetamodelReference == null) usingMetamodelReference = UsingMetamodelReferenceGreen.__Missing;
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
+				return _factory.UsingMetamodel(kUsing, kMetamodel, name, tAssign, usingMetamodelReference, tSemicolon);
+			}
+			
+			public override GreenNode VisitUsingMetamodelReference(MetaParser.UsingMetamodelReferenceContext context)
+			{
+				if (context == null) return UsingMetamodelReferenceGreen.__Missing;
+				MetaParser.QualifierContext qualifierContext = context.qualifier();
+				if (qualifierContext != null) 
+				{
+					return _factory.UsingMetamodelReference((QualifierGreen)this.Visit(qualifierContext));
+				}
+				MetaParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
+				if (stringLiteralContext != null) 
+				{
+					return _factory.UsingMetamodelReference((StringLiteralGreen)this.Visit(stringLiteralContext));
+				}
+				return UsingMetamodelReferenceGreen.__Missing;
 			}
 			
 			public override GreenNode VisitNamespaceDeclaration(MetaParser.NamespaceDeclarationContext context)
@@ -3598,14 +3804,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				if (context == null) return NamespaceBodyGreen.__Missing;
 				InternalSyntaxToken tOpenBrace = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBrace(), MetaSyntaxKind.TOpenBrace);
-			    MetaParser.UsingNamespaceContext[] usingNamespaceContext = context.usingNamespace();
-			    var usingNamespaceBuilder = _pool.Allocate<UsingNamespaceGreen>();
-			    for (int i = 0; i < usingNamespaceContext.Length; i++)
+			    MetaParser.UsingNamespaceOrMetamodelContext[] usingNamespaceOrMetamodelContext = context.usingNamespaceOrMetamodel();
+			    var usingNamespaceOrMetamodelBuilder = _pool.Allocate<UsingNamespaceOrMetamodelGreen>();
+			    for (int i = 0; i < usingNamespaceOrMetamodelContext.Length; i++)
 			    {
-			        usingNamespaceBuilder.Add((UsingNamespaceGreen)this.Visit(usingNamespaceContext[i]));
+			        usingNamespaceOrMetamodelBuilder.Add((UsingNamespaceOrMetamodelGreen)this.Visit(usingNamespaceOrMetamodelContext[i]));
 			    }
-				var usingNamespace = usingNamespaceBuilder.ToList();
-				_pool.Free(usingNamespaceBuilder);
+				var usingNamespaceOrMetamodel = usingNamespaceOrMetamodelBuilder.ToList();
+				_pool.Free(usingNamespaceOrMetamodelBuilder);
 				MetaParser.MetamodelDeclarationContext metamodelDeclarationContext = context.metamodelDeclaration();
 				MetamodelDeclarationGreen metamodelDeclaration = null;
 				if (metamodelDeclarationContext != null) metamodelDeclaration = (MetamodelDeclarationGreen)this.Visit(metamodelDeclarationContext);
@@ -3619,7 +3825,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				var declaration = declarationBuilder.ToList();
 				_pool.Free(declarationBuilder);
 				InternalSyntaxToken tCloseBrace = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBrace(), MetaSyntaxKind.TCloseBrace);
-				return _factory.NamespaceBody(tOpenBrace, usingNamespace, metamodelDeclaration, declaration, tCloseBrace);
+				return _factory.NamespaceBody(tOpenBrace, usingNamespaceOrMetamodel, metamodelDeclaration, declaration, tCloseBrace);
 			}
 			
 			public override GreenNode VisitMetamodelDeclaration(MetaParser.MetamodelDeclarationContext context)
@@ -4689,10 +4895,43 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
+		internal class UsingNamespaceOrMetamodelContext_Cached : UsingNamespaceOrMetamodelContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public UsingNamespaceOrMetamodelContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
 		internal class UsingNamespaceContext_Cached : UsingNamespaceContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
 		    public UsingNamespaceContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class UsingMetamodelContext_Cached : UsingMetamodelContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public UsingMetamodelContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class UsingMetamodelReferenceContext_Cached : UsingMetamodelReferenceContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public UsingMetamodelReferenceContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

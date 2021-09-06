@@ -57,13 +57,16 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseParameterList = new object();
 		public static object UseSource = new object();
 		public static object UseTarget = new object();
-		public static object UseUsingNamespace = new object();
 		public static object UseNamespaceDeclaration = new object();
+		public static object UseUsingNamespace = new object();
+		public static object UseUsingMetamodel = new object();
+		public static object Use = new object();
+		public static object UseName = new object();
 		public static object UseAttribute = new object();
 		public static object UseQualifiedName = new object();
 		public static object UseNamespaceBody = new object();
+		public static object UseUsingNamespaceOrMetamodel = new object();
 		public static object UseMetamodelDeclaration = new object();
-		public static object UseName = new object();
 		public static object UseMetamodelUriProperty = new object();
 		public static object UseMetamodelPrefixProperty = new object();
 		public static object UseEnumDeclaration = new object();
@@ -73,7 +76,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseEnumBody = new object();
 		public static object UseEnumValue = new object();
 		public static object UseSymbolAttribute = new object();
-		public static object Use = new object();
 		public static object UseClassBody = new object();
 		public static object UseSymbolSymbolAttribute = new object();
 		public static object UseExpressionSymbolAttribute = new object();
@@ -96,6 +98,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseIntegerLiteral = new object();
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
+		public static object UseUsingMetamodelReference = new object();
 		public static object UseDeclaration = new object();
 		public static object UseMetamodelProperty = new object();
 		public static object UseEnumMemberDeclaration = new object();
@@ -207,6 +210,22 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitUsingNamespaceOrMetamodel(UsingNamespaceOrMetamodelSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitUsingNamespace(UsingNamespaceSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -220,6 +239,48 @@ namespace MetaDslx.Languages.Meta.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateImportBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitUsingMetamodel(UsingMetamodelSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateMetamodelImportBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitUsingMetamodelReference(UsingMetamodelReferenceSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.StringLiteral)) use = UseStringLiteral;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseStringLiteral)
+				{
+					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.StringLiteral);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

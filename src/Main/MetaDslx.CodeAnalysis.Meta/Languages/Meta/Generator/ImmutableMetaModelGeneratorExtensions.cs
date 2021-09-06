@@ -16,7 +16,7 @@ namespace MetaDslx.Languages.Meta.Generator
     internal enum ModelKind
     {
         None,
-        MetaModel,
+        Metadata,
         ImmutableInstance,
         BuilderInstance,
         Descriptor,
@@ -112,32 +112,32 @@ namespace MetaDslx.Languages.Meta.Generator
             string result;
             switch (kind)
             {
-                case ModelKind.MetaModel:
-                    result = mmodel.Name + "MetaModel";
+                case ModelKind.Metadata:
+                    result = mmodel.Metadata.Name + "Metadata";
                     break;
                 case ModelKind.ImmutableInstance:
-                    result = mmodel.Name + "Instance";
+                    result = mmodel.Metadata.Name + "Instance";
                     break;
                 case ModelKind.BuilderInstance:
-                    result = mmodel.Name + "BuilderInstance";
+                    result = mmodel.Metadata.Name + "BuilderInstance";
                     break;
                 case ModelKind.Descriptor:
-                    result = mmodel.Name + "Descriptor";
+                    result = mmodel.Metadata.Name + "Descriptor";
                     break;
                 case ModelKind.Factory:
-                    result = mmodel.Name + "Factory";
+                    result = mmodel.Metadata.Name + "Factory";
                     break;
                 case ModelKind.Implementation:
-                    result = mmodel.Name + "Implementation";
+                    result = mmodel.Metadata.Name + "Implementation";
                     break;
                 case ModelKind.ImplementationBase:
-                    result = mmodel.Name + "ImplementationBase";
+                    result = mmodel.Metadata.Name + "ImplementationBase";
                     break;
                 case ModelKind.ImplementationProvider:
-                    result = mmodel.Name + "ImplementationProvider";
+                    result = mmodel.Metadata.Name + "ImplementationProvider";
                     break;
                 default:
-                    result = mmodel.Name;
+                    result = mmodel.Metadata.Name;
                     break;
             }
             if (fullName)
@@ -477,7 +477,7 @@ namespace MetaDslx.Languages.Meta.Generator
                 case "System.Object":
                     return "object";
                 case "System.String":
-                    return "String";
+                    return "string";
                 case "System.Int32":
                     return "int";
                 case "System.Int64":

@@ -26,8 +26,8 @@ namespace MetaDslx.Modeling
         private ConditionalWeakTable<ObjectId, MutableObject> objects;
         private ThreadLocal<GreenModelUpdater> updater;
 
-        public MutableModel(string name = null, ModelVersion version = default)
-            : this(new GreenModel(new ModelId(), name, version), null)
+        public MutableModel(ModelMetadata metadata = null)
+            : this(new GreenModel(new ModelId(), metadata ?? new ModelMetadata(string.Empty, new ModelVersion(0,0), string.Empty, string.Empty, string.Empty)), null)
         {
         }
 
@@ -53,16 +53,14 @@ namespace MetaDslx.Modeling
             this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
         }
 
-        public ModelId Id
-        {
-            get { return this.Green.Id; }
-        }
+        public ModelId Id => this.id;
+        public ModelMetadata Metadata => this.Green.Metadata;
 
         public string Name
         {
             get
             {
-                return this.Green.Name;
+                return this.Green.Metadata.Name;
             }
             set
             {
@@ -86,7 +84,7 @@ namespace MetaDslx.Modeling
         {
             get
             {
-                return this.green.Version;
+                return this.green.Metadata.Version;
             }
             set
             {

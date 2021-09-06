@@ -8,8 +8,7 @@ namespace MetaDslx.Modeling
     public interface IModel
     {
         ModelId Id { get; }
-        string Name { get; }
-        ModelVersion Version { get; }
+        ModelMetadata Metadata { get; }
         IEnumerable<IModelObject> Objects { get; }
         IModelGroup ModelGroup { get; }
     }

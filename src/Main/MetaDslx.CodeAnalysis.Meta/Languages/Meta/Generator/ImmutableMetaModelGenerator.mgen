@@ -81,7 +81,7 @@ namespace [model.Namespace.CSharpName(NamespaceKind.Public, true)]
 {
 	using global::[model.Namespace.CSharpName(NamespaceKind.Internal, true)];
 ^
-	[GenerateMetaModel(model)]
+	[GenerateMetadata(model)]
 ^
 	[GenerateMetaModelInstance(model)]
 ^
@@ -119,32 +119,26 @@ namespace [model.Namespace.CSharpName(NamespaceKind.Internal, true)]
 }
 end template
 
-template GenerateMetaModel(MetaModel model)
+template GenerateMetadata(MetaModel model)
 [string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
-internal class [model.CSharpName(ModelKind.MetaModel)] : [Properties.CoreNs].IMetaModel
+public class [model.CSharpName(ModelKind.Metadata)] : [Properties.CoreNs].ModelMetadata
 {
-	internal [model.CSharpName(ModelKind.MetaModel)]()
+	private readonly ImmutableModel model;
+^
+	public [model.CSharpName(ModelKind.Metadata)](string name, ModelVersion version, string uri, string prefix, string namespaceName)
+		: base(name, version, uri, prefix, namespaceName)
 	{
 	}
 ^
-	public [Properties.CoreNs].ModelId Id => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Id;
-	public string Name => "[model.Name]";
-	public [Properties.CoreNs].ModelVersion Version => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Version;
-	public global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> Objects => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Objects;
-	public string Uri => "[model.Uri]";
-	public string Prefix => "[model.Prefix]";
-	public [Properties.CoreNs].IModelGroup ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
-	public string Namespace => "[model.Namespace.CSharpName(NamespaceKind.Public, true)]";
+    protected override ModelMetadata Create(string name, ModelVersion version, string uri, string prefix, string namespaceName)
+    {
+        return new [model.CSharpName(ModelKind.Metadata)](name, version, uri, prefix, namespaceName);
+    }
 ^
-	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
+	public override [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
 	{
 		return new [model.CSharpName(ModelKind.Factory)](model, flags);
 	}
-^
-    public override string ToString()
-    {
-        return $"{Name} ({Version})";
-    }
 }
 end template
 
@@ -160,8 +154,8 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 		get { return [model.CSharpName(ModelKind.ImmutableInstance)].initialized; }
 	}
 ^
-	public static readonly [Properties.CoreNs].IMetaModel MMetaModel;
-	public static readonly [Properties.CoreNs].ImmutableModel MModel;
+	public static readonly [model.CSharpName(ModelKind.Metadata, true)] MMetadata;
+	internal static readonly [Properties.CoreNs].ImmutableModel MModel;
 ^
 	[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
 	[GenerateDocumentation(cst)]
@@ -185,21 +179,21 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 	{
 		[model.CSharpName(ModelKind.BuilderInstance)].instance.Create();
 		[model.CSharpName(ModelKind.BuilderInstance)].instance.EvaluateLazyValues();
-		MMetaModel = new [model.CSharpName(ModelKind.MetaModel)]();
+		MMetadata = [model.CSharpName(ModelKind.BuilderInstance)].instance.MMetadata;
 		MModel = [model.CSharpName(ModelKind.BuilderInstance)].instance.MModel.ToImmutable();
 ^
 		[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
 			[if (metaMetaModel)]
-		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(MModel);
+		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(model);
 			[else]
-		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(MModel);
+		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(model);
 			[end if]
 		[end loop]
 ^
 		[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
-		[cls.CSharpName(model, ClassKind.ImmutableInstance)] = [cls.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(MModel);
+		[cls.CSharpName(model, ClassKind.ImmutableInstance)] = [cls.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(model);
 			[loop(cls->prop:Properties)]
-		[prop.CSharpName(model, PropertyKind.ImmutableInstance)] = [prop.CSharpName(model, PropertyKind.BuilderInstance, true)].ToImmutable(MModel);
+		[prop.CSharpName(model, PropertyKind.ImmutableInstance)] = [prop.CSharpName(model, PropertyKind.BuilderInstance, true)].ToImmutable(model);
 			[end loop]
 		[end loop]
 ^
@@ -219,8 +213,9 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	private bool creating;
 	private bool created;
+	internal [model.CSharpName(ModelKind.Metadata, true)] MMetadata;
 	internal [Properties.CoreNs].MutableModel MModel;
-	[if (!metaMetaModel)]
+	[if (!metaMetaModel && model.MModel.ModelGroup != null)]
 	internal [Properties.CoreNs].MutableModelGroup MModelGroup;
 	[end if]
 ^
@@ -239,12 +234,17 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	internal [model.CSharpName(ModelKind.BuilderInstance)]()
 	{
+		this.MMetadata = new [model.CSharpName(ModelKind.Metadata)](name: "[model.CSharpName()]", version: new ModelVersion(0, 0), uri: "[model.Uri]", prefix: "[model.Prefix]", namespaceName: "[model.Namespace.CSharpName(NamespaceKind.Public, true)]");
 		[if (metaMetaModel)]
-		this.MModel = new [Properties.CoreNs].MutableModel("[model.Name]");
-		[else]
+		this.MModel = new [Properties.CoreNs].MutableModel(this.MMetadata);
+		[else if (model.MModel.ModelGroup != null)]
 		this.MModelGroup = new [Properties.CoreNs].MutableModelGroup();
-		this.MModelGroup.AddReference([Properties.MetaNs].MetaInstance.MModel.ToMutable(true));
-		this.MModel = this.MModelGroup.CreateModel("[model.CSharpName()]");
+			[loop (refModel: model.MModel.ModelGroup.References)]
+		this.MModelGroup.AddReference([refModel.Metadata.NamespaceName].[refModel.Metadata.Name]Instance.MModel);
+			[end loop]
+		this.MModel = this.MModelGroup.CreateModel(this.MMetadata);
+		[else]
+		this.MModel = this.MModelGroup.CreateModel(this.MMetadata);
 		[end if]
 	}
 ^
@@ -1155,14 +1155,10 @@ internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.Co
 	[end loop]
 
 	[if (metaMetaModel && cls.Name == "MetaModel")]
-	[Properties.CoreNs].ModelId [Properties.CoreNs].IModel.Id => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Id;
-	string [Properties.CoreNs].IModel.Name => this.Name;
-	[Properties.CoreNs].ModelVersion [Properties.CoreNs].IModel.Version => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Version;
+	[Properties.CoreNs].ModelId [Properties.CoreNs].IModel.Id => MetaInstance.MModel.Id;
+	[Properties.CoreNs].ModelMetadata [Properties.CoreNs].IModel.Metadata => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Metadata;
 	global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> [Properties.CoreNs].IModel.Objects => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Objects;
-	string [Properties.CoreNs].IMetaModel.Uri => this.Uri;
-	string [Properties.CoreNs].IMetaModel.Prefix => this.Prefix;
 	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
-	string [Properties.CoreNs].IMetaModel.Namespace => this.Namespace.FullName;
 ^
 	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
 	{
@@ -1269,14 +1265,10 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	[end loop]
 	[if (metaMetaModel && cls.Name == "MetaModel")]
 ^
-	[Properties.CoreNs].ModelId [Properties.CoreNs].IModel.Id => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Id;
-	string [Properties.CoreNs].IModel.Name => this.Name;
-	[Properties.CoreNs].ModelVersion [Properties.CoreNs].IModel.Version => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Version;
+	[Properties.CoreNs].ModelId [Properties.CoreNs].IModel.Id => MetaInstance.MModel.Id;
+	[Properties.CoreNs].ModelMetadata [Properties.CoreNs].IModel.Metadata => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Metadata;
 	global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> [Properties.CoreNs].IModel.Objects => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Objects;
-	string [Properties.CoreNs].IMetaModel.Uri => this.Uri;
-	string [Properties.CoreNs].IMetaModel.Prefix => this.Prefix;
 	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
-	string [Properties.CoreNs].IMetaModel.Namespace => this.Namespace.FullName;
 ^
 	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
 	{

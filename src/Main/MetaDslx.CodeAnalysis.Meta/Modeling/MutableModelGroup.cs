@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Linq;
 
 namespace MetaDslx.Modeling
 {
@@ -275,7 +276,37 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void AddReference(ImmutableModelGroup reference)
+        public void AddReference(IEnumerable<IModel> models)
+        {
+            foreach (var model in models)
+            {
+                if (model is ImmutableModel immutableModel) this.AddReference(immutableModel);
+                else if (model is MutableModel mutableModel) this.AddReference(mutableModel);
+                else throw new ArgumentException("The model must be either an ImmutableModel or a MutableModel.", nameof(models));
+            }
+        }
+
+        public void AddReference(params IModel[] models)
+        {
+            this.AddReference(models.ToList());
+        }
+
+        public void AddReference(IEnumerable<IModelGroup> modelGroups)
+        {
+            foreach (var modelGroup in modelGroups)
+            {
+                if (modelGroup is ImmutableModelGroup immutableModelGroup) this.AddReference(immutableModelGroup);
+                else if (modelGroup is MutableModelGroup mutableModelGroup) this.AddReference(mutableModelGroup);
+                else throw new ArgumentException("The model must be either an ImmutableModelGroup or a MutableModelGroup.", nameof(modelGroups));
+            }
+        }
+
+        public void AddReference(params IModelGroup[] modelGroups)
+        {
+            this.AddReference(modelGroups.ToList());
+        }
+
+        private void AddReference(ImmutableModelGroup reference)
         {
             GreenModelGroup gmg = reference.Green;
             foreach (var greenReference in gmg.References)
@@ -288,7 +319,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void AddReference(ImmutableModel reference)
+        private void AddReference(ImmutableModel reference)
         {
             if (reference.ModelGroup != null)
             {
@@ -308,7 +339,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void AddReference(MutableModelGroup reference)
+        private void AddReference(MutableModelGroup reference)
         {
             GreenModelGroup gmg = reference.Green;
             foreach (var greenReference in gmg.References)
@@ -321,7 +352,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void AddReference(MutableModel reference)
+        private void AddReference(MutableModel reference)
         {
             if (reference.ModelGroup != null)
             {
@@ -341,7 +372,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void AddModel(ImmutableModel model)
+        /*public void AddModel(ImmutableModel model)
         {
             // TODO
             throw new NotImplementedException();
@@ -351,9 +382,9 @@ namespace MetaDslx.Modeling
         {
             // TODO
             throw new NotImplementedException();
-        }
+        }*/
 
-        public MutableModel CreateModel(string name = null, ModelVersion version = default)
+        public MutableModel CreateModel(ModelMetadata metadata = null)
         {
             ModelId mid = new ModelId();
             MutableModel model = new MutableModel(mid, this, false, null);
@@ -365,7 +396,7 @@ namespace MetaDslx.Modeling
                 do
                 {
                     ctx = this.BeginUpdate();
-                    greenModel = ctx.Updater.CreateModel(mid, name, version);
+                    greenModel = ctx.Updater.CreateModel(mid, metadata);
                 } while (!this.EndUpdate(ctx));
             }
             finally

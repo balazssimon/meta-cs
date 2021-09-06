@@ -18,6 +18,7 @@ namespace MetaDslx.Modeling
     {
         public XmiReadOptions()
         {
+            this.ReferencedModels = new HashSet<IModel>();
             this.RequireXmiRoot = true;
             this.IgnoreVersionInNamespaces = true;
             this.XmiNamespaces = new HashSet<string>();
@@ -35,11 +36,12 @@ namespace MetaDslx.Modeling
             this.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
         }
 
+        public HashSet<IModel> ReferencedModels { get; }
         public bool RequireXmiRoot { get; set; }
         public bool IgnoreVersionInNamespaces { get; set; }
-        public HashSet<string> XmiNamespaces { get; set; }
+        public HashSet<string> XmiNamespaces { get; }
         public bool IgnoreEmptyNamespace { get; set; }
-        public HashSet<string> IgnoredNamespaces { get; set; }
+        public HashSet<string> IgnoredNamespaces { get; }
         public Dictionary<string, IMetaModel> NamespaceToMetamodelMap { get; }
         public Dictionary<string, string> UriToFileMap { get; }
         public Dictionary<string, IModel> UriToModelMap { get; }
@@ -465,7 +467,7 @@ namespace MetaDslx.Modeling
         private (string, string) RegisterNamespace(IMetaModel metaModel)
         {
             if (_namespaces.TryGetValue(metaModel, out var ns)) return ns;
-            string prefix = string.IsNullOrWhiteSpace(metaModel.Prefix) ? metaModel.Name.ToCamelCase() : metaModel.Prefix;
+            string prefix = string.IsNullOrWhiteSpace(metaModel.Prefix) ? metaModel.Metadata.Name.ToCamelCase() : metaModel.Prefix;
             int index = 1;
             string currentPrefix = prefix;
             while (_namespaces.Values.Any(v => v.Item1 == currentPrefix) || currentPrefix == Xmi)
@@ -473,7 +475,7 @@ namespace MetaDslx.Modeling
                 ++index;
                 currentPrefix = prefix + index;
             }
-            var result = (currentPrefix, metaModel.Uri ?? metaModel.Namespace + "." + metaModel.Name);
+            var result = (currentPrefix, metaModel.Uri ?? metaModel.Namespace + "." + metaModel.Metadata.Name);
             _namespaces.Add(metaModel, result);
             return result;
         }
@@ -772,6 +774,7 @@ namespace MetaDslx.Modeling
         {
             _options = options;
             _modelGroup = new MutableModelGroup();
+            _modelGroup.AddReference(options.ReferencedModels);
             _diagnostics = new DiagnosticBag();
             _readers = new Dictionary<string, XmiFileReader>();
         }

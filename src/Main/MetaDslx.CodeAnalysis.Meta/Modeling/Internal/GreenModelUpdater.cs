@@ -141,11 +141,11 @@ namespace MetaDslx.Modeling.Internal
             }
         }
 
-        public GreenModel CreateModel(ModelId mid, string name, ModelVersion version)
+        public GreenModel CreateModel(ModelId mid, ModelMetadata metadata)
         {
             Debug.Assert(this.group != null);
             if (mid == null) return null;
-            GreenModel result = new GreenModel(mid, name, version);
+            GreenModel result = new GreenModel(mid, metadata);
             this.group = this.group.AddModel(result);
             return result;
         }
@@ -167,12 +167,12 @@ namespace MetaDslx.Modeling.Internal
             if (this.group != null)
             {
                 GreenModel model = this.GetModel(mid);
-                this.UpdateModel(model.Update(name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties, model.References));
+                this.UpdateModel(model.Update(model.Metadata.WithName(name), model.Objects, model.StrongObjects, model.LazyProperties, model.References));
             }
             else
             {
                 Debug.Assert(this.model.Id == mid);
-                this.model = this.model.Update(name, this.model.Version, this.model.Objects, this.model.StrongObjects, this.model.LazyProperties, this.model.References);
+                this.model = this.model.Update(model.Metadata.WithName(name), this.model.Objects, this.model.StrongObjects, this.model.LazyProperties, this.model.References);
             }
         }
 
@@ -181,12 +181,12 @@ namespace MetaDslx.Modeling.Internal
             if (this.group != null)
             {
                 GreenModel model = this.GetModel(mid);
-                this.UpdateModel(model.Update(model.Name, version, model.Objects, model.StrongObjects, model.LazyProperties, model.References));
+                this.UpdateModel(model.Update(model.Metadata.WithVersion(version), model.Objects, model.StrongObjects, model.LazyProperties, model.References));
             }
             else
             {
                 Debug.Assert(this.model.Id == mid);
-                this.model = this.model.Update(this.model.Name, version, this.model.Objects, this.model.StrongObjects, this.model.LazyProperties, this.model.References);
+                this.model = this.model.Update(model.Metadata.WithVersion(version), this.model.Objects, this.model.StrongObjects, this.model.LazyProperties, this.model.References);
             }
         }
 
@@ -273,7 +273,7 @@ namespace MetaDslx.Modeling.Internal
         {
             GreenModel model = this.GetModel(mid);
             Debug.Assert(model != null);
-            model = model.Update(model.Name, model.Version, model.Objects.SetItem(oid, green), model.StrongObjects, model.LazyProperties, model.References);
+            model = model.Update(model.Metadata, model.Objects.SetItem(oid, green), model.StrongObjects, model.LazyProperties, model.References);
             if (this.group != null)
             {
                 this.group = this.group.Update(this.group.Models.SetItem(model.Id, model), this.group.References);
@@ -674,8 +674,7 @@ namespace MetaDslx.Modeling.Internal
                             oldGreen.Slots.SetItem(slot, hasLazy ? list.ClearLazy().Clear() : list.Clear()));
                     GreenModel newModel =
                         oldModel.Update(
-                            oldModel.Name,
-                            oldModel.Version,
+                            oldModel.Metadata,
                             oldModel.Objects.SetItem(oid, newGreen),
                             oldModel.StrongObjects,
                             newLazyModelProperties,
@@ -1428,7 +1427,7 @@ namespace MetaDslx.Modeling.Internal
                     }
                 }
                 references = references.SetItem(oid, slots.Add(slot));
-                model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties, model.References.SetItem(valueOid, references));
+                model = model.Update(model.Metadata, model.Objects, model.StrongObjects, model.LazyProperties, model.References.SetItem(valueOid, references));
                 objectRef.Update(model, objectRef.Object, false);
             }
         }
@@ -1491,7 +1490,7 @@ namespace MetaDslx.Modeling.Internal
                         }
                     }
                 }
-                model = model.Update(model.Name, model.Version, modelObjects, model.StrongObjects, model.LazyProperties, modelReferences);
+                model = model.Update(model.Metadata, modelObjects, model.StrongObjects, model.LazyProperties, modelReferences);
                 objectRef.Update(model, green, false);
             }
         }
@@ -1514,7 +1513,7 @@ namespace MetaDslx.Modeling.Internal
             if (!lazyProperties.Contains(slot))
             {
                 lazyProperties = lazyProperties.Add(slot);
-                model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties.SetItem(oid, lazyProperties), model.References);
+                model = model.Update(model.Metadata, model.Objects, model.StrongObjects, model.LazyProperties.SetItem(oid, lazyProperties), model.References);
                 objectRef.Update(model, objectRef.Object, false);
             }
         }
@@ -1533,8 +1532,8 @@ namespace MetaDslx.Modeling.Internal
             if (model.LazyProperties.TryGetValue(oid, out lazyProperties))
             {
                 lazyProperties = lazyProperties.Remove(slot);
-                if (lazyProperties.Count == 0) model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties.Remove(oid), model.References);
-                else model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties.SetItem(oid, lazyProperties), model.References);
+                if (lazyProperties.Count == 0) model = model.Update(model.Metadata, model.Objects, model.StrongObjects, model.LazyProperties.Remove(oid), model.References);
+                else model = model.Update(model.Metadata, model.Objects, model.StrongObjects, model.LazyProperties.SetItem(oid, lazyProperties), model.References);
                 objectRef.Update(model, objectRef.Object, false);
             }
         }
@@ -1567,8 +1566,7 @@ namespace MetaDslx.Modeling.Internal
                     {
                         newModel =
                             oldModel.Update(
-                                oldModel.Name,
-                                oldModel.Version,
+                                oldModel.Metadata,
                                 oldModel.Objects.SetItem(oid, newGreen),
                                 oldModel.StrongObjects,
                                 oldModel.LazyProperties.Remove(oid),
@@ -1578,8 +1576,7 @@ namespace MetaDslx.Modeling.Internal
                     {
                         newModel =
                             oldModel.Update(
-                                oldModel.Name,
-                                oldModel.Version,
+                                oldModel.Metadata,
                                 oldModel.Objects.SetItem(oid, newGreen),
                                 oldModel.StrongObjects,
                                 oldModel.LazyProperties.SetItem(oid, newLazyProperties),
@@ -1857,14 +1854,14 @@ namespace MetaDslx.Modeling.Internal
 
             public void Update(GreenModel model, GreenObject green, bool addObjectToModel)
             {
-                if (addObjectToModel) this.model = model.Update(model.Name, model.Version, model.Objects.SetItem(this.id, green), model.StrongObjects, model.LazyProperties, model.References);
+                if (addObjectToModel) this.model = model.Update(model.Metadata, model.Objects.SetItem(this.id, green), model.StrongObjects, model.LazyProperties, model.References);
                 else this.model = model;
                 this.green = green;
             }
 
             public void Update(GreenObject green)
             {
-                this.model = model.Update(model.Name, model.Version, model.Objects.SetItem(this.id, green), model.StrongObjects, model.LazyProperties, model.References);
+                this.model = model.Update(model.Metadata, model.Objects.SetItem(this.id, green), model.StrongObjects, model.LazyProperties, model.References);
                 this.green = green;
             }
         }

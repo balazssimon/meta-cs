@@ -36,6 +36,14 @@ namespace MetaDslx.Languages.Meta.Binding
         }
 
 
+        protected virtual void BeginMetamodelImport(SyntaxNodeOrToken syntax)
+        {
+        }
+
+        protected virtual void EndMetamodelImport(SyntaxNodeOrToken syntax)
+        {
+        }
+
         protected virtual void BeginSymbolSymbol(SyntaxNodeOrToken syntax)
         {
         }
@@ -82,9 +90,9 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			if (node.UsingNamespace != null)
+			if (node.UsingNamespaceOrMetamodel != null)
 			{
-				foreach (var child in node.UsingNamespace)
+				foreach (var child in node.UsingNamespaceOrMetamodel)
 				{
 			        this.Visit(child);
 				}
@@ -170,11 +178,27 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
+		public virtual void VisitUsingNamespaceOrMetamodel(UsingNamespaceOrMetamodelSyntax node)
+		{
+			if (node.UsingNamespace != null)
+			{
+			    this.Visit(node.UsingNamespace);
+			}
+			if (node.UsingMetamodel != null)
+			{
+			    this.Visit(node.UsingMetamodel);
+			}
+		}
+		
 		public virtual void VisitUsingNamespace(UsingNamespaceSyntax node)
 		{
 			this.BeginImport(node);
 			try
 			{
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
 				if (node.Qualifier != null)
 				{
 				    this.Visit(node.Qualifier);
@@ -183,6 +207,46 @@ namespace MetaDslx.Languages.Meta.Binding
 			finally
 			{
 				this.EndImport(node);
+			}
+		}
+		
+		public virtual void VisitUsingMetamodel(UsingMetamodelSyntax node)
+		{
+			this.BeginMetamodelImport(node);
+			try
+			{
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
+				if (node.UsingMetamodelReference != null)
+				{
+				    this.Visit(node.UsingMetamodelReference);
+				}
+			}
+			finally
+			{
+				this.EndMetamodelImport(node);
+			}
+		}
+		
+		public virtual void VisitUsingMetamodelReference(UsingMetamodelReferenceSyntax node)
+		{
+			if (node.Qualifier != null)
+			{
+			    this.Visit(node.Qualifier);
+			}
+			if (node.StringLiteral != null)
+			{
+			    this.BeginValue(node.StringLiteral);
+			    try
+			    {
+			    	this.Visit(node.StringLiteral);
+			    }
+			    finally
+			    {
+			    	this.EndValue(node.StringLiteral);
+			    }
 			}
 		}
 		
@@ -218,9 +282,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginScope(node);
 			try
 			{
-				if (node.UsingNamespace != null)
+				if (node.UsingNamespaceOrMetamodel != null)
 				{
-					foreach (var child in node.UsingNamespace)
+					foreach (var child in node.UsingNamespaceOrMetamodel)
 					{
 				        this.Visit(child);
 					}

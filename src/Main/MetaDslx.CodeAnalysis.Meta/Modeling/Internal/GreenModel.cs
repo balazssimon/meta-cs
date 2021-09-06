@@ -17,28 +17,26 @@ namespace MetaDslx.Modeling.Internal
     internal class GreenModel
     {
         private readonly ModelId id;
-        private readonly string name;
-        private readonly ModelVersion version;
+        private readonly ModelMetadata metadata;
         private readonly ImmutableList<ObjectId> strongObjects;
         // TODO: replace with immutable weak dictionaries:
         private readonly ImmutableDictionary<ObjectId, GreenObject> objects;
         private readonly ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties;
         private readonly ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> references;
 
-        internal GreenModel(ModelId id, string name, ModelVersion version)
+        internal GreenModel(ModelId id, ModelMetadata metadata)
         {
             this.id = id;
-            this.name = name;
-            this.version = version;
+            this.metadata = metadata;
             this.objects = ImmutableDictionary<ObjectId, GreenObject>.Empty;
             this.strongObjects = ImmutableList<ObjectId>.Empty;
             this.lazyProperties = ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>.Empty;
             this.references = ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>>.Empty;
         }
 
-        private GreenModel(ModelId id,
-            string name,
-            ModelVersion version,
+        private GreenModel(
+            ModelId id,
+            ModelMetadata metadata,
             ImmutableDictionary<ObjectId, GreenObject> objects,
             ImmutableList<ObjectId> strongObjects,
             ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties,
@@ -48,8 +46,7 @@ namespace MetaDslx.Modeling.Internal
             Debug.Assert(lazyProperties != null);
             Debug.Assert(references != null);
             this.id = id;
-            this.name = name;
-            this.version = version;
+            this.metadata = metadata;
             this.objects = objects;
             this.strongObjects = strongObjects;
             this.lazyProperties = lazyProperties;
@@ -57,25 +54,23 @@ namespace MetaDslx.Modeling.Internal
         }
 
         internal GreenModel Update(
-            string name,
-            ModelVersion version,
+            ModelMetadata metadata,
             ImmutableDictionary<ObjectId, GreenObject> objects,
             ImmutableList<ObjectId> strongObjects,
             ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties,
             ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> references)
         {
-            if (this.name != name || this.version != version || this.objects != objects || 
+            if (this.metadata != metadata || this.objects != objects || 
                 this.strongObjects != strongObjects || 
                 this.lazyProperties != lazyProperties || this.references != references)
             {
-                return new GreenModel(this.id, name, version, objects, strongObjects, lazyProperties, references);
+                return new GreenModel(this.id, metadata, objects, strongObjects, lazyProperties, references);
             }
             return this;
         }
 
         internal ModelId Id { get { return this.id; } }
-        internal string Name { get { return this.name; } }
-        internal ModelVersion Version { get { return this.version; } }
+        internal ModelMetadata Metadata { get { return this.metadata; } }
         internal ImmutableDictionary<ObjectId, GreenObject> Objects { get { return this.objects; } }
         internal ImmutableList<ObjectId> StrongObjects { get { return this.strongObjects; } }
         internal ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> LazyProperties { get { return this.lazyProperties; } }
@@ -84,7 +79,7 @@ namespace MetaDslx.Modeling.Internal
         internal GreenModel AddObject(ObjectId oid, bool weak)
         {
             Debug.Assert(!this.objects.ContainsKey(oid), "The green model already contains this object.");
-            return this.Update(this.name, this.version, this.objects.Add(oid, oid.Descriptor.EmptyGreenObject), weak ? this.strongObjects : this.strongObjects.Add(oid), this.lazyProperties, this.references);
+            return this.Update(this.metadata, this.objects.Add(oid, oid.Descriptor.EmptyGreenObject), weak ? this.strongObjects : this.strongObjects.Add(oid), this.lazyProperties, this.references);
         }
 
         internal GreenModel RemoveObject(ObjectId oid)
@@ -129,8 +124,7 @@ namespace MetaDslx.Modeling.Internal
                     }
                 }
                 return this.Update(
-                    this.name,
-                    this.version,
+                    this.metadata,
                     objects.Remove(oid),
                     this.strongObjects.Remove(oid),
                     this.lazyProperties.Remove(oid),
@@ -197,8 +191,7 @@ namespace MetaDslx.Modeling.Internal
                     }
                 }
                 return this.Update(
-                    this.name,
-                    this.version,
+                    this.metadata,
                     objects.Remove(oid),
                     this.strongObjects.Remove(oid), 
                     this.lazyProperties.Remove(oid), 
@@ -219,17 +212,17 @@ namespace MetaDslx.Modeling.Internal
                     references = references.Remove(id);
                 }
             }
-            return this.Update(this.name, this.version, objects, this.strongObjects, this.lazyProperties, references);
+            return this.Update(this.metadata, objects, this.strongObjects, this.lazyProperties, references);
         }
 
         public override string ToString()
         {
-            return this.Name + " (" + this.Version + ")";
+            return this.Metadata.Name + " (" + this.Metadata.Version + ")";
         }
 
         public string ToFullString()
         {
-            return this.Name + " (" + this.Version + ": " + this.Id.Guid + ")";
+            return this.Metadata.Name + " (" + this.Metadata.Version + ": " + this.Id.Guid + ")";
         }
     }
 }

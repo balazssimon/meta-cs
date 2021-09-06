@@ -17,6 +17,7 @@
 	const MetaPrimitiveType Bool = "System.Boolean";
 	const MetaPrimitiveType Void = "System.Void";
 	const MetaPrimitiveType SystemType = "System.Type";
+	const MetaPrimitiveType Model = "MetaDslx.Modeling.IModel";
 	const MetaPrimitiveType ModelObject = "MetaDslx.Modeling.IModelObject";
 	
 	/**
@@ -49,7 +50,7 @@
 	[type: TypeSymbol]
 	abstract class MetaType
 	{
-		bool ConformsTo(MetaType type);
+		bool ConformsTo(MetaType @type);
 	}
 	
 	[type: Named]
@@ -103,7 +104,7 @@
 		MetaCollectionKind Kind;
 		[property: ElementType]
 		MetaType InnerType;
-		bool ConformsTo(MetaType type);
+		bool ConformsTo(MetaType @type);
 	}
 
 	[type: Nullable]
@@ -111,14 +112,14 @@
 	{
 		[property: InnerType]
 		MetaType InnerType;
-		bool ConformsTo(MetaType type);
+		bool ConformsTo(MetaType @type);
 	}
 
 	[type: Named]
 	class MetaPrimitiveType : MetaNamedType
 	{
 		string DotNetName;
-		bool ConformsTo(MetaType type);
+		bool ConformsTo(MetaType @type);
 	}
 
 	[type: Enum]
@@ -142,7 +143,7 @@
 	{
 		string DotNetName;
 		readonly ModelObject Value;
-		bool ConformsTo(MetaType type);
+		bool ConformsTo(MetaType @type);
 	}
 
 	[type: Class]
@@ -157,7 +158,7 @@
 		containment list<MetaProperty> Properties;
 		[property: Members]
 		containment list<MetaOperation> Operations;
-		bool ConformsTo(MetaType type);
+		bool ConformsTo(MetaType @type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
 		list<MetaProperty> GetAllSuperProperties(bool includeSelf);
 		list<MetaOperation> GetAllSuperOperations(bool includeSelf);
@@ -214,7 +215,7 @@
 		list<MetaProperty> SubsettingProperties;
 		list<MetaProperty> RedefinedProperties;
 		list<MetaProperty> RedefiningProperties;
-		bool ConformsTo(MetaProperty property);
+		bool ConformsTo(MetaProperty @property);
 	}
 
 	association MetaProperty.Class with MetaClass.Properties;

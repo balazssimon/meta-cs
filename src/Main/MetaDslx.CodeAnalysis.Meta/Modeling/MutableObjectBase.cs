@@ -217,9 +217,14 @@ namespace MetaDslx.Modeling
         protected void SetReference<T>(ModelProperty property, T value, object tag = null)
             where T : class
         {
+            var resolvedValue = value;
             if (value is MutableObjectBase mutableObj && mutableObj.model != this.model)
             {
-                value = (T)this.model.ToRedValue(MutableModel.ToGreenValue(value, null), mutableObj.id, property);
+                resolvedValue = (T)this.model.ToRedValue(MutableModel.ToGreenValue(value, null), mutableObj.id, property);
+                if (value != null && resolvedValue == null)
+                {
+                    throw new ModelException(ModelErrorCode.ERR_CannotResolveModelObject.ToDiagnostic(Microsoft.CodeAnalysis.Location.None, value.ToString(), this.model.ToString(), mutableObj.model.ToString()));
+                }
             }
             this.model.SetValue(this.id, property, value, tag, this.creating);
         }
