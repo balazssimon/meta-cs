@@ -7,8 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
@@ -19,37 +17,37 @@ namespace MetaDslx.CodeAnalysis
     /// Represents an immutable snapshot of module CLI metadata.
     /// </summary>
     /// <remarks>This object may allocate significant resources or lock files depending upon how it is constructed.</remarks>
-    public sealed partial class ModelGroupMetadata : Metadata
+    public sealed partial class ModelReferenceMetadata : Metadata
     {
-        private readonly ImmutableModelGroup _modelGroup;
-        private string _lazyName;
 
-        private ModelGroupMetadata(ImmutableModelGroup modelGroup)
+        private readonly ImmutableModel _model;
+
+        private ModelReferenceMetadata(ImmutableModel model)
             : base(isImageOwner: true, id: MetadataId.CreateNewId())
         {
-            _modelGroup = modelGroup;
+            _model = model;
         }
 
         // creates a copy
-        private ModelGroupMetadata(ModelGroupMetadata metadata)
+        private ModelReferenceMetadata(ModelReferenceMetadata metadata)
             : base(isImageOwner: false, id: metadata.Id)
         {
-            _modelGroup = metadata.ModelGroup;
+            _model = metadata.Model;
         }
 
         /// <summary>
         /// Create metadata module from a MetaDslx model.
         /// </summary>
         /// <param name="model">A MetaDslx model.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="modelGroup"/> is null.</exception>
-        public static ModelGroupMetadata CreateFromModelGroup(ImmutableModelGroup modelGroup)
+        /// <exception cref="ArgumentNullException"><paramref name="model"/> is null.</exception>
+        public static ModelReferenceMetadata CreateFromModel(ImmutableModel model)
         {
-            if (modelGroup == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(modelGroup));
+                throw new ArgumentNullException(nameof(model));
             }
 
-            return new ModelGroupMetadata(modelGroup);
+            return new ModelReferenceMetadata(model);
         }
 
         /// <summary>
@@ -62,9 +60,9 @@ namespace MetaDslx.CodeAnalysis
         /// This is used, for example, when a metadata cache needs to return the cached metadata to its users
         /// while keeping the ownership of the cached metadata object.
         /// </remarks>
-        internal new ModelGroupMetadata Copy()
+        internal new ModelReferenceMetadata Copy()
         {
-            return new ModelGroupMetadata(this);
+            return new ModelReferenceMetadata(this);
         }
 
         protected override Metadata CommonCopy()
@@ -72,12 +70,32 @@ namespace MetaDslx.CodeAnalysis
             return Copy();
         }
 
-        internal ImmutableModelGroup ModelGroup
+        internal ImmutableModel Model
         {
             get
             {
-                return _modelGroup;
+                return _model;
             }
+        }
+
+        /// <summary>
+        /// Name of the module.
+        /// </summary>
+        /// <exception cref="BadImageFormatException">Invalid metadata.</exception>
+        /// <exception cref="ObjectDisposedException">Module has been disposed.</exception>
+        public string Name
+        {
+            get { return Model.Metadata.Name; }
+        }
+
+        /// <summary>
+        /// Version of the module content.
+        /// </summary>
+        /// <exception cref="BadImageFormatException">Invalid metadata.</exception>
+        /// <exception cref="ObjectDisposedException">Module has been disposed.</exception>
+        public Guid GetModuleVersionId()
+        {
+            return Guid.Parse(Model.Id.Guid);
         }
 
         /// <summary>
@@ -86,24 +104,6 @@ namespace MetaDslx.CodeAnalysis
         public override MetadataImageKind Kind
         {
             get { return MetadataImageKind.Module; }
-        }
-
-        public string Name
-        {
-            get
-            {
-                if (_lazyName == null)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (var model in _modelGroup.Models)
-                    {
-                        if (sb.Length > 0) sb.Append(", ");
-                        sb.Append(model.ToString());
-                    }
-                    Interlocked.CompareExchange(ref _lazyName, sb.ToString(), null);
-                }
-                return _lazyName;
-            }
         }
 
         /// <summary>
@@ -123,10 +123,10 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="filePath">Path describing the location of the metadata, or null if the metadata have no location.</param>
         /// <param name="display">Display string used in error messages to identity the reference.</param>
         /// <returns>A reference to the module metadata.</returns>
-        public PortableExecutableReference GetReference(DocumentationProvider documentation = null, string filePath = null, string display = null)
+        /*public PortableExecutableReference GetReference(DocumentationProvider documentation = null, string filePath = null, string display = null)
         {
-            return new MetadataImageReference(this, MetadataReferenceProperties.Module, documentation, filePath, display);
-        }
+            return new ModelReference(this, MetadataReferenceProperties.Module, documentation, filePath, display);
+        }*/
 
         public override void Dispose()
         {

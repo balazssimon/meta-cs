@@ -118,6 +118,7 @@ TBarAssign : '|=';
 
 IUri : 'Uri';
 IPrefix : 'Prefix';
+IVersion : 'Version';
 
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
                                                

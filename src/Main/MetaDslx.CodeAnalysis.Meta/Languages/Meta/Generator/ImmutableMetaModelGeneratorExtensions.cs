@@ -143,7 +143,7 @@ namespace MetaDslx.Languages.Meta.Generator
             if (fullName)
             {
                 if (mmodel.Namespace == null) result = "global::" + result;
-                else result = "global::" + mmodel.Namespace + "." + result;
+                else result = "global::" + CSharpName(mmodel.Namespace, fullName: true) + "." + result;
             }
             return result;
         }

@@ -133,6 +133,12 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMetamodelPrefixProperty([NotNull] MetaParser.MetamodelPrefixPropertyContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.metamodelVersionProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMetamodelVersionProperty([NotNull] MetaParser.MetamodelVersionPropertyContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.declaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

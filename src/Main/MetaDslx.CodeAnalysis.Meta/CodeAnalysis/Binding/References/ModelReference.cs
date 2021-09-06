@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis
         internal ModelReference(Metadata metadata, MetadataReferenceProperties properties, DocumentationProvider documentation, string filePath, string display, bool embedInCompilation)
             : base(properties, documentation ?? DocumentationProvider.Default, filePath, display, embedInCompilation)
         {
-            Debug.Assert(metadata is ModelMetadata || metadata is ModelGroupMetadata);
+            Debug.Assert(metadata is ModelReferenceMetadata || metadata is ModelGroupReferenceMetadata);
             _metadata = metadata;
         }
 
@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentNullException(nameof(model));
             }
 
-            return new ModelReference(ModelMetadata.CreateFromModel(model), MetadataReferenceProperties.Module, DocumentationProvider.Default, null, null, embedInCompilation);
+            return new ModelReference(ModelReferenceMetadata.CreateFromModel(model), MetadataReferenceProperties.Module, DocumentationProvider.Default, null, null, embedInCompilation);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentNullException(nameof(modelGroup));
             }
 
-            return new ModelReference(ModelGroupMetadata.CreateFromModelGroup(modelGroup), MetadataReferenceProperties.Module, DocumentationProvider.Default, null, null, embedInCompilation);
+            return new ModelReference(ModelGroupReferenceMetadata.CreateFromModelGroup(modelGroup), MetadataReferenceProperties.Module, DocumentationProvider.Default, null, null, embedInCompilation);
         }
 
         protected override Metadata GetMetadataImpl()
@@ -79,8 +79,8 @@ namespace MetaDslx.CodeAnalysis
                 string result = base.Display;
                 if (result == null)
                 {
-                    if (_metadata is ModelMetadata modelMetadata) return "ModelReference: " + modelMetadata.Model.ToString();
-                    if (_metadata is ModelGroupMetadata modelGroupMetadata) return "ModelGroupReference: " + modelGroupMetadata.Name;
+                    if (_metadata is ModelReferenceMetadata modelMetadata) return "ModelReference: " + modelMetadata.Model.ToString();
+                    if (_metadata is ModelGroupReferenceMetadata modelGroupMetadata) return "ModelGroupReference: " + modelGroupMetadata.Name;
                 }
                 return result;
             }

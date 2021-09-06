@@ -379,6 +379,10 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 			    this.Visit(node.MetamodelPrefixProperty);
 			}
+			if (node.MetamodelVersionProperty != null)
+			{
+			    this.Visit(node.MetamodelVersionProperty);
+			}
 		}
 		
 		public virtual void VisitMetamodelUriProperty(MetamodelUriPropertySyntax node)
@@ -426,6 +430,50 @@ namespace MetaDslx.Languages.Meta.Binding
 			finally
 			{
 				this.EndProperty(node, name: "Prefix");
+			}
+		}
+		
+		public virtual void VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node)
+		{
+			if (node.Major != null)
+			{
+			    this.BeginProperty(node.Major, name: "MajorVersion");
+			    try
+			    {
+			    	this.BeginValue(node.Major);
+			    	try
+			    	{
+			    		this.Visit(node.Major);
+			    	}
+			    	finally
+			    	{
+			    		this.EndValue(node.Major);
+			    	}
+			    }
+			    finally
+			    {
+			    	this.EndProperty(node.Major, name: "MajorVersion");
+			    }
+			}
+			if (node.Minor != null)
+			{
+			    this.BeginProperty(node.Minor, name: "MinorVersion");
+			    try
+			    {
+			    	this.BeginValue(node.Minor);
+			    	try
+			    	{
+			    		this.Visit(node.Minor);
+			    	}
+			    	finally
+			    	{
+			    		this.EndValue(node.Minor);
+			    	}
+			    }
+			    finally
+			    {
+			    	this.EndProperty(node.Minor, name: "MinorVersion");
+			    }
 			}
 		}
 		

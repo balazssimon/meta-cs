@@ -158,6 +158,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.TBarAssign:
 				case MetaTokensSyntaxKind.IUri:
 				case MetaTokensSyntaxKind.IPrefix:
+				case MetaTokensSyntaxKind.IVersion:
 				case MetaTokensSyntaxKind.IdentifierNormal:
 				case MetaTokensSyntaxKind.IdentifierVerbatim:
 				case MetaTokensSyntaxKind.LInteger:
@@ -285,6 +286,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.TBarAssign:
 				case MetaTokensSyntaxKind.IUri:
 				case MetaTokensSyntaxKind.IPrefix:
+				case MetaTokensSyntaxKind.IVersion:
 				case MetaTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 				case MetaTokensSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
 				case MetaTokensSyntaxKind.LCommentStart:
@@ -490,6 +492,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.IUri;
 				case "Prefix":
 					return MetaTokensSyntaxKind.IPrefix;
+				case "Version":
+					return MetaTokensSyntaxKind.IVersion;
 				case "@\"":
 					return MetaTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
 				case "@\'":
@@ -699,6 +703,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "Uri";
 				case MetaTokensSyntaxKind.IPrefix:
 					return "Prefix";
+				case MetaTokensSyntaxKind.IVersion:
+					return "Version";
 				case MetaTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 					return "@\"";
 				case MetaTokensSyntaxKind.SingleQuoteVerbatimStringLiteralStart:

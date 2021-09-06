@@ -151,13 +151,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 foreach (var reference in customReferences.OfType<ModelReference>())
                 {
                     var metadata = reference.GetMetadata();
-                    if (metadata is ModelMetadata modelMetadata)
+                    if (metadata is ModelReferenceMetadata modelMetadata)
                     {
                         var model = modelMetadata.Model;
                         var module = new MetadataModuleSymbol(this, model, moduleBuilder.Count);
                         moduleBuilder.Add(module);
                     }
-                    if (metadata is ModelGroupMetadata modelGroupMetadata)
+                    if (metadata is ModelGroupReferenceMetadata modelGroupMetadata)
                     {
                         var modelGroup = modelGroupMetadata.ModelGroup;
                         var module = new MetadataModuleSymbol(this, modelGroup, moduleBuilder.Count);

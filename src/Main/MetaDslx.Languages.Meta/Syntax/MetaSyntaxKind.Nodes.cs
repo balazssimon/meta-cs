@@ -41,6 +41,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string MetamodelProperty = nameof(MetamodelProperty);
 		public const string MetamodelUriProperty = nameof(MetamodelUriProperty);
 		public const string MetamodelPrefixProperty = nameof(MetamodelPrefixProperty);
+		public const string MetamodelVersionProperty = nameof(MetamodelVersionProperty);
 		public const string Declaration = nameof(Declaration);
 		public const string EnumDeclaration = nameof(EnumDeclaration);
 		public const string EnumBody = nameof(EnumBody);
