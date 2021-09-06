@@ -379,9 +379,13 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 			    this.Visit(node.MetamodelPrefixProperty);
 			}
-			if (node.MetamodelVersionProperty != null)
+			if (node.MajorVersionProperty != null)
 			{
-			    this.Visit(node.MetamodelVersionProperty);
+			    this.Visit(node.MajorVersionProperty);
+			}
+			if (node.MinorVersionProperty != null)
+			{
+			    this.Visit(node.MinorVersionProperty);
 			}
 		}
 		
@@ -433,47 +437,51 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
-		public virtual void VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node)
+		public virtual void VisitMajorVersionProperty(MajorVersionPropertySyntax node)
 		{
-			if (node.Major != null)
+			this.BeginProperty(node, name: "MajorVersion");
+			try
 			{
-			    this.BeginProperty(node.Major, name: "MajorVersion");
-			    try
-			    {
-			    	this.BeginValue(node.Major);
-			    	try
-			    	{
-			    		this.Visit(node.Major);
-			    	}
-			    	finally
-			    	{
-			    		this.EndValue(node.Major);
-			    	}
-			    }
-			    finally
-			    {
-			    	this.EndProperty(node.Major, name: "MajorVersion");
-			    }
+				if (node.IntegerLiteral != null)
+				{
+				    this.BeginValue(node.IntegerLiteral);
+				    try
+				    {
+				    	this.Visit(node.IntegerLiteral);
+				    }
+				    finally
+				    {
+				    	this.EndValue(node.IntegerLiteral);
+				    }
+				}
 			}
-			if (node.Minor != null)
+			finally
 			{
-			    this.BeginProperty(node.Minor, name: "MinorVersion");
-			    try
-			    {
-			    	this.BeginValue(node.Minor);
-			    	try
-			    	{
-			    		this.Visit(node.Minor);
-			    	}
-			    	finally
-			    	{
-			    		this.EndValue(node.Minor);
-			    	}
-			    }
-			    finally
-			    {
-			    	this.EndProperty(node.Minor, name: "MinorVersion");
-			    }
+				this.EndProperty(node, name: "MajorVersion");
+			}
+		}
+		
+		public virtual void VisitMinorVersionProperty(MinorVersionPropertySyntax node)
+		{
+			this.BeginProperty(node, name: "MinorVersion");
+			try
+			{
+				if (node.IntegerLiteral != null)
+				{
+				    this.BeginValue(node.IntegerLiteral);
+				    try
+				    {
+				    	this.Visit(node.IntegerLiteral);
+				    }
+				    finally
+				    {
+				    	this.EndValue(node.IntegerLiteral);
+				    }
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "MinorVersion");
 			}
 		}
 		

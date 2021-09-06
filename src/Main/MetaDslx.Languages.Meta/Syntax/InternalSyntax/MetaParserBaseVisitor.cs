@@ -200,7 +200,7 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitMetamodelPrefixProperty([NotNull] MetaParser.MetamodelPrefixPropertyContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaParser.metamodelVersionProperty"/>.
+	/// Visit a parse tree produced by <see cref="MetaParser.majorVersionProperty"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -208,7 +208,17 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMetamodelVersionProperty([NotNull] MetaParser.MetamodelVersionPropertyContext context) { return VisitChildren(context); }
+	public virtual Result VisitMajorVersionProperty([NotNull] MetaParser.MajorVersionPropertyContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.minorVersionProperty"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitMinorVersionProperty([NotNull] MetaParser.MinorVersionPropertyContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.declaration"/>.
 	/// <para>

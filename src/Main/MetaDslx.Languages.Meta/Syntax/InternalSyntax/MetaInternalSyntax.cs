@@ -2697,12 +2697,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    internal static readonly MetamodelPropertyGreen __Missing = new MetamodelPropertyGreen();
 	    private MetamodelUriPropertyGreen metamodelUriProperty;
 	    private MetamodelPrefixPropertyGreen metamodelPrefixProperty;
-	    private MetamodelVersionPropertyGreen metamodelVersionProperty;
+	    private MajorVersionPropertyGreen majorVersionProperty;
+	    private MinorVersionPropertyGreen minorVersionProperty;
 	
-	    public MetamodelPropertyGreen(MetaSyntaxKind kind, MetamodelUriPropertyGreen metamodelUriProperty, MetamodelPrefixPropertyGreen metamodelPrefixProperty, MetamodelVersionPropertyGreen metamodelVersionProperty)
+	    public MetamodelPropertyGreen(MetaSyntaxKind kind, MetamodelUriPropertyGreen metamodelUriProperty, MetamodelPrefixPropertyGreen metamodelPrefixProperty, MajorVersionPropertyGreen majorVersionProperty, MinorVersionPropertyGreen minorVersionProperty)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 3;
+			this.SlotCount = 4;
 			if (metamodelUriProperty != null)
 			{
 				this.AdjustFlagsAndWidth(metamodelUriProperty);
@@ -2713,17 +2714,22 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(metamodelPrefixProperty);
 				this.metamodelPrefixProperty = metamodelPrefixProperty;
 			}
-			if (metamodelVersionProperty != null)
+			if (majorVersionProperty != null)
 			{
-				this.AdjustFlagsAndWidth(metamodelVersionProperty);
-				this.metamodelVersionProperty = metamodelVersionProperty;
+				this.AdjustFlagsAndWidth(majorVersionProperty);
+				this.majorVersionProperty = majorVersionProperty;
+			}
+			if (minorVersionProperty != null)
+			{
+				this.AdjustFlagsAndWidth(minorVersionProperty);
+				this.minorVersionProperty = minorVersionProperty;
 			}
 	    }
 	
-	    public MetamodelPropertyGreen(MetaSyntaxKind kind, MetamodelUriPropertyGreen metamodelUriProperty, MetamodelPrefixPropertyGreen metamodelPrefixProperty, MetamodelVersionPropertyGreen metamodelVersionProperty, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public MetamodelPropertyGreen(MetaSyntaxKind kind, MetamodelUriPropertyGreen metamodelUriProperty, MetamodelPrefixPropertyGreen metamodelPrefixProperty, MajorVersionPropertyGreen majorVersionProperty, MinorVersionPropertyGreen minorVersionProperty, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 3;
+			this.SlotCount = 4;
 			if (metamodelUriProperty != null)
 			{
 				this.AdjustFlagsAndWidth(metamodelUriProperty);
@@ -2734,10 +2740,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(metamodelPrefixProperty);
 				this.metamodelPrefixProperty = metamodelPrefixProperty;
 			}
-			if (metamodelVersionProperty != null)
+			if (majorVersionProperty != null)
 			{
-				this.AdjustFlagsAndWidth(metamodelVersionProperty);
-				this.metamodelVersionProperty = metamodelVersionProperty;
+				this.AdjustFlagsAndWidth(majorVersionProperty);
+				this.majorVersionProperty = majorVersionProperty;
+			}
+			if (minorVersionProperty != null)
+			{
+				this.AdjustFlagsAndWidth(minorVersionProperty);
+				this.minorVersionProperty = minorVersionProperty;
 			}
 	    }
 	
@@ -2749,7 +2760,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public MetamodelUriPropertyGreen MetamodelUriProperty { get { return this.metamodelUriProperty; } }
 	    public MetamodelPrefixPropertyGreen MetamodelPrefixProperty { get { return this.metamodelPrefixProperty; } }
-	    public MetamodelVersionPropertyGreen MetamodelVersionProperty { get { return this.metamodelVersionProperty; } }
+	    public MajorVersionPropertyGreen MajorVersionProperty { get { return this.majorVersionProperty; } }
+	    public MinorVersionPropertyGreen MinorVersionProperty { get { return this.minorVersionProperty; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -2762,7 +2774,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        {
 	            case 0: return this.metamodelUriProperty;
 	            case 1: return this.metamodelPrefixProperty;
-	            case 2: return this.metamodelVersionProperty;
+	            case 2: return this.majorVersionProperty;
+	            case 3: return this.minorVersionProperty;
 	            default: return null;
 	        }
 	    }
@@ -2773,17 +2786,17 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new MetamodelPropertyGreen(this.Kind, this.metamodelUriProperty, this.metamodelPrefixProperty, this.metamodelVersionProperty, diagnostics, this.GetAnnotations());
+	        return new MetamodelPropertyGreen(this.Kind, this.metamodelUriProperty, this.metamodelPrefixProperty, this.majorVersionProperty, this.minorVersionProperty, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new MetamodelPropertyGreen(this.Kind, this.metamodelUriProperty, this.metamodelPrefixProperty, this.metamodelVersionProperty, this.GetDiagnostics(), annotations);
+	        return new MetamodelPropertyGreen(this.Kind, this.metamodelUriProperty, this.metamodelPrefixProperty, this.majorVersionProperty, this.minorVersionProperty, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new MetamodelPropertyGreen(this.Kind, this.metamodelUriProperty, this.metamodelPrefixProperty, this.metamodelVersionProperty, this.GetDiagnostics(), this.GetAnnotations());
+			return new MetamodelPropertyGreen(this.Kind, this.metamodelUriProperty, this.metamodelPrefixProperty, this.majorVersionProperty, this.minorVersionProperty, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
@@ -2819,11 +2832,27 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public MetamodelPropertyGreen Update(MetamodelVersionPropertyGreen metamodelVersionProperty)
+	    public MetamodelPropertyGreen Update(MajorVersionPropertyGreen majorVersionProperty)
 	    {
-	        if (this.metamodelVersionProperty != metamodelVersionProperty)
+	        if (this.majorVersionProperty != majorVersionProperty)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.MetamodelProperty(metamodelVersionProperty);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.MetamodelProperty(majorVersionProperty);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (MetamodelPropertyGreen)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public MetamodelPropertyGreen Update(MinorVersionPropertyGreen minorVersionProperty)
+	    {
+	        if (this.minorVersionProperty != minorVersionProperty)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.MetamodelProperty(minorVersionProperty);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -3064,143 +3093,229 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    }
 	}
 	
-	internal class MetamodelVersionPropertyGreen : GreenSyntaxNode
+	internal class MajorVersionPropertyGreen : GreenSyntaxNode
 	{
-	    internal static readonly MetamodelVersionPropertyGreen __Missing = new MetamodelVersionPropertyGreen();
-	    private InternalSyntaxToken iVersion;
+	    internal static readonly MajorVersionPropertyGreen __Missing = new MajorVersionPropertyGreen();
+	    private InternalSyntaxToken iMajorVersion;
 	    private InternalSyntaxToken tAssign;
-	    private IntegerLiteralGreen major;
-	    private InternalSyntaxToken tDot;
-	    private IntegerLiteralGreen minor;
+	    private IntegerLiteralGreen integerLiteral;
 	
-	    public MetamodelVersionPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken iVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen major, InternalSyntaxToken tDot, IntegerLiteralGreen minor)
+	    public MajorVersionPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken iMajorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 5;
-			if (iVersion != null)
+			this.SlotCount = 3;
+			if (iMajorVersion != null)
 			{
-				this.AdjustFlagsAndWidth(iVersion);
-				this.iVersion = iVersion;
+				this.AdjustFlagsAndWidth(iMajorVersion);
+				this.iMajorVersion = iMajorVersion;
 			}
 			if (tAssign != null)
 			{
 				this.AdjustFlagsAndWidth(tAssign);
 				this.tAssign = tAssign;
 			}
-			if (major != null)
+			if (integerLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(major);
-				this.major = major;
-			}
-			if (tDot != null)
-			{
-				this.AdjustFlagsAndWidth(tDot);
-				this.tDot = tDot;
-			}
-			if (minor != null)
-			{
-				this.AdjustFlagsAndWidth(minor);
-				this.minor = minor;
+				this.AdjustFlagsAndWidth(integerLiteral);
+				this.integerLiteral = integerLiteral;
 			}
 	    }
 	
-	    public MetamodelVersionPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken iVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen major, InternalSyntaxToken tDot, IntegerLiteralGreen minor, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public MajorVersionPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken iMajorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 5;
-			if (iVersion != null)
+			this.SlotCount = 3;
+			if (iMajorVersion != null)
 			{
-				this.AdjustFlagsAndWidth(iVersion);
-				this.iVersion = iVersion;
+				this.AdjustFlagsAndWidth(iMajorVersion);
+				this.iMajorVersion = iMajorVersion;
 			}
 			if (tAssign != null)
 			{
 				this.AdjustFlagsAndWidth(tAssign);
 				this.tAssign = tAssign;
 			}
-			if (major != null)
+			if (integerLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(major);
-				this.major = major;
-			}
-			if (tDot != null)
-			{
-				this.AdjustFlagsAndWidth(tDot);
-				this.tDot = tDot;
-			}
-			if (minor != null)
-			{
-				this.AdjustFlagsAndWidth(minor);
-				this.minor = minor;
+				this.AdjustFlagsAndWidth(integerLiteral);
+				this.integerLiteral = integerLiteral;
 			}
 	    }
 	
-		private MetamodelVersionPropertyGreen()
-			: base((MetaSyntaxKind)MetaSyntaxKind.MetamodelVersionProperty, null, null)
+		private MajorVersionPropertyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.MajorVersionProperty, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken IVersion { get { return this.iVersion; } }
+	    public InternalSyntaxToken IMajorVersion { get { return this.iMajorVersion; } }
 	    public InternalSyntaxToken TAssign { get { return this.tAssign; } }
-	    public IntegerLiteralGreen Major { get { return this.major; } }
-	    public InternalSyntaxToken TDot { get { return this.tDot; } }
-	    public IntegerLiteralGreen Minor { get { return this.minor; } }
+	    public IntegerLiteralGreen IntegerLiteral { get { return this.integerLiteral; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Languages.Meta.Syntax.MetamodelVersionPropertySyntax(this, (MetaSyntaxNode)parent, position);
+	        return new global::MetaDslx.Languages.Meta.Syntax.MajorVersionPropertySyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.iVersion;
+	            case 0: return this.iMajorVersion;
 	            case 1: return this.tAssign;
-	            case 2: return this.major;
-	            case 3: return this.tDot;
-	            case 4: return this.minor;
+	            case 2: return this.integerLiteral;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitMetamodelVersionPropertyGreen(this);
+	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitMajorVersionPropertyGreen(this);
 	
-	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitMetamodelVersionPropertyGreen(this);
+	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitMajorVersionPropertyGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new MetamodelVersionPropertyGreen(this.Kind, this.iVersion, this.tAssign, this.major, this.tDot, this.minor, diagnostics, this.GetAnnotations());
+	        return new MajorVersionPropertyGreen(this.Kind, this.iMajorVersion, this.tAssign, this.integerLiteral, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new MetamodelVersionPropertyGreen(this.Kind, this.iVersion, this.tAssign, this.major, this.tDot, this.minor, this.GetDiagnostics(), annotations);
+	        return new MajorVersionPropertyGreen(this.Kind, this.iMajorVersion, this.tAssign, this.integerLiteral, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new MetamodelVersionPropertyGreen(this.Kind, this.iVersion, this.tAssign, this.major, this.tDot, this.minor, this.GetDiagnostics(), this.GetAnnotations());
+			return new MajorVersionPropertyGreen(this.Kind, this.iMajorVersion, this.tAssign, this.integerLiteral, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
-	    public MetamodelVersionPropertyGreen Update(InternalSyntaxToken iVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen major, InternalSyntaxToken tDot, IntegerLiteralGreen minor)
+	    public MajorVersionPropertyGreen Update(InternalSyntaxToken iMajorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral)
 	    {
-	        if (this.IVersion != iVersion ||
+	        if (this.IMajorVersion != iMajorVersion ||
 				this.TAssign != tAssign ||
-				this.Major != major ||
-				this.TDot != tDot ||
-				this.Minor != minor)
+				this.IntegerLiteral != integerLiteral)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.MetamodelVersionProperty(iVersion, tAssign, major, tDot, minor);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.MajorVersionProperty(iMajorVersion, tAssign, integerLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (MetamodelVersionPropertyGreen)newNode;
+				return (MajorVersionPropertyGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class MinorVersionPropertyGreen : GreenSyntaxNode
+	{
+	    internal static readonly MinorVersionPropertyGreen __Missing = new MinorVersionPropertyGreen();
+	    private InternalSyntaxToken iMinorVersion;
+	    private InternalSyntaxToken tAssign;
+	    private IntegerLiteralGreen integerLiteral;
+	
+	    public MinorVersionPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken iMinorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (iMinorVersion != null)
+			{
+				this.AdjustFlagsAndWidth(iMinorVersion);
+				this.iMinorVersion = iMinorVersion;
+			}
+			if (tAssign != null)
+			{
+				this.AdjustFlagsAndWidth(tAssign);
+				this.tAssign = tAssign;
+			}
+			if (integerLiteral != null)
+			{
+				this.AdjustFlagsAndWidth(integerLiteral);
+				this.integerLiteral = integerLiteral;
+			}
+	    }
+	
+	    public MinorVersionPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken iMinorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (iMinorVersion != null)
+			{
+				this.AdjustFlagsAndWidth(iMinorVersion);
+				this.iMinorVersion = iMinorVersion;
+			}
+			if (tAssign != null)
+			{
+				this.AdjustFlagsAndWidth(tAssign);
+				this.tAssign = tAssign;
+			}
+			if (integerLiteral != null)
+			{
+				this.AdjustFlagsAndWidth(integerLiteral);
+				this.integerLiteral = integerLiteral;
+			}
+	    }
+	
+		private MinorVersionPropertyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.MinorVersionProperty, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken IMinorVersion { get { return this.iMinorVersion; } }
+	    public InternalSyntaxToken TAssign { get { return this.tAssign; } }
+	    public IntegerLiteralGreen IntegerLiteral { get { return this.integerLiteral; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Meta.Syntax.MinorVersionPropertySyntax(this, (MetaSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.iMinorVersion;
+	            case 1: return this.tAssign;
+	            case 2: return this.integerLiteral;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitMinorVersionPropertyGreen(this);
+	
+	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitMinorVersionPropertyGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new MinorVersionPropertyGreen(this.Kind, this.iMinorVersion, this.tAssign, this.integerLiteral, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new MinorVersionPropertyGreen(this.Kind, this.iMinorVersion, this.tAssign, this.integerLiteral, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new MinorVersionPropertyGreen(this.Kind, this.iMinorVersion, this.tAssign, this.integerLiteral, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public MinorVersionPropertyGreen Update(InternalSyntaxToken iMinorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral)
+	    {
+	        if (this.IMinorVersion != iMinorVersion ||
+				this.TAssign != tAssign ||
+				this.IntegerLiteral != integerLiteral)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.MinorVersionProperty(iMinorVersion, tAssign, integerLiteral);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (MinorVersionPropertyGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -9328,7 +9443,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual void VisitMetamodelPropertyGreen(MetamodelPropertyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitMetamodelUriPropertyGreen(MetamodelUriPropertyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitMetamodelPrefixPropertyGreen(MetamodelPrefixPropertyGreen node) => this.DefaultVisit(node);
-		public virtual void VisitMetamodelVersionPropertyGreen(MetamodelVersionPropertyGreen node) => this.DefaultVisit(node);
+		public virtual void VisitMajorVersionPropertyGreen(MajorVersionPropertyGreen node) => this.DefaultVisit(node);
+		public virtual void VisitMinorVersionPropertyGreen(MinorVersionPropertyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumDeclarationGreen(EnumDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumBodyGreen(EnumBodyGreen node) => this.DefaultVisit(node);
@@ -9403,7 +9519,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual TResult VisitMetamodelPropertyGreen(MetamodelPropertyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitMetamodelUriPropertyGreen(MetamodelUriPropertyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitMetamodelPrefixPropertyGreen(MetamodelPrefixPropertyGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitMetamodelVersionPropertyGreen(MetamodelVersionPropertyGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitMajorVersionPropertyGreen(MajorVersionPropertyGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitMinorVersionPropertyGreen(MinorVersionPropertyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumDeclarationGreen(EnumDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumBodyGreen(EnumBodyGreen node) => this.DefaultVisit(node);
@@ -9990,15 +10107,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	#if DEBUG
 		    if (metamodelUriProperty == null) throw new ArgumentNullException(nameof(metamodelUriProperty));
 	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.MetamodelProperty, metamodelUriProperty, out hash);
-			if (cached != null) return (MetamodelPropertyGreen)cached;
-			var result = new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, metamodelUriProperty, null, null);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
+			return new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, metamodelUriProperty, null, null, null);
 	    }
 	
 		public MetamodelPropertyGreen MetamodelProperty(MetamodelPrefixPropertyGreen metamodelPrefixProperty)
@@ -10006,31 +10115,23 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	#if DEBUG
 		    if (metamodelPrefixProperty == null) throw new ArgumentNullException(nameof(metamodelPrefixProperty));
 	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.MetamodelProperty, metamodelPrefixProperty, out hash);
-			if (cached != null) return (MetamodelPropertyGreen)cached;
-			var result = new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, null, metamodelPrefixProperty, null);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
+			return new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, null, metamodelPrefixProperty, null, null);
 	    }
 	
-		public MetamodelPropertyGreen MetamodelProperty(MetamodelVersionPropertyGreen metamodelVersionProperty)
+		public MetamodelPropertyGreen MetamodelProperty(MajorVersionPropertyGreen majorVersionProperty)
 	    {
 	#if DEBUG
-		    if (metamodelVersionProperty == null) throw new ArgumentNullException(nameof(metamodelVersionProperty));
+		    if (majorVersionProperty == null) throw new ArgumentNullException(nameof(majorVersionProperty));
 	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.MetamodelProperty, metamodelVersionProperty, out hash);
-			if (cached != null) return (MetamodelPropertyGreen)cached;
-			var result = new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, null, null, metamodelVersionProperty);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
+			return new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, null, null, majorVersionProperty, null);
+	    }
+	
+		public MetamodelPropertyGreen MetamodelProperty(MinorVersionPropertyGreen minorVersionProperty)
+	    {
+	#if DEBUG
+		    if (minorVersionProperty == null) throw new ArgumentNullException(nameof(minorVersionProperty));
+	#endif
+			return new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, null, null, null, minorVersionProperty);
 	    }
 	
 		public MetamodelUriPropertyGreen MetamodelUriProperty(InternalSyntaxToken iUri, InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral)
@@ -10073,19 +10174,44 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public MetamodelVersionPropertyGreen MetamodelVersionProperty(InternalSyntaxToken iVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen major, InternalSyntaxToken tDot, IntegerLiteralGreen minor)
+		public MajorVersionPropertyGreen MajorVersionProperty(InternalSyntaxToken iMajorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral)
 	    {
 	#if DEBUG
-			if (iVersion == null) throw new ArgumentNullException(nameof(iVersion));
-			if (iVersion.Kind != MetaSyntaxKind.IVersion) throw new ArgumentException(nameof(iVersion));
+			if (iMajorVersion == null) throw new ArgumentNullException(nameof(iMajorVersion));
+			if (iMajorVersion.Kind != MetaSyntaxKind.IMajorVersion) throw new ArgumentException(nameof(iMajorVersion));
 			if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
 			if (tAssign.Kind != MetaSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-			if (major == null) throw new ArgumentNullException(nameof(major));
-			if (tDot == null) throw new ArgumentNullException(nameof(tDot));
-			if (tDot.Kind != MetaSyntaxKind.TDot) throw new ArgumentException(nameof(tDot));
-			if (minor == null) throw new ArgumentNullException(nameof(minor));
+			if (integerLiteral == null) throw new ArgumentNullException(nameof(integerLiteral));
 	#endif
-	        return new MetamodelVersionPropertyGreen(MetaSyntaxKind.MetamodelVersionProperty, iVersion, tAssign, major, tDot, minor);
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.MajorVersionProperty, iMajorVersion, tAssign, integerLiteral, out hash);
+			if (cached != null) return (MajorVersionPropertyGreen)cached;
+			var result = new MajorVersionPropertyGreen(MetaSyntaxKind.MajorVersionProperty, iMajorVersion, tAssign, integerLiteral);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public MinorVersionPropertyGreen MinorVersionProperty(InternalSyntaxToken iMinorVersion, InternalSyntaxToken tAssign, IntegerLiteralGreen integerLiteral)
+	    {
+	#if DEBUG
+			if (iMinorVersion == null) throw new ArgumentNullException(nameof(iMinorVersion));
+			if (iMinorVersion.Kind != MetaSyntaxKind.IMinorVersion) throw new ArgumentException(nameof(iMinorVersion));
+			if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
+			if (tAssign.Kind != MetaSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
+			if (integerLiteral == null) throw new ArgumentNullException(nameof(integerLiteral));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.MinorVersionProperty, iMinorVersion, tAssign, integerLiteral, out hash);
+			if (cached != null) return (MinorVersionPropertyGreen)cached;
+			var result = new MinorVersionPropertyGreen(MetaSyntaxKind.MinorVersionProperty, iMinorVersion, tAssign, integerLiteral);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public DeclarationGreen Declaration(EnumDeclarationGreen enumDeclaration)
@@ -11108,7 +11234,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				typeof(MetamodelPropertyGreen),
 				typeof(MetamodelUriPropertyGreen),
 				typeof(MetamodelPrefixPropertyGreen),
-				typeof(MetamodelVersionPropertyGreen),
+				typeof(MajorVersionPropertyGreen),
+				typeof(MinorVersionPropertyGreen),
 				typeof(DeclarationGreen),
 				typeof(EnumDeclarationGreen),
 				typeof(EnumBodyGreen),

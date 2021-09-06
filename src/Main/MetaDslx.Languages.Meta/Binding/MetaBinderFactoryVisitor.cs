@@ -23,8 +23,7 @@ namespace MetaDslx.Languages.Meta.Binding
     public class MetaBinderFactoryVisitor : BinderFactoryVisitor, IMetaSyntaxVisitor<Binder>
     {
 		public static object UseStringLiteral = new object();
-		public static object UseMajor = new object();
-		public static object UseMinor = new object();
+		public static object UseIntegerLiteral = new object();
 		public static object UseEnumValues = new object();
 		public static object UseOperationDeclaration = new object();
 		public static object UseKAbstract = new object();
@@ -71,6 +70,8 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseMetamodelDeclaration = new object();
 		public static object UseMetamodelUriProperty = new object();
 		public static object UseMetamodelPrefixProperty = new object();
+		public static object UseMajorVersionProperty = new object();
+		public static object UseMinorVersionProperty = new object();
 		public static object UseEnumDeclaration = new object();
 		public static object UseClassDeclaration = new object();
 		public static object UseAssociationDeclaration = new object();
@@ -97,13 +98,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseParameter = new object();
 		public static object UseNullLiteral = new object();
 		public static object UseBooleanLiteral = new object();
-		public static object UseIntegerLiteral = new object();
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
 		public static object UseUsingMetamodelReference = new object();
 		public static object UseDeclaration = new object();
 		public static object UseMetamodelProperty = new object();
-		public static object UseMetamodelVersionProperty = new object();
 		public static object UseEnumMemberDeclaration = new object();
 		public static object UseClassMemberDeclaration = new object();
 		public static object UseClassAncestor = new object();
@@ -426,7 +425,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax parent)
+		public Binder VisitMajorVersionProperty(MajorVersionPropertySyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -435,24 +434,43 @@ namespace MetaDslx.Languages.Meta.Binding
 			object use = null;
 			if (this.ForChild)
 			{
-				if (LookupPosition.IsInNode(this.Position, parent.Major)) use = UseMajor;
-				if (LookupPosition.IsInNode(this.Position, parent.Minor)) use = UseMinor;
+				if (LookupPosition.IsInNode(this.Position, parent.IntegerLiteral)) use = UseIntegerLiteral;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "MajorVersion");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseMajor)
+				if (use == UseIntegerLiteral)
 				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Major, name: "MajorVersion");
-					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.Major);
+					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.IntegerLiteral);
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
-				if (use == UseMinor)
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitMinorVersionProperty(MinorVersionPropertySyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.IntegerLiteral)) use = UseIntegerLiteral;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "MinorVersion");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseIntegerLiteral)
 				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Minor, name: "MinorVersion");
-					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.Minor);
+					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.IntegerLiteral);
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}

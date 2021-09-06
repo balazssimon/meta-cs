@@ -1585,7 +1585,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 	{
 	    private MetamodelUriPropertySyntax metamodelUriProperty;
 	    private MetamodelPrefixPropertySyntax metamodelPrefixProperty;
-	    private MetamodelVersionPropertySyntax metamodelVersionProperty;
+	    private MajorVersionPropertySyntax majorVersionProperty;
+	    private MinorVersionPropertySyntax minorVersionProperty;
 	
 	    public MetamodelPropertySyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -1605,9 +1606,13 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.metamodelPrefixProperty, 1); } 
 		}
-	    public MetamodelVersionPropertySyntax MetamodelVersionProperty 
+	    public MajorVersionPropertySyntax MajorVersionProperty 
 		{ 
-			get { return this.GetRed(ref this.metamodelVersionProperty, 2); } 
+			get { return this.GetRed(ref this.majorVersionProperty, 2); } 
+		}
+	    public MinorVersionPropertySyntax MinorVersionProperty 
+		{ 
+			get { return this.GetRed(ref this.minorVersionProperty, 3); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
@@ -1616,7 +1621,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        {
 				case 0: return this.GetRed(ref this.metamodelUriProperty, 0);
 				case 1: return this.GetRed(ref this.metamodelPrefixProperty, 1);
-				case 2: return this.GetRed(ref this.metamodelVersionProperty, 2);
+				case 2: return this.GetRed(ref this.majorVersionProperty, 2);
+				case 3: return this.GetRed(ref this.minorVersionProperty, 3);
 				default: return null;
 	        }
 	    }
@@ -1627,7 +1633,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        {
 				case 0: return this.metamodelUriProperty;
 				case 1: return this.metamodelPrefixProperty;
-				case 2: return this.metamodelVersionProperty;
+				case 2: return this.majorVersionProperty;
+				case 3: return this.minorVersionProperty;
 				default: return null;
 	        }
 	    }
@@ -1642,9 +1649,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(metamodelPrefixProperty);
 		}
 	
-	    public MetamodelPropertySyntax WithMetamodelVersionProperty(MetamodelVersionPropertySyntax metamodelVersionProperty)
+	    public MetamodelPropertySyntax WithMajorVersionProperty(MajorVersionPropertySyntax majorVersionProperty)
 		{
-			return this.Update(metamodelVersionProperty);
+			return this.Update(majorVersionProperty);
+		}
+	
+	    public MetamodelPropertySyntax WithMinorVersionProperty(MinorVersionPropertySyntax minorVersionProperty)
+		{
+			return this.Update(minorVersionProperty);
 		}
 	
 	    public MetamodelPropertySyntax Update(MetamodelUriPropertySyntax metamodelUriProperty)
@@ -1673,11 +1685,24 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
-	    public MetamodelPropertySyntax Update(MetamodelVersionPropertySyntax metamodelVersionProperty)
+	    public MetamodelPropertySyntax Update(MajorVersionPropertySyntax majorVersionProperty)
 	    {
-	        if (this.MetamodelVersionProperty != metamodelVersionProperty)
+	        if (this.MajorVersionProperty != majorVersionProperty)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.MetamodelProperty(metamodelVersionProperty);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.MetamodelProperty(majorVersionProperty);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (MetamodelPropertySyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public MetamodelPropertySyntax Update(MinorVersionPropertySyntax minorVersionProperty)
+	    {
+	        if (this.MinorVersionProperty != minorVersionProperty)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.MetamodelProperty(minorVersionProperty);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1904,27 +1929,26 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    }
 	}
 	
-	public sealed class MetamodelVersionPropertySyntax : MetaSyntaxNode
+	public sealed class MajorVersionPropertySyntax : MetaSyntaxNode
 	{
-	    private IntegerLiteralSyntax major;
-	    private IntegerLiteralSyntax minor;
+	    private IntegerLiteralSyntax integerLiteral;
 	
-	    public MetamodelVersionPropertySyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	    public MajorVersionPropertySyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public MetamodelVersionPropertySyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	    public MajorVersionPropertySyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken IVersion 
+	    public SyntaxToken IMajorVersion 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MetamodelVersionPropertyGreen)this.Green;
-				var greenToken = green.IVersion;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MajorVersionPropertyGreen)this.Green;
+				var greenToken = green.IMajorVersion;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -1932,35 +1956,21 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MetamodelVersionPropertyGreen)this.Green;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MajorVersionPropertyGreen)this.Green;
 				var greenToken = green.TAssign;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
 		}
-	    public IntegerLiteralSyntax Major 
+	    public IntegerLiteralSyntax IntegerLiteral 
 		{ 
-			get { return this.GetRed(ref this.major, 2); } 
-		}
-	    public SyntaxToken TDot 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MetamodelVersionPropertyGreen)this.Green;
-				var greenToken = green.TDot;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
-			}
-		}
-	    public IntegerLiteralSyntax Minor 
-		{ 
-			get { return this.GetRed(ref this.minor, 4); } 
+			get { return this.GetRed(ref this.integerLiteral, 2); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 2: return this.GetRed(ref this.major, 2);
-				case 4: return this.GetRed(ref this.minor, 4);
+				case 2: return this.GetRed(ref this.integerLiteral, 2);
 				default: return null;
 	        }
 	    }
@@ -1969,67 +1979,155 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 2: return this.major;
-				case 4: return this.minor;
+				case 2: return this.integerLiteral;
 				default: return null;
 	        }
 	    }
 	
-	    public MetamodelVersionPropertySyntax WithIVersion(SyntaxToken iVersion)
+	    public MajorVersionPropertySyntax WithIMajorVersion(SyntaxToken iMajorVersion)
 		{
-			return this.Update(IVersion, this.TAssign, this.Major, this.TDot, this.Minor);
+			return this.Update(IMajorVersion, this.TAssign, this.IntegerLiteral);
 		}
 	
-	    public MetamodelVersionPropertySyntax WithTAssign(SyntaxToken tAssign)
+	    public MajorVersionPropertySyntax WithTAssign(SyntaxToken tAssign)
 		{
-			return this.Update(this.IVersion, TAssign, this.Major, this.TDot, this.Minor);
+			return this.Update(this.IMajorVersion, TAssign, this.IntegerLiteral);
 		}
 	
-	    public MetamodelVersionPropertySyntax WithMajor(IntegerLiteralSyntax major)
+	    public MajorVersionPropertySyntax WithIntegerLiteral(IntegerLiteralSyntax integerLiteral)
 		{
-			return this.Update(this.IVersion, this.TAssign, Major, this.TDot, this.Minor);
+			return this.Update(this.IMajorVersion, this.TAssign, IntegerLiteral);
 		}
 	
-	    public MetamodelVersionPropertySyntax WithTDot(SyntaxToken tDot)
-		{
-			return this.Update(this.IVersion, this.TAssign, this.Major, TDot, this.Minor);
-		}
-	
-	    public MetamodelVersionPropertySyntax WithMinor(IntegerLiteralSyntax minor)
-		{
-			return this.Update(this.IVersion, this.TAssign, this.Major, this.TDot, Minor);
-		}
-	
-	    public MetamodelVersionPropertySyntax Update(SyntaxToken iVersion, SyntaxToken tAssign, IntegerLiteralSyntax major, SyntaxToken tDot, IntegerLiteralSyntax minor)
+	    public MajorVersionPropertySyntax Update(SyntaxToken iMajorVersion, SyntaxToken tAssign, IntegerLiteralSyntax integerLiteral)
 	    {
-	        if (this.IVersion != iVersion ||
+	        if (this.IMajorVersion != iMajorVersion ||
 				this.TAssign != tAssign ||
-				this.Major != major ||
-				this.TDot != tDot ||
-				this.Minor != minor)
+				this.IntegerLiteral != integerLiteral)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.MetamodelVersionProperty(iVersion, tAssign, major, tDot, minor);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.MajorVersionProperty(iMajorVersion, tAssign, integerLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (MetamodelVersionPropertySyntax)newNode;
+				return (MajorVersionPropertySyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitMetamodelVersionProperty(this, argument);
+	        return visitor.VisitMajorVersionProperty(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitMetamodelVersionProperty(this);
+	        return visitor.VisitMajorVersionProperty(this);
 	    }
 	
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
-	        visitor.VisitMetamodelVersionProperty(this);
+	        visitor.VisitMajorVersionProperty(this);
+	    }
+	}
+	
+	public sealed class MinorVersionPropertySyntax : MetaSyntaxNode
+	{
+	    private IntegerLiteralSyntax integerLiteral;
+	
+	    public MinorVersionPropertySyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public MinorVersionPropertySyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken IMinorVersion 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MinorVersionPropertyGreen)this.Green;
+				var greenToken = green.IMinorVersion;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public SyntaxToken TAssign 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MinorVersionPropertyGreen)this.Green;
+				var greenToken = green.TAssign;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public IntegerLiteralSyntax IntegerLiteral 
+		{ 
+			get { return this.GetRed(ref this.integerLiteral, 2); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 2: return this.GetRed(ref this.integerLiteral, 2);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 2: return this.integerLiteral;
+				default: return null;
+	        }
+	    }
+	
+	    public MinorVersionPropertySyntax WithIMinorVersion(SyntaxToken iMinorVersion)
+		{
+			return this.Update(IMinorVersion, this.TAssign, this.IntegerLiteral);
+		}
+	
+	    public MinorVersionPropertySyntax WithTAssign(SyntaxToken tAssign)
+		{
+			return this.Update(this.IMinorVersion, TAssign, this.IntegerLiteral);
+		}
+	
+	    public MinorVersionPropertySyntax WithIntegerLiteral(IntegerLiteralSyntax integerLiteral)
+		{
+			return this.Update(this.IMinorVersion, this.TAssign, IntegerLiteral);
+		}
+	
+	    public MinorVersionPropertySyntax Update(SyntaxToken iMinorVersion, SyntaxToken tAssign, IntegerLiteralSyntax integerLiteral)
+	    {
+	        if (this.IMinorVersion != iMinorVersion ||
+				this.TAssign != tAssign ||
+				this.IntegerLiteral != integerLiteral)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.MinorVersionProperty(iMinorVersion, tAssign, integerLiteral);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (MinorVersionPropertySyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMinorVersionProperty(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitMinorVersionProperty(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitMinorVersionProperty(this);
 	    }
 	}
 	
@@ -7520,7 +7618,9 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax node);
 		
-		void VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node);
+		void VisitMajorVersionProperty(MajorVersionPropertySyntax node);
+		
+		void VisitMinorVersionProperty(MinorVersionPropertySyntax node);
 		
 		void VisitDeclaration(DeclarationSyntax node);
 		
@@ -7716,7 +7816,12 @@ namespace MetaDslx.Languages.Meta
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node)
+		public virtual void VisitMajorVersionProperty(MajorVersionPropertySyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitMinorVersionProperty(MinorVersionPropertySyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -8025,7 +8130,9 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax node, TArg argument);
 		
-		TResult VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node, TArg argument);
+		TResult VisitMajorVersionProperty(MajorVersionPropertySyntax node, TArg argument);
+		
+		TResult VisitMinorVersionProperty(MinorVersionPropertySyntax node, TArg argument);
 		
 		TResult VisitDeclaration(DeclarationSyntax node, TArg argument);
 		
@@ -8221,7 +8328,12 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node, TArg argument)
+		public virtual TResult VisitMajorVersionProperty(MajorVersionPropertySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitMinorVersionProperty(MinorVersionPropertySyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -8528,7 +8640,9 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax node);
 		
-		TResult VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node);
+		TResult VisitMajorVersionProperty(MajorVersionPropertySyntax node);
+		
+		TResult VisitMinorVersionProperty(MinorVersionPropertySyntax node);
 		
 		TResult VisitDeclaration(DeclarationSyntax node);
 		
@@ -8724,7 +8838,12 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node)
+		public virtual TResult VisitMajorVersionProperty(MajorVersionPropertySyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitMinorVersionProperty(MinorVersionPropertySyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -9148,11 +9267,17 @@ namespace MetaDslx.Languages.Meta
 			    var newMetamodelPrefixProperty = (MetamodelPrefixPropertySyntax)this.Visit(oldMetamodelPrefixProperty);
 				return node.Update(newMetamodelPrefixProperty);
 			}
-			var oldMetamodelVersionProperty = node.MetamodelVersionProperty;
-			if (oldMetamodelVersionProperty != null)
+			var oldMajorVersionProperty = node.MajorVersionProperty;
+			if (oldMajorVersionProperty != null)
 			{
-			    var newMetamodelVersionProperty = (MetamodelVersionPropertySyntax)this.Visit(oldMetamodelVersionProperty);
-				return node.Update(newMetamodelVersionProperty);
+			    var newMajorVersionProperty = (MajorVersionPropertySyntax)this.Visit(oldMajorVersionProperty);
+				return node.Update(newMajorVersionProperty);
+			}
+			var oldMinorVersionProperty = node.MinorVersionProperty;
+			if (oldMinorVersionProperty != null)
+			{
+			    var newMinorVersionProperty = (MinorVersionPropertySyntax)this.Visit(oldMinorVersionProperty);
+				return node.Update(newMinorVersionProperty);
 			}
 			return node;   
 		}
@@ -9173,14 +9298,20 @@ namespace MetaDslx.Languages.Meta
 			return node.Update(iPrefix, tAssign, stringLiteral);
 		}
 		
-		public virtual SyntaxNode VisitMetamodelVersionProperty(MetamodelVersionPropertySyntax node)
+		public virtual SyntaxNode VisitMajorVersionProperty(MajorVersionPropertySyntax node)
 		{
-		    var iVersion = this.VisitToken(node.IVersion);
+		    var iMajorVersion = this.VisitToken(node.IMajorVersion);
 		    var tAssign = this.VisitToken(node.TAssign);
-		    var major = (IntegerLiteralSyntax)this.Visit(node.Major);
-		    var tDot = this.VisitToken(node.TDot);
-		    var minor = (IntegerLiteralSyntax)this.Visit(node.Minor);
-			return node.Update(iVersion, tAssign, major, tDot, minor);
+		    var integerLiteral = (IntegerLiteralSyntax)this.Visit(node.IntegerLiteral);
+			return node.Update(iMajorVersion, tAssign, integerLiteral);
+		}
+		
+		public virtual SyntaxNode VisitMinorVersionProperty(MinorVersionPropertySyntax node)
+		{
+		    var iMinorVersion = this.VisitToken(node.IMinorVersion);
+		    var tAssign = this.VisitToken(node.TAssign);
+		    var integerLiteral = (IntegerLiteralSyntax)this.Visit(node.IntegerLiteral);
+			return node.Update(iMinorVersion, tAssign, integerLiteral);
 		}
 		
 		public virtual SyntaxNode VisitDeclaration(DeclarationSyntax node)
@@ -10134,10 +10265,16 @@ namespace MetaDslx.Languages.Meta
 		    return (MetamodelPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelProperty((Syntax.InternalSyntax.MetamodelPrefixPropertyGreen)metamodelPrefixProperty.Green).CreateRed();
 		}
 		
-		public MetamodelPropertySyntax MetamodelProperty(MetamodelVersionPropertySyntax metamodelVersionProperty)
+		public MetamodelPropertySyntax MetamodelProperty(MajorVersionPropertySyntax majorVersionProperty)
 		{
-		    if (metamodelVersionProperty == null) throw new ArgumentNullException(nameof(metamodelVersionProperty));
-		    return (MetamodelPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelProperty((Syntax.InternalSyntax.MetamodelVersionPropertyGreen)metamodelVersionProperty.Green).CreateRed();
+		    if (majorVersionProperty == null) throw new ArgumentNullException(nameof(majorVersionProperty));
+		    return (MetamodelPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelProperty((Syntax.InternalSyntax.MajorVersionPropertyGreen)majorVersionProperty.Green).CreateRed();
+		}
+		
+		public MetamodelPropertySyntax MetamodelProperty(MinorVersionPropertySyntax minorVersionProperty)
+		{
+		    if (minorVersionProperty == null) throw new ArgumentNullException(nameof(minorVersionProperty));
+		    return (MetamodelPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelProperty((Syntax.InternalSyntax.MinorVersionPropertyGreen)minorVersionProperty.Green).CreateRed();
 		}
 		
 		public MetamodelUriPropertySyntax MetamodelUriProperty(SyntaxToken iUri, SyntaxToken tAssign, StringLiteralSyntax stringLiteral)
@@ -10170,22 +10307,34 @@ namespace MetaDslx.Languages.Meta
 			return this.MetamodelPrefixProperty(this.Token(MetaSyntaxKind.IPrefix), this.Token(MetaSyntaxKind.TAssign), stringLiteral);
 		}
 		
-		public MetamodelVersionPropertySyntax MetamodelVersionProperty(SyntaxToken iVersion, SyntaxToken tAssign, IntegerLiteralSyntax major, SyntaxToken tDot, IntegerLiteralSyntax minor)
+		public MajorVersionPropertySyntax MajorVersionProperty(SyntaxToken iMajorVersion, SyntaxToken tAssign, IntegerLiteralSyntax integerLiteral)
 		{
-		    if (iVersion == null) throw new ArgumentNullException(nameof(iVersion));
-		    if (iVersion.GetKind() != MetaSyntaxKind.IVersion) throw new ArgumentException(nameof(iVersion));
+		    if (iMajorVersion == null) throw new ArgumentNullException(nameof(iMajorVersion));
+		    if (iMajorVersion.GetKind() != MetaSyntaxKind.IMajorVersion) throw new ArgumentException(nameof(iMajorVersion));
 		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
 		    if (tAssign.GetKind() != MetaSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-		    if (major == null) throw new ArgumentNullException(nameof(major));
-		    if (tDot == null) throw new ArgumentNullException(nameof(tDot));
-		    if (tDot.GetKind() != MetaSyntaxKind.TDot) throw new ArgumentException(nameof(tDot));
-		    if (minor == null) throw new ArgumentNullException(nameof(minor));
-		    return (MetamodelVersionPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelVersionProperty((InternalSyntaxToken)iVersion.Node, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.IntegerLiteralGreen)major.Green, (InternalSyntaxToken)tDot.Node, (Syntax.InternalSyntax.IntegerLiteralGreen)minor.Green).CreateRed();
+		    if (integerLiteral == null) throw new ArgumentNullException(nameof(integerLiteral));
+		    return (MajorVersionPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.MajorVersionProperty((InternalSyntaxToken)iMajorVersion.Node, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.IntegerLiteralGreen)integerLiteral.Green).CreateRed();
 		}
 		
-		public MetamodelVersionPropertySyntax MetamodelVersionProperty(IntegerLiteralSyntax major, IntegerLiteralSyntax minor)
+		public MajorVersionPropertySyntax MajorVersionProperty(IntegerLiteralSyntax integerLiteral)
 		{
-			return this.MetamodelVersionProperty(this.Token(MetaSyntaxKind.IVersion), this.Token(MetaSyntaxKind.TAssign), major, this.Token(MetaSyntaxKind.TDot), minor);
+			return this.MajorVersionProperty(this.Token(MetaSyntaxKind.IMajorVersion), this.Token(MetaSyntaxKind.TAssign), integerLiteral);
+		}
+		
+		public MinorVersionPropertySyntax MinorVersionProperty(SyntaxToken iMinorVersion, SyntaxToken tAssign, IntegerLiteralSyntax integerLiteral)
+		{
+		    if (iMinorVersion == null) throw new ArgumentNullException(nameof(iMinorVersion));
+		    if (iMinorVersion.GetKind() != MetaSyntaxKind.IMinorVersion) throw new ArgumentException(nameof(iMinorVersion));
+		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
+		    if (tAssign.GetKind() != MetaSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
+		    if (integerLiteral == null) throw new ArgumentNullException(nameof(integerLiteral));
+		    return (MinorVersionPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.MinorVersionProperty((InternalSyntaxToken)iMinorVersion.Node, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.IntegerLiteralGreen)integerLiteral.Green).CreateRed();
+		}
+		
+		public MinorVersionPropertySyntax MinorVersionProperty(IntegerLiteralSyntax integerLiteral)
+		{
+			return this.MinorVersionProperty(this.Token(MetaSyntaxKind.IMinorVersion), this.Token(MetaSyntaxKind.TAssign), integerLiteral);
 		}
 		
 		public DeclarationSyntax Declaration(EnumDeclarationSyntax enumDeclaration)
@@ -10870,7 +11019,8 @@ namespace MetaDslx.Languages.Meta
 				typeof(MetamodelPropertySyntax),
 				typeof(MetamodelUriPropertySyntax),
 				typeof(MetamodelPrefixPropertySyntax),
-				typeof(MetamodelVersionPropertySyntax),
+				typeof(MajorVersionPropertySyntax),
+				typeof(MinorVersionPropertySyntax),
 				typeof(DeclarationSyntax),
 				typeof(EnumDeclarationSyntax),
 				typeof(EnumBodySyntax),

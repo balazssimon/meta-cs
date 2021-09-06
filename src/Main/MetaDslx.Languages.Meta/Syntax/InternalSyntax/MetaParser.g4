@@ -50,13 +50,16 @@ metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyLi
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
 
-metamodelProperty : metamodelUriProperty | metamodelPrefixProperty | metamodelVersionProperty;
+metamodelProperty : metamodelUriProperty | metamodelPrefixProperty | majorVersionProperty | minorVersionProperty;
 
               
 metamodelUriProperty : IUri TAssign        stringLiteral;
                  
 metamodelPrefixProperty : IPrefix TAssign        stringLiteral;
-metamodelVersionProperty : IVersion TAssign                                major=integerLiteral TDot                                minor=integerLiteral;
+                       
+majorVersionProperty : IMajorVersion TAssign        integerLiteral;
+                       
+minorVersionProperty : IMinorVersion TAssign        integerLiteral;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
@@ -203,7 +206,8 @@ identifier
 	| IdentifierVerbatim
 	| IUri
 	| IPrefix
-	| IVersion
+	| IMajorVersion
+	| IMinorVersion
 	;
 
 // Literals

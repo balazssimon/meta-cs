@@ -118,7 +118,8 @@ TBarAssign : '|=';
 
 IUri : 'Uri';
 IPrefix : 'Prefix';
-IVersion : 'Version';
+IMajorVersion : 'MajorVersion';
+IMinorVersion : 'MinorVersion';
 
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
 $Token(kind=Identifier, defaultIdentifier=true)

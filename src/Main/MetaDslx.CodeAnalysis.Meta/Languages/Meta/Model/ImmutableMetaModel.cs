@@ -1345,7 +1345,7 @@ namespace MetaDslx.Languages.Meta.Model
 		{
 		}
 	
-		public const string MUri = "http://metadslx.core/1.0";
+		public const string MUri = "http://MetaDslx.Languages.Meta/1.0";
 		public const string MPrefix = "";
 	
 		///
@@ -8295,7 +8295,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 		internal MetaBuilderInstance()
 		{
-			this.MMetadata = new MetaMetadata(name: "Meta", version: new global::MetaDslx.Modeling.ModelVersion(0, 0), uri: "http://metadslx.core/1.0", prefix: "", namespaceName: "MetaDslx.Languages.Meta.Model");
+			this.MMetadata = new MetaMetadata(name: "Meta", version: new global::MetaDslx.Modeling.ModelVersion(1, 0), uri: "http://MetaDslx.Languages.Meta/1.0", prefix: "Meta", namespaceName: "MetaDslx.Languages.Meta.Model");
 			this.MModel = new global::MetaDslx.Modeling.MutableModel(this.MMetadata);
 		}
 	
@@ -8560,9 +8560,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp4.Declarations.AddLazy(() => MetaProperty);
 			__tmp5.Documentation = "\n\tRepresents the MetaModel.\n\t\r\n";
 			__tmp5.Name = "Meta";
-			__tmp5.MajorVersion = 0;
+			__tmp5.MajorVersion = 1;
 			__tmp5.MinorVersion = 0;
-			__tmp5.Uri = "http://metadslx.core/1.0";
+			__tmp5.Uri = "http://MetaDslx.Languages.Meta/1.0";
 			__tmp5.Prefix = null;
 			__tmp5.SetNamespaceLazy(() => __tmp4);
 			__tmp6.SetTypeLazy(() => MetaPrimitiveType);

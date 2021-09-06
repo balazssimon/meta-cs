@@ -859,12 +859,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseMetamodelVersionProperty(ref ParserState state)
+		public GreenNode ParseMajorVersionProperty(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.metamodelVersionProperty();
+				var context = this.Antlr4Parser.majorVersionProperty();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -874,27 +874,27 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseMetamodelVersionProperty(MetamodelVersionPropertySyntax node)
+		protected virtual bool CanReuseMajorVersionProperty(MajorVersionPropertySyntax node)
 		{
 			return node != null;
 		}
 		
-		internal MetaParser.MetamodelVersionPropertyContext _Antlr4ParseMetamodelVersionProperty()
+		internal MetaParser.MajorVersionPropertyContext _Antlr4ParseMajorVersionProperty()
 		{
 			BeginNode();
 		    bool cached = false;
-		    MetaParser.MetamodelVersionPropertyContext context = null;
+		    MetaParser.MajorVersionPropertyContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseMetamodelVersionProperty(CurrentNode as MetamodelVersionPropertySyntax);
+		        cached = IsIncremental && CanReuseMajorVersionProperty(CurrentNode as MajorVersionPropertySyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseMetamodelVersionProperty();
+					context = this.Antlr4Parser._DoParseMajorVersionProperty();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -903,7 +903,58 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new MetaParser.MetamodelVersionPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new MetaParser.MajorVersionPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseMinorVersionProperty(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.minorVersionProperty();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseMinorVersionProperty(MinorVersionPropertySyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.MinorVersionPropertyContext _Antlr4ParseMinorVersionProperty()
+		{
+			BeginNode();
+		    bool cached = false;
+		    MetaParser.MinorVersionPropertyContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseMinorVersionProperty(CurrentNode as MinorVersionPropertySyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseMinorVersionProperty();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.MinorVersionPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -3936,10 +3987,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					return _factory.MetamodelProperty((MetamodelPrefixPropertyGreen)this.Visit(metamodelPrefixPropertyContext));
 				}
-				MetaParser.MetamodelVersionPropertyContext metamodelVersionPropertyContext = context.metamodelVersionProperty();
-				if (metamodelVersionPropertyContext != null) 
+				MetaParser.MajorVersionPropertyContext majorVersionPropertyContext = context.majorVersionProperty();
+				if (majorVersionPropertyContext != null) 
 				{
-					return _factory.MetamodelProperty((MetamodelVersionPropertyGreen)this.Visit(metamodelVersionPropertyContext));
+					return _factory.MetamodelProperty((MajorVersionPropertyGreen)this.Visit(majorVersionPropertyContext));
+				}
+				MetaParser.MinorVersionPropertyContext minorVersionPropertyContext = context.minorVersionProperty();
+				if (minorVersionPropertyContext != null) 
+				{
+					return _factory.MetamodelProperty((MinorVersionPropertyGreen)this.Visit(minorVersionPropertyContext));
 				}
 				return MetamodelPropertyGreen.__Missing;
 			}
@@ -3968,21 +4024,28 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				return _factory.MetamodelPrefixProperty(iPrefix, tAssign, stringLiteral);
 			}
 			
-			public override GreenNode VisitMetamodelVersionProperty(MetaParser.MetamodelVersionPropertyContext context)
+			public override GreenNode VisitMajorVersionProperty(MetaParser.MajorVersionPropertyContext context)
 			{
-				if (context == null) return MetamodelVersionPropertyGreen.__Missing;
-				InternalSyntaxToken iVersion = (InternalSyntaxToken)this.VisitTerminal(context.IVersion(), MetaSyntaxKind.IVersion);
+				if (context == null) return MajorVersionPropertyGreen.__Missing;
+				InternalSyntaxToken iMajorVersion = (InternalSyntaxToken)this.VisitTerminal(context.IMajorVersion(), MetaSyntaxKind.IMajorVersion);
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), MetaSyntaxKind.TAssign);
-				MetaParser.IntegerLiteralContext majorContext = context.major;
-				IntegerLiteralGreen major = null;
-				if (majorContext != null) major = (IntegerLiteralGreen)this.Visit(majorContext);
-				if (major == null) major = IntegerLiteralGreen.__Missing;
-				InternalSyntaxToken tDot = (InternalSyntaxToken)this.VisitTerminal(context.TDot(), MetaSyntaxKind.TDot);
-				MetaParser.IntegerLiteralContext minorContext = context.minor;
-				IntegerLiteralGreen minor = null;
-				if (minorContext != null) minor = (IntegerLiteralGreen)this.Visit(minorContext);
-				if (minor == null) minor = IntegerLiteralGreen.__Missing;
-				return _factory.MetamodelVersionProperty(iVersion, tAssign, major, tDot, minor);
+				MetaParser.IntegerLiteralContext integerLiteralContext = context.integerLiteral();
+				IntegerLiteralGreen integerLiteral = null;
+				if (integerLiteralContext != null) integerLiteral = (IntegerLiteralGreen)this.Visit(integerLiteralContext);
+				if (integerLiteral == null) integerLiteral = IntegerLiteralGreen.__Missing;
+				return _factory.MajorVersionProperty(iMajorVersion, tAssign, integerLiteral);
+			}
+			
+			public override GreenNode VisitMinorVersionProperty(MetaParser.MinorVersionPropertyContext context)
+			{
+				if (context == null) return MinorVersionPropertyGreen.__Missing;
+				InternalSyntaxToken iMinorVersion = (InternalSyntaxToken)this.VisitTerminal(context.IMinorVersion(), MetaSyntaxKind.IMinorVersion);
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), MetaSyntaxKind.TAssign);
+				MetaParser.IntegerLiteralContext integerLiteralContext = context.integerLiteral();
+				IntegerLiteralGreen integerLiteral = null;
+				if (integerLiteralContext != null) integerLiteral = (IntegerLiteralGreen)this.Visit(integerLiteralContext);
+				if (integerLiteral == null) integerLiteral = IntegerLiteralGreen.__Missing;
+				return _factory.MinorVersionProperty(iMinorVersion, tAssign, integerLiteral);
 			}
 			
 			public override GreenNode VisitDeclaration(MetaParser.DeclarationContext context)
@@ -4812,9 +4875,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					identifier = (InternalSyntaxToken)this.VisitTerminal(context.IPrefix());
 				}
-				else 	if (context.IVersion() != null)
+				else 	if (context.IMajorVersion() != null)
 				{
-					identifier = (InternalSyntaxToken)this.VisitTerminal(context.IVersion());
+					identifier = (InternalSyntaxToken)this.VisitTerminal(context.IMajorVersion());
+				}
+				else 	if (context.IMinorVersion() != null)
+				{
+					identifier = (InternalSyntaxToken)this.VisitTerminal(context.IMinorVersion());
 				}
 				else
 				{
@@ -5093,10 +5160,21 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class MetamodelVersionPropertyContext_Cached : MetamodelVersionPropertyContext, ICachedRuleContext
+		internal class MajorVersionPropertyContext_Cached : MajorVersionPropertyContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public MetamodelVersionPropertyContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public MajorVersionPropertyContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class MinorVersionPropertyContext_Cached : MinorVersionPropertyContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public MinorVersionPropertyContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

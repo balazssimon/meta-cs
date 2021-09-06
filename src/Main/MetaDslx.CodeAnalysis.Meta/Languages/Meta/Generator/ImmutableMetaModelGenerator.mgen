@@ -232,7 +232,7 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	internal [model.CSharpName(ModelKind.BuilderInstance)]()
 	{
-		this.MMetadata = new [model.CSharpName(ModelKind.Metadata)](name: "[model.CSharpName()]", version: new [Properties.CoreNs].ModelVersion([model.MajorVersion], [model.MinorVersion]), uri: "[model.Uri]", prefix: "[model.Prefix]", namespaceName: "[model.Namespace.CSharpName(NamespaceKind.Public, true)]");
+		this.MMetadata = new [model.CSharpName(ModelKind.Metadata)](name: "[model.CSharpName()]", version: new [Properties.CoreNs].ModelVersion([model.MajorVersion], [model.MinorVersion]), uri: "[model.Uri]", prefix: "[model.Prefix != null ? model.Prefix : model.CSharpName()]", namespaceName: "[model.Namespace.CSharpName(NamespaceKind.Public, true)]");
 		[if (metaMetaModel)]
 		this.MModel = new [Properties.CoreNs].MutableModel(this.MMetadata);
 		[else if (model.MModel.ModelGroup != null)]
