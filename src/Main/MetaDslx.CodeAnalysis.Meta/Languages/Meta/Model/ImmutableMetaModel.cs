@@ -1,6 +1,3 @@
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,45 +11,36 @@ namespace MetaDslx.Languages.Meta.Model
 {
 	using global::MetaDslx.Languages.Meta.Model.Internal;
 
-	internal class MetaMetaModel : global::MetaDslx.Modeling.IMetaModel
+	public class MetaMetadata : global::MetaDslx.Modeling.ModelMetadata
 	{
-		internal MetaMetaModel()
+		public MetaMetadata(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
+			: base(name, version, uri, prefix, namespaceName)
 		{
 		}
-	
-		public global::MetaDslx.Modeling.ModelId Id => MetaInstance.MModel.Id;
-		public global::MetaDslx.Modeling.ModelMetadata Metadata => MetaInstance.MModel.Metadata;
-		public string Name => "Meta";
-		public global::MetaDslx.Modeling.ModelVersion Version => MetaInstance.MModel.Metadata.Version;
-		public global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> Objects => MetaInstance.MModel.Objects;
-		public string Uri => "http://metadslx.core/1.0";
-		public string Prefix => "";
-		public global::MetaDslx.Modeling.IModelGroup ModelGroup => MetaInstance.MModel.ModelGroup;
-		public string Namespace => "MetaDslx.Languages.Meta.Model";
-	
-		public global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
+
+		protected override global::MetaDslx.Modeling.ModelMetadata Create(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
+		{
+			return new MetaMetadata(name, version, uri, prefix, namespaceName);
+		}
+
+		public override global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
 		{
 			return new MetaFactory(model, flags);
 		}
-	
-	    public override string ToString()
-	    {
-	        return $"{Name} ({Version})";
-	    }
 	}
 
 	public class MetaInstance
 	{
 		private static bool initialized;
-	
+
 		public static bool IsInitialized
 		{
 			get { return MetaInstance.initialized; }
 		}
-	
-		public static readonly global::MetaDslx.Modeling.IMetaModel MMetaModel;
+
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaMetadata MMetadata;
 		public static readonly global::MetaDslx.Modeling.ImmutableModel MModel;
-	
+
 		public static readonly MetaPrimitiveType Object;
 		public static readonly MetaPrimitiveType String;
 		public static readonly MetaPrimitiveType Int;
@@ -65,7 +53,7 @@ namespace MetaDslx.Languages.Meta.Model
 		public static readonly MetaPrimitiveType SystemType;
 		public static readonly MetaPrimitiveType Model;
 		public static readonly MetaPrimitiveType ModelObject;
-	
+
 		///
 		///	Represents an element.
 		///	
@@ -132,14 +120,14 @@ namespace MetaDslx.Languages.Meta.Model
 		public static readonly MetaProperty MetaProperty_SubsettingProperties;
 		public static readonly MetaProperty MetaProperty_RedefinedProperties;
 		public static readonly MetaProperty MetaProperty_RedefiningProperties;
-	
+
 		static MetaInstance()
 		{
 			MetaBuilderInstance.instance.Create();
 			MetaBuilderInstance.instance.EvaluateLazyValues();
-			MMetaModel = new MetaMetaModel();
+			MMetadata = MetaBuilderInstance.instance.MMetadata;
 			MModel = MetaBuilderInstance.instance.MModel.ToImmutable();
-	
+
 			Object = MetaBuilderInstance.instance.Object.ToImmutable(MModel);
 			String = MetaBuilderInstance.instance.String.ToImmutable(MModel);
 			Int = MetaBuilderInstance.instance.Int.ToImmutable(MModel);
@@ -152,7 +140,7 @@ namespace MetaDslx.Languages.Meta.Model
 			SystemType = MetaBuilderInstance.instance.SystemType.ToImmutable(MModel);
 			Model = MetaBuilderInstance.instance.Model.ToImmutable(MModel);
 			ModelObject = MetaBuilderInstance.instance.ModelObject.ToImmutable(MModel);
-	
+
 			MetaElement = MetaBuilderInstance.instance.MetaElement.ToImmutable(MModel);
 			MetaElement_Attributes = MetaBuilderInstance.instance.MetaElement_Attributes.ToImmutable(MModel);
 			MetaDocumentedElement = MetaBuilderInstance.instance.MetaDocumentedElement.ToImmutable(MModel);
@@ -216,7 +204,7 @@ namespace MetaDslx.Languages.Meta.Model
 			MetaProperty_SubsettingProperties = MetaBuilderInstance.instance.MetaProperty_SubsettingProperties.ToImmutable(MModel);
 			MetaProperty_RedefinedProperties = MetaBuilderInstance.instance.MetaProperty_RedefinedProperties.ToImmutable(MModel);
 			MetaProperty_RedefiningProperties = MetaBuilderInstance.instance.MetaProperty_RedefiningProperties.ToImmutable(MModel);
-	
+
 			MetaInstance.initialized = true;
 		}
 	}
@@ -231,9 +219,9 @@ namespace MetaDslx.Languages.Meta.Model
 		{
 			MetaDescriptor.Initialize();
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel;
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
 		public override global::MetaDslx.Modeling.MutableObject Create(string type)
 		{
 			switch (type)
@@ -256,7 +244,7 @@ namespace MetaDslx.Languages.Meta.Model
 					throw new global::MetaDslx.Modeling.ModelException(global::MetaDslx.Modeling.ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(type));
 			}
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaNamedType.
 		/// </summary>
@@ -265,7 +253,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaNamedTypeId());
 			return (MetaNamedTypeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaAttribute.
 		/// </summary>
@@ -274,7 +262,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaAttributeId());
 			return (MetaAttributeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaNamespace.
 		/// </summary>
@@ -283,7 +271,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaNamespaceId());
 			return (MetaNamespaceBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaModel.
 		/// </summary>
@@ -292,7 +280,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaModelId());
 			return (MetaModelBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaCollectionType.
 		/// </summary>
@@ -301,7 +289,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaCollectionTypeId());
 			return (MetaCollectionTypeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaNullableType.
 		/// </summary>
@@ -310,7 +298,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaNullableTypeId());
 			return (MetaNullableTypeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaPrimitiveType.
 		/// </summary>
@@ -319,7 +307,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaPrimitiveTypeId());
 			return (MetaPrimitiveTypeBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaEnum.
 		/// </summary>
@@ -328,7 +316,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaEnumId());
 			return (MetaEnumBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaEnumLiteral.
 		/// </summary>
@@ -337,7 +325,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaEnumLiteralId());
 			return (MetaEnumLiteralBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaConstant.
 		/// </summary>
@@ -346,7 +334,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaConstantId());
 			return (MetaConstantBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaClass.
 		/// </summary>
@@ -355,7 +343,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaClassId());
 			return (MetaClassBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaOperation.
 		/// </summary>
@@ -364,7 +352,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaOperationId());
 			return (MetaOperationBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaParameter.
 		/// </summary>
@@ -373,7 +361,7 @@ namespace MetaDslx.Languages.Meta.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaParameterId());
 			return (MetaParameterBuilder)obj;
 		}
-	
+
 		/// <summary>
 		/// Creates a new instance of MetaProperty.
 		/// </summary>
@@ -384,7 +372,7 @@ namespace MetaDslx.Languages.Meta.Model
 		}
 	}
 
-	
+
 	public enum MetaCollectionKind
 	{
 		List,
@@ -392,11 +380,11 @@ namespace MetaDslx.Languages.Meta.Model
 		MultiList,
 		MultiSet
 	}
-	
+
 	public static class MetaCollectionKindExtensions
 	{
 	}
-	
+
 	public enum MetaPropertyKind
 	{
 		Normal,
@@ -405,19 +393,19 @@ namespace MetaDslx.Languages.Meta.Model
 		Derived,
 		DerivedUnion
 	}
-	
+
 	public static class MetaPropertyKindExtensions
 	{
 	}
-	
+
 	///
 	///	Represents an element.
 	///	
 	public interface MetaElement : global::MetaDslx.Modeling.ImmutableObject
 	{
 		global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaElement"/> object to a builder <see cref="MetaElementBuilder"/> object.
 		/// </summary>
@@ -429,15 +417,15 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	///
 	///	Represents an element.
 	///	
 	public interface MetaElementBuilder : global::MetaDslx.Modeling.MutableObject
 	{
 		global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaElementBuilder"/> object to an immutable <see cref="MetaElement"/> object.
 		/// </summary>
@@ -449,12 +437,12 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaDocumentedElement : MetaElement
 	{
-		String Documentation { get; }
-	
-	
+		string Documentation { get; }
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaDocumentedElement"/> object to a builder <see cref="MetaDocumentedElementBuilder"/> object.
 		/// </summary>
@@ -466,15 +454,15 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaDocumentedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaDocumentedElementBuilder : MetaElementBuilder
 	{
-		String Documentation { get; set; }
-		void SetDocumentationLazy(global::System.Func<String> lazy);
-		void SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy);
-		void SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy);
-	
-	
+		string Documentation { get; set; }
+		void SetDocumentationLazy(global::System.Func<string> lazy);
+		void SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy);
+		void SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy);
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaDocumentedElementBuilder"/> object to an immutable <see cref="MetaDocumentedElement"/> object.
 		/// </summary>
@@ -486,12 +474,12 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaDocumentedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaNamedElement : MetaDocumentedElement
 	{
-		String Name { get; }
-	
-	
+		string Name { get; }
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaNamedElement"/> object to a builder <see cref="MetaNamedElementBuilder"/> object.
 		/// </summary>
@@ -503,15 +491,15 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaNamedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaNamedElementBuilder : MetaDocumentedElementBuilder
 	{
-		String Name { get; set; }
-		void SetNameLazy(global::System.Func<String> lazy);
-		void SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy);
-		void SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy);
-	
-	
+		string Name { get; set; }
+		void SetNameLazy(global::System.Func<string> lazy);
+		void SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy);
+		void SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy);
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaNamedElementBuilder"/> object to an immutable <see cref="MetaNamedElement"/> object.
 		/// </summary>
@@ -523,12 +511,12 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaNamedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaTypedElement : MetaElement
 	{
 		MetaType Type { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaTypedElement"/> object to a builder <see cref="MetaTypedElementBuilder"/> object.
 		/// </summary>
@@ -540,15 +528,15 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaTypedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaTypedElementBuilder : MetaElementBuilder
 	{
 		MetaTypeBuilder Type { get; set; }
 		void SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy);
 		void SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy);
 		void SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaTypedElementBuilder"/> object to an immutable <see cref="MetaTypedElement"/> object.
 		/// </summary>
@@ -560,12 +548,12 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaTypedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaType : global::MetaDslx.Modeling.ImmutableObject
 	{
-	
+
 		bool ConformsTo(MetaType @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaType"/> object to a builder <see cref="MetaTypeBuilder"/> object.
 		/// </summary>
@@ -577,12 +565,12 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaTypeBuilder : global::MetaDslx.Modeling.MutableObject
 	{
-	
+
 		bool ConformsTo(MetaTypeBuilder @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaTypeBuilder"/> object to an immutable <see cref="MetaType"/> object.
 		/// </summary>
@@ -594,11 +582,11 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaNamedType : MetaType, MetaDeclaration
 	{
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaNamedType"/> object to a builder <see cref="MetaNamedTypeBuilder"/> object.
 		/// </summary>
@@ -610,11 +598,11 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaNamedTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaNamedTypeBuilder : MetaTypeBuilder, MetaDeclarationBuilder
 	{
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaNamedTypeBuilder"/> object to an immutable <see cref="MetaNamedType"/> object.
 		/// </summary>
@@ -626,11 +614,11 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaNamedType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaAttribute : MetaNamedType
 	{
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaAttribute"/> object to a builder <see cref="MetaAttributeBuilder"/> object.
 		/// </summary>
@@ -642,11 +630,11 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaAttributeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaAttributeBuilder : MetaNamedTypeBuilder
 	{
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaAttributeBuilder"/> object to an immutable <see cref="MetaAttribute"/> object.
 		/// </summary>
@@ -658,14 +646,14 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaAttribute ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaDeclaration : MetaNamedElement
 	{
 		MetaNamespace Namespace { get; }
 		MetaModel MetaModel { get; }
-		String FullName { get; }
-	
-	
+		string FullName { get; }
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaDeclaration"/> object to a builder <see cref="MetaDeclarationBuilder"/> object.
 		/// </summary>
@@ -677,7 +665,7 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaDeclarationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaDeclarationBuilder : MetaNamedElementBuilder
 	{
 		MetaNamespaceBuilder Namespace { get; set; }
@@ -688,12 +676,12 @@ namespace MetaDslx.Languages.Meta.Model
 		void SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy);
 		void SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy);
 		void SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy);
-		String FullName { get; }
-		void SetFullNameLazy(global::System.Func<String> lazy);
-		void SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy);
-		void SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy);
-	
-	
+		string FullName { get; }
+		void SetFullNameLazy(global::System.Func<string> lazy);
+		void SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy);
+		void SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy);
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaDeclarationBuilder"/> object to an immutable <see cref="MetaDeclaration"/> object.
 		/// </summary>
@@ -705,13 +693,13 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaDeclaration ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaNamespace : MetaDeclaration
 	{
 		MetaModel DefinedMetaModel { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaDeclaration> Declarations { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaNamespace"/> object to a builder <see cref="MetaNamespaceBuilder"/> object.
 		/// </summary>
@@ -723,7 +711,7 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaNamespaceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaNamespaceBuilder : MetaDeclarationBuilder
 	{
 		MetaModelBuilder DefinedMetaModel { get; set; }
@@ -731,8 +719,8 @@ namespace MetaDslx.Languages.Meta.Model
 		void SetDefinedMetaModelLazy(global::System.Func<MetaNamespaceBuilder, MetaModelBuilder> lazy);
 		void SetDefinedMetaModelLazy(global::System.Func<MetaNamespace, MetaModel> immutableLazy, global::System.Func<MetaNamespaceBuilder, MetaModelBuilder> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<MetaDeclarationBuilder> Declarations { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaNamespaceBuilder"/> object to an immutable <see cref="MetaNamespace"/> object.
 		/// </summary>
@@ -744,18 +732,14 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaNamespace ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
-	public interface MetaModel : MetaNamedElement, global::MetaDslx.Modeling.IMetaModel
+
+	public interface MetaModel : MetaNamedElement
 	{
-		/// <summary>
-		/// The name of the metamodel.
-		/// </summary>
-		new string Name { get; }
-		new String Uri { get; }
-		new String Prefix { get; }
+		new string Uri { get; }
+		new string Prefix { get; }
 		new MetaNamespace Namespace { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaModel"/> object to a builder <see cref="MetaModelBuilder"/> object.
 		/// </summary>
@@ -767,27 +751,23 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaModelBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
-	public interface MetaModelBuilder : MetaNamedElementBuilder, global::MetaDslx.Modeling.IMetaModel
+
+	public interface MetaModelBuilder : MetaNamedElementBuilder
 	{
-		/// <summary>
-		/// The name of the metamodel.
-		/// </summary>
-		new string Name { get; set; }
-		new String Uri { get; set; }
-		void SetUriLazy(global::System.Func<String> lazy);
-		void SetUriLazy(global::System.Func<MetaModelBuilder, String> lazy);
-		void SetUriLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy);
-		new String Prefix { get; set; }
-		void SetPrefixLazy(global::System.Func<String> lazy);
-		void SetPrefixLazy(global::System.Func<MetaModelBuilder, String> lazy);
-		void SetPrefixLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy);
+		new string Uri { get; set; }
+		void SetUriLazy(global::System.Func<string> lazy);
+		void SetUriLazy(global::System.Func<MetaModelBuilder, string> lazy);
+		void SetUriLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy);
+		new string Prefix { get; set; }
+		void SetPrefixLazy(global::System.Func<string> lazy);
+		void SetPrefixLazy(global::System.Func<MetaModelBuilder, string> lazy);
+		void SetPrefixLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy);
 		new MetaNamespaceBuilder Namespace { get; set; }
 		void SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy);
 		void SetNamespaceLazy(global::System.Func<MetaModelBuilder, MetaNamespaceBuilder> lazy);
 		void SetNamespaceLazy(global::System.Func<MetaModel, MetaNamespace> immutableLazy, global::System.Func<MetaModelBuilder, MetaNamespaceBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaModelBuilder"/> object to an immutable <see cref="MetaModel"/> object.
 		/// </summary>
@@ -799,14 +779,14 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaModel ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaCollectionType : MetaType
 	{
 		MetaCollectionKind Kind { get; }
 		MetaType InnerType { get; }
-	
+
 		bool ConformsTo(MetaType @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaCollectionType"/> object to a builder <see cref="MetaCollectionTypeBuilder"/> object.
 		/// </summary>
@@ -818,7 +798,7 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaCollectionTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaCollectionTypeBuilder : MetaTypeBuilder
 	{
 		MetaCollectionKind Kind { get; set; }
@@ -829,9 +809,9 @@ namespace MetaDslx.Languages.Meta.Model
 		void SetInnerTypeLazy(global::System.Func<MetaTypeBuilder> lazy);
 		void SetInnerTypeLazy(global::System.Func<MetaCollectionTypeBuilder, MetaTypeBuilder> lazy);
 		void SetInnerTypeLazy(global::System.Func<MetaCollectionType, MetaType> immutableLazy, global::System.Func<MetaCollectionTypeBuilder, MetaTypeBuilder> mutableLazy);
-	
+
 		bool ConformsTo(MetaTypeBuilder @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaCollectionTypeBuilder"/> object to an immutable <see cref="MetaCollectionType"/> object.
 		/// </summary>
@@ -843,13 +823,13 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaCollectionType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaNullableType : MetaType
 	{
 		MetaType InnerType { get; }
-	
+
 		bool ConformsTo(MetaType @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaNullableType"/> object to a builder <see cref="MetaNullableTypeBuilder"/> object.
 		/// </summary>
@@ -861,16 +841,16 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaNullableTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaNullableTypeBuilder : MetaTypeBuilder
 	{
 		MetaTypeBuilder InnerType { get; set; }
 		void SetInnerTypeLazy(global::System.Func<MetaTypeBuilder> lazy);
 		void SetInnerTypeLazy(global::System.Func<MetaNullableTypeBuilder, MetaTypeBuilder> lazy);
 		void SetInnerTypeLazy(global::System.Func<MetaNullableType, MetaType> immutableLazy, global::System.Func<MetaNullableTypeBuilder, MetaTypeBuilder> mutableLazy);
-	
+
 		bool ConformsTo(MetaTypeBuilder @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaNullableTypeBuilder"/> object to an immutable <see cref="MetaNullableType"/> object.
 		/// </summary>
@@ -882,13 +862,13 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaNullableType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaPrimitiveType : MetaNamedType
 	{
-		String DotNetName { get; }
-	
+		string DotNetName { get; }
+
 		bool ConformsTo(MetaType @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaPrimitiveType"/> object to a builder <see cref="MetaPrimitiveTypeBuilder"/> object.
 		/// </summary>
@@ -900,16 +880,16 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaPrimitiveTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaPrimitiveTypeBuilder : MetaNamedTypeBuilder
 	{
-		String DotNetName { get; set; }
-		void SetDotNetNameLazy(global::System.Func<String> lazy);
-		void SetDotNetNameLazy(global::System.Func<MetaPrimitiveTypeBuilder, String> lazy);
-		void SetDotNetNameLazy(global::System.Func<MetaPrimitiveType, String> immutableLazy, global::System.Func<MetaPrimitiveTypeBuilder, String> mutableLazy);
-	
+		string DotNetName { get; set; }
+		void SetDotNetNameLazy(global::System.Func<string> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaPrimitiveTypeBuilder, string> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaPrimitiveType, string> immutableLazy, global::System.Func<MetaPrimitiveTypeBuilder, string> mutableLazy);
+
 		bool ConformsTo(MetaTypeBuilder @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaPrimitiveTypeBuilder"/> object to an immutable <see cref="MetaPrimitiveType"/> object.
 		/// </summary>
@@ -921,13 +901,13 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaPrimitiveType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaEnum : MetaNamedType
 	{
 		global::MetaDslx.Modeling.ImmutableModelList<MetaEnumLiteral> EnumLiterals { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaOperation> Operations { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaEnum"/> object to a builder <see cref="MetaEnumBuilder"/> object.
 		/// </summary>
@@ -939,13 +919,13 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaEnumBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaEnumBuilder : MetaNamedTypeBuilder
 	{
 		global::MetaDslx.Modeling.MutableModelList<MetaEnumLiteralBuilder> EnumLiterals { get; }
 		global::MetaDslx.Modeling.MutableModelList<MetaOperationBuilder> Operations { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaEnumBuilder"/> object to an immutable <see cref="MetaEnum"/> object.
 		/// </summary>
@@ -957,12 +937,12 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaEnum ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaEnumLiteral : MetaNamedElement, MetaTypedElement
 	{
 		MetaEnum Enum { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaEnumLiteral"/> object to a builder <see cref="MetaEnumLiteralBuilder"/> object.
 		/// </summary>
@@ -974,15 +954,15 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaEnumLiteralBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaEnumLiteralBuilder : MetaNamedElementBuilder, MetaTypedElementBuilder
 	{
 		MetaEnumBuilder Enum { get; set; }
 		void SetEnumLazy(global::System.Func<MetaEnumBuilder> lazy);
 		void SetEnumLazy(global::System.Func<MetaEnumLiteralBuilder, MetaEnumBuilder> lazy);
 		void SetEnumLazy(global::System.Func<MetaEnumLiteral, MetaEnum> immutableLazy, global::System.Func<MetaEnumLiteralBuilder, MetaEnumBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaEnumLiteralBuilder"/> object to an immutable <see cref="MetaEnumLiteral"/> object.
 		/// </summary>
@@ -994,14 +974,14 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaEnumLiteral ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaConstant : MetaNamedType, MetaTypedElement
 	{
-		String DotNetName { get; }
+		string DotNetName { get; }
 		MetaDslx.Modeling.IModelObject Value { get; }
-	
+
 		bool ConformsTo(MetaType @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaConstant"/> object to a builder <see cref="MetaConstantBuilder"/> object.
 		/// </summary>
@@ -1013,20 +993,20 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaConstantBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaConstantBuilder : MetaNamedTypeBuilder, MetaTypedElementBuilder
 	{
-		String DotNetName { get; set; }
-		void SetDotNetNameLazy(global::System.Func<String> lazy);
-		void SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, String> lazy);
-		void SetDotNetNameLazy(global::System.Func<MetaConstant, String> immutableLazy, global::System.Func<MetaConstantBuilder, String> mutableLazy);
+		string DotNetName { get; set; }
+		void SetDotNetNameLazy(global::System.Func<string> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, string> lazy);
+		void SetDotNetNameLazy(global::System.Func<MetaConstant, string> immutableLazy, global::System.Func<MetaConstantBuilder, string> mutableLazy);
 		MetaDslx.Modeling.IModelObject Value { get; }
 		void SetValueLazy(global::System.Func<MetaDslx.Modeling.IModelObject> lazy);
 		void SetValueLazy(global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> lazy);
 		void SetValueLazy(global::System.Func<MetaConstant, MetaDslx.Modeling.IModelObject> immutableLazy, global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> mutableLazy);
-	
+
 		bool ConformsTo(MetaTypeBuilder @type);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaConstantBuilder"/> object to an immutable <see cref="MetaConstant"/> object.
 		/// </summary>
@@ -1038,7 +1018,7 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaConstant ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaClass : MetaNamedType
 	{
 		System.Type SymbolType { get; }
@@ -1046,7 +1026,7 @@ namespace MetaDslx.Languages.Meta.Model
 		global::MetaDslx.Modeling.ImmutableModelList<MetaClass> SuperClasses { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> Properties { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaOperation> Operations { get; }
-	
+
 		bool ConformsTo(MetaType @type);
 		global::System.Collections.Generic.IReadOnlyList<MetaClass> GetAllSuperClasses(bool includeSelf);
 		global::System.Collections.Generic.IReadOnlyList<MetaProperty> GetAllSuperProperties(bool includeSelf);
@@ -1055,7 +1035,7 @@ namespace MetaDslx.Languages.Meta.Model
 		global::System.Collections.Generic.IReadOnlyList<MetaOperation> GetAllOperations();
 		global::System.Collections.Generic.IReadOnlyList<MetaProperty> GetAllFinalProperties();
 		global::System.Collections.Generic.IReadOnlyList<MetaOperation> GetAllFinalOperations();
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaClass"/> object to a builder <see cref="MetaClassBuilder"/> object.
 		/// </summary>
@@ -1067,7 +1047,7 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaClassBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaClassBuilder : MetaNamedTypeBuilder
 	{
 		System.Type SymbolType { get; set; }
@@ -1081,7 +1061,7 @@ namespace MetaDslx.Languages.Meta.Model
 		global::MetaDslx.Modeling.MutableModelList<MetaClassBuilder> SuperClasses { get; }
 		global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> Properties { get; }
 		global::MetaDslx.Modeling.MutableModelList<MetaOperationBuilder> Operations { get; }
-	
+
 		bool ConformsTo(MetaTypeBuilder @type);
 		global::System.Collections.Generic.IReadOnlyList<MetaClassBuilder> GetAllSuperClasses(bool includeSelf);
 		global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> GetAllSuperProperties(bool includeSelf);
@@ -1090,7 +1070,7 @@ namespace MetaDslx.Languages.Meta.Model
 		global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> GetAllOperations();
 		global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> GetAllFinalProperties();
 		global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> GetAllFinalOperations();
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaClassBuilder"/> object to an immutable <see cref="MetaClass"/> object.
 		/// </summary>
@@ -1102,7 +1082,7 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaClass ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaOperation : MetaNamedElement
 	{
 		MetaClass Class { get; }
@@ -1111,9 +1091,9 @@ namespace MetaDslx.Languages.Meta.Model
 		bool IsReadonly { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaParameter> Parameters { get; }
 		MetaType ReturnType { get; }
-	
+
 		bool ConformsTo(MetaOperation operation);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaOperation"/> object to a builder <see cref="MetaOperationBuilder"/> object.
 		/// </summary>
@@ -1125,7 +1105,7 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaOperationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaOperationBuilder : MetaNamedElementBuilder
 	{
 		MetaClassBuilder Class { get; set; }
@@ -1149,9 +1129,9 @@ namespace MetaDslx.Languages.Meta.Model
 		void SetReturnTypeLazy(global::System.Func<MetaTypeBuilder> lazy);
 		void SetReturnTypeLazy(global::System.Func<MetaOperationBuilder, MetaTypeBuilder> lazy);
 		void SetReturnTypeLazy(global::System.Func<MetaOperation, MetaType> immutableLazy, global::System.Func<MetaOperationBuilder, MetaTypeBuilder> mutableLazy);
-	
+
 		bool ConformsTo(MetaOperationBuilder operation);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaOperationBuilder"/> object to an immutable <see cref="MetaOperation"/> object.
 		/// </summary>
@@ -1163,12 +1143,12 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaOperation ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaParameter : MetaNamedElement, MetaTypedElement
 	{
 		MetaOperation Operation { get; }
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaParameter"/> object to a builder <see cref="MetaParameterBuilder"/> object.
 		/// </summary>
@@ -1180,15 +1160,15 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaParameterBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaParameterBuilder : MetaNamedElementBuilder, MetaTypedElementBuilder
 	{
 		MetaOperationBuilder Operation { get; set; }
 		void SetOperationLazy(global::System.Func<MetaOperationBuilder> lazy);
 		void SetOperationLazy(global::System.Func<MetaParameterBuilder, MetaOperationBuilder> lazy);
 		void SetOperationLazy(global::System.Func<MetaParameter, MetaOperation> immutableLazy, global::System.Func<MetaParameterBuilder, MetaOperationBuilder> mutableLazy);
-	
-	
+
+
 		/// <summary>
 		/// Convert the <see cref="MetaParameterBuilder"/> object to an immutable <see cref="MetaParameter"/> object.
 		/// </summary>
@@ -1200,22 +1180,22 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new MetaParameter ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
+
 	public interface MetaProperty : MetaNamedElement, MetaTypedElement
 	{
-		String SymbolProperty { get; }
+		string SymbolProperty { get; }
 		MetaPropertyKind Kind { get; }
 		MetaClass Class { get; }
-		String DefaultValue { get; }
+		string DefaultValue { get; }
 		bool IsContainment { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> OppositeProperties { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> SubsettedProperties { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> SubsettingProperties { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> RedefinedProperties { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> RedefiningProperties { get; }
-	
+
 		bool ConformsTo(MetaProperty @property);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaProperty"/> object to a builder <see cref="MetaPropertyBuilder"/> object.
 		/// </summary>
@@ -1227,13 +1207,13 @@ namespace MetaDslx.Languages.Meta.Model
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
 		new MetaPropertyBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
-	
+
 	public interface MetaPropertyBuilder : MetaNamedElementBuilder, MetaTypedElementBuilder
 	{
-		String SymbolProperty { get; set; }
-		void SetSymbolPropertyLazy(global::System.Func<String> lazy);
-		void SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, String> lazy);
-		void SetSymbolPropertyLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy);
+		string SymbolProperty { get; set; }
+		void SetSymbolPropertyLazy(global::System.Func<string> lazy);
+		void SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, string> lazy);
+		void SetSymbolPropertyLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy);
 		MetaPropertyKind Kind { get; set; }
 		void SetKindLazy(global::System.Func<MetaPropertyKind> lazy);
 		void SetKindLazy(global::System.Func<MetaPropertyBuilder, MetaPropertyKind> lazy);
@@ -1242,10 +1222,10 @@ namespace MetaDslx.Languages.Meta.Model
 		void SetClassLazy(global::System.Func<MetaClassBuilder> lazy);
 		void SetClassLazy(global::System.Func<MetaPropertyBuilder, MetaClassBuilder> lazy);
 		void SetClassLazy(global::System.Func<MetaProperty, MetaClass> immutableLazy, global::System.Func<MetaPropertyBuilder, MetaClassBuilder> mutableLazy);
-		String DefaultValue { get; set; }
-		void SetDefaultValueLazy(global::System.Func<String> lazy);
-		void SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, String> lazy);
-		void SetDefaultValueLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy);
+		string DefaultValue { get; set; }
+		void SetDefaultValueLazy(global::System.Func<string> lazy);
+		void SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, string> lazy);
+		void SetDefaultValueLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy);
 		bool IsContainment { get; set; }
 		void SetIsContainmentLazy(global::System.Func<bool> lazy);
 		void SetIsContainmentLazy(global::System.Func<MetaPropertyBuilder, bool> lazy);
@@ -1255,9 +1235,9 @@ namespace MetaDslx.Languages.Meta.Model
 		global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> SubsettingProperties { get; }
 		global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> RedefinedProperties { get; }
 		global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> RedefiningProperties { get; }
-	
+
 		bool ConformsTo(MetaPropertyBuilder @property);
-	
+
 		/// <summary>
 		/// Convert the <see cref="MetaPropertyBuilder"/> object to an immutable <see cref="MetaProperty"/> object.
 		/// </summary>
@@ -1273,7 +1253,7 @@ namespace MetaDslx.Languages.Meta.Model
 	public static class MetaDescriptor
 	{
 		private static global::System.Collections.Generic.List<global::MetaDslx.Modeling.ModelProperty> properties;
-	
+
 		static MetaDescriptor()
 		{
 			properties = new global::System.Collections.Generic.List<global::MetaDslx.Modeling.ModelProperty>();
@@ -1341,14 +1321,14 @@ namespace MetaDslx.Languages.Meta.Model
 			properties.Add(MetaDescriptor.MetaProperty.RedefinedPropertiesProperty);
 			properties.Add(MetaDescriptor.MetaProperty.RedefiningPropertiesProperty);
 		}
-	
+
 		public static void Initialize()
 		{
 		}
-	
+
 		public const string MUri = "http://metadslx.core/1.0";
 		public const string MPrefix = "";
-	
+
 		///
 		///	Represents an element.
 		///	
@@ -1357,884 +1337,884 @@ namespace MetaDslx.Languages.Meta.Model
 		public static class MetaElement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaElement()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaElement));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaElement; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Attributes")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty AttributesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaElement), name: "Attributes",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaAttribute),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaElement), name: "Attributes",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaAttribute),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaElement_Attributes,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaDocumentedElementId), typeof(global::MetaDslx.Languages.Meta.Model.MetaDocumentedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaDocumentedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaElement) })]
 		public static class MetaDocumentedElement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaDocumentedElement()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaDocumentedElement));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDocumentedElement; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DocumentationProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDocumentedElement), name: "Documentation",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDocumentedElement), name: "Documentation",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDocumentedElement_Documentation,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedElementId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDocumentedElement) })]
 		public static class MetaNamedElement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaNamedElement()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamedElement));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedElement; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Name")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamedElement), name: "Name",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamedElement), name: "Name",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedElement_Name,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaTypedElementId), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaElement) })]
 		public static class MetaTypedElement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaTypedElement()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaTypedElement));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaTypedElement; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaTypedElement), name: "Type",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaTypedElement), name: "Type",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaTypedElement_Type,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.TypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaType), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder))]
 		public static class MetaType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaType()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaType));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaType; }
 			}
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamedType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaNamedType()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamedType));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedType; }
 			}
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaAttributeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaAttribute), typeof(global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaAttribute
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaAttribute()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaAttribute));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaAttribute; }
 			}
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaDeclarationId), typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclaration), typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclarationBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaDeclaration
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaDeclaration()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaDeclaration));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaNamespace), "Declarations")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NamespaceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "Namespace",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "Namespace",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_Namespace,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty MetaModelProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "MetaModel",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModel),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "MetaModel",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModel),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_MetaModel,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty FullNameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "FullName",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "FullName",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_FullName,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamespaceSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamespaceId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamespace
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaNamespace()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamespace));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaModel), "Namespace")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefinedMetaModelProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamespace), name: "DefinedMetaModel",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModel),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamespace), name: "DefinedMetaModel",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModel),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_DefinedMetaModel,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaDeclaration), "Namespace")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty DeclarationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamespace), name: "Declarations",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclaration),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclarationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamespace), name: "Declarations",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclaration),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclarationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_Declarations,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaModelId), typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaModel
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaModel()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaModel));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty UriProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Uri",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Uri",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Uri,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty PrefixProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Prefix",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Prefix",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Prefix,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaNamespace), "DefinedMetaModel")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NamespaceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Namespace",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Namespace",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Namespace,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ArrayTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaCollectionTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionType), typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaCollectionType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaCollectionType()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaCollectionType));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaCollectionType; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty KindProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaCollectionType), name: "Kind",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaCollectionType), name: "Kind",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaCollectionType_Kind,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ElementType")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty InnerTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaCollectionType), name: "InnerType",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaCollectionType), name: "InnerType",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaCollectionType_InnerType,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NullableTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNullableTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNullableType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNullableTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaNullableType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaNullableType()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNullableType));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNullableType; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("InnerType")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty InnerTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNullableType), name: "InnerType",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNullableType), name: "InnerType",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNullableType_InnerType,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPrimitiveTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaPrimitiveType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaPrimitiveType()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaPrimitiveType));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaPrimitiveType; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DotNetNameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaPrimitiveType), name: "DotNetName",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaPrimitiveType), name: "DotNetName",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaPrimitiveType_DotNetName,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.EnumTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaEnumId), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaEnum
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaEnum()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaEnum));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaEnumLiteral), "Enum")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EnumLiteralsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnum), name: "EnumLiterals",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnum), name: "EnumLiterals",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum_EnumLiterals,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Enum")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnum), name: "Operations",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnum), name: "Operations",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum_Operations,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.EnumLiteralSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaEnumLiteralId), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaEnumLiteral
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaEnumLiteral()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaEnumLiteral));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnumLiteral; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaEnum), "EnumLiterals")]
 			[global::MetaDslx.Modeling.RedefinesAttribute(typeof(MetaDescriptor.MetaTypedElement), "Type")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EnumProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnumLiteral), name: "Enum",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnumLiteral), name: "Enum",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnumLiteral_Enum,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaConstantId), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaConstant
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaConstant()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaConstant));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DotNetNameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "DotNetName",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "DotNetName",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_DotNetName,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "Value",
-			        immutableType: typeof(MetaDslx.Modeling.IModelObject),
-			        mutableType: typeof(MetaDslx.Modeling.IModelObject),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "Value",
+					immutableType: typeof(MetaDslx.Modeling.IModelObject),
+					mutableType: typeof(MetaDslx.Modeling.IModelObject),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_Value,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ClassTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaClassId), typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaClass
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaClass()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaClass));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass; }
 			}
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Attributes")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SymbolTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SymbolType",
-			        immutableType: typeof(System.Type),
-			        mutableType: typeof(System.Type),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SymbolType",
+					immutableType: typeof(System.Type),
+					mutableType: typeof(System.Type),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_SymbolType,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsAbstractProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "IsAbstract",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "IsAbstract",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_IsAbstract,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("BaseTypes")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SuperClassesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SuperClasses",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SuperClasses",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClass),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_SuperClasses,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "Class")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty PropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "Properties",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "Properties",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Properties,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Class")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "Operations",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "Operations",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Operations,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MethodSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaOperationId), typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaOperation
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaOperation()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaOperation));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaClass), "Operations")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ClassProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Class",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Class",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClass),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Class,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaEnum), "Operations")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EnumProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Enum",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Enum",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Enum,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsBuilderProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "IsBuilder",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "IsBuilder",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_IsBuilder,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsReadonlyProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "IsReadonly",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "IsReadonly",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_IsReadonly,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaParameter), "Operation")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ParametersProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Parameters",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaParameter),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Parameters",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaParameter),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Parameters,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReturnType")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ReturnTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "ReturnType",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "ReturnType",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_ReturnType,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ParameterSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaParameterId), typeof(global::MetaDslx.Languages.Meta.Model.MetaParameter), typeof(global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaParameter
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaParameter()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaParameter));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaParameter; }
 			}
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Parameters")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaParameter), name: "Operation",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaParameter), name: "Operation",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaParameter_Operation,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.PropertySymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPropertyId), typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaProperty
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
+
 			static MetaProperty()
 			{
 				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaProperty));
 			}
-		
+
 			internal static void Initialize()
 			{
 			}
-		
+
 			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
 				get { return descriptor; }
 			}
-		
+
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty; }
 			}
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty SymbolPropertyProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SymbolProperty",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SymbolProperty",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SymbolProperty,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty KindProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "Kind",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "Kind",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_Kind,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaClass), "Properties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ClassProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "Class",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClass),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "Class",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClass),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_Class,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefaultValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "DefaultValue",
-			        immutableType: typeof(String),
-			        mutableType: typeof(String),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "DefaultValue",
+					immutableType: typeof(string),
+					mutableType: typeof(string),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_DefaultValue,
 					defaultValue: null);
-			
+
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsContainmentProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "IsContainment",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "IsContainment",
+					immutableType: typeof(bool),
+					mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_IsContainment,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "OppositeProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OppositePropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "OppositeProperties",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "OppositeProperties",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_OppositeProperties,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "SubsettingProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SubsettedPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SubsettedProperties",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SubsettedProperties",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SubsettedProperties,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "SubsettedProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SubsettingPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SubsettingProperties",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SubsettingProperties",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SubsettingProperties,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "RedefiningProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty RedefinedPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "RedefinedProperties",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "RedefinedProperties",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_RedefinedProperties,
 					defaultValue: null);
-			
+
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "RedefinedProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty RedefiningPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "RedefiningProperties",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
+				global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "RedefiningProperties",
+					immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty),
+					mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_RedefiningProperties,
 					defaultValue: null);
 		}
@@ -2243,3856 +2223,3656 @@ namespace MetaDslx.Languages.Meta.Model
 
 namespace MetaDslx.Languages.Meta.Model.Internal
 {
-	
+
 	internal class MetaElementId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaElementImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaElementBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
-	
+
 		internal MetaElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaElement;
+
 		public new MetaElementBuilder ToMutable()
 		{
 			return (MetaElementBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaElementBuilder)base.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	}
-	
+
 	internal class MetaElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaElementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaElement(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaElement;
+
 		public new MetaElement ToImmutable()
 		{
 			return (MetaElement)base.ToImmutable();
 		}
-	
+
 		public new MetaElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaElement)base.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	}
-	
+
 	internal class MetaDocumentedElementId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaDocumentedElementImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaDocumentedElementBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaDocumentedElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaDocumentedElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
-	
+		private string documentation0;
+
 		internal MetaDocumentedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaDocumentedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaDocumentedElement;
+
 		public new MetaDocumentedElementBuilder ToMutable()
 		{
 			return (MetaDocumentedElementBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaDocumentedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaDocumentedElementBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	}
-	
+
 	internal class MetaDocumentedElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaDocumentedElementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaDocumentedElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaDocumentedElement(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaDocumentedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaDocumentedElement;
+
 		public new MetaDocumentedElement ToImmutable()
 		{
 			return (MetaDocumentedElement)base.ToImmutable();
 		}
-	
+
 		public new MetaDocumentedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaDocumentedElement)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
 	}
-	
+
 	internal class MetaNamedElementId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaNamedElementImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaNamedElementBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaNamedElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaNamedElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
-	
+		private string name0;
+
 		internal MetaNamedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNamedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNamedElement;
+
 		public new MetaNamedElementBuilder ToMutable()
 		{
 			return (MetaNamedElementBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaNamedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaNamedElementBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	}
-	
+
 	internal class MetaNamedElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaNamedElementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaNamedElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaNamedElement(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNamedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNamedElement;
+
 		public new MetaNamedElement ToImmutable()
 		{
 			return (MetaNamedElement)base.ToImmutable();
 		}
-	
+
 		public new MetaNamedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaNamedElement)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
 	}
-	
+
 	internal class MetaTypedElementId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaTypedElementImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaTypedElementBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaTypedElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaTypedElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
-	
+
 		internal MetaTypedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaTypedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaTypedElement;
+
 		public new MetaTypedElementBuilder ToMutable()
 		{
 			return (MetaTypedElementBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaTypedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaTypedElementBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
+
+
 		public MetaType Type
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
 		}
 	}
-	
+
 	internal class MetaTypedElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaTypedElementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaTypedElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaTypedElement(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaTypedElement; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaTypedElement;
+
 		public new MetaTypedElement ToImmutable()
 		{
 			return (MetaTypedElement)base.ToImmutable();
 		}
-	
+
 		public new MetaTypedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaTypedElement)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
+
+
 		public MetaTypeBuilder Type
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, immutableLazy, mutableLazy);
 		}
 	}
-	
+
 	internal class MetaTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaType.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaTypeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaTypeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaType
 	{
-	
+
 		internal MetaTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaType;
+
 		public new MetaTypeBuilder ToMutable()
 		{
 			return (MetaTypeBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaTypeBuilder)base.ToMutable(model);
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaTypeBuilder
 	{
-	
+
 		internal MetaTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaType(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaType;
+
 		public new MetaType ToImmutable()
 		{
 			return (MetaType)base.ToImmutable();
 		}
-	
+
 		public new MetaType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaType)base.ToImmutable(model);
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaNamedTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedType.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaNamedTypeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaNamedTypeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaNamedTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaNamedType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
-	
+		private string fullName0;
+
 		internal MetaNamedTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNamedType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNamedType;
+
 		public new MetaNamedTypeBuilder ToMutable()
 		{
 			return (MetaNamedTypeBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaNamedTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaNamedTypeBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaNamedTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaNamedTypeBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaNamedTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaNamedType(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNamedType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNamedType;
+
 		public new MetaNamedType ToImmutable()
 		{
 			return (MetaNamedType)base.ToImmutable();
 		}
-	
+
 		public new MetaNamedType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaNamedType)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaAttributeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaAttribute.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaAttributeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaAttributeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaAttributeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaAttribute
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
-	
+		private string fullName0;
+
 		internal MetaAttributeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaAttribute; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaAttribute;
+
 		public new MetaAttributeBuilder ToMutable()
 		{
 			return (MetaAttributeBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaAttributeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaAttributeBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaAttributeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaAttributeBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaAttributeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaAttribute(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaAttribute; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaAttribute;
+
 		public new MetaAttribute ToImmutable()
 		{
 			return (MetaAttribute)base.ToImmutable();
 		}
-	
+
 		public new MetaAttribute ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaAttribute)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaDeclarationId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaDeclarationImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaDeclarationBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaDeclarationImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaDeclaration
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
-	
+		private string fullName0;
+
 		internal MetaDeclarationImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaDeclaration; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaDeclaration;
+
 		public new MetaDeclarationBuilder ToMutable()
 		{
 			return (MetaDeclarationBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaDeclarationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaDeclarationBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	}
-	
+
 	internal class MetaDeclarationBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaDeclarationBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaDeclarationBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaDeclaration(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaDeclaration; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaDeclaration;
+
 		public new MetaDeclaration ToImmutable()
 		{
 			return (MetaDeclaration)base.ToImmutable();
 		}
-	
+
 		public new MetaDeclaration ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaDeclaration)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
 	}
-	
+
 	internal class MetaNamespaceId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaNamespaceImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaNamespaceBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaNamespaceImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaNamespace
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
+		private string fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel definedMetaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaDeclaration> declarations0;
-	
+
 		internal MetaNamespaceImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNamespace; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNamespace;
+
 		public new MetaNamespaceBuilder ToMutable()
 		{
 			return (MetaNamespaceBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaNamespaceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaNamespaceBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
-	
-		
+
+
 		public MetaModel DefinedMetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.DefinedMetaModelProperty, ref definedMetaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.DefinedMetaModelProperty, ref definedMetaModel0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaDeclaration> Declarations
 		{
-		    get { return this.GetList<MetaDeclaration>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
+			get { return this.GetList<MetaDeclaration>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
 		}
 	}
-	
+
 	internal class MetaNamespaceBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaNamespaceBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaDeclarationBuilder> declarations0;
-	
+
 		internal MetaNamespaceBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaNamespace(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNamespace; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNamespace;
+
 		public new MetaNamespace ToImmutable()
 		{
 			return (MetaNamespace)base.ToImmutable();
 		}
-	
+
 		public new MetaNamespace ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaNamespace)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder DefinedMetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.DefinedMetaModelProperty); }
 			set { this.SetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.DefinedMetaModelProperty, value); }
 		}
-		
+
 		void MetaNamespaceBuilder.SetDefinedMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamespace.DefinedMetaModelProperty, lazy);
 		}
-		
+
 		void MetaNamespaceBuilder.SetDefinedMetaModelLazy(global::System.Func<MetaNamespaceBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamespace.DefinedMetaModelProperty, lazy);
 		}
-		
+
 		void MetaNamespaceBuilder.SetDefinedMetaModelLazy(global::System.Func<MetaNamespace, MetaModel> immutableLazy, global::System.Func<MetaNamespaceBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamespace.DefinedMetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaDeclarationBuilder> Declarations
 		{
 			get { return this.GetList<MetaDeclarationBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
 		}
 	}
-	
+
 	internal class MetaModelId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaModelImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaModelBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaModelImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaModel
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String uri0;
+		private string uri0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String prefix0;
+		private string prefix0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
-	
+
 		internal MetaModelImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaModel; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaModel;
+
 		public new MetaModelBuilder ToMutable()
 		{
 			return (MetaModelBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaModelBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaModelBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
-		public String Uri
+
+
+		public string Uri
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, ref uri0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, ref uri0); }
 		}
-	
-		
-		public String Prefix
+
+
+		public string Prefix
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, ref prefix0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, ref prefix0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.NamespaceProperty, ref namespace0); }
 		}
-		global::MetaDslx.Modeling.ModelId global::MetaDslx.Modeling.IModel.Id => MetaInstance.MModel.Id;
-		global::MetaDslx.Modeling.ModelMetadata global::MetaDslx.Modeling.IModel.Metadata => MetaInstance.MModel.Metadata;
-		global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> global::MetaDslx.Modeling.IModel.Objects => MetaInstance.MModel.Objects;
-		string global::MetaDslx.Modeling.IMetaModel.Uri => this.Uri;
-		string global::MetaDslx.Modeling.IMetaModel.Prefix => this.Prefix;
-		global::MetaDslx.Modeling.IModelGroup global::MetaDslx.Modeling.IModel.ModelGroup => MetaInstance.MModel.ModelGroup;
-		string global::MetaDslx.Modeling.IMetaModel.Namespace => this.Namespace.FullName;
-	
+
 		public global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
 		{
 			return new MetaFactory(model, flags);
 		}
 	}
-	
+
 	internal class MetaModelBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaModelBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaModelBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaModel(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaModel; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaModel;
+
 		public new MetaModel ToImmutable()
 		{
 			return (MetaModel)base.ToImmutable();
 		}
-	
+
 		public new MetaModel ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaModel)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Uri
+
+
+		public string Uri
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.UriProperty, value); }
 		}
-		
-		void MetaModelBuilder.SetUriLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, lazy);
-		}
-		
-		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModelBuilder, String> lazy)
+
+		void MetaModelBuilder.SetUriLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, lazy);
 		}
-		
-		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy)
+
+		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModelBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, lazy);
+		}
+
+		void MetaModelBuilder.SetUriLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.UriProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Prefix
+
+
+		public string Prefix
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.PrefixProperty, value); }
 		}
-		
-		void MetaModelBuilder.SetPrefixLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, lazy);
-		}
-		
-		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModelBuilder, String> lazy)
+
+		void MetaModelBuilder.SetPrefixLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, lazy);
 		}
-		
-		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModel, String> immutableLazy, global::System.Func<MetaModelBuilder, String> mutableLazy)
+
+		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModelBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, lazy);
+		}
+
+		void MetaModelBuilder.SetPrefixLazy(global::System.Func<MetaModel, string> immutableLazy, global::System.Func<MetaModelBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.PrefixProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaModel.NamespaceProperty, value); }
 		}
-		
+
 		void MetaModelBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaModelBuilder.SetNamespaceLazy(global::System.Func<MetaModelBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaModelBuilder.SetNamespaceLazy(global::System.Func<MetaModel, MetaNamespace> immutableLazy, global::System.Func<MetaModelBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaModel.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-
-		global::MetaDslx.Modeling.ModelId global::MetaDslx.Modeling.IModel.Id => MetaInstance.MModel.Id;
-		global::MetaDslx.Modeling.ModelMetadata global::MetaDslx.Modeling.IModel.Metadata => MetaInstance.MModel.Metadata;
-		global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> global::MetaDslx.Modeling.IModel.Objects => MetaInstance.MModel.Objects;
-		string global::MetaDslx.Modeling.IMetaModel.Uri => this.Uri;
-		string global::MetaDslx.Modeling.IMetaModel.Prefix => this.Prefix;
-		global::MetaDslx.Modeling.IModelGroup global::MetaDslx.Modeling.IModel.ModelGroup => MetaInstance.MModel.ModelGroup;
-		string global::MetaDslx.Modeling.IMetaModel.Namespace => this.Namespace.FullName;
-	
-		public global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
-		{
-			return new MetaFactory(model, flags);
-		}
 	}
-	
+
 	internal class MetaCollectionTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaCollectionTypeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaCollectionTypeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaCollectionTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaCollectionType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaCollectionKind kind0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType innerType0;
-	
+
 		internal MetaCollectionTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaCollectionType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaCollectionType;
+
 		public new MetaCollectionTypeBuilder ToMutable()
 		{
 			return (MetaCollectionTypeBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaCollectionTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaCollectionTypeBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public MetaCollectionKind Kind
 		{
-		    get { return this.GetValue<MetaCollectionKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.KindProperty, ref kind0); }
+			get { return this.GetValue<MetaCollectionKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.KindProperty, ref kind0); }
 		}
-	
-		
+
+
 		public MetaType InnerType
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.InnerTypeProperty, ref innerType0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.InnerTypeProperty, ref innerType0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaCollectionType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaCollectionTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaCollectionTypeBuilder
 	{
-	
+
 		internal MetaCollectionTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaCollectionType(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaCollectionType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaCollectionType;
+
 		public new MetaCollectionType ToImmutable()
 		{
 			return (MetaCollectionType)base.ToImmutable();
 		}
-	
+
 		public new MetaCollectionType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaCollectionType)base.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public MetaCollectionKind Kind
 		{
 			get { return this.GetValue<MetaCollectionKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.KindProperty); }
 			set { this.SetValue<MetaCollectionKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.KindProperty, value); }
 		}
-		
+
 		void MetaCollectionTypeBuilder.SetKindLazy(global::System.Func<MetaCollectionKind> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaCollectionType.KindProperty, lazy);
 		}
-		
+
 		void MetaCollectionTypeBuilder.SetKindLazy(global::System.Func<MetaCollectionTypeBuilder, MetaCollectionKind> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaCollectionType.KindProperty, lazy);
 		}
-		
+
 		void MetaCollectionTypeBuilder.SetKindLazy(global::System.Func<MetaCollectionType, MetaCollectionKind> immutableLazy, global::System.Func<MetaCollectionTypeBuilder, MetaCollectionKind> mutableLazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaCollectionType.KindProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaTypeBuilder InnerType
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.InnerTypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaCollectionType.InnerTypeProperty, value); }
 		}
-		
+
 		void MetaCollectionTypeBuilder.SetInnerTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaCollectionType.InnerTypeProperty, lazy);
 		}
-		
+
 		void MetaCollectionTypeBuilder.SetInnerTypeLazy(global::System.Func<MetaCollectionTypeBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaCollectionType.InnerTypeProperty, lazy);
 		}
-		
+
 		void MetaCollectionTypeBuilder.SetInnerTypeLazy(global::System.Func<MetaCollectionType, MetaType> immutableLazy, global::System.Func<MetaCollectionTypeBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaCollectionType.InnerTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaCollectionTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaCollectionType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaNullableTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNullableType.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaNullableTypeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaNullableTypeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaNullableTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaNullableType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType innerType0;
-	
+
 		internal MetaNullableTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNullableType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNullableType;
+
 		public new MetaNullableTypeBuilder ToMutable()
 		{
 			return (MetaNullableTypeBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaNullableTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaNullableTypeBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public MetaType InnerType
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNullableType.InnerTypeProperty, ref innerType0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNullableType.InnerTypeProperty, ref innerType0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaNullableType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaNullableTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaNullableTypeBuilder
 	{
-	
+
 		internal MetaNullableTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaNullableType(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaNullableType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaNullableType;
+
 		public new MetaNullableType ToImmutable()
 		{
 			return (MetaNullableType)base.ToImmutable();
 		}
-	
+
 		public new MetaNullableType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaNullableType)base.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public MetaTypeBuilder InnerType
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNullableType.InnerTypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNullableType.InnerTypeProperty, value); }
 		}
-		
+
 		void MetaNullableTypeBuilder.SetInnerTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNullableType.InnerTypeProperty, lazy);
 		}
-		
+
 		void MetaNullableTypeBuilder.SetInnerTypeLazy(global::System.Func<MetaNullableTypeBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNullableType.InnerTypeProperty, lazy);
 		}
-		
+
 		void MetaNullableTypeBuilder.SetInnerTypeLazy(global::System.Func<MetaNullableType, MetaType> immutableLazy, global::System.Func<MetaNullableTypeBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNullableType.InnerTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaNullableTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaNullableType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaPrimitiveTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaPrimitiveTypeImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaPrimitiveTypeBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaPrimitiveTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaPrimitiveType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
+		private string fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String dotNetName0;
-	
+		private string dotNetName0;
+
 		internal MetaPrimitiveTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaPrimitiveType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaPrimitiveType;
+
 		public new MetaPrimitiveTypeBuilder ToMutable()
 		{
 			return (MetaPrimitiveTypeBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaPrimitiveTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaPrimitiveTypeBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, ref dotNetName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, ref dotNetName0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaPrimitiveType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaPrimitiveTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaPrimitiveTypeBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaPrimitiveTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaPrimitiveType(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaPrimitiveType; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaPrimitiveType;
+
 		public new MetaPrimitiveType ToImmutable()
 		{
 			return (MetaPrimitiveType)base.ToImmutable();
 		}
-	
+
 		public new MetaPrimitiveType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaPrimitiveType)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, value); }
 		}
-		
-		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, lazy);
-		}
-		
-		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<MetaPrimitiveTypeBuilder, String> lazy)
+
+		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, lazy);
 		}
-		
-		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<MetaPrimitiveType, String> immutableLazy, global::System.Func<MetaPrimitiveTypeBuilder, String> mutableLazy)
+
+		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<MetaPrimitiveTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, lazy);
+		}
+
+		void MetaPrimitiveTypeBuilder.SetDotNetNameLazy(global::System.Func<MetaPrimitiveType, string> immutableLazy, global::System.Func<MetaPrimitiveTypeBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaPrimitiveType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaPrimitiveTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaPrimitiveType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaEnumId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnum.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaEnumImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaEnumBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaEnumImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaEnum
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
+		private string fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaEnumLiteral> enumLiterals0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaOperation> operations0;
-	
+
 		internal MetaEnumImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaEnum; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaEnum;
+
 		public new MetaEnumBuilder ToMutable()
 		{
 			return (MetaEnumBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaEnumBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaEnumBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaEnumLiteral> EnumLiterals
 		{
-		    get { return this.GetList<MetaEnumLiteral>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnum.EnumLiteralsProperty, ref enumLiterals0); }
+			get { return this.GetList<MetaEnumLiteral>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnum.EnumLiteralsProperty, ref enumLiterals0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaOperation> Operations
 		{
-		    get { return this.GetList<MetaOperation>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnum.OperationsProperty, ref operations0); }
+			get { return this.GetList<MetaOperation>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnum.OperationsProperty, ref operations0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaEnumBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaEnumBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaEnumLiteralBuilder> enumLiterals0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaOperationBuilder> operations0;
-	
+
 		internal MetaEnumBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaEnum(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaEnum; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaEnum;
+
 		public new MetaEnum ToImmutable()
 		{
 			return (MetaEnum)base.ToImmutable();
 		}
-	
+
 		public new MetaEnum ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaEnum)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaEnumLiteralBuilder> EnumLiterals
 		{
 			get { return this.GetList<MetaEnumLiteralBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnum.EnumLiteralsProperty, ref enumLiterals0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaOperationBuilder> Operations
 		{
 			get { return this.GetList<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnum.OperationsProperty, ref operations0); }
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaEnumLiteralId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnumLiteral.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaEnumLiteralImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaEnumLiteralBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaEnumLiteralImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaEnumLiteral
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaEnum enum0;
-	
+
 		internal MetaEnumLiteralImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaEnumLiteral; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaEnumLiteral;
+
 		public new MetaEnumLiteralBuilder ToMutable()
 		{
 			return (MetaEnumLiteralBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaEnumLiteralBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaEnumLiteralBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
+
+
 		public MetaType Type
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaEnum Enum
 		{
-		    get { return this.GetReference<MetaEnum>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnumLiteral.EnumProperty, ref enum0); }
+			get { return this.GetReference<MetaEnum>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnumLiteral.EnumProperty, ref enum0); }
 		}
 	}
-	
+
 	internal class MetaEnumLiteralBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaEnumLiteralBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaEnumLiteralBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaEnumLiteral(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaEnumLiteral; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaEnumLiteral;
+
 		public new MetaEnumLiteral ToImmutable()
 		{
 			return (MetaEnumLiteral)base.ToImmutable();
 		}
-	
+
 		public new MetaEnumLiteral ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaEnumLiteral)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaTypeBuilder Type
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaEnumBuilder Enum
 		{
 			get { return this.GetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnumLiteral.EnumProperty); }
 			set { this.SetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaEnumLiteral.EnumProperty, value); }
 		}
-		
+
 		void MetaEnumLiteralBuilder.SetEnumLazy(global::System.Func<MetaEnumBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaEnumLiteral.EnumProperty, lazy);
 		}
-		
+
 		void MetaEnumLiteralBuilder.SetEnumLazy(global::System.Func<MetaEnumLiteralBuilder, MetaEnumBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaEnumLiteral.EnumProperty, lazy);
 		}
-		
+
 		void MetaEnumLiteralBuilder.SetEnumLazy(global::System.Func<MetaEnumLiteral, MetaEnum> immutableLazy, global::System.Func<MetaEnumLiteralBuilder, MetaEnumBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaEnumLiteral.EnumProperty, immutableLazy, mutableLazy);
 		}
 	}
-	
+
 	internal class MetaConstantId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaConstantImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaConstantBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaConstantImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaConstant
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6100,501 +5880,489 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
+		private string fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String dotNetName0;
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaDslx.Modeling.IModelObject value0;
-	
+
 		internal MetaConstantImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaConstant; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaConstant;
+
 		public new MetaConstantBuilder ToMutable()
 		{
 			return (MetaConstantBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaConstantBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaConstantBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
-	
-		
+
+
 		public MetaType Type
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, ref dotNetName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, ref dotNetName0); }
 		}
-	
-		
+
+
 		public MetaDslx.Modeling.IModelObject Value
 		{
-		    get { return this.GetReference<MetaDslx.Modeling.IModelObject>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.ValueProperty, ref value0); }
+			get { return this.GetReference<MetaDslx.Modeling.IModelObject>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.ValueProperty, ref value0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaConstant.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaConstantBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaConstantBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaConstantBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaConstant(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaConstant; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaConstant;
+
 		public new MetaConstant ToImmutable()
 		{
 			return (MetaConstant)base.ToImmutable();
 		}
-	
+
 		public new MetaConstant ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaConstant)base.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaTypeBuilder Type
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DotNetName
+
+
+		public string DotNetName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.DotNetNameProperty, value); }
 		}
-		
-		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, lazy);
-		}
-		
-		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, String> lazy)
+
+		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, lazy);
 		}
-		
-		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstant, String> immutableLazy, global::System.Func<MetaConstantBuilder, String> mutableLazy)
+
+		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstantBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, lazy);
+		}
+
+		void MetaConstantBuilder.SetDotNetNameLazy(global::System.Func<MetaConstant, string> immutableLazy, global::System.Func<MetaConstantBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaDslx.Modeling.IModelObject Value
 		{
 			get { return this.GetReference<MetaDslx.Modeling.IModelObject>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaConstant.ValueProperty); }
 		}
-		
+
 		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaDslx.Modeling.IModelObject> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.ValueProperty, lazy);
 		}
-		
+
 		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.ValueProperty, lazy);
 		}
-		
+
 		void MetaConstantBuilder.SetValueLazy(global::System.Func<MetaConstant, MetaDslx.Modeling.IModelObject> immutableLazy, global::System.Func<MetaConstantBuilder, MetaDslx.Modeling.IModelObject> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaConstant.ValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaConstantBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaConstant_ConformsTo(this, @type);
 		}
 	}
-	
+
 	internal class MetaClassId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaClassImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaClassBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaClassImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaClass
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String fullName0;
+		private string fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private System.Type symbolType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6605,564 +6373,552 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> properties0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaOperation> operations0;
-	
+
 		internal MetaClassImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaClass; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaClass;
+
 		public new MetaClassBuilder ToMutable()
 		{
 			return (MetaClassBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaClassBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaClassBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaNamespace Namespace
 		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+			get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
-	
-		
+
+
 		public MetaModel MetaModel
 		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+			get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
-	
-		
+
+
 		public System.Type SymbolType
 		{
-		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty, ref symbolType0); }
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty, ref symbolType0); }
 		}
-	
-		
+
+
 		public bool IsAbstract
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.IsAbstractProperty, ref isAbstract0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.IsAbstractProperty, ref isAbstract0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaClass> SuperClasses
 		{
-		    get { return this.GetList<MetaClass>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SuperClassesProperty, ref superClasses0); }
+			get { return this.GetList<MetaClass>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SuperClassesProperty, ref superClasses0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> Properties
 		{
-		    get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.PropertiesProperty, ref properties0); }
+			get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.PropertiesProperty, ref properties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaOperation> Operations
 		{
-		    get { return this.GetList<MetaOperation>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.OperationsProperty, ref operations0); }
+			get { return this.GetList<MetaOperation>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.OperationsProperty, ref operations0); }
 		}
-	
-		
+
+
 		bool MetaType.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaClass.ConformsTo(MetaType @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaClass> MetaClass.GetAllSuperClasses(bool includeSelf)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this, includeSelf);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this, includeSelf);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaProperty> MetaClass.GetAllSuperProperties(bool includeSelf)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperProperties(this, includeSelf);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperProperties(this, includeSelf);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaOperation> MetaClass.GetAllSuperOperations(bool includeSelf)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperOperations(this, includeSelf);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperOperations(this, includeSelf);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaProperty> MetaClass.GetAllProperties()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaOperation> MetaClass.GetAllOperations()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaProperty> MetaClass.GetAllFinalProperties()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalProperties(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalProperties(this);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaOperation> MetaClass.GetAllFinalOperations()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalOperations(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalOperations(this);
 		}
 	}
-	
+
 	internal class MetaClassBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaClassBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaClassBuilder> superClasses0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> properties0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaOperationBuilder> operations0;
-	
+
 		internal MetaClassBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaClass(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaClass; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaClass;
+
 		public new MetaClass ToImmutable()
 		{
 			return (MetaClass)base.ToImmutable();
 		}
-	
+
 		public new MetaClass ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaClass)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaNamespaceBuilder Namespace
 		{
 			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
 			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaModelBuilder MetaModel
 		{
 			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
 		}
-		
+
 		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String FullName
+
+
+		public string FullName
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
-		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, String> lazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
 		}
-		
-		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, String> immutableLazy, global::System.Func<MetaDeclarationBuilder, String> mutableLazy)
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public System.Type SymbolType
 		{
 			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty); }
 			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SymbolTypeProperty, value); }
 		}
-		
+
 		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<System.Type> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaClass.SymbolTypeProperty, lazy);
 		}
-		
+
 		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<MetaClassBuilder, System.Type> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaClass.SymbolTypeProperty, lazy);
 		}
-		
+
 		void MetaClassBuilder.SetSymbolTypeLazy(global::System.Func<MetaClass, System.Type> immutableLazy, global::System.Func<MetaClassBuilder, System.Type> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaClass.SymbolTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool IsAbstract
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.IsAbstractProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.IsAbstractProperty, value); }
 		}
-		
+
 		void MetaClassBuilder.SetIsAbstractLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaClass.IsAbstractProperty, lazy);
 		}
-		
+
 		void MetaClassBuilder.SetIsAbstractLazy(global::System.Func<MetaClassBuilder, bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaClass.IsAbstractProperty, lazy);
 		}
-		
+
 		void MetaClassBuilder.SetIsAbstractLazy(global::System.Func<MetaClass, bool> immutableLazy, global::System.Func<MetaClassBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaClass.IsAbstractProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaClassBuilder> SuperClasses
 		{
 			get { return this.GetList<MetaClassBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.SuperClassesProperty, ref superClasses0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> Properties
 		{
 			get { return this.GetList<MetaPropertyBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.PropertiesProperty, ref properties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaOperationBuilder> Operations
 		{
 			get { return this.GetList<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaClass.OperationsProperty, ref operations0); }
 		}
-	
-		
+
+
 		bool MetaTypeBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		bool MetaClassBuilder.ConformsTo(MetaTypeBuilder @type)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
+			return MetaImplementationProvider.Implementation.MetaClass_ConformsTo(this, @type);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaClassBuilder> MetaClassBuilder.GetAllSuperClasses(bool includeSelf)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this, includeSelf);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this, includeSelf);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> MetaClassBuilder.GetAllSuperProperties(bool includeSelf)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperProperties(this, includeSelf);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperProperties(this, includeSelf);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> MetaClassBuilder.GetAllSuperOperations(bool includeSelf)
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperOperations(this, includeSelf);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperOperations(this, includeSelf);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> MetaClassBuilder.GetAllProperties()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> MetaClassBuilder.GetAllOperations()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> MetaClassBuilder.GetAllFinalProperties()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalProperties(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalProperties(this);
 		}
-	
-		
+
+
 		global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> MetaClassBuilder.GetAllFinalOperations()
 		{
-		    return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalOperations(this);
+			return MetaImplementationProvider.Implementation.MetaClass_GetAllFinalOperations(this);
 		}
 	}
-	
+
 	internal class MetaOperationId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaOperationImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaOperationBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaOperationImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaOperation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaClass class0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7175,687 +6931,663 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaParameter> parameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType returnType0;
-	
+
 		internal MetaOperationImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaOperation; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaOperation;
+
 		public new MetaOperationBuilder ToMutable()
 		{
 			return (MetaOperationBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaOperationBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaOperationBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaClass Class
 		{
-		    get { return this.GetReference<MetaClass>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ClassProperty, ref class0); }
+			get { return this.GetReference<MetaClass>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ClassProperty, ref class0); }
 		}
-	
-		
+
+
 		public MetaEnum Enum
 		{
-		    get { return this.GetReference<MetaEnum>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.EnumProperty, ref enum0); }
+			get { return this.GetReference<MetaEnum>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.EnumProperty, ref enum0); }
 		}
-	
-		
+
+
 		public bool IsBuilder
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsBuilderProperty, ref isBuilder0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsBuilderProperty, ref isBuilder0); }
 		}
-	
-		
+
+
 		public bool IsReadonly
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsReadonlyProperty, ref isReadonly0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsReadonlyProperty, ref isReadonly0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaParameter> Parameters
 		{
-		    get { return this.GetList<MetaParameter>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ParametersProperty, ref parameters0); }
+			get { return this.GetList<MetaParameter>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ParametersProperty, ref parameters0); }
 		}
-	
-		
+
+
 		public MetaType ReturnType
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ReturnTypeProperty, ref returnType0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ReturnTypeProperty, ref returnType0); }
 		}
-	
-		
+
+
 		bool MetaOperation.ConformsTo(MetaOperation operation)
 		{
-		    return MetaImplementationProvider.Implementation.MetaOperation_ConformsTo(this, operation);
+			return MetaImplementationProvider.Implementation.MetaOperation_ConformsTo(this, operation);
 		}
 	}
-	
+
 	internal class MetaOperationBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaOperationBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaParameterBuilder> parameters0;
-	
+
 		internal MetaOperationBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaOperation(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaOperation; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaOperation;
+
 		public new MetaOperation ToImmutable()
 		{
 			return (MetaOperation)base.ToImmutable();
 		}
-	
+
 		public new MetaOperation ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaOperation)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaClassBuilder Class
 		{
 			get { return this.GetReference<MetaClassBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ClassProperty); }
 			set { this.SetReference<MetaClassBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ClassProperty, value); }
 		}
-		
+
 		void MetaOperationBuilder.SetClassLazy(global::System.Func<MetaClassBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.ClassProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetClassLazy(global::System.Func<MetaOperationBuilder, MetaClassBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.ClassProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetClassLazy(global::System.Func<MetaOperation, MetaClass> immutableLazy, global::System.Func<MetaOperationBuilder, MetaClassBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.ClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaEnumBuilder Enum
 		{
 			get { return this.GetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.EnumProperty); }
 			set { this.SetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.EnumProperty, value); }
 		}
-		
+
 		void MetaOperationBuilder.SetEnumLazy(global::System.Func<MetaEnumBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.EnumProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetEnumLazy(global::System.Func<MetaOperationBuilder, MetaEnumBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.EnumProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetEnumLazy(global::System.Func<MetaOperation, MetaEnum> immutableLazy, global::System.Func<MetaOperationBuilder, MetaEnumBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.EnumProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool IsBuilder
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsBuilderProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsBuilderProperty, value); }
 		}
-		
+
 		void MetaOperationBuilder.SetIsBuilderLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaOperation.IsBuilderProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetIsBuilderLazy(global::System.Func<MetaOperationBuilder, bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaOperation.IsBuilderProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetIsBuilderLazy(global::System.Func<MetaOperation, bool> immutableLazy, global::System.Func<MetaOperationBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaOperation.IsBuilderProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool IsReadonly
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsReadonlyProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.IsReadonlyProperty, value); }
 		}
-		
+
 		void MetaOperationBuilder.SetIsReadonlyLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaOperation.IsReadonlyProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetIsReadonlyLazy(global::System.Func<MetaOperationBuilder, bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaOperation.IsReadonlyProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetIsReadonlyLazy(global::System.Func<MetaOperation, bool> immutableLazy, global::System.Func<MetaOperationBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaOperation.IsReadonlyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaParameterBuilder> Parameters
 		{
 			get { return this.GetList<MetaParameterBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ParametersProperty, ref parameters0); }
 		}
-	
-		
+
+
 		public MetaTypeBuilder ReturnType
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ReturnTypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ReturnTypeProperty, value); }
 		}
-		
+
 		void MetaOperationBuilder.SetReturnTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.ReturnTypeProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetReturnTypeLazy(global::System.Func<MetaOperationBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.ReturnTypeProperty, lazy);
 		}
-		
+
 		void MetaOperationBuilder.SetReturnTypeLazy(global::System.Func<MetaOperation, MetaType> immutableLazy, global::System.Func<MetaOperationBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaOperation.ReturnTypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		bool MetaOperationBuilder.ConformsTo(MetaOperationBuilder operation)
 		{
-		    return MetaImplementationProvider.Implementation.MetaOperation_ConformsTo(this, operation);
+			return MetaImplementationProvider.Implementation.MetaOperation_ConformsTo(this, operation);
 		}
 	}
-	
+
 	internal class MetaParameterId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaParameterImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaParameterBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaParameterImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaParameter
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaOperation operation0;
-	
+
 		internal MetaParameterImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaParameter; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaParameter;
+
 		public new MetaParameterBuilder ToMutable()
 		{
 			return (MetaParameterBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaParameterBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaParameterBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
+
+
 		public MetaType Type
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
+
+
 		public MetaOperation Operation
 		{
-		    get { return this.GetReference<MetaOperation>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.OperationProperty, ref operation0); }
+			get { return this.GetReference<MetaOperation>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.OperationProperty, ref operation0); }
 		}
 	}
-	
+
 	internal class MetaParameterBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaParameterBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
-	
+
 		internal MetaParameterBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaParameter(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaParameter; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaParameter;
+
 		public new MetaParameter ToImmutable()
 		{
 			return (MetaParameter)base.ToImmutable();
 		}
-	
+
 		public new MetaParameter ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaParameter)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaTypeBuilder Type
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaOperationBuilder Operation
 		{
 			get { return this.GetReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.OperationProperty); }
 			set { this.SetReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.OperationProperty, value); }
 		}
-		
+
 		void MetaParameterBuilder.SetOperationLazy(global::System.Func<MetaOperationBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaParameter.OperationProperty, lazy);
 		}
-		
+
 		void MetaParameterBuilder.SetOperationLazy(global::System.Func<MetaParameterBuilder, MetaOperationBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaParameter.OperationProperty, lazy);
 		}
-		
+
 		void MetaParameterBuilder.SetOperationLazy(global::System.Func<MetaParameter, MetaOperation> immutableLazy, global::System.Func<MetaParameterBuilder, MetaOperationBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaParameter.OperationProperty, immutableLazy, mutableLazy);
 		}
 	}
-	
+
 	internal class MetaPropertyId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.MDescriptor; } }
-	
+
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return new MetaPropertyImpl(this, model);
 		}
-	
+
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
 			return new MetaPropertyBuilderImpl(this, model, creating);
 		}
 	}
-	
+
 	internal class MetaPropertyImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaProperty
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String documentation0;
+		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String name0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String symbolProperty0;
+		private string symbolProperty0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaPropertyKind kind0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaClass class0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private String defaultValue0;
+		private string defaultValue0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isContainment0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7868,163 +7600,157 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> redefinedProperties0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> redefiningProperties0;
-	
+
 		internal MetaPropertyImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaProperty; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaProperty;
+
 		public new MetaPropertyBuilder ToMutable()
 		{
 			return (MetaPropertyBuilder)base.ToMutable();
 		}
-	
+
 		public new MetaPropertyBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (MetaPropertyBuilder)base.ToMutable(model);
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaTypedElementBuilder MetaTypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
-	
+
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+			get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
-	
-		
+
+
 		public MetaType Type
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+			get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
-	
-		
-		public String SymbolProperty
+
+
+		public string SymbolProperty
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, ref symbolProperty0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, ref symbolProperty0); }
 		}
-	
-		
+
+
 		public MetaPropertyKind Kind
 		{
-		    get { return this.GetValue<MetaPropertyKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.KindProperty, ref kind0); }
+			get { return this.GetValue<MetaPropertyKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.KindProperty, ref kind0); }
 		}
-	
-		
+
+
 		public MetaClass Class
 		{
-		    get { return this.GetReference<MetaClass>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.ClassProperty, ref class0); }
+			get { return this.GetReference<MetaClass>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.ClassProperty, ref class0); }
 		}
-	
-		
-		public String DefaultValue
+
+
+		public string DefaultValue
 		{
-		    get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, ref defaultValue0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, ref defaultValue0); }
 		}
-	
-		
+
+
 		public bool IsContainment
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.IsContainmentProperty, ref isContainment0); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.IsContainmentProperty, ref isContainment0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> OppositeProperties
 		{
-		    get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.OppositePropertiesProperty, ref oppositeProperties0); }
+			get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.OppositePropertiesProperty, ref oppositeProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> SubsettedProperties
 		{
-		    get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SubsettedPropertiesProperty, ref subsettedProperties0); }
+			get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SubsettedPropertiesProperty, ref subsettedProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> SubsettingProperties
 		{
-		    get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SubsettingPropertiesProperty, ref subsettingProperties0); }
+			get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SubsettingPropertiesProperty, ref subsettingProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> RedefinedProperties
 		{
-		    get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.RedefinedPropertiesProperty, ref redefinedProperties0); }
+			get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.RedefinedPropertiesProperty, ref redefinedProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.ImmutableModelList<MetaProperty> RedefiningProperties
 		{
-		    get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.RedefiningPropertiesProperty, ref redefiningProperties0); }
+			get { return this.GetList<MetaProperty>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.RedefiningPropertiesProperty, ref redefiningProperties0); }
 		}
-	
-		
+
+
 		bool MetaProperty.ConformsTo(MetaProperty @property)
 		{
-		    return MetaImplementationProvider.Implementation.MetaProperty_ConformsTo(this, @property);
+			return MetaImplementationProvider.Implementation.MetaProperty_ConformsTo(this, @property);
 		}
 	}
-	
+
 	internal class MetaPropertyBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaPropertyBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
@@ -8033,304 +7759,299 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> subsettingProperties0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> redefinedProperties0;
 		private global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> redefiningProperties0;
-	
+
 		internal MetaPropertyBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
-	
+
 		protected override void MInit()
 		{
 			MetaImplementationProvider.Implementation.MetaProperty(this);
 		}
-	
-		public override global::MetaDslx.Modeling.IMetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetaModel; }
-		}
-	
-		public override MetaClass MMetaClass
-		{
-			get { return MetaInstance.MetaProperty; }
-		}
-	
+
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Meta.Model.MetaInstance.MMetadata;
+
+		public override MetaClass MMetaClass => MetaInstance.MetaProperty;
+
 		public new MetaProperty ToImmutable()
 		{
 			return (MetaProperty)base.ToImmutable();
 		}
-	
+
 		public new MetaProperty ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaProperty)base.ToImmutable(model);
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
-	
+
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
 			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
-	
-		
-		public String Documentation
+
+
+		public string Documentation
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
-		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, String> lazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
 		}
-		
-		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, String> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, String> mutableLazy)
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, lazy);
+		}
+
+		void MetaDocumentedElementBuilder.SetDocumentationLazy(global::System.Func<MetaDocumentedElement, string> immutableLazy, global::System.Func<MetaDocumentedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaTypeBuilder Type
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
 		}
-		
+
 		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String Name
+
+
+		public string Name
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
-		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, String> lazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
 		}
-		
-		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, String> immutableLazy, global::System.Func<MetaNamedElementBuilder, String> mutableLazy)
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, lazy);
+		}
+
+		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String SymbolProperty
+
+
+		public string SymbolProperty
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SymbolPropertyProperty, value); }
 		}
-		
-		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, lazy);
-		}
-		
-		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, String> lazy)
+
+		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, lazy);
 		}
-		
-		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy)
+
+		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaPropertyBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, lazy);
+		}
+
+		void MetaPropertyBuilder.SetSymbolPropertyLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.SymbolPropertyProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaPropertyKind Kind
 		{
 			get { return this.GetValue<MetaPropertyKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.KindProperty); }
 			set { this.SetValue<MetaPropertyKind>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.KindProperty, value); }
 		}
-		
+
 		void MetaPropertyBuilder.SetKindLazy(global::System.Func<MetaPropertyKind> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaProperty.KindProperty, lazy);
 		}
-		
+
 		void MetaPropertyBuilder.SetKindLazy(global::System.Func<MetaPropertyBuilder, MetaPropertyKind> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaProperty.KindProperty, lazy);
 		}
-		
+
 		void MetaPropertyBuilder.SetKindLazy(global::System.Func<MetaProperty, MetaPropertyKind> immutableLazy, global::System.Func<MetaPropertyBuilder, MetaPropertyKind> mutableLazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaProperty.KindProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public MetaClassBuilder Class
 		{
 			get { return this.GetReference<MetaClassBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.ClassProperty); }
 			set { this.SetReference<MetaClassBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.ClassProperty, value); }
 		}
-		
+
 		void MetaPropertyBuilder.SetClassLazy(global::System.Func<MetaClassBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.ClassProperty, lazy);
 		}
-		
+
 		void MetaPropertyBuilder.SetClassLazy(global::System.Func<MetaPropertyBuilder, MetaClassBuilder> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.ClassProperty, lazy);
 		}
-		
+
 		void MetaPropertyBuilder.SetClassLazy(global::System.Func<MetaProperty, MetaClass> immutableLazy, global::System.Func<MetaPropertyBuilder, MetaClassBuilder> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.ClassProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public String DefaultValue
+
+
+		public string DefaultValue
 		{
-			get { return this.GetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty); }
-			set { this.SetReference<String>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.DefaultValueProperty, value); }
 		}
-		
-		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<String> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, lazy);
-		}
-		
-		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, String> lazy)
+
+		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<string> lazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, lazy);
 		}
-		
-		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaProperty, String> immutableLazy, global::System.Func<MetaPropertyBuilder, String> mutableLazy)
+
+		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaPropertyBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, lazy);
+		}
+
+		void MetaPropertyBuilder.SetDefaultValueLazy(global::System.Func<MetaProperty, string> immutableLazy, global::System.Func<MetaPropertyBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaProperty.DefaultValueProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public bool IsContainment
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.IsContainmentProperty); }
 			set { this.SetValue<bool>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.IsContainmentProperty, value); }
 		}
-		
+
 		void MetaPropertyBuilder.SetIsContainmentLazy(global::System.Func<bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaProperty.IsContainmentProperty, lazy);
 		}
-		
+
 		void MetaPropertyBuilder.SetIsContainmentLazy(global::System.Func<MetaPropertyBuilder, bool> lazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaProperty.IsContainmentProperty, lazy);
 		}
-		
+
 		void MetaPropertyBuilder.SetIsContainmentLazy(global::System.Func<MetaProperty, bool> immutableLazy, global::System.Func<MetaPropertyBuilder, bool> mutableLazy)
 		{
 			this.SetLazyValue(MetaDescriptor.MetaProperty.IsContainmentProperty, immutableLazy, mutableLazy);
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> OppositeProperties
 		{
 			get { return this.GetList<MetaPropertyBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.OppositePropertiesProperty, ref oppositeProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> SubsettedProperties
 		{
 			get { return this.GetList<MetaPropertyBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SubsettedPropertiesProperty, ref subsettedProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> SubsettingProperties
 		{
 			get { return this.GetList<MetaPropertyBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.SubsettingPropertiesProperty, ref subsettingProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> RedefinedProperties
 		{
 			get { return this.GetList<MetaPropertyBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.RedefinedPropertiesProperty, ref redefinedProperties0); }
 		}
-	
-		
+
+
 		public global::MetaDslx.Modeling.MutableModelList<MetaPropertyBuilder> RedefiningProperties
 		{
 			get { return this.GetList<MetaPropertyBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaProperty.RedefiningPropertiesProperty, ref redefiningProperties0); }
 		}
-	
-		
+
+
 		bool MetaPropertyBuilder.ConformsTo(MetaPropertyBuilder @property)
 		{
-		    return MetaImplementationProvider.Implementation.MetaProperty_ConformsTo(this, @property);
+			return MetaImplementationProvider.Implementation.MetaProperty_ConformsTo(this, @property);
 		}
 	}
 
 	internal class MetaBuilderInstance
 	{
 		internal static MetaBuilderInstance instance = new MetaBuilderInstance();
-	
+
 		private bool creating;
 		private bool created;
+		internal global::MetaDslx.Languages.Meta.Model.MetaMetadata MMetadata;
 		internal global::MetaDslx.Modeling.MutableModel MModel;
-	
+
 		internal MetaPrimitiveTypeBuilder Object = null;
 		internal MetaPrimitiveTypeBuilder String = null;
 		internal MetaPrimitiveTypeBuilder Int = null;
@@ -8343,7 +8064,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		internal MetaPrimitiveTypeBuilder SystemType = null;
 		internal MetaPrimitiveTypeBuilder Model = null;
 		internal MetaPrimitiveTypeBuilder ModelObject = null;
-	
+
 		private MetaNamespaceBuilder __tmp1;
 		private MetaNamespaceBuilder __tmp2;
 		private MetaNamespaceBuilder __tmp3;
@@ -8481,12 +8202,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private MetaCollectionTypeBuilder __tmp69;
 		private MetaCollectionTypeBuilder __tmp70;
 		private MetaCollectionTypeBuilder __tmp71;
-	
+
 		internal MetaBuilderInstance()
 		{
-			this.MModel = new global::MetaDslx.Modeling.MutableModel(new Modeling.ModelMetadata("Meta", default, "http://metadslx.core/1.0", "Meta", "MetaDslx.Languages.Meta.Model"));
+			this.MMetadata = new MetaMetadata(name: "Meta", version: new global::MetaDslx.Modeling.ModelVersion(0, 0), uri: "http://metadslx.core/1.0", prefix: "", namespaceName: "MetaDslx.Languages.Meta.Model");
+			this.MModel = new global::MetaDslx.Modeling.MutableModel(this.MMetadata);
 		}
-	
+
 		internal void Create()
 		{
 			lock (this)
@@ -8496,26 +8218,26 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			}
 			this.CreateInstances();
 			MetaImplementationProvider.Implementation.MetaBuilderInstance(this);
-	        foreach (global::MetaDslx.Modeling.MutableObject obj in this.MModel.Objects)
-	        {
-	            obj.MMakeCreated();
-	        }
+			foreach (global::MetaDslx.Modeling.MutableObject obj in this.MModel.Objects)
+			{
+				obj.MMakeCreated();
+			}
 			lock (this)
 			{
 				this.created = true;
 			}
 		}
-	
+
 		internal void EvaluateLazyValues()
 		{
 			if (!this.created) return;
 			this.MModel.EvaluateLazyValues();
 		}
-	
+
 		private void CreateInstances()
 		{
 			global::MetaDslx.Languages.Meta.Model.MetaFactory factory = new global::MetaDslx.Languages.Meta.Model.MetaFactory(this.MModel, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
-	
+
 			Object = factory.MetaPrimitiveType();
 			Object.MName = "Object";
 			Object.DotNetName = "System.Object";
@@ -8552,7 +8274,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			ModelObject = factory.MetaPrimitiveType();
 			ModelObject.MName = "ModelObject";
 			ModelObject.DotNetName = "MetaDslx.Modeling.IModelObject";
-	
+
 			__tmp1 = factory.MetaNamespace();
 			__tmp2 = factory.MetaNamespace();
 			__tmp3 = factory.MetaNamespace();
@@ -8690,7 +8412,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp69 = factory.MetaCollectionType();
 			__tmp70 = factory.MetaCollectionType();
 			__tmp71 = factory.MetaCollectionType();
-	
+
 			__tmp1.Documentation = null;
 			__tmp1.Name = "MetaDslx";
 			// __tmp1.Namespace = null;
@@ -9625,7 +9347,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		internal virtual void MetaBuilderInstance(MetaBuilderInstance _this)
 		{
 		}
-	
+
 		/// <summary>
 		/// Implements the constructor: MetaElement()
 		/// </summary>
@@ -9633,17 +9355,17 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaElementSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaElement
 		/// </summary>
 		protected virtual void CallMetaElementSuperConstructors(MetaElementBuilder _this)
 		{
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaDocumentedElement()
 		/// </summary>
@@ -9659,7 +9381,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaDocumentedElementSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaDocumentedElement
 		/// </summary>
@@ -9667,10 +9389,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.MetaElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaNamedElement()
 		/// </summary>
@@ -9687,7 +9409,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaNamedElementSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaNamedElement
 		/// </summary>
@@ -9696,10 +9418,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaTypedElement()
 		/// </summary>
@@ -9715,7 +9437,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaTypedElementSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaTypedElement
 		/// </summary>
@@ -9723,10 +9445,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.MetaElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaType()
 		/// </summary>
@@ -9734,16 +9456,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaTypeSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaType
 		/// </summary>
 		protected virtual void CallMetaTypeSuperConstructors(MetaTypeBuilder _this)
 		{
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaType.ConformsTo()
 		/// </summary>
@@ -9751,13 +9473,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaType_ConformsTo(_this.ToMutable(), @type.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaTypeBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaType_ConformsTo(MetaTypeBuilder _this, MetaTypeBuilder @type);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: MetaNamedType()
 		/// </summary>
@@ -9780,7 +9502,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaNamedType
 		/// </summary>
@@ -9792,10 +9514,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaAttribute()
 		/// </summary>
@@ -9818,7 +9540,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaAttribute
 		/// </summary>
@@ -9831,10 +9553,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaDeclaration()
 		/// </summary>
@@ -9859,7 +9581,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaDeclaration
 		/// </summary>
@@ -9869,7 +9591,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
 		}
-	
+
 		/// <summary>
 		/// Computes the value of the property: MetaDeclaration.MetaModel
 		/// </summary	
@@ -9877,10 +9599,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// <summary>
 		/// Computes the value of the property: MetaDeclaration.FullName
 		/// </summary	
-		public abstract String MetaDeclaration_ComputeProperty_FullName(MetaDeclarationBuilder _this);
-	
-	
-	
+		public abstract string MetaDeclaration_ComputeProperty_FullName(MetaDeclarationBuilder _this);
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaNamespace()
 		/// </summary>
@@ -9901,7 +9623,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaNamespace
 		/// </summary>
@@ -9912,10 +9634,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaNamedElement(_this);
 			this.MetaDeclaration(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaModel()
 		/// </summary>
@@ -9933,7 +9655,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaModelSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaModel
 		/// </summary>
@@ -9943,10 +9665,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaCollectionType()
 		/// </summary>
@@ -9962,7 +9684,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaCollectionTypeSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaCollectionType
 		/// </summary>
@@ -9970,9 +9692,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.MetaType(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaCollectionType.ConformsTo()
 		/// </summary>
@@ -9980,13 +9702,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaCollectionType_ConformsTo(_this.ToMutable(), @type.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaCollectionTypeBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaCollectionType_ConformsTo(MetaCollectionTypeBuilder _this, MetaTypeBuilder @type);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: MetaNullableType()
 		/// </summary>
@@ -10002,7 +9724,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaNullableTypeSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaNullableType
 		/// </summary>
@@ -10010,9 +9732,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.MetaType(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaNullableType.ConformsTo()
 		/// </summary>
@@ -10020,13 +9742,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaNullableType_ConformsTo(_this.ToMutable(), @type.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaNullableTypeBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaNullableType_ConformsTo(MetaNullableTypeBuilder _this, MetaTypeBuilder @type);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: MetaPrimitiveType()
 		/// </summary>
@@ -10049,7 +9771,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaPrimitiveType
 		/// </summary>
@@ -10062,9 +9784,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaPrimitiveType.ConformsTo()
 		/// </summary>
@@ -10072,13 +9794,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaPrimitiveType_ConformsTo(_this.ToMutable(), @type.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaPrimitiveTypeBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaPrimitiveType_ConformsTo(MetaPrimitiveTypeBuilder _this, MetaTypeBuilder @type);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: MetaEnum()
 		/// </summary>
@@ -10101,7 +9823,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaEnum
 		/// </summary>
@@ -10114,10 +9836,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaEnumLiteral()
 		/// </summary>
@@ -10137,7 +9859,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaEnumLiteralSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaEnumLiteral
 		/// </summary>
@@ -10148,10 +9870,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaTypedElement(_this);
 			this.MetaNamedElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaConstant()
 		/// </summary>
@@ -10180,7 +9902,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaConstant
 		/// </summary>
@@ -10194,9 +9916,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaTypedElement(_this);
 			this.MetaNamedType(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaConstant.ConformsTo()
 		/// </summary>
@@ -10204,13 +9926,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaConstant_ConformsTo(_this.ToMutable(), @type.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaConstantBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaConstant_ConformsTo(MetaConstantBuilder _this, MetaTypeBuilder @type);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: MetaClass()
 		/// </summary>
@@ -10233,7 +9955,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaClass
 		/// </summary>
@@ -10246,9 +9968,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaClass.ConformsTo()
 		/// </summary>
@@ -10256,12 +9978,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_ConformsTo(_this.ToMutable(), @type.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaClass_ConformsTo(MetaClassBuilder _this, MetaTypeBuilder @type);
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClass.GetAllSuperClasses()
 		/// </summary>
@@ -10269,12 +9991,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_GetAllSuperClasses(_this.ToMutable(), includeSelf).Select(obj => obj.ToImmutable()).ToList();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.GetAllSuperClasses()
 		/// </summary>
 		public abstract global::System.Collections.Generic.IReadOnlyList<MetaClassBuilder> MetaClass_GetAllSuperClasses(MetaClassBuilder _this, bool includeSelf);
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClass.GetAllSuperProperties()
 		/// </summary>
@@ -10282,12 +10004,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_GetAllSuperProperties(_this.ToMutable(), includeSelf).Select(obj => obj.ToImmutable()).ToList();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.GetAllSuperProperties()
 		/// </summary>
 		public abstract global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> MetaClass_GetAllSuperProperties(MetaClassBuilder _this, bool includeSelf);
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClass.GetAllSuperOperations()
 		/// </summary>
@@ -10295,12 +10017,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_GetAllSuperOperations(_this.ToMutable(), includeSelf).Select(obj => obj.ToImmutable()).ToList();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.GetAllSuperOperations()
 		/// </summary>
 		public abstract global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> MetaClass_GetAllSuperOperations(MetaClassBuilder _this, bool includeSelf);
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClass.GetAllProperties()
 		/// </summary>
@@ -10308,12 +10030,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_GetAllProperties(_this.ToMutable()).Select(obj => obj.ToImmutable()).ToList();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.GetAllProperties()
 		/// </summary>
 		public abstract global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> MetaClass_GetAllProperties(MetaClassBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClass.GetAllOperations()
 		/// </summary>
@@ -10321,12 +10043,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_GetAllOperations(_this.ToMutable()).Select(obj => obj.ToImmutable()).ToList();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.GetAllOperations()
 		/// </summary>
 		public abstract global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> MetaClass_GetAllOperations(MetaClassBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClass.GetAllFinalProperties()
 		/// </summary>
@@ -10334,12 +10056,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_GetAllFinalProperties(_this.ToMutable()).Select(obj => obj.ToImmutable()).ToList();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.GetAllFinalProperties()
 		/// </summary>
 		public abstract global::System.Collections.Generic.IReadOnlyList<MetaPropertyBuilder> MetaClass_GetAllFinalProperties(MetaClassBuilder _this);
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClass.GetAllFinalOperations()
 		/// </summary>
@@ -10347,13 +10069,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaClass_GetAllFinalOperations(_this.ToMutable()).Select(obj => obj.ToImmutable()).ToList();
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaClassBuilder.GetAllFinalOperations()
 		/// </summary>
 		public abstract global::System.Collections.Generic.IReadOnlyList<MetaOperationBuilder> MetaClass_GetAllFinalOperations(MetaClassBuilder _this);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: MetaOperation()
 		/// </summary>
@@ -10371,7 +10093,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaOperationSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaOperation
 		/// </summary>
@@ -10381,9 +10103,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaOperation.ConformsTo()
 		/// </summary>
@@ -10391,13 +10113,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaOperation_ConformsTo(_this.ToMutable(), operation.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaOperationBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaOperation_ConformsTo(MetaOperationBuilder _this, MetaOperationBuilder operation);
-	
-	
+
+
 		/// <summary>
 		/// Implements the constructor: MetaParameter()
 		/// </summary>
@@ -10417,7 +10139,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaParameterSuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaParameter
 		/// </summary>
@@ -10428,10 +10150,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaTypedElement(_this);
 			this.MetaNamedElement(_this);
 		}
-	
-	
-	
-	
+
+
+
+
 		/// <summary>
 		/// Implements the constructor: MetaProperty()
 		/// </summary>
@@ -10451,7 +10173,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			this.CallMetaPropertySuperConstructors(_this);
 		}
-	
+
 		/// <summary>
 		/// Calls the super constructors of MetaProperty
 		/// </summary>
@@ -10462,9 +10184,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaTypedElement(_this);
 			this.MetaNamedElement(_this);
 		}
-	
-	
-	
+
+
+
 		/// <summary>
 		/// Implements the operation: MetaProperty.ConformsTo()
 		/// </summary>
@@ -10472,14 +10194,14 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		{
 			return this.MetaProperty_ConformsTo(_this.ToMutable(), @property.ToMutable());
 		}
-	
+
 		/// <summary>
 		/// Implements the operation: MetaPropertyBuilder.ConformsTo()
 		/// </summary>
 		public abstract bool MetaProperty_ConformsTo(MetaPropertyBuilder _this, MetaPropertyBuilder @property);
-	
-	
-	
+
+
+
 	}
 
 	internal class MetaImplementationProvider
@@ -10487,11 +10209,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		// If there is a compile error at this line, create a new class called MetaImplementation
 		// which is a subclass of global::MetaDslx.Languages.Meta.Model.MetaImplementationBase:
 		private static MetaImplementation implementation = new MetaImplementation();
-	
+
 		public static MetaImplementation Implementation
 		{
 			get { return implementation; }
 		}
 	}
 }
-

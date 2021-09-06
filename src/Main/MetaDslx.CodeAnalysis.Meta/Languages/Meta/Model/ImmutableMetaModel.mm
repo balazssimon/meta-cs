@@ -83,6 +83,8 @@
 	[type: Named]
 	class MetaModel : MetaNamedElement
 	{
+		int MajorVersion;
+		int MinorVersion;
 		string Uri;
 		string Prefix;
 		MetaNamespace Namespace;

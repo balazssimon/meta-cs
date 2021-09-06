@@ -9,15 +9,15 @@ namespace MetaDslx.Languages.Meta.Model
     {
         public MetaXmiReadOptions()
         {
-            this.NamespaceToMetamodelMap.Add(MetaInstance.MMetaModel.Uri, MetaInstance.MMetaModel);
-            this.UriToModelMap.Add(MetaInstance.MMetaModel.Uri, MetaInstance.MModel);
+            this.NamespaceToMetadataMap.Add(MetaInstance.MMetadata.Uri, MetaInstance.MMetadata);
+            this.UriToModelMap.Add(MetaInstance.MMetadata.Uri, MetaInstance.MModel);
         }
 
-        public MetaXmiReadOptions(IMetaModel metaModel)
-            : base(metaModel)
+        public MetaXmiReadOptions(ModelMetadata metadata)
+            : base(metadata)
         {
-            this.NamespaceToMetamodelMap.Add(MetaInstance.MMetaModel.Uri, MetaInstance.MMetaModel);
-            this.UriToModelMap.Add(MetaInstance.MMetaModel.Uri, MetaInstance.MModel);
+            this.NamespaceToMetadataMap.Add(MetaInstance.MMetadata.Uri, MetaInstance.MMetadata);
+            this.UriToModelMap.Add(MetaInstance.MMetadata.Uri, MetaInstance.MModel);
         }
     }
 
@@ -25,7 +25,7 @@ namespace MetaDslx.Languages.Meta.Model
     {
         public MetaXmiWriteOptions()
         {
-            this.ModelToUriMap.Add(MetaInstance.MModel, MetaInstance.MMetaModel.Uri);
+            this.ModelToUriMap.Add(MetaInstance.MModel, MetaInstance.MMetadata.Uri);
         }
     }
 
@@ -33,11 +33,11 @@ namespace MetaDslx.Languages.Meta.Model
     {
         private XmiSerializer _xmiSerializer = new XmiSerializer();
 
-        public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel)
+        public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
-            return _xmiSerializer.ReadModel(xmiCode, new MetaXmiReadOptions(metaModel));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            return _xmiSerializer.ReadModel(xmiCode, new MetaXmiReadOptions(metadata));
         }
 
         public ImmutableModel ReadModel(string xmiCode, MetaXmiReadOptions options = null)
@@ -46,11 +46,11 @@ namespace MetaDslx.Languages.Meta.Model
             return _xmiSerializer.ReadModel(xmiCode, options ?? new MetaXmiReadOptions());
         }
 
-        public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel)
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
-            return _xmiSerializer.ReadModelFromFile(xmiFilePath, new MetaXmiReadOptions(metaModel));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            return _xmiSerializer.ReadModelFromFile(xmiFilePath, new MetaXmiReadOptions(metadata));
         }
 
         public ImmutableModel ReadModelFromFile(string xmiFilePath, MetaXmiReadOptions options = null)
@@ -59,9 +59,9 @@ namespace MetaDslx.Languages.Meta.Model
             return _xmiSerializer.ReadModelFromFile(xmiFilePath, options ?? new MetaXmiReadOptions());
         }
 
-        public ImmutableModelGroup ReadModelGroup(string xmiCode, IMetaModel metaModel)
+        public ImmutableModelGroup ReadModelGroup(string xmiCode, ModelMetadata metadata)
         {
-            return this.ReadModel(xmiCode, metaModel).ModelGroup;
+            return this.ReadModel(xmiCode, metadata).ModelGroup;
         }
 
         public ImmutableModelGroup ReadModelGroup(string xmiCode, MetaXmiReadOptions options = null)
@@ -69,9 +69,9 @@ namespace MetaDslx.Languages.Meta.Model
             return this.ReadModel(xmiCode, options).ModelGroup;
         }
 
-        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, IMetaModel metaModel)
+        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, ModelMetadata metadata)
         {
-            return this.ReadModelFromFile(xmiFilePath, metaModel).ModelGroup;
+            return this.ReadModelFromFile(xmiFilePath, metadata).ModelGroup;
         }
 
         public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, MetaXmiReadOptions options = null)

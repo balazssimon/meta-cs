@@ -49,7 +49,7 @@ extern function string GetEnumValueOf(MetaModel mmodel, Enum menum)
 extern function string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr)
 extern function string GetAttributeName(MetaElement element, MetaAttribute mattr)
 extern function string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
-extern function string CSharpName(IMetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
+extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
 extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
 extern function string CSharpName(MetaProperty mproperty, MetaModel mmodel, PropertyKind kind = PropertyKind.None, bool fullName = false)
 extern function string CSharpName(MetaConstant mconst, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
@@ -123,14 +123,12 @@ template GenerateMetadata(MetaModel model)
 [string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
 public class [model.CSharpName(ModelKind.Metadata)] : [Properties.CoreNs].ModelMetadata
 {
-	private readonly ImmutableModel model;
-^
-	public [model.CSharpName(ModelKind.Metadata)](string name, ModelVersion version, string uri, string prefix, string namespaceName)
+	public [model.CSharpName(ModelKind.Metadata)](string name, [Properties.CoreNs].ModelVersion version, string uri, string prefix, string namespaceName)
 		: base(name, version, uri, prefix, namespaceName)
 	{
 	}
 ^
-    protected override ModelMetadata Create(string name, ModelVersion version, string uri, string prefix, string namespaceName)
+    protected override [Properties.CoreNs].ModelMetadata Create(string name, [Properties.CoreNs].ModelVersion version, string uri, string prefix, string namespaceName)
     {
         return new [model.CSharpName(ModelKind.Metadata)](name, version, uri, prefix, namespaceName);
     }
@@ -155,7 +153,7 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 	}
 ^
 	public static readonly [model.CSharpName(ModelKind.Metadata, true)] MMetadata;
-	internal static readonly [Properties.CoreNs].ImmutableModel MModel;
+	public static readonly [Properties.CoreNs].ImmutableModel MModel;
 ^
 	[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
 	[GenerateDocumentation(cst)]
@@ -184,16 +182,16 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 ^
 		[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
 			[if (metaMetaModel)]
-		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(model);
+		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(MModel);
 			[else]
-		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(model);
+		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(MModel);
 			[end if]
 		[end loop]
 ^
 		[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
-		[cls.CSharpName(model, ClassKind.ImmutableInstance)] = [cls.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(model);
+		[cls.CSharpName(model, ClassKind.ImmutableInstance)] = [cls.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(MModel);
 			[loop(cls->prop:Properties)]
-		[prop.CSharpName(model, PropertyKind.ImmutableInstance)] = [prop.CSharpName(model, PropertyKind.BuilderInstance, true)].ToImmutable(model);
+		[prop.CSharpName(model, PropertyKind.ImmutableInstance)] = [prop.CSharpName(model, PropertyKind.BuilderInstance, true)].ToImmutable(MModel);
 			[end loop]
 		[end loop]
 ^
@@ -234,7 +232,7 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	internal [model.CSharpName(ModelKind.BuilderInstance)]()
 	{
-		this.MMetadata = new [model.CSharpName(ModelKind.Metadata)](name: "[model.CSharpName()]", version: new ModelVersion(0, 0), uri: "[model.Uri]", prefix: "[model.Prefix]", namespaceName: "[model.Namespace.CSharpName(NamespaceKind.Public, true)]");
+		this.MMetadata = new [model.CSharpName(ModelKind.Metadata)](name: "[model.CSharpName()]", version: new [Properties.CoreNs].ModelVersion(0, 0), uri: "[model.Uri]", prefix: "[model.Prefix]", namespaceName: "[model.Namespace.CSharpName(NamespaceKind.Public, true)]");
 		[if (metaMetaModel)]
 		this.MModel = new [Properties.CoreNs].MutableModel(this.MMetadata);
 		[else if (model.MModel.ModelGroup != null)]
@@ -445,7 +443,7 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 		[model.CSharpName(ModelKind.Descriptor)].Initialize();
 	}
 ^
-	public override [Properties.CoreNs].IMetaModel MMetaModel => [model.CSharpName(ModelKind.ImmutableInstance, true)].MMetaModel;
+	public override [Properties.CoreNs].ModelMetadata MMetadata => [model.CSharpName(ModelKind.ImmutableInstance, true)].MMetadata;
 ^
 	public override [Properties.CoreNs].MutableObject Create(string type)
 	{
@@ -952,14 +950,8 @@ end template
 template GenerateImmutableClass(MetaModel model, MetaClass cls)
 [bool metaMetaModel = model.IsMetaMetaModel()]
 [GenerateDocumentation(cls)]
-public interface [cls.CSharpName(model, ClassKind.Immutable)][GetImmutableAncestors(model, cls)][metaMetaModel && cls.Name == "MetaModel" ? ", "+Properties.CoreNs+".IMetaModel" : ""]
+public interface [cls.CSharpName(model, ClassKind.Immutable)][GetImmutableAncestors(model, cls)]
 {
-	[if (metaMetaModel && cls.Name == "MetaModel")]
-	/// <summary>
-	/// The name of the metamodel.
-	/// </summary>
-	new string Name { get; }
-	[end if]
 	[loop(cls->prop:Properties)]
 	[GenerateImmutableProperty(model, prop)]
 	[end loop]
@@ -1017,14 +1009,8 @@ end function
 template GenerateBuilderClass(MetaModel model, MetaClass cls)
 [bool metaMetaModel = model.IsMetaMetaModel()]
 [GenerateDocumentation(cls)]
-public interface [cls.CSharpName(model, ClassKind.Builder)][GetBuilderAncestors(model, cls)][metaMetaModel && cls.Name == "MetaModel" ? ", "+Properties.CoreNs+".IMetaModel" : ""]
+public interface [cls.CSharpName(model, ClassKind.Builder)][GetBuilderAncestors(model, cls)]
 {
-	[if (metaMetaModel && cls.Name == "MetaModel")]
-	/// <summary>
-	/// The name of the metamodel.
-	/// </summary>
-	new string Name { get; set; }
-	[end if]
 	[loop(cls->prop:Properties)]
 	[GenerateBuilderProperty(model, prop)]
 	[end loop]
@@ -1114,15 +1100,9 @@ internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.Co
 	{
 	}
 	^
-	public override [Properties.CoreNs].IMetaModel MMetaModel
-	{
-		get { return [cls.MetaModel.CSharpName(ModelKind.ImmutableInstance, true)].MMetaModel; }
-	}
+	public override [Properties.CoreNs].ModelMetadata MMetadata => [model.CSharpName(ModelKind.ImmutableInstance, true)].MMetadata;
 	^
-	public override [metaNs]MetaClass MMetaClass
-	{
-		get { return [cls.CSharpName(model, ClassKind.ImmutableInstance, true)]; }
-	}
+	public override [metaNs]MetaClass MMetaClass => [cls.CSharpName(model, ClassKind.ImmutableInstance, true)];
 	^
 	public new [cls.CSharpName(model, ClassKind.Builder)] ToMutable()
 	{
@@ -1224,15 +1204,9 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)](this);
 	}
 	^
-	public override [Properties.CoreNs].IMetaModel MMetaModel
-	{
-		get { return [cls.MetaModel.CSharpName(ModelKind.ImmutableInstance, true)].MMetaModel; }
-	}
+	public override [Properties.CoreNs].ModelMetadata MMetadata => [model.CSharpName(ModelKind.ImmutableInstance, true)].MMetadata;
 	^
-	public override [metaNs]MetaClass MMetaClass
-	{
-		get { return [cls.CSharpName(model, ClassKind.ImmutableInstance, true)]; }
-	}
+	public override [metaNs]MetaClass MMetaClass => [cls.CSharpName(model, ClassKind.ImmutableInstance, true)];
 	^
 	public new [cls.CSharpName(model, ClassKind.Immutable)] ToImmutable()
 	{

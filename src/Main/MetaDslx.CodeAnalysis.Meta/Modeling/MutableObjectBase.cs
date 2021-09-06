@@ -39,7 +39,7 @@ namespace MetaDslx.Modeling
         internal bool MIsBeingCreated { get { return this.creating; } }
         public bool MIsReadOnly { get { return this.model.IsReadOnly; } }
 
-        public abstract IMetaModel MMetaModel { get; }
+        public abstract ModelMetadata MMetadata { get; }
         public abstract MetaClass MMetaClass { get; }
 
         public MutableModel MModel { get { return this.model; } }

@@ -35,7 +35,7 @@ namespace MetaDslx.Modeling
 
         public ObjectId MId { get { return this.id; } }
 
-        public abstract IMetaModel MMetaModel { get; }
+        public abstract ModelMetadata MMetadata { get; }
         public abstract MetaClass MMetaClass { get; }
 
         public ImmutableModel MModel { get { return this.model; } }

@@ -25,15 +25,15 @@ namespace MetaDslx.Modeling
             this.XmiNamespaces.Add("http://www.omg.org/spec/XMI");
             this.IgnoreEmptyNamespace = true;
             this.IgnoredNamespaces = new HashSet<string>();
-            this.NamespaceToMetamodelMap = new Dictionary<string, IMetaModel>();
+            this.NamespaceToMetadataMap = new Dictionary<string, ModelMetadata>();
             this.UriToFileMap = new Dictionary<string, string>();
             this.UriToModelMap = new Dictionary<string, IModel>();
         }
 
-        public XmiReadOptions(IMetaModel metaModel)
+        public XmiReadOptions(ModelMetadata metadata)
             : this()
         {
-            this.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
+            this.NamespaceToMetadataMap.Add(metadata.Uri, metadata);
         }
 
         public HashSet<IModel> ReferencedModels { get; }
@@ -42,7 +42,7 @@ namespace MetaDslx.Modeling
         public HashSet<string> XmiNamespaces { get; }
         public bool IgnoreEmptyNamespace { get; set; }
         public HashSet<string> IgnoredNamespaces { get; }
-        public Dictionary<string, IMetaModel> NamespaceToMetamodelMap { get; }
+        public Dictionary<string, ModelMetadata> NamespaceToMetadataMap { get; }
         public Dictionary<string, string> UriToFileMap { get; }
         public Dictionary<string, IModel> UriToModelMap { get; }
     }
@@ -53,7 +53,7 @@ namespace MetaDslx.Modeling
         {
             this.RequireXmiRoot = true;
             this.XmiNamespace = "http://www.omg.org/spec/XMI";
-            this.MetamodelToNamespaceMap = new Dictionary<IMetaModel, string>();
+            this.MetadataToNamespaceMap = new Dictionary<ModelMetadata, string>();
             this.ModelToUriMap = new Dictionary<IModel, string>();
             this.ModelToFileMap = new Dictionary<IModel, string>();
         }
@@ -61,16 +61,16 @@ namespace MetaDslx.Modeling
         public bool RequireXmiRoot { get; set; }
         public string XmiNamespace { get; set; }
         public bool PreferReferenceByName { get; set; }
-        public Dictionary<IMetaModel, string> MetamodelToNamespaceMap { get; }
+        public Dictionary<ModelMetadata, string> MetadataToNamespaceMap { get; }
         public Dictionary<IModel, string> ModelToUriMap { get; }
         public Dictionary<IModel, string> ModelToFileMap { get; }
     }
 
     public class XmiSerializer
     {
-        public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel)
+        public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata)
         {
-            var result = this.ReadModel(xmiCode, metaModel, out var diagnostics);
+            var result = this.ReadModel(xmiCode, metadata, out var diagnostics);
             if (diagnostics.Length > 0)
             {
                 throw new ModelException(diagnostics[0]);
@@ -78,12 +78,12 @@ namespace MetaDslx.Modeling
             return result;
         }
 
-        public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
             var options = new XmiReadOptions();
-            options.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
+            options.NamespaceToMetadataMap.Add(metadata.Uri, metadata);
             return this.ReadModel(xmiCode, options, out diagnostics);
         }
 
@@ -107,9 +107,9 @@ namespace MetaDslx.Modeling
             return reader.Model.ToImmutable();
         }
 
-        public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel)
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata)
         {
-            var result = this.ReadModelFromFile(xmiFilePath, metaModel, out var diagnostics);
+            var result = this.ReadModelFromFile(xmiFilePath, metadata, out var diagnostics);
             if (diagnostics.Length > 0)
             {
                 throw new ModelException(diagnostics[0]);
@@ -117,12 +117,12 @@ namespace MetaDslx.Modeling
             return result;
         }
 
-        public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
             var options = new XmiReadOptions();
-            options.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
+            options.NamespaceToMetadataMap.Add(metadata.Uri, metadata);
             return this.ReadModelFromFile(xmiFilePath, options, out diagnostics);
         }
 
@@ -146,14 +146,14 @@ namespace MetaDslx.Modeling
             return reader.Model.ToImmutable();
         }
 
-        public ImmutableModelGroup ReadModelGroup(string xmiCode, IMetaModel metaModel)
+        public ImmutableModelGroup ReadModelGroup(string xmiCode, ModelMetadata metadata)
         {
-            return this.ReadModel(xmiCode, metaModel).ModelGroup;
+            return this.ReadModel(xmiCode, metadata).ModelGroup;
         }
 
-        public ImmutableModelGroup ReadModelGroup(string xmiCode, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        public ImmutableModelGroup ReadModelGroup(string xmiCode, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
-            return this.ReadModel(xmiCode, metaModel, out diagnostics).ModelGroup;
+            return this.ReadModel(xmiCode, metadata, out diagnostics).ModelGroup;
         }
 
         public ImmutableModelGroup ReadModelGroup(string xmiCode, XmiReadOptions options)
@@ -166,14 +166,14 @@ namespace MetaDslx.Modeling
             return this.ReadModel(xmiCode, options, out diagnostics).ModelGroup;
         }
 
-        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, IMetaModel metaModel)
+        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, ModelMetadata metadata)
         {
-            return this.ReadModelFromFile(xmiFilePath, metaModel).ModelGroup;
+            return this.ReadModelFromFile(xmiFilePath, metadata).ModelGroup;
         }
 
-        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
-            return this.ReadModelFromFile(xmiFilePath, metaModel, out diagnostics).ModelGroup;
+            return this.ReadModelFromFile(xmiFilePath, metadata, out diagnostics).ModelGroup;
         }
 
         public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, XmiReadOptions options)
@@ -437,7 +437,7 @@ namespace MetaDslx.Modeling
         private Dictionary<IModel, string> _modelToUriMap;
         private XmlWriter _currentXmlWriter;
         private string _currentFile;
-        private Dictionary<IMetaModel, (string, string)> _namespaces;
+        private Dictionary<ModelMetadata, (string, string)> _namespaces;
         private Dictionary<IModel, Dictionary<string, IModelObject>> _nameMap;
         private Dictionary<IModel, List<MetaConstant>> _constantMap;
         private IModelGroup _modelGroup;
@@ -453,7 +453,7 @@ namespace MetaDslx.Modeling
             _modelToUriMap = modelToUriMap;
             _modelToRelativeFileMap = new Dictionary<IModel, string>();
             _options = options;
-            _namespaces = new Dictionary<IMetaModel, (string, string)>();
+            _namespaces = new Dictionary<ModelMetadata, (string, string)>();
             _nameMap = new Dictionary<IModel, Dictionary<string, IModelObject>>();
             _constantMap = new Dictionary<IModel, List<MetaConstant>>();
             _diagnostics = new DiagnosticBag();
@@ -464,10 +464,10 @@ namespace MetaDslx.Modeling
         internal DiagnosticBag Diagnostics => _diagnostics;
         internal IModelGroup ModelGroup => _modelGroup;
 
-        private (string, string) RegisterNamespace(IMetaModel metaModel)
+        private (string, string) RegisterNamespace(ModelMetadata metadata)
         {
-            if (_namespaces.TryGetValue(metaModel, out var ns)) return ns;
-            string prefix = string.IsNullOrWhiteSpace(metaModel.Prefix) ? metaModel.Metadata.Name.ToCamelCase() : metaModel.Prefix;
+            if (_namespaces.TryGetValue(metadata, out var ns)) return ns;
+            string prefix = string.IsNullOrWhiteSpace(metadata.Prefix) ? metadata.Name.ToCamelCase() : metadata.Prefix;
             int index = 1;
             string currentPrefix = prefix;
             while (_namespaces.Values.Any(v => v.Item1 == currentPrefix) || currentPrefix == Xmi)
@@ -475,8 +475,8 @@ namespace MetaDslx.Modeling
                 ++index;
                 currentPrefix = prefix + index;
             }
-            var result = (currentPrefix, metaModel.Uri ?? metaModel.Namespace + "." + metaModel.Metadata.Name);
-            _namespaces.Add(metaModel, result);
+            var result = (currentPrefix, metadata.Uri ?? metadata.FullName);
+            _namespaces.Add(metadata, result);
             return result;
         }
 
@@ -526,18 +526,18 @@ namespace MetaDslx.Modeling
 
         private void WriteXmlNamespaces()
         {
-            IEnumerable<IMetaModel> metaModels = _allObjects.Select(obj => obj.MMetaModel).Distinct();
-            foreach (var mm in metaModels)
+            IEnumerable<ModelMetadata> metadatas = _allObjects.Select(obj => obj.MMetadata).Distinct();
+            foreach (var metadata in metadatas)
             {
-                var ns = this.RegisterNamespace(mm);
+                var ns = this.RegisterNamespace(metadata);
                 _currentXmlWriter.WriteAttributeString("xmlns", ns.Item1, null, ns.Item2);
             }
         }
 
         private void WriteObject(IModelObject obj, string parentProperty)
         {
-            var mm = obj.MMetaModel;
-            var ns = this.RegisterNamespace(mm);
+            var metadata = obj.MMetadata;
+            var ns = this.RegisterNamespace(metadata);
             if (parentProperty != null)
             {
                 _currentXmlWriter.WriteStartElement(parentProperty.ToCamelCase());
@@ -947,10 +947,10 @@ namespace MetaDslx.Modeling
         {
             if (IgnoreMetaModelNamespace(nsName)) return null;
             if (_namespaceToFactoryMap.TryGetValue(nsName, out var factory) && factory != null) return factory;
-            var metaModel = ResolveMetaModelByNamespace(nsName);
-            if (metaModel != null)
+            var metadata = ResolveMetadataByNamespace(nsName);
+            if (metadata != null)
             {
-                factory = new ModelFactory((MutableModel)_model, metaModel, ModelFactoryFlags.DontMakeObjectsCreated);
+                factory = new ModelFactory((MutableModel)_model, metadata, ModelFactoryFlags.DontMakeObjectsCreated);
                 _namespaceToFactoryMap.Add(nsName, factory);
                 return factory;
             }
@@ -974,11 +974,11 @@ namespace MetaDslx.Modeling
             }
         }
 
-        private IMetaModel ResolveMetaModelByNamespace(string nsName)
+        private ModelMetadata ResolveMetadataByNamespace(string nsName)
         {
             if (this.Options.IgnoreVersionInNamespaces)
             {
-                foreach (var entry in this.Options.NamespaceToMetamodelMap)
+                foreach (var entry in this.Options.NamespaceToMetadataMap)
                 {
                     if (nsName.StartsWith(entry.Key)) return entry.Value;
                 }
@@ -986,7 +986,7 @@ namespace MetaDslx.Modeling
             }
             else
             {
-                this.Options.NamespaceToMetamodelMap.TryGetValue(nsName, out var metaModel);
+                this.Options.NamespaceToMetadataMap.TryGetValue(nsName, out var metaModel);
                 return metaModel;
             }
         }

@@ -106,38 +106,38 @@ namespace MetaDslx.Languages.Meta.Generator
             return result;
         }
 
-        public string CSharpName(IMetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
+        public string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
         {
             if (mmodel == null) return string.Empty;
             string result;
             switch (kind)
             {
                 case ModelKind.Metadata:
-                    result = mmodel.Metadata.Name + "Metadata";
+                    result = mmodel.Name + "Metadata";
                     break;
                 case ModelKind.ImmutableInstance:
-                    result = mmodel.Metadata.Name + "Instance";
+                    result = mmodel.Name + "Instance";
                     break;
                 case ModelKind.BuilderInstance:
-                    result = mmodel.Metadata.Name + "BuilderInstance";
+                    result = mmodel.Name + "BuilderInstance";
                     break;
                 case ModelKind.Descriptor:
-                    result = mmodel.Metadata.Name + "Descriptor";
+                    result = mmodel.Name + "Descriptor";
                     break;
                 case ModelKind.Factory:
-                    result = mmodel.Metadata.Name + "Factory";
+                    result = mmodel.Name + "Factory";
                     break;
                 case ModelKind.Implementation:
-                    result = mmodel.Metadata.Name + "Implementation";
+                    result = mmodel.Name + "Implementation";
                     break;
                 case ModelKind.ImplementationBase:
-                    result = mmodel.Metadata.Name + "ImplementationBase";
+                    result = mmodel.Name + "ImplementationBase";
                     break;
                 case ModelKind.ImplementationProvider:
-                    result = mmodel.Metadata.Name + "ImplementationProvider";
+                    result = mmodel.Name + "ImplementationProvider";
                     break;
                 default:
-                    result = mmodel.Metadata.Name;
+                    result = mmodel.Name;
                     break;
             }
             if (fullName)
@@ -682,7 +682,7 @@ namespace MetaDslx.Languages.Meta.Generator
             }
             else
             {
-                return this.CSharpName(mattr.MMetaModel, ModelKind.ImmutableInstance, true) + "." + mattr.Name + ".ToMutable()";
+                return mattr.MMetadata.InstanceClassFullName + "." + mattr.Name + ".ToMutable()";
             }
         }
 

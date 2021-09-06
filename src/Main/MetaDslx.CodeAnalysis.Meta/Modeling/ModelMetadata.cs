@@ -35,11 +35,19 @@ namespace MetaDslx.Modeling
             return new ModelMetadata(name, version, uri, prefix, namespaceName);
         }
 
+        public virtual IModelFactory CreateFactory(MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.None)
+        {
+            return new ModelFactory(model, flags);
+        }
+
         public string Name => _name;
         public ModelVersion Version => _version;
         public string Uri => _uri;
         public string Prefix => _prefix;
         public string NamespaceName => _namespaceName;
+        public string FullName => $"{_namespaceName}.{_name}";
+        public string InstanceClassFullName => $"{_namespaceName}.{_name}Instance";
+        public string InstanceModelFullName => $"{_namespaceName}.{_name}Instance.MModel";
 
         public ModelMetadata WithName(string name)
         {

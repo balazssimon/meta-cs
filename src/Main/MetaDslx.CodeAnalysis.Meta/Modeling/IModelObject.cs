@@ -8,7 +8,7 @@ namespace MetaDslx.Modeling
 {
     public interface IModelObject : IEquatable<IModelObject>
     {
-        IMetaModel MMetaModel { get; }
+        ModelMetadata MMetadata { get; }
         MetaClass MMetaClass { get; }
         ObjectId MId { get; }
         IModel MModel { get; }

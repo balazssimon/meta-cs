@@ -6,7 +6,7 @@ namespace MetaDslx.Modeling
 {
     public interface IModelFactory
     {
-        IMetaModel MMetaModel { get; }
+        ModelMetadata MMetadata { get; }
 
         MutableModel MModel { get; }
 

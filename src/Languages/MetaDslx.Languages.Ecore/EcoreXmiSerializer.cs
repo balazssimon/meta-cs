@@ -22,7 +22,7 @@ namespace MetaDslx.Languages.Ecore
         {
             this.RequireXmiRoot = false;
             this.XmiNamespaces.Add("http://www.omg.org/XMI");
-            this.NamespaceToMetamodelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
+            this.NamespaceToMetadataMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
             this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
         }
 
@@ -31,7 +31,7 @@ namespace MetaDslx.Languages.Ecore
         {
             this.RequireXmiRoot = false;
             this.XmiNamespaces.Add("http://www.omg.org/XMI");
-            this.NamespaceToMetamodelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
+            this.NamespaceToMetadataMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
             this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
         }
     }
