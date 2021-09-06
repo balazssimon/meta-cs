@@ -100,9 +100,10 @@ namespace MetaDslx.CodeAnalysis.Binding
         public void AddLookupCandidateSymbols(LookupCandidates result, LookupConstraints constraints)
         {
             constraints = this.AdjustConstraints(constraints);
-            for (var scope = this; scope != null && scope.ContinueLookup; scope = scope.Next)
+            for (var scope = this; scope != null; scope = scope.Next)
             {
                 scope.AddLookupCandidateSymbolsInSingleBinder(result, constraints);
+                if (!scope.ContinueLookup) break;
             }
         }
 

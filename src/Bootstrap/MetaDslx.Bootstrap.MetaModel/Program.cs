@@ -27,8 +27,8 @@ namespace MetaDslx.Bootstrap.MetaModel
             var coreRef = MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll"));
             Console.WriteLine(coreRef);
 
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
-            string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
