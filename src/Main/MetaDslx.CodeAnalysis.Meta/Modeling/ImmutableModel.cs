@@ -11,6 +11,7 @@ namespace MetaDslx.Modeling
 {
     public sealed class ImmutableModel : IModel
     {
+        private ModelMetadata metadata;
         private bool readOnly;
         private WeakReference<MutableModel> mutableModel;
 
@@ -24,6 +25,7 @@ namespace MetaDslx.Modeling
 
         internal ImmutableModel(ModelId id, ImmutableModelGroup group, GreenModel green, bool readOnly, MutableModel mutableModel)
         {
+            this.metadata = new ModelMetadata(this, green.Metadata);
             this.id = id;
             this.group = group;
             this.green = green;
@@ -34,6 +36,7 @@ namespace MetaDslx.Modeling
 
         internal ImmutableModel(GreenModel green, MutableModel mutableModel)
         {
+            this.metadata = new ModelMetadata(this, green.Metadata);
             this.id = green.Id;
             this.group = null;
             this.green = green;
@@ -43,7 +46,7 @@ namespace MetaDslx.Modeling
         }
 
         public ModelId Id { get { return this.id; } }
-        public ModelMetadata Metadata => this.green.Metadata;
+        public ModelMetadata Metadata => this.metadata;
         internal GreenModel Green { get { return this.green; } }
         public ImmutableModelGroup ModelGroup { get { return this.group; } }
         public IEnumerable<ImmutableObject> Objects

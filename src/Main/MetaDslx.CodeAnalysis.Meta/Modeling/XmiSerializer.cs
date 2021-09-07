@@ -81,7 +81,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
             var options = new XmiReadOptions();
             options.NamespaceToMetadataMap.Add(metadata.Uri, metadata);
             return this.ReadModel(xmiCode, options, out diagnostics);
@@ -120,7 +120,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
             var options = new XmiReadOptions();
             options.NamespaceToMetadataMap.Add(metadata.Uri, metadata);
             return this.ReadModelFromFile(xmiFilePath, options, out diagnostics);
@@ -893,7 +893,7 @@ namespace MetaDslx.Modeling
         private XmiReader _xmiReader;
         private IModel _model;
         private XElement _root;
-        private Dictionary<string, ModelFactory> _namespaceToFactoryMap;
+        private Dictionary<string, IModelFactory> _namespaceToFactoryMap;
         private Dictionary<string, MutableObjectBase> _objectsById;
         private Dictionary<(int, int), MutableObjectBase> _objectsByPosition;
         private Dictionary<MutableObjectBase, XElement> _elementsByObject;
@@ -906,7 +906,7 @@ namespace MetaDslx.Modeling
             _xmiReader = xmiReader;
             _model = _xmiReader.ModelGroup.CreateModel();
             ((MutableModel)_model).Name = _fileUri.AbsoluteUri;
-            _namespaceToFactoryMap = new Dictionary<string, ModelFactory>();
+            _namespaceToFactoryMap = new Dictionary<string, IModelFactory>();
             _objectsById = new Dictionary<string, MutableObjectBase>();
             _objectsByPosition = new Dictionary<(int, int), MutableObjectBase>();
             _elementsByObject = new Dictionary<MutableObjectBase, XElement>();
@@ -943,14 +943,14 @@ namespace MetaDslx.Modeling
             _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
         }
 
-        private ModelFactory GetFactory(XObject location, string nsName, bool reportError = true)
+        private IModelFactory GetFactory(XObject location, string nsName, bool reportError = true)
         {
             if (IgnoreMetaModelNamespace(nsName)) return null;
             if (_namespaceToFactoryMap.TryGetValue(nsName, out var factory) && factory != null) return factory;
             var metadata = ResolveMetadataByNamespace(nsName);
-            if (metadata != null)
+            if (metadata.Model != null)
             {
-                factory = new ModelFactory((MutableModel)_model, metadata, ModelFactoryFlags.DontMakeObjectsCreated);
+                factory = metadata.CreateFactory((MutableModel)_model, ModelFactoryFlags.DontMakeObjectsCreated);
                 _namespaceToFactoryMap.Add(nsName, factory);
                 return factory;
             }
@@ -982,7 +982,7 @@ namespace MetaDslx.Modeling
                 {
                     if (nsName.StartsWith(entry.Key)) return entry.Value;
                 }
-                return null;
+                return default;
             }
             else
             {
@@ -1027,14 +1027,14 @@ namespace MetaDslx.Modeling
             _isFinished = true;
         }
 
-        private void CreateObject(XElement element, MutableObjectBase parent, ModelFactory currentFactory)
+        private void CreateObject(XElement element, MutableObjectBase parent, IModelFactory currentFactory)
         {
             XAttribute xmiTypeAttribute = GetXmiTypeAttribute(element);
             XAttribute xsiTypeAttribute = GetXsiTypeAttribute(element);
             XAttribute idAttribute = GetXmiIdAttribute(element);
             string typePrefix = null;
             string typeName = null;
-            ModelFactory factory = null;
+            IModelFactory factory = null;
             if (xmiTypeAttribute != null || xsiTypeAttribute != null)
             {
                 var typeAttribute = xmiTypeAttribute ?? xsiTypeAttribute;

@@ -1,10 +1,11 @@
 ﻿namespace MetaDslx.Languages.Ecore.Model
 {
     using MetaDslx.CodeAnalysis.Symbols;
+    using MetaDslx.Languages.Meta.Model;
 
     metamodel Ecore(Uri="http://www.eclipse.org/emf/2002/Ecore",Prefix="ecore"); 
 
-    const EDataType EBigDecimal = "System.Decimal";
+    const MetaPrimitiveType EBigDecimal = "System.Decimal";
     const EDataType EBigInteger = "System.Numerics.BigInteger";
     const EDataType EBoolean = "System.Boolean";
     const EDataType EBooleanObject = "bool?";

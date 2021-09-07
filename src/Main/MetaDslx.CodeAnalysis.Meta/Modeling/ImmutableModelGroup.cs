@@ -87,12 +87,12 @@ namespace MetaDslx.Modeling
 
         private ImmutableModel GetExistingReference(ModelId mid)
         {
-            return this.models.GetValue(mid, key => new ImmutableModel(key, this, this.Green.References.GetValueOrDefault(key), true, this.GetMutableReference(key)));
+            return this.models.GetValue(mid, key => new ImmutableModel(key, this, this.Green.References[key], true, this.GetMutableReference(key)));
         }
 
         private ImmutableModel GetExistingModel(ModelId mid)
         {
-            return this.models.GetValue(mid, key => new ImmutableModel(key, this, this.Green.Models.GetValueOrDefault(key), false, this.GetMutableReference(key)));
+            return this.models.GetValue(mid, key => new ImmutableModel(key, this, this.Green.Models[key], false, this.GetMutableReference(key)));
         }
 
         public ImmutableModel GetReference(ModelId mid)

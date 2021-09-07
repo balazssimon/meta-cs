@@ -81,8 +81,6 @@ namespace [model.Namespace.CSharpName(NamespaceKind.Public, true)]
 {
 	using global::[model.Namespace.CSharpName(NamespaceKind.Internal, true)];
 ^
-	[GenerateMetadata(model)]
-^
 	[GenerateMetaModelInstance(model)]
 ^
 	[GenerateFactory(model)]
@@ -121,16 +119,16 @@ end template
 
 template GenerateMetadata(MetaModel model)
 [string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
-public class [model.CSharpName(ModelKind.Metadata)] : [Properties.CoreNs].ModelMetadata
+private class [model.CSharpName(ModelKind.Metadata)] : [Properties.CoreNs].ModelMetadata
 {
-	public [model.CSharpName(ModelKind.Metadata)](string name, [Properties.CoreNs].ModelVersion version, string uri, string prefix, string namespaceName)
-		: base(name, version, uri, prefix, namespaceName)
+	public [model.CSharpName(ModelKind.Metadata)]([Properties.CoreNs].IModel model, global::System.Collections.Immutable.ImmutableArray<string> namespaceSegments, string name, [Properties.CoreNs].ModelVersion version, string uri, string prefix)
+		: base(model, namespaceSegments, name, version, uri, prefix)
 	{
 	}
 ^
-    protected override [Properties.CoreNs].ModelMetadata Create(string name, [Properties.CoreNs].ModelVersion version, string uri, string prefix, string namespaceName)
+    protected override [Properties.CoreNs].ModelMetadata Create([Properties.CoreNs].IModel model, global::System.Collections.Immutable.ImmutableArray<string> namespaceSegments, string name, [Properties.CoreNs].ModelVersion version, string uri, string prefix)
     {
-        return new [model.CSharpName(ModelKind.Metadata)](name, version, uri, prefix, namespaceName);
+        return new [model.CSharpName(ModelKind.Metadata)](model, namespaceSegments, name, version, uri, prefix);
     }
 ^
 	public override [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
@@ -152,7 +150,7 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 		get { return [model.CSharpName(ModelKind.ImmutableInstance)].initialized; }
 	}
 ^
-	public static readonly [model.CSharpName(ModelKind.Metadata, true)] MMetadata;
+	public static readonly [Properties.CoreNs].ModelMetadata MMetadata;
 	public static readonly [Properties.CoreNs].ImmutableModel MModel;
 ^
 	[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
@@ -177,8 +175,8 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 	{
 		[model.CSharpName(ModelKind.BuilderInstance)].instance.Create();
 		[model.CSharpName(ModelKind.BuilderInstance)].instance.EvaluateLazyValues();
-		MMetadata = [model.CSharpName(ModelKind.BuilderInstance)].instance.MMetadata;
 		MModel = [model.CSharpName(ModelKind.BuilderInstance)].instance.MModel.ToImmutable();
+		MMetadata = MModel.MMetadata;
 ^
 		[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
 			[if (metaMetaModel)]
@@ -211,7 +209,7 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	private bool creating;
 	private bool created;
-	internal [model.CSharpName(ModelKind.Metadata, true)] MMetadata;
+	internal [Properties.CoreNs].ModelMetadata MMetadata;
 	internal [Properties.CoreNs].MutableModel MModel;
 	[if (!metaMetaModel && model.MModel.ModelGroup != null)]
 	internal [Properties.CoreNs].MutableModelGroup MModelGroup;
@@ -232,18 +230,14 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	internal [model.CSharpName(ModelKind.BuilderInstance)]()
 	{
-		this.MMetadata = new [model.CSharpName(ModelKind.Metadata)](name: "[model.CSharpName()]", version: new [Properties.CoreNs].ModelVersion([model.MajorVersion], [model.MinorVersion]), uri: "[model.Uri]", prefix: "[model.Prefix != null ? model.Prefix : model.CSharpName()]", namespaceName: "[model.Namespace.CSharpName(NamespaceKind.Public, true)]");
-		[if (metaMetaModel)]
-		this.MModel = new [Properties.CoreNs].MutableModel(this.MMetadata);
-		[else if (model.MModel.ModelGroup != null)]
+		[if (!metaMetaModel && model.MModel.ModelGroup != null)]
 		this.MModelGroup = new [Properties.CoreNs].MutableModelGroup();
 			[loop (refModel: model.MModel.ModelGroup.References)]
 		this.MModelGroup.AddReference([refModel.Metadata.NamespaceName].[refModel.Metadata.Name]Instance.MModel);
 			[end loop]
-		this.MModel = this.MModelGroup.CreateModel(this.MMetadata);
-		[else]
-		this.MModel = this.MModelGroup.CreateModel(this.MMetadata);
 		[end if]
+		this.MModel = [if (metaMetaModel || model.MModel.ModelGroup == null)]new [Properties.CoreNs].MutableModel[else]this.MModelGroup.CreateModel[end if](namespaceName: "[model.Namespace.CSharpName(NamespaceKind.Public, true)]", name: "[model.CSharpName()]", version: new [Properties.CoreNs].ModelVersion([model.MajorVersion], [model.MinorVersion]), uri: "[model.Uri]", prefix: "[model.Prefix != null ? model.Prefix : model.CSharpName()]", factoryConstructor: ([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags) => new [model.CSharpName(ModelKind.Factory)](model, flags));
+		this.MMetadata = this.MModel.Metadata;
 	}
 ^
 	internal void Create()

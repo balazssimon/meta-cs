@@ -14,8 +14,8 @@ namespace MetaDslx.Modeling
 {
     public sealed class MutableModel : IModel
     {
+        private ModelMetadata metadata;
         private bool readOnly;
-        private WeakReference<ImmutableModel> immutableModel;
 
         // Used in models contained by a group:
         private ModelId id;
@@ -25,36 +25,45 @@ namespace MetaDslx.Modeling
         private GreenModel green;
         private ConditionalWeakTable<ObjectId, MutableObject> objects;
         private ThreadLocal<GreenModelUpdater> updater;
+        private WeakReference<ImmutableModel> immutableModel;
 
-        public MutableModel(ModelMetadata metadata = null)
-            : this(new GreenModel(new ModelId(), metadata ?? new ModelMetadata(string.Empty, new ModelVersion(0,0), string.Empty, string.Empty, string.Empty)), null)
+        public MutableModel(string name = null, ModelVersion version = default, string uri = null, string prefix = null, string namespaceName = null, Func<MutableModel, ModelFactoryFlags, IModelFactory> factoryConstructor = null)
+            : this(new GreenModel(new ModelId(), new GreenMetadata(namespaceName, name, version, uri, prefix, factoryConstructor)))
         {
         }
 
-        internal MutableModel(ModelId id, MutableModelGroup group, bool readOnly, ImmutableModel immutableModel)
+        internal MutableModel(ModelId id, MutableModelGroup group, bool readOnly, GreenMetadata greenMetadata)
         {
             this.id = id;
+            this.metadata = new ModelMetadata(this, greenMetadata);
             this.group = group;
             this.green = null;
             this.updater = null;
             this.readOnly = readOnly;
             this.objects = null;
-            this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
+            this.immutableModel = null;
         }
 
         internal MutableModel(GreenModel green, ImmutableModel immutableModel)
+            : this(green)
         {
+            this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
+        }
+
+        private MutableModel(GreenModel green)
+        {
+            if (green == null) green = new GreenModel(new ModelId(), new GreenMetadata(ImmutableArray<string>.Empty, default, default, default, default, null));
             this.id = green.Id;
+            this.metadata = new ModelMetadata(this, green.Metadata);
             this.group = null;
             this.green = green;
             this.updater = new ThreadLocal<GreenModelUpdater>();
             this.readOnly = false;
             this.objects = new ConditionalWeakTable<ObjectId, MutableObject>();
-            this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
         }
 
         public ModelId Id => this.id;
-        public ModelMetadata Metadata => this.Green.Metadata;
+        public ModelMetadata Metadata => this.metadata;
 
         public string Name
         {
@@ -84,7 +93,7 @@ namespace MetaDslx.Modeling
         {
             get
             {
-                return this.green.Metadata.Version;
+                return this.Green.Metadata.Version;
             }
             set
             {

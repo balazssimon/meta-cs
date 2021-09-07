@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public override object CreateModel()
         {
             var modelGroup = new MutableModelGroup();
-            object model = modelGroup.CreateModel(new Modeling.ModelMetadata(Compilation.AssemblyName, default, string.Empty, string.Empty, string.Empty));
+            object model = modelGroup.CreateModel(Compilation.AssemblyName);
             foreach (var reference in ReferencedModels)
             {
                 if (reference is ImmutableModel im) modelGroup.AddReference(im);

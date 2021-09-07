@@ -5,6 +5,7 @@ using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace MetaDslx.Languages.Meta.Binding
@@ -15,8 +16,8 @@ namespace MetaDslx.Languages.Meta.Binding
             : base(next, syntax, false, false, forCompletion)
         {
         }
-
-        /*public override DeclaredSymbol BindImportedSymbol(Binder usingsBinder, UsingDirective usingDirective, LookupConstraints constraints, DiagnosticBag diagnostics)
+        
+        public override DeclaredSymbol BindImportedSymbol(Binder usingsBinder, UsingDirective usingDirective, LookupConstraints constraints, DiagnosticBag diagnostics)
         {
             if (usingDirective.TargetQualifiedName.Length > 0)
             {
@@ -25,15 +26,29 @@ namespace MetaDslx.Languages.Meta.Binding
             }
             else
             {
-                var refModels = this.Compilation.ObjectFactory.ReferencedModels;
-                foreach (var refModel in refModels)
+                var uri = Language.SyntaxFacts.ExtractValue(usingDirective.TargetName);
+                if (uri is string uriStr)
                 {
-                    if (refModel is IModel model)
+                    foreach (var module in this.Compilation.Assembly.Modules)
                     {
-                        model.M
+                        if (module is IModelModuleSymbol modelModule && modelModule.Model is IModel model)
+                        {
+                            if (model.Metadata.Uri == uriStr)
+                            {
+                                var namespaceSegments = model.Metadata.NamespaceName.Split('.').ToImmutableArray();
+                                NamespaceSymbol scope = module.GlobalNamespace.LookupNestedNamespace(namespaceSegments);
+                                if (scope != null)
+                                {
+                                    return scope;
+                                }
+                            }
+                        }
                     }
                 }
+                diagnostics.Add(ModelErrorCode.ERR_CannotResolveModelByUri.ToDiagnostic(usingDirective.TargetName.GetLocation(), uri));
             }
-        }*/
+            return null;
+        }
+
     }
 }

@@ -87,22 +87,29 @@ namespace MetaDslx.CodeAnalysis.Binding
             return base.AdjustConstraints(constraints).WithAdditionalValidators(this);
         }
 
-        protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
+        protected sealed override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
             var imports = GetImports();
-            var symbol = imports.GetImportedSymbol(this.Syntax);
-            if (symbol == null) return;
-            foreach (var member in symbol.GetMembersUnordered())
+            var importedSymbol = imports.GetImportedSymbol(this.Syntax);
+            if (importedSymbol == null) return;
+            var importedCandidates = LookupCandidates.GetInstance();
+            this.AddLookupCandidateSymbolsForImport(importedSymbol, importedCandidates, constraints);
+            foreach (var symbol in importedCandidates.Symbols)
             {
-                if (constraints.IsViable(member))
+                if (constraints.IsViable(symbol))
                 {
-                    result.Add(member);
+                    result.Add(symbol);
                     if (constraints.IsLookup)
                     {
                         this.Compilation.MarkImportDirectiveAsUsed(this.Syntax);
                     }
                 }
             }
+        }
+
+        protected virtual void AddLookupCandidateSymbolsForImport(DeclaredSymbol importedSymbol, LookupCandidates result, LookupConstraints constraints)
+        {
+            result.AddRange(importedSymbol.GetMembersUnordered());
         }
     }
 }

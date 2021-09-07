@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public class ModelFactory : ModelFactoryBase
+    /*public class ModelFactory : ModelFactoryBase
     {
         private readonly string _metaModelNamespace;
         private readonly ModelMetadata _metadata;
@@ -22,7 +22,7 @@ namespace MetaDslx.Modeling
         public ModelFactory(MutableModel model, ModelMetadata metadata, ModelFactoryFlags flags = ModelFactoryFlags.None)
             : base(model, flags)
         {
-            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
             _metadata = metadata;
             _metaModelAssembly = metadata.GetType().Assembly;
             _metaModelNamespace = metadata.NamespaceName + ".";
@@ -54,7 +54,7 @@ namespace MetaDslx.Modeling
             }
             return this.CreateObject(result.CreateObjectId());
         }
-    }
+    }*/
 
 
 }

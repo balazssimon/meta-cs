@@ -210,28 +210,31 @@ namespace MetaDslx.CodeAnalysis.Binding
                     }
                     else
                     {
-                        if (usingDirective.TargetName.IsMissing || usingDirective.TargetQualifiedName.IsDefaultOrEmpty)
+                        /*if (usingDirective.TargetName.IsMissing || usingDirective.TargetQualifiedName.IsDefaultOrEmpty)
                         {
                             //don't try to lookup namespaces inserted by parser error recovery
                             continue;
-                        }
+                        }*/
 
                         var importBinder = compilation.GetBinder(usingDirective.Syntax).FindAncestorBinder<ImportBinder>();
                         Debug.Assert(importBinder != null);
                         if (importBinder != null)
                         {
                             var imported = importBinder.BindImportedSymbol(usingsBinder, usingDirective, constraints, diagnostics);
-                            if (uniqueUsings.Contains(imported))
+                            if (imported != null)
                             {
-                                diagnostics.Add(InternalErrorCode.WRN_DuplicateUsing, usingDirective.TargetName.GetLocation(), imported);
-                            }
-                            else
-                            {
-                                uniqueUsings.Add(imported);
-                                // Do not report additional error if the symbol itself is erroneous.
-                                if (!imported.IsError)
+                                if (uniqueUsings.Contains(imported))
                                 {
-                                    usings.Add(new DeclaredSymbolAndUsingDirective(imported, usingDirective));
+                                    diagnostics.Add(InternalErrorCode.WRN_DuplicateUsing, usingDirective.TargetName.GetLocation(), imported);
+                                }
+                                else
+                                {
+                                    uniqueUsings.Add(imported);
+                                    // Do not report additional error if the symbol itself is erroneous.
+                                    if (!imported.IsError)
+                                    {
+                                        usings.Add(new DeclaredSymbolAndUsingDirective(imported, usingDirective));
+                                    }
                                 }
                             }
                         } 

@@ -111,12 +111,12 @@ namespace MetaDslx.Modeling
 
         private MutableModel GetExistingReference(ModelId mid)
         {
-            return this.models.GetValue(mid, key => new MutableModel(key, this, true, null));
+            return this.models.GetValue(mid, key => new MutableModel(key, this, true, this.Green.References[key].Metadata));
         }
 
         private MutableModel GetExistingModel(ModelId mid)
         {
-            return this.models.GetValue(mid, key => new MutableModel(key, this, false, null));
+            return this.models.GetValue(mid, key => new MutableModel(key, this, false, this.Green.Models[key].Metadata));
         }
 
         public MutableModel GetReference(ModelId mid)
@@ -384,15 +384,12 @@ namespace MetaDslx.Modeling
             throw new NotImplementedException();
         }*/
 
-        public MutableModel CreateModel(ModelMetadata metadata = null)
+        public MutableModel CreateModel(string name = null, ModelVersion version = default, string uri = null, string prefix = null, string namespaceName = null, Func<MutableModel, ModelFactoryFlags, IModelFactory> factoryConstructor = null)
         {
+            var metadata = new GreenMetadata(namespaceName, name, version, uri, prefix, factoryConstructor);
             ModelId mid = new ModelId();
-            MutableModel model = new MutableModel(mid, this, false, null);
+            MutableModel model = new MutableModel(mid, this, false, metadata);
             this.models.Add(mid, model);
-            if (metadata == null)
-            {
-                metadata = new ModelMetadata(null, default, null, null, null);
-            }
             GreenModel greenModel;
             GreenModelUpdateContext ctx = null;
             try

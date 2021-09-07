@@ -141,7 +141,7 @@ namespace MetaDslx.Modeling.Internal
             }
         }
 
-        public GreenModel CreateModel(ModelId mid, ModelMetadata metadata)
+        public GreenModel CreateModel(ModelId mid, GreenMetadata metadata)
         {
             Debug.Assert(this.group != null);
             if (mid == null) return null;
@@ -350,7 +350,7 @@ namespace MetaDslx.Modeling.Internal
             if (model == null)
             {
                 Debug.Assert(false);
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotResolveModel, mid);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotResolveModelById, mid);
             }
             if (this.group != null)
             {

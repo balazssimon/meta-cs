@@ -17,14 +17,14 @@ namespace MetaDslx.Modeling.Internal
     internal class GreenModel
     {
         private readonly ModelId id;
-        private readonly ModelMetadata metadata;
+        private readonly GreenMetadata metadata;
         private readonly ImmutableList<ObjectId> strongObjects;
         // TODO: replace with immutable weak dictionaries:
         private readonly ImmutableDictionary<ObjectId, GreenObject> objects;
         private readonly ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties;
         private readonly ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> references;
 
-        internal GreenModel(ModelId id, ModelMetadata metadata)
+        internal GreenModel(ModelId id, GreenMetadata metadata)
         {
             Debug.Assert(id != null);
             Debug.Assert(metadata != null);
@@ -38,7 +38,7 @@ namespace MetaDslx.Modeling.Internal
 
         private GreenModel(
             ModelId id,
-            ModelMetadata metadata,
+            GreenMetadata metadata,
             ImmutableDictionary<ObjectId, GreenObject> objects,
             ImmutableList<ObjectId> strongObjects,
             ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties,
@@ -58,7 +58,7 @@ namespace MetaDslx.Modeling.Internal
         }
 
         internal GreenModel Update(
-            ModelMetadata metadata,
+            GreenMetadata metadata,
             ImmutableDictionary<ObjectId, GreenObject> objects,
             ImmutableList<ObjectId> strongObjects,
             ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties,
@@ -74,7 +74,7 @@ namespace MetaDslx.Modeling.Internal
         }
 
         internal ModelId Id { get { return this.id; } }
-        internal ModelMetadata Metadata { get { return this.metadata; } }
+        internal GreenMetadata Metadata { get { return this.metadata; } }
         internal ImmutableDictionary<ObjectId, GreenObject> Objects { get { return this.objects; } }
         internal ImmutableList<ObjectId> StrongObjects { get { return this.strongObjects; } }
         internal ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> LazyProperties { get { return this.lazyProperties; } }

@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 }
                 foreach (var symbol in _info.Keys)
                 {
-                    if (symbol.DeclaringSyntaxReferences.Length == 0) continue;
+                    if (symbol.ContainingModule != context.Compilation.SourceModule || symbol.DeclaringSyntaxReferences.Length == 0) continue;
                     var info = _info[symbol];
                     if (!info.IsAbstract) concreteSymbols.Add(info);
                     Debug.WriteLine($"Generating source symbol for: {info.NamespaceName}.{info.Name}");

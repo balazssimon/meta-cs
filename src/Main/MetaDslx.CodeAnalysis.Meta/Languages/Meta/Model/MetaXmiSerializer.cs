@@ -36,7 +36,7 @@ namespace MetaDslx.Languages.Meta.Model
         public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
             return _xmiSerializer.ReadModel(xmiCode, new MetaXmiReadOptions(metadata));
         }
 
@@ -49,7 +49,7 @@ namespace MetaDslx.Languages.Meta.Model
         public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
             return _xmiSerializer.ReadModelFromFile(xmiFilePath, new MetaXmiReadOptions(metadata));
         }
 

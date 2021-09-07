@@ -14,24 +14,6 @@ namespace MetaDslx.Languages.Meta.Model
 {
 	using global::MetaDslx.Languages.Meta.Model.Internal;
 
-	public class MetaMetadata : global::MetaDslx.Modeling.ModelMetadata
-	{
-		public MetaMetadata(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
-			: base(name, version, uri, prefix, namespaceName)
-		{
-		}
-	
-	    protected override global::MetaDslx.Modeling.ModelMetadata Create(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
-	    {
-	        return new MetaMetadata(name, version, uri, prefix, namespaceName);
-	    }
-	
-		public override global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
-		{
-			return new MetaFactory(model, flags);
-		}
-	}
-
 	public class MetaInstance
 	{
 		private static bool initialized;
@@ -41,7 +23,7 @@ namespace MetaDslx.Languages.Meta.Model
 			get { return MetaInstance.initialized; }
 		}
 	
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaMetadata MMetadata;
+		public static readonly global::MetaDslx.Modeling.ModelMetadata MMetadata;
 		public static readonly global::MetaDslx.Modeling.ImmutableModel MModel;
 	
 		public static readonly MetaPrimitiveType Object;
@@ -130,9 +112,9 @@ namespace MetaDslx.Languages.Meta.Model
 		{
 			MetaBuilderInstance.instance.Create();
 			MetaBuilderInstance.instance.EvaluateLazyValues();
-			MMetadata = MetaBuilderInstance.instance.MMetadata;
 			MModel = MetaBuilderInstance.instance.MModel.ToImmutable();
-	
+			MMetadata = MModel.Metadata;
+
 			Object = MetaBuilderInstance.instance.Object.ToImmutable(MModel);
 			String = MetaBuilderInstance.instance.String.ToImmutable(MModel);
 			Int = MetaBuilderInstance.instance.Int.ToImmutable(MModel);
@@ -8137,7 +8119,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 		private bool creating;
 		private bool created;
-		internal global::MetaDslx.Languages.Meta.Model.MetaMetadata MMetadata;
+		internal global::MetaDslx.Modeling.ModelMetadata MMetadata;
 		internal global::MetaDslx.Modeling.MutableModel MModel;
 	
 		internal MetaPrimitiveTypeBuilder Object = null;
@@ -8295,10 +8277,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 		internal MetaBuilderInstance()
 		{
-			this.MMetadata = new MetaMetadata(name: "Meta", version: new global::MetaDslx.Modeling.ModelVersion(1, 0), uri: "http://MetaDslx.Languages.Meta/1.0", prefix: "Meta", namespaceName: "MetaDslx.Languages.Meta.Model");
-			this.MModel = new global::MetaDslx.Modeling.MutableModel(this.MMetadata);
+			this.MModel = new global::MetaDslx.Modeling.MutableModel(name: "Meta", version: new global::MetaDslx.Modeling.ModelVersion(1, 0), uri: "http://MetaDslx.Languages.Meta/1.0", prefix: "Meta", namespaceName: "MetaDslx.Languages.Meta", factoryConstructor: (MetaDslx.Modeling.MutableModel model, MetaDslx.Modeling.ModelFactoryFlags flags) => new MetaFactory(model, flags));
+			this.MMetadata = this.MModel.Metadata;
 		}
-	
+
 		internal void Create()
 		{
 			lock (this)

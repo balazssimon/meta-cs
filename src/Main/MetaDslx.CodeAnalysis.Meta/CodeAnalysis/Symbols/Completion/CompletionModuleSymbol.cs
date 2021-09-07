@@ -16,7 +16,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-    public abstract partial class CompletionModuleSymbol : NonMissingModuleSymbol
+    public abstract partial class CompletionModuleSymbol : NonMissingModuleSymbol, IModelModuleSymbol
     {
         private AssemblySymbol _owningAssembly;
         private object _model;
