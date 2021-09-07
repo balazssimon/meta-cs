@@ -30,6 +30,7 @@ namespace MetaDslx.Modeling
         public MutableModel(string name = null, ModelVersion version = default, string uri = null, string prefix = null, string namespaceName = null, Func<MutableModel, ModelFactoryFlags, IModelFactory> factoryConstructor = null)
             : this(new GreenModel(new ModelId(), new GreenMetadata(namespaceName, name, version, uri, prefix, factoryConstructor)))
         {
+            this.immutableModel = new WeakReference<ImmutableModel>(null);
         }
 
         internal MutableModel(ModelId id, MutableModelGroup group, bool readOnly, GreenMetadata greenMetadata)

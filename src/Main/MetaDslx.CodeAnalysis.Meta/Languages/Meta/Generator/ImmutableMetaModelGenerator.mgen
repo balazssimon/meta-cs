@@ -176,7 +176,7 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 		[model.CSharpName(ModelKind.BuilderInstance)].instance.Create();
 		[model.CSharpName(ModelKind.BuilderInstance)].instance.EvaluateLazyValues();
 		MModel = [model.CSharpName(ModelKind.BuilderInstance)].instance.MModel.ToImmutable();
-		MMetadata = MModel.MMetadata;
+		MMetadata = MModel.Metadata;
 ^
 		[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
 			[if (metaMetaModel)]

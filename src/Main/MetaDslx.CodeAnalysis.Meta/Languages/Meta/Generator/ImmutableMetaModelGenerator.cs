@@ -1835,8 +1835,8 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             {
                 __out.AppendLine(false); //178:88
             }
-            __out.Write("		MMetadata = MModel.MMetadata;"); //179:1
-            __out.AppendLine(false); //179:32
+            __out.Write("		MMetadata = MModel.Metadata;"); //179:1
+            __out.AppendLine(false); //179:31
             __out.AppendLine(true); //180:1
             var __loop11_results = 
                 (from __loop11_var1 in __Enumerate((model.Namespace.Declarations).GetEnumerator()) //181:9

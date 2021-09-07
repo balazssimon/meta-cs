@@ -11,24 +11,6 @@ namespace MetaDslx.Languages.Ecore.Model
 {
 	using global::MetaDslx.Languages.Ecore.Model.Internal;
 
-	public class EcoreMetadata : global::MetaDslx.Modeling.ModelMetadata
-	{
-		public EcoreMetadata(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
-			: base(name, version, uri, prefix, namespaceName)
-		{
-		}
-
-		protected override global::MetaDslx.Modeling.ModelMetadata Create(string name, global::MetaDslx.Modeling.ModelVersion version, string uri, string prefix, string namespaceName)
-		{
-			return new EcoreMetadata(name, version, uri, prefix, namespaceName);
-		}
-
-		public override global::MetaDslx.Modeling.IModelFactory CreateFactory(global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags = global::MetaDslx.Modeling.ModelFactoryFlags.None)
-		{
-			return new EcoreFactory(model, flags);
-		}
-	}
-
 	public class EcoreInstance
 	{
 		private static bool initialized;
@@ -38,7 +20,7 @@ namespace MetaDslx.Languages.Ecore.Model
 			get { return EcoreInstance.initialized; }
 		}
 
-		public static readonly global::MetaDslx.Languages.Ecore.Model.EcoreMetadata MMetadata;
+		public static readonly global::MetaDslx.Modeling.ModelMetadata MMetadata;
 		public static readonly global::MetaDslx.Modeling.ImmutableModel MModel;
 
 		public static readonly EDataType EBigDecimal;
@@ -182,8 +164,8 @@ namespace MetaDslx.Languages.Ecore.Model
 		{
 			EcoreBuilderInstance.instance.Create();
 			EcoreBuilderInstance.instance.EvaluateLazyValues();
-			MMetadata = EcoreBuilderInstance.instance.MMetadata;
 			MModel = EcoreBuilderInstance.instance.MModel.ToImmutable();
+			MMetadata = MModel.Metadata;
 
 			EBigDecimal = EcoreBuilderInstance.instance.EBigDecimal.ToImmutable(MModel);
 			EBigInteger = EcoreBuilderInstance.instance.EBigInteger.ToImmutable(MModel);
@@ -10728,7 +10710,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 
 		private bool creating;
 		private bool created;
-		internal global::MetaDslx.Languages.Ecore.Model.EcoreMetadata MMetadata;
+		internal global::MetaDslx.Modeling.ModelMetadata MMetadata;
 		internal global::MetaDslx.Modeling.MutableModel MModel;
 		internal global::MetaDslx.Modeling.MutableModelGroup MModelGroup;
 
@@ -11010,10 +10992,10 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 
 		internal EcoreBuilderInstance()
 		{
-			this.MMetadata = new EcoreMetadata(name: "Ecore", version: new global::MetaDslx.Modeling.ModelVersion(0, 0), uri: "http://www.eclipse.org/emf/2002/Ecore", prefix: "ecore", namespaceName: "MetaDslx.Languages.Ecore.Model");
 			this.MModelGroup = new global::MetaDslx.Modeling.MutableModelGroup();
 			this.MModelGroup.AddReference(MetaDslx.Languages.Meta.Model.MetaInstance.MModel);
-			this.MModel = this.MModelGroup.CreateModel(this.MMetadata);
+			this.MModel = this.MModelGroup.CreateModel(namespaceName: "MetaDslx.Languages.Ecore.Model", name: "Ecore", version: new global::MetaDslx.Modeling.ModelVersion(0, 0), uri: "http://www.eclipse.org/emf/2002/Ecore", prefix: "ecore", factoryConstructor: (global::MetaDslx.Modeling.MutableModel model, global::MetaDslx.Modeling.ModelFactoryFlags flags) => new EcoreFactory(model, flags));
+			this.MMetadata = this.MModel.Metadata;
 		}
 
 		internal void Create()
