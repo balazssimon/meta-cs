@@ -498,7 +498,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     foreach (var nameBinder in nameBinders)
                     {
                         var valueBinders = FindBinders.FindValueBinders(importBinder);
-                        Debug.Assert(valueBinders.Length == 1);
+                        //Debug.Assert(valueBinders.Length == 1);
                         if (valueBinders.Length >= 1)
                         {
                             var isGlobal = syntaxFacts.IsGlobalAlias(nameBinder.Syntax);
@@ -512,7 +512,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 else
                 {
                     var valueBinders = FindBinders.FindValueBinders(importBinder);
-                    Debug.Assert(valueBinders.Length == 1);
+                    //Debug.Assert(valueBinders.Length == 1);
                     if (valueBinders.Length >= 1)
                     {
                         var valueBinder = valueBinders[0];
