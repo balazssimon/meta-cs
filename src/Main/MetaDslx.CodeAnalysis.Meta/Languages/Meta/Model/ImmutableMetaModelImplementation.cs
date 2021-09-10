@@ -209,14 +209,18 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             if (_this.Parameters.Count != operation.Parameters.Count) return false;
             if (_this.Class != null && !_this.Class.ConformsTo(operation.Class)) return false;
             if (_this.Enum != null && !_this.Enum.ConformsTo(operation.Enum)) return false;
-            if (_this.ReturnType == null && operation.ReturnType != null) return false;
-            if (_this.ReturnType != null && operation.ReturnType == null) return false;
-            if (_this.ReturnType != null && !_this.ReturnType.ConformsTo(operation.ReturnType)) return false;
+            var thisReturnType = GetMetaType(_this);
+            var otherReturnType = GetMetaType(operation);
+            if (thisReturnType == null && otherReturnType != null) return false;
+            if (thisReturnType != null && otherReturnType == null) return false;
+            if (thisReturnType != null && !thisReturnType.ConformsTo(otherReturnType)) return false;
             for (int i = 0; i < _this.Parameters.Count; i++)
             {
                 var thisParam = _this.Parameters[i];
                 var otherParam = operation.Parameters[i];
-                if (otherParam == null || otherParam.Type == null || !otherParam.Type.ConformsTo(thisParam.Type)) return false;
+                var thisType = GetMetaType(thisParam);
+                var otherType = GetMetaType(otherParam);
+                if (thisType == null || otherType == null || !otherType.ConformsTo(thisType)) return false;
             }
             return true;
         }
@@ -227,9 +231,86 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             if (_this.Name != property.Name) return false;
             if (!_this.Class.ConformsTo(property.Class)) return false;
             if (_this.IsContainment && !property.IsContainment) return false;
-            if (!_this.Type.ConformsTo(property.Type) && !property.Type.ConformsTo(_this.Type)) return false;
-            if (_this.Type is MetaCollectionTypeBuilder && !(property.Type is MetaCollectionTypeBuilder)) return false;
+            var thisType = GetMetaType(_this);
+            var otherType = GetMetaType(property);
+            if (!thisType.ConformsTo(otherType) && !otherType.ConformsTo(thisType)) return false;
+            if (thisType is MetaCollectionTypeBuilder && !(otherType is MetaCollectionTypeBuilder)) return false;
             return true;
+        }
+
+        public static MetaTypeBuilder GetMetaType(MetaTypedElementBuilder mtypedElement)
+        {
+            var type = mtypedElement.MGet(MetaDescriptor.MetaTypedElement.TypeProperty);
+            if (type is MetaTypeBuilder mtype) return mtype;
+            if (type is MetaConstantBuilder mconst) return GetMetaConstantType(mconst.Name)?.ToMutable();
+            return null;
+        }
+
+        public static MetaTypeBuilder GetMetaType(MetaOperationBuilder mop)
+        {
+            var type = mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
+            if (type is MetaTypeBuilder mtype) return mtype;
+            if (type is MetaConstantBuilder mconst) return GetMetaConstantType(mconst.Name)?.ToMutable();
+            return null;
+        }
+
+        public static MetaType GetMetaType(MetaTypedElement mtypedElement)
+        {
+            var type = mtypedElement.MGet(MetaDescriptor.MetaTypedElement.TypeProperty);
+            if (type is MetaType mtype) return mtype;
+            if (type is MetaConstant mconst) return GetMetaConstantType(mconst.Name);
+            return null;
+        }
+
+        public static MetaType GetMetaType(MetaOperation mop)
+        {
+            var type = mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
+            if (type is MetaType mtype) return mtype;
+            if (type is MetaConstant mconst) return GetMetaConstantType(mconst.Name);
+            return null;
+        }
+
+        private static MetaType GetMetaConstantType(string mconst)
+        {
+            switch (mconst)
+            {
+                case "Object":
+                case "EJavaObject":
+                case "EEnumerator":
+                    return MetaInstance.Object;
+                case "String":
+                case "EString":
+                    return MetaInstance.String;
+                case "Int":
+                case "EInt":
+                    return MetaInstance.Int;
+                case "Long":
+                case "ELong":
+                    return MetaInstance.Long;
+                case "Float":
+                case "EFloat":
+                    return MetaInstance.Float;
+                case "Double":
+                case "EDouble":
+                    return MetaInstance.Double;
+                case "Byte":
+                case "EByte":
+                    return MetaInstance.Byte;
+                case "Bool":
+                case "EBoolean":
+                    return MetaInstance.Bool;
+                case "Void": 
+                    return MetaInstance.Void;
+                case "SystemType":
+                case "EJavaClass":
+                    return MetaInstance.SystemType;
+                case "Model":
+                case "EResource":
+                    return MetaInstance.Model;
+                case "ModelObject": 
+                    return MetaInstance.ModelObject;
+                default: return null;
+            }
         }
     }
     //*/

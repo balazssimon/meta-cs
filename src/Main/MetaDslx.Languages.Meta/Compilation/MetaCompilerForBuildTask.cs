@@ -51,10 +51,12 @@ namespace MetaDslx.Languages.Meta
                 var tree = MetaSyntaxTree.ParseText(text, path: _inputFilePath);
 
                 BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+                BinderFlags allowMetaConstants = BinderFlags.AllowMetaConstants;
+                binderFlags = binderFlags.UnionWith(allowMetaConstants);
                 if (_compileMetaModelCore)
                 {
-                    BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
-                    binderFlags = binderFlags.UnionWith(binderFlags2);
+                    BinderFlags ignoreDuplicates = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+                    binderFlags = binderFlags.UnionWith(ignoreDuplicates);
                 }
                 MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags);
                 //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);

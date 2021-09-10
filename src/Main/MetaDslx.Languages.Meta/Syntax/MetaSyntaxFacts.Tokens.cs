@@ -94,6 +94,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSet:
 				case MetaTokensSyntaxKind.KMultiList:
 				case MetaTokensSyntaxKind.KMultiSet:
+				case MetaTokensSyntaxKind.KEnumerable:
 				case MetaTokensSyntaxKind.KThis:
 				case MetaTokensSyntaxKind.KTypeof:
 				case MetaTokensSyntaxKind.KAs:
@@ -224,6 +225,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSet:
 				case MetaTokensSyntaxKind.KMultiList:
 				case MetaTokensSyntaxKind.KMultiSet:
+				case MetaTokensSyntaxKind.KEnumerable:
 				case MetaTokensSyntaxKind.KThis:
 				case MetaTokensSyntaxKind.KTypeof:
 				case MetaTokensSyntaxKind.KAs:
@@ -368,6 +370,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KMultiList;
 				case "multi_set":
 					return MetaTokensSyntaxKind.KMultiSet;
+				case "enumerable":
+					return MetaTokensSyntaxKind.KEnumerable;
 				case "this":
 					return MetaTokensSyntaxKind.KThis;
 				case "typeof":
@@ -581,6 +585,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "multi_list";
 				case MetaTokensSyntaxKind.KMultiSet:
 					return "multi_set";
+				case MetaTokensSyntaxKind.KEnumerable:
+					return "enumerable";
 				case MetaTokensSyntaxKind.KThis:
 					return "this";
 				case MetaTokensSyntaxKind.KTypeof:
@@ -767,6 +773,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSet:
 				case MetaTokensSyntaxKind.KMultiList:
 				case MetaTokensSyntaxKind.KMultiSet:
+				case MetaTokensSyntaxKind.KEnumerable:
 				case MetaTokensSyntaxKind.KThis:
 				case MetaTokensSyntaxKind.KTypeof:
 				case MetaTokensSyntaxKind.KAs:
@@ -905,6 +912,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSet:
 				case MetaTokensSyntaxKind.KMultiList:
 				case MetaTokensSyntaxKind.KMultiSet:
+				case MetaTokensSyntaxKind.KEnumerable:
 				case MetaTokensSyntaxKind.KThis:
 				case MetaTokensSyntaxKind.KTypeof:
 				case MetaTokensSyntaxKind.KAs:
@@ -964,6 +972,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				yield return MetaTokensSyntaxKind.KSet;
 				yield return MetaTokensSyntaxKind.KMultiList;
 				yield return MetaTokensSyntaxKind.KMultiSet;
+				yield return MetaTokensSyntaxKind.KEnumerable;
 				yield return MetaTokensSyntaxKind.KThis;
 				yield return MetaTokensSyntaxKind.KTypeof;
 				yield return MetaTokensSyntaxKind.KAs;
@@ -1053,6 +1062,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KMultiList;
 				case "multi_set":
 					return MetaTokensSyntaxKind.KMultiSet;
+				case "enumerable":
+					return MetaTokensSyntaxKind.KEnumerable;
 				case "this":
 					return MetaTokensSyntaxKind.KThis;
 				case "typeof":

@@ -1544,6 +1544,17 @@ namespace MetaDslx.Languages.Meta.Binding
 			    			this.EndValue(node.CollectionKind, value: MetaCollectionKind.MultiList);
 			    		}
 			    		break;
+			    	case MetaSyntaxKind.KEnumerable:
+			    		this.BeginValue(node.CollectionKind, value: MetaCollectionKind.Enumerable);
+			    		try
+			    		{
+			    			this.Visit(node.CollectionKind);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.CollectionKind, value: MetaCollectionKind.Enumerable);
+			    		}
+			    		break;
 			    	default:
 			    		break;
 			    }

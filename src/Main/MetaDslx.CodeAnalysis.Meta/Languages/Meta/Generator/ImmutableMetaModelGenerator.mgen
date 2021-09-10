@@ -571,7 +571,7 @@ template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, Me
 [if (propType is MetaCollectionType)]
 ["["+Properties.CoreNs+".CollectionAttribute]"]
 [end if]
-[if (propType is MetaCollectionType && (((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiList))]
+[if (propType is MetaCollectionType && (((MetaCollectionType)propType).Kind == MetaCollectionKind.Enumerable || ((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiList))]
 ["["+Properties.CoreNs+".NonUniqueAttribute]"]
 [end if]
 [if (propType is MetaCollectionType && (((MetaCollectionType)propType).Kind == MetaCollectionKind.List || ((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiList))]

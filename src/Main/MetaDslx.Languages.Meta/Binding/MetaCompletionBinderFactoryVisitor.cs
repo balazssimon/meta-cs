@@ -4954,6 +4954,9 @@ namespace MetaDslx.Languages.Meta.Binding
             	var KMultiListBinder = binder;
             	KMultiListBinder = this.BinderFactory.CreateValueBinder(KMultiListBinder, this.SyntaxFactory.MissingToken((MetaSyntaxKind)MetaSyntaxKind.KMultiList), value: MetaCollectionKind.MultiList, forCompletion: true);
             	AddBinder(KMultiListBinder, (MetaSyntaxKind)MetaSyntaxKind.KMultiList, operation);
+            	var KEnumerableBinder = binder;
+            	KEnumerableBinder = this.BinderFactory.CreateValueBinder(KEnumerableBinder, this.SyntaxFactory.MissingToken((MetaSyntaxKind)MetaSyntaxKind.KEnumerable), value: MetaCollectionKind.Enumerable, forCompletion: true);
+            	AddBinder(KEnumerableBinder, (MetaSyntaxKind)MetaSyntaxKind.KEnumerable, operation);
                 use = FinishedUse;
             }
             _visited[54] = false;

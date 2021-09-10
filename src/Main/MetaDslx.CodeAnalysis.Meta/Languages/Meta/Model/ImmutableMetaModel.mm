@@ -97,7 +97,8 @@
 		List,
 		Set,
 		MultiList,
-		MultiSet
+		MultiSet,
+		Enumerable
 	}
 
 	[type: Array]
@@ -144,6 +145,8 @@
 	[symbol: Variable]
 	class MetaConstant : MetaDeclaration, MetaTypedElement
 	{
+		[property: Type]
+		MetaType Type redefines MetaTypedElement.Type;
 		readonly object Value;
 	}
 

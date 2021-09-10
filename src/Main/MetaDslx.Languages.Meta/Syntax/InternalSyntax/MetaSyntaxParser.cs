@@ -4651,6 +4651,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					collectionKind = (InternalSyntaxToken)this.VisitTerminal(context.KMultiList());
 				}
+				else 	if (context.KEnumerable() != null)
+				{
+					collectionKind = (InternalSyntaxToken)this.VisitTerminal(context.KEnumerable());
+				}
 				else
 				{
 					collectionKind = _factory.MissingToken(SyntaxKind.MissingToken);

@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -400,12 +401,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static void SetPropertyValue<T>(object? value, Location? location, ArrayBuilder<T> result, bool singleValue, Symbol symbol, string symbolPropertyName, object modelObjectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            bool isMetaConstantReference = false;
             if (symbol is IModelSymbol msymbol && msymbol.ModelObject is not null && modelObjectProperty is not null)
             {
+                if (value is SourceVariableSymbol svar && svar.ModelObject is MetaConstantBuilder mconst)
+                {
+                    if (symbolPropertyName != "Members" && svar.DeclaringCompilation.Options.TopLevelBinderFlags.Includes(BinderFlags.AllowMetaConstants))
+                    {
+                        isMetaConstantReference = true;
+                        svar.ForceComplete(SourceVariableSymbol.CompletionParts.FinishComputingProperty_Type, null, cancellationToken);
+                    }
+                }
                 symbol.Language.SymbolFacts.SetOrAddPropertyValue(msymbol.ModelObject, modelObjectProperty, value, location, diagnostics, cancellationToken);
             }
             if (result is not null)
             {
+                if (isMetaConstantReference) value = ((SourceVariableSymbol)value).Type; // TODO:MetaDslx: replace with DefaultValue
                 if (value is not null && !typeof(T).IsAssignableFrom(value.GetType()))
                 {
                     if (typeof(Symbol).IsAssignableFrom(typeof(T)) && value is not Symbol)

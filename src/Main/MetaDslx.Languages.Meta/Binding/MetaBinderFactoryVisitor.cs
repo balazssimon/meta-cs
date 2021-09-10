@@ -54,6 +54,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseKList = new object();
 		public static object UseKMultiSet = new object();
 		public static object UseKMultiList = new object();
+		public static object UseKEnumerable = new object();
 		public static object UseReturnType = new object();
 		public static object UseParameterList = new object();
 		public static object UseSource = new object();
@@ -1340,6 +1341,9 @@ namespace MetaDslx.Languages.Meta.Binding
 							break;
 						case MetaSyntaxKind.KMultiList:
 							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.MultiList);
+							break;
+						case MetaSyntaxKind.KEnumerable:
+							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.Enumerable);
 							break;
 						default:
 							break;

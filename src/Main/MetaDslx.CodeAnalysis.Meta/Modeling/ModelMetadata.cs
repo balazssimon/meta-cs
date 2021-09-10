@@ -7,7 +7,7 @@ using MetaDslx.Modeling.Internal;
 
 namespace MetaDslx.Modeling
 {
-    public struct ModelMetadata
+    public class ModelMetadata : IModelMetadata
     {
         private readonly IModel _model;
         private readonly GreenMetadata _green;

@@ -7975,7 +7975,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //572:48
                 }
             }
-            if (propType is MetaCollectionType && (((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiList)) //574:2
+            if (propType is MetaCollectionType && (((MetaCollectionType)propType).Kind == MetaCollectionKind.Enumerable || ((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)propType).Kind == MetaCollectionKind.MultiList)) //574:2
             {
                 bool __tmp5_outputWritten = false;
                 var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();

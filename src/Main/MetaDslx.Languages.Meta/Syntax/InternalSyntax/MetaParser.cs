@@ -46,25 +46,25 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		KClass=7, KStruct=8, KEnum=9, KAssociation=10, KContainment=11, KWith=12, 
 		KNew=13, KNull=14, KTrue=15, KFalse=16, KVoid=17, KObject=18, KString=19, 
 		KInt=20, KLong=21, KFloat=22, KDouble=23, KByte=24, KBool=25, KList=26, 
-		KAny=27, KNone=28, KError=29, KSet=30, KMultiList=31, KMultiSet=32, KThis=33, 
-		KTypeof=34, KAs=35, KIs=36, KBase=37, KConst=38, KRedefines=39, KSubsets=40, 
-		KReadonly=41, KLazy=42, KDerived=43, KUnion=44, KBuilder=45, KSymbol=46, 
-		KExpression=47, KStatement=48, KType=49, KProperty=50, KStatic=51, TSemicolon=52, 
-		TColon=53, TDot=54, TComma=55, TAssign=56, TOpenParen=57, TCloseParen=58, 
-		TOpenBracket=59, TCloseBracket=60, TOpenBrace=61, TCloseBrace=62, TLessThan=63, 
-		TGreaterThan=64, TQuestion=65, TQuestionQuestion=66, TAmpersand=67, THat=68, 
-		TBar=69, TAndAlso=70, TOrElse=71, TPlusPlus=72, TMinusMinus=73, TPlus=74, 
-		TMinus=75, TTilde=76, TExclamation=77, TSlash=78, TAsterisk=79, TPercent=80, 
-		TLessThanOrEqual=81, TGreaterThanOrEqual=82, TEqual=83, TNotEqual=84, 
-		TAsteriskAssign=85, TSlashAssign=86, TPercentAssign=87, TPlusAssign=88, 
-		TMinusAssign=89, TLeftShiftAssign=90, TRightShiftAssign=91, TAmpersandAssign=92, 
-		THatAssign=93, TBarAssign=94, IUri=95, IPrefix=96, IMajorVersion=97, IMinorVersion=98, 
-		IdentifierNormal=99, IdentifierVerbatim=100, LInteger=101, LDecimal=102, 
-		LScientific=103, LDateTimeOffset=104, LDateTime=105, LDate=106, LTime=107, 
-		LRegularString=108, LGuid=109, LUtf8Bom=110, LWhiteSpace=111, LCrLf=112, 
-		LLineEnd=113, LSingleLineComment=114, LComment=115, LDoubleQuoteVerbatimString=116, 
-		LSingleQuoteVerbatimString=117, DoubleQuoteVerbatimStringLiteralStart=118, 
-		SingleQuoteVerbatimStringLiteralStart=119, LCommentStart=120;
+		KAny=27, KNone=28, KError=29, KSet=30, KMultiList=31, KMultiSet=32, KEnumerable=33, 
+		KThis=34, KTypeof=35, KAs=36, KIs=37, KBase=38, KConst=39, KRedefines=40, 
+		KSubsets=41, KReadonly=42, KLazy=43, KDerived=44, KUnion=45, KBuilder=46, 
+		KSymbol=47, KExpression=48, KStatement=49, KType=50, KProperty=51, KStatic=52, 
+		TSemicolon=53, TColon=54, TDot=55, TComma=56, TAssign=57, TOpenParen=58, 
+		TCloseParen=59, TOpenBracket=60, TCloseBracket=61, TOpenBrace=62, TCloseBrace=63, 
+		TLessThan=64, TGreaterThan=65, TQuestion=66, TQuestionQuestion=67, TAmpersand=68, 
+		THat=69, TBar=70, TAndAlso=71, TOrElse=72, TPlusPlus=73, TMinusMinus=74, 
+		TPlus=75, TMinus=76, TTilde=77, TExclamation=78, TSlash=79, TAsterisk=80, 
+		TPercent=81, TLessThanOrEqual=82, TGreaterThanOrEqual=83, TEqual=84, TNotEqual=85, 
+		TAsteriskAssign=86, TSlashAssign=87, TPercentAssign=88, TPlusAssign=89, 
+		TMinusAssign=90, TLeftShiftAssign=91, TRightShiftAssign=92, TAmpersandAssign=93, 
+		THatAssign=94, TBarAssign=95, IUri=96, IPrefix=97, IMajorVersion=98, IMinorVersion=99, 
+		IdentifierNormal=100, IdentifierVerbatim=101, LInteger=102, LDecimal=103, 
+		LScientific=104, LDateTimeOffset=105, LDateTime=106, LDate=107, LTime=108, 
+		LRegularString=109, LGuid=110, LUtf8Bom=111, LWhiteSpace=112, LCrLf=113, 
+		LLineEnd=114, LSingleLineComment=115, LComment=116, LDoubleQuoteVerbatimString=117, 
+		LSingleQuoteVerbatimString=118, DoubleQuoteVerbatimStringLiteralStart=119, 
+		SingleQuoteVerbatimStringLiteralStart=120, LCommentStart=121;
 	public const int
 		RULE_main = 0, RULE_name = 1, RULE_qualifiedName = 2, RULE_qualifier = 3, 
 		RULE_attribute = 4, RULE_usingNamespaceOrMetamodel = 5, RULE_usingNamespace = 6, 
@@ -116,14 +116,14 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		"'with'", "'new'", "'null'", "'true'", "'false'", "'void'", "'object'", 
 		"'string'", "'int'", "'long'", "'float'", "'double'", "'byte'", "'bool'", 
 		"'list'", "'any'", "'none'", "'error'", "'set'", "'multi_list'", "'multi_set'", 
-		"'this'", "'typeof'", "'as'", "'is'", "'base'", "'const'", "'redefines'", 
-		"'subsets'", "'readonly'", "'lazy'", "'derived'", "'union'", "'builder'", 
-		"'symbol'", "'expression'", "'statement'", "'type'", "'property'", "'static'", 
-		"';'", "':'", "'.'", "','", "'='", "'('", "')'", "'['", "']'", "'{'", 
-		"'}'", "'<'", "'>'", "'?'", "'??'", "'&'", "'^'", "'|'", "'&&'", "'||'", 
-		"'++'", "'--'", "'+'", "'-'", "'~'", "'!'", "'/'", null, "'%'", "'<='", 
-		"'>='", "'=='", "'!='", "'*='", "'/='", "'%='", "'+='", "'-='", "'<<='", 
-		"'>>='", "'&='", "'^='", "'|='", "'Uri'", "'Prefix'", "'MajorVersion'", 
+		"'enumerable'", "'this'", "'typeof'", "'as'", "'is'", "'base'", "'const'", 
+		"'redefines'", "'subsets'", "'readonly'", "'lazy'", "'derived'", "'union'", 
+		"'builder'", "'symbol'", "'expression'", "'statement'", "'type'", "'property'", 
+		"'static'", "';'", "':'", "'.'", "','", "'='", "'('", "')'", "'['", "']'", 
+		"'{'", "'}'", "'<'", "'>'", "'?'", "'??'", "'&'", "'^'", "'|'", "'&&'", 
+		"'||'", "'++'", "'--'", "'+'", "'-'", "'~'", "'!'", "'/'", null, "'%'", 
+		"'<='", "'>='", "'=='", "'!='", "'*='", "'/='", "'%='", "'+='", "'-='", 
+		"'<<='", "'>>='", "'&='", "'^='", "'|='", "'Uri'", "'Prefix'", "'MajorVersion'", 
 		"'MinorVersion'", null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, "'\"'", "'''", "'@\"'", 
 		"'@''", "'/*'"
@@ -133,9 +133,9 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		"KClass", "KStruct", "KEnum", "KAssociation", "KContainment", "KWith", 
 		"KNew", "KNull", "KTrue", "KFalse", "KVoid", "KObject", "KString", "KInt", 
 		"KLong", "KFloat", "KDouble", "KByte", "KBool", "KList", "KAny", "KNone", 
-		"KError", "KSet", "KMultiList", "KMultiSet", "KThis", "KTypeof", "KAs", 
-		"KIs", "KBase", "KConst", "KRedefines", "KSubsets", "KReadonly", "KLazy", 
-		"KDerived", "KUnion", "KBuilder", "KSymbol", "KExpression", "KStatement", 
+		"KError", "KSet", "KMultiList", "KMultiSet", "KEnumerable", "KThis", "KTypeof", 
+		"KAs", "KIs", "KBase", "KConst", "KRedefines", "KSubsets", "KReadonly", 
+		"KLazy", "KDerived", "KUnion", "KBuilder", "KSymbol", "KExpression", "KStatement", 
 		"KType", "KProperty", "KStatic", "TSemicolon", "TColon", "TDot", "TComma", 
 		"TAssign", "TOpenParen", "TCloseParen", "TOpenBracket", "TCloseBracket", 
 		"TOpenBrace", "TCloseBrace", "TLessThan", "TGreaterThan", "TQuestion", 
@@ -943,7 +943,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 				State = 228;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				if (((((_la - 95)) & ~0x3f) == 0 && ((1L << (_la - 95)) & ((1L << (IUri - 95)) | (1L << (IPrefix - 95)) | (1L << (IMajorVersion - 95)) | (1L << (IMinorVersion - 95)))) != 0)) {
+				if (((((_la - 96)) & ~0x3f) == 0 && ((1L << (_la - 96)) & ((1L << (IUri - 96)) | (1L << (IPrefix - 96)) | (1L << (IMajorVersion - 96)) | (1L << (IMinorVersion - 96)))) != 0)) {
 					{
 					State = 227;
 					metamodelPropertyList();
@@ -1517,7 +1517,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 				State = 287;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KVoid) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KReadonly) | (1L << KBuilder) | (1L << KSymbol) | (1L << TOpenBracket))) != 0) || ((((_la - 95)) & ~0x3f) == 0 && ((1L << (_la - 95)) & ((1L << (IUri - 95)) | (1L << (IPrefix - 95)) | (1L << (IMajorVersion - 95)) | (1L << (IMinorVersion - 95)) | (1L << (IdentifierNormal - 95)) | (1L << (IdentifierVerbatim - 95)))) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KVoid) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KEnumerable) | (1L << KReadonly) | (1L << KBuilder) | (1L << KSymbol) | (1L << TOpenBracket))) != 0) || ((((_la - 96)) & ~0x3f) == 0 && ((1L << (_la - 96)) & ((1L << (IUri - 96)) | (1L << (IPrefix - 96)) | (1L << (IMajorVersion - 96)) | (1L << (IMinorVersion - 96)) | (1L << (IdentifierNormal - 96)) | (1L << (IdentifierVerbatim - 96)))) != 0)) {
 					{
 					{
 					State = 284;
@@ -2173,7 +2173,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			State = 366;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KVoid) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived) | (1L << KUnion) | (1L << KBuilder) | (1L << KSymbol) | (1L << TOpenBracket))) != 0) || ((((_la - 95)) & ~0x3f) == 0 && ((1L << (_la - 95)) & ((1L << (IUri - 95)) | (1L << (IPrefix - 95)) | (1L << (IMajorVersion - 95)) | (1L << (IMinorVersion - 95)) | (1L << (IdentifierNormal - 95)) | (1L << (IdentifierVerbatim - 95)))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KVoid) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KEnumerable) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived) | (1L << KUnion) | (1L << KBuilder) | (1L << KSymbol) | (1L << TOpenBracket))) != 0) || ((((_la - 96)) & ~0x3f) == 0 && ((1L << (_la - 96)) & ((1L << (IUri - 96)) | (1L << (IPrefix - 96)) | (1L << (IMajorVersion - 96)) | (1L << (IMinorVersion - 96)) | (1L << (IdentifierNormal - 96)) | (1L << (IdentifierVerbatim - 96)))) != 0)) {
 				{
 				{
 				State = 363;
@@ -2805,7 +2805,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			State = 432;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (((((_la - 95)) & ~0x3f) == 0 && ((1L << (_la - 95)) & ((1L << (IUri - 95)) | (1L << (IPrefix - 95)) | (1L << (IMajorVersion - 95)) | (1L << (IMinorVersion - 95)) | (1L << (IdentifierNormal - 95)) | (1L << (IdentifierVerbatim - 95)))) != 0)) {
+			if (((((_la - 96)) & ~0x3f) == 0 && ((1L << (_la - 96)) & ((1L << (IUri - 96)) | (1L << (IPrefix - 96)) | (1L << (IMajorVersion - 96)) | (1L << (IMinorVersion - 96)) | (1L << (IdentifierNormal - 96)) | (1L << (IdentifierVerbatim - 96)))) != 0)) {
 				{
 				State = 431;
 				nameUseList();
@@ -2860,7 +2860,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			State = 436;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (((((_la - 95)) & ~0x3f) == 0 && ((1L << (_la - 95)) & ((1L << (IUri - 95)) | (1L << (IPrefix - 95)) | (1L << (IMajorVersion - 95)) | (1L << (IMinorVersion - 95)) | (1L << (IdentifierNormal - 95)) | (1L << (IdentifierVerbatim - 95)))) != 0)) {
+			if (((((_la - 96)) & ~0x3f) == 0 && ((1L << (_la - 96)) & ((1L << (IUri - 96)) | (1L << (IPrefix - 96)) | (1L << (IMajorVersion - 96)) | (1L << (IMinorVersion - 96)) | (1L << (IdentifierNormal - 96)) | (1L << (IdentifierVerbatim - 96)))) != 0)) {
 				{
 				State = 435;
 				nameUseList();
@@ -3045,6 +3045,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			case KSet:
 			case KMultiList:
 			case KMultiSet:
+			case KEnumerable:
 			case KSymbol:
 			case IUri:
 			case IPrefix:
@@ -3159,6 +3160,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			case KSet:
 			case KMultiList:
 			case KMultiSet:
+			case KEnumerable:
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 457;
@@ -3574,6 +3576,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KList() { return GetToken(MetaParser.KList, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KMultiSet() { return GetToken(MetaParser.KMultiSet, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KMultiList() { return GetToken(MetaParser.KMultiList, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KEnumerable() { return GetToken(MetaParser.KEnumerable, 0); }
 		public CollectionKindContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -3601,7 +3604,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			{
 			State = 483;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KEnumerable))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -3708,7 +3711,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			State = 501;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KSymbol) | (1L << TOpenBracket))) != 0) || ((((_la - 95)) & ~0x3f) == 0 && ((1L << (_la - 95)) & ((1L << (IUri - 95)) | (1L << (IPrefix - 95)) | (1L << (IMajorVersion - 95)) | (1L << (IMinorVersion - 95)) | (1L << (IdentifierNormal - 95)) | (1L << (IdentifierVerbatim - 95)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KEnumerable) | (1L << KSymbol) | (1L << TOpenBracket))) != 0) || ((((_la - 96)) & ~0x3f) == 0 && ((1L << (_la - 96)) & ((1L << (IUri - 96)) | (1L << (IPrefix - 96)) | (1L << (IMajorVersion - 96)) | (1L << (IMinorVersion - 96)) | (1L << (IdentifierNormal - 96)) | (1L << (IdentifierVerbatim - 96)))) != 0)) {
 				{
 				State = 500;
 				parameterList();
@@ -4125,7 +4128,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 			{
 			State = 543;
 			_la = TokenStream.LA(1);
-			if ( !(((((_la - 95)) & ~0x3f) == 0 && ((1L << (_la - 95)) & ((1L << (IUri - 95)) | (1L << (IPrefix - 95)) | (1L << (IMajorVersion - 95)) | (1L << (IMinorVersion - 95)) | (1L << (IdentifierNormal - 95)) | (1L << (IdentifierVerbatim - 95)))) != 0)) ) {
+			if ( !(((((_la - 96)) & ~0x3f) == 0 && ((1L << (_la - 96)) & ((1L << (IUri - 96)) | (1L << (IPrefix - 96)) | (1L << (IMajorVersion - 96)) | (1L << (IMinorVersion - 96)) | (1L << (IdentifierNormal - 96)) | (1L << (IdentifierVerbatim - 96)))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -4504,7 +4507,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', 'z', '\x238', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', '{', '\x238', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x4', 
 		'\x6', '\t', '\x6', '\x4', '\a', '\t', '\a', '\x4', '\b', '\t', '\b', 
 		'\x4', '\t', '\t', '\t', '\x4', '\n', '\t', '\n', '\x4', '\v', '\t', '\v', 
@@ -4622,9 +4625,9 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'L', 'N', 'P', 'R', 'T', 'V', 'X', 'Z', '\\', '^', '`', '\x62', '\x64', 
 		'\x66', 'h', 'j', 'l', 'n', 'p', 'r', 't', 'v', 'x', 'z', '|', '~', '\x80', 
 		'\x82', '\x84', '\x86', '\x88', '\x8A', '\x8C', '\x2', '\b', '\x3', '\x2', 
-		'+', '.', '\x4', '\x2', '\x14', '\x15', '\x30', '\x30', '\x3', '\x2', 
-		'\x16', '\x1B', '\x4', '\x2', '\x1C', '\x1C', ' ', '\"', '\x3', '\x2', 
-		'\x61', '\x66', '\x3', '\x2', '\x11', '\x12', '\x2', '\x22E', '\x2', '\x91', 
+		',', '/', '\x4', '\x2', '\x14', '\x15', '\x31', '\x31', '\x3', '\x2', 
+		'\x16', '\x1B', '\x4', '\x2', '\x1C', '\x1C', ' ', '#', '\x3', '\x2', 
+		'\x62', 'g', '\x3', '\x2', '\x11', '\x12', '\x2', '\x22E', '\x2', '\x91', 
 		'\x3', '\x2', '\x2', '\x2', '\x4', '\x97', '\x3', '\x2', '\x2', '\x2', 
 		'\x6', '\x99', '\x3', '\x2', '\x2', '\x2', '\b', '\x9B', '\x3', '\x2', 
 		'\x2', '\x2', '\n', '\xA3', '\x3', '\x2', '\x2', '\x2', '\f', '\xA9', 
@@ -4675,29 +4678,29 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x2', '\x3', '\x96', '\x3', '\x3', '\x2', '\x2', '\x2', '\x97', '\x98', 
 		'\x5', '~', '@', '\x2', '\x98', '\x5', '\x3', '\x2', '\x2', '\x2', '\x99', 
 		'\x9A', '\x5', '\b', '\x5', '\x2', '\x9A', '\a', '\x3', '\x2', '\x2', 
-		'\x2', '\x9B', '\xA0', '\x5', '~', '@', '\x2', '\x9C', '\x9D', '\a', '\x38', 
+		'\x2', '\x9B', '\xA0', '\x5', '~', '@', '\x2', '\x9C', '\x9D', '\a', '\x39', 
 		'\x2', '\x2', '\x9D', '\x9F', '\x5', '~', '@', '\x2', '\x9E', '\x9C', 
 		'\x3', '\x2', '\x2', '\x2', '\x9F', '\xA2', '\x3', '\x2', '\x2', '\x2', 
 		'\xA0', '\x9E', '\x3', '\x2', '\x2', '\x2', '\xA0', '\xA1', '\x3', '\x2', 
 		'\x2', '\x2', '\xA1', '\t', '\x3', '\x2', '\x2', '\x2', '\xA2', '\xA0', 
-		'\x3', '\x2', '\x2', '\x2', '\xA3', '\xA4', '\a', '=', '\x2', '\x2', '\xA4', 
-		'\xA5', '\x5', '\b', '\x5', '\x2', '\xA5', '\xA6', '\a', '>', '\x2', '\x2', 
+		'\x3', '\x2', '\x2', '\x2', '\xA3', '\xA4', '\a', '>', '\x2', '\x2', '\xA4', 
+		'\xA5', '\x5', '\b', '\x5', '\x2', '\xA5', '\xA6', '\a', '?', '\x2', '\x2', 
 		'\xA6', '\v', '\x3', '\x2', '\x2', '\x2', '\xA7', '\xAA', '\x5', '\xE', 
 		'\b', '\x2', '\xA8', '\xAA', '\x5', '\x10', '\t', '\x2', '\xA9', '\xA7', 
 		'\x3', '\x2', '\x2', '\x2', '\xA9', '\xA8', '\x3', '\x2', '\x2', '\x2', 
 		'\xAA', '\r', '\x3', '\x2', '\x2', '\x2', '\xAB', '\xAF', '\a', '\x4', 
 		'\x2', '\x2', '\xAC', '\xAD', '\x5', '\x4', '\x3', '\x2', '\xAD', '\xAE', 
-		'\a', ':', '\x2', '\x2', '\xAE', '\xB0', '\x3', '\x2', '\x2', '\x2', '\xAF', 
+		'\a', ';', '\x2', '\x2', '\xAE', '\xB0', '\x3', '\x2', '\x2', '\x2', '\xAF', 
 		'\xAC', '\x3', '\x2', '\x2', '\x2', '\xAF', '\xB0', '\x3', '\x2', '\x2', 
 		'\x2', '\xB0', '\xB1', '\x3', '\x2', '\x2', '\x2', '\xB1', '\xB2', '\x5', 
-		'\b', '\x5', '\x2', '\xB2', '\xB3', '\a', '\x36', '\x2', '\x2', '\xB3', 
+		'\b', '\x5', '\x2', '\xB2', '\xB3', '\a', '\x37', '\x2', '\x2', '\xB3', 
 		'\xF', '\x3', '\x2', '\x2', '\x2', '\xB4', '\xB5', '\a', '\x4', '\x2', 
 		'\x2', '\xB5', '\xB9', '\a', '\x5', '\x2', '\x2', '\xB6', '\xB7', '\x5', 
-		'\x4', '\x3', '\x2', '\xB7', '\xB8', '\a', ':', '\x2', '\x2', '\xB8', 
+		'\x4', '\x3', '\x2', '\xB7', '\xB8', '\a', ';', '\x2', '\x2', '\xB8', 
 		'\xBA', '\x3', '\x2', '\x2', '\x2', '\xB9', '\xB6', '\x3', '\x2', '\x2', 
 		'\x2', '\xB9', '\xBA', '\x3', '\x2', '\x2', '\x2', '\xBA', '\xBB', '\x3', 
 		'\x2', '\x2', '\x2', '\xBB', '\xBC', '\x5', '\x12', '\n', '\x2', '\xBC', 
-		'\xBD', '\a', '\x36', '\x2', '\x2', '\xBD', '\x11', '\x3', '\x2', '\x2', 
+		'\xBD', '\a', '\x37', '\x2', '\x2', '\xBD', '\x11', '\x3', '\x2', '\x2', 
 		'\x2', '\xBE', '\xC1', '\x5', '\b', '\x5', '\x2', '\xBF', '\xC1', '\x5', 
 		'\x8C', 'G', '\x2', '\xC0', '\xBE', '\x3', '\x2', '\x2', '\x2', '\xC0', 
 		'\xBF', '\x3', '\x2', '\x2', '\x2', '\xC1', '\x13', '\x3', '\x2', '\x2', 
@@ -4708,7 +4711,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x2', '\x2', '\x2', '\xC8', '\xC9', '\a', '\x3', '\x2', '\x2', '\xC9', 
 		'\xCA', '\x5', '\x6', '\x4', '\x2', '\xCA', '\xCB', '\x5', '\x16', '\f', 
 		'\x2', '\xCB', '\x15', '\x3', '\x2', '\x2', '\x2', '\xCC', '\xD0', '\a', 
-		'?', '\x2', '\x2', '\xCD', '\xCF', '\x5', '\f', '\a', '\x2', '\xCE', '\xCD', 
+		'@', '\x2', '\x2', '\xCD', '\xCF', '\x5', '\f', '\a', '\x2', '\xCE', '\xCD', 
 		'\x3', '\x2', '\x2', '\x2', '\xCF', '\xD2', '\x3', '\x2', '\x2', '\x2', 
 		'\xD0', '\xCE', '\x3', '\x2', '\x2', '\x2', '\xD0', '\xD1', '\x3', '\x2', 
 		'\x2', '\x2', '\xD1', '\xD3', '\x3', '\x2', '\x2', '\x2', '\xD2', '\xD0', 
@@ -4717,21 +4720,21 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x2', '\x2', '\xD6', '\xD9', '\x3', '\x2', '\x2', '\x2', '\xD7', '\xD5', 
 		'\x3', '\x2', '\x2', '\x2', '\xD7', '\xD8', '\x3', '\x2', '\x2', '\x2', 
 		'\xD8', '\xDA', '\x3', '\x2', '\x2', '\x2', '\xD9', '\xD7', '\x3', '\x2', 
-		'\x2', '\x2', '\xDA', '\xDB', '\a', '@', '\x2', '\x2', '\xDB', '\x17', 
+		'\x2', '\x2', '\xDA', '\xDB', '\a', '\x41', '\x2', '\x2', '\xDB', '\x17', 
 		'\x3', '\x2', '\x2', '\x2', '\xDC', '\xDE', '\x5', '\n', '\x6', '\x2', 
 		'\xDD', '\xDC', '\x3', '\x2', '\x2', '\x2', '\xDE', '\xE1', '\x3', '\x2', 
 		'\x2', '\x2', '\xDF', '\xDD', '\x3', '\x2', '\x2', '\x2', '\xDF', '\xE0', 
 		'\x3', '\x2', '\x2', '\x2', '\xE0', '\xE2', '\x3', '\x2', '\x2', '\x2', 
 		'\xE1', '\xDF', '\x3', '\x2', '\x2', '\x2', '\xE2', '\xE3', '\a', '\x5', 
 		'\x2', '\x2', '\xE3', '\xE9', '\x5', '\x4', '\x3', '\x2', '\xE4', '\xE6', 
-		'\a', ';', '\x2', '\x2', '\xE5', '\xE7', '\x5', '\x1A', '\xE', '\x2', 
+		'\a', '<', '\x2', '\x2', '\xE5', '\xE7', '\x5', '\x1A', '\xE', '\x2', 
 		'\xE6', '\xE5', '\x3', '\x2', '\x2', '\x2', '\xE6', '\xE7', '\x3', '\x2', 
 		'\x2', '\x2', '\xE7', '\xE8', '\x3', '\x2', '\x2', '\x2', '\xE8', '\xEA', 
-		'\a', '<', '\x2', '\x2', '\xE9', '\xE4', '\x3', '\x2', '\x2', '\x2', '\xE9', 
+		'\a', '=', '\x2', '\x2', '\xE9', '\xE4', '\x3', '\x2', '\x2', '\x2', '\xE9', 
 		'\xEA', '\x3', '\x2', '\x2', '\x2', '\xEA', '\xEB', '\x3', '\x2', '\x2', 
-		'\x2', '\xEB', '\xEC', '\a', '\x36', '\x2', '\x2', '\xEC', '\x19', '\x3', 
+		'\x2', '\xEB', '\xEC', '\a', '\x37', '\x2', '\x2', '\xEC', '\x19', '\x3', 
 		'\x2', '\x2', '\x2', '\xED', '\xF2', '\x5', '\x1C', '\xF', '\x2', '\xEE', 
-		'\xEF', '\a', '\x39', '\x2', '\x2', '\xEF', '\xF1', '\x5', '\x1C', '\xF', 
+		'\xEF', '\a', ':', '\x2', '\x2', '\xEF', '\xF1', '\x5', '\x1C', '\xF', 
 		'\x2', '\xF0', '\xEE', '\x3', '\x2', '\x2', '\x2', '\xF1', '\xF4', '\x3', 
 		'\x2', '\x2', '\x2', '\xF2', '\xF0', '\x3', '\x2', '\x2', '\x2', '\xF2', 
 		'\xF3', '\x3', '\x2', '\x2', '\x2', '\xF3', '\x1B', '\x3', '\x2', '\x2', 
@@ -4741,15 +4744,15 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x2', '\xF9', '\xF5', '\x3', '\x2', '\x2', '\x2', '\xF9', '\xF6', '\x3', 
 		'\x2', '\x2', '\x2', '\xF9', '\xF7', '\x3', '\x2', '\x2', '\x2', '\xF9', 
 		'\xF8', '\x3', '\x2', '\x2', '\x2', '\xFA', '\x1D', '\x3', '\x2', '\x2', 
-		'\x2', '\xFB', '\xFC', '\a', '\x61', '\x2', '\x2', '\xFC', '\xFD', '\a', 
-		':', '\x2', '\x2', '\xFD', '\xFE', '\x5', '\x8C', 'G', '\x2', '\xFE', 
-		'\x1F', '\x3', '\x2', '\x2', '\x2', '\xFF', '\x100', '\a', '\x62', '\x2', 
-		'\x2', '\x100', '\x101', '\a', ':', '\x2', '\x2', '\x101', '\x102', '\x5', 
+		'\x2', '\xFB', '\xFC', '\a', '\x62', '\x2', '\x2', '\xFC', '\xFD', '\a', 
+		';', '\x2', '\x2', '\xFD', '\xFE', '\x5', '\x8C', 'G', '\x2', '\xFE', 
+		'\x1F', '\x3', '\x2', '\x2', '\x2', '\xFF', '\x100', '\a', '\x63', '\x2', 
+		'\x2', '\x100', '\x101', '\a', ';', '\x2', '\x2', '\x101', '\x102', '\x5', 
 		'\x8C', 'G', '\x2', '\x102', '!', '\x3', '\x2', '\x2', '\x2', '\x103', 
-		'\x104', '\a', '\x63', '\x2', '\x2', '\x104', '\x105', '\a', ':', '\x2', 
+		'\x104', '\a', '\x64', '\x2', '\x2', '\x104', '\x105', '\a', ';', '\x2', 
 		'\x2', '\x105', '\x106', '\x5', '\x86', '\x44', '\x2', '\x106', '#', '\x3', 
-		'\x2', '\x2', '\x2', '\x107', '\x108', '\a', '\x64', '\x2', '\x2', '\x108', 
-		'\x109', '\a', ':', '\x2', '\x2', '\x109', '\x10A', '\x5', '\x86', '\x44', 
+		'\x2', '\x2', '\x2', '\x107', '\x108', '\a', '\x65', '\x2', '\x2', '\x108', 
+		'\x109', '\a', ';', '\x2', '\x2', '\x109', '\x10A', '\x5', '\x86', '\x44', 
 		'\x2', '\x10A', '%', '\x3', '\x2', '\x2', '\x2', '\x10B', '\x110', '\x5', 
 		'(', '\x15', '\x2', '\x10C', '\x110', '\x5', '\x32', '\x1A', '\x2', '\x10D', 
 		'\x110', '\x5', '|', '?', '\x2', '\x10E', '\x110', '\x5', 'X', '-', '\x2', 
@@ -4763,17 +4766,17 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x114', '\x3', '\x2', '\x2', '\x2', '\x117', '\x118', '\a', '\v', '\x2', 
 		'\x2', '\x118', '\x119', '\x5', '\x4', '\x3', '\x2', '\x119', '\x11A', 
 		'\x5', '*', '\x16', '\x2', '\x11A', ')', '\x3', '\x2', '\x2', '\x2', '\x11B', 
-		'\x11C', '\a', '?', '\x2', '\x2', '\x11C', '\x124', '\x5', ',', '\x17', 
-		'\x2', '\x11D', '\x121', '\a', '\x36', '\x2', '\x2', '\x11E', '\x120', 
+		'\x11C', '\a', '@', '\x2', '\x2', '\x11C', '\x124', '\x5', ',', '\x17', 
+		'\x2', '\x11D', '\x121', '\a', '\x37', '\x2', '\x2', '\x11E', '\x120', 
 		'\x5', '\x30', '\x19', '\x2', '\x11F', '\x11E', '\x3', '\x2', '\x2', '\x2', 
 		'\x120', '\x123', '\x3', '\x2', '\x2', '\x2', '\x121', '\x11F', '\x3', 
 		'\x2', '\x2', '\x2', '\x121', '\x122', '\x3', '\x2', '\x2', '\x2', '\x122', 
 		'\x125', '\x3', '\x2', '\x2', '\x2', '\x123', '\x121', '\x3', '\x2', '\x2', 
 		'\x2', '\x124', '\x11D', '\x3', '\x2', '\x2', '\x2', '\x124', '\x125', 
 		'\x3', '\x2', '\x2', '\x2', '\x125', '\x126', '\x3', '\x2', '\x2', '\x2', 
-		'\x126', '\x127', '\a', '@', '\x2', '\x2', '\x127', '+', '\x3', '\x2', 
+		'\x126', '\x127', '\a', '\x41', '\x2', '\x2', '\x127', '+', '\x3', '\x2', 
 		'\x2', '\x2', '\x128', '\x12D', '\x5', '.', '\x18', '\x2', '\x129', '\x12A', 
-		'\a', '\x39', '\x2', '\x2', '\x12A', '\x12C', '\x5', '.', '\x18', '\x2', 
+		'\a', ':', '\x2', '\x2', '\x12A', '\x12C', '\x5', '.', '\x18', '\x2', 
 		'\x12B', '\x129', '\x3', '\x2', '\x2', '\x2', '\x12C', '\x12F', '\x3', 
 		'\x2', '\x2', '\x2', '\x12D', '\x12B', '\x3', '\x2', '\x2', '\x2', '\x12D', 
 		'\x12E', '\x3', '\x2', '\x2', '\x2', '\x12E', '-', '\x3', '\x2', '\x2', 
@@ -4795,7 +4798,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x144', '\x143', '\x3', '\x2', '\x2', '\x2', '\x144', '\x145', '\x3', 
 		'\x2', '\x2', '\x2', '\x145', '\x146', '\x3', '\x2', '\x2', '\x2', '\x146', 
 		'\x147', '\a', '\t', '\x2', '\x2', '\x147', '\x14A', '\x5', '\x4', '\x3', 
-		'\x2', '\x148', '\x149', '\a', '\x37', '\x2', '\x2', '\x149', '\x14B', 
+		'\x2', '\x148', '\x149', '\a', '\x38', '\x2', '\x2', '\x149', '\x14B', 
 		'\x5', '@', '!', '\x2', '\x14A', '\x148', '\x3', '\x2', '\x2', '\x2', 
 		'\x14A', '\x14B', '\x3', '\x2', '\x2', '\x2', '\x14B', '\x14C', '\x3', 
 		'\x2', '\x2', '\x2', '\x14C', '\x14D', '\x5', '>', ' ', '\x2', '\x14D', 
@@ -4805,83 +4808,83 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x152', '\x14E', '\x3', '\x2', '\x2', '\x2', '\x152', '\x14F', '\x3', 
 		'\x2', '\x2', '\x2', '\x152', '\x150', '\x3', '\x2', '\x2', '\x2', '\x152', 
 		'\x151', '\x3', '\x2', '\x2', '\x2', '\x153', '\x35', '\x3', '\x2', '\x2', 
-		'\x2', '\x154', '\x155', '\a', '=', '\x2', '\x2', '\x155', '\x156', '\a', 
-		'\x30', '\x2', '\x2', '\x156', '\x157', '\a', '\x37', '\x2', '\x2', '\x157', 
-		'\x158', '\x5', '\b', '\x5', '\x2', '\x158', '\x159', '\a', '>', '\x2', 
+		'\x2', '\x154', '\x155', '\a', '>', '\x2', '\x2', '\x155', '\x156', '\a', 
+		'\x31', '\x2', '\x2', '\x156', '\x157', '\a', '\x38', '\x2', '\x2', '\x157', 
+		'\x158', '\x5', '\b', '\x5', '\x2', '\x158', '\x159', '\a', '?', '\x2', 
 		'\x2', '\x159', '\x37', '\x3', '\x2', '\x2', '\x2', '\x15A', '\x15B', 
-		'\a', '=', '\x2', '\x2', '\x15B', '\x15C', '\a', '\x31', '\x2', '\x2', 
-		'\x15C', '\x15D', '\a', '\x37', '\x2', '\x2', '\x15D', '\x15E', '\x5', 
-		'\b', '\x5', '\x2', '\x15E', '\x15F', '\a', '>', '\x2', '\x2', '\x15F', 
-		'\x39', '\x3', '\x2', '\x2', '\x2', '\x160', '\x161', '\a', '=', '\x2', 
-		'\x2', '\x161', '\x162', '\a', '\x32', '\x2', '\x2', '\x162', '\x163', 
-		'\a', '\x37', '\x2', '\x2', '\x163', '\x164', '\x5', '\b', '\x5', '\x2', 
-		'\x164', '\x165', '\a', '>', '\x2', '\x2', '\x165', ';', '\x3', '\x2', 
-		'\x2', '\x2', '\x166', '\x167', '\a', '=', '\x2', '\x2', '\x167', '\x168', 
-		'\a', '\x33', '\x2', '\x2', '\x168', '\x169', '\a', '\x37', '\x2', '\x2', 
-		'\x169', '\x16A', '\x5', '\b', '\x5', '\x2', '\x16A', '\x16B', '\a', '>', 
+		'\a', '>', '\x2', '\x2', '\x15B', '\x15C', '\a', '\x32', '\x2', '\x2', 
+		'\x15C', '\x15D', '\a', '\x38', '\x2', '\x2', '\x15D', '\x15E', '\x5', 
+		'\b', '\x5', '\x2', '\x15E', '\x15F', '\a', '?', '\x2', '\x2', '\x15F', 
+		'\x39', '\x3', '\x2', '\x2', '\x2', '\x160', '\x161', '\a', '>', '\x2', 
+		'\x2', '\x161', '\x162', '\a', '\x33', '\x2', '\x2', '\x162', '\x163', 
+		'\a', '\x38', '\x2', '\x2', '\x163', '\x164', '\x5', '\b', '\x5', '\x2', 
+		'\x164', '\x165', '\a', '?', '\x2', '\x2', '\x165', ';', '\x3', '\x2', 
+		'\x2', '\x2', '\x166', '\x167', '\a', '>', '\x2', '\x2', '\x167', '\x168', 
+		'\a', '\x34', '\x2', '\x2', '\x168', '\x169', '\a', '\x38', '\x2', '\x2', 
+		'\x169', '\x16A', '\x5', '\b', '\x5', '\x2', '\x16A', '\x16B', '\a', '?', 
 		'\x2', '\x2', '\x16B', '=', '\x3', '\x2', '\x2', '\x2', '\x16C', '\x170', 
-		'\a', '?', '\x2', '\x2', '\x16D', '\x16F', '\x5', '\x44', '#', '\x2', 
+		'\a', '@', '\x2', '\x2', '\x16D', '\x16F', '\x5', '\x44', '#', '\x2', 
 		'\x16E', '\x16D', '\x3', '\x2', '\x2', '\x2', '\x16F', '\x172', '\x3', 
 		'\x2', '\x2', '\x2', '\x170', '\x16E', '\x3', '\x2', '\x2', '\x2', '\x170', 
 		'\x171', '\x3', '\x2', '\x2', '\x2', '\x171', '\x173', '\x3', '\x2', '\x2', 
 		'\x2', '\x172', '\x170', '\x3', '\x2', '\x2', '\x2', '\x173', '\x174', 
-		'\a', '@', '\x2', '\x2', '\x174', '?', '\x3', '\x2', '\x2', '\x2', '\x175', 
-		'\x17A', '\x5', '\x42', '\"', '\x2', '\x176', '\x177', '\a', '\x39', '\x2', 
-		'\x2', '\x177', '\x179', '\x5', '\x42', '\"', '\x2', '\x178', '\x176', 
-		'\x3', '\x2', '\x2', '\x2', '\x179', '\x17C', '\x3', '\x2', '\x2', '\x2', 
-		'\x17A', '\x178', '\x3', '\x2', '\x2', '\x2', '\x17A', '\x17B', '\x3', 
-		'\x2', '\x2', '\x2', '\x17B', '\x41', '\x3', '\x2', '\x2', '\x2', '\x17C', 
-		'\x17A', '\x3', '\x2', '\x2', '\x2', '\x17D', '\x17E', '\x5', '\b', '\x5', 
-		'\x2', '\x17E', '\x43', '\x3', '\x2', '\x2', '\x2', '\x17F', '\x182', 
-		'\x5', '\x46', '$', '\x2', '\x180', '\x182', '\x5', 'p', '\x39', '\x2', 
-		'\x181', '\x17F', '\x3', '\x2', '\x2', '\x2', '\x181', '\x180', '\x3', 
-		'\x2', '\x2', '\x2', '\x182', '\x45', '\x3', '\x2', '\x2', '\x2', '\x183', 
-		'\x185', '\x5', '\n', '\x6', '\x2', '\x184', '\x183', '\x3', '\x2', '\x2', 
-		'\x2', '\x185', '\x188', '\x3', '\x2', '\x2', '\x2', '\x186', '\x184', 
-		'\x3', '\x2', '\x2', '\x2', '\x186', '\x187', '\x3', '\x2', '\x2', '\x2', 
-		'\x187', '\x18A', '\x3', '\x2', '\x2', '\x2', '\x188', '\x186', '\x3', 
-		'\x2', '\x2', '\x2', '\x189', '\x18B', '\x5', 'H', '%', '\x2', '\x18A', 
-		'\x189', '\x3', '\x2', '\x2', '\x2', '\x18A', '\x18B', '\x3', '\x2', '\x2', 
-		'\x2', '\x18B', '\x18D', '\x3', '\x2', '\x2', '\x2', '\x18C', '\x18E', 
-		'\x5', 'J', '&', '\x2', '\x18D', '\x18C', '\x3', '\x2', '\x2', '\x2', 
-		'\x18D', '\x18E', '\x3', '\x2', '\x2', '\x2', '\x18E', '\x190', '\x3', 
-		'\x2', '\x2', '\x2', '\x18F', '\x191', '\x5', 'L', '\'', '\x2', '\x190', 
-		'\x18F', '\x3', '\x2', '\x2', '\x2', '\x190', '\x191', '\x3', '\x2', '\x2', 
-		'\x2', '\x191', '\x192', '\x3', '\x2', '\x2', '\x2', '\x192', '\x193', 
-		'\x5', '^', '\x30', '\x2', '\x193', '\x195', '\x5', '\x4', '\x3', '\x2', 
-		'\x194', '\x196', '\x5', 'N', '(', '\x2', '\x195', '\x194', '\x3', '\x2', 
-		'\x2', '\x2', '\x195', '\x196', '\x3', '\x2', '\x2', '\x2', '\x196', '\x19A', 
-		'\x3', '\x2', '\x2', '\x2', '\x197', '\x199', '\x5', 'P', ')', '\x2', 
-		'\x198', '\x197', '\x3', '\x2', '\x2', '\x2', '\x199', '\x19C', '\x3', 
-		'\x2', '\x2', '\x2', '\x19A', '\x198', '\x3', '\x2', '\x2', '\x2', '\x19A', 
-		'\x19B', '\x3', '\x2', '\x2', '\x2', '\x19B', '\x19D', '\x3', '\x2', '\x2', 
-		'\x2', '\x19C', '\x19A', '\x3', '\x2', '\x2', '\x2', '\x19D', '\x19E', 
-		'\a', '\x36', '\x2', '\x2', '\x19E', 'G', '\x3', '\x2', '\x2', '\x2', 
-		'\x19F', '\x1A0', '\a', '=', '\x2', '\x2', '\x1A0', '\x1A1', '\a', '\x34', 
-		'\x2', '\x2', '\x1A1', '\x1A2', '\a', '\x37', '\x2', '\x2', '\x1A2', '\x1A3', 
-		'\x5', '~', '@', '\x2', '\x1A3', '\x1A4', '\a', '>', '\x2', '\x2', '\x1A4', 
-		'I', '\x3', '\x2', '\x2', '\x2', '\x1A5', '\x1A6', '\a', '\r', '\x2', 
-		'\x2', '\x1A6', 'K', '\x3', '\x2', '\x2', '\x2', '\x1A7', '\x1A8', '\t', 
-		'\x2', '\x2', '\x2', '\x1A8', 'M', '\x3', '\x2', '\x2', '\x2', '\x1A9', 
-		'\x1AA', '\a', ':', '\x2', '\x2', '\x1AA', '\x1AB', '\x5', '\x8C', 'G', 
+		'\a', '\x41', '\x2', '\x2', '\x174', '?', '\x3', '\x2', '\x2', '\x2', 
+		'\x175', '\x17A', '\x5', '\x42', '\"', '\x2', '\x176', '\x177', '\a', 
+		':', '\x2', '\x2', '\x177', '\x179', '\x5', '\x42', '\"', '\x2', '\x178', 
+		'\x176', '\x3', '\x2', '\x2', '\x2', '\x179', '\x17C', '\x3', '\x2', '\x2', 
+		'\x2', '\x17A', '\x178', '\x3', '\x2', '\x2', '\x2', '\x17A', '\x17B', 
+		'\x3', '\x2', '\x2', '\x2', '\x17B', '\x41', '\x3', '\x2', '\x2', '\x2', 
+		'\x17C', '\x17A', '\x3', '\x2', '\x2', '\x2', '\x17D', '\x17E', '\x5', 
+		'\b', '\x5', '\x2', '\x17E', '\x43', '\x3', '\x2', '\x2', '\x2', '\x17F', 
+		'\x182', '\x5', '\x46', '$', '\x2', '\x180', '\x182', '\x5', 'p', '\x39', 
+		'\x2', '\x181', '\x17F', '\x3', '\x2', '\x2', '\x2', '\x181', '\x180', 
+		'\x3', '\x2', '\x2', '\x2', '\x182', '\x45', '\x3', '\x2', '\x2', '\x2', 
+		'\x183', '\x185', '\x5', '\n', '\x6', '\x2', '\x184', '\x183', '\x3', 
+		'\x2', '\x2', '\x2', '\x185', '\x188', '\x3', '\x2', '\x2', '\x2', '\x186', 
+		'\x184', '\x3', '\x2', '\x2', '\x2', '\x186', '\x187', '\x3', '\x2', '\x2', 
+		'\x2', '\x187', '\x18A', '\x3', '\x2', '\x2', '\x2', '\x188', '\x186', 
+		'\x3', '\x2', '\x2', '\x2', '\x189', '\x18B', '\x5', 'H', '%', '\x2', 
+		'\x18A', '\x189', '\x3', '\x2', '\x2', '\x2', '\x18A', '\x18B', '\x3', 
+		'\x2', '\x2', '\x2', '\x18B', '\x18D', '\x3', '\x2', '\x2', '\x2', '\x18C', 
+		'\x18E', '\x5', 'J', '&', '\x2', '\x18D', '\x18C', '\x3', '\x2', '\x2', 
+		'\x2', '\x18D', '\x18E', '\x3', '\x2', '\x2', '\x2', '\x18E', '\x190', 
+		'\x3', '\x2', '\x2', '\x2', '\x18F', '\x191', '\x5', 'L', '\'', '\x2', 
+		'\x190', '\x18F', '\x3', '\x2', '\x2', '\x2', '\x190', '\x191', '\x3', 
+		'\x2', '\x2', '\x2', '\x191', '\x192', '\x3', '\x2', '\x2', '\x2', '\x192', 
+		'\x193', '\x5', '^', '\x30', '\x2', '\x193', '\x195', '\x5', '\x4', '\x3', 
+		'\x2', '\x194', '\x196', '\x5', 'N', '(', '\x2', '\x195', '\x194', '\x3', 
+		'\x2', '\x2', '\x2', '\x195', '\x196', '\x3', '\x2', '\x2', '\x2', '\x196', 
+		'\x19A', '\x3', '\x2', '\x2', '\x2', '\x197', '\x199', '\x5', 'P', ')', 
+		'\x2', '\x198', '\x197', '\x3', '\x2', '\x2', '\x2', '\x199', '\x19C', 
+		'\x3', '\x2', '\x2', '\x2', '\x19A', '\x198', '\x3', '\x2', '\x2', '\x2', 
+		'\x19A', '\x19B', '\x3', '\x2', '\x2', '\x2', '\x19B', '\x19D', '\x3', 
+		'\x2', '\x2', '\x2', '\x19C', '\x19A', '\x3', '\x2', '\x2', '\x2', '\x19D', 
+		'\x19E', '\a', '\x37', '\x2', '\x2', '\x19E', 'G', '\x3', '\x2', '\x2', 
+		'\x2', '\x19F', '\x1A0', '\a', '>', '\x2', '\x2', '\x1A0', '\x1A1', '\a', 
+		'\x35', '\x2', '\x2', '\x1A1', '\x1A2', '\a', '\x38', '\x2', '\x2', '\x1A2', 
+		'\x1A3', '\x5', '~', '@', '\x2', '\x1A3', '\x1A4', '\a', '?', '\x2', '\x2', 
+		'\x1A4', 'I', '\x3', '\x2', '\x2', '\x2', '\x1A5', '\x1A6', '\a', '\r', 
+		'\x2', '\x2', '\x1A6', 'K', '\x3', '\x2', '\x2', '\x2', '\x1A7', '\x1A8', 
+		'\t', '\x2', '\x2', '\x2', '\x1A8', 'M', '\x3', '\x2', '\x2', '\x2', '\x1A9', 
+		'\x1AA', '\a', ';', '\x2', '\x2', '\x1AA', '\x1AB', '\x5', '\x8C', 'G', 
 		'\x2', '\x1AB', 'O', '\x3', '\x2', '\x2', '\x2', '\x1AC', '\x1AF', '\x5', 
 		'R', '*', '\x2', '\x1AD', '\x1AF', '\x5', 'T', '+', '\x2', '\x1AE', '\x1AC', 
 		'\x3', '\x2', '\x2', '\x2', '\x1AE', '\x1AD', '\x3', '\x2', '\x2', '\x2', 
-		'\x1AF', 'Q', '\x3', '\x2', '\x2', '\x2', '\x1B0', '\x1B2', '\a', ')', 
+		'\x1AF', 'Q', '\x3', '\x2', '\x2', '\x2', '\x1B0', '\x1B2', '\a', '*', 
 		'\x2', '\x2', '\x1B1', '\x1B3', '\x5', 'V', ',', '\x2', '\x1B2', '\x1B1', 
 		'\x3', '\x2', '\x2', '\x2', '\x1B2', '\x1B3', '\x3', '\x2', '\x2', '\x2', 
-		'\x1B3', 'S', '\x3', '\x2', '\x2', '\x2', '\x1B4', '\x1B6', '\a', '*', 
+		'\x1B3', 'S', '\x3', '\x2', '\x2', '\x2', '\x1B4', '\x1B6', '\a', '+', 
 		'\x2', '\x2', '\x1B5', '\x1B7', '\x5', 'V', ',', '\x2', '\x1B6', '\x1B5', 
 		'\x3', '\x2', '\x2', '\x2', '\x1B6', '\x1B7', '\x3', '\x2', '\x2', '\x2', 
 		'\x1B7', 'U', '\x3', '\x2', '\x2', '\x2', '\x1B8', '\x1BD', '\x5', '\b', 
-		'\x5', '\x2', '\x1B9', '\x1BA', '\a', '\x39', '\x2', '\x2', '\x1BA', '\x1BC', 
+		'\x5', '\x2', '\x1B9', '\x1BA', '\a', ':', '\x2', '\x2', '\x1BA', '\x1BC', 
 		'\x5', '\b', '\x5', '\x2', '\x1BB', '\x1B9', '\x3', '\x2', '\x2', '\x2', 
 		'\x1BC', '\x1BF', '\x3', '\x2', '\x2', '\x2', '\x1BD', '\x1BB', '\x3', 
 		'\x2', '\x2', '\x2', '\x1BD', '\x1BE', '\x3', '\x2', '\x2', '\x2', '\x1BE', 
 		'W', '\x3', '\x2', '\x2', '\x2', '\x1BF', '\x1BD', '\x3', '\x2', '\x2', 
-		'\x2', '\x1C0', '\x1C1', '\a', '(', '\x2', '\x2', '\x1C1', '\x1C2', '\x5', 
+		'\x2', '\x1C0', '\x1C1', '\a', ')', '\x2', '\x2', '\x1C1', '\x1C2', '\x5', 
 		'^', '\x30', '\x2', '\x1C2', '\x1C3', '\x5', '\x4', '\x3', '\x2', '\x1C3', 
-		'\x1C4', '\a', '\x36', '\x2', '\x2', '\x1C4', 'Y', '\x3', '\x2', '\x2', 
+		'\x1C4', '\a', '\x37', '\x2', '\x2', '\x1C4', 'Y', '\x3', '\x2', '\x2', 
 		'\x2', '\x1C5', '\x1C8', '\x5', '^', '\x30', '\x2', '\x1C6', '\x1C8', 
 		'\x5', 'h', '\x35', '\x2', '\x1C7', '\x1C5', '\x3', '\x2', '\x2', '\x2', 
 		'\x1C7', '\x1C6', '\x3', '\x2', '\x2', '\x2', '\x1C8', '[', '\x3', '\x2', 
@@ -4900,10 +4903,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x65', '\x3', '\x2', '\x2', '\x2', '\x1D9', '\x1DA', '\t', '\x4', '\x2', 
 		'\x2', '\x1DA', 'g', '\x3', '\x2', '\x2', '\x2', '\x1DB', '\x1DC', '\a', 
 		'\x13', '\x2', '\x2', '\x1DC', 'i', '\x3', '\x2', '\x2', '\x2', '\x1DD', 
-		'\x1DE', '\x5', '\x66', '\x34', '\x2', '\x1DE', '\x1DF', '\a', '\x43', 
+		'\x1DE', '\x5', '\x66', '\x34', '\x2', '\x1DE', '\x1DF', '\a', '\x44', 
 		'\x2', '\x2', '\x1DF', 'k', '\x3', '\x2', '\x2', '\x2', '\x1E0', '\x1E1', 
-		'\x5', 'n', '\x38', '\x2', '\x1E1', '\x1E2', '\a', '\x41', '\x2', '\x2', 
-		'\x1E2', '\x1E3', '\x5', '`', '\x31', '\x2', '\x1E3', '\x1E4', '\a', '\x42', 
+		'\x5', 'n', '\x38', '\x2', '\x1E1', '\x1E2', '\a', '\x42', '\x2', '\x2', 
+		'\x1E2', '\x1E3', '\x5', '`', '\x31', '\x2', '\x1E3', '\x1E4', '\a', '\x43', 
 		'\x2', '\x2', '\x1E4', 'm', '\x3', '\x2', '\x2', '\x2', '\x1E5', '\x1E6', 
 		'\t', '\x5', '\x2', '\x2', '\x1E6', 'o', '\x3', '\x2', '\x2', '\x2', '\x1E7', 
 		'\x1E9', '\x5', '\n', '\x6', '\x2', '\x1E8', '\x1E7', '\x3', '\x2', '\x2', 
@@ -4916,59 +4919,58 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x3', '\x2', '\x2', '\x2', '\x1F1', '\x1F3', '\x3', '\x2', '\x2', '\x2', 
 		'\x1F2', '\x1F0', '\x3', '\x2', '\x2', '\x2', '\x1F3', '\x1F4', '\x5', 
 		'Z', '.', '\x2', '\x1F4', '\x1F5', '\x5', '\x4', '\x3', '\x2', '\x1F5', 
-		'\x1F7', '\a', ';', '\x2', '\x2', '\x1F6', '\x1F8', '\x5', 'x', '=', '\x2', 
+		'\x1F7', '\a', '<', '\x2', '\x2', '\x1F6', '\x1F8', '\x5', 'x', '=', '\x2', 
 		'\x1F7', '\x1F6', '\x3', '\x2', '\x2', '\x2', '\x1F7', '\x1F8', '\x3', 
 		'\x2', '\x2', '\x2', '\x1F8', '\x1F9', '\x3', '\x2', '\x2', '\x2', '\x1F9', 
-		'\x1FA', '\a', '<', '\x2', '\x2', '\x1FA', '\x1FB', '\a', '\x36', '\x2', 
+		'\x1FA', '\a', '=', '\x2', '\x2', '\x1FA', '\x1FB', '\a', '\x37', '\x2', 
 		'\x2', '\x1FB', 'q', '\x3', '\x2', '\x2', '\x2', '\x1FC', '\x1FF', '\x5', 
 		't', ';', '\x2', '\x1FD', '\x1FF', '\x5', 'v', '<', '\x2', '\x1FE', '\x1FC', 
 		'\x3', '\x2', '\x2', '\x2', '\x1FE', '\x1FD', '\x3', '\x2', '\x2', '\x2', 
-		'\x1FF', 's', '\x3', '\x2', '\x2', '\x2', '\x200', '\x201', '\a', '/', 
+		'\x1FF', 's', '\x3', '\x2', '\x2', '\x2', '\x200', '\x201', '\a', '\x30', 
 		'\x2', '\x2', '\x201', 'u', '\x3', '\x2', '\x2', '\x2', '\x202', '\x203', 
-		'\a', '+', '\x2', '\x2', '\x203', 'w', '\x3', '\x2', '\x2', '\x2', '\x204', 
-		'\x209', '\x5', 'z', '>', '\x2', '\x205', '\x206', '\a', '\x39', '\x2', 
-		'\x2', '\x206', '\x208', '\x5', 'z', '>', '\x2', '\x207', '\x205', '\x3', 
-		'\x2', '\x2', '\x2', '\x208', '\x20B', '\x3', '\x2', '\x2', '\x2', '\x209', 
-		'\x207', '\x3', '\x2', '\x2', '\x2', '\x209', '\x20A', '\x3', '\x2', '\x2', 
-		'\x2', '\x20A', 'y', '\x3', '\x2', '\x2', '\x2', '\x20B', '\x209', '\x3', 
-		'\x2', '\x2', '\x2', '\x20C', '\x20E', '\x5', '\n', '\x6', '\x2', '\x20D', 
-		'\x20C', '\x3', '\x2', '\x2', '\x2', '\x20E', '\x211', '\x3', '\x2', '\x2', 
-		'\x2', '\x20F', '\x20D', '\x3', '\x2', '\x2', '\x2', '\x20F', '\x210', 
-		'\x3', '\x2', '\x2', '\x2', '\x210', '\x212', '\x3', '\x2', '\x2', '\x2', 
-		'\x211', '\x20F', '\x3', '\x2', '\x2', '\x2', '\x212', '\x213', '\x5', 
-		'^', '\x30', '\x2', '\x213', '\x214', '\x5', '\x4', '\x3', '\x2', '\x214', 
-		'{', '\x3', '\x2', '\x2', '\x2', '\x215', '\x217', '\x5', '\n', '\x6', 
-		'\x2', '\x216', '\x215', '\x3', '\x2', '\x2', '\x2', '\x217', '\x21A', 
-		'\x3', '\x2', '\x2', '\x2', '\x218', '\x216', '\x3', '\x2', '\x2', '\x2', 
-		'\x218', '\x219', '\x3', '\x2', '\x2', '\x2', '\x219', '\x21B', '\x3', 
-		'\x2', '\x2', '\x2', '\x21A', '\x218', '\x3', '\x2', '\x2', '\x2', '\x21B', 
-		'\x21C', '\a', '\f', '\x2', '\x2', '\x21C', '\x21D', '\x5', '\b', '\x5', 
-		'\x2', '\x21D', '\x21E', '\a', '\xE', '\x2', '\x2', '\x21E', '\x21F', 
-		'\x5', '\b', '\x5', '\x2', '\x21F', '\x220', '\a', '\x36', '\x2', '\x2', 
-		'\x220', '}', '\x3', '\x2', '\x2', '\x2', '\x221', '\x222', '\t', '\x6', 
-		'\x2', '\x2', '\x222', '\x7F', '\x3', '\x2', '\x2', '\x2', '\x223', '\x22A', 
-		'\x5', '\x82', '\x42', '\x2', '\x224', '\x22A', '\x5', '\x84', '\x43', 
-		'\x2', '\x225', '\x22A', '\x5', '\x86', '\x44', '\x2', '\x226', '\x22A', 
-		'\x5', '\x88', '\x45', '\x2', '\x227', '\x22A', '\x5', '\x8A', '\x46', 
-		'\x2', '\x228', '\x22A', '\x5', '\x8C', 'G', '\x2', '\x229', '\x223', 
-		'\x3', '\x2', '\x2', '\x2', '\x229', '\x224', '\x3', '\x2', '\x2', '\x2', 
-		'\x229', '\x225', '\x3', '\x2', '\x2', '\x2', '\x229', '\x226', '\x3', 
-		'\x2', '\x2', '\x2', '\x229', '\x227', '\x3', '\x2', '\x2', '\x2', '\x229', 
-		'\x228', '\x3', '\x2', '\x2', '\x2', '\x22A', '\x81', '\x3', '\x2', '\x2', 
-		'\x2', '\x22B', '\x22C', '\a', '\x10', '\x2', '\x2', '\x22C', '\x83', 
-		'\x3', '\x2', '\x2', '\x2', '\x22D', '\x22E', '\t', '\a', '\x2', '\x2', 
-		'\x22E', '\x85', '\x3', '\x2', '\x2', '\x2', '\x22F', '\x230', '\a', 'g', 
-		'\x2', '\x2', '\x230', '\x87', '\x3', '\x2', '\x2', '\x2', '\x231', '\x232', 
-		'\a', 'h', '\x2', '\x2', '\x232', '\x89', '\x3', '\x2', '\x2', '\x2', 
-		'\x233', '\x234', '\a', 'i', '\x2', '\x2', '\x234', '\x8B', '\x3', '\x2', 
-		'\x2', '\x2', '\x235', '\x236', '\a', 'n', '\x2', '\x2', '\x236', '\x8D', 
-		'\x3', '\x2', '\x2', '\x2', '\x33', '\x91', '\xA0', '\xA9', '\xAF', '\xB9', 
-		'\xC0', '\xC5', '\xD0', '\xD7', '\xDF', '\xE6', '\xE9', '\xF2', '\xF9', 
-		'\x10F', '\x114', '\x121', '\x124', '\x12D', '\x133', '\x13D', '\x141', 
-		'\x144', '\x14A', '\x152', '\x170', '\x17A', '\x181', '\x186', '\x18A', 
-		'\x18D', '\x190', '\x195', '\x19A', '\x1AE', '\x1B2', '\x1B6', '\x1BD', 
-		'\x1C7', '\x1CD', '\x1D3', '\x1EA', '\x1F0', '\x1F7', '\x1FE', '\x209', 
-		'\x20F', '\x218', '\x229',
+		'\a', ',', '\x2', '\x2', '\x203', 'w', '\x3', '\x2', '\x2', '\x2', '\x204', 
+		'\x209', '\x5', 'z', '>', '\x2', '\x205', '\x206', '\a', ':', '\x2', '\x2', 
+		'\x206', '\x208', '\x5', 'z', '>', '\x2', '\x207', '\x205', '\x3', '\x2', 
+		'\x2', '\x2', '\x208', '\x20B', '\x3', '\x2', '\x2', '\x2', '\x209', '\x207', 
+		'\x3', '\x2', '\x2', '\x2', '\x209', '\x20A', '\x3', '\x2', '\x2', '\x2', 
+		'\x20A', 'y', '\x3', '\x2', '\x2', '\x2', '\x20B', '\x209', '\x3', '\x2', 
+		'\x2', '\x2', '\x20C', '\x20E', '\x5', '\n', '\x6', '\x2', '\x20D', '\x20C', 
+		'\x3', '\x2', '\x2', '\x2', '\x20E', '\x211', '\x3', '\x2', '\x2', '\x2', 
+		'\x20F', '\x20D', '\x3', '\x2', '\x2', '\x2', '\x20F', '\x210', '\x3', 
+		'\x2', '\x2', '\x2', '\x210', '\x212', '\x3', '\x2', '\x2', '\x2', '\x211', 
+		'\x20F', '\x3', '\x2', '\x2', '\x2', '\x212', '\x213', '\x5', '^', '\x30', 
+		'\x2', '\x213', '\x214', '\x5', '\x4', '\x3', '\x2', '\x214', '{', '\x3', 
+		'\x2', '\x2', '\x2', '\x215', '\x217', '\x5', '\n', '\x6', '\x2', '\x216', 
+		'\x215', '\x3', '\x2', '\x2', '\x2', '\x217', '\x21A', '\x3', '\x2', '\x2', 
+		'\x2', '\x218', '\x216', '\x3', '\x2', '\x2', '\x2', '\x218', '\x219', 
+		'\x3', '\x2', '\x2', '\x2', '\x219', '\x21B', '\x3', '\x2', '\x2', '\x2', 
+		'\x21A', '\x218', '\x3', '\x2', '\x2', '\x2', '\x21B', '\x21C', '\a', 
+		'\f', '\x2', '\x2', '\x21C', '\x21D', '\x5', '\b', '\x5', '\x2', '\x21D', 
+		'\x21E', '\a', '\xE', '\x2', '\x2', '\x21E', '\x21F', '\x5', '\b', '\x5', 
+		'\x2', '\x21F', '\x220', '\a', '\x37', '\x2', '\x2', '\x220', '}', '\x3', 
+		'\x2', '\x2', '\x2', '\x221', '\x222', '\t', '\x6', '\x2', '\x2', '\x222', 
+		'\x7F', '\x3', '\x2', '\x2', '\x2', '\x223', '\x22A', '\x5', '\x82', '\x42', 
+		'\x2', '\x224', '\x22A', '\x5', '\x84', '\x43', '\x2', '\x225', '\x22A', 
+		'\x5', '\x86', '\x44', '\x2', '\x226', '\x22A', '\x5', '\x88', '\x45', 
+		'\x2', '\x227', '\x22A', '\x5', '\x8A', '\x46', '\x2', '\x228', '\x22A', 
+		'\x5', '\x8C', 'G', '\x2', '\x229', '\x223', '\x3', '\x2', '\x2', '\x2', 
+		'\x229', '\x224', '\x3', '\x2', '\x2', '\x2', '\x229', '\x225', '\x3', 
+		'\x2', '\x2', '\x2', '\x229', '\x226', '\x3', '\x2', '\x2', '\x2', '\x229', 
+		'\x227', '\x3', '\x2', '\x2', '\x2', '\x229', '\x228', '\x3', '\x2', '\x2', 
+		'\x2', '\x22A', '\x81', '\x3', '\x2', '\x2', '\x2', '\x22B', '\x22C', 
+		'\a', '\x10', '\x2', '\x2', '\x22C', '\x83', '\x3', '\x2', '\x2', '\x2', 
+		'\x22D', '\x22E', '\t', '\a', '\x2', '\x2', '\x22E', '\x85', '\x3', '\x2', 
+		'\x2', '\x2', '\x22F', '\x230', '\a', 'h', '\x2', '\x2', '\x230', '\x87', 
+		'\x3', '\x2', '\x2', '\x2', '\x231', '\x232', '\a', 'i', '\x2', '\x2', 
+		'\x232', '\x89', '\x3', '\x2', '\x2', '\x2', '\x233', '\x234', '\a', 'j', 
+		'\x2', '\x2', '\x234', '\x8B', '\x3', '\x2', '\x2', '\x2', '\x235', '\x236', 
+		'\a', 'o', '\x2', '\x2', '\x236', '\x8D', '\x3', '\x2', '\x2', '\x2', 
+		'\x33', '\x91', '\xA0', '\xA9', '\xAF', '\xB9', '\xC0', '\xC5', '\xD0', 
+		'\xD7', '\xDF', '\xE6', '\xE9', '\xF2', '\xF9', '\x10F', '\x114', '\x121', 
+		'\x124', '\x12D', '\x133', '\x13D', '\x141', '\x144', '\x14A', '\x152', 
+		'\x170', '\x17A', '\x181', '\x186', '\x18A', '\x18D', '\x190', '\x195', 
+		'\x19A', '\x1AE', '\x1B2', '\x1B6', '\x1BD', '\x1C7', '\x1CD', '\x1D3', 
+		'\x1EA', '\x1F0', '\x1F7', '\x1FE', '\x209', '\x20F', '\x218', '\x229',
 	};
 
 	public static readonly ATN _ATN =

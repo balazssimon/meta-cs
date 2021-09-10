@@ -155,7 +155,6 @@ namespace MetaDslx.Languages.Ecore.Model
                 parentNs.Declarations.Add(mcst);
                 _map.Add(edt, mcst);
                 mcst.Type = mdataType;
-                mcst.DotNetName = GetDotNetName(edt.Name);
             }
         }
 
@@ -338,6 +337,7 @@ namespace MetaDslx.Languages.Ecore.Model
             MutableObject mobj = null;
             var etype = ete.EGenericType != null ? ete.EGenericType.EClassifier : ete.EType;
             var isCollection = ete.UpperBound < 0 || ete.UpperBound > 1;
+            var isEnumerable = ete.EGenericType != null && (ete.EGenericType.EClassifier.Name == "ETreeIterator") && ete.EGenericType.ETypeArguments.Count == 1;
             var isOrdered = ete.Ordered;
             var isUnique = ete.Unique;
             if (ete.EGenericType != null && ete.EGenericType.EClassifier.Name == "EEList" && ete.EGenericType.ETypeArguments.Count == 1)
@@ -356,15 +356,22 @@ namespace MetaDslx.Languages.Ecore.Model
                 if (isCollection)
                 {
                     MetaCollectionKind kind;
-                    if (isUnique)
+                    if (isEnumerable)
                     {
-                        if (isOrdered) kind = MetaCollectionKind.List;
-                        else kind = MetaCollectionKind.Set;
+                        kind = MetaCollectionKind.Enumerable;
                     }
                     else
                     {
-                        if (isOrdered) kind = MetaCollectionKind.MultiList;
-                        else kind = MetaCollectionKind.MultiSet;
+                        if (isUnique)
+                        {
+                            if (isOrdered) kind = MetaCollectionKind.List;
+                            else kind = MetaCollectionKind.Set;
+                        }
+                        else
+                        {
+                            if (isOrdered) kind = MetaCollectionKind.MultiList;
+                            else kind = MetaCollectionKind.MultiSet;
+                        }
                     }
                     var mcoll = _factory.MetaCollectionType();
                     mcoll.InnerType = mtype;
@@ -674,7 +681,7 @@ namespace MetaDslx.Languages.Ecore.Model
         {
             foreach (var mconst in mns.Declarations.OfType<MetaConstant>())
             {
-                ResolveType(parentEpkg, mconst.Value.MName);
+                ResolveType(parentEpkg, mconst.MName);
             }
         }
     }

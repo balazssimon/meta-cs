@@ -173,6 +173,7 @@ collectionKind
 	|                                 KList
 	|                                     KMultiSet 
 	|                                      KMultiList
+	|                                       KEnumerable
 	;
 	
                       

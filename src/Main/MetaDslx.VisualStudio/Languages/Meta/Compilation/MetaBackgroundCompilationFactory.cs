@@ -39,8 +39,10 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Compilation
                 var metaModelReference = ModelReference.CreateFromModel(MetaInstance.MModel);
                 var symbolsReference = MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location);
                 BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
-                BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
-                binderFlags = binderFlags.UnionWith(binderFlags2);
+                BinderFlags allowMetaConstants = BinderFlags.AllowMetaConstants;
+                binderFlags = binderFlags.UnionWith(allowMetaConstants);
+                //BinderFlags ignoreDuplicates = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+                //binderFlags = binderFlags.UnionWith(ignoreDuplicates);
                 MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule,
                     deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags);
                 var compilation = MetaCompilation.Create("MetaBackgroundCompilation").AddReferences(symbolsReference, metaModelReference).AddSyntaxTrees(syntaxTrees).WithOptions(options);

@@ -1,6 +1,7 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
@@ -47,6 +48,11 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         public override IClassificationType GetSymbolClassificationType(Symbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
+            if (symbol is VariableSymbol varSymbol && !symbol.IsError && varSymbol is IModelSymbol msymbol && msymbol.ModelObject is MetaConstantBuilder mconst && mconst?.Type?.MMetaClass is MetaType)
+            {
+                if (!symbol.Locations.Any(loc => loc.SourceSpan == token.Span)) return this.StandardClassificationService.SymbolDefinition; // this.StandardClassificationService.SymbolReference
+                //else return this.StandardClassificationService.SymbolDefinition; // this.StandardClassificationService.SymbolReference
+            }
             if (symbol is TypeSymbol typeSymbol && !symbol.IsError)
             {
                 if (symbol.Locations.Any(loc => loc.SourceSpan == token.Span)) return this.StandardClassificationService.SymbolDefinition;

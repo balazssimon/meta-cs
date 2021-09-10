@@ -54,7 +54,7 @@ namespace MetaDslx.Languages.Ecore
         public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
             return _xmiSerializer.ReadModel(xmiCode, new EcoreXmiReadOptions(metadata));
         }
 
@@ -67,7 +67,7 @@ namespace MetaDslx.Languages.Ecore
         public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
             return _xmiSerializer.ReadModelFromFile(xmiFilePath, new EcoreXmiReadOptions(metadata));
         }
 

@@ -81,7 +81,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
             var options = new XmiReadOptions();
             options.NamespaceToMetadataMap.Add(metadata.Uri, metadata);
             return this.ReadModel(xmiCode, options, out diagnostics);
@@ -120,7 +120,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            if (metadata.Model == null) throw new ArgumentNullException(nameof(metadata));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
             var options = new XmiReadOptions();
             options.NamespaceToMetadataMap.Add(metadata.Uri, metadata);
             return this.ReadModelFromFile(xmiFilePath, options, out diagnostics);
@@ -948,7 +948,7 @@ namespace MetaDslx.Modeling
             if (IgnoreMetaModelNamespace(nsName)) return null;
             if (_namespaceToFactoryMap.TryGetValue(nsName, out var factory) && factory != null) return factory;
             var metadata = ResolveMetadataByNamespace(nsName);
-            if (metadata.Model != null)
+            if (metadata != null)
             {
                 factory = metadata.CreateFactory((MutableModel)_model, ModelFactoryFlags.DontMakeObjectsCreated);
                 _namespaceToFactoryMap.Add(nsName, factory);

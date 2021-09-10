@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using MetaDslx.Languages.Meta.Model.Internal;
 
 namespace MetaDslx.Languages.Meta.Generator
 {
@@ -237,7 +238,8 @@ namespace MetaDslx.Languages.Meta.Generator
             string result = this.CSharpName(mtype.InnerType, mmodel, kind, fullName);
             if (kind == ClassKind.BuilderOperation || kind == ClassKind.ImmutableOperation)
             {
-                if (mtype.Kind == MetaCollectionKind.List || mtype.Kind == MetaCollectionKind.MultiList) return "global::System.Collections.Generic.IReadOnlyList<" + result + ">";
+                if (mtype.Kind == MetaCollectionKind.Enumerable) return "System.Collections.Generic.IEnumerable<" + result + ">";
+                else if (mtype.Kind == MetaCollectionKind.List || mtype.Kind == MetaCollectionKind.MultiList) return "global::System.Collections.Generic.IReadOnlyList<" + result + ">";
                 else return "global::System.Collections.Generic.IReadOnlyCollection<" + result + ">";
             }
             string collectionName;
@@ -245,19 +247,22 @@ namespace MetaDslx.Languages.Meta.Generator
             {
                 case MetaCollectionKind.List:
                 case MetaCollectionKind.MultiList:
-                    if (kind == ClassKind.Builder) collectionName = "MutableModelList";
-                    else collectionName = "ImmutableModelList";
+                    if (kind == ClassKind.Builder) collectionName = _generator.Properties.CoreNs + ".MutableModelList";
+                    else collectionName = _generator.Properties.CoreNs + ".ImmutableModelList";
                     break;
                 case MetaCollectionKind.Set:
                 case MetaCollectionKind.MultiSet:
-                    if (kind == ClassKind.Builder) collectionName = "MutableModelSet";
-                    else collectionName = "ImmutableModelSet";
+                    if (kind == ClassKind.Builder) collectionName = _generator.Properties.CoreNs + ".MutableModelSet";
+                    else collectionName = _generator.Properties.CoreNs + ".ImmutableModelSet";
+                    break;
+                case MetaCollectionKind.Enumerable:
+                    collectionName = "System.Collections.Generic.IEnumerable";
                     break;
                 default:
                     collectionName = "";
                     break;
             }
-            result = _generator.Properties.CoreNs + "." + collectionName + "<" + result + ">";
+            result = collectionName + "<" + result + ">";
             return result;
         }
 
@@ -765,14 +770,14 @@ namespace MetaDslx.Languages.Meta.Generator
             string result = "_this" + GetImmBldConversion(mmodel, operation.Class, kind);
             foreach (var param in operation.Parameters)
             {
-                result += ", " + param.Name + this.GetImmBldConversion(mmodel, param.Type, kind);
+                result += ", " + param.Name + this.GetImmBldConversion(mmodel, GetMetaType(param), kind);
             }
             return result;
         }
 
         public string GetImmBldReturn(MetaModel mmodel, MetaOperation operation, ClassKind kind)
         {
-            return this.GetImmBldConversion(mmodel, operation.ReturnType, kind);
+            return this.GetImmBldConversion(mmodel, GetMetaType(operation), kind);
         }
 
         private string GetImmBldConversion(MetaModel mmodel, MetaType type, ClassKind kind)
@@ -828,38 +833,12 @@ namespace MetaDslx.Languages.Meta.Generator
 
         public MetaType GetMetaType(MetaTypedElement mtypedElement)
         {
-            var type = mtypedElement.MGet(MetaDescriptor.MetaTypedElement.TypeProperty);
-            if (type is MetaType mtype) return mtype;
-            if (type is MetaConstant mconst) return GetMetaConstantType(mconst);
-            return null;
+            return MetaImplementation.GetMetaType(mtypedElement);
         }
 
         public MetaType GetMetaType(MetaOperation mop)
         {
-            var type = mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
-            if (type is MetaType mtype) return mtype;
-            if (type is MetaConstant mconst) return GetMetaConstantType(mconst);
-            return null;
-        }
-
-        private MetaType GetMetaConstantType(MetaConstant mconst)
-        {
-            switch (mconst.Name)
-            {
-                case "Object": return MetaInstance.Object;
-                case "String": return MetaInstance.String;
-                case "Int": return MetaInstance.Int;
-                case "Long": return MetaInstance.Long;
-                case "Float": return MetaInstance.Float;
-                case "Double": return MetaInstance.Double;
-                case "Byte": return MetaInstance.Byte;
-                case "Bool": return MetaInstance.Bool;
-                case "Void": return MetaInstance.Void;
-                case "SystemType": return MetaInstance.SystemType;
-                case "Model": return MetaInstance.Model;
-                case "ModelObject": return MetaInstance.ModelObject;
-                default: return null;
-            }
+            return MetaImplementation.GetMetaType(mop);
         }
     }
     //*/

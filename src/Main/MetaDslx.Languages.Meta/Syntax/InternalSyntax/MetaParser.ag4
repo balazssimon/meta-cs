@@ -173,6 +173,7 @@ collectionKind
 	| $Value(MetaCollectionKind.List) KList
 	| $Value(MetaCollectionKind.MultiSet) KMultiSet 
 	| $Value(MetaCollectionKind.MultiList) KMultiList
+	| $Value(MetaCollectionKind.Enumerable) KEnumerable
 	;
 	
 $Define(MetaOperation)

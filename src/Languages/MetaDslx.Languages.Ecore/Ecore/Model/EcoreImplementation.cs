@@ -178,7 +178,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override IEnumerable EObject_EAllContents(EObjectBuilder _this)
+        public override IEnumerable<EObjectBuilder> EObject_EAllContents(EObjectBuilder _this)
         {
             throw new NotImplementedException();
         }

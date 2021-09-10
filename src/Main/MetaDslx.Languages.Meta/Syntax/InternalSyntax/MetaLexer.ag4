@@ -49,6 +49,7 @@ KError : 'error';
 KSet : 'set';
 KMultiList : 'multi_list';
 KMultiSet : 'multi_set';
+KEnumerable : 'enumerable';
 KThis : 'this';
 KTypeof : 'typeof';
 KAs : 'as';
