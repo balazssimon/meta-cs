@@ -387,17 +387,6 @@ public interface IMetaParserListener : IParseTreeListener {
 	void ExitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaParser.constValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterConstValue([NotNull] MetaParser.ConstValueContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaParser.constValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitConstValue([NotNull] MetaParser.ConstValueContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.returnType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

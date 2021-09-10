@@ -1,3 +1,4 @@
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -19,7 +20,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public override object CreateModel()
         {
             var modelGroup = new MutableModelGroup();
-            object model = modelGroup.CreateModel(Compilation.AssemblyName);
+            var model = modelGroup.CreateModel(Compilation.AssemblyName);
+            if (Compilation.Options.TopLevelBinderFlags.Includes(BinderFlags.AllowMetaConstants))
+            {
+                model.AllowMetaConstants = true;
+            }
             foreach (var reference in ReferencedModels)
             {
                 if (reference is ImmutableModel im) modelGroup.AddReference(im);

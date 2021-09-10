@@ -21,6 +21,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public const string SuppressObsoleteChecks = nameof(SuppressObsoleteChecks);
         public const string IgnoreCorLibraryDuplicatedTypes = nameof(IgnoreCorLibraryDuplicatedTypes);
         public const string IgnoreMetaLibraryDuplicatedTypes = nameof(IgnoreMetaLibraryDuplicatedTypes);
+        public const string AllowMetaConstants = nameof(AllowMetaConstants);
 
         /// <summary>
         /// Indicates that this binder is being used to answer SemanticModel questions (i.e. not

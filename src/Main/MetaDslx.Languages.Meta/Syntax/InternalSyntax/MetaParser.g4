@@ -130,9 +130,7 @@ nameUseList : qualifier (TComma qualifier)*;
 
                        
                      
-constDeclaration : KConst                 typeReference name constValue? TSemicolon;
-                     
-constValue : TAssign        stringLiteral;
+constDeclaration : KConst                 typeReference name TSemicolon;
 
               
 returnType : typeReference | voidType;
@@ -143,7 +141,7 @@ typeReference : collectionType | simpleType;
               
 simpleType : primitiveType | objectType | nullableType | classType;
 
-                                             
+                                
 classType : qualifier;
 
 objectType 

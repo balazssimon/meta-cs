@@ -7,18 +7,18 @@
 	*/
 	metamodel Meta(Uri="http://MetaDslx.Languages.Meta/1.0",MajorVersion=1,MinorVersion=0); 
 	
-	const MetaPrimitiveType Object = "System.Object";
-	const MetaPrimitiveType String = "System.String";
-	const MetaPrimitiveType Int = "System.Int32";
-	const MetaPrimitiveType Long = "System.Int64";
-	const MetaPrimitiveType Float = "System.Single";
-	const MetaPrimitiveType Double = "System.Double";
-	const MetaPrimitiveType Byte = "System.Byte";
-	const MetaPrimitiveType Bool = "System.Boolean";
-	const MetaPrimitiveType Void = "System.Void";
-	const MetaPrimitiveType SystemType = "System.Type";
-	const MetaPrimitiveType Model = "MetaDslx.Modeling.IModel";
-	const MetaPrimitiveType ModelObject = "MetaDslx.Modeling.IModelObject";
+	const MetaPrimitiveType Object;
+	const MetaPrimitiveType String;
+	const MetaPrimitiveType Int;
+	const MetaPrimitiveType Long;
+	const MetaPrimitiveType Float;
+	const MetaPrimitiveType Double;
+	const MetaPrimitiveType Byte;
+	const MetaPrimitiveType Bool;
+	const MetaPrimitiveType Void;
+	const MetaPrimitiveType SystemType;
+	const MetaPrimitiveType Model;
+	const MetaPrimitiveType ModelObject;
 	
 	/**
 	Represents an element.
@@ -141,11 +141,10 @@
 
 	association MetaEnumLiteral.Enum with MetaEnum.EnumLiterals;
 
-	class MetaConstant : MetaNamedType, MetaTypedElement
+	[symbol: Variable]
+	class MetaConstant : MetaDeclaration, MetaTypedElement
 	{
-		string DotNetName;
-		readonly ModelObject Value;
-		bool ConformsTo(MetaType @type);
+		readonly object Value;
 	}
 
 	[type: Class]

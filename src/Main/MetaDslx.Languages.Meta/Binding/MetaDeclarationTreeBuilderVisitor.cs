@@ -1183,10 +1183,6 @@ namespace MetaDslx.Languages.Meta.Binding
 					{
 					    this.Visit(node.Name);
 					}
-					if (node.ConstValue != null)
-					{
-					    this.Visit(node.ConstValue);
-					}
 				}
 				finally
 				{
@@ -1196,30 +1192,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			finally
 			{
 				this.EndProperty(node, name: "Declarations");
-			}
-		}
-		
-		public virtual void VisitConstValue(ConstValueSyntax node)
-		{
-			this.BeginProperty(node, name: "DotNetName");
-			try
-			{
-				if (node.StringLiteral != null)
-				{
-				    this.BeginValue(node.StringLiteral);
-				    try
-				    {
-				    	this.Visit(node.StringLiteral);
-				    }
-				    finally
-				    {
-				    	this.EndValue(node.StringLiteral);
-				    }
-				}
-			}
-			finally
-			{
-				this.EndProperty(node, name: "DotNetName");
 			}
 		}
 		
@@ -1309,7 +1281,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitClassType(ClassTypeSyntax node)
 		{
-			this.BeginUse(node, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)));
+			this.BeginUse(node, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum)));
 			try
 			{
 				if (node.Qualifier != null)
@@ -1319,7 +1291,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndUse(node, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)));
+				this.EndUse(node, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum)));
 			}
 		}
 		

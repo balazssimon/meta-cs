@@ -192,6 +192,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public void AssignNonSymbolProperties(Symbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol.IsError) return;
             if (symbol is ModuleSymbol || symbol is AssemblySymbol) return;
             var msymbol = symbol as IModelSymbol;
             if (msymbol?.ModelObject is null) return;
@@ -251,6 +252,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static void AssignSymbolProperty<T>(Symbol symbol, string symbolPropertyName, ArrayBuilder<T> result, bool singleValue, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol.IsError) return;
             var ssymbol = symbol as ISourceSymbol;
             if (ssymbol?.MergedDeclaration is null) return;
             var msymbol = symbol as IModelSymbol;

@@ -301,12 +301,6 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaParser.constValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitConstValue([NotNull] MetaParser.ConstValueContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.returnType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

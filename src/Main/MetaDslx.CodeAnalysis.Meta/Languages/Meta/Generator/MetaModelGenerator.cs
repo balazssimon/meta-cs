@@ -397,46 +397,16 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp9_last) __out.AppendLine(true);
             }
-            if (!string.IsNullOrWhiteSpace(cst.DotNetName)) //39:56
+            string __tmp10_line = ";"; //39:55
+            if (!string.IsNullOrEmpty(__tmp10_line))
             {
-                string __tmp11_line = " = \""; //39:104
-                if (!string.IsNullOrEmpty(__tmp11_line))
-                {
-                    __out.Write(__tmp11_line);
-                    __tmp5_outputWritten = true;
-                }
-                var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                __tmp12.Write(cst.DotNetName);
-                var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
-                bool __tmp12_last = __tmp12Reader.EndOfStream;
-                while(!__tmp12_last)
-                {
-                    ReadOnlySpan<char> __tmp12_line = __tmp12Reader.ReadLine();
-                    __tmp12_last = __tmp12Reader.EndOfStream;
-                    if (!__tmp12_last || !__tmp12_line.IsEmpty)
-                    {
-                        __out.Write(__tmp12_line);
-                        __tmp5_outputWritten = true;
-                    }
-                    if (!__tmp12_last) __out.AppendLine(true);
-                }
-                string __tmp13_line = "\""; //39:124
-                if (!string.IsNullOrEmpty(__tmp13_line))
-                {
-                    __out.Write(__tmp13_line);
-                    __tmp5_outputWritten = true;
-                }
-            }
-            string __tmp15_line = ";"; //39:133
-            if (!string.IsNullOrEmpty(__tmp15_line))
-            {
-                __out.Write(__tmp15_line);
+                __out.Write(__tmp10_line);
                 __tmp5_outputWritten = true;
             }
             if (__tmp5_outputWritten) __out.AppendLine(true);
             if (__tmp5_outputWritten)
             {
-                __out.AppendLine(false); //39:134
+                __out.AppendLine(false); //39:56
             }
             return __out.ToStringAndFree();
         }

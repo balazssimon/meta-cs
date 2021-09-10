@@ -116,7 +116,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (result is not null) return result;
             var name = _symbolFacts.GetName(modelObject);
             var metadataName = _symbolFacts.GetMetadataName(modelObject);
-            return new Metadata.MetadataNamedTypeSymbol.Error(container, name, metadataName, ErrorKind.Unsupported, null, ImmutableArray<Symbol>.Empty, false, modelObject);
+            return new Source.SourceNamedTypeSymbol.Error(container, declaration, ErrorKind.Unsupported, null, ImmutableArray<Symbol>.Empty, false, modelObject);
         }
 
         public T MakeMetadataErrorSymbol<T>(Symbol? container, string name, string metadataName, ErrorKind kind, DiagnosticInfo? errorInfo = null, ImmutableArray<Symbol> candidateSymbols = default, bool unreported = false, object? modelObject = null)

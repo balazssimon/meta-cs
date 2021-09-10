@@ -95,7 +95,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (symbol is IModelSymbol ms)
             {
                 var mtype = ms.ModelObjectType;
-                return mtype != null && _types.Any(t => t.IsAssignableFrom(mtype));
+                if (mtype != null)
+                {
+                    if (_types.Any(t => t.IsAssignableFrom(mtype))) return true;
+                    if (this.Flags.Includes(BinderFlags.AllowMetaConstants)) return typeof(MetaConstant).IsAssignableFrom(mtype) || typeof(MetaConstantBuilder).IsAssignableFrom(mtype);
+                }
             }
             return false;
         }

@@ -451,9 +451,9 @@ namespace MetaDslx.Languages.Meta.Generator
                     case ClassKind.Builder:
                     case ClassKind.ImmutableOperation:
                     case ClassKind.BuilderOperation:
-                        if (mconst.DotNetName != null)
+                        if (mconst.Value is MetaPrimitiveType mtype && mtype.DotNetName != null)
                         {
-                            result = ToCSharpAlias(mconst.DotNetName);
+                            result = ToCSharpAlias(mtype.DotNetName);
                         }
                         else
                         {
@@ -718,7 +718,7 @@ namespace MetaDslx.Languages.Meta.Generator
                 return !((MetaExternalType)mtype).IsValueType;
             }
             if (mtype is MetaClass) return true;
-            if (mtype is MetaConstant mc) return IsCSharpReferenceType(mc.DotNetName);
+            if (mtype is MetaConstant mc && mc.Value is MetaPrimitiveType mct) return IsCSharpReferenceType(mct.DotNetName);
             if (mtype is MetaPrimitiveType mp) return IsCSharpReferenceType(mp.DotNetName);
             return false;
         }
@@ -826,6 +826,41 @@ namespace MetaDslx.Languages.Meta.Generator
             return property;
         }
 
+        public MetaType GetMetaType(MetaTypedElement mtypedElement)
+        {
+            var type = mtypedElement.MGet(MetaDescriptor.MetaTypedElement.TypeProperty);
+            if (type is MetaType mtype) return mtype;
+            if (type is MetaConstant mconst) return GetMetaConstantType(mconst);
+            return null;
+        }
+
+        public MetaType GetMetaType(MetaOperation mop)
+        {
+            var type = mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
+            if (type is MetaType mtype) return mtype;
+            if (type is MetaConstant mconst) return GetMetaConstantType(mconst);
+            return null;
+        }
+
+        private MetaType GetMetaConstantType(MetaConstant mconst)
+        {
+            switch (mconst.Name)
+            {
+                case "Object": return MetaInstance.Object;
+                case "String": return MetaInstance.String;
+                case "Int": return MetaInstance.Int;
+                case "Long": return MetaInstance.Long;
+                case "Float": return MetaInstance.Float;
+                case "Double": return MetaInstance.Double;
+                case "Byte": return MetaInstance.Byte;
+                case "Bool": return MetaInstance.Bool;
+                case "Void": return MetaInstance.Void;
+                case "SystemType": return MetaInstance.SystemType;
+                case "Model": return MetaInstance.Model;
+                case "ModelObject": return MetaInstance.ModelObject;
+                default: return null;
+            }
+        }
     }
     //*/
 }

@@ -6381,13 +6381,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    private InternalSyntaxToken kConst;
 	    private TypeReferenceGreen typeReference;
 	    private NameGreen name;
-	    private ConstValueGreen constValue;
 	    private InternalSyntaxToken tSemicolon;
 	
-	    public ConstDeclarationGreen(MetaSyntaxKind kind, InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, ConstValueGreen constValue, InternalSyntaxToken tSemicolon)
+	    public ConstDeclarationGreen(MetaSyntaxKind kind, InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, InternalSyntaxToken tSemicolon)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 5;
+			this.SlotCount = 4;
 			if (kConst != null)
 			{
 				this.AdjustFlagsAndWidth(kConst);
@@ -6402,11 +6401,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				this.AdjustFlagsAndWidth(name);
 				this.name = name;
-			}
-			if (constValue != null)
-			{
-				this.AdjustFlagsAndWidth(constValue);
-				this.constValue = constValue;
 			}
 			if (tSemicolon != null)
 			{
@@ -6415,10 +6409,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public ConstDeclarationGreen(MetaSyntaxKind kind, InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, ConstValueGreen constValue, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ConstDeclarationGreen(MetaSyntaxKind kind, InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 5;
+			this.SlotCount = 4;
 			if (kConst != null)
 			{
 				this.AdjustFlagsAndWidth(kConst);
@@ -6433,11 +6427,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				this.AdjustFlagsAndWidth(name);
 				this.name = name;
-			}
-			if (constValue != null)
-			{
-				this.AdjustFlagsAndWidth(constValue);
-				this.constValue = constValue;
 			}
 			if (tSemicolon != null)
 			{
@@ -6455,7 +6444,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    public InternalSyntaxToken KConst { get { return this.kConst; } }
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	    public NameGreen Name { get { return this.name; } }
-	    public ConstValueGreen ConstValue { get { return this.constValue; } }
 	    public InternalSyntaxToken TSemicolon { get { return this.tSemicolon; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -6470,8 +6458,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	            case 0: return this.kConst;
 	            case 1: return this.typeReference;
 	            case 2: return this.name;
-	            case 3: return this.constValue;
-	            case 4: return this.tSemicolon;
+	            case 3: return this.tSemicolon;
 	            default: return null;
 	        }
 	    }
@@ -6482,29 +6469,28 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ConstDeclarationGreen(this.Kind, this.kConst, this.typeReference, this.name, this.constValue, this.tSemicolon, diagnostics, this.GetAnnotations());
+	        return new ConstDeclarationGreen(this.Kind, this.kConst, this.typeReference, this.name, this.tSemicolon, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ConstDeclarationGreen(this.Kind, this.kConst, this.typeReference, this.name, this.constValue, this.tSemicolon, this.GetDiagnostics(), annotations);
+	        return new ConstDeclarationGreen(this.Kind, this.kConst, this.typeReference, this.name, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new ConstDeclarationGreen(this.Kind, this.kConst, this.typeReference, this.name, this.constValue, this.tSemicolon, this.GetDiagnostics(), this.GetAnnotations());
+			return new ConstDeclarationGreen(this.Kind, this.kConst, this.typeReference, this.name, this.tSemicolon, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
-	    public ConstDeclarationGreen Update(InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, ConstValueGreen constValue, InternalSyntaxToken tSemicolon)
+	    public ConstDeclarationGreen Update(InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.KConst != kConst ||
 				this.TypeReference != typeReference ||
 				this.Name != name ||
-				this.ConstValue != constValue ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.ConstDeclaration(kConst, typeReference, name, constValue, tSemicolon);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.ConstDeclaration(kConst, typeReference, name, tSemicolon);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -6512,106 +6498,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (ConstDeclarationGreen)newNode;
-	        }
-	        return this;
-	    }
-	}
-	
-	internal class ConstValueGreen : GreenSyntaxNode
-	{
-	    internal static readonly ConstValueGreen __Missing = new ConstValueGreen();
-	    private InternalSyntaxToken tAssign;
-	    private StringLiteralGreen stringLiteral;
-	
-	    public ConstValueGreen(MetaSyntaxKind kind, InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral)
-	        : base(kind, null, null)
-	    {
-			this.SlotCount = 2;
-			if (tAssign != null)
-			{
-				this.AdjustFlagsAndWidth(tAssign);
-				this.tAssign = tAssign;
-			}
-			if (stringLiteral != null)
-			{
-				this.AdjustFlagsAndWidth(stringLiteral);
-				this.stringLiteral = stringLiteral;
-			}
-	    }
-	
-	    public ConstValueGreen(MetaSyntaxKind kind, InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-	        : base(kind, diagnostics, annotations)
-	    {
-			this.SlotCount = 2;
-			if (tAssign != null)
-			{
-				this.AdjustFlagsAndWidth(tAssign);
-				this.tAssign = tAssign;
-			}
-			if (stringLiteral != null)
-			{
-				this.AdjustFlagsAndWidth(stringLiteral);
-				this.stringLiteral = stringLiteral;
-			}
-	    }
-	
-		private ConstValueGreen()
-			: base((MetaSyntaxKind)MetaSyntaxKind.ConstValue, null, null)
-		{
-			this.flags &= ~NodeFlags.IsNotMissing;
-		}
-	
-	    public InternalSyntaxToken TAssign { get { return this.tAssign; } }
-	    public StringLiteralGreen StringLiteral { get { return this.stringLiteral; } }
-	
-	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
-	    {
-	        return new global::MetaDslx.Languages.Meta.Syntax.ConstValueSyntax(this, (MetaSyntaxNode)parent, position);
-	    }
-	
-	    protected override GreenNode GetSlot(int index)
-	    {
-	        switch (index)
-	        {
-	            case 0: return this.tAssign;
-	            case 1: return this.stringLiteral;
-	            default: return null;
-	        }
-	    }
-	
-	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitConstValueGreen(this);
-	
-	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitConstValueGreen(this);
-	
-	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
-	    {
-	        return new ConstValueGreen(this.Kind, this.tAssign, this.stringLiteral, diagnostics, this.GetAnnotations());
-	    }
-	
-	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
-	    {
-	        return new ConstValueGreen(this.Kind, this.tAssign, this.stringLiteral, this.GetDiagnostics(), annotations);
-	    }
-	
-	    public override GreenNode Clone()
-	    {
-			return new ConstValueGreen(this.Kind, this.tAssign, this.stringLiteral, this.GetDiagnostics(), this.GetAnnotations());
-		}
-	
-	
-	    public ConstValueGreen Update(InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral)
-	    {
-	        if (this.TAssign != tAssign ||
-				this.StringLiteral != stringLiteral)
-	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.ConstValue(tAssign, stringLiteral);
-	            var diags = this.GetDiagnostics();
-	            if (diags != null && diags.Length > 0)
-	               newNode = newNode.WithDiagnostics(diags);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (ConstValueGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -9471,7 +9357,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual void VisitSubsettingsGreen(SubsettingsGreen node) => this.DefaultVisit(node);
 		public virtual void VisitNameUseListGreen(NameUseListGreen node) => this.DefaultVisit(node);
 		public virtual void VisitConstDeclarationGreen(ConstDeclarationGreen node) => this.DefaultVisit(node);
-		public virtual void VisitConstValueGreen(ConstValueGreen node) => this.DefaultVisit(node);
 		public virtual void VisitReturnTypeGreen(ReturnTypeGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTypeOfReferenceGreen(TypeOfReferenceGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTypeReferenceGreen(TypeReferenceGreen node) => this.DefaultVisit(node);
@@ -9547,7 +9432,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual TResult VisitSubsettingsGreen(SubsettingsGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitNameUseListGreen(NameUseListGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitConstDeclarationGreen(ConstDeclarationGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitConstValueGreen(ConstValueGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitReturnTypeGreen(ReturnTypeGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTypeOfReferenceGreen(TypeOfReferenceGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTypeReferenceGreen(TypeReferenceGreen node) => this.DefaultVisit(node);
@@ -10667,7 +10551,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ConstDeclarationGreen ConstDeclaration(InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, ConstValueGreen constValue, InternalSyntaxToken tSemicolon)
+		public ConstDeclarationGreen ConstDeclaration(InternalSyntaxToken kConst, TypeReferenceGreen typeReference, NameGreen name, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
 			if (kConst == null) throw new ArgumentNullException(nameof(kConst));
@@ -10677,25 +10561,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 			if (tSemicolon.Kind != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 	#endif
-	        return new ConstDeclarationGreen(MetaSyntaxKind.ConstDeclaration, kConst, typeReference, name, constValue, tSemicolon);
-	    }
-	
-		public ConstValueGreen ConstValue(InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral)
-	    {
-	#if DEBUG
-			if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
-			if (tAssign.Kind != MetaSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-			if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
-	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.ConstValue, tAssign, stringLiteral, out hash);
-			if (cached != null) return (ConstValueGreen)cached;
-			var result = new ConstValueGreen(MetaSyntaxKind.ConstValue, tAssign, stringLiteral);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
+	        return new ConstDeclarationGreen(MetaSyntaxKind.ConstDeclaration, kConst, typeReference, name, tSemicolon);
 	    }
 	
 		public ReturnTypeGreen ReturnType(TypeReferenceGreen typeReference)
@@ -11262,7 +11128,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				typeof(SubsettingsGreen),
 				typeof(NameUseListGreen),
 				typeof(ConstDeclarationGreen),
-				typeof(ConstValueGreen),
 				typeof(ReturnTypeGreen),
 				typeof(TypeOfReferenceGreen),
 				typeof(TypeReferenceGreen),

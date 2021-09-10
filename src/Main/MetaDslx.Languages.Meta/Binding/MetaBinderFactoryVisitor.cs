@@ -88,7 +88,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseFieldContainment = new object();
 		public static object UseFieldModifier = new object();
 		public static object UseDefaultValue = new object();
-		public static object UseConstValue = new object();
 		public static object UseCollectionType = new object();
 		public static object UseNullableType = new object();
 		public static object UseClassType = new object();
@@ -1057,32 +1056,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitConstValue(ConstValueSyntax parent)
-		{
-		    if (!parent.FullSpan.Contains(this.Position))
-		    {
-		        return VisitParent(parent);
-		    }
-			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.StringLiteral)) use = UseStringLiteral;
-			}
-			Binder resultBinder = null;
-			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
-			{
-				resultBinder = VisitParent(parent);
-				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "DotNetName");
-				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseStringLiteral)
-				{
-					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.StringLiteral);
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-			}
-			return resultBinder;
-		}
-		
 		public Binder VisitReturnType(ReturnTypeSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -1162,7 +1135,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)));
+				resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

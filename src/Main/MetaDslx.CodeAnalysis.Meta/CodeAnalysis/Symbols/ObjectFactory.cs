@@ -1,3 +1,4 @@
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Completion;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;

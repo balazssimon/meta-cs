@@ -27,7 +27,7 @@ namespace MetaDslx.Bootstrap.MetaModel
             var coreRef = MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll"));
             Console.WriteLine(coreRef);
 
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
@@ -37,7 +37,7 @@ namespace MetaDslx.Bootstrap.MetaModel
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Meta.Test\Languages\PropertiesTest\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Model\Uml.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Ecore\Model\Ecore.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Ecore\Model\Ecore.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Examples\RailDsl\Model\RailDsl.mm");
             //string text = File.ReadAllText(@"..\..\..\Error0.mm");
             //string text = File.ReadAllText(@"..\..\..\Error1.mm");
@@ -64,8 +64,9 @@ namespace MetaDslx.Bootstrap.MetaModel
 
             //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true);
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
-            BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
-            binderFlags = binderFlags.UnionWith(binderFlags2);
+            BinderFlags ignoreDuplicates = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+            BinderFlags allowMetaConstants = BinderFlags.AllowMetaConstants;
+            binderFlags = binderFlags.UnionWith(ignoreDuplicates, allowMetaConstants);
             MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags); 
             //MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: false, concurrentBuild: true).WithTopLevelBinderFlags(binderFlags);
             var compilation = MetaCompilation.

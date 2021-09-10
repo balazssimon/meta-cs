@@ -69,7 +69,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string Subsettings = nameof(Subsettings);
 		public const string NameUseList = nameof(NameUseList);
 		public const string ConstDeclaration = nameof(ConstDeclaration);
-		public const string ConstValue = nameof(ConstValue);
 		public const string ReturnType = nameof(ReturnType);
 		public const string TypeOfReference = nameof(TypeOfReference);
 		public const string TypeReference = nameof(TypeReference);

@@ -130,9 +130,7 @@ nameUseList : qualifier (TComma qualifier)*;
 
 $Property(Declarations)
 $Define(MetaConstant)
-constDeclaration : KConst $Property(Type) typeReference name constValue? TSemicolon;
-$Property(DotNetName)
-constValue : TAssign $Value stringLiteral;
+constDeclaration : KConst $Property(Type) typeReference name TSemicolon;
 
 $Use(MetaType)
 returnType : typeReference | voidType;
@@ -143,7 +141,7 @@ typeReference : collectionType | simpleType;
 $Use(MetaType)
 simpleType : primitiveType | objectType | nullableType | classType;
 
-$Use(types=(MetaClass,MetaEnum,MetaConstant))
+$Use(types=(MetaClass,MetaEnum))
 classType : qualifier;
 
 objectType 

@@ -455,19 +455,6 @@ public partial class MetaParserBaseListener : IMetaParserListener {
 	public virtual void ExitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaParser.constValue"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterConstValue([NotNull] MetaParser.ConstValueContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaParser.constValue"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitConstValue([NotNull] MetaParser.ConstValueContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.returnType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

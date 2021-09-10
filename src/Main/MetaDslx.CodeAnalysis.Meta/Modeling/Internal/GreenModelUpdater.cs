@@ -1,4 +1,5 @@
 using MetaDslx.CodeAnalysis;
+using MetaDslx.Languages.Meta.Model;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
@@ -26,6 +27,7 @@ namespace MetaDslx.Modeling.Internal
     {
         private MutableModel redModel;
         private MutableModelGroup redModelGroup;
+        private bool mayAllowMetaConstant;
         private GreenModel model;
         private GreenModelGroup group;
         private List<GreenLazyEvalEntry> lazyEvalStack;
@@ -33,6 +35,7 @@ namespace MetaDslx.Modeling.Internal
         public GreenModelUpdater(GreenModel model, MutableModel redModel)
         {
             this.model = model;
+            this.mayAllowMetaConstant = redModel.AllowMetaConstants;
             this.group = null;
             this.redModel = redModel;
         }
@@ -42,6 +45,7 @@ namespace MetaDslx.Modeling.Internal
             this.model = null;
             this.group = group;
             this.redModelGroup = redModelGroup;
+            this.mayAllowMetaConstant = redModelGroup.Models.Any(m => m.AllowMetaConstants);
         }
 
         public void MakeException(Location location, ErrorCode errorCode, params object[] args)
@@ -138,6 +142,19 @@ namespace MetaDslx.Modeling.Internal
                     return new ModelRef(this.model, false);
                 }
                 return null;
+            }
+        }
+
+        private MutableModel ResolveUpdatedRedModel(ModelId mid)
+        {
+            if (this.redModelGroup != null)
+            {
+                return this.redModelGroup.GetModel(mid);
+            }
+            else
+            {
+                if (this.redModel.Id == mid) return redModel;
+                else return null;
             }
         }
 
@@ -861,15 +878,29 @@ namespace MetaDslx.Modeling.Internal
             {
                 return true;
             }
-            if ((plainValue is ObjectId) && !slot.IsAssignableFrom(((ObjectId)plainValue).Descriptor.MutableType, out var unassignableProperty))
+            var valueType = plainValue.GetType();
+            if (plainValue is ObjectId pvoi)
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, ((ObjectId)plainValue).Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
-                value = null;
-                return false;
+                valueType = pvoi.Descriptor.MutableType;
+                if (mayAllowMetaConstant)
+                {
+                    var redModel = this.ResolveUpdatedRedModel(objectRef.Model.Id);
+                    if (redModel != null && redModel.AllowMetaConstants)
+                    {
+                        var isMetaConstant = typeof(MetaConstantBuilder).IsAssignableFrom(valueType);
+                        if (isMetaConstant)
+                        {
+                            var redValue = this.ResolveObject(pvoi);
+
+                            if (redValue is MetaConstant mc && mc.Type != null) valueType = mc.Type.GetType();
+                            else if (redValue is MetaConstantBuilder mcb && mcb.Type != null) valueType = mcb.Type.GetType();
+                        }
+                    }
+                }
             }
-            if (!(plainValue is ObjectId) && !slot.IsAssignableFrom(plainValue.GetType(), out unassignableProperty))
+            if (!slot.IsAssignableFrom(valueType, out var unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, plainValue.GetType(), unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, valueType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }

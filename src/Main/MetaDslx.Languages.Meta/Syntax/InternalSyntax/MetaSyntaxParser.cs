@@ -2287,57 +2287,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseConstValue(ref ParserState state)
-		{
-		    RestoreParserState(state);
-			try
-			{
-				var context = this.Antlr4Parser.constValue();
-		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return _visitor.Visit(context);
-			}
-			finally
-			{
-				state = this.State;
-			}
-		}
-		
-		protected virtual bool CanReuseConstValue(ConstValueSyntax node)
-		{
-			return node != null;
-		}
-		
-		internal MetaParser.ConstValueContext _Antlr4ParseConstValue()
-		{
-			BeginNode();
-		    bool cached = false;
-		    MetaParser.ConstValueContext context = null;
-		    GreenNode green = null;
-		    try
-		    {
-		        cached = IsIncremental && CanReuseConstValue(CurrentNode as ConstValueSyntax);
-				if (cached)
-				{
-					green = EatNode();
-				}
-				else
-				{
-					context = this.Antlr4Parser._DoParseConstValue();
-					green = _visitor.Visit(context);
-				}
-		    }
-		    finally
-		    {
-		        EndNode(ref green);
-		        if (cached)
-		        {
-					context = new MetaParser.ConstValueContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
-		        }
-		        CacheGreenNode(context, green);
-		    }
-		    return context;
-		}
 		public GreenNode ParseReturnType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -4508,22 +4457,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
 				if (name == null) name = NameGreen.__Missing;
-				MetaParser.ConstValueContext constValueContext = context.constValue();
-				ConstValueGreen constValue = null;
-				if (constValueContext != null) constValue = (ConstValueGreen)this.Visit(constValueContext);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return _factory.ConstDeclaration(kConst, typeReference, name, constValue, tSemicolon);
-			}
-			
-			public override GreenNode VisitConstValue(MetaParser.ConstValueContext context)
-			{
-				if (context == null) return ConstValueGreen.__Missing;
-				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), MetaSyntaxKind.TAssign);
-				MetaParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
-				StringLiteralGreen stringLiteral = null;
-				if (stringLiteralContext != null) stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
-				if (stringLiteral == null) stringLiteral = StringLiteralGreen.__Missing;
-				return _factory.ConstValue(tAssign, stringLiteral);
+				return _factory.ConstDeclaration(kConst, typeReference, name, tSemicolon);
 			}
 			
 			public override GreenNode VisitReturnType(MetaParser.ReturnTypeContext context)
@@ -5461,17 +5396,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public ConstDeclarationContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
-				: base(parent, invokingState)
-		    {
-		        _cachedNode = cachedNode;
-		    }
-		    public GreenNode CachedNode => _cachedNode;
-		}
-		
-		internal class ConstValueContext_Cached : ConstValueContext, ICachedRuleContext
-		{
-		    private GreenNode _cachedNode;
-		    public ConstValueContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

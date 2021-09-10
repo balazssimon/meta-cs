@@ -4913,7 +4913,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	{
 	    private TypeReferenceSyntax typeReference;
 	    private NameSyntax name;
-	    private ConstValueSyntax constValue;
 	
 	    public ConstDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -4942,17 +4941,13 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.name, 2); } 
 		}
-	    public ConstValueSyntax ConstValue 
-		{ 
-			get { return this.GetRed(ref this.constValue, 3); } 
-		}
 	    public SyntaxToken TSemicolon 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ConstDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
 		}
 	
@@ -4962,7 +4957,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        {
 				case 1: return this.GetRed(ref this.typeReference, 1);
 				case 2: return this.GetRed(ref this.name, 2);
-				case 3: return this.GetRed(ref this.constValue, 3);
 				default: return null;
 	        }
 	    }
@@ -4973,45 +4967,38 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        {
 				case 1: return this.typeReference;
 				case 2: return this.name;
-				case 3: return this.constValue;
 				default: return null;
 	        }
 	    }
 	
 	    public ConstDeclarationSyntax WithKConst(SyntaxToken kConst)
 		{
-			return this.Update(KConst, this.TypeReference, this.Name, this.ConstValue, this.TSemicolon);
+			return this.Update(KConst, this.TypeReference, this.Name, this.TSemicolon);
 		}
 	
 	    public ConstDeclarationSyntax WithTypeReference(TypeReferenceSyntax typeReference)
 		{
-			return this.Update(this.KConst, TypeReference, this.Name, this.ConstValue, this.TSemicolon);
+			return this.Update(this.KConst, TypeReference, this.Name, this.TSemicolon);
 		}
 	
 	    public ConstDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.KConst, this.TypeReference, Name, this.ConstValue, this.TSemicolon);
-		}
-	
-	    public ConstDeclarationSyntax WithConstValue(ConstValueSyntax constValue)
-		{
-			return this.Update(this.KConst, this.TypeReference, this.Name, ConstValue, this.TSemicolon);
+			return this.Update(this.KConst, this.TypeReference, Name, this.TSemicolon);
 		}
 	
 	    public ConstDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.KConst, this.TypeReference, this.Name, this.ConstValue, TSemicolon);
+			return this.Update(this.KConst, this.TypeReference, this.Name, TSemicolon);
 		}
 	
-	    public ConstDeclarationSyntax Update(SyntaxToken kConst, TypeReferenceSyntax typeReference, NameSyntax name, ConstValueSyntax constValue, SyntaxToken tSemicolon)
+	    public ConstDeclarationSyntax Update(SyntaxToken kConst, TypeReferenceSyntax typeReference, NameSyntax name, SyntaxToken tSemicolon)
 	    {
 	        if (this.KConst != kConst ||
 				this.TypeReference != typeReference ||
 				this.Name != name ||
-				this.ConstValue != constValue ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ConstDeclaration(kConst, typeReference, name, constValue, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.ConstDeclaration(kConst, typeReference, name, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -5033,92 +5020,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
 	        visitor.VisitConstDeclaration(this);
-	    }
-	}
-	
-	public sealed class ConstValueSyntax : MetaSyntaxNode
-	{
-	    private StringLiteralSyntax stringLiteral;
-	
-	    public ConstValueSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
-	        : base(green, syntaxTree, position)
-	    {
-	    }
-	
-	    public ConstValueSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
-	        : base(green, parent, position)
-	    {
-	    }
-	
-	    public SyntaxToken TAssign 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ConstValueGreen)this.Green;
-				var greenToken = green.TAssign;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
-			}
-		}
-	    public StringLiteralSyntax StringLiteral 
-		{ 
-			get { return this.GetRed(ref this.stringLiteral, 1); } 
-		}
-	
-	    public override SyntaxNode GetNodeSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 1: return this.GetRed(ref this.stringLiteral, 1);
-				default: return null;
-	        }
-	    }
-	
-	    public override SyntaxNode GetCachedSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 1: return this.stringLiteral;
-				default: return null;
-	        }
-	    }
-	
-	    public ConstValueSyntax WithTAssign(SyntaxToken tAssign)
-		{
-			return this.Update(TAssign, this.StringLiteral);
-		}
-	
-	    public ConstValueSyntax WithStringLiteral(StringLiteralSyntax stringLiteral)
-		{
-			return this.Update(this.TAssign, StringLiteral);
-		}
-	
-	    public ConstValueSyntax Update(SyntaxToken tAssign, StringLiteralSyntax stringLiteral)
-	    {
-	        if (this.TAssign != tAssign ||
-				this.StringLiteral != stringLiteral)
-	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ConstValue(tAssign, stringLiteral);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (ConstValueSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
-	    {
-	        return visitor.VisitConstValue(this, argument);
-	    }
-	
-	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
-	    {
-	        return visitor.VisitConstValue(this);
-	    }
-	
-	    public override void Accept(IMetaSyntaxVisitor visitor)
-	    {
-	        visitor.VisitConstValue(this);
 	    }
 	}
 	
@@ -7674,8 +7575,6 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitConstDeclaration(ConstDeclarationSyntax node);
 		
-		void VisitConstValue(ConstValueSyntax node);
-		
 		void VisitReturnType(ReturnTypeSyntax node);
 		
 		void VisitTypeOfReference(TypeOfReferenceSyntax node);
@@ -7956,11 +7855,6 @@ namespace MetaDslx.Languages.Meta
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitConstValue(ConstValueSyntax node)
-		{
-		    this.DefaultVisit(node);
-		}
-		
 		public virtual void VisitReturnType(ReturnTypeSyntax node)
 		{
 		    this.DefaultVisit(node);
@@ -8185,8 +8079,6 @@ namespace MetaDslx.Languages.Meta
 		TResult VisitNameUseList(NameUseListSyntax node, TArg argument);
 		
 		TResult VisitConstDeclaration(ConstDeclarationSyntax node, TArg argument);
-		
-		TResult VisitConstValue(ConstValueSyntax node, TArg argument);
 		
 		TResult VisitReturnType(ReturnTypeSyntax node, TArg argument);
 		
@@ -8468,11 +8360,6 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitConstValue(ConstValueSyntax node, TArg argument)
-		{
-		    return this.DefaultVisit(node, argument);
-		}
-		
 		public virtual TResult VisitReturnType(ReturnTypeSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
@@ -8695,8 +8582,6 @@ namespace MetaDslx.Languages.Meta
 		TResult VisitNameUseList(NameUseListSyntax node);
 		
 		TResult VisitConstDeclaration(ConstDeclarationSyntax node);
-		
-		TResult VisitConstValue(ConstValueSyntax node);
 		
 		TResult VisitReturnType(ReturnTypeSyntax node);
 		
@@ -8974,11 +8859,6 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitConstDeclaration(ConstDeclarationSyntax node)
-		{
-		    return this.DefaultVisit(node);
-		}
-		
-		public virtual TResult VisitConstValue(ConstValueSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -9585,16 +9465,8 @@ namespace MetaDslx.Languages.Meta
 		    var kConst = this.VisitToken(node.KConst);
 		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
 		    var name = (NameSyntax)this.Visit(node.Name);
-		    var constValue = (ConstValueSyntax)this.Visit(node.ConstValue);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(kConst, typeReference, name, constValue, tSemicolon);
-		}
-		
-		public virtual SyntaxNode VisitConstValue(ConstValueSyntax node)
-		{
-		    var tAssign = this.VisitToken(node.TAssign);
-		    var stringLiteral = (StringLiteralSyntax)this.Visit(node.StringLiteral);
-			return node.Update(tAssign, stringLiteral);
+			return node.Update(kConst, typeReference, name, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitReturnType(ReturnTypeSyntax node)
@@ -10674,7 +10546,7 @@ namespace MetaDslx.Languages.Meta
 		    return (NameUseListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.NameUseList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<QualifierGreen>(qualifier.Node)).CreateRed();
 		}
 		
-		public ConstDeclarationSyntax ConstDeclaration(SyntaxToken kConst, TypeReferenceSyntax typeReference, NameSyntax name, ConstValueSyntax constValue, SyntaxToken tSemicolon)
+		public ConstDeclarationSyntax ConstDeclaration(SyntaxToken kConst, TypeReferenceSyntax typeReference, NameSyntax name, SyntaxToken tSemicolon)
 		{
 		    if (kConst == null) throw new ArgumentNullException(nameof(kConst));
 		    if (kConst.GetKind() != MetaSyntaxKind.KConst) throw new ArgumentException(nameof(kConst));
@@ -10682,25 +10554,12 @@ namespace MetaDslx.Languages.Meta
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (ConstDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ConstDeclaration((InternalSyntaxToken)kConst.Node, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, constValue == null ? null : (Syntax.InternalSyntax.ConstValueGreen)constValue.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (ConstDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ConstDeclaration((InternalSyntaxToken)kConst.Node, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public ConstDeclarationSyntax ConstDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)
 		{
-			return this.ConstDeclaration(this.Token(MetaSyntaxKind.KConst), typeReference, name, default, this.Token(MetaSyntaxKind.TSemicolon));
-		}
-		
-		public ConstValueSyntax ConstValue(SyntaxToken tAssign, StringLiteralSyntax stringLiteral)
-		{
-		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
-		    if (tAssign.GetKind() != MetaSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
-		    return (ConstValueSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ConstValue((InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.StringLiteralGreen)stringLiteral.Green).CreateRed();
-		}
-		
-		public ConstValueSyntax ConstValue(StringLiteralSyntax stringLiteral)
-		{
-			return this.ConstValue(this.Token(MetaSyntaxKind.TAssign), stringLiteral);
+			return this.ConstDeclaration(this.Token(MetaSyntaxKind.KConst), typeReference, name, this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
 		public ReturnTypeSyntax ReturnType(TypeReferenceSyntax typeReference)
@@ -11047,7 +10906,6 @@ namespace MetaDslx.Languages.Meta
 				typeof(SubsettingsSyntax),
 				typeof(NameUseListSyntax),
 				typeof(ConstDeclarationSyntax),
-				typeof(ConstValueSyntax),
 				typeof(ReturnTypeSyntax),
 				typeof(TypeOfReferenceSyntax),
 				typeof(TypeReferenceSyntax),

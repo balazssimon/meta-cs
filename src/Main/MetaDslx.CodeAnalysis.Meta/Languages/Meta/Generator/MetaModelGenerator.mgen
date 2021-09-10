@@ -36,7 +36,7 @@ end template
 
 template GenerateConstant(MetaConstant cst)
 [GenerateComment(cst)]
-const [GenerateType(cst.Type)] [cst.Name.EscapeName()][if (!string.IsNullOrWhiteSpace(cst.DotNetName))] = "[cst.DotNetName]"[end if];
+const [GenerateType(cst.Type)] [cst.Name.EscapeName()];
 end template
 
 template GenerateEnum(MetaEnum enm)

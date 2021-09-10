@@ -44,6 +44,23 @@ namespace MetaDslx.Languages.Meta.Model.Internal
     //*
     internal class MetaImplementation : MetaImplementationBase
     {
+        internal override void MetaBuilderInstance(MetaBuilderInstance _this)
+        {
+            base.MetaBuilderInstance(_this);
+            _this.Object.DotNetName = "System.Object";
+            _this.String.DotNetName = "System.String";
+            _this.Int.DotNetName = "System.Int32";
+            _this.Long.DotNetName = "System.Int64";
+            _this.Float.DotNetName = "System.Single";
+            _this.Double.DotNetName = "System.Double";
+            _this.Byte.DotNetName = "System.Byte";
+            _this.Bool.DotNetName = "System.Boolean";
+            _this.Void.DotNetName = "System.Void";
+            _this.SystemType.DotNetName = "System.Type";
+            _this.Model.DotNetName = "MetaDslx.Modeling.IModel";
+            _this.ModelObject.DotNetName = "MetaDslx.Modeling.IModelObject";
+        }
+
         public override MetaModelBuilder MetaDeclaration_ComputeProperty_MetaModel(MetaDeclarationBuilder _this)
         {
             return _this.Namespace?.DefinedMetaModel;
@@ -178,11 +195,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             if (_this == MetaInstance.Long && (type == MetaInstance.Float || type == MetaInstance.Double)) return true;
             if (_this == MetaInstance.Float && (type == MetaInstance.Double)) return true;
             return false;
-        }
-
-        public override bool MetaConstant_ConformsTo(MetaConstantBuilder _this, MetaTypeBuilder type)
-        {
-            return _this == type;
         }
 
         public override bool MetaClass_ConformsTo(MetaClassBuilder _this, MetaTypeBuilder type)
