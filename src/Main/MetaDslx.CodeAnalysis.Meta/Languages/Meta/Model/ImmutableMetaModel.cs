@@ -9337,7 +9337,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	/// This class has to be be overriden in global::MetaDslx.Languages.Meta.Model.MetaImplementation to provide custom
 	/// implementation for the constructors, operations and property values.
 	/// </summary>
-	internal abstract class MetaImplementationBase
+	public abstract class MetaImplementationBase
 	{
 		/// <summary>
 		/// Implements the constructor: MetaBuilderInstance()
@@ -10185,7 +10185,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 	}
 
-	internal class MetaImplementationProvider
+	public class MetaImplementationProvider
 	{
 		// If there is a compile error at this line, create a new class called MetaImplementation
 		// which is a subclass of global::MetaDslx.Languages.Meta.Model.MetaImplementationBase:

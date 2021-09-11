@@ -42,7 +42,7 @@ namespace MetaDslx.Languages.Meta.Model
 namespace MetaDslx.Languages.Meta.Model.Internal
 {
     //*
-    internal class MetaImplementation : MetaImplementationBase
+    public class MetaImplementation : MetaImplementationBase
     {
         internal override void MetaBuilderInstance(MetaBuilderInstance _this)
         {

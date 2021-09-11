@@ -665,7 +665,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		new EClass ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface EClassifier : ENamedElement
+	public interface EClassifier : ENamedElement, global::MetaDslx.Languages.Meta.Model.MetaType
 	{
 		string DotNetName { get; }
 		string InstanceClassName { get; }
@@ -690,7 +690,7 @@ namespace MetaDslx.Languages.Ecore.Model
 		new EClassifierBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface EClassifierBuilder : ENamedElementBuilder
+	public interface EClassifierBuilder : ENamedElementBuilder, global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder
 	{
 		string DotNetName { get; set; }
 		void SetDotNetNameLazy(global::System.Func<string> lazy);
@@ -1944,7 +1944,7 @@ namespace MetaDslx.Languages.Ecore.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EClassifierId), typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier), typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ENamedElement) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Ecore.Model.Internal.EClassifierId), typeof(global::MetaDslx.Languages.Ecore.Model.EClassifier), typeof(global::MetaDslx.Languages.Ecore.Model.EClassifierBuilder), BaseDescriptors = new global::System.Type[] { typeof(EcoreDescriptor.ENamedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaType) })]
 		public static class EClassifier
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -3933,6 +3933,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4110,6 +4120,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		
+		bool global::MetaDslx.Languages.Meta.Model.MetaType.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaType @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+		}
+	
+		
 		bool EClassifier.IsInstance(object @object)
 		{
 		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
@@ -4230,6 +4246,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -4568,6 +4594,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		
+		bool global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+		}
+	
+		
 		bool EClassifierBuilder.IsInstance(object @object)
 		{
 		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
@@ -4705,6 +4737,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		ENamedElementBuilder ENamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4776,6 +4818,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		
+		bool global::MetaDslx.Languages.Meta.Model.MetaType.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaType @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+		}
+	
+		
 		bool EClassifier.IsInstance(object @object)
 		{
 		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
@@ -4823,6 +4871,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5008,6 +5066,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		
+		bool global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+		}
+	
+		
 		bool EClassifierBuilder.IsInstance(object @object)
 		{
 		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
@@ -5083,6 +5147,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5174,6 +5248,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		
+		bool global::MetaDslx.Languages.Meta.Model.MetaType.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaType @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+		}
+	
+		
 		bool EClassifier.IsInstance(object @object)
 		{
 		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
@@ -5221,6 +5301,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5438,6 +5528,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		
+		bool global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+		}
+	
+		
 		bool EClassifierBuilder.IsInstance(object @object)
 		{
 		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
@@ -5515,6 +5611,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		EModelElementBuilder EModelElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder global::MetaDslx.Languages.Meta.Model.MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5622,6 +5728,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		
+		bool global::MetaDslx.Languages.Meta.Model.MetaType.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaType @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
+		}
+	
+		
 		bool EClassifier.IsInstance(object @object)
 		{
 		    return EcoreImplementationProvider.Implementation.EClassifier_IsInstance(this, @object);
@@ -5688,6 +5800,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		}
 	
 		EModelElement EModelElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaType global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5918,6 +6040,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		EAnnotationBuilder EModelElementBuilder.GetEAnnotation(string source)
 		{
 		    return EcoreImplementationProvider.Implementation.EModelElement_GetEAnnotation(this, source);
+		}
+	
+		
+		bool global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder.ConformsTo(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder @type)
+		{
+		    return global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType_ConformsTo(this, @type);
 		}
 	
 		
@@ -11937,6 +12065,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			EClassifier.SymbolType = null;
 			EClassifier.IsAbstract = true;
 			EClassifier.SuperClasses.AddLazy(() => ENamedElement);
+			EClassifier.SuperClasses.AddLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaType.ToMutable());
 			EClassifier.Properties.AddLazy(() => EClassifier_DotNetName);
 			EClassifier.Properties.AddLazy(() => EClassifier_InstanceClassName);
 			EClassifier.Properties.AddLazy(() => EClassifier_InstanceClass);
@@ -13090,6 +13219,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// All superclasses:
 		/// <ul>
 		///     <li>EModelElement</li>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
 		///     <li>EClassifier</li>
 		/// </ul>
@@ -13129,6 +13259,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		protected virtual void CallEClassSuperConstructors(EClassBuilder _this)
 		{
 			this.EModelElement(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 		}
@@ -13312,10 +13443,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>ENamedElement</li>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>EModelElement</li>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
 		/// </ul>
 		/// Initializes the following derived properties:
@@ -13336,6 +13469,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		protected virtual void CallEClassifierSuperConstructors(EClassifierBuilder _this)
 		{
 			this.EModelElement(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
 			this.ENamedElement(_this);
 		}
 	
@@ -13386,6 +13520,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// All superclasses:
 		/// <ul>
 		///     <li>EModelElement</li>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
 		///     <li>EClassifier</li>
 		/// </ul>
@@ -13403,6 +13538,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		protected virtual void CallEDataTypeSuperConstructors(EDataTypeBuilder _this)
 		{
 			this.EModelElement(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 		}
@@ -13420,6 +13556,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// All superclasses:
 		/// <ul>
 		///     <li>EModelElement</li>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
 		///     <li>EClassifier</li>
 		///     <li>EDataType</li>
@@ -13438,6 +13575,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		protected virtual void CallEEnumSuperConstructors(EEnumBuilder _this)
 		{
 			this.EModelElement(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 			this.EDataType(_this);

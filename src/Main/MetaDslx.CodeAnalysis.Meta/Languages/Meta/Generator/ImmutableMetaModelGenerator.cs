@@ -4791,7 +4791,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __tmp103_outputWritten = true;
                 }
                 var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                __tmp108.Write(CSharpName(((MetaType)valueDecl), model, ClassKind.ImmutableInstance, true));
+                __tmp108.Write(CSharpName(((MetaType)valueDecl), model, ClassKind.BuilderInstance, false));
                 var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                 bool __tmp108_last = __tmp108Reader.EndOfStream;
                 while(!__tmp108_last)
@@ -4805,7 +4805,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp108_last) __out.AppendLine(true);
                 }
-                string __tmp109_line = ");"; //373:109
+                string __tmp109_line = ");"; //373:108
                 if (!string.IsNullOrEmpty(__tmp109_line))
                 {
                     __out.Write(__tmp109_line);
@@ -4814,7 +4814,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp103_outputWritten) __out.AppendLine(true);
                 if (__tmp103_outputWritten)
                 {
-                    __out.AppendLine(false); //373:111
+                    __out.AppendLine(false); //373:110
                 }
             }
             else if (valueCollection != null) //374:2
@@ -5470,7 +5470,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp64_last) __out.AppendLine(true);
                 }
-                string __tmp65_line = "."; //407:7
+                string __tmp65_line = ".Set"; //407:7
                 if (!string.IsNullOrEmpty(__tmp65_line))
                 {
                     __out.Write(__tmp65_line);
@@ -5491,7 +5491,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp66_last) __out.AppendLine(true);
                 }
-                string __tmp67_line = ".AddLazy(() => "; //407:19
+                string __tmp67_line = "Lazy(() => "; //407:22
                 if (!string.IsNullOrEmpty(__tmp67_line))
                 {
                     __out.Write(__tmp67_line);
@@ -5512,7 +5512,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp68_last) __out.AppendLine(true);
                 }
-                string __tmp69_line = ");"; //407:81
+                string __tmp69_line = ");"; //407:80
                 if (!string.IsNullOrEmpty(__tmp69_line))
                 {
                     __out.Write(__tmp69_line);
@@ -5521,7 +5521,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp63_outputWritten) __out.AppendLine(true);
                 if (__tmp63_outputWritten)
                 {
-                    __out.AppendLine(false); //407:83
+                    __out.AppendLine(false); //407:82
                 }
             }
             else if (value is MetaPrimitiveType) //408:2
@@ -5544,7 +5544,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp72_last) __out.AppendLine(true);
                     }
-                    string __tmp73_line = "."; //410:7
+                    string __tmp73_line = ".Set"; //410:7
                     if (!string.IsNullOrEmpty(__tmp73_line))
                     {
                         __out.Write(__tmp73_line);
@@ -5565,14 +5565,14 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp74_last) __out.AppendLine(true);
                     }
-                    string __tmp75_line = ".AddLazy(() => "; //410:19
+                    string __tmp75_line = "Lazy(() => "; //410:22
                     if (!string.IsNullOrEmpty(__tmp75_line))
                     {
                         __out.Write(__tmp75_line);
                         __tmp71_outputWritten = true;
                     }
                     var __tmp76 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                    __tmp76.Write(CSharpName(((MetaPrimitiveType)value), model, ClassKind.ImmutableInstance, false));
+                    __tmp76.Write(CSharpName(((MetaPrimitiveType)value), model, ClassKind.BuilderInstance, false));
                     var __tmp76Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp76.ToStringAndFree());
                     bool __tmp76_last = __tmp76Reader.EndOfStream;
                     while(!__tmp76_last)
@@ -5586,7 +5586,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp76_last) __out.AppendLine(true);
                     }
-                    string __tmp77_line = ");"; //410:116
+                    string __tmp77_line = ");"; //410:113
                     if (!string.IsNullOrEmpty(__tmp77_line))
                     {
                         __out.Write(__tmp77_line);
@@ -5595,7 +5595,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     if (__tmp71_outputWritten) __out.AppendLine(true);
                     if (__tmp71_outputWritten)
                     {
-                        __out.AppendLine(false); //410:118
+                        __out.AppendLine(false); //410:115
                     }
                 }
                 else //411:3
@@ -5616,7 +5616,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp80_last) __out.AppendLine(true);
                     }
-                    string __tmp81_line = "."; //412:7
+                    string __tmp81_line = ".Set"; //412:7
                     if (!string.IsNullOrEmpty(__tmp81_line))
                     {
                         __out.Write(__tmp81_line);
@@ -5637,7 +5637,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp82_last) __out.AppendLine(true);
                     }
-                    string __tmp83_line = ".AddLazy(() => "; //412:19
+                    string __tmp83_line = "Lazy(() => "; //412:22
                     if (!string.IsNullOrEmpty(__tmp83_line))
                     {
                         __out.Write(__tmp83_line);
@@ -5658,7 +5658,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp84_last) __out.AppendLine(true);
                     }
-                    string __tmp85_line = ".ToMutable());"; //412:115
+                    string __tmp85_line = ".ToMutable());"; //412:114
                     if (!string.IsNullOrEmpty(__tmp85_line))
                     {
                         __out.Write(__tmp85_line);
@@ -5667,11 +5667,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     if (__tmp79_outputWritten) __out.AppendLine(true);
                     if (__tmp79_outputWritten)
                     {
-                        __out.AppendLine(false); //412:129
+                        __out.AppendLine(false); //412:128
                     }
                 }
             }
-            else if (valueObject != null && instanceNames.ContainsKey(valueObject)) //414:2
+            else if (valueDecl != null && valueDecl is MetaConstant) //414:2
             {
                 bool __tmp87_outputWritten = false;
                 var __tmp88 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
@@ -5689,7 +5689,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp88_last) __out.AppendLine(true);
                 }
-                string __tmp89_line = "."; //415:7
+                string __tmp89_line = ".Set"; //415:7
                 if (!string.IsNullOrEmpty(__tmp89_line))
                 {
                     __out.Write(__tmp89_line);
@@ -5710,14 +5710,14 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp90_last) __out.AppendLine(true);
                 }
-                string __tmp91_line = ".AddLazy(() => "; //415:19
+                string __tmp91_line = "Lazy(() => "; //415:22
                 if (!string.IsNullOrEmpty(__tmp91_line))
                 {
                     __out.Write(__tmp91_line);
                     __tmp87_outputWritten = true;
                 }
                 var __tmp92 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                __tmp92.Write(instanceNames[valueObject]);
+                __tmp92.Write(CSharpName(((MetaConstant)valueDecl), model, ClassKind.BuilderInstance, false));
                 var __tmp92Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp92.ToStringAndFree());
                 bool __tmp92_last = __tmp92Reader.EndOfStream;
                 while(!__tmp92_last)
@@ -5731,7 +5731,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp92_last) __out.AppendLine(true);
                 }
-                string __tmp93_line = ");"; //415:62
+                string __tmp93_line = ");"; //415:112
                 if (!string.IsNullOrEmpty(__tmp93_line))
                 {
                     __out.Write(__tmp93_line);
@@ -5740,10 +5740,10 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp87_outputWritten) __out.AppendLine(true);
                 if (__tmp87_outputWritten)
                 {
-                    __out.AppendLine(false); //415:64
+                    __out.AppendLine(false); //415:114
                 }
             }
-            else if (valueDecl != null && valueDecl is MetaType) //416:2
+            else if (valueObject != null && instanceNames.ContainsKey(valueObject)) //416:2
             {
                 bool __tmp95_outputWritten = false;
                 var __tmp96 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
@@ -5761,7 +5761,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp96_last) __out.AppendLine(true);
                 }
-                string __tmp97_line = "."; //417:7
+                string __tmp97_line = ".Set"; //417:7
                 if (!string.IsNullOrEmpty(__tmp97_line))
                 {
                     __out.Write(__tmp97_line);
@@ -5782,14 +5782,14 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp98_last) __out.AppendLine(true);
                 }
-                string __tmp99_line = ".AddLazy(() => "; //417:19
+                string __tmp99_line = "Lazy(() => "; //417:22
                 if (!string.IsNullOrEmpty(__tmp99_line))
                 {
                     __out.Write(__tmp99_line);
                     __tmp95_outputWritten = true;
                 }
                 var __tmp100 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                __tmp100.Write(CSharpName(((MetaType)valueDecl), model, ClassKind.ImmutableInstance, true));
+                __tmp100.Write(instanceNames[valueObject]);
                 var __tmp100Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp100.ToStringAndFree());
                 bool __tmp100_last = __tmp100Reader.EndOfStream;
                 while(!__tmp100_last)
@@ -5803,7 +5803,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp100_last) __out.AppendLine(true);
                 }
-                string __tmp101_line = ");"; //417:110
+                string __tmp101_line = ");"; //417:61
                 if (!string.IsNullOrEmpty(__tmp101_line))
                 {
                     __out.Write(__tmp101_line);
@@ -5812,10 +5812,10 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp95_outputWritten) __out.AppendLine(true);
                 if (__tmp95_outputWritten)
                 {
-                    __out.AppendLine(false); //417:112
+                    __out.AppendLine(false); //417:63
                 }
             }
-            else if (valueDecl != null && valueDecl is MetaConstant) //418:2
+            else if (valueDecl != null && valueDecl is MetaType) //418:2
             {
                 bool __tmp103_outputWritten = false;
                 var __tmp104 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
@@ -5833,7 +5833,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp104_last) __out.AppendLine(true);
                 }
-                string __tmp105_line = "."; //419:7
+                string __tmp105_line = ".Set"; //419:7
                 if (!string.IsNullOrEmpty(__tmp105_line))
                 {
                     __out.Write(__tmp105_line);
@@ -5854,14 +5854,14 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp106_last) __out.AppendLine(true);
                 }
-                string __tmp107_line = ".AddLazy(() => "; //419:19
+                string __tmp107_line = "Lazy(() => "; //419:22
                 if (!string.IsNullOrEmpty(__tmp107_line))
                 {
                     __out.Write(__tmp107_line);
                     __tmp103_outputWritten = true;
                 }
                 var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                __tmp108.Write(CSharpName(((MetaConstant)valueDecl), model, ClassKind.ImmutableInstance, true));
+                __tmp108.Write(CSharpName(((MetaType)valueDecl), model, ClassKind.BuilderInstance, false));
                 var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                 bool __tmp108_last = __tmp108Reader.EndOfStream;
                 while(!__tmp108_last)
@@ -5875,7 +5875,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp108_last) __out.AppendLine(true);
                 }
-                string __tmp109_line = ");"; //419:114
+                string __tmp109_line = ");"; //419:108
                 if (!string.IsNullOrEmpty(__tmp109_line))
                 {
                     __out.Write(__tmp109_line);
@@ -5884,7 +5884,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp103_outputWritten) __out.AppendLine(true);
                 if (__tmp103_outputWritten)
                 {
-                    __out.AppendLine(false); //419:116
+                    __out.AppendLine(false); //419:110
                 }
             }
             else //420:2
@@ -8465,7 +8465,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
         {
             var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "internal class "; //612:1
+            string __tmp3_line = "public class "; //612:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Write(__tmp3_line);
@@ -8488,7 +8488,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //612:68
+                __out.AppendLine(false); //612:66
             }
             __out.Write("{"); //613:1
             __out.AppendLine(false); //613:2
@@ -8697,7 +8697,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.Write("/// </summary>"); //632:1
             __out.AppendLine(false); //632:15
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "internal abstract class "; //633:1
+            string __tmp8_line = "public abstract class "; //633:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Write(__tmp8_line);
@@ -8720,7 +8720,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //633:73
+                __out.AppendLine(false); //633:71
             }
             __out.Write("{"); //634:1
             __out.AppendLine(false); //634:2
@@ -15201,7 +15201,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (!__tmp13_last) __out.AppendLine(true);
             }
             var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            __tmp14.Write(CSharpName(model, ModelKind.ImplementationProvider));
+            __tmp14.Write(CSharpName(op.MMetaModel, ModelKind.ImplementationProvider));
             var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
             bool __tmp14_last = __tmp14Reader.EndOfStream;
             while(!__tmp14_last)
@@ -15215,7 +15215,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp14_last) __out.AppendLine(true);
             }
-            string __tmp15_line = ".Implementation."; //1169:138
+            string __tmp15_line = ".Implementation."; //1169:146
             if (!string.IsNullOrEmpty(__tmp15_line))
             {
                 __out.Write(__tmp15_line);
@@ -15236,7 +15236,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp16_last) __out.AppendLine(true);
             }
-            string __tmp17_line = "_"; //1169:208
+            string __tmp17_line = "_"; //1169:216
             if (!string.IsNullOrEmpty(__tmp17_line))
             {
                 __out.Write(__tmp17_line);
@@ -15257,7 +15257,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp18_last) __out.AppendLine(true);
             }
-            string __tmp19_line = "("; //1169:223
+            string __tmp19_line = "("; //1169:231
             if (!string.IsNullOrEmpty(__tmp19_line))
             {
                 __out.Write(__tmp19_line);
@@ -15278,7 +15278,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp20_last) __out.AppendLine(true);
             }
-            string __tmp21_line = ");"; //1169:302
+            string __tmp21_line = ");"; //1169:310
             if (!string.IsNullOrEmpty(__tmp21_line))
             {
                 __out.Write(__tmp21_line);
@@ -15287,7 +15287,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (__tmp12_outputWritten) __out.AppendLine(true);
             if (__tmp12_outputWritten)
             {
-                __out.AppendLine(false); //1169:304
+                __out.AppendLine(false); //1169:312
             }
             __out.Write("}"); //1170:1
             __out.AppendLine(false); //1170:2
@@ -17318,7 +17318,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (!__tmp13_last) __out.AppendLine(true);
             }
             var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            __tmp14.Write(CSharpName(model, ModelKind.ImplementationProvider));
+            __tmp14.Write(CSharpName(op.MMetaModel, ModelKind.ImplementationProvider));
             var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
             bool __tmp14_last = __tmp14Reader.EndOfStream;
             while(!__tmp14_last)
@@ -17332,7 +17332,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp14_last) __out.AppendLine(true);
             }
-            string __tmp15_line = ".Implementation."; //1297:136
+            string __tmp15_line = ".Implementation."; //1297:144
             if (!string.IsNullOrEmpty(__tmp15_line))
             {
                 __out.Write(__tmp15_line);
@@ -17353,7 +17353,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp16_last) __out.AppendLine(true);
             }
-            string __tmp17_line = "_"; //1297:206
+            string __tmp17_line = "_"; //1297:214
             if (!string.IsNullOrEmpty(__tmp17_line))
             {
                 __out.Write(__tmp17_line);
@@ -17374,7 +17374,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp18_last) __out.AppendLine(true);
             }
-            string __tmp19_line = "("; //1297:221
+            string __tmp19_line = "("; //1297:229
             if (!string.IsNullOrEmpty(__tmp19_line))
             {
                 __out.Write(__tmp19_line);
@@ -17395,7 +17395,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp20_last) __out.AppendLine(true);
             }
-            string __tmp21_line = ");"; //1297:298
+            string __tmp21_line = ");"; //1297:306
             if (!string.IsNullOrEmpty(__tmp21_line))
             {
                 __out.Write(__tmp21_line);
@@ -17404,7 +17404,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (__tmp12_outputWritten) __out.AppendLine(true);
             if (__tmp12_outputWritten)
             {
-                __out.AppendLine(false); //1297:300
+                __out.AppendLine(false); //1297:308
             }
             __out.Write("}"); //1298:1
             __out.AppendLine(false); //1298:2

@@ -1,5 +1,6 @@
 ﻿namespace MetaDslx.Languages.Ecore.Model
 {
+    using MetaDslx.Languages.Meta.Model;
     using MetaDslx.CodeAnalysis.Symbols;
 
     metamodel Ecore(Uri="http://www.eclipse.org/emf/2002/Ecore",Prefix="ecore"); 
@@ -83,7 +84,7 @@
     	EGenericType GetFeatureType(EStructuralFeature feature);
     }
 
-    abstract class EClassifier : ENamedElement
+    abstract class EClassifier : ENamedElement, MetaType
     {
         string DotNetName; // TODO:MetaDslx: replace with InstanceClassName
     	EString InstanceClassName;
