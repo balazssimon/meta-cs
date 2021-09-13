@@ -60,6 +60,13 @@ namespace MetaDslx.Languages.Meta.Generator
         BuilderInstance
     }
 
+    internal enum OperationKind
+    {
+        None,
+        ImmutableImpl,
+        BuilderImpl
+    }
+
     interface MetaExternalType : MetaDeclaration
     {
         bool IsValueType { get; }
@@ -431,6 +438,36 @@ namespace MetaDslx.Languages.Meta.Generator
                 }
                 result = fullNamePrefix + result;
             }
+            return result;
+        }
+
+        public string CSharpName(MetaOperation mop, MetaModel mmodel, OperationKind kind = OperationKind.None, bool fullName = false)
+        {
+            if (mop == null) return string.Empty;
+            var opMetaModel = mop.Class != null ? mop.Class.MetaModel : mop.Enum.MetaModel;
+            bool currentModel = this.IsSameModel(mmodel, opMetaModel);
+            string result;
+            switch (kind)
+            {
+                case OperationKind.ImmutableImpl:
+                case OperationKind.BuilderImpl:
+                    var builderClassName = mop.Class != null ? CSharpName(mop.Class, mmodel, ClassKind.Immutable) : CSharpName(mop.Enum, mmodel, ClassKind.Immutable);
+                    result = ".Implementation." + builderClassName + "_" + mop.Name;
+                    break;
+                default:
+                    result = mop.Name;
+                    break;
+            }
+            string fullNamePrefix;
+            if (fullName && !currentModel)
+            {
+                fullNamePrefix = this.CSharpName(opMetaModel, ModelKind.ImplementationProvider, true);
+            }
+            else
+            {
+                fullNamePrefix = this.CSharpName(opMetaModel, ModelKind.ImplementationProvider, false);
+            }
+            result = fullNamePrefix + result;
             return result;
         }
 
@@ -839,6 +876,12 @@ namespace MetaDslx.Languages.Meta.Generator
         public MetaType GetMetaType(MetaOperation mop)
         {
             return MetaImplementation.GetMetaType(mop);
+        }
+
+        public bool UseConstValueForProperty(ImmutableObject obj, ModelProperty prop)
+        {
+            var isConstDefinition = obj is MetaNamespace && prop.Name == "Declarations";
+            return !isConstDefinition;
         }
     }
     //*/
