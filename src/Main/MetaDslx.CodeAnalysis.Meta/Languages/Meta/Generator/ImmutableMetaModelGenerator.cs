@@ -11024,7 +11024,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.Write("/// </summary>"); //794:1
             __out.AppendLine(false); //794:15
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "internal class "; //795:1
+            string __tmp3_line = "public class "; //795:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Write(__tmp3_line);
@@ -11045,7 +11045,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp4_last) __out.AppendLine(true);
             }
-            string __tmp5_line = " : "; //795:60
+            string __tmp5_line = " : "; //795:58
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Write(__tmp5_line);
@@ -11068,7 +11068,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //795:111
+                __out.AppendLine(false); //795:109
             }
             __out.Write("{"); //796:1
             __out.AppendLine(false); //796:2

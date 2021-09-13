@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\Versions.props" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MetaDslx.Languages.Core</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
+    <MetaDslxDisableSymbolSourceGenerator>false</MetaDslxDisableSymbolSourceGenerator>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/*/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
+  </ItemGroup>
+</Project>

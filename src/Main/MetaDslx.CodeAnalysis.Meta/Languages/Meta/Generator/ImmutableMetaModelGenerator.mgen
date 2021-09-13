@@ -792,7 +792,7 @@ template GenerateImplementation(MetaModel model)
 /// <summary>
 /// Class for implementing the behavior of the model elements.
 /// </summary>
-internal class [model.CSharpName(ModelKind.Implementation)] : [model.CSharpName(ModelKind.ImplementationBase)]
+public class [model.CSharpName(ModelKind.Implementation)] : [model.CSharpName(ModelKind.ImplementationBase)]
 {
 	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
 	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly || prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
