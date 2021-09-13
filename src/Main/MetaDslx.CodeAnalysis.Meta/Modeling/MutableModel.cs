@@ -149,7 +149,7 @@ namespace MetaDslx.Modeling
             }
         }
         public bool IsReadOnly { get { return this.readOnly; } }
-        internal bool AllowMetaConstants { get; set; }
+        public bool AllowMetaConstants { get; set; }
         public MutableModelGroup ModelGroup { get { return this.group; } }
         public IEnumerable<MutableObject> Objects
         {

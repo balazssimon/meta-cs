@@ -48,7 +48,7 @@
 	}
 
 	[type: TypeSymbol]
-	abstract class MetaType
+	abstract class MetaType : MetaElement
 	{
 		bool ConformsTo(MetaType @type);
 	}

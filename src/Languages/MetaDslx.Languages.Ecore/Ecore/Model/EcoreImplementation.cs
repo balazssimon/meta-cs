@@ -6,7 +6,7 @@ using MetaDslx.Modeling;
 
 namespace MetaDslx.Languages.Ecore.Model.Internal
 {
-    internal class EcoreImplementation : EcoreImplementationBase
+    public class EcoreImplementation : EcoreImplementationBase
     {
         public override EDataTypeBuilder EAttribute_ComputeProperty_EAttributeType(EAttributeBuilder _this)
         {

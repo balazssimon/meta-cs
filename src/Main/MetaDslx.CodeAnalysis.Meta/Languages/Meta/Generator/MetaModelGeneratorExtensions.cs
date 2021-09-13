@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MetaDslx.Languages.Meta.Model;
+using MetaDslx.Languages.Meta.Model.Internal;
 using MetaDslx.Modeling;
 using Roslyn.Utilities;
 
@@ -34,7 +35,7 @@ namespace MetaDslx.Languages.Meta.Generator
         {
             if (property.DefaultValue != null)
             {
-                if (property.Type is MetaEnum enm) return string.Format(" = \"{0}.{1}\"", enm.Name.ToPascalCase(), property.DefaultValue);
+                if (GetType(property) is MetaEnum enm) return string.Format(" = \"{0}.{1}\"", enm.Name.ToPascalCase(), property.DefaultValue);
                 else return string.Format(" = \"{0}\"", property.DefaultValue);
             }
             return string.Empty;
@@ -54,6 +55,18 @@ namespace MetaDslx.Languages.Meta.Generator
                 }
             }
             return result;
+        }
+
+        public MetaElement GetReturnType(MetaOperation mop)
+        {
+            //return MetaImplementation.GetMetaType(mop);
+            return (MetaElement)mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
+        }
+
+        public MetaElement GetType(MetaTypedElement melem)
+        {
+            //return MetaImplementation.GetMetaType(melem);
+            return (MetaElement)melem.MGet(MetaDescriptor.MetaTypedElement.TypeProperty);
         }
 
         public string ToCSharpAlias(string name)

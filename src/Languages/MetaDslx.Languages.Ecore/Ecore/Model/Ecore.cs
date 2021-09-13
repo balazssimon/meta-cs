@@ -3854,6 +3854,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	internal class EClassImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EClass
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
@@ -3923,6 +3925,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			return (EClassBuilder)base.ToMutable(model);
 		}
 	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -3961,6 +3973,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		EClassifierBuilder EClassifier.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> Attributes
+		{
+		    get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4200,6 +4218,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	
 	internal class EClassBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EClassBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
 		private global::MetaDslx.Modeling.MutableModelList<EClassBuilder> eSuperTypes0;
@@ -4240,6 +4259,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			return (EClass)base.ToImmutable(model);
 		}
 	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		EModelElement EModelElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4278,6 +4307,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		EClassifier EClassifierBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4690,6 +4725,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	internal class EClassifierImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EClassifier
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
@@ -4727,6 +4764,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 			return (EClassifierBuilder)base.ToMutable(model);
 		}
 	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		EModelElementBuilder EModelElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4755,6 +4802,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		ENamedElementBuilder ENamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> Attributes
+		{
+		    get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4838,6 +4891,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	
 	internal class EClassifierBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EClassifierBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
 	
@@ -4863,6 +4917,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public new EClassifier ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EClassifier)base.ToImmutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
 		}
 	
 		EModelElement EModelElementBuilder.ToImmutable()
@@ -4893,6 +4957,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		ENamedElement ENamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5102,6 +5172,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	internal class EDataTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EDataType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
@@ -5139,6 +5211,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public new EDataTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EDataTypeBuilder)base.ToMutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
 		}
 	
 		EModelElementBuilder EModelElement.ToMutable()
@@ -5179,6 +5261,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		EClassifierBuilder EClassifier.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> Attributes
+		{
+		    get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5268,6 +5356,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	
 	internal class EDataTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EDataTypeBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
 	
@@ -5293,6 +5382,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public new EDataType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EDataType)base.ToImmutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
 		}
 	
 		EModelElement EModelElementBuilder.ToImmutable()
@@ -5333,6 +5432,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		EClassifier EClassifierBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5564,6 +5669,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	internal class EEnumImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EEnum
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<EAnnotation> eAnnotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
@@ -5603,6 +5710,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public new EEnumBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return (EEnumBuilder)base.ToMutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElementBuilder global::MetaDslx.Languages.Meta.Model.MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
 		}
 	
 		EModelElementBuilder EModelElement.ToMutable()
@@ -5653,6 +5770,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		EDataTypeBuilder EDataType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute> Attributes
+		{
+		    get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5766,6 +5889,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	
 	internal class EEnumBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EEnumBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> attributes0;
 		private global::MetaDslx.Modeling.MutableModelList<EAnnotationBuilder> eAnnotations0;
 		private global::MetaDslx.Modeling.MutableModelList<ETypeParameterBuilder> eTypeParameters0;
 		private global::MetaDslx.Modeling.MutableModelList<EEnumLiteralBuilder> eLiterals0;
@@ -5792,6 +5916,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public new EEnum ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (EEnum)base.ToImmutable(model);
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		global::MetaDslx.Languages.Meta.Model.MetaElement global::MetaDslx.Languages.Meta.Model.MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
 		}
 	
 		EModelElement EModelElementBuilder.ToImmutable()
@@ -5842,6 +5976,12 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		EDataType EDataTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -13124,7 +13264,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	/// This class has to be be overriden in global::MetaDslx.Languages.Ecore.Model.EcoreImplementation to provide custom
 	/// implementation for the constructors, operations and property values.
 	/// </summary>
-	internal abstract class EcoreImplementationBase
+	public abstract class EcoreImplementationBase
 	{
 		/// <summary>
 		/// Implements the constructor: EcoreBuilderInstance()
@@ -13155,13 +13295,6 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEAttributeSuperConstructors(_this);
 			_this.SetEAttributeTypeLazy(this.EAttribute_ComputeProperty_EAttributeType);
-			_this.SetDefaultValueLazy(this.EStructuralFeature_ComputeProperty_DefaultValue);
-			_this.SetChangeableLazy(() => true);
-			_this.SetRequiredLazy(this.ETypedElement_ComputeProperty_Required);
-			_this.SetManyLazy(this.ETypedElement_ComputeProperty_Many);
-			_this.SetUpperBoundLazy(() => 1);
-			_this.SetUniqueLazy(() => true);
-			_this.SetOrderedLazy(() => true);
 		}
 	
 		/// <summary>
@@ -13218,6 +13351,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaElement</li>
 		///     <li>EModelElement</li>
 		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
@@ -13239,18 +13373,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void EClass(EClassBuilder _this)
 		{
 			this.CallEClassSuperConstructors(_this);
-			_this.EAllGenericSuperTypes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllGenericSuperTypes);
-			_this.SetEIDAttributeLazy(this.EClass_ComputeProperty_EIDAttribute);
-			_this.EAllSuperTypes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllSuperTypes);
-			_this.EAllStructuralFeatures.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllStructuralFeatures);
-			_this.EAllOperations.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllOperations);
-			_this.EAllContainments.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllContainments);
-			_this.EAttributes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAttributes);
-			_this.EReferences.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EReferences);
-			_this.EAllReferences.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllReferences);
 			_this.EAllAttributes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllAttributes);
-			_this.SetDefaultValueLazy(this.EClassifier_ComputeProperty_DefaultValue);
-			_this.SetInstanceClassLazy(this.EClassifier_ComputeProperty_InstanceClass);
+			_this.EAllReferences.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllReferences);
+			_this.EReferences.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EReferences);
+			_this.EAttributes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAttributes);
+			_this.EAllContainments.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllContainments);
+			_this.EAllOperations.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllOperations);
+			_this.EAllStructuralFeatures.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllStructuralFeatures);
+			_this.EAllSuperTypes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllSuperTypes);
+			_this.SetEIDAttributeLazy(this.EClass_ComputeProperty_EIDAttribute);
+			_this.EAllGenericSuperTypes.AddRangeLazy<EClassBuilder>(this.EClass_ComputeProperty_EAllGenericSuperTypes);
 		}
 	
 		/// <summary>
@@ -13258,8 +13390,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </summary>
 		protected virtual void CallEClassSuperConstructors(EClassBuilder _this)
 		{
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaElement(_this);
 			this.EModelElement(_this);
-			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType(_this);
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 		}
@@ -13447,6 +13580,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaElement</li>
 		///     <li>EModelElement</li>
 		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
@@ -13459,8 +13593,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void EClassifier(EClassifierBuilder _this)
 		{
 			this.CallEClassifierSuperConstructors(_this);
-			_this.SetDefaultValueLazy(this.EClassifier_ComputeProperty_DefaultValue);
 			_this.SetInstanceClassLazy(this.EClassifier_ComputeProperty_InstanceClass);
+			_this.SetDefaultValueLazy(this.EClassifier_ComputeProperty_DefaultValue);
 		}
 	
 		/// <summary>
@@ -13468,8 +13602,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </summary>
 		protected virtual void CallEClassifierSuperConstructors(EClassifierBuilder _this)
 		{
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaElement(_this);
 			this.EModelElement(_this);
-			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType(_this);
 			this.ENamedElement(_this);
 		}
 	
@@ -13519,6 +13654,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaElement</li>
 		///     <li>EModelElement</li>
 		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
@@ -13528,8 +13664,6 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		{
 			this.CallEDataTypeSuperConstructors(_this);
 			_this.SetSerializableLazy(() => true);
-			_this.SetDefaultValueLazy(this.EClassifier_ComputeProperty_DefaultValue);
-			_this.SetInstanceClassLazy(this.EClassifier_ComputeProperty_InstanceClass);
 		}
 	
 		/// <summary>
@@ -13537,8 +13671,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </summary>
 		protected virtual void CallEDataTypeSuperConstructors(EDataTypeBuilder _this)
 		{
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaElement(_this);
 			this.EModelElement(_this);
-			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType(_this);
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 		}
@@ -13555,6 +13690,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>global::MetaDslx.Languages.Meta.Model.MetaElement</li>
 		///     <li>EModelElement</li>
 		///     <li>global::MetaDslx.Languages.Meta.Model.MetaType</li>
 		///     <li>ENamedElement</li>
@@ -13564,9 +13700,6 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void EEnum(EEnumBuilder _this)
 		{
 			this.CallEEnumSuperConstructors(_this);
-			_this.SetSerializableLazy(() => true);
-			_this.SetDefaultValueLazy(this.EClassifier_ComputeProperty_DefaultValue);
-			_this.SetInstanceClassLazy(this.EClassifier_ComputeProperty_InstanceClass);
 		}
 	
 		/// <summary>
@@ -13574,8 +13707,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		/// </summary>
 		protected virtual void CallEEnumSuperConstructors(EEnumBuilder _this)
 		{
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaElement(_this);
 			this.EModelElement(_this);
-			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.MetaType(_this);
+			global::MetaDslx.Languages.Meta.Model.Internal.MetaImplementationProvider.Implementation.MetaType(_this);
 			this.ENamedElement(_this);
 			this.EClassifier(_this);
 			this.EDataType(_this);
@@ -14005,11 +14139,6 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void EOperation(EOperationBuilder _this)
 		{
 			this.CallEOperationSuperConstructors(_this);
-			_this.SetRequiredLazy(this.ETypedElement_ComputeProperty_Required);
-			_this.SetManyLazy(this.ETypedElement_ComputeProperty_Many);
-			_this.SetUpperBoundLazy(() => 1);
-			_this.SetUniqueLazy(() => true);
-			_this.SetOrderedLazy(() => true);
 		}
 	
 		/// <summary>
@@ -14109,11 +14238,6 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void EParameter(EParameterBuilder _this)
 		{
 			this.CallEParameterSuperConstructors(_this);
-			_this.SetRequiredLazy(this.ETypedElement_ComputeProperty_Required);
-			_this.SetManyLazy(this.ETypedElement_ComputeProperty_Many);
-			_this.SetUpperBoundLazy(() => 1);
-			_this.SetUniqueLazy(() => true);
-			_this.SetOrderedLazy(() => true);
 		}
 	
 		/// <summary>
@@ -14151,16 +14275,9 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void EReference(EReferenceBuilder _this)
 		{
 			this.CallEReferenceSuperConstructors(_this);
-			_this.SetEReferenceTypeLazy(this.EReference_ComputeProperty_EReferenceType);
-			_this.SetResolveProxiesLazy(() => true);
 			_this.SetContainerLazy(this.EReference_ComputeProperty_Container);
-			_this.SetDefaultValueLazy(this.EStructuralFeature_ComputeProperty_DefaultValue);
-			_this.SetChangeableLazy(() => true);
-			_this.SetRequiredLazy(this.ETypedElement_ComputeProperty_Required);
-			_this.SetManyLazy(this.ETypedElement_ComputeProperty_Many);
-			_this.SetUpperBoundLazy(() => 1);
-			_this.SetUniqueLazy(() => true);
-			_this.SetOrderedLazy(() => true);
+			_this.SetResolveProxiesLazy(() => true);
+			_this.SetEReferenceTypeLazy(this.EReference_ComputeProperty_EReferenceType);
 		}
 	
 		/// <summary>
@@ -14205,13 +14322,8 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void EStructuralFeature(EStructuralFeatureBuilder _this)
 		{
 			this.CallEStructuralFeatureSuperConstructors(_this);
-			_this.SetDefaultValueLazy(this.EStructuralFeature_ComputeProperty_DefaultValue);
 			_this.SetChangeableLazy(() => true);
-			_this.SetRequiredLazy(this.ETypedElement_ComputeProperty_Required);
-			_this.SetManyLazy(this.ETypedElement_ComputeProperty_Many);
-			_this.SetUpperBoundLazy(() => 1);
-			_this.SetUniqueLazy(() => true);
-			_this.SetOrderedLazy(() => true);
+			_this.SetDefaultValueLazy(this.EStructuralFeature_ComputeProperty_DefaultValue);
 		}
 	
 		/// <summary>
@@ -14277,11 +14389,11 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 		public virtual void ETypedElement(ETypedElementBuilder _this)
 		{
 			this.CallETypedElementSuperConstructors(_this);
-			_this.SetRequiredLazy(this.ETypedElement_ComputeProperty_Required);
-			_this.SetManyLazy(this.ETypedElement_ComputeProperty_Many);
-			_this.SetUpperBoundLazy(() => 1);
-			_this.SetUniqueLazy(() => true);
 			_this.SetOrderedLazy(() => true);
+			_this.SetUniqueLazy(() => true);
+			_this.SetUpperBoundLazy(() => 1);
+			_this.SetManyLazy(this.ETypedElement_ComputeProperty_Many);
+			_this.SetRequiredLazy(this.ETypedElement_ComputeProperty_Required);
 		}
 	
 		/// <summary>
@@ -14392,7 +14504,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 	
 	}
 
-	internal class EcoreImplementationProvider
+	public class EcoreImplementationProvider
 	{
 		// If there is a compile error at this line, create a new class called EcoreImplementation
 		// which is a subclass of global::MetaDslx.Languages.Ecore.Model.EcoreImplementationBase:

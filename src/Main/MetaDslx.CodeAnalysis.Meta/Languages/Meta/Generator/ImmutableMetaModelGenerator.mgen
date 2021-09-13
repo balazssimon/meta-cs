@@ -704,7 +704,7 @@ public abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]([cls.CSharpName(model, ClassKind.Builder)] _this)
 	{
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
-		[loop(cls->prop:GetAllFinalProperties())]
+		[loop(cls->prop:Properties)]
 			[var propType = GetMetaType(prop)]
 			[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
 			[else if (prop.DefaultValue != null)]
@@ -739,7 +739,7 @@ public abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 		[if (model.Namespace.Declarations.Contains(sup))]
 		this.[sup.CSharpName(model, ClassKind.Immutable)](_this);
 		[else]
-		[sup.MetaModel.CSharpName(ModelKind.ImplementationProvider, true)].[sup.CSharpName(model, ClassKind.Immutable)](_this);
+		[sup.MetaModel.CSharpName(ModelKind.ImplementationProvider, true)].Implementation.[sup.CSharpName(model, ClassKind.Immutable)](_this);
 		[end if]
 	[end loop]
 	}

@@ -9552,7 +9552,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 var __loop42_results = 
                     (from __loop42_var1 in __Enumerate((cls).GetEnumerator()) //707:9
-                    from prop in __Enumerate((__loop42_var1.GetAllFinalProperties()).GetEnumerator()) //707:14
+                    from prop in __Enumerate((__loop42_var1.Properties).GetEnumerator()) //707:14
                     select new { __loop42_var1 = __loop42_var1, prop = prop}
                     ).ToList(); //707:4
                 for (int __loop42_iteration = 0; __loop42_iteration < __loop42_results.Count; ++__loop42_iteration)
@@ -10182,7 +10182,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             }
                             if (!__tmp142_last) __out.AppendLine(true);
                         }
-                        string __tmp143_line = "."; //742:69
+                        string __tmp143_line = ".Implementation."; //742:69
                         if (!string.IsNullOrEmpty(__tmp143_line))
                         {
                             __out.Write(__tmp143_line);
@@ -10203,7 +10203,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             }
                             if (!__tmp144_last) __out.AppendLine(true);
                         }
-                        string __tmp145_line = "(_this);"; //742:114
+                        string __tmp145_line = "(_this);"; //742:129
                         if (!string.IsNullOrEmpty(__tmp145_line))
                         {
                             __out.Write(__tmp145_line);
@@ -10212,7 +10212,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (__tmp141_outputWritten) __out.AppendLine(true);
                         if (__tmp141_outputWritten)
                         {
-                            __out.AppendLine(false); //742:122
+                            __out.AppendLine(false); //742:137
                         }
                     }
                 }

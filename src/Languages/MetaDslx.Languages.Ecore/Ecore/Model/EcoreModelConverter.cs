@@ -64,6 +64,7 @@ namespace MetaDslx.Languages.Ecore.Model
                 _modelGroup.AddReference(ecore.ModelGroup.References);
             }
             _meta = _modelGroup.CreateModel();
+            _meta.AllowMetaConstants = true;
             _factory = new MetaFactory(_meta);
             _diagnostics = new DiagnosticBag();
             _map = new Dictionary<ImmutableObject, MutableObject>();
@@ -319,28 +320,28 @@ namespace MetaDslx.Languages.Ecore.Model
                 var mtype = GetType(ete);
                 if (entry.Value is MetaPropertyBuilder mprop)
                 {
-                    mprop.Type = mtype;
+                    mprop.MSet(MetaDescriptor.MetaTypedElement.TypeProperty, mtype);
                 }
                 else if (entry.Value is MetaParameterBuilder mparam)
                 {
-                    mparam.Type = mtype;
+                    mparam.MSet(MetaDescriptor.MetaTypedElement.TypeProperty, mtype);
                 }
                 else if (entry.Value is MetaOperationBuilder mop)
                 {
-                    mop.ReturnType = mtype;
+                    mop.MSet(MetaDescriptor.MetaOperation.ReturnTypeProperty, mtype);
                 }
             }
         }
 
-        private MetaTypeBuilder GetType(ETypedElement ete)
+        private MutableObject GetType(ETypedElement ete)
         {
             MutableObject mobj = null;
             var etype = ete.EGenericType != null ? ete.EGenericType.EClassifier : ete.EType;
             var isCollection = ete.UpperBound < 0 || ete.UpperBound > 1;
-            var isEnumerable = ete.EGenericType != null && (ete.EGenericType.EClassifier.Name == "ETreeIterator") && ete.EGenericType.ETypeArguments.Count == 1;
+            var isEnumerable = ete.EGenericType?.EClassifier != null && (ete.EGenericType.EClassifier.Name == "ETreeIterator") && ete.EGenericType.ETypeArguments.Count == 1;
             var isOrdered = ete.Ordered;
             var isUnique = ete.Unique;
-            if (ete.EGenericType != null && ete.EGenericType.EClassifier.Name == "EEList" && ete.EGenericType.ETypeArguments.Count == 1)
+            if (ete.EGenericType?.EClassifier != null && ete.EGenericType.EClassifier.Name == "EEList" && ete.EGenericType.ETypeArguments.Count == 1)
             {
                 isCollection = true;
                 isOrdered = true;
@@ -352,7 +353,7 @@ namespace MetaDslx.Languages.Ecore.Model
             }
             if (mobj != null || etype != null && _map.TryGetValue(etype, out mobj))
             {
-                var mtype = (MetaTypeBuilder)mobj;
+                var mtype = mobj;
                 if (isCollection)
                 {
                     MetaCollectionKind kind;
@@ -374,7 +375,7 @@ namespace MetaDslx.Languages.Ecore.Model
                         }
                     }
                     var mcoll = _factory.MetaCollectionType();
-                    mcoll.InnerType = mtype;
+                    mcoll.MSet(MetaDescriptor.MetaCollectionType.InnerTypeProperty, mtype);
                     mcoll.Kind = kind;
                     return mcoll;
                 }

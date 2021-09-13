@@ -1,3 +1,6 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -536,7 +539,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaTypedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface MetaType : global::MetaDslx.Modeling.ImmutableObject
+	public interface MetaType : MetaElement
 	{
 	
 		bool ConformsTo(MetaType @type);
@@ -553,7 +556,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface MetaTypeBuilder : global::MetaDslx.Modeling.MutableObject
+	public interface MetaTypeBuilder : MetaElementBuilder
 	{
 	
 		bool ConformsTo(MetaTypeBuilder @type);
@@ -1463,7 +1466,7 @@ namespace MetaDslx.Languages.Meta.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.TypeSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaType), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder))]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaType), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaElement) })]
 		public static class MetaType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -2779,6 +2782,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 	internal class MetaTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaType
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 	
 		internal MetaTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -2799,6 +2804,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaTypeBuilder)base.ToMutable(model);
 		}
 	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
+		}
+	
 		
 		bool MetaType.ConformsTo(MetaType @type)
 		{
@@ -2808,6 +2829,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 	internal class MetaTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaTypeBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
 	
 		internal MetaTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -2831,6 +2853,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public new MetaType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return (MetaType)base.ToImmutable(model);
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -2858,11 +2896,11 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaNamedTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaNamedType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2889,16 +2927,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaNamedTypeBuilder)base.ToMutable(model);
 		}
 	
-		MetaElementBuilder MetaElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -2915,6 +2943,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -2940,12 +2978,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
-		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
-		}
-	
-		
 		public string Documentation
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
@@ -2955,6 +2987,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -3010,16 +3048,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaNamedType)base.ToImmutable(model);
 		}
 	
-		MetaElement MetaElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3036,6 +3064,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -3058,12 +3096,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
-		{
-			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -3108,6 +3140,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -3199,11 +3237,11 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaAttributeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaAttribute
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3230,16 +3268,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaAttributeBuilder)base.ToMutable(model);
 		}
 	
-		MetaElementBuilder MetaElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -3256,6 +3284,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -3291,12 +3329,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
-		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
-		}
-	
-		
 		public string Documentation
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
@@ -3306,6 +3338,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -3361,16 +3399,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaAttribute)base.ToImmutable(model);
 		}
 	
-		MetaElement MetaElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3387,6 +3415,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -3419,12 +3457,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
-		{
-			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -3469,6 +3501,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4554,6 +4592,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaCollectionTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaCollectionType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaCollectionKind kind0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType innerType0;
@@ -4577,6 +4617,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaCollectionTypeBuilder)base.ToMutable(model);
 		}
 	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -4585,6 +4635,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4614,6 +4670,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 	internal class MetaCollectionTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaCollectionTypeBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
 	
 		internal MetaCollectionTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -4639,6 +4696,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaCollectionType)base.ToImmutable(model);
 		}
 	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4647,6 +4714,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4724,6 +4797,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaNullableTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaNullableType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType innerType0;
 	
 		internal MetaNullableTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -4745,6 +4820,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaNullableTypeBuilder)base.ToMutable(model);
 		}
 	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -4753,6 +4838,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4776,6 +4867,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	
 	internal class MetaNullableTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, MetaNullableTypeBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> attributes0;
 	
 		internal MetaNullableTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -4801,6 +4893,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaNullableType)base.ToImmutable(model);
 		}
 	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4809,6 +4911,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -4864,11 +4972,11 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaPrimitiveTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaPrimitiveType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4897,16 +5005,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaPrimitiveTypeBuilder)base.ToMutable(model);
 		}
 	
-		MetaElementBuilder MetaElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4923,6 +5021,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -4958,12 +5066,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
-		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
-		}
-	
-		
 		public string Documentation
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
@@ -4973,6 +5075,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5040,16 +5148,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaPrimitiveType)base.ToImmutable(model);
 		}
 	
-		MetaElement MetaElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5066,6 +5164,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5098,12 +5206,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
-		{
-			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5148,6 +5250,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5267,11 +5375,11 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaEnumImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaEnum
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5302,16 +5410,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaEnumBuilder)base.ToMutable(model);
 		}
 	
-		MetaElementBuilder MetaElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -5328,6 +5426,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5363,12 +5471,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
-		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
-		}
-	
-		
 		public string Documentation
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
@@ -5378,6 +5480,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5447,16 +5555,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaEnum)base.ToImmutable(model);
 		}
 	
-		MetaElement MetaElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5473,6 +5571,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5505,12 +5613,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
-		{
-			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5555,6 +5657,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -6359,11 +6467,11 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 	internal class MetaClassImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaClass
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6400,16 +6508,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaClassBuilder)base.ToMutable(model);
 		}
 	
-		MetaElementBuilder MetaElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -6426,6 +6524,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaElementBuilder MetaElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6461,12 +6569,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
-		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
-		}
-	
-		
 		public string Documentation
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
@@ -6476,6 +6578,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
+		{
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -6612,16 +6720,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return (MetaClass)base.ToImmutable(model);
 		}
 	
-		MetaElement MetaElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -6638,6 +6736,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaElement MetaElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6670,12 +6778,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
-		{
-			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -6720,6 +6822,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
+		{
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -8596,6 +8704,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaType.SetNamespaceLazy(() => __tmp4);
 			MetaType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.TypeSymbol);
 			MetaType.IsAbstract = true;
+			MetaType.SuperClasses.AddLazy(() => MetaElement);
 			MetaType.Operations.AddLazy(() => __tmp19);
 			__tmp19.Documentation = null;
 			__tmp19.Name = "ConformsTo";
@@ -9450,6 +9559,14 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// <summary>
 		/// Implements the constructor: MetaType()
 		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>MetaElement</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>MetaElement</li>
+		/// </ul>
 		public virtual void MetaType(MetaTypeBuilder _this)
 		{
 			this.CallMetaTypeSuperConstructors(_this);
@@ -9460,6 +9577,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaTypeSuperConstructors(MetaTypeBuilder _this)
 		{
+			this.MetaElement(_this);
 		}
 	
 	
@@ -9488,17 +9606,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaElement</li>
 		///     <li>MetaDeclaration</li>
 		///     <li>MetaType</li>
 		/// </ul>
 		public virtual void MetaNamedType(MetaNamedTypeBuilder _this)
 		{
 			this.CallMetaNamedTypeSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
-			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9506,9 +9622,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaNamedTypeSuperConstructors(MetaNamedTypeBuilder _this)
 		{
-			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaElement(_this);
 			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 		}
@@ -9525,9 +9641,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaElement</li>
 		///     <li>MetaDeclaration</li>
 		///     <li>MetaType</li>
 		///     <li>MetaNamedType</li>
@@ -9535,8 +9651,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public virtual void MetaAttribute(MetaAttributeBuilder _this)
 		{
 			this.CallMetaAttributeSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
-			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9544,9 +9658,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaAttributeSuperConstructors(MetaAttributeBuilder _this)
 		{
-			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaElement(_this);
 			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
@@ -9576,8 +9690,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public virtual void MetaDeclaration(MetaDeclarationBuilder _this)
 		{
 			this.CallMetaDeclarationSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
+			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
 		}
 	
 		/// <summary>
@@ -9618,8 +9732,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public virtual void MetaNamespace(MetaNamespaceBuilder _this)
 		{
 			this.CallMetaNamespaceSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
-			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9676,6 +9788,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaElement</li>
 		///     <li>MetaType</li>
 		/// </ul>
 		public virtual void MetaCollectionType(MetaCollectionTypeBuilder _this)
@@ -9688,6 +9801,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaCollectionTypeSuperConstructors(MetaCollectionTypeBuilder _this)
 		{
+			this.MetaElement(_this);
 			this.MetaType(_this);
 		}
 	
@@ -9716,6 +9830,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaElement</li>
 		///     <li>MetaType</li>
 		/// </ul>
 		public virtual void MetaNullableType(MetaNullableTypeBuilder _this)
@@ -9728,6 +9843,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaNullableTypeSuperConstructors(MetaNullableTypeBuilder _this)
 		{
+			this.MetaElement(_this);
 			this.MetaType(_this);
 		}
 	
@@ -9756,9 +9872,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaElement</li>
 		///     <li>MetaDeclaration</li>
 		///     <li>MetaType</li>
 		///     <li>MetaNamedType</li>
@@ -9766,8 +9882,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public virtual void MetaPrimitiveType(MetaPrimitiveTypeBuilder _this)
 		{
 			this.CallMetaPrimitiveTypeSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
-			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9775,9 +9889,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaPrimitiveTypeSuperConstructors(MetaPrimitiveTypeBuilder _this)
 		{
-			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaElement(_this);
 			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
@@ -9808,9 +9922,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaElement</li>
 		///     <li>MetaDeclaration</li>
 		///     <li>MetaType</li>
 		///     <li>MetaNamedType</li>
@@ -9818,8 +9932,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public virtual void MetaEnum(MetaEnumBuilder _this)
 		{
 			this.CallMetaEnumSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
-			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9827,9 +9939,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaEnumSuperConstructors(MetaEnumBuilder _this)
 		{
-			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaElement(_this);
 			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
@@ -9895,8 +10007,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public virtual void MetaConstant(MetaConstantBuilder _this)
 		{
 			this.CallMetaConstantSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
-			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9923,9 +10033,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaElement</li>
 		///     <li>MetaDeclaration</li>
 		///     <li>MetaType</li>
 		///     <li>MetaNamedType</li>
@@ -9933,8 +10043,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public virtual void MetaClass(MetaClassBuilder _this)
 		{
 			this.CallMetaClassSuperConstructors(_this);
-			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
-			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9942,9 +10050,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		protected virtual void CallMetaClassSuperConstructors(MetaClassBuilder _this)
 		{
-			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaElement(_this);
 			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 			this.MetaNamedType(_this);
@@ -10197,3 +10305,4 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	}
 }
+

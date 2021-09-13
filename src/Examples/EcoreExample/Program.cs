@@ -14,7 +14,10 @@ namespace EcoreExample
 
         static void Main(string[] args)
         {
-            var ecoreFile = @"Ecore\Model\Ecore";
+            //var ecoreFile = @"Ecore\Model\Ecore";
+            //var ecoreFile = @"Xbase\Model\Xtype";
+            //var ecoreFile = @"Xbase\Model\XAnnotations";
+            var ecoreFile = @"Xbase\Model\JavaVMTypes";
             //var ecoreFile = @"Xbase\Model\Xbase";
             //var ecoreFile = @"Xcore\Model\Xcore";
             //var ecoreFile = @"Xtext\Model\Xtext";

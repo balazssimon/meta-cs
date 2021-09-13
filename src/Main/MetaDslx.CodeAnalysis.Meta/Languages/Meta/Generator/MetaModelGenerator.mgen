@@ -10,6 +10,8 @@ extern function string EscapeName(string name)
 extern function string ToCSharpAlias(string name)
 extern function string GenerateDefaultValue(MetaProperty property)
 extern function IEnumerable<ValueTuple<MetaProperty,MetaProperty>> GetAssociations(IEnumerable<ImmutableObject> objects)
+extern function MetaElement GetType(MetaTypedElement melem)
+extern function MetaElement GetReturnType(MetaOperation mop)
 
 template Generate(MetaModel metaModel)
 namespace [metaModel.Namespace.FullName]
@@ -36,7 +38,7 @@ end template
 
 template GenerateConstant(MetaConstant cst)
 [GenerateComment(cst)]
-const [GenerateType(cst.Type)] [cst.Name.EscapeName()];
+const [GenerateType(GetType(cst))] [cst.Name.EscapeName()];
 end template
 
 template GenerateEnum(MetaEnum enm)
@@ -73,7 +75,7 @@ end template
 
 template GenerateProperty(MetaProperty prop)
 [GenerateComment(prop)]
-[GenerateContainment(prop)][GenerateModifiers(prop)][GenerateType(prop.Type)] [prop.Name.EscapeName()][prop.GenerateDefaultValue()][GenerateRedefines(prop)][GenerateSubsets(prop)];
+[GenerateContainment(prop)][GenerateModifiers(prop)][GenerateType(GetType(prop))] [prop.Name.EscapeName()][prop.GenerateDefaultValue()][GenerateRedefines(prop)][GenerateSubsets(prop)];
 end template
 
 function string GenerateContainment(MetaProperty prop)
@@ -90,10 +92,11 @@ function string GenerateModifiers(MetaProperty prop)
 	return "";
 end function
 
-function string GenerateType(MetaType t)
+function string GenerateType(MetaElement t)
 	if (t is MetaCollectionType)
 		string typeName = GenerateType(((MetaCollectionType)t).InnerType);
 		switch (((MetaCollectionType)t).Kind)
+		case MetaCollectionKind.Enumerable: return "enumerable<"+typeName+">";
 		case MetaCollectionKind.Set: return "set<"+typeName+">";
 		case MetaCollectionKind.List: return "list<"+typeName+">";
 		case MetaCollectionKind.MultiSet: return "multi_set<"+typeName+">";
@@ -149,22 +152,23 @@ template GenerateOperation(MetaOperation op)
 end template
 
 template GenerateReturnType(MetaOperation op)
+[var returnType = GetReturnType(op)]
 [if (op.IsReadonly)]
 readonly \
 [end if]
 [if (op.IsBuilder)]
 builder \
 [end if]
-[if (op.ReturnType == null)]
+[if (returnType == null)]
 void
 [else]
-[GenerateType(op.ReturnType)]
+[GenerateType(returnType)]
 [end if]
 end template
 
 template GenerateParams(MetaOperation op)
 [loop(op->param:Parameters; separator sep = ", ")]
-[GenerateType(param.Type)] [param.Name.EscapeName()][sep]\
+[GenerateType(GetType(param))] [param.Name.EscapeName()][sep]\
 [end loop]
 end template
 
