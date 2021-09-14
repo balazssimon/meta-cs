@@ -9050,7 +9050,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaClass_SymbolType.SetTypeLazy(() => SystemType);
 			MetaClass_SymbolType.Documentation = null;
 			MetaClass_SymbolType.Name = "SymbolType";
-			MetaClass_SymbolType.SymbolProperty = "Attributes";
+			MetaClass_SymbolType.SymbolProperty = null;
 			MetaClass_SymbolType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			MetaClass_SymbolType.SetClassLazy(() => MetaClass);
 			MetaClass_SymbolType.DefaultValue = null;

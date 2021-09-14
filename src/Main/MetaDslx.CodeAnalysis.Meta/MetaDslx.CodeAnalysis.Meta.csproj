@@ -41,4 +41,10 @@
     </MetaGenerator>
   </ItemGroup>
 
+  <ItemGroup>
+    <MetaModel Update="Languages\Meta\Model\ImmutableMetaModel.mm">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </MetaModel>
+  </ItemGroup>
+
 </Project>
