@@ -17,6 +17,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public abstract ExpressionSymbol Receiver { get; }
 
+
+        /// <summary>
+        /// Indicates whether indexed access is null conditional (?[] operator)
+        /// </summary>
+        [SymbolProperty]
+        public abstract bool IsNullConditional { get; }
+
         /// <summary>
         /// Arguments of the invocation, excluding the instance argument. Arguments are in evaluation order.
         /// </summary>

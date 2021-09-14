@@ -70,7 +70,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.CShar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcoreExample", "Examples\EcoreExample\EcoreExample.csproj", "{B6A5F076-ACD0-4E8B-953F-09BD43F92F36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Core", "Main\MetaDslx.Languages.Core\MetaDslx.Languages.Core.csproj", "{8DAE6353-3B78-4B0C-AFD2-5BC2990FBEB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Core", "Main\MetaDslx.Languages.Core\MetaDslx.Languages.Core.csproj", "{8DAE6353-3B78-4B0C-AFD2-5BC2990FBEB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.Core", "Bootstrap\MetaDslx.Bootstrap.Core\MetaDslx.Bootstrap.Core.csproj", "{35C9998E-627B-4C2D-BEDB-5B2225F1C8AB}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -217,6 +219,10 @@ Global
 		{8DAE6353-3B78-4B0C-AFD2-5BC2990FBEB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DAE6353-3B78-4B0C-AFD2-5BC2990FBEB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DAE6353-3B78-4B0C-AFD2-5BC2990FBEB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C9998E-627B-4C2D-BEDB-5B2225F1C8AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C9998E-627B-4C2D-BEDB-5B2225F1C8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C9998E-627B-4C2D-BEDB-5B2225F1C8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35C9998E-627B-4C2D-BEDB-5B2225F1C8AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

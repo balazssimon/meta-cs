@@ -317,7 +317,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 left = leftNts.InnerType;
                 leftNullable = true;
             }
-            var leftSpecialSymbol = left.GetSpecialSymbol(CSharpLanguage.Instance);
+            var leftSpecialSymbol = left.GetSpecialSymbol(Compilation.Language);
             var leftIndex = -1;
             if (leftSpecialSymbol is SpecialType leftSpecialType)
             {
@@ -333,7 +333,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 right = rightNts.InnerType;
                 rightNullable = true;
             }
-            var rightSpecialSymbol = right.GetSpecialSymbol(CSharpLanguage.Instance);
+            var rightSpecialSymbol = right.GetSpecialSymbol(Compilation.Language);
             var rightIndex = -1;
             if (rightSpecialSymbol is SpecialType rightSpecialType)
             {

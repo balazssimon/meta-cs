@@ -19,6 +19,12 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         public void BinaryOperatorOverloadResolution(BinaryOperatorKind kind, ExpressionSymbol left, ExpressionSymbol right, BinaryOperatorOverloadResolutionResult result, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
+            if (kind is null || left is null || right is null)
+            {
+                result.Results.Add(BinaryOperatorAnalysisResult.Inapplicable(BinaryOperatorSignature.Error, Conversions.NoConversion, Conversions.NoConversion));
+                return;
+            }
+
             // We can do a table lookup for well-known problems in overload resolution.
             GetStandardOrUserDefinedOperator(kind, left, right, result, ref useSiteDiagnostics);
             if (result.Results.Count > 0)

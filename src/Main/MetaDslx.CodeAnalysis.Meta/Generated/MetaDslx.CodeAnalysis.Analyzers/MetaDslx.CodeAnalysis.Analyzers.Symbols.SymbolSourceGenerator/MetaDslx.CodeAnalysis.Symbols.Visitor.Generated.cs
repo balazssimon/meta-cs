@@ -57,6 +57,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(IndexerSymbol symbol);
         void Visit(LambdaSymbol symbol);
         void Visit(MethodSymbol symbol);
+        void Visit(VariableSymbol symbol);
         void Visit(ParameterSymbol symbol);
         void Visit(UnaryOperatorSymbol symbol);
         void Visit(ModuleSymbol symbol);
@@ -82,7 +83,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(SwitchStatementSymbol symbol);
         void Visit(TryStatementSymbol symbol);
         void Visit(UsingStatementSymbol symbol);
-        void Visit(VariableSymbol symbol);
         void Visit(WhileLoopStatementSymbol symbol);
         void Visit(TypeSymbol symbol);
         void Visit(ArrayTypeSymbol symbol);
@@ -90,9 +90,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(ClassTypeSymbol symbol);
         void Visit(CollectionTypeSymbol symbol);
         void Visit(DelegateTypeSymbol symbol);
+        void Visit(DictionaryTypeSymbol symbol);
         void Visit(DynamicTypeSymbol symbol);
         void Visit(EnumLiteralSymbol symbol);
         void Visit(EnumTypeSymbol symbol);
+        void Visit(GenericTypeReferenceTypeSymbol symbol);
         void Visit(InterfaceTypeSymbol symbol);
         void Visit(NullableTypeSymbol symbol);
         void Visit(PrimitiveTypeSymbol symbol);
@@ -146,6 +148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(IndexerSymbol symbol);
         TResult Visit(LambdaSymbol symbol);
         TResult Visit(MethodSymbol symbol);
+        TResult Visit(VariableSymbol symbol);
         TResult Visit(ParameterSymbol symbol);
         TResult Visit(UnaryOperatorSymbol symbol);
         TResult Visit(ModuleSymbol symbol);
@@ -171,7 +174,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(SwitchStatementSymbol symbol);
         TResult Visit(TryStatementSymbol symbol);
         TResult Visit(UsingStatementSymbol symbol);
-        TResult Visit(VariableSymbol symbol);
         TResult Visit(WhileLoopStatementSymbol symbol);
         TResult Visit(TypeSymbol symbol);
         TResult Visit(ArrayTypeSymbol symbol);
@@ -179,9 +181,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(ClassTypeSymbol symbol);
         TResult Visit(CollectionTypeSymbol symbol);
         TResult Visit(DelegateTypeSymbol symbol);
+        TResult Visit(DictionaryTypeSymbol symbol);
         TResult Visit(DynamicTypeSymbol symbol);
         TResult Visit(EnumLiteralSymbol symbol);
         TResult Visit(EnumTypeSymbol symbol);
+        TResult Visit(GenericTypeReferenceTypeSymbol symbol);
         TResult Visit(InterfaceTypeSymbol symbol);
         TResult Visit(NullableTypeSymbol symbol);
         TResult Visit(PrimitiveTypeSymbol symbol);
@@ -235,6 +239,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(IndexerSymbol symbol, TArgument argument);
         TResult Visit(LambdaSymbol symbol, TArgument argument);
         TResult Visit(MethodSymbol symbol, TArgument argument);
+        TResult Visit(VariableSymbol symbol, TArgument argument);
         TResult Visit(ParameterSymbol symbol, TArgument argument);
         TResult Visit(UnaryOperatorSymbol symbol, TArgument argument);
         TResult Visit(ModuleSymbol symbol, TArgument argument);
@@ -260,7 +265,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(SwitchStatementSymbol symbol, TArgument argument);
         TResult Visit(TryStatementSymbol symbol, TArgument argument);
         TResult Visit(UsingStatementSymbol symbol, TArgument argument);
-        TResult Visit(VariableSymbol symbol, TArgument argument);
         TResult Visit(WhileLoopStatementSymbol symbol, TArgument argument);
         TResult Visit(TypeSymbol symbol, TArgument argument);
         TResult Visit(ArrayTypeSymbol symbol, TArgument argument);
@@ -268,9 +272,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(ClassTypeSymbol symbol, TArgument argument);
         TResult Visit(CollectionTypeSymbol symbol, TArgument argument);
         TResult Visit(DelegateTypeSymbol symbol, TArgument argument);
+        TResult Visit(DictionaryTypeSymbol symbol, TArgument argument);
         TResult Visit(DynamicTypeSymbol symbol, TArgument argument);
         TResult Visit(EnumLiteralSymbol symbol, TArgument argument);
         TResult Visit(EnumTypeSymbol symbol, TArgument argument);
+        TResult Visit(GenericTypeReferenceTypeSymbol symbol, TArgument argument);
         TResult Visit(InterfaceTypeSymbol symbol, TArgument argument);
         TResult Visit(NullableTypeSymbol symbol, TArgument argument);
         TResult Visit(PrimitiveTypeSymbol symbol, TArgument argument);

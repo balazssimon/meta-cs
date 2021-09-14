@@ -136,6 +136,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 var result = UnaryOperatorOverloadResolutionResult.GetInstance();
                 compilation.OverloadResolution.UnaryOperatorOverloadResolution(this.OperatorKind, this.Operand, result, ref useSiteDiagnostics);
                 var analysisResult = result.Best;
+                if (result.Results.Count == 0 && (useSiteDiagnostics is null || useSiteDiagnostics.Count == 0))
+                {
+                    diagnostics.Add(InternalErrorCode.ERR_BadUnaryOp.ToDiagnostic(this.GetLocation(), this.OperatorKind.ToString(), this.Operand?.Type?.ToString()));
+                }
                 result.Free();
                 this.AddSymbolDiagnostics(useSiteDiagnostics);
                 return analysisResult;

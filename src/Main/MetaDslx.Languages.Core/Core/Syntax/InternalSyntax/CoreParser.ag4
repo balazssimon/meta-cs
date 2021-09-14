@@ -1,0 +1,245 @@
+﻿parser grammar CoreParser;
+
+@header 
+{
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Core.Model;
+}
+
+options
+{
+    tokenVocab = CoreLexer; 
+	generateCompiler=true;
+}
+
+main: usingNamespace* statement* EOF;
+
+$Import
+usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
+
+// Statements
+
+$Define(ExpressionStatement)
+statement: $Property(Expression) expression TSemicolon;
+
+// Expressions
+
+expression
+	: TOpenParen $Property(Operand) expression TCloseParen #parenthesizedExpr $Define(ParenthesizedExpression)
+	| KDefault #defaultExpr $Define(DefaultValueExpression)
+	| KThis #thisExpr $Define(InstanceReferenceExpression)
+	| KBase #baseExpr $Define(InstanceReferenceExpression)
+	| $Property(Value) literal #literalExpr $Define(LiteralExpression)
+	| $Property(ReferencedSymbol) $Use(Declaration) identifier genericTypeArguments? #identifierExpr $Define(ReferenceExpression)
+	| $Property(Qualifier) expression dotOperator $Property(ReferencedSymbol) $Use(Declaration) identifier genericTypeArguments? #qualifierExpr $Define(ReferenceExpression)
+	| $Property(Receiver) expression indexerOperator argumentList TCloseBracket #indexerExpr $Define(IndexerAccessExpression)
+	| expression TOpenParen argumentList? TCloseParen #invocationExpr $Define(InvocationExpression)
+	| KTypeof TOpenParen $Property(TypeOperand) typeReference TCloseParen #typeofExpr $Define(TypeOfExpression)
+	| KNameof TOpenParen $Property(Argument) expression TCloseParen #nameofExpr $Define(NameOfExpression)
+	| KSizeof TOpenParen $Property(TypeOperand) typeReference TCloseParen #sizeofExpr $Define(SizeOfExpression)
+	| KChecked TOpenParen expression TCloseParen #checkedExpr
+	| KUnchecked TOpenParen expression TCloseParen #uncheckedExpr
+	| KNew $Property(ObjectType) typeReference TOpenParen argumentList? TCloseParen initializerExpression? #newExpr $Define(ObjectCreationExpression)
+	| $Property(Operand) expression $Property(OperatorKind) postfixOperator #postfixUnaryExpr $Define(UnaryExpression)
+	| $Property(OperatorKind) unaryOperator $Property(Operand) expression #unaryExpr $Define(UnaryExpression)
+	| TOpenParen $Property(TargetType) typeReference TCloseParen $Property(Operand) expression #typeCastExpr $Define(ConversionExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) multiplicativeOperator $Property(RightOperand) right=expression #multExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) additiveOperator $Property(RightOperand) right=expression #addExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) shiftOperator $Property(RightOperand) right=expression #shiftExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) relationalOperator $Property(RightOperand) right=expression #relExpr $Define(BinaryExpression)
+	| $Property(ValueOperand) expression KIs $Property(name=IsNegated,value=true) KNot? $Property(TypeOperand) typeReference #typeIsExpr $Define(IsTypeExpression)
+	| $Property(Operand) expression KAs $Property(TargetType) typeReference #typeAsExpr $Define(ConversionExpression) $Property(name=IsTryCast,value=true)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) equalityOperator $Property(RightOperand) right=expression #eqExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) $Value(BinaryOperatorKind.BitwiseAnd) TAmpersand $Property(RightOperand) right=expression #andExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) $Value(BinaryOperatorKind.BitwiseXor) THat $Property(RightOperand) right=expression #xorExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) $Value(BinaryOperatorKind.BitwiseOr) TBar $Property(RightOperand) right=expression #orExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) $Value(BinaryOperatorKind.LogicalAnd) TAndAlso $Property(RightOperand) right=expression #andAlsoExpr $Define(BinaryExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) $Value(BinaryOperatorKind.LogicalOr) TOrElse $Property(RightOperand) right=expression #orElseExpr $Define(BinaryExpression)
+	| $Property(Value) value=expression TQuestionQuestion $Property(WhenNull) whenNull=expression #coalExpr $Define(CoalesceExpression)
+	| $Property(Condition) condition=expression TQuestion $Property(WhenTrue) whenTrue=expression TColon $Property(WhenFalse) whenFalse=expression #condExpr $Define(ConditionalExpression)
+	| $Property(Target) target=expression TAssign $Property(Value) value=expression #assignExpr $Define(AssignmentExpression)
+	| $Property(Target) target=expression $Property(OperatorKind) compoundAssignmentOperator $Property(Value) value=expression #compAssignExpr $Define(CompoundAssignmentExpression)
+	;
+
+argumentList: argumentExpression (TComma argumentExpression)*;
+argumentExpression: (name TColon)? expression;
+
+initializerExpression
+	: fieldInitializerExpressions
+	| collectionInitializerExpressions
+	| dictionaryInitializerExpressions
+	;
+
+fieldInitializerExpressions: fieldInitializerExpression (TComma fieldInitializerExpression)*;
+fieldInitializerExpression: identifier TAssign expression;
+collectionInitializerExpressions: expression (TComma expression)*;
+dictionaryInitializerExpressions: dictionaryInitializerExpression (TComma dictionaryInitializerExpression)*;
+dictionaryInitializerExpression: TOpenBracket identifier TCloseBracket TAssign expression;
+
+dotOperator
+	: TDot
+	| $Property(name=IsNullConditional,value=true) TQuestionDot
+	;
+
+indexerOperator
+	: TOpenBracket
+	| $Property(name=IsNullConditional,value=true) TQuestionOpenBracket
+	;
+
+postfixOperator
+	: $Value(UnaryOperatorKind.PostfixIncrement) TPlusPlus
+	| $Value(UnaryOperatorKind.PostfixDecrement) TMinusMinus
+	| TExclamation
+	;
+
+unaryOperator
+	: $Value(UnaryOperatorKind.UnaryPlus) TPlus
+	| $Value(UnaryOperatorKind.UnaryMinus) TMinus
+	| $Value(UnaryOperatorKind.LogicalNegation) TExclamation
+	| $Value(UnaryOperatorKind.BitwiseComplement) TTilde
+	| $Value(UnaryOperatorKind.PrefixIncrement) TPlusPlus
+	| $Value(UnaryOperatorKind.PrefixDecrement) TMinusMinus
+	| THat
+	;
+
+multiplicativeOperator
+	: $Value(BinaryOperatorKind.Multiplication) TAsterisk
+	| $Value(BinaryOperatorKind.Division) TSlash
+	| $Value(BinaryOperatorKind.Remainder) TPercent
+	;
+
+$Property(OperatorKind)
+additiveOperator
+	: $Value(BinaryOperatorKind.Addition) TPlus
+	| $Value(BinaryOperatorKind.Subtraction) TMinus
+	;
+
+shiftOperator
+	: leftShiftOperator
+	| rightShiftOperator
+	;
+$Value(BinaryOperatorKind.LeftShift)
+leftShiftOperator: first=TLessThan second=TLessThan;
+$Value(BinaryOperatorKind.RightShift)
+rightShiftOperator: first=TLessThan second=TLessThan;
+
+relationalOperator
+	: $Value(BinaryOperatorKind.LessThan) TLessThan
+	| $Value(BinaryOperatorKind.GreaterThan) TGreaterThan
+	| $Value(BinaryOperatorKind.LessThanOrEqual) TLessThanOrEqual
+	| $Value(BinaryOperatorKind.GreaterThanOrEqual) TGreaterThanOrEqual
+	;
+
+equalityOperator
+	: $Value(BinaryOperatorKind.Equal) TEqual
+	| $Value(BinaryOperatorKind.NotEqual) TNotEqual
+	;
+
+compoundAssignmentOperator
+	: $Value(BinaryOperatorKind.Addition) TPlusAssign
+	| $Value(BinaryOperatorKind.Subtraction) TMinusAssign
+	| $Value(BinaryOperatorKind.Multiplication) TAsteriskAssign
+	| $Value(BinaryOperatorKind.Division) TSlashAssign
+	| $Value(BinaryOperatorKind.Remainder) TPercentAssign
+	| $Value(BinaryOperatorKind.LogicalAnd) TAmpersandAssign
+	| $Value(BinaryOperatorKind.LogicalXor) THatAssign
+	| $Value(BinaryOperatorKind.LogicalOr) TBarAssign
+	| $Value(BinaryOperatorKind.LeftShift) TLeftShiftAssign
+	| $Value(BinaryOperatorKind.RightShift) TRightShiftAssign
+	;
+
+
+// Type references
+
+returnType : typeReference | voidType;
+
+$Use(DataType)
+typeReference 
+	: primitiveType #primitiveTypeRef
+	| $Property(ReferencedType) namedType genericTypeArguments #genericTypeRef $Define(GenericTypeReference)
+	| qualifier #namedTypeRef $Use(types=(ClassifierType,EnumType,DelegateType))
+	| $Property(ElementType) typeReference TOpenBracket TCloseBracket #arrayTypeRef $Define(ArrayType)
+	| $Property(InnerType) typeReference TQuestion #nullableTypeRef;
+
+$Use(types=(ClassifierType,EnumType,DelegateType))
+namedType : qualifier;
+
+$Property(TypeArguments)
+genericTypeArguments : TLessThan genericTypeArgument (TComma genericTypeArgument)* TGreaterThan;
+genericTypeArgument : typeReference;
+
+primitiveType
+	: $Value(CoreInstance.Object) KObject 
+	| $Value(CoreInstance.Boolean) KBool
+	| $Value(CoreInstance.Char) KChar
+	| $Value(CoreInstance.SByte) KSByte
+	| $Value(CoreInstance.Byte) KByte
+	| $Value(CoreInstance.Int16) KShort
+	| $Value(CoreInstance.UInt16) KUShort
+	| $Value(CoreInstance.Int32) KInt
+	| $Value(CoreInstance.UInt32) KUInt
+	| $Value(CoreInstance.Int64) KLong
+	| $Value(CoreInstance.UInt64) KULong 
+	| $Value(CoreInstance.Decimal) KDecimal
+	| $Value(CoreInstance.Single) KFloat
+	| $Value(CoreInstance.Double) KDouble 
+	| $Value(CoreInstance.String) KString
+	;
+
+$Value(CoreInstance.Void) 
+voidType : KVoid;
+
+
+
+// Additional rules for lexer:
+
+// Identifiers
+$Name
+name : identifier;
+
+$Name
+qualifiedName : qualifier;
+
+$Qualifier
+qualifier : identifier (TDot identifier)*;
+
+$Identifier
+identifier 
+	: IdentifierNormal 
+	| IdentifierVerbatim
+	;
+
+// Literals
+literal 
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
+	;
+
+// Null literal
+$Value
+nullLiteral : KNull;
+
+// Boolean literals
+$Property(name=Type,value=CoreInstance.Boolean)
+$Value
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+$Property(name=Type,value=CoreInstance.Int32)
+$Value
+integerLiteral : LInteger;
+$Property(name=Type,value=CoreInstance.Decimal)
+$Value
+decimalLiteral : LDecimal;
+$Property(name=Type,value=CoreInstance.Double)
+$Value
+scientificLiteral : LScientific;
+
+// String literals
+$Property(name=Type,value=CoreInstance.String)
+$Value
+stringLiteral : LRegularString;

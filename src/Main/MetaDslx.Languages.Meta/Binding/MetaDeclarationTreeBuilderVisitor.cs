@@ -6,28 +6,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using Microsoft.CodeAnalysis;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Symbols;
 
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
-	public class MetaDeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, IMetaSyntaxVisitor
+	public class MetaDeclarationTreeBuilderVisitor : MetaDslx.CodeAnalysis.Declarations.DeclarationTreeBuilderVisitor, IMetaSyntaxVisitor
 	{
-        protected MetaDeclarationTreeBuilderVisitor(MetaSyntaxTree syntaxTree, SymbolFacts symbolFacts, string scriptClassName, bool isSubmission)
+        protected MetaDeclarationTreeBuilderVisitor(MetaSyntaxTree syntaxTree, MetaDslx.CodeAnalysis.Symbols.SymbolFacts symbolFacts, string scriptClassName, bool isSubmission)
             : base(syntaxTree, symbolFacts, scriptClassName, isSubmission)
         {
         }
 
-        public static RootSingleDeclaration ForTree(
+        public static MetaDslx.CodeAnalysis.Declarations.RootSingleDeclaration ForTree(
             MetaSyntaxTree syntaxTree,
-            SymbolFacts symbolFacts,
+            MetaDslx.CodeAnalysis.Symbols.SymbolFacts symbolFacts,
             string scriptClassName,
             bool isSubmission)
         {

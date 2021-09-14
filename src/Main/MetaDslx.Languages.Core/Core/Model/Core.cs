@@ -26,6 +26,24 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Modeling.ModelMetadata MMetadata;
 		public static readonly global::MetaDslx.Modeling.ImmutableModel MModel;
 	
+		public static readonly PrimitiveType Object;
+		public static readonly PrimitiveType Void;
+		public static readonly PrimitiveType Boolean;
+		public static readonly PrimitiveType Char;
+		public static readonly PrimitiveType SByte;
+		public static readonly PrimitiveType Byte;
+		public static readonly PrimitiveType Int16;
+		public static readonly PrimitiveType UInt16;
+		public static readonly PrimitiveType Int32;
+		public static readonly PrimitiveType UInt32;
+		public static readonly PrimitiveType Int64;
+		public static readonly PrimitiveType UInt64;
+		public static readonly PrimitiveType Decimal;
+		public static readonly PrimitiveType Single;
+		public static readonly PrimitiveType Double;
+		public static readonly PrimitiveType String;
+		public static readonly PrimitiveType SystemType;
+		public static readonly PrimitiveType SystemEnum;
 	
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Element;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Element_Attributes;
@@ -36,6 +54,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass TypedElement;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty TypedElement_Type;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DataType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty DataType_ResolvedType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Declaration;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Declaration_TypeParameters;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Declaration_Members;
@@ -44,11 +63,13 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Alias;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Alias_Target;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass NamedType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NamedType_DotNetName;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NamedType_IsAbstract;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NamedType_IsSealed;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NamedType_TypeArguments;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NamedType_BaseTypes;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass PrimitiveType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ClassifierType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass InterfaceType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ClassType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass StructType;
@@ -67,10 +88,19 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty CollectionType_IsUnique;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty CollectionType_IsUnordered;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty CollectionType_ItemType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DictionaryType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty DictionaryType_IsUnordered;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty DictionaryType_KeyType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty DictionaryType_ValueType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass NullableType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NullableType_InnerType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass TupleType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass TypeParameter;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass GenericTypeReference;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GenericTypeReference_ReferencedType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GenericTypeReference_TypeArguments;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GenericTypeReference_ConstructedType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GenericTypeReference_ResolvedType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Member;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Member_IsStatic;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Member_IsVirtual;
@@ -92,6 +122,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty MethodLikeMember_Body;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Method;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Parameter;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Parameter_IsVarArg;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Constructor;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Constructor_NextConstructorInvocation;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Destructor;
@@ -171,6 +202,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty WhileLoopStatement_ConditionIsTop;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty WhileLoopStatement_ConditionIsUntil;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Expression;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Expression_Type;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Argument;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Argument_Value;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass AssignmentExpression;
@@ -208,6 +240,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IncrementOrDecrementExpression_IsChecked;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass IndexerAccessExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IndexerAccessExpression_Receiver;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IndexerAccessExpression_IsNullConditional;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IndexerAccessExpression_Arguments;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IndexerAccessExpression_Target;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass InstanceReferenceExpression;
@@ -225,6 +258,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LambdaExpression_Body;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass LiteralExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LiteralExpression_Value;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LiteralExpression_Type;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass NameOfExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NameOfExpression_Argument;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ObjectCreationExpression;
@@ -242,6 +276,8 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ReferenceExpression_ReferencedSymbol;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass SizeOfExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty SizeOfExpression_TypeOperand;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass TypeOfExpression;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty TypeOfExpression_TypeOperand;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ThrowExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ThrowExpression_Exception;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass TupleExpression;
@@ -265,6 +301,24 @@ namespace MetaDslx.Languages.Core.Model
 			MModel = CoreBuilderInstance.instance.MModel.ToImmutable();
 			MMetadata = MModel.Metadata;
 	
+			Object = CoreBuilderInstance.instance.Object.ToImmutable(MModel);
+			Void = CoreBuilderInstance.instance.Void.ToImmutable(MModel);
+			Boolean = CoreBuilderInstance.instance.Boolean.ToImmutable(MModel);
+			Char = CoreBuilderInstance.instance.Char.ToImmutable(MModel);
+			SByte = CoreBuilderInstance.instance.SByte.ToImmutable(MModel);
+			Byte = CoreBuilderInstance.instance.Byte.ToImmutable(MModel);
+			Int16 = CoreBuilderInstance.instance.Int16.ToImmutable(MModel);
+			UInt16 = CoreBuilderInstance.instance.UInt16.ToImmutable(MModel);
+			Int32 = CoreBuilderInstance.instance.Int32.ToImmutable(MModel);
+			UInt32 = CoreBuilderInstance.instance.UInt32.ToImmutable(MModel);
+			Int64 = CoreBuilderInstance.instance.Int64.ToImmutable(MModel);
+			UInt64 = CoreBuilderInstance.instance.UInt64.ToImmutable(MModel);
+			Decimal = CoreBuilderInstance.instance.Decimal.ToImmutable(MModel);
+			Single = CoreBuilderInstance.instance.Single.ToImmutable(MModel);
+			Double = CoreBuilderInstance.instance.Double.ToImmutable(MModel);
+			String = CoreBuilderInstance.instance.String.ToImmutable(MModel);
+			SystemType = CoreBuilderInstance.instance.SystemType.ToImmutable(MModel);
+			SystemEnum = CoreBuilderInstance.instance.SystemEnum.ToImmutable(MModel);
 	
 			Element = CoreBuilderInstance.instance.Element.ToImmutable(MModel);
 			Element_Attributes = CoreBuilderInstance.instance.Element_Attributes.ToImmutable(MModel);
@@ -275,6 +329,7 @@ namespace MetaDslx.Languages.Core.Model
 			TypedElement = CoreBuilderInstance.instance.TypedElement.ToImmutable(MModel);
 			TypedElement_Type = CoreBuilderInstance.instance.TypedElement_Type.ToImmutable(MModel);
 			DataType = CoreBuilderInstance.instance.DataType.ToImmutable(MModel);
+			DataType_ResolvedType = CoreBuilderInstance.instance.DataType_ResolvedType.ToImmutable(MModel);
 			Declaration = CoreBuilderInstance.instance.Declaration.ToImmutable(MModel);
 			Declaration_TypeParameters = CoreBuilderInstance.instance.Declaration_TypeParameters.ToImmutable(MModel);
 			Declaration_Members = CoreBuilderInstance.instance.Declaration_Members.ToImmutable(MModel);
@@ -283,11 +338,13 @@ namespace MetaDslx.Languages.Core.Model
 			Alias = CoreBuilderInstance.instance.Alias.ToImmutable(MModel);
 			Alias_Target = CoreBuilderInstance.instance.Alias_Target.ToImmutable(MModel);
 			NamedType = CoreBuilderInstance.instance.NamedType.ToImmutable(MModel);
+			NamedType_DotNetName = CoreBuilderInstance.instance.NamedType_DotNetName.ToImmutable(MModel);
 			NamedType_IsAbstract = CoreBuilderInstance.instance.NamedType_IsAbstract.ToImmutable(MModel);
 			NamedType_IsSealed = CoreBuilderInstance.instance.NamedType_IsSealed.ToImmutable(MModel);
 			NamedType_TypeArguments = CoreBuilderInstance.instance.NamedType_TypeArguments.ToImmutable(MModel);
 			NamedType_BaseTypes = CoreBuilderInstance.instance.NamedType_BaseTypes.ToImmutable(MModel);
 			PrimitiveType = CoreBuilderInstance.instance.PrimitiveType.ToImmutable(MModel);
+			ClassifierType = CoreBuilderInstance.instance.ClassifierType.ToImmutable(MModel);
 			InterfaceType = CoreBuilderInstance.instance.InterfaceType.ToImmutable(MModel);
 			ClassType = CoreBuilderInstance.instance.ClassType.ToImmutable(MModel);
 			StructType = CoreBuilderInstance.instance.StructType.ToImmutable(MModel);
@@ -306,10 +363,19 @@ namespace MetaDslx.Languages.Core.Model
 			CollectionType_IsUnique = CoreBuilderInstance.instance.CollectionType_IsUnique.ToImmutable(MModel);
 			CollectionType_IsUnordered = CoreBuilderInstance.instance.CollectionType_IsUnordered.ToImmutable(MModel);
 			CollectionType_ItemType = CoreBuilderInstance.instance.CollectionType_ItemType.ToImmutable(MModel);
+			DictionaryType = CoreBuilderInstance.instance.DictionaryType.ToImmutable(MModel);
+			DictionaryType_IsUnordered = CoreBuilderInstance.instance.DictionaryType_IsUnordered.ToImmutable(MModel);
+			DictionaryType_KeyType = CoreBuilderInstance.instance.DictionaryType_KeyType.ToImmutable(MModel);
+			DictionaryType_ValueType = CoreBuilderInstance.instance.DictionaryType_ValueType.ToImmutable(MModel);
 			NullableType = CoreBuilderInstance.instance.NullableType.ToImmutable(MModel);
 			NullableType_InnerType = CoreBuilderInstance.instance.NullableType_InnerType.ToImmutable(MModel);
 			TupleType = CoreBuilderInstance.instance.TupleType.ToImmutable(MModel);
 			TypeParameter = CoreBuilderInstance.instance.TypeParameter.ToImmutable(MModel);
+			GenericTypeReference = CoreBuilderInstance.instance.GenericTypeReference.ToImmutable(MModel);
+			GenericTypeReference_ReferencedType = CoreBuilderInstance.instance.GenericTypeReference_ReferencedType.ToImmutable(MModel);
+			GenericTypeReference_TypeArguments = CoreBuilderInstance.instance.GenericTypeReference_TypeArguments.ToImmutable(MModel);
+			GenericTypeReference_ConstructedType = CoreBuilderInstance.instance.GenericTypeReference_ConstructedType.ToImmutable(MModel);
+			GenericTypeReference_ResolvedType = CoreBuilderInstance.instance.GenericTypeReference_ResolvedType.ToImmutable(MModel);
 			Member = CoreBuilderInstance.instance.Member.ToImmutable(MModel);
 			Member_IsStatic = CoreBuilderInstance.instance.Member_IsStatic.ToImmutable(MModel);
 			Member_IsVirtual = CoreBuilderInstance.instance.Member_IsVirtual.ToImmutable(MModel);
@@ -331,6 +397,7 @@ namespace MetaDslx.Languages.Core.Model
 			MethodLikeMember_Body = CoreBuilderInstance.instance.MethodLikeMember_Body.ToImmutable(MModel);
 			Method = CoreBuilderInstance.instance.Method.ToImmutable(MModel);
 			Parameter = CoreBuilderInstance.instance.Parameter.ToImmutable(MModel);
+			Parameter_IsVarArg = CoreBuilderInstance.instance.Parameter_IsVarArg.ToImmutable(MModel);
 			Constructor = CoreBuilderInstance.instance.Constructor.ToImmutable(MModel);
 			Constructor_NextConstructorInvocation = CoreBuilderInstance.instance.Constructor_NextConstructorInvocation.ToImmutable(MModel);
 			Destructor = CoreBuilderInstance.instance.Destructor.ToImmutable(MModel);
@@ -410,6 +477,7 @@ namespace MetaDslx.Languages.Core.Model
 			WhileLoopStatement_ConditionIsTop = CoreBuilderInstance.instance.WhileLoopStatement_ConditionIsTop.ToImmutable(MModel);
 			WhileLoopStatement_ConditionIsUntil = CoreBuilderInstance.instance.WhileLoopStatement_ConditionIsUntil.ToImmutable(MModel);
 			Expression = CoreBuilderInstance.instance.Expression.ToImmutable(MModel);
+			Expression_Type = CoreBuilderInstance.instance.Expression_Type.ToImmutable(MModel);
 			Argument = CoreBuilderInstance.instance.Argument.ToImmutable(MModel);
 			Argument_Value = CoreBuilderInstance.instance.Argument_Value.ToImmutable(MModel);
 			AssignmentExpression = CoreBuilderInstance.instance.AssignmentExpression.ToImmutable(MModel);
@@ -447,6 +515,7 @@ namespace MetaDslx.Languages.Core.Model
 			IncrementOrDecrementExpression_IsChecked = CoreBuilderInstance.instance.IncrementOrDecrementExpression_IsChecked.ToImmutable(MModel);
 			IndexerAccessExpression = CoreBuilderInstance.instance.IndexerAccessExpression.ToImmutable(MModel);
 			IndexerAccessExpression_Receiver = CoreBuilderInstance.instance.IndexerAccessExpression_Receiver.ToImmutable(MModel);
+			IndexerAccessExpression_IsNullConditional = CoreBuilderInstance.instance.IndexerAccessExpression_IsNullConditional.ToImmutable(MModel);
 			IndexerAccessExpression_Arguments = CoreBuilderInstance.instance.IndexerAccessExpression_Arguments.ToImmutable(MModel);
 			IndexerAccessExpression_Target = CoreBuilderInstance.instance.IndexerAccessExpression_Target.ToImmutable(MModel);
 			InstanceReferenceExpression = CoreBuilderInstance.instance.InstanceReferenceExpression.ToImmutable(MModel);
@@ -464,6 +533,7 @@ namespace MetaDslx.Languages.Core.Model
 			LambdaExpression_Body = CoreBuilderInstance.instance.LambdaExpression_Body.ToImmutable(MModel);
 			LiteralExpression = CoreBuilderInstance.instance.LiteralExpression.ToImmutable(MModel);
 			LiteralExpression_Value = CoreBuilderInstance.instance.LiteralExpression_Value.ToImmutable(MModel);
+			LiteralExpression_Type = CoreBuilderInstance.instance.LiteralExpression_Type.ToImmutable(MModel);
 			NameOfExpression = CoreBuilderInstance.instance.NameOfExpression.ToImmutable(MModel);
 			NameOfExpression_Argument = CoreBuilderInstance.instance.NameOfExpression_Argument.ToImmutable(MModel);
 			ObjectCreationExpression = CoreBuilderInstance.instance.ObjectCreationExpression.ToImmutable(MModel);
@@ -481,6 +551,8 @@ namespace MetaDslx.Languages.Core.Model
 			ReferenceExpression_ReferencedSymbol = CoreBuilderInstance.instance.ReferenceExpression_ReferencedSymbol.ToImmutable(MModel);
 			SizeOfExpression = CoreBuilderInstance.instance.SizeOfExpression.ToImmutable(MModel);
 			SizeOfExpression_TypeOperand = CoreBuilderInstance.instance.SizeOfExpression_TypeOperand.ToImmutable(MModel);
+			TypeOfExpression = CoreBuilderInstance.instance.TypeOfExpression.ToImmutable(MModel);
+			TypeOfExpression_TypeOperand = CoreBuilderInstance.instance.TypeOfExpression_TypeOperand.ToImmutable(MModel);
 			ThrowExpression = CoreBuilderInstance.instance.ThrowExpression.ToImmutable(MModel);
 			ThrowExpression_Exception = CoreBuilderInstance.instance.ThrowExpression_Exception.ToImmutable(MModel);
 			TupleExpression = CoreBuilderInstance.instance.TupleExpression.ToImmutable(MModel);
@@ -522,6 +594,7 @@ namespace MetaDslx.Languages.Core.Model
 				case "Namespace": return this.Namespace();
 				case "Alias": return this.Alias();
 				case "PrimitiveType": return this.PrimitiveType();
+				case "ClassifierType": return this.ClassifierType();
 				case "InterfaceType": return this.InterfaceType();
 				case "ClassType": return this.ClassType();
 				case "StructType": return this.StructType();
@@ -530,9 +603,11 @@ namespace MetaDslx.Languages.Core.Model
 				case "DelegateType": return this.DelegateType();
 				case "ArrayType": return this.ArrayType();
 				case "CollectionType": return this.CollectionType();
+				case "DictionaryType": return this.DictionaryType();
 				case "NullableType": return this.NullableType();
 				case "TupleType": return this.TupleType();
 				case "TypeParameter": return this.TypeParameter();
+				case "GenericTypeReference": return this.GenericTypeReference();
 				case "Field": return this.Field();
 				case "Property": return this.Property();
 				case "Indexer": return this.Indexer();
@@ -585,6 +660,7 @@ namespace MetaDslx.Languages.Core.Model
 				case "ParenthesizedExpression": return this.ParenthesizedExpression();
 				case "ReferenceExpression": return this.ReferenceExpression();
 				case "SizeOfExpression": return this.SizeOfExpression();
+				case "TypeOfExpression": return this.TypeOfExpression();
 				case "ThrowExpression": return this.ThrowExpression();
 				case "TupleExpression": return this.TupleExpression();
 				case "UnaryExpression": return this.UnaryExpression();
@@ -629,6 +705,15 @@ namespace MetaDslx.Languages.Core.Model
 		{
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new PrimitiveTypeId());
 			return (PrimitiveTypeBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of ClassifierType.
+		/// </summary>
+		public ClassifierTypeBuilder ClassifierType()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new ClassifierTypeId());
+			return (ClassifierTypeBuilder)obj;
 		}
 	
 		/// <summary>
@@ -704,6 +789,15 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		/// <summary>
+		/// Creates a new instance of DictionaryType.
+		/// </summary>
+		public DictionaryTypeBuilder DictionaryType()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new DictionaryTypeId());
+			return (DictionaryTypeBuilder)obj;
+		}
+	
+		/// <summary>
 		/// Creates a new instance of NullableType.
 		/// </summary>
 		public NullableTypeBuilder NullableType()
@@ -728,6 +822,15 @@ namespace MetaDslx.Languages.Core.Model
 		{
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new TypeParameterId());
 			return (TypeParameterBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of GenericTypeReference.
+		/// </summary>
+		public GenericTypeReferenceBuilder GenericTypeReference()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new GenericTypeReferenceId());
+			return (GenericTypeReferenceBuilder)obj;
 		}
 	
 		/// <summary>
@@ -1199,6 +1302,15 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		/// <summary>
+		/// Creates a new instance of TypeOfExpression.
+		/// </summary>
+		public TypeOfExpressionBuilder TypeOfExpression()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new TypeOfExpressionId());
+			return (TypeOfExpressionBuilder)obj;
+		}
+	
+		/// <summary>
 		/// Creates a new instance of ThrowExpression.
 		/// </summary>
 		public ThrowExpressionBuilder ThrowExpression()
@@ -1392,6 +1504,7 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface DataType : Element
 	{
+		DataType ResolvedType { get; }
 	
 	
 		/// <summary>
@@ -1408,6 +1521,10 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface DataTypeBuilder : ElementBuilder
 	{
+		DataTypeBuilder ResolvedType { get; }
+		void SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy);
+		void SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy);
+		void SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy);
 	
 	
 		/// <summary>
@@ -1561,6 +1678,7 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface NamedType : Declaration, DataType
 	{
+		string DotNetName { get; }
 		bool IsAbstract { get; }
 		bool IsSealed { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<DataType> TypeArguments { get; }
@@ -1581,6 +1699,10 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface NamedTypeBuilder : DeclarationBuilder, DataTypeBuilder
 	{
+		string DotNetName { get; set; }
+		void SetDotNetNameLazy(global::System.Func<string> lazy);
+		void SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy);
+		void SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy);
 		bool IsAbstract { get; set; }
 		void SetIsAbstractLazy(global::System.Func<bool> lazy);
 		void SetIsAbstractLazy(global::System.Func<NamedTypeBuilder, bool> lazy);
@@ -1637,7 +1759,39 @@ namespace MetaDslx.Languages.Core.Model
 		new PrimitiveType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface InterfaceType : NamedType
+	public interface ClassifierType : NamedType
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="ClassifierType"/> object to a builder <see cref="ClassifierTypeBuilder"/> object.
+		/// </summary>
+		new ClassifierTypeBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="ClassifierType"/> object to a builder <see cref="ClassifierTypeBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new ClassifierTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface ClassifierTypeBuilder : NamedTypeBuilder
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="ClassifierTypeBuilder"/> object to an immutable <see cref="ClassifierType"/> object.
+		/// </summary>
+		new ClassifierType ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="ClassifierTypeBuilder"/> object to an immutable <see cref="ClassifierType"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new ClassifierType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface InterfaceType : ClassifierType
 	{
 	
 	
@@ -1653,7 +1807,7 @@ namespace MetaDslx.Languages.Core.Model
 		new InterfaceTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface InterfaceTypeBuilder : NamedTypeBuilder
+	public interface InterfaceTypeBuilder : ClassifierTypeBuilder
 	{
 	
 	
@@ -1669,7 +1823,7 @@ namespace MetaDslx.Languages.Core.Model
 		new InterfaceType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface ClassType : NamedType
+	public interface ClassType : ClassifierType
 	{
 	
 	
@@ -1685,7 +1839,7 @@ namespace MetaDslx.Languages.Core.Model
 		new ClassTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface ClassTypeBuilder : NamedTypeBuilder
+	public interface ClassTypeBuilder : ClassifierTypeBuilder
 	{
 	
 	
@@ -1701,7 +1855,7 @@ namespace MetaDslx.Languages.Core.Model
 		new ClassType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface StructType : NamedType
+	public interface StructType : ClassifierType
 	{
 	
 	
@@ -1717,7 +1871,7 @@ namespace MetaDslx.Languages.Core.Model
 		new StructTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface StructTypeBuilder : NamedTypeBuilder
+	public interface StructTypeBuilder : ClassifierTypeBuilder
 	{
 	
 	
@@ -1937,6 +2091,53 @@ namespace MetaDslx.Languages.Core.Model
 		new CollectionType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
+	public interface DictionaryType : DataType
+	{
+		bool IsUnordered { get; }
+		DataType KeyType { get; }
+		DataType ValueType { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="DictionaryType"/> object to a builder <see cref="DictionaryTypeBuilder"/> object.
+		/// </summary>
+		new DictionaryTypeBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="DictionaryType"/> object to a builder <see cref="DictionaryTypeBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new DictionaryTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface DictionaryTypeBuilder : DataTypeBuilder
+	{
+		bool IsUnordered { get; set; }
+		void SetIsUnorderedLazy(global::System.Func<bool> lazy);
+		void SetIsUnorderedLazy(global::System.Func<DictionaryTypeBuilder, bool> lazy);
+		void SetIsUnorderedLazy(global::System.Func<DictionaryType, bool> immutableLazy, global::System.Func<DictionaryTypeBuilder, bool> mutableLazy);
+		DataTypeBuilder KeyType { get; set; }
+		void SetKeyTypeLazy(global::System.Func<DataTypeBuilder> lazy);
+		void SetKeyTypeLazy(global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> lazy);
+		void SetKeyTypeLazy(global::System.Func<DictionaryType, DataType> immutableLazy, global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> mutableLazy);
+		DataTypeBuilder ValueType { get; set; }
+		void SetValueTypeLazy(global::System.Func<DataTypeBuilder> lazy);
+		void SetValueTypeLazy(global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> lazy);
+		void SetValueTypeLazy(global::System.Func<DictionaryType, DataType> immutableLazy, global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="DictionaryTypeBuilder"/> object to an immutable <see cref="DictionaryType"/> object.
+		/// </summary>
+		new DictionaryType ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="DictionaryTypeBuilder"/> object to an immutable <see cref="DictionaryType"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new DictionaryType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
 	public interface NullableType : DataType
 	{
 		DataType InnerType { get; }
@@ -2036,6 +2237,55 @@ namespace MetaDslx.Languages.Core.Model
 		/// </summary>
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new TypeParameter ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface GenericTypeReference : DataType
+	{
+		NamedType ReferencedType { get; }
+		global::MetaDslx.Modeling.ImmutableModelList<DataType> TypeArguments { get; }
+		NamedType ConstructedType { get; }
+		new DataType ResolvedType { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="GenericTypeReference"/> object to a builder <see cref="GenericTypeReferenceBuilder"/> object.
+		/// </summary>
+		new GenericTypeReferenceBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="GenericTypeReference"/> object to a builder <see cref="GenericTypeReferenceBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new GenericTypeReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface GenericTypeReferenceBuilder : DataTypeBuilder
+	{
+		NamedTypeBuilder ReferencedType { get; set; }
+		void SetReferencedTypeLazy(global::System.Func<NamedTypeBuilder> lazy);
+		void SetReferencedTypeLazy(global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> lazy);
+		void SetReferencedTypeLazy(global::System.Func<GenericTypeReference, NamedType> immutableLazy, global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> mutableLazy);
+		global::MetaDslx.Modeling.MutableModelList<DataTypeBuilder> TypeArguments { get; }
+		NamedTypeBuilder ConstructedType { get; }
+		void SetConstructedTypeLazy(global::System.Func<NamedTypeBuilder> lazy);
+		void SetConstructedTypeLazy(global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> lazy);
+		void SetConstructedTypeLazy(global::System.Func<GenericTypeReference, NamedType> immutableLazy, global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> mutableLazy);
+		new DataTypeBuilder ResolvedType { get; }
+		new void SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy);
+		new void SetResolvedTypeLazy(global::System.Func<GenericTypeReferenceBuilder, DataTypeBuilder> lazy);
+		new void SetResolvedTypeLazy(global::System.Func<GenericTypeReference, DataType> immutableLazy, global::System.Func<GenericTypeReferenceBuilder, DataTypeBuilder> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="GenericTypeReferenceBuilder"/> object to an immutable <see cref="GenericTypeReference"/> object.
+		/// </summary>
+		new GenericTypeReference ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="GenericTypeReferenceBuilder"/> object to an immutable <see cref="GenericTypeReference"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new GenericTypeReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
 	public interface Member : Declaration
@@ -2321,8 +2571,9 @@ namespace MetaDslx.Languages.Core.Model
 		new Method ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface Parameter : Local, TypedDeclaration
+	public interface Parameter : Variable
 	{
+		bool IsVarArg { get; }
 	
 	
 		/// <summary>
@@ -2337,8 +2588,12 @@ namespace MetaDslx.Languages.Core.Model
 		new ParameterBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface ParameterBuilder : LocalBuilder, TypedDeclarationBuilder
+	public interface ParameterBuilder : VariableBuilder
 	{
+		bool IsVarArg { get; set; }
+		void SetIsVarArgLazy(global::System.Func<bool> lazy);
+		void SetIsVarArgLazy(global::System.Func<ParameterBuilder, bool> lazy);
+		void SetIsVarArgLazy(global::System.Func<Parameter, bool> immutableLazy, global::System.Func<ParameterBuilder, bool> mutableLazy);
 	
 	
 		/// <summary>
@@ -3591,6 +3846,7 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface Expression : Element
 	{
+		DataType Type { get; }
 	
 	
 		/// <summary>
@@ -3607,6 +3863,10 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface ExpressionBuilder : ElementBuilder
 	{
+		DataTypeBuilder Type { get; set; }
+		void SetTypeLazy(global::System.Func<DataTypeBuilder> lazy);
+		void SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy);
+		void SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy);
 	
 	
 		/// <summary>
@@ -4123,6 +4383,7 @@ namespace MetaDslx.Languages.Core.Model
 	public interface IndexerAccessExpression : Expression
 	{
 		Expression Receiver { get; }
+		bool IsNullConditional { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<Argument> Arguments { get; }
 		Indexer Target { get; }
 	
@@ -4145,6 +4406,10 @@ namespace MetaDslx.Languages.Core.Model
 		void SetReceiverLazy(global::System.Func<ExpressionBuilder> lazy);
 		void SetReceiverLazy(global::System.Func<IndexerAccessExpressionBuilder, ExpressionBuilder> lazy);
 		void SetReceiverLazy(global::System.Func<IndexerAccessExpression, Expression> immutableLazy, global::System.Func<IndexerAccessExpressionBuilder, ExpressionBuilder> mutableLazy);
+		bool IsNullConditional { get; set; }
+		void SetIsNullConditionalLazy(global::System.Func<bool> lazy);
+		void SetIsNullConditionalLazy(global::System.Func<IndexerAccessExpressionBuilder, bool> lazy);
+		void SetIsNullConditionalLazy(global::System.Func<IndexerAccessExpression, bool> immutableLazy, global::System.Func<IndexerAccessExpressionBuilder, bool> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<ArgumentBuilder> Arguments { get; }
 		IndexerBuilder Target { get; set; }
 		void SetTargetLazy(global::System.Func<IndexerBuilder> lazy);
@@ -4334,6 +4599,7 @@ namespace MetaDslx.Languages.Core.Model
 	public interface LiteralExpression : Expression
 	{
 		object Value { get; }
+		new DataType Type { get; }
 	
 	
 		/// <summary>
@@ -4354,6 +4620,10 @@ namespace MetaDslx.Languages.Core.Model
 		void SetValueLazy(global::System.Func<object> lazy);
 		void SetValueLazy(global::System.Func<LiteralExpressionBuilder, object> lazy);
 		void SetValueLazy(global::System.Func<LiteralExpression, object> immutableLazy, global::System.Func<LiteralExpressionBuilder, object> mutableLazy);
+		new DataTypeBuilder Type { get; set; }
+		new void SetTypeLazy(global::System.Func<DataTypeBuilder> lazy);
+		new void SetTypeLazy(global::System.Func<LiteralExpressionBuilder, DataTypeBuilder> lazy);
+		new void SetTypeLazy(global::System.Func<LiteralExpression, DataType> immutableLazy, global::System.Func<LiteralExpressionBuilder, DataTypeBuilder> mutableLazy);
 	
 	
 		/// <summary>
@@ -4579,6 +4849,43 @@ namespace MetaDslx.Languages.Core.Model
 		new SizeOfExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
+	public interface TypeOfExpression : Expression
+	{
+		DataType TypeOperand { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="TypeOfExpression"/> object to a builder <see cref="TypeOfExpressionBuilder"/> object.
+		/// </summary>
+		new TypeOfExpressionBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="TypeOfExpression"/> object to a builder <see cref="TypeOfExpressionBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new TypeOfExpressionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface TypeOfExpressionBuilder : ExpressionBuilder
+	{
+		DataTypeBuilder TypeOperand { get; set; }
+		void SetTypeOperandLazy(global::System.Func<DataTypeBuilder> lazy);
+		void SetTypeOperandLazy(global::System.Func<TypeOfExpressionBuilder, DataTypeBuilder> lazy);
+		void SetTypeOperandLazy(global::System.Func<TypeOfExpression, DataType> immutableLazy, global::System.Func<TypeOfExpressionBuilder, DataTypeBuilder> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="TypeOfExpressionBuilder"/> object to an immutable <see cref="TypeOfExpression"/> object.
+		/// </summary>
+		new TypeOfExpression ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="TypeOfExpressionBuilder"/> object to an immutable <see cref="TypeOfExpression"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new TypeOfExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
 	public interface ThrowExpression : Expression
 	{
 		Expression Exception { get; }
@@ -4801,6 +5108,7 @@ namespace MetaDslx.Languages.Core.Model
 			Alias.Initialize();
 			NamedType.Initialize();
 			PrimitiveType.Initialize();
+			ClassifierType.Initialize();
 			InterfaceType.Initialize();
 			ClassType.Initialize();
 			StructType.Initialize();
@@ -4809,9 +5117,11 @@ namespace MetaDslx.Languages.Core.Model
 			DelegateType.Initialize();
 			ArrayType.Initialize();
 			CollectionType.Initialize();
+			DictionaryType.Initialize();
 			NullableType.Initialize();
 			TupleType.Initialize();
 			TypeParameter.Initialize();
+			GenericTypeReference.Initialize();
 			Member.Initialize();
 			FieldLikeMember.Initialize();
 			Field.Initialize();
@@ -4876,6 +5186,7 @@ namespace MetaDslx.Languages.Core.Model
 			ParenthesizedExpression.Initialize();
 			ReferenceExpression.Initialize();
 			SizeOfExpression.Initialize();
+			TypeOfExpression.Initialize();
 			ThrowExpression.Initialize();
 			TupleExpression.Initialize();
 			UnaryExpression.Initialize();
@@ -4885,9 +5196,11 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.Attribute.TypeProperty);
 			properties.Add(CoreDescriptor.NamedElement.NameProperty);
 			properties.Add(CoreDescriptor.TypedElement.TypeProperty);
+			properties.Add(CoreDescriptor.DataType.ResolvedTypeProperty);
 			properties.Add(CoreDescriptor.Declaration.TypeParametersProperty);
 			properties.Add(CoreDescriptor.Declaration.MembersProperty);
 			properties.Add(CoreDescriptor.Alias.TargetProperty);
+			properties.Add(CoreDescriptor.NamedType.DotNetNameProperty);
 			properties.Add(CoreDescriptor.NamedType.IsAbstractProperty);
 			properties.Add(CoreDescriptor.NamedType.IsSealedProperty);
 			properties.Add(CoreDescriptor.NamedType.TypeArgumentsProperty);
@@ -4902,7 +5215,14 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.CollectionType.IsUniqueProperty);
 			properties.Add(CoreDescriptor.CollectionType.IsUnorderedProperty);
 			properties.Add(CoreDescriptor.CollectionType.ItemTypeProperty);
+			properties.Add(CoreDescriptor.DictionaryType.IsUnorderedProperty);
+			properties.Add(CoreDescriptor.DictionaryType.KeyTypeProperty);
+			properties.Add(CoreDescriptor.DictionaryType.ValueTypeProperty);
 			properties.Add(CoreDescriptor.NullableType.InnerTypeProperty);
+			properties.Add(CoreDescriptor.GenericTypeReference.ReferencedTypeProperty);
+			properties.Add(CoreDescriptor.GenericTypeReference.TypeArgumentsProperty);
+			properties.Add(CoreDescriptor.GenericTypeReference.ConstructedTypeProperty);
+			properties.Add(CoreDescriptor.GenericTypeReference.ResolvedTypeProperty);
 			properties.Add(CoreDescriptor.Member.IsStaticProperty);
 			properties.Add(CoreDescriptor.Member.IsVirtualProperty);
 			properties.Add(CoreDescriptor.Member.IsOverrideProperty);
@@ -4916,6 +5236,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.MethodLikeMember.ReturnTypeProperty);
 			properties.Add(CoreDescriptor.MethodLikeMember.ParametersProperty);
 			properties.Add(CoreDescriptor.MethodLikeMember.BodyProperty);
+			properties.Add(CoreDescriptor.Parameter.IsVarArgProperty);
 			properties.Add(CoreDescriptor.Constructor.NextConstructorInvocationProperty);
 			properties.Add(CoreDescriptor.UnaryOperator.OperatorKindProperty);
 			properties.Add(CoreDescriptor.BinaryOperator.OperatorKindProperty);
@@ -4962,6 +5283,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.WhileLoopStatement.ConditionProperty);
 			properties.Add(CoreDescriptor.WhileLoopStatement.ConditionIsTopProperty);
 			properties.Add(CoreDescriptor.WhileLoopStatement.ConditionIsUntilProperty);
+			properties.Add(CoreDescriptor.Expression.TypeProperty);
 			properties.Add(CoreDescriptor.Argument.ValueProperty);
 			properties.Add(CoreDescriptor.AssignmentExpression.TargetProperty);
 			properties.Add(CoreDescriptor.AssignmentExpression.ValueProperty);
@@ -4986,6 +5308,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty);
 			properties.Add(CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty);
 			properties.Add(CoreDescriptor.IndexerAccessExpression.ReceiverProperty);
+			properties.Add(CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty);
 			properties.Add(CoreDescriptor.IndexerAccessExpression.ArgumentsProperty);
 			properties.Add(CoreDescriptor.IndexerAccessExpression.TargetProperty);
 			properties.Add(CoreDescriptor.InstanceReferenceExpression.AccessThroughBaseTypeProperty);
@@ -4998,6 +5321,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.LambdaExpression.ParametersProperty);
 			properties.Add(CoreDescriptor.LambdaExpression.BodyProperty);
 			properties.Add(CoreDescriptor.LiteralExpression.ValueProperty);
+			properties.Add(CoreDescriptor.LiteralExpression.TypeProperty);
 			properties.Add(CoreDescriptor.NameOfExpression.ArgumentProperty);
 			properties.Add(CoreDescriptor.ObjectCreationExpression.ObjectTypeProperty);
 			properties.Add(CoreDescriptor.ObjectCreationExpression.ArgumentsProperty);
@@ -5010,6 +5334,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.ReferenceExpression.ReferenceThroughTypeProperty);
 			properties.Add(CoreDescriptor.ReferenceExpression.ReferencedSymbolProperty);
 			properties.Add(CoreDescriptor.SizeOfExpression.TypeOperandProperty);
+			properties.Add(CoreDescriptor.TypeOfExpression.TypeOperandProperty);
 			properties.Add(CoreDescriptor.ThrowExpression.ExceptionProperty);
 			properties.Add(CoreDescriptor.TupleExpression.ArgumentsProperty);
 			properties.Add(CoreDescriptor.UnaryExpression.OperatorKindProperty);
@@ -5189,6 +5514,15 @@ namespace MetaDslx.Languages.Core.Model
 			{
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.DataType; }
 			}
+			
+			[global::MetaDslx.Modeling.ReadonlyAttribute]
+			[global::MetaDslx.Modeling.DerivedAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ResolvedTypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(DataType), name: "ResolvedType",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.DataType_ResolvedType,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol))]
@@ -5349,6 +5683,13 @@ namespace MetaDslx.Languages.Core.Model
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.NamedType; }
 			}
 			
+			public static readonly global::MetaDslx.Modeling.ModelProperty DotNetNameProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(NamedType), name: "DotNetName",
+			        immutableType: typeof(string),
+			        mutableType: typeof(string),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.NamedType_DotNetName,
+					defaultValue: null);
+			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsAbstract")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsAbstractProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(NamedType), name: "IsAbstract",
@@ -5413,8 +5754,33 @@ namespace MetaDslx.Languages.Core.Model
 			}
 		}
 	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ClassifierTypeId), typeof(global::MetaDslx.Languages.Core.Model.ClassifierType), typeof(global::MetaDslx.Languages.Core.Model.ClassifierTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.NamedType) })]
+		public static class ClassifierType
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static ClassifierType()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ClassifierType));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.ClassifierType; }
+			}
+		}
+	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.InterfaceTypeSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.InterfaceTypeId), typeof(global::MetaDslx.Languages.Core.Model.InterfaceType), typeof(global::MetaDslx.Languages.Core.Model.InterfaceTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.NamedType) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.InterfaceTypeId), typeof(global::MetaDslx.Languages.Core.Model.InterfaceType), typeof(global::MetaDslx.Languages.Core.Model.InterfaceTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.ClassifierType) })]
 		public static class InterfaceType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -5440,7 +5806,7 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ClassTypeSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ClassTypeId), typeof(global::MetaDslx.Languages.Core.Model.ClassType), typeof(global::MetaDslx.Languages.Core.Model.ClassTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.NamedType) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ClassTypeId), typeof(global::MetaDslx.Languages.Core.Model.ClassType), typeof(global::MetaDslx.Languages.Core.Model.ClassTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.ClassifierType) })]
 		public static class ClassType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -5466,7 +5832,7 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.StructTypeSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.StructTypeId), typeof(global::MetaDslx.Languages.Core.Model.StructType), typeof(global::MetaDslx.Languages.Core.Model.StructTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.NamedType) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.StructTypeId), typeof(global::MetaDslx.Languages.Core.Model.StructType), typeof(global::MetaDslx.Languages.Core.Model.StructTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.ClassifierType) })]
 		public static class StructType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -5709,6 +6075,56 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 		}
 	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.DictionaryTypeSymbol))]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.DictionaryTypeId), typeof(global::MetaDslx.Languages.Core.Model.DictionaryType), typeof(global::MetaDslx.Languages.Core.Model.DictionaryTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.DataType) })]
+		public static class DictionaryType
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static DictionaryType()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(DictionaryType));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.DictionaryType; }
+			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsUnordered")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsUnorderedProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(DictionaryType), name: "IsUnordered",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.DictionaryType_IsUnordered,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("KeyType")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty KeyTypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(DictionaryType), name: "KeyType",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.DictionaryType_KeyType,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ValueType")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ValueTypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(DictionaryType), name: "ValueType",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.DictionaryType_ValueType,
+					defaultValue: null);
+		}
+	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NullableTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.NullableTypeId), typeof(global::MetaDslx.Languages.Core.Model.NullableType), typeof(global::MetaDslx.Languages.Core.Model.NullableTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.DataType) })]
 		public static class NullableType
@@ -5793,6 +6209,69 @@ namespace MetaDslx.Languages.Core.Model
 			{
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.TypeParameter; }
 			}
+		}
+	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.GenericTypeReferenceTypeSymbol))]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.GenericTypeReferenceId), typeof(global::MetaDslx.Languages.Core.Model.GenericTypeReference), typeof(global::MetaDslx.Languages.Core.Model.GenericTypeReferenceBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.DataType) })]
+		public static class GenericTypeReference
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static GenericTypeReference()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(GenericTypeReference));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.GenericTypeReference; }
+			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReferencedType")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ReferencedTypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(GenericTypeReference), name: "ReferencedType",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.NamedType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.NamedTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.GenericTypeReference_ReferencedType,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TypeArguments")]
+			[global::MetaDslx.Modeling.CollectionAttribute]
+			[global::MetaDslx.Modeling.OrderedAttribute]
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty TypeArgumentsProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(GenericTypeReference), name: "TypeArguments",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.GenericTypeReference_TypeArguments,
+					defaultValue: null);
+			
+			[global::MetaDslx.Modeling.ReadonlyAttribute]
+			[global::MetaDslx.Modeling.DerivedAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ConstructedTypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(GenericTypeReference), name: "ConstructedType",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.NamedType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.NamedTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.GenericTypeReference_ConstructedType,
+					defaultValue: null);
+			
+			[global::MetaDslx.Modeling.ReadonlyAttribute]
+			[global::MetaDslx.Modeling.DerivedAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ResolvedTypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(GenericTypeReference), name: "ResolvedType",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.GenericTypeReference_ResolvedType,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol))]
@@ -6092,7 +6571,7 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ParameterSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ParameterId), typeof(global::MetaDslx.Languages.Core.Model.Parameter), typeof(global::MetaDslx.Languages.Core.Model.ParameterBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Local), typeof(CoreDescriptor.TypedDeclaration) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ParameterId), typeof(global::MetaDslx.Languages.Core.Model.Parameter), typeof(global::MetaDslx.Languages.Core.Model.ParameterBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Variable) })]
 		public static class Parameter
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -6115,6 +6594,14 @@ namespace MetaDslx.Languages.Core.Model
 			{
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.Parameter; }
 			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsVarArg")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsVarArgProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Parameter), name: "IsVarArg",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Parameter_IsVarArg,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ConstructorSymbol))]
@@ -7389,6 +7876,13 @@ namespace MetaDslx.Languages.Core.Model
 			{
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.Expression; }
 			}
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Expression), name: "Type",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Expression_Type,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ArgumentSymbol))]
@@ -7531,7 +8025,6 @@ namespace MetaDslx.Languages.Core.Model
 			}
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("OperatorKind")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperatorKindProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(BinaryExpression), name: "OperatorKind",
 			        immutableType: typeof(object),
@@ -7558,7 +8051,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsChecked")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsCheckedProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(BinaryExpression), name: "IsChecked",
 			        immutableType: typeof(bool),
@@ -7567,7 +8059,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("OperatorMethod")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperatorMethodProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(BinaryExpression), name: "OperatorMethod",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.BinaryOperator),
@@ -7646,7 +8137,6 @@ namespace MetaDslx.Languages.Core.Model
 			}
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("OperatorKind")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperatorKindProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(CompoundAssignmentExpression), name: "OperatorKind",
 			        immutableType: typeof(object),
@@ -7655,7 +8145,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsChecked")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsCheckedProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(CompoundAssignmentExpression), name: "IsChecked",
 			        immutableType: typeof(bool),
@@ -7752,7 +8241,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TargetType")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty TargetTypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ConversionExpression), name: "TargetType",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
@@ -7769,7 +8257,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsChecked")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsCheckedProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ConversionExpression), name: "IsChecked",
 			        immutableType: typeof(bool),
@@ -7899,7 +8386,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsChecked")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsCheckedProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IncrementOrDecrementExpression), name: "IsChecked",
 			        immutableType: typeof(bool),
@@ -7942,6 +8428,14 @@ namespace MetaDslx.Languages.Core.Model
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.IndexerAccessExpression_Receiver,
 					defaultValue: null);
 			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsNullConditional")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsNullConditionalProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IndexerAccessExpression), name: "IsNullConditional",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.IndexerAccessExpression_IsNullConditional,
+					defaultValue: null);
+			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Arguments")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
@@ -7954,7 +8448,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Target")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty TargetProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IndexerAccessExpression), name: "Target",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Indexer),
@@ -7989,7 +8482,6 @@ namespace MetaDslx.Languages.Core.Model
 			}
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("AccessThroughBaseType")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty AccessThroughBaseTypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(InstanceReferenceExpression), name: "AccessThroughBaseType",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.NamedType),
@@ -8079,7 +8571,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TypeOperand")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty TypeOperandProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IsTypeExpression), name: "TypeOperand",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
@@ -8088,7 +8579,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsNegated")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsNegatedProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IsTypeExpression), name: "IsNegated",
 			        immutableType: typeof(bool),
@@ -8182,6 +8672,14 @@ namespace MetaDslx.Languages.Core.Model
 			        immutableType: typeof(object),
 			        mutableType: typeof(object),
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.LiteralExpression_Value,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Type")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(LiteralExpression), name: "Type",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.LiteralExpression_Type,
 					defaultValue: null);
 		}
 	
@@ -8414,12 +8912,45 @@ namespace MetaDslx.Languages.Core.Model
 			}
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TypeOperand")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty TypeOperandProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(SizeOfExpression), name: "TypeOperand",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
 			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.SizeOfExpression_TypeOperand,
+					defaultValue: null);
+		}
+	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.TypeOfExpressionSymbol))]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.TypeOfExpressionId), typeof(global::MetaDslx.Languages.Core.Model.TypeOfExpression), typeof(global::MetaDslx.Languages.Core.Model.TypeOfExpressionBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Expression) })]
+		public static class TypeOfExpression
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static TypeOfExpression()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(TypeOfExpression));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.TypeOfExpression; }
+			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("TypeOperand")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty TypeOperandProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(TypeOfExpression), name: "TypeOperand",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.TypeOfExpression_TypeOperand,
 					defaultValue: null);
 		}
 	
@@ -8521,7 +9052,6 @@ namespace MetaDslx.Languages.Core.Model
 			}
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("OperatorKind")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperatorKindProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(UnaryExpression), name: "OperatorKind",
 			        immutableType: typeof(object),
@@ -8539,7 +9069,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsChecked")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsCheckedProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(UnaryExpression), name: "IsChecked",
 			        immutableType: typeof(bool),
@@ -8548,7 +9077,6 @@ namespace MetaDslx.Languages.Core.Model
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("OperatorMethod")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperatorMethodProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(UnaryExpression), name: "OperatorMethod",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.UnaryOperator),
@@ -9247,6 +9775,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
 	
 		internal DataTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -9281,6 +9811,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
 		}
 	}
 	
@@ -9326,6 +9862,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -10215,9 +10772,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10299,6 +10860,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -10308,6 +10875,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -10436,6 +11009,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -10445,6 +11039,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -10526,9 +11142,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10620,6 +11240,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -10629,6 +11255,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -10767,6 +11399,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -10776,6 +11429,418 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public bool IsAbstract
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.IsAbstractProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.IsAbstractProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetIsAbstractLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.NamedType.IsAbstractProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetIsAbstractLazy(global::System.Func<NamedTypeBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.NamedType.IsAbstractProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetIsAbstractLazy(global::System.Func<NamedType, bool> immutableLazy, global::System.Func<NamedTypeBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CoreDescriptor.NamedType.IsAbstractProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public bool IsSealed
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.IsSealedProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.IsSealedProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetIsSealedLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.NamedType.IsSealedProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetIsSealedLazy(global::System.Func<NamedTypeBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.NamedType.IsSealedProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetIsSealedLazy(global::System.Func<NamedType, bool> immutableLazy, global::System.Func<NamedTypeBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CoreDescriptor.NamedType.IsSealedProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<DataTypeBuilder> TypeArguments
+		{
+			get { return this.GetList<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.TypeArgumentsProperty, ref typeArguments0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<NamedTypeBuilder> BaseTypes
+		{
+			get { return this.GetList<NamedTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.BaseTypesProperty, ref baseTypes0); }
+		}
+	}
+	
+	internal class ClassifierTypeId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.ClassifierType.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new ClassifierTypeImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new ClassifierTypeBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class ClassifierTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ClassifierType
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isAbstract0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isSealed0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<DataType> typeArguments0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<NamedType> baseTypes0;
+	
+		internal ClassifierTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.ClassifierType;
+	
+		public new ClassifierTypeBuilder ToMutable()
+		{
+			return (ClassifierTypeBuilder)base.ToMutable();
+		}
+	
+		public new ClassifierTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (ClassifierTypeBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		DataTypeBuilder DataType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		DataTypeBuilder DataType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		DeclarationBuilder Declaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedTypeBuilder NamedType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedTypeBuilder NamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
+		{
+		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
+		{
+		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
+		{
+		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
+		}
+	
+		
+		public bool IsAbstract
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.IsAbstractProperty, ref isAbstract0); }
+		}
+	
+		
+		public bool IsSealed
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.IsSealedProperty, ref isSealed0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<DataType> TypeArguments
+		{
+		    get { return this.GetList<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.TypeArgumentsProperty, ref typeArguments0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<NamedType> BaseTypes
+		{
+		    get { return this.GetList<NamedType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.BaseTypesProperty, ref baseTypes0); }
+		}
+	}
+	
+	internal class ClassifierTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ClassifierTypeBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
+		private global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> typeParameters0;
+		private global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> members0;
+		private global::MetaDslx.Modeling.MutableModelList<DataTypeBuilder> typeArguments0;
+		private global::MetaDslx.Modeling.MutableModelList<NamedTypeBuilder> baseTypes0;
+	
+		internal ClassifierTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CoreImplementationProvider.Implementation.ClassifierType(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.ClassifierType;
+	
+		public new ClassifierType ToImmutable()
+		{
+			return (ClassifierType)base.ToImmutable();
+		}
+	
+		public new ClassifierType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (ClassifierType)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		DataType DataTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		DataType DataTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		Declaration DeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedType NamedTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedType NamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
+		{
+			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
+		{
+			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
+		{
+			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -10857,9 +11922,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10938,6 +12007,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		ClassifierTypeBuilder ClassifierType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ClassifierTypeBuilder ClassifierType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
@@ -10951,6 +12030,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -10960,6 +12045,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -11069,6 +12160,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		ClassifierType ClassifierTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		ClassifierType ClassifierTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
@@ -11098,6 +12199,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -11107,6 +12229,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -11188,9 +12332,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -11269,6 +12417,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		ClassifierTypeBuilder ClassifierType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ClassifierTypeBuilder ClassifierType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
@@ -11282,6 +12440,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -11291,6 +12455,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -11400,6 +12570,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		ClassifierType ClassifierTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		ClassifierType ClassifierTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
@@ -11429,6 +12609,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -11438,6 +12639,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -11519,9 +12742,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -11600,6 +12827,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		ClassifierTypeBuilder ClassifierType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ClassifierTypeBuilder ClassifierType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
@@ -11613,6 +12850,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -11622,6 +12865,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -11731,6 +12980,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		ClassifierType ClassifierTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		ClassifierType ClassifierTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
@@ -11760,6 +13019,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -11769,6 +13049,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -11850,9 +13152,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -11946,6 +13252,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -11955,6 +13267,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -12100,6 +13418,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -12109,6 +13448,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -12648,9 +14009,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -12746,6 +14111,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -12755,6 +14126,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -12906,6 +14283,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -12915,6 +14313,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -13022,6 +14442,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private int lowerBound0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private int size0;
@@ -13071,6 +14493,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
 		}
 	
 		
@@ -13144,6 +14572,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -13233,6 +14682,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isUnique0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isUnordered0;
@@ -13282,6 +14733,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
 		}
 	
 		
@@ -13358,6 +14815,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public bool IsUnique
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.CollectionType.IsUniqueProperty); }
@@ -13424,6 +14902,246 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	}
 	
+	internal class DictionaryTypeId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new DictionaryTypeImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new DictionaryTypeBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class DictionaryTypeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, DictionaryType
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isUnordered0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType keyType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType valueType0;
+	
+		internal DictionaryTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.DictionaryType;
+	
+		public new DictionaryTypeBuilder ToMutable()
+		{
+			return (DictionaryTypeBuilder)base.ToMutable();
+		}
+	
+		public new DictionaryTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (DictionaryTypeBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		DataTypeBuilder DataType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		DataTypeBuilder DataType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
+		{
+		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
+		public bool IsUnordered
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.IsUnorderedProperty, ref isUnordered0); }
+		}
+	
+		
+		public DataType KeyType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.KeyTypeProperty, ref keyType0); }
+		}
+	
+		
+		public DataType ValueType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.ValueTypeProperty, ref valueType0); }
+		}
+	}
+	
+	internal class DictionaryTypeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, DictionaryTypeBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
+	
+		internal DictionaryTypeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CoreImplementationProvider.Implementation.DictionaryType(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.DictionaryType;
+	
+		public new DictionaryType ToImmutable()
+		{
+			return (DictionaryType)base.ToImmutable();
+		}
+	
+		public new DictionaryType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (DictionaryType)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		DataType DataTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		DataType DataTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
+		{
+			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public bool IsUnordered
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.IsUnorderedProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.IsUnorderedProperty, value); }
+		}
+		
+		void DictionaryTypeBuilder.SetIsUnorderedLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.DictionaryType.IsUnorderedProperty, lazy);
+		}
+		
+		void DictionaryTypeBuilder.SetIsUnorderedLazy(global::System.Func<DictionaryTypeBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.DictionaryType.IsUnorderedProperty, lazy);
+		}
+		
+		void DictionaryTypeBuilder.SetIsUnorderedLazy(global::System.Func<DictionaryType, bool> immutableLazy, global::System.Func<DictionaryTypeBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CoreDescriptor.DictionaryType.IsUnorderedProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder KeyType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.KeyTypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.KeyTypeProperty, value); }
+		}
+		
+		void DictionaryTypeBuilder.SetKeyTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DictionaryType.KeyTypeProperty, lazy);
+		}
+		
+		void DictionaryTypeBuilder.SetKeyTypeLazy(global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DictionaryType.KeyTypeProperty, lazy);
+		}
+		
+		void DictionaryTypeBuilder.SetKeyTypeLazy(global::System.Func<DictionaryType, DataType> immutableLazy, global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DictionaryType.KeyTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder ValueType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.ValueTypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DictionaryType.ValueTypeProperty, value); }
+		}
+		
+		void DictionaryTypeBuilder.SetValueTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DictionaryType.ValueTypeProperty, lazy);
+		}
+		
+		void DictionaryTypeBuilder.SetValueTypeLazy(global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DictionaryType.ValueTypeProperty, lazy);
+		}
+		
+		void DictionaryTypeBuilder.SetValueTypeLazy(global::System.Func<DictionaryType, DataType> immutableLazy, global::System.Func<DictionaryTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DictionaryType.ValueTypeProperty, immutableLazy, mutableLazy);
+		}
+	}
+	
 	internal class NullableTypeId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.NullableType.MDescriptor; } }
@@ -13443,6 +15161,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType innerType0;
 	
@@ -13489,6 +15209,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
 		}
 	
 		
@@ -13553,6 +15279,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public DataTypeBuilder InnerType
 		{
 			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NullableType.InnerTypeProperty); }
@@ -13594,6 +15341,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
 	
 		internal TupleTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -13638,6 +15387,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
 		}
 	}
 	
@@ -13694,6 +15449,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
 		}
+	
+		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
 	}
 	
 	internal class TypeParameterId : global::MetaDslx.Modeling.ObjectId
@@ -13718,9 +15494,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -13812,6 +15592,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -13821,6 +15607,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, ref dotNetName0); }
 		}
 	
 		
@@ -13959,6 +15751,27 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -13968,6 +15781,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public string DotNetName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.DotNetNameProperty, value); }
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedTypeBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, lazy);
+		}
+		
+		void NamedTypeBuilder.SetDotNetNameLazy(global::System.Func<NamedType, string> immutableLazy, global::System.Func<NamedTypeBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedType.DotNetNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -14024,6 +15859,261 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<NamedTypeBuilder> BaseTypes
 		{
 			get { return this.GetList<NamedTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedType.BaseTypesProperty, ref baseTypes0); }
+		}
+	}
+	
+	internal class GenericTypeReferenceId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new GenericTypeReferenceImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new GenericTypeReferenceBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class GenericTypeReferenceImpl : global::MetaDslx.Modeling.ImmutableObjectBase, GenericTypeReference
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private NamedType referencedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<DataType> typeArguments0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private NamedType constructedType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType resolvedType1;
+	
+		internal GenericTypeReferenceImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.GenericTypeReference;
+	
+		public new GenericTypeReferenceBuilder ToMutable()
+		{
+			return (GenericTypeReferenceBuilder)base.ToMutable();
+		}
+	
+		public new GenericTypeReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (GenericTypeReferenceBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		DataTypeBuilder DataType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		DataTypeBuilder DataType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
+		{
+		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		DataType DataType.ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty, ref resolvedType0); }
+		}
+	
+		
+		public NamedType ReferencedType
+		{
+		    get { return this.GetReference<NamedType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.ReferencedTypeProperty, ref referencedType0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<DataType> TypeArguments
+		{
+		    get { return this.GetList<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.TypeArgumentsProperty, ref typeArguments0); }
+		}
+	
+		
+		public NamedType ConstructedType
+		{
+		    get { return this.GetReference<NamedType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.ConstructedTypeProperty, ref constructedType0); }
+		}
+	
+		
+		public DataType ResolvedType
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.ResolvedTypeProperty, ref resolvedType1); }
+		}
+	}
+	
+	internal class GenericTypeReferenceBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, GenericTypeReferenceBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
+		private global::MetaDslx.Modeling.MutableModelList<DataTypeBuilder> typeArguments0;
+	
+		internal GenericTypeReferenceBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CoreImplementationProvider.Implementation.GenericTypeReference(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.GenericTypeReference;
+	
+		public new GenericTypeReference ToImmutable()
+		{
+			return (GenericTypeReference)base.ToImmutable();
+		}
+	
+		public new GenericTypeReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (GenericTypeReference)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		DataType DataTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		DataType DataTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
+		{
+			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		DataTypeBuilder DataTypeBuilder.ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DataType.ResolvedTypeProperty); }
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, lazy);
+		}
+		
+		void DataTypeBuilder.SetResolvedTypeLazy(global::System.Func<DataType, DataType> immutableLazy, global::System.Func<DataTypeBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.DataType.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public NamedTypeBuilder ReferencedType
+		{
+			get { return this.GetReference<NamedTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.ReferencedTypeProperty); }
+			set { this.SetReference<NamedTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.ReferencedTypeProperty, value); }
+		}
+		
+		void GenericTypeReferenceBuilder.SetReferencedTypeLazy(global::System.Func<NamedTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ReferencedTypeProperty, lazy);
+		}
+		
+		void GenericTypeReferenceBuilder.SetReferencedTypeLazy(global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ReferencedTypeProperty, lazy);
+		}
+		
+		void GenericTypeReferenceBuilder.SetReferencedTypeLazy(global::System.Func<GenericTypeReference, NamedType> immutableLazy, global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ReferencedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<DataTypeBuilder> TypeArguments
+		{
+			get { return this.GetList<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.TypeArgumentsProperty, ref typeArguments0); }
+		}
+	
+		
+		public NamedTypeBuilder ConstructedType
+		{
+			get { return this.GetReference<NamedTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.ConstructedTypeProperty); }
+		}
+		
+		void GenericTypeReferenceBuilder.SetConstructedTypeLazy(global::System.Func<NamedTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ConstructedTypeProperty, lazy);
+		}
+		
+		void GenericTypeReferenceBuilder.SetConstructedTypeLazy(global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ConstructedTypeProperty, lazy);
+		}
+		
+		void GenericTypeReferenceBuilder.SetConstructedTypeLazy(global::System.Func<GenericTypeReference, NamedType> immutableLazy, global::System.Func<GenericTypeReferenceBuilder, NamedTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ConstructedTypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder ResolvedType
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.GenericTypeReference.ResolvedTypeProperty); }
+		}
+		
+		void GenericTypeReferenceBuilder.SetResolvedTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ResolvedTypeProperty, lazy);
+		}
+		
+		void GenericTypeReferenceBuilder.SetResolvedTypeLazy(global::System.Func<GenericTypeReferenceBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ResolvedTypeProperty, lazy);
+		}
+		
+		void GenericTypeReferenceBuilder.SetResolvedTypeLazy(global::System.Func<GenericTypeReference, DataType> immutableLazy, global::System.Func<GenericTypeReferenceBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ResolvedTypeProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -17479,11 +19569,17 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private DataType type0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isConst0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Expression defaultValue0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isVarArg0;
 	
 		internal ParameterImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -17524,16 +19620,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
-		TypedElementBuilder TypedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		TypedElementBuilder TypedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
@@ -17544,22 +19630,22 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
-		TypedDeclarationBuilder TypedDeclaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		TypedDeclarationBuilder TypedDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		LocalBuilder Local.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
 		LocalBuilder Local.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		VariableBuilder Variable.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		VariableBuilder Variable.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -17577,12 +19663,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataType Type
-		{
-		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.TypedElement.TypeProperty, ref type0); }
-		}
-	
-		
 		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
 		{
 		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -17592,6 +19672,30 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public bool IsConst
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.IsConstProperty, ref isConst0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.TypeProperty, ref type0); }
+		}
+	
+		
+		public Expression DefaultValue
+		{
+		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty, ref defaultValue0); }
+		}
+	
+		
+		public bool IsVarArg
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Parameter.IsVarArgProperty, ref isVarArg0); }
 		}
 	}
 	
@@ -17645,16 +19749,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
-		TypedElement TypedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		TypedElement TypedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -17665,22 +19759,22 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
-		TypedDeclaration TypedDeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		TypedDeclaration TypedDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		Local LocalBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
 		Local LocalBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		Variable VariableBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Variable VariableBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -17714,28 +19808,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataTypeBuilder Type
-		{
-			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.TypedElement.TypeProperty); }
-			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.TypedElement.TypeProperty, value); }
-		}
-		
-		void TypedElementBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.TypedElement.TypeProperty, lazy);
-		}
-		
-		void TypedElementBuilder.SetTypeLazy(global::System.Func<TypedElementBuilder, DataTypeBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.TypedElement.TypeProperty, lazy);
-		}
-		
-		void TypedElementBuilder.SetTypeLazy(global::System.Func<TypedElement, DataType> immutableLazy, global::System.Func<TypedElementBuilder, DataTypeBuilder> mutableLazy)
-		{
-			this.SetLazyReference(CoreDescriptor.TypedElement.TypeProperty, immutableLazy, mutableLazy);
-		}
-	
-		
 		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
 		{
 			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
@@ -17745,6 +19817,94 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public bool IsConst
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.IsConstProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.IsConstProperty, value); }
+		}
+		
+		void VariableBuilder.SetIsConstLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Variable.IsConstProperty, lazy);
+		}
+		
+		void VariableBuilder.SetIsConstLazy(global::System.Func<VariableBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Variable.IsConstProperty, lazy);
+		}
+		
+		void VariableBuilder.SetIsConstLazy(global::System.Func<Variable, bool> immutableLazy, global::System.Func<VariableBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Variable.IsConstProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.TypeProperty, value); }
+		}
+		
+		void VariableBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Variable.TypeProperty, lazy);
+		}
+		
+		void VariableBuilder.SetTypeLazy(global::System.Func<VariableBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Variable.TypeProperty, lazy);
+		}
+		
+		void VariableBuilder.SetTypeLazy(global::System.Func<Variable, DataType> immutableLazy, global::System.Func<VariableBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Variable.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public ExpressionBuilder DefaultValue
+		{
+			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty); }
+			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty, value); }
+		}
+		
+		void VariableBuilder.SetDefaultValueLazy(global::System.Func<ExpressionBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, lazy);
+		}
+		
+		void VariableBuilder.SetDefaultValueLazy(global::System.Func<VariableBuilder, ExpressionBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, lazy);
+		}
+		
+		void VariableBuilder.SetDefaultValueLazy(global::System.Func<Variable, Expression> immutableLazy, global::System.Func<VariableBuilder, ExpressionBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public bool IsVarArg
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Parameter.IsVarArgProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Parameter.IsVarArgProperty, value); }
+		}
+		
+		void ParameterBuilder.SetIsVarArgLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Parameter.IsVarArgProperty, lazy);
+		}
+		
+		void ParameterBuilder.SetIsVarArgLazy(global::System.Func<ParameterBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Parameter.IsVarArgProperty, lazy);
+		}
+		
+		void ParameterBuilder.SetIsVarArgLazy(global::System.Func<Parameter, bool> immutableLazy, global::System.Func<ParameterBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Parameter.IsVarArgProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -25874,6 +28034,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 	
 		internal ExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -25908,6 +28070,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	}
 	
@@ -25954,6 +28122,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
 		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
 	}
 	
 	internal class ArgumentId : global::MetaDslx.Modeling.ObjectId
@@ -25977,6 +28167,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression value0;
 	
@@ -26039,6 +28231,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -26135,6 +28333,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Value
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Argument.ValueProperty); }
@@ -26176,6 +28396,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression target0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -26224,6 +28446,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -26294,6 +28522,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Target
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.AssignmentExpression.TargetProperty); }
@@ -26358,6 +28608,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression operation0;
 	
 		internal AwaitExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -26403,6 +28655,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -26467,6 +28725,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Operation
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.AwaitExpression.OperationProperty); }
@@ -26508,6 +28788,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object operatorKind0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -26562,6 +28844,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -26647,6 +28935,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -26780,6 +29090,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression value0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression whenNull0;
@@ -26827,6 +29139,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -26897,6 +29215,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Value
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.CoalesceExpression.ValueProperty); }
@@ -26961,6 +29301,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression target0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression value0;
@@ -27022,6 +29364,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -27111,6 +29459,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -27222,6 +29592,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression condition0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression whenTrue0;
@@ -27271,6 +29643,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -27344,6 +29722,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -27433,6 +29833,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression operand0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType targetType0;
@@ -27484,6 +29886,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -27563,6 +29971,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -27673,6 +30103,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 	
 		internal DefaultValueExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -27717,6 +30149,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	}
 	
@@ -27773,6 +30211,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
 		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
 	}
 	
 	internal class DiscardExpressionId : global::MetaDslx.Modeling.ObjectId
@@ -27794,6 +30254,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 	
 		internal DiscardExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -27838,6 +30300,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	}
 	
@@ -27894,6 +30362,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
 		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
 	}
 	
 	internal class DynamicExpressionId : global::MetaDslx.Modeling.ObjectId
@@ -27915,6 +30405,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 	
 		internal DynamicExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -27959,6 +30451,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	}
 	
@@ -28015,6 +30513,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
 		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
 	}
 	
 	internal class IncrementOrDecrementExpressionId : global::MetaDslx.Modeling.ObjectId
@@ -28036,6 +30556,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression target0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -28086,6 +30608,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -28159,6 +30687,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -28248,7 +30798,11 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression receiver0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isNullConditional0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Argument> arguments0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -28300,9 +30854,21 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
+		}
+	
+		
 		public Expression Receiver
 		{
 		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IndexerAccessExpression.ReceiverProperty, ref receiver0); }
+		}
+	
+		
+		public bool IsNullConditional
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty, ref isNullConditional0); }
 		}
 	
 		
@@ -28374,6 +30940,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Receiver
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IndexerAccessExpression.ReceiverProperty); }
@@ -28393,6 +30981,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		void IndexerAccessExpressionBuilder.SetReceiverLazy(global::System.Func<IndexerAccessExpression, Expression> immutableLazy, global::System.Func<IndexerAccessExpressionBuilder, ExpressionBuilder> mutableLazy)
 		{
 			this.SetLazyReference(CoreDescriptor.IndexerAccessExpression.ReceiverProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public bool IsNullConditional
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty, value); }
+		}
+		
+		void IndexerAccessExpressionBuilder.SetIsNullConditionalLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty, lazy);
+		}
+		
+		void IndexerAccessExpressionBuilder.SetIsNullConditionalLazy(global::System.Func<IndexerAccessExpressionBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty, lazy);
+		}
+		
+		void IndexerAccessExpressionBuilder.SetIsNullConditionalLazy(global::System.Func<IndexerAccessExpression, bool> immutableLazy, global::System.Func<IndexerAccessExpressionBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -28444,6 +31054,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private NamedType accessThroughBaseType0;
 	
 		internal InstanceReferenceExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -28489,6 +31101,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -28553,6 +31171,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public NamedTypeBuilder AccessThroughBaseType
 		{
 			get { return this.GetReference<NamedTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.InstanceReferenceExpression.AccessThroughBaseTypeProperty); }
@@ -28594,6 +31234,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression receiver0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -28642,6 +31284,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -28713,6 +31361,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Receiver
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.InvocationExpression.ReceiverProperty); }
@@ -28760,6 +31430,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression valueOperand0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -28810,6 +31482,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -28883,6 +31561,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -28972,6 +31672,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType returnType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Parameter> parameters0;
@@ -29021,6 +31723,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -29098,6 +31806,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public DataTypeBuilder ReturnType
 		{
 			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LambdaExpression.ReturnTypeProperty); }
@@ -29168,7 +31898,11 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object value0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type1;
 	
 		internal LiteralExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -29216,9 +31950,22 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		DataType Expression.Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
+		}
+	
+		
 		public object Value
 		{
 		    get { return this.GetReference<object>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LiteralExpression.ValueProperty, ref value0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LiteralExpression.TypeProperty, ref type1); }
 		}
 	}
 	
@@ -29277,6 +32024,29 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		DataTypeBuilder ExpressionBuilder.Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public object Value
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LiteralExpression.ValueProperty); }
@@ -29296,6 +32066,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		void LiteralExpressionBuilder.SetValueLazy(global::System.Func<LiteralExpression, object> immutableLazy, global::System.Func<LiteralExpressionBuilder, object> mutableLazy)
 		{
 			this.SetLazyReference(CoreDescriptor.LiteralExpression.ValueProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LiteralExpression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LiteralExpression.TypeProperty, value); }
+		}
+		
+		void LiteralExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LiteralExpression.TypeProperty, lazy);
+		}
+		
+		void LiteralExpressionBuilder.SetTypeLazy(global::System.Func<LiteralExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LiteralExpression.TypeProperty, lazy);
+		}
+		
+		void LiteralExpressionBuilder.SetTypeLazy(global::System.Func<LiteralExpression, DataType> immutableLazy, global::System.Func<LiteralExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LiteralExpression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -29318,6 +32110,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression argument0;
 	
@@ -29364,6 +32158,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -29428,6 +32228,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Argument
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NameOfExpression.ArgumentProperty); }
@@ -29469,6 +32291,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType objectType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -29519,6 +32343,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -29597,6 +32427,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public DataTypeBuilder ObjectType
 		{
 			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ObjectCreationExpression.ObjectTypeProperty); }
@@ -29651,6 +32503,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression operand0;
 	
 		internal ParenthesizedExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -29696,6 +32550,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -29760,6 +32620,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Operand
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ParenthesizedExpression.OperandProperty); }
@@ -29801,6 +32683,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression qualifier0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -29857,6 +32741,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -29949,6 +32839,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -30088,6 +33000,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType typeOperand0;
 	
 		internal SizeOfExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -30133,6 +33047,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -30197,6 +33117,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public DataTypeBuilder TypeOperand
 		{
 			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.SizeOfExpression.TypeOperandProperty); }
@@ -30219,6 +33161,187 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	}
 	
+	internal class TypeOfExpressionId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.TypeOfExpression.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new TypeOfExpressionImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new TypeOfExpressionBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class TypeOfExpressionImpl : global::MetaDslx.Modeling.ImmutableObjectBase, TypeOfExpression
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType typeOperand0;
+	
+		internal TypeOfExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.TypeOfExpression;
+	
+		public new TypeOfExpressionBuilder ToMutable()
+		{
+			return (TypeOfExpressionBuilder)base.ToMutable();
+		}
+	
+		public new TypeOfExpressionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (TypeOfExpressionBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		ExpressionBuilder Expression.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ExpressionBuilder Expression.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
+		{
+		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
+		}
+	
+		
+		public DataType TypeOperand
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.TypeOfExpression.TypeOperandProperty, ref typeOperand0); }
+		}
+	}
+	
+	internal class TypeOfExpressionBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, TypeOfExpressionBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
+	
+		internal TypeOfExpressionBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CoreImplementationProvider.Implementation.TypeOfExpression(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.TypeOfExpression;
+	
+		public new TypeOfExpression ToImmutable()
+		{
+			return (TypeOfExpression)base.ToImmutable();
+		}
+	
+		public new TypeOfExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (TypeOfExpression)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		Expression ExpressionBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Expression ExpressionBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
+		{
+			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder TypeOperand
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.TypeOfExpression.TypeOperandProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.TypeOfExpression.TypeOperandProperty, value); }
+		}
+		
+		void TypeOfExpressionBuilder.SetTypeOperandLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.TypeOfExpression.TypeOperandProperty, lazy);
+		}
+		
+		void TypeOfExpressionBuilder.SetTypeOperandLazy(global::System.Func<TypeOfExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.TypeOfExpression.TypeOperandProperty, lazy);
+		}
+		
+		void TypeOfExpressionBuilder.SetTypeOperandLazy(global::System.Func<TypeOfExpression, DataType> immutableLazy, global::System.Func<TypeOfExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.TypeOfExpression.TypeOperandProperty, immutableLazy, mutableLazy);
+		}
+	}
+	
 	internal class ThrowExpressionId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.ThrowExpression.MDescriptor; } }
@@ -30238,6 +33361,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression exception0;
 	
@@ -30284,6 +33409,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -30348,6 +33479,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public ExpressionBuilder Exception
 		{
 			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ThrowExpression.ExceptionProperty); }
@@ -30389,6 +33542,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Argument> arguments0;
 	
@@ -30435,6 +33590,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -30500,6 +33661,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<ArgumentBuilder> Arguments
 		{
 			get { return this.GetList<ArgumentBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.TupleExpression.ArgumentsProperty, ref arguments0); }
@@ -30525,6 +33708,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object operatorKind0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -30577,6 +33762,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -30656,6 +33847,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -30767,6 +33980,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Variable symbol0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression initializer0;
@@ -30814,6 +34029,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -30884,6 +34105,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public VariableBuilder Symbol
 		{
 			get { return this.GetReference<VariableBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.SymbolProperty); }
@@ -30948,6 +34191,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<VariableDeclarationExpression> declarations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression initializer0;
@@ -30995,6 +34240,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
@@ -31066,6 +34317,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
+		}
+		
+		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<VariableDeclarationExpressionBuilder> Declarations
 		{
 			get { return this.GetList<VariableDeclarationExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationGroupExpression.DeclarationsProperty, ref declarations0); }
@@ -31104,12 +34377,48 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Modeling.MutableModel MModel;
 		internal global::MetaDslx.Modeling.MutableModelGroup MModelGroup;
 	
+		internal PrimitiveTypeBuilder Object = null;
+		internal PrimitiveTypeBuilder Void = null;
+		internal PrimitiveTypeBuilder Boolean = null;
+		internal PrimitiveTypeBuilder Char = null;
+		internal PrimitiveTypeBuilder SByte = null;
+		internal PrimitiveTypeBuilder Byte = null;
+		internal PrimitiveTypeBuilder Int16 = null;
+		internal PrimitiveTypeBuilder UInt16 = null;
+		internal PrimitiveTypeBuilder Int32 = null;
+		internal PrimitiveTypeBuilder UInt32 = null;
+		internal PrimitiveTypeBuilder Int64 = null;
+		internal PrimitiveTypeBuilder UInt64 = null;
+		internal PrimitiveTypeBuilder Decimal = null;
+		internal PrimitiveTypeBuilder Single = null;
+		internal PrimitiveTypeBuilder Double = null;
+		internal PrimitiveTypeBuilder String = null;
+		internal PrimitiveTypeBuilder SystemType = null;
+		internal PrimitiveTypeBuilder SystemEnum = null;
 	
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp1;
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp2;
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp3;
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp4;
 		private global::MetaDslx.Languages.Meta.Model.MetaModelBuilder __tmp5;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp6;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp7;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp8;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp9;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp10;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp11;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp12;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp13;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp14;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp15;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp16;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp17;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp18;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp19;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp20;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp21;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp22;
+		private global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder __tmp23;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Element;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Element_Attributes;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Attribute;
@@ -31119,6 +34428,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder TypedElement;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder TypedElement_Type;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DataType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder DataType_ResolvedType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Declaration;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Declaration_TypeParameters;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Declaration_Members;
@@ -31127,11 +34437,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Alias;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Alias_Target;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder NamedType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NamedType_DotNetName;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NamedType_IsAbstract;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NamedType_IsSealed;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NamedType_TypeArguments;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NamedType_BaseTypes;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder PrimitiveType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ClassifierType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder InterfaceType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ClassType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder StructType;
@@ -31150,10 +34462,19 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder CollectionType_IsUnique;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder CollectionType_IsUnordered;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder CollectionType_ItemType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DictionaryType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder DictionaryType_IsUnordered;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder DictionaryType_KeyType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder DictionaryType_ValueType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder NullableType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NullableType_InnerType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder TupleType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder TypeParameter;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder GenericTypeReference;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GenericTypeReference_ReferencedType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GenericTypeReference_TypeArguments;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GenericTypeReference_ConstructedType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GenericTypeReference_ResolvedType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Member;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Member_IsStatic;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Member_IsVirtual;
@@ -31175,6 +34496,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder MethodLikeMember_Body;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Method;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Parameter;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Parameter_IsVarArg;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Constructor;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Constructor_NextConstructorInvocation;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Destructor;
@@ -31254,6 +34576,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder WhileLoopStatement_ConditionIsTop;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder WhileLoopStatement_ConditionIsUntil;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Expression;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Expression_Type;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Argument;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Argument_Value;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder AssignmentExpression;
@@ -31291,6 +34614,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IncrementOrDecrementExpression_IsChecked;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder IndexerAccessExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IndexerAccessExpression_Receiver;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IndexerAccessExpression_IsNullConditional;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IndexerAccessExpression_Arguments;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IndexerAccessExpression_Target;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder InstanceReferenceExpression;
@@ -31308,6 +34632,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LambdaExpression_Body;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder LiteralExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LiteralExpression_Value;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LiteralExpression_Type;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder NameOfExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NameOfExpression_Argument;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ObjectCreationExpression;
@@ -31325,6 +34650,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ReferenceExpression_ReferencedSymbol;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder SizeOfExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder SizeOfExpression_TypeOperand;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder TypeOfExpression;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder TypeOfExpression_TypeOperand;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ThrowExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ThrowExpression_Exception;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder TupleExpression;
@@ -31340,29 +34667,30 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder VariableDeclarationGroupExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationGroupExpression_Declarations;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationGroupExpression_Initializer;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp6;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp7;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp8;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp9;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp10;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp11;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp12;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp13;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp14;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp15;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp16;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp17;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp18;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp19;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp20;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp21;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp22;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp23;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp24;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp25;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp26;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp27;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp28;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp29;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp30;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp31;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp32;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp33;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp34;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp35;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp36;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp37;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp38;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp39;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp40;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp41;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp42;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp43;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp44;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp45;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp46;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp47;
 	
 		internal CoreBuilderInstance()
 		{
@@ -31402,12 +34730,66 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			global::MetaDslx.Languages.Meta.Model.MetaFactory factory = new global::MetaDslx.Languages.Meta.Model.MetaFactory(this.MModel, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
 			CoreFactory constantFactory = new CoreFactory(this.MModel, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
 	
+			Object = constantFactory.PrimitiveType();
+			Object.MName = "Object";
+			Void = constantFactory.PrimitiveType();
+			Void.MName = "Void";
+			Boolean = constantFactory.PrimitiveType();
+			Boolean.MName = "Boolean";
+			Char = constantFactory.PrimitiveType();
+			Char.MName = "Char";
+			SByte = constantFactory.PrimitiveType();
+			SByte.MName = "SByte";
+			Byte = constantFactory.PrimitiveType();
+			Byte.MName = "Byte";
+			Int16 = constantFactory.PrimitiveType();
+			Int16.MName = "Int16";
+			UInt16 = constantFactory.PrimitiveType();
+			UInt16.MName = "UInt16";
+			Int32 = constantFactory.PrimitiveType();
+			Int32.MName = "Int32";
+			UInt32 = constantFactory.PrimitiveType();
+			UInt32.MName = "UInt32";
+			Int64 = constantFactory.PrimitiveType();
+			Int64.MName = "Int64";
+			UInt64 = constantFactory.PrimitiveType();
+			UInt64.MName = "UInt64";
+			Decimal = constantFactory.PrimitiveType();
+			Decimal.MName = "Decimal";
+			Single = constantFactory.PrimitiveType();
+			Single.MName = "Single";
+			Double = constantFactory.PrimitiveType();
+			Double.MName = "Double";
+			String = constantFactory.PrimitiveType();
+			String.MName = "String";
+			SystemType = constantFactory.PrimitiveType();
+			SystemType.MName = "SystemType";
+			SystemEnum = constantFactory.PrimitiveType();
+			SystemEnum.MName = "SystemEnum";
 	
 			__tmp1 = factory.MetaNamespace();
 			__tmp2 = factory.MetaNamespace();
 			__tmp3 = factory.MetaNamespace();
 			__tmp4 = factory.MetaNamespace();
 			__tmp5 = factory.MetaModel();
+			__tmp6 = factory.MetaConstant();
+			__tmp7 = factory.MetaConstant();
+			__tmp8 = factory.MetaConstant();
+			__tmp9 = factory.MetaConstant();
+			__tmp10 = factory.MetaConstant();
+			__tmp11 = factory.MetaConstant();
+			__tmp12 = factory.MetaConstant();
+			__tmp13 = factory.MetaConstant();
+			__tmp14 = factory.MetaConstant();
+			__tmp15 = factory.MetaConstant();
+			__tmp16 = factory.MetaConstant();
+			__tmp17 = factory.MetaConstant();
+			__tmp18 = factory.MetaConstant();
+			__tmp19 = factory.MetaConstant();
+			__tmp20 = factory.MetaConstant();
+			__tmp21 = factory.MetaConstant();
+			__tmp22 = factory.MetaConstant();
+			__tmp23 = factory.MetaConstant();
 			Element = factory.MetaClass();
 			Element_Attributes = factory.MetaProperty();
 			Attribute = factory.MetaClass();
@@ -31417,6 +34799,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			TypedElement = factory.MetaClass();
 			TypedElement_Type = factory.MetaProperty();
 			DataType = factory.MetaClass();
+			DataType_ResolvedType = factory.MetaProperty();
 			Declaration = factory.MetaClass();
 			Declaration_TypeParameters = factory.MetaProperty();
 			Declaration_Members = factory.MetaProperty();
@@ -31425,11 +34808,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Alias = factory.MetaClass();
 			Alias_Target = factory.MetaProperty();
 			NamedType = factory.MetaClass();
+			NamedType_DotNetName = factory.MetaProperty();
 			NamedType_IsAbstract = factory.MetaProperty();
 			NamedType_IsSealed = factory.MetaProperty();
 			NamedType_TypeArguments = factory.MetaProperty();
 			NamedType_BaseTypes = factory.MetaProperty();
 			PrimitiveType = factory.MetaClass();
+			ClassifierType = factory.MetaClass();
 			InterfaceType = factory.MetaClass();
 			ClassType = factory.MetaClass();
 			StructType = factory.MetaClass();
@@ -31448,10 +34833,19 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			CollectionType_IsUnique = factory.MetaProperty();
 			CollectionType_IsUnordered = factory.MetaProperty();
 			CollectionType_ItemType = factory.MetaProperty();
+			DictionaryType = factory.MetaClass();
+			DictionaryType_IsUnordered = factory.MetaProperty();
+			DictionaryType_KeyType = factory.MetaProperty();
+			DictionaryType_ValueType = factory.MetaProperty();
 			NullableType = factory.MetaClass();
 			NullableType_InnerType = factory.MetaProperty();
 			TupleType = factory.MetaClass();
 			TypeParameter = factory.MetaClass();
+			GenericTypeReference = factory.MetaClass();
+			GenericTypeReference_ReferencedType = factory.MetaProperty();
+			GenericTypeReference_TypeArguments = factory.MetaProperty();
+			GenericTypeReference_ConstructedType = factory.MetaProperty();
+			GenericTypeReference_ResolvedType = factory.MetaProperty();
 			Member = factory.MetaClass();
 			Member_IsStatic = factory.MetaProperty();
 			Member_IsVirtual = factory.MetaProperty();
@@ -31473,6 +34867,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			MethodLikeMember_Body = factory.MetaProperty();
 			Method = factory.MetaClass();
 			Parameter = factory.MetaClass();
+			Parameter_IsVarArg = factory.MetaProperty();
 			Constructor = factory.MetaClass();
 			Constructor_NextConstructorInvocation = factory.MetaProperty();
 			Destructor = factory.MetaClass();
@@ -31552,6 +34947,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			WhileLoopStatement_ConditionIsTop = factory.MetaProperty();
 			WhileLoopStatement_ConditionIsUntil = factory.MetaProperty();
 			Expression = factory.MetaClass();
+			Expression_Type = factory.MetaProperty();
 			Argument = factory.MetaClass();
 			Argument_Value = factory.MetaProperty();
 			AssignmentExpression = factory.MetaClass();
@@ -31589,6 +34985,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IncrementOrDecrementExpression_IsChecked = factory.MetaProperty();
 			IndexerAccessExpression = factory.MetaClass();
 			IndexerAccessExpression_Receiver = factory.MetaProperty();
+			IndexerAccessExpression_IsNullConditional = factory.MetaProperty();
 			IndexerAccessExpression_Arguments = factory.MetaProperty();
 			IndexerAccessExpression_Target = factory.MetaProperty();
 			InstanceReferenceExpression = factory.MetaClass();
@@ -31606,6 +35003,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			LambdaExpression_Body = factory.MetaProperty();
 			LiteralExpression = factory.MetaClass();
 			LiteralExpression_Value = factory.MetaProperty();
+			LiteralExpression_Type = factory.MetaProperty();
 			NameOfExpression = factory.MetaClass();
 			NameOfExpression_Argument = factory.MetaProperty();
 			ObjectCreationExpression = factory.MetaClass();
@@ -31623,6 +35021,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ReferenceExpression_ReferencedSymbol = factory.MetaProperty();
 			SizeOfExpression = factory.MetaClass();
 			SizeOfExpression_TypeOperand = factory.MetaProperty();
+			TypeOfExpression = factory.MetaClass();
+			TypeOfExpression_TypeOperand = factory.MetaProperty();
 			ThrowExpression = factory.MetaClass();
 			ThrowExpression_Exception = factory.MetaProperty();
 			TupleExpression = factory.MetaClass();
@@ -31638,29 +35038,30 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			VariableDeclarationGroupExpression = factory.MetaClass();
 			VariableDeclarationGroupExpression_Declarations = factory.MetaProperty();
 			VariableDeclarationGroupExpression_Initializer = factory.MetaProperty();
-			__tmp6 = factory.MetaCollectionType();
-			__tmp7 = factory.MetaCollectionType();
-			__tmp8 = factory.MetaCollectionType();
-			__tmp9 = factory.MetaCollectionType();
-			__tmp10 = factory.MetaCollectionType();
-			__tmp11 = factory.MetaCollectionType();
-			__tmp12 = factory.MetaCollectionType();
-			__tmp13 = factory.MetaCollectionType();
-			__tmp14 = factory.MetaCollectionType();
-			__tmp15 = factory.MetaCollectionType();
-			__tmp16 = factory.MetaCollectionType();
-			__tmp17 = factory.MetaCollectionType();
-			__tmp18 = factory.MetaCollectionType();
-			__tmp19 = factory.MetaCollectionType();
-			__tmp20 = factory.MetaCollectionType();
-			__tmp21 = factory.MetaCollectionType();
-			__tmp22 = factory.MetaCollectionType();
-			__tmp23 = factory.MetaCollectionType();
 			__tmp24 = factory.MetaCollectionType();
 			__tmp25 = factory.MetaCollectionType();
 			__tmp26 = factory.MetaCollectionType();
 			__tmp27 = factory.MetaCollectionType();
 			__tmp28 = factory.MetaCollectionType();
+			__tmp29 = factory.MetaCollectionType();
+			__tmp30 = factory.MetaCollectionType();
+			__tmp31 = factory.MetaCollectionType();
+			__tmp32 = factory.MetaCollectionType();
+			__tmp33 = factory.MetaCollectionType();
+			__tmp34 = factory.MetaCollectionType();
+			__tmp35 = factory.MetaCollectionType();
+			__tmp36 = factory.MetaCollectionType();
+			__tmp37 = factory.MetaCollectionType();
+			__tmp38 = factory.MetaCollectionType();
+			__tmp39 = factory.MetaCollectionType();
+			__tmp40 = factory.MetaCollectionType();
+			__tmp41 = factory.MetaCollectionType();
+			__tmp42 = factory.MetaCollectionType();
+			__tmp43 = factory.MetaCollectionType();
+			__tmp44 = factory.MetaCollectionType();
+			__tmp45 = factory.MetaCollectionType();
+			__tmp46 = factory.MetaCollectionType();
+			__tmp47 = factory.MetaCollectionType();
 	
 			__tmp1.Documentation = null;
 			__tmp1.Name = "MetaDslx";
@@ -31681,6 +35082,24 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Name = "Model";
 			__tmp4.SetNamespaceLazy(() => __tmp3);
 			__tmp4.SetDefinedMetaModelLazy(() => __tmp5);
+			__tmp4.Declarations.AddLazy(() => __tmp6);
+			__tmp4.Declarations.AddLazy(() => __tmp7);
+			__tmp4.Declarations.AddLazy(() => __tmp8);
+			__tmp4.Declarations.AddLazy(() => __tmp9);
+			__tmp4.Declarations.AddLazy(() => __tmp10);
+			__tmp4.Declarations.AddLazy(() => __tmp11);
+			__tmp4.Declarations.AddLazy(() => __tmp12);
+			__tmp4.Declarations.AddLazy(() => __tmp13);
+			__tmp4.Declarations.AddLazy(() => __tmp14);
+			__tmp4.Declarations.AddLazy(() => __tmp15);
+			__tmp4.Declarations.AddLazy(() => __tmp16);
+			__tmp4.Declarations.AddLazy(() => __tmp17);
+			__tmp4.Declarations.AddLazy(() => __tmp18);
+			__tmp4.Declarations.AddLazy(() => __tmp19);
+			__tmp4.Declarations.AddLazy(() => __tmp20);
+			__tmp4.Declarations.AddLazy(() => __tmp21);
+			__tmp4.Declarations.AddLazy(() => __tmp22);
+			__tmp4.Declarations.AddLazy(() => __tmp23);
 			__tmp4.Declarations.AddLazy(() => Element);
 			__tmp4.Declarations.AddLazy(() => Attribute);
 			__tmp4.Declarations.AddLazy(() => NamedElement);
@@ -31692,6 +35111,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Declarations.AddLazy(() => Alias);
 			__tmp4.Declarations.AddLazy(() => NamedType);
 			__tmp4.Declarations.AddLazy(() => PrimitiveType);
+			__tmp4.Declarations.AddLazy(() => ClassifierType);
 			__tmp4.Declarations.AddLazy(() => InterfaceType);
 			__tmp4.Declarations.AddLazy(() => ClassType);
 			__tmp4.Declarations.AddLazy(() => StructType);
@@ -31700,9 +35120,11 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Declarations.AddLazy(() => DelegateType);
 			__tmp4.Declarations.AddLazy(() => ArrayType);
 			__tmp4.Declarations.AddLazy(() => CollectionType);
+			__tmp4.Declarations.AddLazy(() => DictionaryType);
 			__tmp4.Declarations.AddLazy(() => NullableType);
 			__tmp4.Declarations.AddLazy(() => TupleType);
 			__tmp4.Declarations.AddLazy(() => TypeParameter);
+			__tmp4.Declarations.AddLazy(() => GenericTypeReference);
 			__tmp4.Declarations.AddLazy(() => Member);
 			__tmp4.Declarations.AddLazy(() => FieldLikeMember);
 			__tmp4.Declarations.AddLazy(() => Field);
@@ -31767,6 +35189,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Declarations.AddLazy(() => ParenthesizedExpression);
 			__tmp4.Declarations.AddLazy(() => ReferenceExpression);
 			__tmp4.Declarations.AddLazy(() => SizeOfExpression);
+			__tmp4.Declarations.AddLazy(() => TypeOfExpression);
 			__tmp4.Declarations.AddLazy(() => ThrowExpression);
 			__tmp4.Declarations.AddLazy(() => TupleExpression);
 			__tmp4.Declarations.AddLazy(() => UnaryExpression);
@@ -31779,13 +35202,103 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp5.Uri = "http://MetaDslx.Languages.Core/1.0";
 			__tmp5.Prefix = null;
 			__tmp5.SetNamespaceLazy(() => __tmp4);
+			__tmp6.Documentation = null;
+			__tmp6.Name = "Object";
+			__tmp6.SetNamespaceLazy(() => __tmp4);
+			__tmp6.SetTypeLazy(() => PrimitiveType);
+			__tmp6.SetValueLazy(() => Object);
+			__tmp7.Documentation = null;
+			__tmp7.Name = "Void";
+			__tmp7.SetNamespaceLazy(() => __tmp4);
+			__tmp7.SetTypeLazy(() => PrimitiveType);
+			__tmp7.SetValueLazy(() => Void);
+			__tmp8.Documentation = null;
+			__tmp8.Name = "Boolean";
+			__tmp8.SetNamespaceLazy(() => __tmp4);
+			__tmp8.SetTypeLazy(() => PrimitiveType);
+			__tmp8.SetValueLazy(() => Boolean);
+			__tmp9.Documentation = null;
+			__tmp9.Name = "Char";
+			__tmp9.SetNamespaceLazy(() => __tmp4);
+			__tmp9.SetTypeLazy(() => PrimitiveType);
+			__tmp9.SetValueLazy(() => Char);
+			__tmp10.Documentation = null;
+			__tmp10.Name = "SByte";
+			__tmp10.SetNamespaceLazy(() => __tmp4);
+			__tmp10.SetTypeLazy(() => PrimitiveType);
+			__tmp10.SetValueLazy(() => SByte);
+			__tmp11.Documentation = null;
+			__tmp11.Name = "Byte";
+			__tmp11.SetNamespaceLazy(() => __tmp4);
+			__tmp11.SetTypeLazy(() => PrimitiveType);
+			__tmp11.SetValueLazy(() => Byte);
+			__tmp12.Documentation = null;
+			__tmp12.Name = "Int16";
+			__tmp12.SetNamespaceLazy(() => __tmp4);
+			__tmp12.SetTypeLazy(() => PrimitiveType);
+			__tmp12.SetValueLazy(() => Int16);
+			__tmp13.Documentation = null;
+			__tmp13.Name = "UInt16";
+			__tmp13.SetNamespaceLazy(() => __tmp4);
+			__tmp13.SetTypeLazy(() => PrimitiveType);
+			__tmp13.SetValueLazy(() => UInt16);
+			__tmp14.Documentation = null;
+			__tmp14.Name = "Int32";
+			__tmp14.SetNamespaceLazy(() => __tmp4);
+			__tmp14.SetTypeLazy(() => PrimitiveType);
+			__tmp14.SetValueLazy(() => Int32);
+			__tmp15.Documentation = null;
+			__tmp15.Name = "UInt32";
+			__tmp15.SetNamespaceLazy(() => __tmp4);
+			__tmp15.SetTypeLazy(() => PrimitiveType);
+			__tmp15.SetValueLazy(() => UInt32);
+			__tmp16.Documentation = null;
+			__tmp16.Name = "Int64";
+			__tmp16.SetNamespaceLazy(() => __tmp4);
+			__tmp16.SetTypeLazy(() => PrimitiveType);
+			__tmp16.SetValueLazy(() => Int64);
+			__tmp17.Documentation = null;
+			__tmp17.Name = "UInt64";
+			__tmp17.SetNamespaceLazy(() => __tmp4);
+			__tmp17.SetTypeLazy(() => PrimitiveType);
+			__tmp17.SetValueLazy(() => UInt64);
+			__tmp18.Documentation = null;
+			__tmp18.Name = "Decimal";
+			__tmp18.SetNamespaceLazy(() => __tmp4);
+			__tmp18.SetTypeLazy(() => PrimitiveType);
+			__tmp18.SetValueLazy(() => Decimal);
+			__tmp19.Documentation = null;
+			__tmp19.Name = "Single";
+			__tmp19.SetNamespaceLazy(() => __tmp4);
+			__tmp19.SetTypeLazy(() => PrimitiveType);
+			__tmp19.SetValueLazy(() => Single);
+			__tmp20.Documentation = null;
+			__tmp20.Name = "Double";
+			__tmp20.SetNamespaceLazy(() => __tmp4);
+			__tmp20.SetTypeLazy(() => PrimitiveType);
+			__tmp20.SetValueLazy(() => Double);
+			__tmp21.Documentation = null;
+			__tmp21.Name = "String";
+			__tmp21.SetNamespaceLazy(() => __tmp4);
+			__tmp21.SetTypeLazy(() => PrimitiveType);
+			__tmp21.SetValueLazy(() => String);
+			__tmp22.Documentation = null;
+			__tmp22.Name = "SystemType";
+			__tmp22.SetNamespaceLazy(() => __tmp4);
+			__tmp22.SetTypeLazy(() => PrimitiveType);
+			__tmp22.SetValueLazy(() => SystemType);
+			__tmp23.Documentation = null;
+			__tmp23.Name = "SystemEnum";
+			__tmp23.SetNamespaceLazy(() => __tmp4);
+			__tmp23.SetTypeLazy(() => PrimitiveType);
+			__tmp23.SetValueLazy(() => SystemEnum);
 			Element.Documentation = null;
 			Element.Name = "Element";
 			Element.SetNamespaceLazy(() => __tmp4);
 			Element.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.Symbol);
 			Element.IsAbstract = true;
 			Element.Properties.AddLazy(() => Element_Attributes);
-			Element_Attributes.SetTypeLazy(() => __tmp6);
+			Element_Attributes.SetTypeLazy(() => __tmp24);
 			Element_Attributes.Documentation = null;
 			Element_Attributes.Name = "Attributes";
 			Element_Attributes.SymbolProperty = "Attributes";
@@ -31849,6 +35362,15 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			DataType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.TypeSymbol);
 			DataType.IsAbstract = true;
 			DataType.SuperClasses.AddLazy(() => Element);
+			DataType.Properties.AddLazy(() => DataType_ResolvedType);
+			DataType_ResolvedType.SetTypeLazy(() => DataType);
+			DataType_ResolvedType.Documentation = null;
+			DataType_ResolvedType.Name = "ResolvedType";
+			DataType_ResolvedType.SymbolProperty = null;
+			DataType_ResolvedType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Derived;
+			DataType_ResolvedType.SetClassLazy(() => DataType);
+			DataType_ResolvedType.DefaultValue = null;
+			DataType_ResolvedType.IsContainment = false;
 			Declaration.Documentation = null;
 			Declaration.Name = "Declaration";
 			Declaration.SetNamespaceLazy(() => __tmp4);
@@ -31857,7 +35379,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Declaration.SuperClasses.AddLazy(() => NamedElement);
 			Declaration.Properties.AddLazy(() => Declaration_TypeParameters);
 			Declaration.Properties.AddLazy(() => Declaration_Members);
-			Declaration_TypeParameters.SetTypeLazy(() => __tmp7);
+			Declaration_TypeParameters.SetTypeLazy(() => __tmp25);
 			Declaration_TypeParameters.Documentation = null;
 			Declaration_TypeParameters.Name = "TypeParameters";
 			Declaration_TypeParameters.SymbolProperty = "TypeParameters";
@@ -31865,7 +35387,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Declaration_TypeParameters.SetClassLazy(() => Declaration);
 			Declaration_TypeParameters.DefaultValue = null;
 			Declaration_TypeParameters.IsContainment = true;
-			Declaration_Members.SetTypeLazy(() => __tmp8);
+			Declaration_Members.SetTypeLazy(() => __tmp26);
 			Declaration_Members.Documentation = null;
 			Declaration_Members.Name = "Members";
 			Declaration_Members.SymbolProperty = "Members";
@@ -31908,10 +35430,19 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			NamedType.IsAbstract = true;
 			NamedType.SuperClasses.AddLazy(() => Declaration);
 			NamedType.SuperClasses.AddLazy(() => DataType);
+			NamedType.Properties.AddLazy(() => NamedType_DotNetName);
 			NamedType.Properties.AddLazy(() => NamedType_IsAbstract);
 			NamedType.Properties.AddLazy(() => NamedType_IsSealed);
 			NamedType.Properties.AddLazy(() => NamedType_TypeArguments);
 			NamedType.Properties.AddLazy(() => NamedType_BaseTypes);
+			NamedType_DotNetName.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.String.ToMutable());
+			NamedType_DotNetName.Documentation = null;
+			NamedType_DotNetName.Name = "DotNetName";
+			NamedType_DotNetName.SymbolProperty = null;
+			NamedType_DotNetName.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			NamedType_DotNetName.SetClassLazy(() => NamedType);
+			NamedType_DotNetName.DefaultValue = null;
+			NamedType_DotNetName.IsContainment = false;
 			NamedType_IsAbstract.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
 			NamedType_IsAbstract.Documentation = null;
 			NamedType_IsAbstract.Name = "IsAbstract";
@@ -31928,7 +35459,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			NamedType_IsSealed.SetClassLazy(() => NamedType);
 			NamedType_IsSealed.DefaultValue = null;
 			NamedType_IsSealed.IsContainment = false;
-			NamedType_TypeArguments.SetTypeLazy(() => __tmp9);
+			NamedType_TypeArguments.SetTypeLazy(() => __tmp27);
 			NamedType_TypeArguments.Documentation = null;
 			NamedType_TypeArguments.Name = "TypeArguments";
 			NamedType_TypeArguments.SymbolProperty = "TypeArguments";
@@ -31936,7 +35467,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			NamedType_TypeArguments.SetClassLazy(() => NamedType);
 			NamedType_TypeArguments.DefaultValue = null;
 			NamedType_TypeArguments.IsContainment = true;
-			NamedType_BaseTypes.SetTypeLazy(() => __tmp10);
+			NamedType_BaseTypes.SetTypeLazy(() => __tmp28);
 			NamedType_BaseTypes.Documentation = null;
 			NamedType_BaseTypes.Name = "BaseTypes";
 			NamedType_BaseTypes.SymbolProperty = "BaseTypes";
@@ -31950,24 +35481,30 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			PrimitiveType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.PrimitiveTypeSymbol);
 			PrimitiveType.IsAbstract = false;
 			PrimitiveType.SuperClasses.AddLazy(() => NamedType);
+			ClassifierType.Documentation = null;
+			ClassifierType.Name = "ClassifierType";
+			ClassifierType.SetNamespaceLazy(() => __tmp4);
+			ClassifierType.SymbolType = null;
+			ClassifierType.IsAbstract = false;
+			ClassifierType.SuperClasses.AddLazy(() => NamedType);
 			InterfaceType.Documentation = null;
 			InterfaceType.Name = "InterfaceType";
 			InterfaceType.SetNamespaceLazy(() => __tmp4);
 			InterfaceType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.InterfaceTypeSymbol);
 			InterfaceType.IsAbstract = false;
-			InterfaceType.SuperClasses.AddLazy(() => NamedType);
+			InterfaceType.SuperClasses.AddLazy(() => ClassifierType);
 			ClassType.Documentation = null;
 			ClassType.Name = "ClassType";
 			ClassType.SetNamespaceLazy(() => __tmp4);
 			ClassType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.ClassTypeSymbol);
 			ClassType.IsAbstract = false;
-			ClassType.SuperClasses.AddLazy(() => NamedType);
+			ClassType.SuperClasses.AddLazy(() => ClassifierType);
 			StructType.Documentation = null;
 			StructType.Name = "StructType";
 			StructType.SetNamespaceLazy(() => __tmp4);
 			StructType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.StructTypeSymbol);
 			StructType.IsAbstract = false;
-			StructType.SuperClasses.AddLazy(() => NamedType);
+			StructType.SuperClasses.AddLazy(() => ClassifierType);
 			EnumType.Documentation = null;
 			EnumType.Name = "EnumType";
 			EnumType.SetNamespaceLazy(() => __tmp4);
@@ -31975,7 +35512,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			EnumType.IsAbstract = false;
 			EnumType.SuperClasses.AddLazy(() => NamedType);
 			EnumType.Properties.AddLazy(() => EnumType_Literals);
-			EnumType_Literals.SetTypeLazy(() => __tmp11);
+			EnumType_Literals.SetTypeLazy(() => __tmp29);
 			EnumType_Literals.Documentation = null;
 			EnumType_Literals.Name = "Literals";
 			EnumType_Literals.SymbolProperty = null;
@@ -32016,7 +35553,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			DelegateType_ReturnType.SetClassLazy(() => DelegateType);
 			DelegateType_ReturnType.DefaultValue = null;
 			DelegateType_ReturnType.IsContainment = false;
-			DelegateType_Parameters.SetTypeLazy(() => __tmp12);
+			DelegateType_Parameters.SetTypeLazy(() => __tmp30);
 			DelegateType_Parameters.Documentation = null;
 			DelegateType_Parameters.Name = "Parameters";
 			DelegateType_Parameters.SymbolProperty = "Parameters";
@@ -32090,6 +35627,39 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			CollectionType_ItemType.SetClassLazy(() => CollectionType);
 			CollectionType_ItemType.DefaultValue = null;
 			CollectionType_ItemType.IsContainment = false;
+			DictionaryType.Documentation = null;
+			DictionaryType.Name = "DictionaryType";
+			DictionaryType.SetNamespaceLazy(() => __tmp4);
+			DictionaryType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.DictionaryTypeSymbol);
+			DictionaryType.IsAbstract = false;
+			DictionaryType.SuperClasses.AddLazy(() => DataType);
+			DictionaryType.Properties.AddLazy(() => DictionaryType_IsUnordered);
+			DictionaryType.Properties.AddLazy(() => DictionaryType_KeyType);
+			DictionaryType.Properties.AddLazy(() => DictionaryType_ValueType);
+			DictionaryType_IsUnordered.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			DictionaryType_IsUnordered.Documentation = null;
+			DictionaryType_IsUnordered.Name = "IsUnordered";
+			DictionaryType_IsUnordered.SymbolProperty = "IsUnordered";
+			DictionaryType_IsUnordered.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			DictionaryType_IsUnordered.SetClassLazy(() => DictionaryType);
+			DictionaryType_IsUnordered.DefaultValue = null;
+			DictionaryType_IsUnordered.IsContainment = false;
+			DictionaryType_KeyType.SetTypeLazy(() => DataType);
+			DictionaryType_KeyType.Documentation = null;
+			DictionaryType_KeyType.Name = "KeyType";
+			DictionaryType_KeyType.SymbolProperty = "KeyType";
+			DictionaryType_KeyType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			DictionaryType_KeyType.SetClassLazy(() => DictionaryType);
+			DictionaryType_KeyType.DefaultValue = null;
+			DictionaryType_KeyType.IsContainment = false;
+			DictionaryType_ValueType.SetTypeLazy(() => DataType);
+			DictionaryType_ValueType.Documentation = null;
+			DictionaryType_ValueType.Name = "ValueType";
+			DictionaryType_ValueType.SymbolProperty = "ValueType";
+			DictionaryType_ValueType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			DictionaryType_ValueType.SetClassLazy(() => DictionaryType);
+			DictionaryType_ValueType.DefaultValue = null;
+			DictionaryType_ValueType.IsContainment = false;
 			NullableType.Documentation = null;
 			NullableType.Name = "NullableType";
 			NullableType.SetNamespaceLazy(() => __tmp4);
@@ -32117,6 +35687,48 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			TypeParameter.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.TypeParameterSymbol);
 			TypeParameter.IsAbstract = false;
 			TypeParameter.SuperClasses.AddLazy(() => NamedType);
+			GenericTypeReference.Documentation = null;
+			GenericTypeReference.Name = "GenericTypeReference";
+			GenericTypeReference.SetNamespaceLazy(() => __tmp4);
+			GenericTypeReference.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.GenericTypeReferenceTypeSymbol);
+			GenericTypeReference.IsAbstract = false;
+			GenericTypeReference.SuperClasses.AddLazy(() => DataType);
+			GenericTypeReference.Properties.AddLazy(() => GenericTypeReference_ReferencedType);
+			GenericTypeReference.Properties.AddLazy(() => GenericTypeReference_TypeArguments);
+			GenericTypeReference.Properties.AddLazy(() => GenericTypeReference_ConstructedType);
+			GenericTypeReference.Properties.AddLazy(() => GenericTypeReference_ResolvedType);
+			GenericTypeReference_ReferencedType.SetTypeLazy(() => NamedType);
+			GenericTypeReference_ReferencedType.Documentation = null;
+			GenericTypeReference_ReferencedType.Name = "ReferencedType";
+			GenericTypeReference_ReferencedType.SymbolProperty = "ReferencedType";
+			GenericTypeReference_ReferencedType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			GenericTypeReference_ReferencedType.SetClassLazy(() => GenericTypeReference);
+			GenericTypeReference_ReferencedType.DefaultValue = null;
+			GenericTypeReference_ReferencedType.IsContainment = false;
+			GenericTypeReference_TypeArguments.SetTypeLazy(() => __tmp31);
+			GenericTypeReference_TypeArguments.Documentation = null;
+			GenericTypeReference_TypeArguments.Name = "TypeArguments";
+			GenericTypeReference_TypeArguments.SymbolProperty = "TypeArguments";
+			GenericTypeReference_TypeArguments.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			GenericTypeReference_TypeArguments.SetClassLazy(() => GenericTypeReference);
+			GenericTypeReference_TypeArguments.DefaultValue = null;
+			GenericTypeReference_TypeArguments.IsContainment = true;
+			GenericTypeReference_ConstructedType.SetTypeLazy(() => NamedType);
+			GenericTypeReference_ConstructedType.Documentation = null;
+			GenericTypeReference_ConstructedType.Name = "ConstructedType";
+			GenericTypeReference_ConstructedType.SymbolProperty = null;
+			GenericTypeReference_ConstructedType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Derived;
+			GenericTypeReference_ConstructedType.SetClassLazy(() => GenericTypeReference);
+			GenericTypeReference_ConstructedType.DefaultValue = null;
+			GenericTypeReference_ConstructedType.IsContainment = false;
+			GenericTypeReference_ResolvedType.SetTypeLazy(() => DataType);
+			GenericTypeReference_ResolvedType.Documentation = null;
+			GenericTypeReference_ResolvedType.Name = "ResolvedType";
+			GenericTypeReference_ResolvedType.SymbolProperty = null;
+			GenericTypeReference_ResolvedType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Derived;
+			GenericTypeReference_ResolvedType.SetClassLazy(() => GenericTypeReference);
+			GenericTypeReference_ResolvedType.DefaultValue = null;
+			GenericTypeReference_ResolvedType.IsContainment = false;
 			Member.Documentation = null;
 			Member.Name = "Member";
 			Member.SetNamespaceLazy(() => __tmp4);
@@ -32222,7 +35834,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Indexer.IsAbstract = false;
 			Indexer.SuperClasses.AddLazy(() => Property);
 			Indexer.Properties.AddLazy(() => Indexer_Parameters);
-			Indexer_Parameters.SetTypeLazy(() => __tmp13);
+			Indexer_Parameters.SetTypeLazy(() => __tmp32);
 			Indexer_Parameters.Documentation = null;
 			Indexer_Parameters.Name = "Parameters";
 			Indexer_Parameters.SymbolProperty = "Parameters";
@@ -32256,7 +35868,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			MethodLikeMember_ReturnType.SetClassLazy(() => MethodLikeMember);
 			MethodLikeMember_ReturnType.DefaultValue = null;
 			MethodLikeMember_ReturnType.IsContainment = false;
-			MethodLikeMember_Parameters.SetTypeLazy(() => __tmp14);
+			MethodLikeMember_Parameters.SetTypeLazy(() => __tmp33);
 			MethodLikeMember_Parameters.Documentation = null;
 			MethodLikeMember_Parameters.Name = "Parameters";
 			MethodLikeMember_Parameters.SymbolProperty = "Parameters";
@@ -32283,8 +35895,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Parameter.SetNamespaceLazy(() => __tmp4);
 			Parameter.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.ParameterSymbol);
 			Parameter.IsAbstract = false;
-			Parameter.SuperClasses.AddLazy(() => Local);
-			Parameter.SuperClasses.AddLazy(() => TypedDeclaration);
+			Parameter.SuperClasses.AddLazy(() => Variable);
+			Parameter.Properties.AddLazy(() => Parameter_IsVarArg);
+			Parameter_IsVarArg.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			Parameter_IsVarArg.Documentation = null;
+			Parameter_IsVarArg.Name = "IsVarArg";
+			Parameter_IsVarArg.SymbolProperty = "IsVarArg";
+			Parameter_IsVarArg.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Parameter_IsVarArg.SetClassLazy(() => Parameter);
+			Parameter_IsVarArg.DefaultValue = null;
+			Parameter_IsVarArg.IsContainment = false;
 			Constructor.Documentation = null;
 			Constructor.Name = "Constructor";
 			Constructor.SetNamespaceLazy(() => __tmp4);
@@ -32412,7 +36032,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			BlockStatement.IsAbstract = false;
 			BlockStatement.SuperClasses.AddLazy(() => Statement);
 			BlockStatement.Properties.AddLazy(() => BlockStatement_Statements);
-			BlockStatement_Statements.SetTypeLazy(() => __tmp15);
+			BlockStatement_Statements.SetTypeLazy(() => __tmp34);
 			BlockStatement_Statements.Documentation = null;
 			BlockStatement_Statements.Name = "Statements";
 			BlockStatement_Statements.SymbolProperty = "Statements";
@@ -32474,7 +36094,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_Before);
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_Condition);
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_AtLoopBottom);
-			ForLoopStatement_Before.SetTypeLazy(() => __tmp16);
+			ForLoopStatement_Before.SetTypeLazy(() => __tmp35);
 			ForLoopStatement_Before.Documentation = null;
 			ForLoopStatement_Before.Name = "Before";
 			ForLoopStatement_Before.SymbolProperty = "Before";
@@ -32490,7 +36110,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ForLoopStatement_Condition.SetClassLazy(() => ForLoopStatement);
 			ForLoopStatement_Condition.DefaultValue = null;
 			ForLoopStatement_Condition.IsContainment = true;
-			ForLoopStatement_AtLoopBottom.SetTypeLazy(() => __tmp17);
+			ForLoopStatement_AtLoopBottom.SetTypeLazy(() => __tmp36);
 			ForLoopStatement_AtLoopBottom.Documentation = null;
 			ForLoopStatement_AtLoopBottom.Name = "AtLoopBottom";
 			ForLoopStatement_AtLoopBottom.SymbolProperty = "AtLoopBottom";
@@ -32691,7 +36311,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			SwitchStatement_Value.SetClassLazy(() => SwitchStatement);
 			SwitchStatement_Value.DefaultValue = null;
 			SwitchStatement_Value.IsContainment = true;
-			SwitchStatement_Cases.SetTypeLazy(() => __tmp18);
+			SwitchStatement_Cases.SetTypeLazy(() => __tmp37);
 			SwitchStatement_Cases.Documentation = null;
 			SwitchStatement_Cases.Name = "Cases";
 			SwitchStatement_Cases.SymbolProperty = "Cases";
@@ -32707,7 +36327,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			SwitchCase.SuperClasses.AddLazy(() => Element);
 			SwitchCase.Properties.AddLazy(() => SwitchCase_Clauses);
 			SwitchCase.Properties.AddLazy(() => SwitchCase_Body);
-			SwitchCase_Clauses.SetTypeLazy(() => __tmp19);
+			SwitchCase_Clauses.SetTypeLazy(() => __tmp38);
 			SwitchCase_Clauses.Documentation = null;
 			SwitchCase_Clauses.Name = "Clauses";
 			SwitchCase_Clauses.SymbolProperty = "Clauses";
@@ -32777,7 +36397,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			TryStatement_Body.SetClassLazy(() => TryStatement);
 			TryStatement_Body.DefaultValue = null;
 			TryStatement_Body.IsContainment = true;
-			TryStatement_Catches.SetTypeLazy(() => __tmp20);
+			TryStatement_Catches.SetTypeLazy(() => __tmp39);
 			TryStatement_Catches.Documentation = null;
 			TryStatement_Catches.Name = "Catches";
 			TryStatement_Catches.SymbolProperty = "Catches";
@@ -32897,6 +36517,15 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Expression.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol);
 			Expression.IsAbstract = true;
 			Expression.SuperClasses.AddLazy(() => Element);
+			Expression.Properties.AddLazy(() => Expression_Type);
+			Expression_Type.SetTypeLazy(() => DataType);
+			Expression_Type.Documentation = null;
+			Expression_Type.Name = "Type";
+			Expression_Type.SymbolProperty = null;
+			Expression_Type.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Expression_Type.SetClassLazy(() => Expression);
+			Expression_Type.DefaultValue = null;
+			Expression_Type.IsContainment = false;
 			Argument.Documentation = null;
 			Argument.Name = "Argument";
 			Argument.SetNamespaceLazy(() => __tmp4);
@@ -32970,7 +36599,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			BinaryExpression_OperatorKind.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			BinaryExpression_OperatorKind.SetClassLazy(() => BinaryExpression);
 			BinaryExpression_OperatorKind.DefaultValue = null;
-			BinaryExpression_OperatorKind.IsContainment = true;
+			BinaryExpression_OperatorKind.IsContainment = false;
 			BinaryExpression_LeftOperand.SetTypeLazy(() => Expression);
 			BinaryExpression_LeftOperand.Documentation = null;
 			BinaryExpression_LeftOperand.Name = "LeftOperand";
@@ -32994,7 +36623,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			BinaryExpression_IsChecked.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			BinaryExpression_IsChecked.SetClassLazy(() => BinaryExpression);
 			BinaryExpression_IsChecked.DefaultValue = null;
-			BinaryExpression_IsChecked.IsContainment = true;
+			BinaryExpression_IsChecked.IsContainment = false;
 			BinaryExpression_OperatorMethod.SetTypeLazy(() => BinaryOperator);
 			BinaryExpression_OperatorMethod.Documentation = null;
 			BinaryExpression_OperatorMethod.Name = "OperatorMethod";
@@ -33002,7 +36631,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			BinaryExpression_OperatorMethod.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			BinaryExpression_OperatorMethod.SetClassLazy(() => BinaryExpression);
 			BinaryExpression_OperatorMethod.DefaultValue = null;
-			BinaryExpression_OperatorMethod.IsContainment = true;
+			BinaryExpression_OperatorMethod.IsContainment = false;
 			CoalesceExpression.Documentation = null;
 			CoalesceExpression.Name = "CoalesceExpression";
 			CoalesceExpression.SetNamespaceLazy(() => __tmp4);
@@ -33042,7 +36671,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			CompoundAssignmentExpression_OperatorKind.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			CompoundAssignmentExpression_OperatorKind.SetClassLazy(() => CompoundAssignmentExpression);
 			CompoundAssignmentExpression_OperatorKind.DefaultValue = null;
-			CompoundAssignmentExpression_OperatorKind.IsContainment = true;
+			CompoundAssignmentExpression_OperatorKind.IsContainment = false;
 			CompoundAssignmentExpression_IsChecked.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
 			CompoundAssignmentExpression_IsChecked.Documentation = null;
 			CompoundAssignmentExpression_IsChecked.Name = "IsChecked";
@@ -33050,7 +36679,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			CompoundAssignmentExpression_IsChecked.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			CompoundAssignmentExpression_IsChecked.SetClassLazy(() => CompoundAssignmentExpression);
 			CompoundAssignmentExpression_IsChecked.DefaultValue = null;
-			CompoundAssignmentExpression_IsChecked.IsContainment = true;
+			CompoundAssignmentExpression_IsChecked.IsContainment = false;
 			ConditionalExpression.Documentation = null;
 			ConditionalExpression.Name = "ConditionalExpression";
 			ConditionalExpression.SetNamespaceLazy(() => __tmp4);
@@ -33109,7 +36738,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ConversionExpression_TargetType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			ConversionExpression_TargetType.SetClassLazy(() => ConversionExpression);
 			ConversionExpression_TargetType.DefaultValue = null;
-			ConversionExpression_TargetType.IsContainment = true;
+			ConversionExpression_TargetType.IsContainment = false;
 			ConversionExpression_IsTryCast.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
 			ConversionExpression_IsTryCast.Documentation = null;
 			ConversionExpression_IsTryCast.Name = "IsTryCast";
@@ -33125,7 +36754,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ConversionExpression_IsChecked.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			ConversionExpression_IsChecked.SetClassLazy(() => ConversionExpression);
 			ConversionExpression_IsChecked.DefaultValue = null;
-			ConversionExpression_IsChecked.IsContainment = true;
+			ConversionExpression_IsChecked.IsContainment = false;
 			DefaultValueExpression.Documentation = null;
 			DefaultValueExpression.Name = "DefaultValueExpression";
 			DefaultValueExpression.SetNamespaceLazy(() => __tmp4);
@@ -33176,7 +36805,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IncrementOrDecrementExpression_IsChecked.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			IncrementOrDecrementExpression_IsChecked.SetClassLazy(() => IncrementOrDecrementExpression);
 			IncrementOrDecrementExpression_IsChecked.DefaultValue = null;
-			IncrementOrDecrementExpression_IsChecked.IsContainment = true;
+			IncrementOrDecrementExpression_IsChecked.IsContainment = false;
 			IndexerAccessExpression.Documentation = null;
 			IndexerAccessExpression.Name = "IndexerAccessExpression";
 			IndexerAccessExpression.SetNamespaceLazy(() => __tmp4);
@@ -33184,6 +36813,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IndexerAccessExpression.IsAbstract = false;
 			IndexerAccessExpression.SuperClasses.AddLazy(() => Expression);
 			IndexerAccessExpression.Properties.AddLazy(() => IndexerAccessExpression_Receiver);
+			IndexerAccessExpression.Properties.AddLazy(() => IndexerAccessExpression_IsNullConditional);
 			IndexerAccessExpression.Properties.AddLazy(() => IndexerAccessExpression_Arguments);
 			IndexerAccessExpression.Properties.AddLazy(() => IndexerAccessExpression_Target);
 			IndexerAccessExpression_Receiver.SetTypeLazy(() => Expression);
@@ -33194,7 +36824,15 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IndexerAccessExpression_Receiver.SetClassLazy(() => IndexerAccessExpression);
 			IndexerAccessExpression_Receiver.DefaultValue = null;
 			IndexerAccessExpression_Receiver.IsContainment = true;
-			IndexerAccessExpression_Arguments.SetTypeLazy(() => __tmp21);
+			IndexerAccessExpression_IsNullConditional.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			IndexerAccessExpression_IsNullConditional.Documentation = null;
+			IndexerAccessExpression_IsNullConditional.Name = "IsNullConditional";
+			IndexerAccessExpression_IsNullConditional.SymbolProperty = "IsNullConditional";
+			IndexerAccessExpression_IsNullConditional.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			IndexerAccessExpression_IsNullConditional.SetClassLazy(() => IndexerAccessExpression);
+			IndexerAccessExpression_IsNullConditional.DefaultValue = null;
+			IndexerAccessExpression_IsNullConditional.IsContainment = false;
+			IndexerAccessExpression_Arguments.SetTypeLazy(() => __tmp40);
 			IndexerAccessExpression_Arguments.Documentation = null;
 			IndexerAccessExpression_Arguments.Name = "Arguments";
 			IndexerAccessExpression_Arguments.SymbolProperty = "Arguments";
@@ -33209,7 +36847,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IndexerAccessExpression_Target.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			IndexerAccessExpression_Target.SetClassLazy(() => IndexerAccessExpression);
 			IndexerAccessExpression_Target.DefaultValue = null;
-			IndexerAccessExpression_Target.IsContainment = true;
+			IndexerAccessExpression_Target.IsContainment = false;
 			InstanceReferenceExpression.Documentation = null;
 			InstanceReferenceExpression.Name = "InstanceReferenceExpression";
 			InstanceReferenceExpression.SetNamespaceLazy(() => __tmp4);
@@ -33224,7 +36862,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			InstanceReferenceExpression_AccessThroughBaseType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			InstanceReferenceExpression_AccessThroughBaseType.SetClassLazy(() => InstanceReferenceExpression);
 			InstanceReferenceExpression_AccessThroughBaseType.DefaultValue = null;
-			InstanceReferenceExpression_AccessThroughBaseType.IsContainment = true;
+			InstanceReferenceExpression_AccessThroughBaseType.IsContainment = false;
 			InvocationExpression.Documentation = null;
 			InvocationExpression.Name = "InvocationExpression";
 			InvocationExpression.SetNamespaceLazy(() => __tmp4);
@@ -33241,7 +36879,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			InvocationExpression_Receiver.SetClassLazy(() => InvocationExpression);
 			InvocationExpression_Receiver.DefaultValue = null;
 			InvocationExpression_Receiver.IsContainment = true;
-			InvocationExpression_Arguments.SetTypeLazy(() => __tmp22);
+			InvocationExpression_Arguments.SetTypeLazy(() => __tmp41);
 			InvocationExpression_Arguments.Documentation = null;
 			InvocationExpression_Arguments.Name = "Arguments";
 			InvocationExpression_Arguments.SymbolProperty = "Arguments";
@@ -33273,7 +36911,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IsTypeExpression_TypeOperand.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			IsTypeExpression_TypeOperand.SetClassLazy(() => IsTypeExpression);
 			IsTypeExpression_TypeOperand.DefaultValue = null;
-			IsTypeExpression_TypeOperand.IsContainment = true;
+			IsTypeExpression_TypeOperand.IsContainment = false;
 			IsTypeExpression_IsNegated.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
 			IsTypeExpression_IsNegated.Documentation = null;
 			IsTypeExpression_IsNegated.Name = "IsNegated";
@@ -33281,7 +36919,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IsTypeExpression_IsNegated.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			IsTypeExpression_IsNegated.SetClassLazy(() => IsTypeExpression);
 			IsTypeExpression_IsNegated.DefaultValue = null;
-			IsTypeExpression_IsNegated.IsContainment = true;
+			IsTypeExpression_IsNegated.IsContainment = false;
 			LambdaExpression.Documentation = null;
 			LambdaExpression.Name = "LambdaExpression";
 			LambdaExpression.SetNamespaceLazy(() => __tmp4);
@@ -33299,7 +36937,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			LambdaExpression_ReturnType.SetClassLazy(() => LambdaExpression);
 			LambdaExpression_ReturnType.DefaultValue = null;
 			LambdaExpression_ReturnType.IsContainment = false;
-			LambdaExpression_Parameters.SetTypeLazy(() => __tmp23);
+			LambdaExpression_Parameters.SetTypeLazy(() => __tmp42);
 			LambdaExpression_Parameters.Documentation = null;
 			LambdaExpression_Parameters.Name = "Parameters";
 			LambdaExpression_Parameters.SymbolProperty = "Parameters";
@@ -33322,6 +36960,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			LiteralExpression.IsAbstract = false;
 			LiteralExpression.SuperClasses.AddLazy(() => Expression);
 			LiteralExpression.Properties.AddLazy(() => LiteralExpression_Value);
+			LiteralExpression.Properties.AddLazy(() => LiteralExpression_Type);
 			LiteralExpression_Value.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Object.ToMutable());
 			LiteralExpression_Value.Documentation = null;
 			LiteralExpression_Value.Name = "Value";
@@ -33330,6 +36969,14 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			LiteralExpression_Value.SetClassLazy(() => LiteralExpression);
 			LiteralExpression_Value.DefaultValue = null;
 			LiteralExpression_Value.IsContainment = false;
+			LiteralExpression_Type.SetTypeLazy(() => DataType);
+			LiteralExpression_Type.Documentation = null;
+			LiteralExpression_Type.Name = "Type";
+			LiteralExpression_Type.SymbolProperty = "Type";
+			LiteralExpression_Type.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			LiteralExpression_Type.SetClassLazy(() => LiteralExpression);
+			LiteralExpression_Type.DefaultValue = null;
+			LiteralExpression_Type.IsContainment = false;
 			NameOfExpression.Documentation = null;
 			NameOfExpression.Name = "NameOfExpression";
 			NameOfExpression.SetNamespaceLazy(() => __tmp4);
@@ -33362,7 +37009,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ObjectCreationExpression_ObjectType.SetClassLazy(() => ObjectCreationExpression);
 			ObjectCreationExpression_ObjectType.DefaultValue = null;
 			ObjectCreationExpression_ObjectType.IsContainment = false;
-			ObjectCreationExpression_Arguments.SetTypeLazy(() => __tmp24);
+			ObjectCreationExpression_Arguments.SetTypeLazy(() => __tmp43);
 			ObjectCreationExpression_Arguments.Documentation = null;
 			ObjectCreationExpression_Arguments.Name = "Arguments";
 			ObjectCreationExpression_Arguments.SymbolProperty = "Arguments";
@@ -33370,7 +37017,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ObjectCreationExpression_Arguments.SetClassLazy(() => ObjectCreationExpression);
 			ObjectCreationExpression_Arguments.DefaultValue = null;
 			ObjectCreationExpression_Arguments.IsContainment = true;
-			ObjectCreationExpression_Initializers.SetTypeLazy(() => __tmp25);
+			ObjectCreationExpression_Initializers.SetTypeLazy(() => __tmp44);
 			ObjectCreationExpression_Initializers.Documentation = null;
 			ObjectCreationExpression_Initializers.Name = "Initializers";
 			ObjectCreationExpression_Initializers.SymbolProperty = "Arguments";
@@ -33421,7 +37068,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ReferenceExpression_IsNullConditional.SetClassLazy(() => ReferenceExpression);
 			ReferenceExpression_IsNullConditional.DefaultValue = null;
 			ReferenceExpression_IsNullConditional.IsContainment = false;
-			ReferenceExpression_TypeArguments.SetTypeLazy(() => __tmp26);
+			ReferenceExpression_TypeArguments.SetTypeLazy(() => __tmp45);
 			ReferenceExpression_TypeArguments.Documentation = null;
 			ReferenceExpression_TypeArguments.Name = "TypeArguments";
 			ReferenceExpression_TypeArguments.SymbolProperty = "TypeArguments";
@@ -33467,7 +37114,22 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			SizeOfExpression_TypeOperand.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			SizeOfExpression_TypeOperand.SetClassLazy(() => SizeOfExpression);
 			SizeOfExpression_TypeOperand.DefaultValue = null;
-			SizeOfExpression_TypeOperand.IsContainment = true;
+			SizeOfExpression_TypeOperand.IsContainment = false;
+			TypeOfExpression.Documentation = null;
+			TypeOfExpression.Name = "TypeOfExpression";
+			TypeOfExpression.SetNamespaceLazy(() => __tmp4);
+			TypeOfExpression.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.TypeOfExpressionSymbol);
+			TypeOfExpression.IsAbstract = false;
+			TypeOfExpression.SuperClasses.AddLazy(() => Expression);
+			TypeOfExpression.Properties.AddLazy(() => TypeOfExpression_TypeOperand);
+			TypeOfExpression_TypeOperand.SetTypeLazy(() => DataType);
+			TypeOfExpression_TypeOperand.Documentation = null;
+			TypeOfExpression_TypeOperand.Name = "TypeOperand";
+			TypeOfExpression_TypeOperand.SymbolProperty = "TypeOperand";
+			TypeOfExpression_TypeOperand.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			TypeOfExpression_TypeOperand.SetClassLazy(() => TypeOfExpression);
+			TypeOfExpression_TypeOperand.DefaultValue = null;
+			TypeOfExpression_TypeOperand.IsContainment = false;
 			ThrowExpression.Documentation = null;
 			ThrowExpression.Name = "ThrowExpression";
 			ThrowExpression.SetNamespaceLazy(() => __tmp4);
@@ -33490,7 +37152,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			TupleExpression.IsAbstract = false;
 			TupleExpression.SuperClasses.AddLazy(() => Expression);
 			TupleExpression.Properties.AddLazy(() => TupleExpression_Arguments);
-			TupleExpression_Arguments.SetTypeLazy(() => __tmp27);
+			TupleExpression_Arguments.SetTypeLazy(() => __tmp46);
 			TupleExpression_Arguments.Documentation = null;
 			TupleExpression_Arguments.Name = "Arguments";
 			TupleExpression_Arguments.SymbolProperty = "Arguments";
@@ -33515,7 +37177,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			UnaryExpression_OperatorKind.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			UnaryExpression_OperatorKind.SetClassLazy(() => UnaryExpression);
 			UnaryExpression_OperatorKind.DefaultValue = null;
-			UnaryExpression_OperatorKind.IsContainment = true;
+			UnaryExpression_OperatorKind.IsContainment = false;
 			UnaryExpression_Operand.SetTypeLazy(() => Expression);
 			UnaryExpression_Operand.Documentation = null;
 			UnaryExpression_Operand.Name = "Operand";
@@ -33531,7 +37193,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			UnaryExpression_IsChecked.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			UnaryExpression_IsChecked.SetClassLazy(() => UnaryExpression);
 			UnaryExpression_IsChecked.DefaultValue = null;
-			UnaryExpression_IsChecked.IsContainment = true;
+			UnaryExpression_IsChecked.IsContainment = false;
 			UnaryExpression_OperatorMethod.SetTypeLazy(() => UnaryOperator);
 			UnaryExpression_OperatorMethod.Documentation = null;
 			UnaryExpression_OperatorMethod.Name = "OperatorMethod";
@@ -33539,7 +37201,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			UnaryExpression_OperatorMethod.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			UnaryExpression_OperatorMethod.SetClassLazy(() => UnaryExpression);
 			UnaryExpression_OperatorMethod.DefaultValue = null;
-			UnaryExpression_OperatorMethod.IsContainment = true;
+			UnaryExpression_OperatorMethod.IsContainment = false;
 			VariableDeclarationExpression.Documentation = null;
 			VariableDeclarationExpression.Name = "VariableDeclarationExpression";
 			VariableDeclarationExpression.SetNamespaceLazy(() => __tmp4);
@@ -33572,7 +37234,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			VariableDeclarationGroupExpression.SuperClasses.AddLazy(() => Expression);
 			VariableDeclarationGroupExpression.Properties.AddLazy(() => VariableDeclarationGroupExpression_Declarations);
 			VariableDeclarationGroupExpression.Properties.AddLazy(() => VariableDeclarationGroupExpression_Initializer);
-			VariableDeclarationGroupExpression_Declarations.SetTypeLazy(() => __tmp28);
+			VariableDeclarationGroupExpression_Declarations.SetTypeLazy(() => __tmp47);
 			VariableDeclarationGroupExpression_Declarations.Documentation = null;
 			VariableDeclarationGroupExpression_Declarations.Name = "Declarations";
 			VariableDeclarationGroupExpression_Declarations.SymbolProperty = "Declarations";
@@ -33588,52 +37250,54 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			VariableDeclarationGroupExpression_Initializer.SetClassLazy(() => VariableDeclarationGroupExpression);
 			VariableDeclarationGroupExpression_Initializer.DefaultValue = null;
 			VariableDeclarationGroupExpression_Initializer.IsContainment = true;
-			__tmp6.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp6.SetInnerTypeLazy(() => Attribute);
-			__tmp7.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp7.SetInnerTypeLazy(() => TypeParameter);
-			__tmp8.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp8.SetInnerTypeLazy(() => Declaration);
-			__tmp9.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp9.SetInnerTypeLazy(() => DataType);
-			__tmp10.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp10.SetInnerTypeLazy(() => NamedType);
-			__tmp11.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp11.SetInnerTypeLazy(() => EnumLiteral);
-			__tmp12.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp12.SetInnerTypeLazy(() => Parameter);
-			__tmp13.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp13.SetInnerTypeLazy(() => Parameter);
-			__tmp14.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp14.SetInnerTypeLazy(() => Parameter);
-			__tmp15.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp15.SetInnerTypeLazy(() => Statement);
-			__tmp16.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp16.SetInnerTypeLazy(() => Statement);
-			__tmp17.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp17.SetInnerTypeLazy(() => Statement);
-			__tmp18.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp18.SetInnerTypeLazy(() => SwitchCase);
-			__tmp19.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp19.SetInnerTypeLazy(() => CaseClause);
-			__tmp20.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp20.SetInnerTypeLazy(() => CatchClause);
-			__tmp21.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp21.SetInnerTypeLazy(() => Argument);
-			__tmp22.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp22.SetInnerTypeLazy(() => Argument);
-			__tmp23.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp23.SetInnerTypeLazy(() => Parameter);
 			__tmp24.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp24.SetInnerTypeLazy(() => Argument);
+			__tmp24.SetInnerTypeLazy(() => Attribute);
 			__tmp25.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp25.SetInnerTypeLazy(() => Expression);
+			__tmp25.SetInnerTypeLazy(() => TypeParameter);
 			__tmp26.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp26.SetInnerTypeLazy(() => DataType);
+			__tmp26.SetInnerTypeLazy(() => Declaration);
 			__tmp27.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp27.SetInnerTypeLazy(() => Argument);
+			__tmp27.SetInnerTypeLazy(() => DataType);
 			__tmp28.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp28.SetInnerTypeLazy(() => VariableDeclarationExpression);
+			__tmp28.SetInnerTypeLazy(() => NamedType);
+			__tmp29.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp29.SetInnerTypeLazy(() => EnumLiteral);
+			__tmp30.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp30.SetInnerTypeLazy(() => Parameter);
+			__tmp31.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp31.SetInnerTypeLazy(() => DataType);
+			__tmp32.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp32.SetInnerTypeLazy(() => Parameter);
+			__tmp33.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp33.SetInnerTypeLazy(() => Parameter);
+			__tmp34.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp34.SetInnerTypeLazy(() => Statement);
+			__tmp35.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp35.SetInnerTypeLazy(() => Statement);
+			__tmp36.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp36.SetInnerTypeLazy(() => Statement);
+			__tmp37.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp37.SetInnerTypeLazy(() => SwitchCase);
+			__tmp38.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp38.SetInnerTypeLazy(() => CaseClause);
+			__tmp39.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp39.SetInnerTypeLazy(() => CatchClause);
+			__tmp40.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp40.SetInnerTypeLazy(() => Argument);
+			__tmp41.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp41.SetInnerTypeLazy(() => Argument);
+			__tmp42.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp42.SetInnerTypeLazy(() => Parameter);
+			__tmp43.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp43.SetInnerTypeLazy(() => Argument);
+			__tmp44.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp44.SetInnerTypeLazy(() => Expression);
+			__tmp45.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp45.SetInnerTypeLazy(() => DataType);
+			__tmp46.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp46.SetInnerTypeLazy(() => Argument);
+			__tmp47.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp47.SetInnerTypeLazy(() => VariableDeclarationExpression);
 		}
 	}
 
@@ -33766,9 +37430,14 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// <ul>
 		///     <li>Element</li>
 		/// </ul>
+		/// Initializes the following derived properties:
+		/// <ul>
+		///     <li>ResolvedType</li>
+		/// </ul>
 		public virtual void DataType(DataTypeBuilder _this)
 		{
 			this.CallDataTypeSuperConstructors(_this);
+			_this.SetResolvedTypeLazy(this.DataType_ComputeProperty_ResolvedType);
 		}
 	
 		/// <summary>
@@ -33779,6 +37448,10 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			this.Element(_this);
 		}
 	
+		/// <summary>
+		/// Computes the value of the property: DataType.ResolvedType
+		/// </summary	
+		public abstract DataTypeBuilder DataType_ComputeProperty_ResolvedType(DataTypeBuilder _this);
 	
 	
 	
@@ -33977,7 +37650,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	
 	
 		/// <summary>
-		/// Implements the constructor: InterfaceType()
+		/// Implements the constructor: ClassifierType()
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
@@ -33990,6 +37663,42 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		///     <li>DataType</li>
 		///     <li>Declaration</li>
 		///     <li>NamedType</li>
+		/// </ul>
+		public virtual void ClassifierType(ClassifierTypeBuilder _this)
+		{
+			this.CallClassifierTypeSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of ClassifierType
+		/// </summary>
+		protected virtual void CallClassifierTypeSuperConstructors(ClassifierTypeBuilder _this)
+		{
+			this.Element(_this);
+			this.NamedElement(_this);
+			this.DataType(_this);
+			this.Declaration(_this);
+			this.NamedType(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: InterfaceType()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>ClassifierType</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		///     <li>NamedElement</li>
+		///     <li>DataType</li>
+		///     <li>Declaration</li>
+		///     <li>NamedType</li>
+		///     <li>ClassifierType</li>
 		/// </ul>
 		public virtual void InterfaceType(InterfaceTypeBuilder _this)
 		{
@@ -34006,6 +37715,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			this.DataType(_this);
 			this.Declaration(_this);
 			this.NamedType(_this);
+			this.ClassifierType(_this);
 		}
 	
 	
@@ -34016,7 +37726,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>NamedType</li>
+		///     <li>ClassifierType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
@@ -34025,6 +37735,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		///     <li>DataType</li>
 		///     <li>Declaration</li>
 		///     <li>NamedType</li>
+		///     <li>ClassifierType</li>
 		/// </ul>
 		public virtual void ClassType(ClassTypeBuilder _this)
 		{
@@ -34041,6 +37752,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			this.DataType(_this);
 			this.Declaration(_this);
 			this.NamedType(_this);
+			this.ClassifierType(_this);
 		}
 	
 	
@@ -34051,7 +37763,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>NamedType</li>
+		///     <li>ClassifierType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
@@ -34060,6 +37772,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		///     <li>DataType</li>
 		///     <li>Declaration</li>
 		///     <li>NamedType</li>
+		///     <li>ClassifierType</li>
 		/// </ul>
 		public virtual void StructType(StructTypeBuilder _this)
 		{
@@ -34076,6 +37789,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			this.DataType(_this);
 			this.Declaration(_this);
 			this.NamedType(_this);
+			this.ClassifierType(_this);
 		}
 	
 	
@@ -34264,6 +37978,35 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	
 	
 		/// <summary>
+		/// Implements the constructor: DictionaryType()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>DataType</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		///     <li>DataType</li>
+		/// </ul>
+		public virtual void DictionaryType(DictionaryTypeBuilder _this)
+		{
+			this.CallDictionaryTypeSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of DictionaryType
+		/// </summary>
+		protected virtual void CallDictionaryTypeSuperConstructors(DictionaryTypeBuilder _this)
+		{
+			this.Element(_this);
+			this.DataType(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
 		/// Implements the constructor: NullableType()
 		/// </summary>
 		/// Direct superclasses: 
@@ -34353,6 +38096,50 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			this.NamedType(_this);
 		}
 	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: GenericTypeReference()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>DataType</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		///     <li>DataType</li>
+		/// </ul>
+		/// Initializes the following derived properties:
+		/// <ul>
+		///     <li>ConstructedType</li>
+		///     <li>ResolvedType</li>
+		/// </ul>
+		public virtual void GenericTypeReference(GenericTypeReferenceBuilder _this)
+		{
+			this.CallGenericTypeReferenceSuperConstructors(_this);
+			_this.SetConstructedTypeLazy(this.GenericTypeReference_ComputeProperty_ConstructedType);
+			_this.SetResolvedTypeLazy(this.GenericTypeReference_ComputeProperty_ResolvedType);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of GenericTypeReference
+		/// </summary>
+		protected virtual void CallGenericTypeReferenceSuperConstructors(GenericTypeReferenceBuilder _this)
+		{
+			this.Element(_this);
+			this.DataType(_this);
+		}
+	
+		/// <summary>
+		/// Computes the value of the property: GenericTypeReference.ConstructedType
+		/// </summary	
+		public abstract NamedTypeBuilder GenericTypeReference_ComputeProperty_ConstructedType(GenericTypeReferenceBuilder _this);
+		/// <summary>
+		/// Computes the value of the property: GenericTypeReference.ResolvedType
+		/// </summary	
+		public abstract DataTypeBuilder GenericTypeReference_ComputeProperty_ResolvedType(GenericTypeReferenceBuilder _this);
 	
 	
 	
@@ -34617,17 +38404,15 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>Local</li>
-		///     <li>TypedDeclaration</li>
+		///     <li>Variable</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>Element</li>
 		///     <li>NamedElement</li>
-		///     <li>TypedElement</li>
 		///     <li>Declaration</li>
-		///     <li>TypedDeclaration</li>
 		///     <li>Local</li>
+		///     <li>Variable</li>
 		/// </ul>
 		public virtual void Parameter(ParameterBuilder _this)
 		{
@@ -34641,10 +38426,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			this.Element(_this);
 			this.NamedElement(_this);
-			this.TypedElement(_this);
 			this.Declaration(_this);
-			this.TypedDeclaration(_this);
 			this.Local(_this);
+			this.Variable(_this);
 		}
 	
 	
@@ -36319,6 +40103,35 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// Calls the super constructors of SizeOfExpression
 		/// </summary>
 		protected virtual void CallSizeOfExpressionSuperConstructors(SizeOfExpressionBuilder _this)
+		{
+			this.Element(_this);
+			this.Expression(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: TypeOfExpression()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Expression</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		///     <li>Expression</li>
+		/// </ul>
+		public virtual void TypeOfExpression(TypeOfExpressionBuilder _this)
+		{
+			this.CallTypeOfExpressionSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of TypeOfExpression
+		/// </summary>
+		protected virtual void CallTypeOfExpressionSuperConstructors(TypeOfExpressionBuilder _this)
 		{
 			this.Element(_this);
 			this.Expression(_this);

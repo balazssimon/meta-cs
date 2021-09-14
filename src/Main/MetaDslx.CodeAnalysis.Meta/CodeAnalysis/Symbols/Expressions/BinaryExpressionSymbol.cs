@@ -165,6 +165,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 var result = BinaryOperatorOverloadResolutionResult.GetInstance();
                 compilation.OverloadResolution.BinaryOperatorOverloadResolution(this.OperatorKind, this.LeftOperand, this.RightOperand, result, ref useSiteDiagnostics);
                 var analysisResult = result.Best;
+                if (result.Results.Count == 0 && (useSiteDiagnostics is null || useSiteDiagnostics.Count == 0))
+                {
+                    diagnostics.Add(InternalErrorCode.ERR_BadBinaryOps.ToDiagnostic(this.GetLocation(), this.OperatorKind.ToString(), this.LeftOperand?.Type?.ToString(), this.RightOperand?.Type?.ToString()));
+                }
                 result.Free();
                 this.AddSymbolDiagnostics(useSiteDiagnostics);
                 return analysisResult;

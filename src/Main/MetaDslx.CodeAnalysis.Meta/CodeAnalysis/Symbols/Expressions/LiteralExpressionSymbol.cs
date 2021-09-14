@@ -15,5 +15,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract object? Value { get; }
+        /// <summary>
+        /// The type of the literal.
+        /// </summary>
+        [SymbolProperty]
+        public override TypeSymbol? Type { get; }
     }
 }

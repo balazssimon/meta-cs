@@ -153,7 +153,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 operand = opNts.InnerType;
                 opNullable = true;
             }
-            var opSpecialSymbol = operand.GetSpecialSymbol(CSharpLanguage.Instance);
+            var opSpecialSymbol = operand.GetSpecialSymbol(Compilation.Language);
             var opIndex = -1;
             if (opSpecialSymbol is SpecialType opSpecialType)
             {

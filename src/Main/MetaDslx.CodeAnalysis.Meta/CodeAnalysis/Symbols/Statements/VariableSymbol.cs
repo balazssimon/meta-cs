@@ -16,5 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public bool HasConstantValue { get; }
         public object? ConstantValue { get; }
+
+        public TypeWithAnnotations TypeWithAnnotations => null;
     }
 }

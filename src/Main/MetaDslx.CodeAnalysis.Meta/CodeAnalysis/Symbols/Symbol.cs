@@ -383,7 +383,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var metadataName = this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat);
             var specialSymbolId = language.SymbolFacts.GetSpecialSymbolOfMetadataName(metadataName);
             if (specialSymbolId is not null) return specialSymbolId;
-            specialSymbolId = language.SymbolFacts.GetSpecialSymbolOfMetadataName(this.MetadataName);
+            if (this is IModelSymbol modelSymbol && modelSymbol.ModelObject is not null)
+            {
+                specialSymbolId = language.SymbolFacts.GetSpecialSymbolOfModelObject(modelSymbol.ModelObject);
+            }
             return specialSymbolId;
         }
 
@@ -395,7 +398,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (specialSymbolId is not null)
             {
                 var metadataName = language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
-                if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.ContainingSymbol is ModuleSymbol && this.MetadataName == metadataName)) return true;
+                if (!string.IsNullOrEmpty(metadataName) && this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName) return true;
+                else if (this is IModelSymbol modelSymbol && modelSymbol.ModelObject is not null) return modelSymbol.ModelObject.Equals(specialModelObject);
                 else return false;
             }
             return false;

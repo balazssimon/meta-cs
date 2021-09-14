@@ -388,7 +388,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var modelObject = this.Language.SymbolFacts.GetModelObjectOfSpecialSymbol(specialSymbolId);
             var metadataName = this.Language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
             var name = this.Language.SymbolFacts.GetName(modelObject);
-            var result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            var result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: true);
+            if (result is null)
+            {
+                if (metadataName is not null)
+                {
+                    MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
+                    var symbol = this.LookupTopLevelMetadataType(ref emittedName, false);
+                    if (symbol is not null)
+                    {
+                        results.Add(symbol);
+                    }
+                }
+                result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            }
             results.Free();
             return result!;
         }
@@ -406,7 +419,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             var name = this.Language.SymbolFacts.GetName(modelObject);
             var metadataName = this.Language.SymbolFacts.GetMetadataName(modelObject);
-            var result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: true);
+            var result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            if (result is null)
+            {
+                if (metadataName is not null)
+                {
+                    MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
+                    var symbol = this.LookupTopLevelMetadataType(ref emittedName, false);
+                    if (symbol is not null)
+                    {
+                        results.Add(symbol);
+                    }
+                }
+                result = SelectSingleModelSymbolResult(results, name, metadataName, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            }
             results.Free();
             return result;
         }

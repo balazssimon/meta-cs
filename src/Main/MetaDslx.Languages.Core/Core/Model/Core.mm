@@ -4,6 +4,25 @@
 
 	metamodel Core(Uri="http://MetaDslx.Languages.Core/1.0",MajorVersion=1,MinorVersion=0);
 
+	const PrimitiveType Object;
+	const PrimitiveType Void;
+	const PrimitiveType Boolean;
+	const PrimitiveType Char;
+	const PrimitiveType SByte;
+	const PrimitiveType Byte;
+	const PrimitiveType Int16;
+	const PrimitiveType UInt16;
+	const PrimitiveType Int32;
+	const PrimitiveType UInt32;
+	const PrimitiveType Int64;
+	const PrimitiveType UInt64;
+	const PrimitiveType Decimal;
+	const PrimitiveType Single;
+	const PrimitiveType Double;
+	const PrimitiveType String;
+	const PrimitiveType SystemType;
+	const PrimitiveType SystemEnum;
+
 	//=============================
 	// Base classes
 	//=============================
@@ -36,6 +55,7 @@
 	[symbol: Type]
 	abstract class DataType : Element
 	{
+		derived DataType ResolvedType;
 	}
 
 	//=============================
@@ -70,6 +90,7 @@
 	[symbol: NamedType]
 	abstract class NamedType : Declaration, DataType
 	{
+		string DotNetName;
 		[property: IsAbstract]
 		bool IsAbstract;
 		[property: IsSealed]
@@ -89,18 +110,22 @@
 	{
 	}
 
+	class ClassifierType : NamedType
+	{
+	}
+
 	[type: Interface]
-	class InterfaceType : NamedType
+	class InterfaceType : ClassifierType
 	{
 	}
 
 	[type: Class]
-	class ClassType : NamedType
+	class ClassType : ClassifierType
 	{
 	}
 
 	[type: Struct]
-	class StructType : NamedType
+	class StructType : ClassifierType
 	{
 	}
 
@@ -147,6 +172,17 @@
 		DataType ItemType;
 	}
 
+	[type: Dictionary]
+	class DictionaryType : DataType
+	{
+		[property: IsUnordered]
+		bool IsUnordered;
+		[property: KeyType]
+		DataType KeyType;
+		[property: ValueType]
+		DataType ValueType;
+	}
+
 	[type: Nullable]
 	class NullableType : DataType
 	{
@@ -162,6 +198,17 @@
 	[symbol: TypeParameter]
 	class TypeParameter : NamedType
 	{
+	}
+
+	[type: GenericTypeReference]
+	class GenericTypeReference : DataType
+	{
+		[property: ReferencedType]
+		NamedType ReferencedType;
+		[property: TypeArguments]
+		containment list<DataType> TypeArguments;
+		derived NamedType ConstructedType;
+		derived DataType ResolvedType;
 	}
 
 	//=============================
@@ -230,8 +277,10 @@
 	}
 
 	[symbol: Parameter]
-	class Parameter : Local, TypedDeclaration
+	class Parameter : Variable
 	{
+		[property: IsVarArg]
+		bool IsVarArg;
 	}
 
 	[symbol: Constructor]
@@ -494,7 +543,8 @@
 
 	[symbol: Expression]
 	abstract class Expression : Element
-	{
+	{	
+		DataType Type;
 	}
 
 	[symbol: Argument]
@@ -524,15 +574,15 @@
 	class BinaryExpression : Expression
 	{
 		[property: OperatorKind]
-		containment object OperatorKind;
+		object OperatorKind;
 		[property: LeftOperand]
 		containment Expression LeftOperand;
 		[property: RightOperand]
 		containment Expression RightOperand;
 		[property: IsChecked]
-		containment bool IsChecked;
+		bool IsChecked;
 		[property: OperatorMethod]
-		containment BinaryOperator OperatorMethod;
+		BinaryOperator OperatorMethod;
 	}
 	
 	[expression: Coalesce]
@@ -548,9 +598,9 @@
 	class CompoundAssignmentExpression : AssignmentExpression
 	{
 		[property: OperatorKind]
-		containment object OperatorKind;
+		object OperatorKind;
 		[property: IsChecked]
-		containment bool IsChecked;
+		bool IsChecked;
 	}
 	
 	[expression: Conditional]
@@ -570,11 +620,11 @@
 		[property: Operand]
 		containment Expression Operand;
 		[property: TargetType]
-		containment DataType TargetType;
+		DataType TargetType;
 		[property: IsTryCast]
 		bool IsTryCast;
 		[property: IsChecked]
-		containment bool IsChecked;
+		bool IsChecked;
 	}
 	
 	[expression: DefaultValue]
@@ -600,7 +650,7 @@
 		[property: IsPostfix]
 		bool IsPostfix;
 		[property: IsChecked]
-		containment bool IsChecked;
+		bool IsChecked;
 	}
 	
 	[expression: IndexerAccess]
@@ -608,17 +658,19 @@
 	{
 		[property: Receiver]
 		containment Expression Receiver;
+		[property: IsNullConditional]
+		bool IsNullConditional;
 		[property: Arguments]
 		containment list<Argument> Arguments;
 		[property: Target]
-		containment Indexer Target;
+		Indexer Target;
 	}
 
 	[expression: InstanceReference]
 	class InstanceReferenceExpression : Expression
 	{
 		[property: AccessThroughBaseType]
-		containment NamedType AccessThroughBaseType;
+		NamedType AccessThroughBaseType;
 	}
 	
 	[expression: Invocation]
@@ -636,9 +688,9 @@
 		[property: ValueOperand]
 		containment Expression ValueOperand;
 		[property: TypeOperand]
-		containment DataType TypeOperand;
+		DataType TypeOperand;
 		[property: IsNegated]
-		containment bool IsNegated;
+		bool IsNegated;
 	}
 	
 	[expression: Lambda]
@@ -657,6 +709,8 @@
 	{
 		[property: Value]
 		object Value;
+		[property: Type]
+		DataType Type;
 	}
 	
 	[expression: NameOf]
@@ -705,7 +759,14 @@
 	class SizeOfExpression : Expression
 	{
 		[property: TypeOperand]
-		containment DataType TypeOperand;
+		DataType TypeOperand;
+	}
+	
+	[expression: TypeOf]
+	class TypeOfExpression : Expression
+	{
+		[property: TypeOperand]
+		DataType TypeOperand;
 	}
 	
 	[expression: Throw]
@@ -726,13 +787,13 @@
 	class UnaryExpression : Expression
 	{
 		[property: OperatorKind]
-		containment object OperatorKind;
+		object OperatorKind;
 		[property: Operand]
 		containment Expression Operand;
 		[property: IsChecked]
-		containment bool IsChecked;
+		bool IsChecked;
 		[property: OperatorMethod]
-		containment UnaryOperator OperatorMethod;
+		UnaryOperator OperatorMethod;
 	}
 	
 	[expression: VariableDeclaration]

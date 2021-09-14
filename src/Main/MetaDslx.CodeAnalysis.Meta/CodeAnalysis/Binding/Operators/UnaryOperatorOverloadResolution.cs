@@ -18,6 +18,12 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         public void UnaryOperatorOverloadResolution(UnaryOperatorKind kind, ExpressionSymbol operand, UnaryOperatorOverloadResolutionResult result, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
+            if (kind is null || operand is null)
+            {
+                result.Results.Add(UnaryOperatorAnalysisResult.Inapplicable(UnaryOperatorSignature.Error, Conversions.NoConversion));
+                return;
+            }
+
             Debug.Assert(operand != null);
             Debug.Assert(result.Results.Count == 0);
 

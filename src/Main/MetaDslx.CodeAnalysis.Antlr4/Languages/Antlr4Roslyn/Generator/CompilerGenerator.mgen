@@ -4938,10 +4938,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
@@ -4950,16 +4948,16 @@ using [Properties.DefaultNamespace].Symbols;
 ^
 namespace [Properties.DefaultNamespace].Binding
 {
-	public class [Properties.LanguageName]DeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, I[Properties.LanguageName]SyntaxVisitor
+	public class [Properties.LanguageName]DeclarationTreeBuilderVisitor : MetaDslx.CodeAnalysis.Declarations.DeclarationTreeBuilderVisitor, I[Properties.LanguageName]SyntaxVisitor
 	{
-        protected [Properties.LanguageName]DeclarationTreeBuilderVisitor([Properties.LanguageName]SyntaxTree syntaxTree, SymbolFacts symbolFacts, string scriptClassName, bool isSubmission)
+        protected [Properties.LanguageName]DeclarationTreeBuilderVisitor([Properties.LanguageName]SyntaxTree syntaxTree, MetaDslx.CodeAnalysis.Symbols.SymbolFacts symbolFacts, string scriptClassName, bool isSubmission)
             : base(syntaxTree, symbolFacts, scriptClassName, isSubmission)
         {
         }
 ^
-        public static RootSingleDeclaration ForTree(
+        public static MetaDslx.CodeAnalysis.Declarations.RootSingleDeclaration ForTree(
             [Properties.LanguageName]SyntaxTree syntaxTree,
-            SymbolFacts symbolFacts,
+            MetaDslx.CodeAnalysis.Symbols.SymbolFacts symbolFacts,
             string scriptClassName,
             bool isSubmission)
         {
@@ -5319,6 +5317,9 @@ namespace [Properties.DefaultNamespace].Binding
 ^
         [loop(rule:Instances.ParserRules)]
         [GenerateCompletionBinderFactoryAddResults(rule)]
+			[loop(alt:rule.Alternatives)]
+        [GenerateCompletionBinderFactoryAddResults(alt)]
+			[end loop]
         [end loop]
     }
 }
@@ -5405,14 +5406,14 @@ public void AddResultsFor[rule.PlainName()](object use, CompletionSearchFlags op
     if (_visited["["][rule.RuleIndex]["]"]) return;
     _visited["["][rule.RuleIndex]["]"] = true;
     [if (rule.Alternatives.Count > 0)]
-        object altUse;
-        [loop (alt:rule.Alternatives where alt.ContainsBinderAnnotations)]
-            [if (hasloop(elem:alt.AllElements where elem.ContainsBinderAnnotations))]
-        if ([loop(elem:alt.AllElements where elem.ContainsBinderAnnotations; separator delim = " || ")]use == Use_[alt.PlainName()]_[elem.RedName()][end loop]) altUse = use;
-        else altUse = UnassignedUse;
-            [end if]
-        AddResultsFor[alt.PlainName()](altUse, operation, parentBinder);
-        [end loop]
+    object altUse;
+    [loop (alt:rule.Alternatives where alt.ContainsBinderAnnotations)]
+        [if (hasloop(elem:alt.AllElements where elem.ContainsBinderAnnotations))]
+    if ([loop(elem:alt.AllElements where elem.ContainsBinderAnnotations; separator delim = " || ")]use == Use_[alt.PlainName()]_[elem.RedName()][delim][end loop]) altUse = use;
+    else altUse = UnassignedUse;
+        [end if]
+    AddResultsFor[alt.PlainName()](altUse, operation, parentBinder);
+    [end loop]
     [else]
     [GenerateCompletionBinderFactoryAddResultsBody(rule)]
     [end if]

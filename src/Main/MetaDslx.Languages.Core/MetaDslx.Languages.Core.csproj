@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\Versions.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>MetaDslx.Languages.Core</RootNamespace>
+    <RootNamespace>MetaDslx.Languages</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
     <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
     <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
@@ -22,7 +22,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MetaModel Update="Model\Core.mm">
+    <Antlr4Roslyn Update="Core\Syntax\InternalSyntax\CoreLexer.ag4">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Core\Syntax\InternalSyntax\CoreParser.ag4">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </Antlr4Roslyn>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MetaModel Update="Compiler\Model\Compiler.mm">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </MetaModel>
+    <MetaModel Update="Core\Model\Core.mm">
       <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </MetaModel>
   </ItemGroup>
