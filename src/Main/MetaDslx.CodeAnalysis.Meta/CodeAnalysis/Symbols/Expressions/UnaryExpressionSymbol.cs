@@ -138,7 +138,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 var analysisResult = result.Best;
                 if (result.Results.Count == 0 && (useSiteDiagnostics is null || useSiteDiagnostics.Count == 0))
                 {
-                    diagnostics.Add(InternalErrorCode.ERR_BadUnaryOp.ToDiagnostic(this.GetLocation(), this.OperatorKind.ToString(), this.Operand?.Type?.ToString()));
+                    diagnostics.Add(InternalErrorCode.ERR_BadUnaryOp.ToDiagnostic(this.GetLocation(), this.OperatorKind?.ToString() ?? string.Empty, this.Operand?.Type?.ToString() ?? string.Empty));
                 }
                 result.Free();
                 this.AddSymbolDiagnostics(useSiteDiagnostics);

@@ -167,7 +167,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 var analysisResult = result.Best;
                 if (result.Results.Count == 0 && (useSiteDiagnostics is null || useSiteDiagnostics.Count == 0))
                 {
-                    diagnostics.Add(InternalErrorCode.ERR_BadBinaryOps.ToDiagnostic(this.GetLocation(), this.OperatorKind.ToString(), this.LeftOperand?.Type?.ToString(), this.RightOperand?.Type?.ToString()));
+                    diagnostics.Add(InternalErrorCode.ERR_BadBinaryOps.ToDiagnostic(this.GetLocation(), this.OperatorKind?.ToString() ?? string.Empty, this.LeftOperand?.Type?.ToString() ?? string.Empty, this.RightOperand?.Type?.ToString() ?? string.Empty));
                 }
                 result.Free();
                 this.AddSymbolDiagnostics(useSiteDiagnostics);
