@@ -22,6 +22,9 @@ usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
 $Define(ExpressionStatement)
 statement: $Property(Expression) expression TSemicolon;
 
+$Define(BlockStatement)
+blockStatement: TOpenBrace $Property(Statements) statement* TCloseBrace;
+
 // Expressions
 
 expression
@@ -59,6 +62,7 @@ expression
 	| $Property(Condition) condition=expression TQuestion $Property(WhenTrue) whenTrue=expression TColon $Property(WhenFalse) whenFalse=expression #condExpr $Define(ConditionalExpression)
 	| $Property(Target) target=expression TAssign $Property(Value) value=expression #assignExpr $Define(AssignmentExpression)
 	| $Property(Target) target=expression $Property(OperatorKind) compoundAssignmentOperator $Property(Value) value=expression #compAssignExpr $Define(CompoundAssignmentExpression)
+	| lambdaSignature TArrow lambdaBody #lambdaExpr $Define(LambdaExpression)
 	;
 
 argumentList: argumentExpression (TComma argumentExpression)*;
@@ -75,6 +79,24 @@ fieldInitializerExpression: identifier TAssign expression;
 collectionInitializerExpressions: expression (TComma expression)*;
 dictionaryInitializerExpressions: dictionaryInitializerExpression (TComma dictionaryInitializerExpression)*;
 dictionaryInitializerExpression: TOpenBracket identifier TCloseBracket TAssign expression;
+
+lambdaSignature: implicitLambdaSignature | explicitLambdaSignature;
+implicitLambdaSignature : implicitParameter | implicitParameterList;
+$Property(Parameters)
+implicitParameterList : TOpenParen implicitParameter (TComma implicitParameter)* TCloseParen;
+$Property(Parameters)
+$Define(Parameter)
+implicitParameter : name;
+
+explicitLambdaSignature : explicitParameterList;
+$Property(Parameters)
+explicitParameterList : TOpenParen explicitParameter (TComma explicitParameter)* TCloseParen;
+$Property(Parameters)
+$Define(Parameter)
+explicitParameter : $Property(Type) typeReference name;
+
+$Property(Body)
+lambdaBody: $Define(ExpressionStatement) $Property(Expression) expression | blockStatement;
 
 dotOperator
 	: TDot

@@ -28,6 +28,7 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string Main = nameof(Main);
 		public const string UsingNamespace = nameof(UsingNamespace);
 		public const string Statement = nameof(Statement);
+		public const string BlockStatement = nameof(BlockStatement);
 		public const string ParenthesizedExpr = nameof(ParenthesizedExpr);
 		public const string DefaultExpr = nameof(DefaultExpr);
 		public const string ThisExpr = nameof(ThisExpr);
@@ -62,6 +63,7 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string CondExpr = nameof(CondExpr);
 		public const string AssignExpr = nameof(AssignExpr);
 		public const string CompAssignExpr = nameof(CompAssignExpr);
+		public const string LambdaExpr = nameof(LambdaExpr);
 		public const string ArgumentList = nameof(ArgumentList);
 		public const string ArgumentExpression = nameof(ArgumentExpression);
 		public const string InitializerExpression = nameof(InitializerExpression);
@@ -70,6 +72,14 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string CollectionInitializerExpressions = nameof(CollectionInitializerExpressions);
 		public const string DictionaryInitializerExpressions = nameof(DictionaryInitializerExpressions);
 		public const string DictionaryInitializerExpression = nameof(DictionaryInitializerExpression);
+		public const string LambdaSignature = nameof(LambdaSignature);
+		public const string ImplicitLambdaSignature = nameof(ImplicitLambdaSignature);
+		public const string ImplicitParameterList = nameof(ImplicitParameterList);
+		public const string ImplicitParameter = nameof(ImplicitParameter);
+		public const string ExplicitLambdaSignature = nameof(ExplicitLambdaSignature);
+		public const string ExplicitParameterList = nameof(ExplicitParameterList);
+		public const string ExplicitParameter = nameof(ExplicitParameter);
+		public const string LambdaBody = nameof(LambdaBody);
 		public const string DotOperator = nameof(DotOperator);
 		public const string IndexerOperator = nameof(IndexerOperator);
 		public const string PostfixOperator = nameof(PostfixOperator);

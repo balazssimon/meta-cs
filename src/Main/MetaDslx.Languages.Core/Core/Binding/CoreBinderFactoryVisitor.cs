@@ -23,6 +23,7 @@ namespace MetaDslx.Languages.Core.Binding
     public class CoreBinderFactoryVisitor : BinderFactoryVisitor, ICoreSyntaxVisitor<Binder>
     {
 		public static object UseExpression = new object();
+		public static object UseStatement = new object();
 		public static object UseLiteral = new object();
 		public static object UseIdentifier = new object();
 		public static object UseTypeReference = new object();
@@ -92,11 +93,16 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseKDouble = new object();
 		public static object UseKString = new object();
 		public static object UseUsingNamespace = new object();
-		public static object UseStatement = new object();
 		public static object Use = new object();
 		public static object UseName = new object();
 		public static object UseQualifier = new object();
 		public static object UseGenericTypeArguments = new object();
+		public static object UseLambdaBody = new object();
+		public static object UseImplicitParameter = new object();
+		public static object UseImplicitParameterList = new object();
+		public static object UseExplicitParameterList = new object();
+		public static object UseExplicitParameter = new object();
+		public static object UseBlockStatement = new object();
 		public static object UseDotOperator = new object();
 		public static object UseIndexerOperator = new object();
 		public static object UseLeftShiftOperator = new object();
@@ -113,9 +119,12 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseCollectionInitializerExpressions = new object();
 		public static object UseFieldInitializerExpression = new object();
 		public static object UseDictionaryInitializerExpression = new object();
+		public static object UseImplicitLambdaSignature = new object();
+		public static object UseExplicitLambdaSignature = new object();
 		public static object UseGenericTypeArgument = new object();
 		public static object UseArgumentList = new object();
 		public static object UseInitializerExpression = new object();
+		public static object UseLambdaSignature = new object();
 		public static object UseFieldInitializerExpressions = new object();
 		public static object UseDictionaryInitializerExpressions = new object();
 
@@ -186,6 +195,32 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseExpression)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Expression");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitBlockStatement(BlockStatementSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Statement.Node)) use = UseStatement;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(BlockStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseStatement)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement.Node, name: "Statements");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -1226,6 +1261,23 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitLambdaExpr(LambdaExprSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(LambdaExpression));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitArgumentList(ArgumentListSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -1350,6 +1402,160 @@ namespace MetaDslx.Languages.Core.Binding
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitLambdaSignature(LambdaSignatureSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitImplicitParameterList(ImplicitParameterListSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Parameters");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitImplicitParameter(ImplicitParameterSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Parameters");
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Parameter));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExplicitParameterList(ExplicitParameterListSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Parameters");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExplicitParameter(ExplicitParameterSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.TypeReference)) use = UseTypeReference;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Parameters");
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Parameter));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseTypeReference)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.TypeReference, name: "Type");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitLambdaBody(LambdaBodySyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Body");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseExpression)
+				{
+					resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent.Expression, type: typeof(ExpressionStatement));
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Expression");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

@@ -22,6 +22,9 @@ usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
                             
 statement:                       expression TSemicolon;
 
+                       
+blockStatement: TOpenBrace                       statement* TCloseBrace;
+
 // Expressions
 
 expression
@@ -59,6 +62,7 @@ expression
 	|                      condition=expression TQuestion                     whenTrue=expression TColon                      whenFalse=expression #condExpr                               
 	|                   target=expression TAssign                  value=expression #assignExpr                              
 	|                   target=expression                         compoundAssignmentOperator                  value=expression #compAssignExpr                                      
+	| lambdaSignature TArrow lambdaBody #lambdaExpr                          
 	;
 
 argumentList: argumentExpression (TComma argumentExpression)*;
@@ -75,6 +79,24 @@ fieldInitializerExpression: identifier TAssign expression;
 collectionInitializerExpressions: expression (TComma expression)*;
 dictionaryInitializerExpressions: dictionaryInitializerExpression (TComma dictionaryInitializerExpression)*;
 dictionaryInitializerExpression: TOpenBracket identifier TCloseBracket TAssign expression;
+
+lambdaSignature: implicitLambdaSignature | explicitLambdaSignature;
+implicitLambdaSignature : implicitParameter | implicitParameterList;
+                     
+implicitParameterList : TOpenParen implicitParameter (TComma implicitParameter)* TCloseParen;
+                     
+                  
+implicitParameter : name;
+
+explicitLambdaSignature : explicitParameterList;
+                     
+explicitParameterList : TOpenParen explicitParameter (TComma explicitParameter)* TCloseParen;
+                     
+                  
+explicitParameter :                 typeReference name;
+
+               
+lambdaBody:                                                    expression | blockStatement;
 
 dotOperator
 	: TDot

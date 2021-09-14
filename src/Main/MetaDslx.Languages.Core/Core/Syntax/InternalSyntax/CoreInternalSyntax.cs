@@ -1508,6 +1508,120 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    }
 	}
 	
+	internal class BlockStatementGreen : GreenSyntaxNode
+	{
+	    internal static readonly BlockStatementGreen __Missing = new BlockStatementGreen();
+	    private InternalSyntaxToken tOpenBrace;
+	    private GreenNode statement;
+	    private InternalSyntaxToken tCloseBrace;
+	
+	    public BlockStatementGreen(CoreSyntaxKind kind, InternalSyntaxToken tOpenBrace, GreenNode statement, InternalSyntaxToken tCloseBrace)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (tOpenBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBrace);
+				this.tOpenBrace = tOpenBrace;
+			}
+			if (statement != null)
+			{
+				this.AdjustFlagsAndWidth(statement);
+				this.statement = statement;
+			}
+			if (tCloseBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBrace);
+				this.tCloseBrace = tCloseBrace;
+			}
+	    }
+	
+	    public BlockStatementGreen(CoreSyntaxKind kind, InternalSyntaxToken tOpenBrace, GreenNode statement, InternalSyntaxToken tCloseBrace, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (tOpenBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBrace);
+				this.tOpenBrace = tOpenBrace;
+			}
+			if (statement != null)
+			{
+				this.AdjustFlagsAndWidth(statement);
+				this.statement = statement;
+			}
+			if (tCloseBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBrace);
+				this.tCloseBrace = tCloseBrace;
+			}
+	    }
+	
+		private BlockStatementGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.BlockStatement, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> Statement { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen>(this.statement); } }
+	    public InternalSyntaxToken TCloseBrace { get { return this.tCloseBrace; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.BlockStatementSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.tOpenBrace;
+	            case 1: return this.statement;
+	            case 2: return this.tCloseBrace;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitBlockStatementGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitBlockStatementGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new BlockStatementGreen(this.Kind, this.tOpenBrace, this.statement, this.tCloseBrace, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new BlockStatementGreen(this.Kind, this.tOpenBrace, this.statement, this.tCloseBrace, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new BlockStatementGreen(this.Kind, this.tOpenBrace, this.statement, this.tCloseBrace, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public BlockStatementGreen Update(InternalSyntaxToken tOpenBrace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> statement, InternalSyntaxToken tCloseBrace)
+	    {
+	        if (this.TOpenBrace != tOpenBrace ||
+				this.Statement != statement ||
+				this.TCloseBrace != tCloseBrace)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.BlockStatement(tOpenBrace, statement, tCloseBrace);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (BlockStatementGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
 	internal abstract class ExpressionGreen : GreenSyntaxNode
 	{
 	    internal static readonly ExpressionGreen __Missing = ParenthesizedExprGreen.__Missing;
@@ -5451,6 +5565,120 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    }
 	}
 	
+	internal class LambdaExprGreen : ExpressionGreen
+	{
+	    internal static new readonly LambdaExprGreen __Missing = new LambdaExprGreen();
+	    private LambdaSignatureGreen lambdaSignature;
+	    private InternalSyntaxToken tArrow;
+	    private LambdaBodyGreen lambdaBody;
+	
+	    public LambdaExprGreen(CoreSyntaxKind kind, LambdaSignatureGreen lambdaSignature, InternalSyntaxToken tArrow, LambdaBodyGreen lambdaBody)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (lambdaSignature != null)
+			{
+				this.AdjustFlagsAndWidth(lambdaSignature);
+				this.lambdaSignature = lambdaSignature;
+			}
+			if (tArrow != null)
+			{
+				this.AdjustFlagsAndWidth(tArrow);
+				this.tArrow = tArrow;
+			}
+			if (lambdaBody != null)
+			{
+				this.AdjustFlagsAndWidth(lambdaBody);
+				this.lambdaBody = lambdaBody;
+			}
+	    }
+	
+	    public LambdaExprGreen(CoreSyntaxKind kind, LambdaSignatureGreen lambdaSignature, InternalSyntaxToken tArrow, LambdaBodyGreen lambdaBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (lambdaSignature != null)
+			{
+				this.AdjustFlagsAndWidth(lambdaSignature);
+				this.lambdaSignature = lambdaSignature;
+			}
+			if (tArrow != null)
+			{
+				this.AdjustFlagsAndWidth(tArrow);
+				this.tArrow = tArrow;
+			}
+			if (lambdaBody != null)
+			{
+				this.AdjustFlagsAndWidth(lambdaBody);
+				this.lambdaBody = lambdaBody;
+			}
+	    }
+	
+		private LambdaExprGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.LambdaExpr, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public LambdaSignatureGreen LambdaSignature { get { return this.lambdaSignature; } }
+	    public InternalSyntaxToken TArrow { get { return this.tArrow; } }
+	    public LambdaBodyGreen LambdaBody { get { return this.lambdaBody; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.LambdaExprSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.lambdaSignature;
+	            case 1: return this.tArrow;
+	            case 2: return this.lambdaBody;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitLambdaExprGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitLambdaExprGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new LambdaExprGreen(this.Kind, this.lambdaSignature, this.tArrow, this.lambdaBody, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new LambdaExprGreen(this.Kind, this.lambdaSignature, this.tArrow, this.lambdaBody, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new LambdaExprGreen(this.Kind, this.lambdaSignature, this.tArrow, this.lambdaBody, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public LambdaExprGreen Update(LambdaSignatureGreen lambdaSignature, InternalSyntaxToken tArrow, LambdaBodyGreen lambdaBody)
+	    {
+	        if (this.LambdaSignature != lambdaSignature ||
+				this.TArrow != tArrow ||
+				this.LambdaBody != lambdaBody)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.LambdaExpr(lambdaSignature, tArrow, lambdaBody);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaExprGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
 	internal class ArgumentListGreen : GreenSyntaxNode
 	{
 	    internal static readonly ArgumentListGreen __Missing = new ArgumentListGreen();
@@ -6304,6 +6532,851 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (DictionaryInitializerExpressionGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class LambdaSignatureGreen : GreenSyntaxNode
+	{
+	    internal static readonly LambdaSignatureGreen __Missing = new LambdaSignatureGreen();
+	    private ImplicitLambdaSignatureGreen implicitLambdaSignature;
+	    private ExplicitLambdaSignatureGreen explicitLambdaSignature;
+	
+	    public LambdaSignatureGreen(CoreSyntaxKind kind, ImplicitLambdaSignatureGreen implicitLambdaSignature, ExplicitLambdaSignatureGreen explicitLambdaSignature)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 2;
+			if (implicitLambdaSignature != null)
+			{
+				this.AdjustFlagsAndWidth(implicitLambdaSignature);
+				this.implicitLambdaSignature = implicitLambdaSignature;
+			}
+			if (explicitLambdaSignature != null)
+			{
+				this.AdjustFlagsAndWidth(explicitLambdaSignature);
+				this.explicitLambdaSignature = explicitLambdaSignature;
+			}
+	    }
+	
+	    public LambdaSignatureGreen(CoreSyntaxKind kind, ImplicitLambdaSignatureGreen implicitLambdaSignature, ExplicitLambdaSignatureGreen explicitLambdaSignature, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 2;
+			if (implicitLambdaSignature != null)
+			{
+				this.AdjustFlagsAndWidth(implicitLambdaSignature);
+				this.implicitLambdaSignature = implicitLambdaSignature;
+			}
+			if (explicitLambdaSignature != null)
+			{
+				this.AdjustFlagsAndWidth(explicitLambdaSignature);
+				this.explicitLambdaSignature = explicitLambdaSignature;
+			}
+	    }
+	
+		private LambdaSignatureGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.LambdaSignature, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public ImplicitLambdaSignatureGreen ImplicitLambdaSignature { get { return this.implicitLambdaSignature; } }
+	    public ExplicitLambdaSignatureGreen ExplicitLambdaSignature { get { return this.explicitLambdaSignature; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.LambdaSignatureSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.implicitLambdaSignature;
+	            case 1: return this.explicitLambdaSignature;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitLambdaSignatureGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitLambdaSignatureGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new LambdaSignatureGreen(this.Kind, this.implicitLambdaSignature, this.explicitLambdaSignature, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new LambdaSignatureGreen(this.Kind, this.implicitLambdaSignature, this.explicitLambdaSignature, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new LambdaSignatureGreen(this.Kind, this.implicitLambdaSignature, this.explicitLambdaSignature, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public LambdaSignatureGreen Update(ImplicitLambdaSignatureGreen implicitLambdaSignature)
+	    {
+	        if (this.implicitLambdaSignature != implicitLambdaSignature)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.LambdaSignature(implicitLambdaSignature);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaSignatureGreen)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public LambdaSignatureGreen Update(ExplicitLambdaSignatureGreen explicitLambdaSignature)
+	    {
+	        if (this.explicitLambdaSignature != explicitLambdaSignature)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.LambdaSignature(explicitLambdaSignature);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaSignatureGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ImplicitLambdaSignatureGreen : GreenSyntaxNode
+	{
+	    internal static readonly ImplicitLambdaSignatureGreen __Missing = new ImplicitLambdaSignatureGreen();
+	    private ImplicitParameterGreen implicitParameter;
+	    private ImplicitParameterListGreen implicitParameterList;
+	
+	    public ImplicitLambdaSignatureGreen(CoreSyntaxKind kind, ImplicitParameterGreen implicitParameter, ImplicitParameterListGreen implicitParameterList)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 2;
+			if (implicitParameter != null)
+			{
+				this.AdjustFlagsAndWidth(implicitParameter);
+				this.implicitParameter = implicitParameter;
+			}
+			if (implicitParameterList != null)
+			{
+				this.AdjustFlagsAndWidth(implicitParameterList);
+				this.implicitParameterList = implicitParameterList;
+			}
+	    }
+	
+	    public ImplicitLambdaSignatureGreen(CoreSyntaxKind kind, ImplicitParameterGreen implicitParameter, ImplicitParameterListGreen implicitParameterList, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 2;
+			if (implicitParameter != null)
+			{
+				this.AdjustFlagsAndWidth(implicitParameter);
+				this.implicitParameter = implicitParameter;
+			}
+			if (implicitParameterList != null)
+			{
+				this.AdjustFlagsAndWidth(implicitParameterList);
+				this.implicitParameterList = implicitParameterList;
+			}
+	    }
+	
+		private ImplicitLambdaSignatureGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.ImplicitLambdaSignature, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public ImplicitParameterGreen ImplicitParameter { get { return this.implicitParameter; } }
+	    public ImplicitParameterListGreen ImplicitParameterList { get { return this.implicitParameterList; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.ImplicitLambdaSignatureSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.implicitParameter;
+	            case 1: return this.implicitParameterList;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitImplicitLambdaSignatureGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitImplicitLambdaSignatureGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ImplicitLambdaSignatureGreen(this.Kind, this.implicitParameter, this.implicitParameterList, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ImplicitLambdaSignatureGreen(this.Kind, this.implicitParameter, this.implicitParameterList, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new ImplicitLambdaSignatureGreen(this.Kind, this.implicitParameter, this.implicitParameterList, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public ImplicitLambdaSignatureGreen Update(ImplicitParameterGreen implicitParameter)
+	    {
+	        if (this.implicitParameter != implicitParameter)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.ImplicitLambdaSignature(implicitParameter);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitLambdaSignatureGreen)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public ImplicitLambdaSignatureGreen Update(ImplicitParameterListGreen implicitParameterList)
+	    {
+	        if (this.implicitParameterList != implicitParameterList)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.ImplicitLambdaSignature(implicitParameterList);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitLambdaSignatureGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ImplicitParameterListGreen : GreenSyntaxNode
+	{
+	    internal static readonly ImplicitParameterListGreen __Missing = new ImplicitParameterListGreen();
+	    private InternalSyntaxToken tOpenParen;
+	    private GreenNode implicitParameter;
+	    private InternalSyntaxToken tCloseParen;
+	
+	    public ImplicitParameterListGreen(CoreSyntaxKind kind, InternalSyntaxToken tOpenParen, GreenNode implicitParameter, InternalSyntaxToken tCloseParen)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (tOpenParen != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenParen);
+				this.tOpenParen = tOpenParen;
+			}
+			if (implicitParameter != null)
+			{
+				this.AdjustFlagsAndWidth(implicitParameter);
+				this.implicitParameter = implicitParameter;
+			}
+			if (tCloseParen != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseParen);
+				this.tCloseParen = tCloseParen;
+			}
+	    }
+	
+	    public ImplicitParameterListGreen(CoreSyntaxKind kind, InternalSyntaxToken tOpenParen, GreenNode implicitParameter, InternalSyntaxToken tCloseParen, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (tOpenParen != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenParen);
+				this.tOpenParen = tOpenParen;
+			}
+			if (implicitParameter != null)
+			{
+				this.AdjustFlagsAndWidth(implicitParameter);
+				this.implicitParameter = implicitParameter;
+			}
+			if (tCloseParen != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseParen);
+				this.tCloseParen = tCloseParen;
+			}
+	    }
+	
+		private ImplicitParameterListGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.ImplicitParameterList, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken TOpenParen { get { return this.tOpenParen; } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ImplicitParameterGreen> ImplicitParameter { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ImplicitParameterGreen>(this.implicitParameter); } }
+	    public InternalSyntaxToken TCloseParen { get { return this.tCloseParen; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.ImplicitParameterListSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.tOpenParen;
+	            case 1: return this.implicitParameter;
+	            case 2: return this.tCloseParen;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitImplicitParameterListGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitImplicitParameterListGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ImplicitParameterListGreen(this.Kind, this.tOpenParen, this.implicitParameter, this.tCloseParen, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ImplicitParameterListGreen(this.Kind, this.tOpenParen, this.implicitParameter, this.tCloseParen, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new ImplicitParameterListGreen(this.Kind, this.tOpenParen, this.implicitParameter, this.tCloseParen, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public ImplicitParameterListGreen Update(InternalSyntaxToken tOpenParen, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ImplicitParameterGreen> implicitParameter, InternalSyntaxToken tCloseParen)
+	    {
+	        if (this.TOpenParen != tOpenParen ||
+				this.ImplicitParameter != implicitParameter ||
+				this.TCloseParen != tCloseParen)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.ImplicitParameterList(tOpenParen, implicitParameter, tCloseParen);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitParameterListGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ImplicitParameterGreen : GreenSyntaxNode
+	{
+	    internal static readonly ImplicitParameterGreen __Missing = new ImplicitParameterGreen();
+	    private NameGreen name;
+	
+	    public ImplicitParameterGreen(CoreSyntaxKind kind, NameGreen name)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (name != null)
+			{
+				this.AdjustFlagsAndWidth(name);
+				this.name = name;
+			}
+	    }
+	
+	    public ImplicitParameterGreen(CoreSyntaxKind kind, NameGreen name, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (name != null)
+			{
+				this.AdjustFlagsAndWidth(name);
+				this.name = name;
+			}
+	    }
+	
+		private ImplicitParameterGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.ImplicitParameter, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public NameGreen Name { get { return this.name; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.ImplicitParameterSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.name;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitImplicitParameterGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitImplicitParameterGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ImplicitParameterGreen(this.Kind, this.name, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ImplicitParameterGreen(this.Kind, this.name, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new ImplicitParameterGreen(this.Kind, this.name, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public ImplicitParameterGreen Update(NameGreen name)
+	    {
+	        if (this.Name != name)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.ImplicitParameter(name);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitParameterGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ExplicitLambdaSignatureGreen : GreenSyntaxNode
+	{
+	    internal static readonly ExplicitLambdaSignatureGreen __Missing = new ExplicitLambdaSignatureGreen();
+	    private ExplicitParameterListGreen explicitParameterList;
+	
+	    public ExplicitLambdaSignatureGreen(CoreSyntaxKind kind, ExplicitParameterListGreen explicitParameterList)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (explicitParameterList != null)
+			{
+				this.AdjustFlagsAndWidth(explicitParameterList);
+				this.explicitParameterList = explicitParameterList;
+			}
+	    }
+	
+	    public ExplicitLambdaSignatureGreen(CoreSyntaxKind kind, ExplicitParameterListGreen explicitParameterList, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (explicitParameterList != null)
+			{
+				this.AdjustFlagsAndWidth(explicitParameterList);
+				this.explicitParameterList = explicitParameterList;
+			}
+	    }
+	
+		private ExplicitLambdaSignatureGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.ExplicitLambdaSignature, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public ExplicitParameterListGreen ExplicitParameterList { get { return this.explicitParameterList; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.ExplicitLambdaSignatureSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.explicitParameterList;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitExplicitLambdaSignatureGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitExplicitLambdaSignatureGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ExplicitLambdaSignatureGreen(this.Kind, this.explicitParameterList, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ExplicitLambdaSignatureGreen(this.Kind, this.explicitParameterList, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new ExplicitLambdaSignatureGreen(this.Kind, this.explicitParameterList, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public ExplicitLambdaSignatureGreen Update(ExplicitParameterListGreen explicitParameterList)
+	    {
+	        if (this.ExplicitParameterList != explicitParameterList)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.ExplicitLambdaSignature(explicitParameterList);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExplicitLambdaSignatureGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ExplicitParameterListGreen : GreenSyntaxNode
+	{
+	    internal static readonly ExplicitParameterListGreen __Missing = new ExplicitParameterListGreen();
+	    private InternalSyntaxToken tOpenParen;
+	    private GreenNode explicitParameter;
+	    private InternalSyntaxToken tCloseParen;
+	
+	    public ExplicitParameterListGreen(CoreSyntaxKind kind, InternalSyntaxToken tOpenParen, GreenNode explicitParameter, InternalSyntaxToken tCloseParen)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (tOpenParen != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenParen);
+				this.tOpenParen = tOpenParen;
+			}
+			if (explicitParameter != null)
+			{
+				this.AdjustFlagsAndWidth(explicitParameter);
+				this.explicitParameter = explicitParameter;
+			}
+			if (tCloseParen != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseParen);
+				this.tCloseParen = tCloseParen;
+			}
+	    }
+	
+	    public ExplicitParameterListGreen(CoreSyntaxKind kind, InternalSyntaxToken tOpenParen, GreenNode explicitParameter, InternalSyntaxToken tCloseParen, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (tOpenParen != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenParen);
+				this.tOpenParen = tOpenParen;
+			}
+			if (explicitParameter != null)
+			{
+				this.AdjustFlagsAndWidth(explicitParameter);
+				this.explicitParameter = explicitParameter;
+			}
+			if (tCloseParen != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseParen);
+				this.tCloseParen = tCloseParen;
+			}
+	    }
+	
+		private ExplicitParameterListGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.ExplicitParameterList, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken TOpenParen { get { return this.tOpenParen; } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ExplicitParameterGreen> ExplicitParameter { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ExplicitParameterGreen>(this.explicitParameter); } }
+	    public InternalSyntaxToken TCloseParen { get { return this.tCloseParen; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.ExplicitParameterListSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.tOpenParen;
+	            case 1: return this.explicitParameter;
+	            case 2: return this.tCloseParen;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitExplicitParameterListGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitExplicitParameterListGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ExplicitParameterListGreen(this.Kind, this.tOpenParen, this.explicitParameter, this.tCloseParen, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ExplicitParameterListGreen(this.Kind, this.tOpenParen, this.explicitParameter, this.tCloseParen, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new ExplicitParameterListGreen(this.Kind, this.tOpenParen, this.explicitParameter, this.tCloseParen, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public ExplicitParameterListGreen Update(InternalSyntaxToken tOpenParen, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ExplicitParameterGreen> explicitParameter, InternalSyntaxToken tCloseParen)
+	    {
+	        if (this.TOpenParen != tOpenParen ||
+				this.ExplicitParameter != explicitParameter ||
+				this.TCloseParen != tCloseParen)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.ExplicitParameterList(tOpenParen, explicitParameter, tCloseParen);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExplicitParameterListGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ExplicitParameterGreen : GreenSyntaxNode
+	{
+	    internal static readonly ExplicitParameterGreen __Missing = new ExplicitParameterGreen();
+	    private TypeReferenceGreen typeReference;
+	    private NameGreen name;
+	
+	    public ExplicitParameterGreen(CoreSyntaxKind kind, TypeReferenceGreen typeReference, NameGreen name)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 2;
+			if (typeReference != null)
+			{
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
+			}
+			if (name != null)
+			{
+				this.AdjustFlagsAndWidth(name);
+				this.name = name;
+			}
+	    }
+	
+	    public ExplicitParameterGreen(CoreSyntaxKind kind, TypeReferenceGreen typeReference, NameGreen name, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 2;
+			if (typeReference != null)
+			{
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
+			}
+			if (name != null)
+			{
+				this.AdjustFlagsAndWidth(name);
+				this.name = name;
+			}
+	    }
+	
+		private ExplicitParameterGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.ExplicitParameter, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
+	    public NameGreen Name { get { return this.name; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.ExplicitParameterSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.typeReference;
+	            case 1: return this.name;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitExplicitParameterGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitExplicitParameterGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ExplicitParameterGreen(this.Kind, this.typeReference, this.name, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ExplicitParameterGreen(this.Kind, this.typeReference, this.name, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new ExplicitParameterGreen(this.Kind, this.typeReference, this.name, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public ExplicitParameterGreen Update(TypeReferenceGreen typeReference, NameGreen name)
+	    {
+	        if (this.TypeReference != typeReference ||
+				this.Name != name)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.ExplicitParameter(typeReference, name);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExplicitParameterGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class LambdaBodyGreen : GreenSyntaxNode
+	{
+	    internal static readonly LambdaBodyGreen __Missing = new LambdaBodyGreen();
+	    private ExpressionGreen expression;
+	    private BlockStatementGreen blockStatement;
+	
+	    public LambdaBodyGreen(CoreSyntaxKind kind, ExpressionGreen expression, BlockStatementGreen blockStatement)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 2;
+			if (expression != null)
+			{
+				this.AdjustFlagsAndWidth(expression);
+				this.expression = expression;
+			}
+			if (blockStatement != null)
+			{
+				this.AdjustFlagsAndWidth(blockStatement);
+				this.blockStatement = blockStatement;
+			}
+	    }
+	
+	    public LambdaBodyGreen(CoreSyntaxKind kind, ExpressionGreen expression, BlockStatementGreen blockStatement, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 2;
+			if (expression != null)
+			{
+				this.AdjustFlagsAndWidth(expression);
+				this.expression = expression;
+			}
+			if (blockStatement != null)
+			{
+				this.AdjustFlagsAndWidth(blockStatement);
+				this.blockStatement = blockStatement;
+			}
+	    }
+	
+		private LambdaBodyGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.LambdaBody, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public ExpressionGreen Expression { get { return this.expression; } }
+	    public BlockStatementGreen BlockStatement { get { return this.blockStatement; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.LambdaBodySyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.expression;
+	            case 1: return this.blockStatement;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitLambdaBodyGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitLambdaBodyGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new LambdaBodyGreen(this.Kind, this.expression, this.blockStatement, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new LambdaBodyGreen(this.Kind, this.expression, this.blockStatement, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new LambdaBodyGreen(this.Kind, this.expression, this.blockStatement, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public LambdaBodyGreen Update(ExpressionGreen expression)
+	    {
+	        if (this.expression != expression)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.LambdaBody(expression);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaBodyGreen)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public LambdaBodyGreen Update(BlockStatementGreen blockStatement)
+	    {
+	        if (this.blockStatement != blockStatement)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.LambdaBody(blockStatement);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaBodyGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -9565,6 +10638,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual void VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
 		public virtual void VisitUsingNamespaceGreen(UsingNamespaceGreen node) => this.DefaultVisit(node);
 		public virtual void VisitStatementGreen(StatementGreen node) => this.DefaultVisit(node);
+		public virtual void VisitBlockStatementGreen(BlockStatementGreen node) => this.DefaultVisit(node);
 		public virtual void VisitParenthesizedExprGreen(ParenthesizedExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDefaultExprGreen(DefaultExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitThisExprGreen(ThisExprGreen node) => this.DefaultVisit(node);
@@ -9599,6 +10673,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual void VisitCondExprGreen(CondExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitAssignExprGreen(AssignExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitCompAssignExprGreen(CompAssignExprGreen node) => this.DefaultVisit(node);
+		public virtual void VisitLambdaExprGreen(LambdaExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitArgumentListGreen(ArgumentListGreen node) => this.DefaultVisit(node);
 		public virtual void VisitArgumentExpressionGreen(ArgumentExpressionGreen node) => this.DefaultVisit(node);
 		public virtual void VisitInitializerExpressionGreen(InitializerExpressionGreen node) => this.DefaultVisit(node);
@@ -9607,6 +10682,14 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual void VisitCollectionInitializerExpressionsGreen(CollectionInitializerExpressionsGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDictionaryInitializerExpressionsGreen(DictionaryInitializerExpressionsGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDictionaryInitializerExpressionGreen(DictionaryInitializerExpressionGreen node) => this.DefaultVisit(node);
+		public virtual void VisitLambdaSignatureGreen(LambdaSignatureGreen node) => this.DefaultVisit(node);
+		public virtual void VisitImplicitLambdaSignatureGreen(ImplicitLambdaSignatureGreen node) => this.DefaultVisit(node);
+		public virtual void VisitImplicitParameterListGreen(ImplicitParameterListGreen node) => this.DefaultVisit(node);
+		public virtual void VisitImplicitParameterGreen(ImplicitParameterGreen node) => this.DefaultVisit(node);
+		public virtual void VisitExplicitLambdaSignatureGreen(ExplicitLambdaSignatureGreen node) => this.DefaultVisit(node);
+		public virtual void VisitExplicitParameterListGreen(ExplicitParameterListGreen node) => this.DefaultVisit(node);
+		public virtual void VisitExplicitParameterGreen(ExplicitParameterGreen node) => this.DefaultVisit(node);
+		public virtual void VisitLambdaBodyGreen(LambdaBodyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDotOperatorGreen(DotOperatorGreen node) => this.DefaultVisit(node);
 		public virtual void VisitIndexerOperatorGreen(IndexerOperatorGreen node) => this.DefaultVisit(node);
 		public virtual void VisitPostfixOperatorGreen(PostfixOperatorGreen node) => this.DefaultVisit(node);
@@ -9649,6 +10732,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual TResult VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitUsingNamespaceGreen(UsingNamespaceGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitStatementGreen(StatementGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitBlockStatementGreen(BlockStatementGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitParenthesizedExprGreen(ParenthesizedExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDefaultExprGreen(DefaultExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitThisExprGreen(ThisExprGreen node) => this.DefaultVisit(node);
@@ -9683,6 +10767,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual TResult VisitCondExprGreen(CondExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitAssignExprGreen(AssignExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitCompAssignExprGreen(CompAssignExprGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitLambdaExprGreen(LambdaExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitArgumentListGreen(ArgumentListGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitArgumentExpressionGreen(ArgumentExpressionGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitInitializerExpressionGreen(InitializerExpressionGreen node) => this.DefaultVisit(node);
@@ -9691,6 +10776,14 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual TResult VisitCollectionInitializerExpressionsGreen(CollectionInitializerExpressionsGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDictionaryInitializerExpressionsGreen(DictionaryInitializerExpressionsGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDictionaryInitializerExpressionGreen(DictionaryInitializerExpressionGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitLambdaSignatureGreen(LambdaSignatureGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitImplicitLambdaSignatureGreen(ImplicitLambdaSignatureGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitImplicitParameterListGreen(ImplicitParameterListGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitImplicitParameterGreen(ImplicitParameterGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitExplicitLambdaSignatureGreen(ExplicitLambdaSignatureGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitExplicitParameterListGreen(ExplicitParameterListGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitExplicitParameterGreen(ExplicitParameterGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitLambdaBodyGreen(LambdaBodyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDotOperatorGreen(DotOperatorGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitIndexerOperatorGreen(IndexerOperatorGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitPostfixOperatorGreen(PostfixOperatorGreen node) => this.DefaultVisit(node);
@@ -10065,6 +11158,25 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.Statement, expression, tSemicolon, out hash);
 			if (cached != null) return (StatementGreen)cached;
 			var result = new StatementGreen(CoreSyntaxKind.Statement, expression, tSemicolon);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public BlockStatementGreen BlockStatement(InternalSyntaxToken tOpenBrace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> statement, InternalSyntaxToken tCloseBrace)
+	    {
+	#if DEBUG
+			if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
+			if (tOpenBrace.Kind != CoreSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
+			if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
+			if (tCloseBrace.Kind != CoreSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.BlockStatement, tOpenBrace, statement.Node, tCloseBrace, out hash);
+			if (cached != null) return (BlockStatementGreen)cached;
+			var result = new BlockStatementGreen(CoreSyntaxKind.BlockStatement, tOpenBrace, statement.Node, tCloseBrace);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -10626,6 +11738,25 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			return result;
 	    }
 	
+		public LambdaExprGreen LambdaExpr(LambdaSignatureGreen lambdaSignature, InternalSyntaxToken tArrow, LambdaBodyGreen lambdaBody)
+	    {
+	#if DEBUG
+			if (lambdaSignature == null) throw new ArgumentNullException(nameof(lambdaSignature));
+			if (tArrow == null) throw new ArgumentNullException(nameof(tArrow));
+			if (tArrow.Kind != CoreSyntaxKind.TArrow) throw new ArgumentException(nameof(tArrow));
+			if (lambdaBody == null) throw new ArgumentNullException(nameof(lambdaBody));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.LambdaExpr, lambdaSignature, tArrow, lambdaBody, out hash);
+			if (cached != null) return (LambdaExprGreen)cached;
+			var result = new LambdaExprGreen(CoreSyntaxKind.LambdaExpr, lambdaSignature, tArrow, lambdaBody);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
 		public ArgumentListGreen ArgumentList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ArgumentExpressionGreen> argumentExpression)
 	    {
 	#if DEBUG
@@ -10783,6 +11914,189 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			if (expression == null) throw new ArgumentNullException(nameof(expression));
 	#endif
 	        return new DictionaryInitializerExpressionGreen(CoreSyntaxKind.DictionaryInitializerExpression, tOpenBracket, identifier, tCloseBracket, tAssign, expression);
+	    }
+	
+		public LambdaSignatureGreen LambdaSignature(ImplicitLambdaSignatureGreen implicitLambdaSignature)
+	    {
+	#if DEBUG
+		    if (implicitLambdaSignature == null) throw new ArgumentNullException(nameof(implicitLambdaSignature));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.LambdaSignature, implicitLambdaSignature, out hash);
+			if (cached != null) return (LambdaSignatureGreen)cached;
+			var result = new LambdaSignatureGreen(CoreSyntaxKind.LambdaSignature, implicitLambdaSignature, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public LambdaSignatureGreen LambdaSignature(ExplicitLambdaSignatureGreen explicitLambdaSignature)
+	    {
+	#if DEBUG
+		    if (explicitLambdaSignature == null) throw new ArgumentNullException(nameof(explicitLambdaSignature));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.LambdaSignature, explicitLambdaSignature, out hash);
+			if (cached != null) return (LambdaSignatureGreen)cached;
+			var result = new LambdaSignatureGreen(CoreSyntaxKind.LambdaSignature, null, explicitLambdaSignature);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ImplicitLambdaSignatureGreen ImplicitLambdaSignature(ImplicitParameterGreen implicitParameter)
+	    {
+	#if DEBUG
+		    if (implicitParameter == null) throw new ArgumentNullException(nameof(implicitParameter));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.ImplicitLambdaSignature, implicitParameter, out hash);
+			if (cached != null) return (ImplicitLambdaSignatureGreen)cached;
+			var result = new ImplicitLambdaSignatureGreen(CoreSyntaxKind.ImplicitLambdaSignature, implicitParameter, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ImplicitLambdaSignatureGreen ImplicitLambdaSignature(ImplicitParameterListGreen implicitParameterList)
+	    {
+	#if DEBUG
+		    if (implicitParameterList == null) throw new ArgumentNullException(nameof(implicitParameterList));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.ImplicitLambdaSignature, implicitParameterList, out hash);
+			if (cached != null) return (ImplicitLambdaSignatureGreen)cached;
+			var result = new ImplicitLambdaSignatureGreen(CoreSyntaxKind.ImplicitLambdaSignature, null, implicitParameterList);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ImplicitParameterListGreen ImplicitParameterList(InternalSyntaxToken tOpenParen, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ImplicitParameterGreen> implicitParameter, InternalSyntaxToken tCloseParen)
+	    {
+	#if DEBUG
+			if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
+			if (tOpenParen.Kind != CoreSyntaxKind.TOpenParen) throw new ArgumentException(nameof(tOpenParen));
+			if (tCloseParen == null) throw new ArgumentNullException(nameof(tCloseParen));
+			if (tCloseParen.Kind != CoreSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.ImplicitParameterList, tOpenParen, implicitParameter.Node, tCloseParen, out hash);
+			if (cached != null) return (ImplicitParameterListGreen)cached;
+			var result = new ImplicitParameterListGreen(CoreSyntaxKind.ImplicitParameterList, tOpenParen, implicitParameter.Node, tCloseParen);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ImplicitParameterGreen ImplicitParameter(NameGreen name)
+	    {
+	#if DEBUG
+			if (name == null) throw new ArgumentNullException(nameof(name));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.ImplicitParameter, name, out hash);
+			if (cached != null) return (ImplicitParameterGreen)cached;
+			var result = new ImplicitParameterGreen(CoreSyntaxKind.ImplicitParameter, name);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ExplicitLambdaSignatureGreen ExplicitLambdaSignature(ExplicitParameterListGreen explicitParameterList)
+	    {
+	#if DEBUG
+			if (explicitParameterList == null) throw new ArgumentNullException(nameof(explicitParameterList));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.ExplicitLambdaSignature, explicitParameterList, out hash);
+			if (cached != null) return (ExplicitLambdaSignatureGreen)cached;
+			var result = new ExplicitLambdaSignatureGreen(CoreSyntaxKind.ExplicitLambdaSignature, explicitParameterList);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ExplicitParameterListGreen ExplicitParameterList(InternalSyntaxToken tOpenParen, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ExplicitParameterGreen> explicitParameter, InternalSyntaxToken tCloseParen)
+	    {
+	#if DEBUG
+			if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
+			if (tOpenParen.Kind != CoreSyntaxKind.TOpenParen) throw new ArgumentException(nameof(tOpenParen));
+			if (tCloseParen == null) throw new ArgumentNullException(nameof(tCloseParen));
+			if (tCloseParen.Kind != CoreSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.ExplicitParameterList, tOpenParen, explicitParameter.Node, tCloseParen, out hash);
+			if (cached != null) return (ExplicitParameterListGreen)cached;
+			var result = new ExplicitParameterListGreen(CoreSyntaxKind.ExplicitParameterList, tOpenParen, explicitParameter.Node, tCloseParen);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ExplicitParameterGreen ExplicitParameter(TypeReferenceGreen typeReference, NameGreen name)
+	    {
+	#if DEBUG
+			if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+			if (name == null) throw new ArgumentNullException(nameof(name));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.ExplicitParameter, typeReference, name, out hash);
+			if (cached != null) return (ExplicitParameterGreen)cached;
+			var result = new ExplicitParameterGreen(CoreSyntaxKind.ExplicitParameter, typeReference, name);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public LambdaBodyGreen LambdaBody(ExpressionGreen expression)
+	    {
+	#if DEBUG
+		    if (expression == null) throw new ArgumentNullException(nameof(expression));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.LambdaBody, expression, out hash);
+			if (cached != null) return (LambdaBodyGreen)cached;
+			var result = new LambdaBodyGreen(CoreSyntaxKind.LambdaBody, expression, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public LambdaBodyGreen LambdaBody(BlockStatementGreen blockStatement)
+	    {
+	#if DEBUG
+		    if (blockStatement == null) throw new ArgumentNullException(nameof(blockStatement));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.LambdaBody, blockStatement, out hash);
+			if (cached != null) return (LambdaBodyGreen)cached;
+			var result = new LambdaBodyGreen(CoreSyntaxKind.LambdaBody, null, blockStatement);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public DotOperatorGreen DotOperator(InternalSyntaxToken dotOperator)
@@ -11420,6 +12734,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				typeof(MainGreen),
 				typeof(UsingNamespaceGreen),
 				typeof(StatementGreen),
+				typeof(BlockStatementGreen),
 				typeof(ParenthesizedExprGreen),
 				typeof(DefaultExprGreen),
 				typeof(ThisExprGreen),
@@ -11454,6 +12769,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				typeof(CondExprGreen),
 				typeof(AssignExprGreen),
 				typeof(CompAssignExprGreen),
+				typeof(LambdaExprGreen),
 				typeof(ArgumentListGreen),
 				typeof(ArgumentExpressionGreen),
 				typeof(InitializerExpressionGreen),
@@ -11462,6 +12778,14 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				typeof(CollectionInitializerExpressionsGreen),
 				typeof(DictionaryInitializerExpressionsGreen),
 				typeof(DictionaryInitializerExpressionGreen),
+				typeof(LambdaSignatureGreen),
+				typeof(ImplicitLambdaSignatureGreen),
+				typeof(ImplicitParameterListGreen),
+				typeof(ImplicitParameterGreen),
+				typeof(ExplicitLambdaSignatureGreen),
+				typeof(ExplicitParameterListGreen),
+				typeof(ExplicitParameterGreen),
+				typeof(LambdaBodyGreen),
 				typeof(DotOperatorGreen),
 				typeof(IndexerOperatorGreen),
 				typeof(PostfixOperatorGreen),

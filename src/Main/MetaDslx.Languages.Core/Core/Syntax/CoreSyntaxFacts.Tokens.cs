@@ -135,6 +135,7 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.TSlash:
 				case CoreTokensSyntaxKind.TAsterisk:
 				case CoreTokensSyntaxKind.TPercent:
+				case CoreTokensSyntaxKind.TArrow:
 				case CoreTokensSyntaxKind.TLessThanOrEqual:
 				case CoreTokensSyntaxKind.TGreaterThanOrEqual:
 				case CoreTokensSyntaxKind.TEqual:
@@ -253,6 +254,7 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.TExclamation:
 				case CoreTokensSyntaxKind.TSlash:
 				case CoreTokensSyntaxKind.TPercent:
+				case CoreTokensSyntaxKind.TArrow:
 				case CoreTokensSyntaxKind.TLessThanOrEqual:
 				case CoreTokensSyntaxKind.TGreaterThanOrEqual:
 				case CoreTokensSyntaxKind.TEqual:
@@ -426,6 +428,8 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.TSlash;
 				case "%":
 					return CoreTokensSyntaxKind.TPercent;
+				case "=>":
+					return CoreTokensSyntaxKind.TArrow;
 				case "<=":
 					return CoreTokensSyntaxKind.TLessThanOrEqual;
 				case ">=":
@@ -617,6 +621,8 @@ namespace MetaDslx.Languages.Core.Syntax
 					return "/";
 				case CoreTokensSyntaxKind.TPercent:
 					return "%";
+				case CoreTokensSyntaxKind.TArrow:
+					return "=>";
 				case CoreTokensSyntaxKind.TLessThanOrEqual:
 					return "<=";
 				case CoreTokensSyntaxKind.TGreaterThanOrEqual:

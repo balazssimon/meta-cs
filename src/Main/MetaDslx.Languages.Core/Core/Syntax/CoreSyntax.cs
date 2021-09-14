@@ -494,6 +494,117 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
+	public sealed class BlockStatementSyntax : CoreSyntaxNode
+	{
+	    private SyntaxNode statement;
+	
+	    public BlockStatementSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public BlockStatementSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenBrace 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.BlockStatementGreen)this.Green;
+				var greenToken = green.TOpenBrace;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> Statement 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.statement, 1);
+				if (red != null) return new Microsoft.CodeAnalysis.SyntaxList<StatementSyntax>(red);
+				return default;
+			} 
+		}
+	    public SyntaxToken TCloseBrace 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.BlockStatementGreen)this.Green;
+				var greenToken = green.TCloseBrace;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.statement, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.statement;
+				default: return null;
+	        }
+	    }
+	
+	    public BlockStatementSyntax WithTOpenBrace(SyntaxToken tOpenBrace)
+		{
+			return this.Update(TOpenBrace, this.Statement, this.TCloseBrace);
+		}
+	
+	    public BlockStatementSyntax WithStatement(Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement)
+		{
+			return this.Update(this.TOpenBrace, Statement, this.TCloseBrace);
+		}
+	
+	    public BlockStatementSyntax AddStatement(params StatementSyntax[] statement)
+		{
+			return this.WithStatement(this.Statement.AddRange(statement));
+		}
+	
+	    public BlockStatementSyntax WithTCloseBrace(SyntaxToken tCloseBrace)
+		{
+			return this.Update(this.TOpenBrace, this.Statement, TCloseBrace);
+		}
+	
+	    public BlockStatementSyntax Update(SyntaxToken tOpenBrace, Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement, SyntaxToken tCloseBrace)
+	    {
+	        if (this.TOpenBrace != tOpenBrace ||
+				this.Statement != statement ||
+				this.TCloseBrace != tCloseBrace)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.BlockStatement(tOpenBrace, statement, tCloseBrace);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (BlockStatementSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitBlockStatement(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitBlockStatement(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitBlockStatement(this);
+	    }
+	}
+	
 	public abstract class ExpressionSyntax : CoreSyntaxNode
 	{
 	    protected ExpressionSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
@@ -3937,6 +4048,105 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
+	public sealed class LambdaExprSyntax : ExpressionSyntax
+	{
+	    private LambdaSignatureSyntax lambdaSignature;
+	    private LambdaBodySyntax lambdaBody;
+	
+	    public LambdaExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public LambdaExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public LambdaSignatureSyntax LambdaSignature 
+		{ 
+			get { return this.GetRed(ref this.lambdaSignature, 0); } 
+		}
+	    public SyntaxToken TArrow 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.LambdaExprGreen)this.Green;
+				var greenToken = green.TArrow;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public LambdaBodySyntax LambdaBody 
+		{ 
+			get { return this.GetRed(ref this.lambdaBody, 2); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.lambdaSignature, 0);
+				case 2: return this.GetRed(ref this.lambdaBody, 2);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.lambdaSignature;
+				case 2: return this.lambdaBody;
+				default: return null;
+	        }
+	    }
+	
+	    public LambdaExprSyntax WithLambdaSignature(LambdaSignatureSyntax lambdaSignature)
+		{
+			return this.Update(LambdaSignature, this.TArrow, this.LambdaBody);
+		}
+	
+	    public LambdaExprSyntax WithTArrow(SyntaxToken tArrow)
+		{
+			return this.Update(this.LambdaSignature, TArrow, this.LambdaBody);
+		}
+	
+	    public LambdaExprSyntax WithLambdaBody(LambdaBodySyntax lambdaBody)
+		{
+			return this.Update(this.LambdaSignature, this.TArrow, LambdaBody);
+		}
+	
+	    public LambdaExprSyntax Update(LambdaSignatureSyntax lambdaSignature, SyntaxToken tArrow, LambdaBodySyntax lambdaBody)
+	    {
+	        if (this.LambdaSignature != lambdaSignature ||
+				this.TArrow != tArrow ||
+				this.LambdaBody != lambdaBody)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.LambdaExpr(lambdaSignature, tArrow, lambdaBody);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitLambdaExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitLambdaExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitLambdaExpr(this);
+	    }
+	}
+	
 	public sealed class ArgumentListSyntax : CoreSyntaxNode
 	{
 	    private SyntaxNode argumentExpression;
@@ -4718,6 +4928,748 @@ namespace MetaDslx.Languages.Core.Syntax
 	    public override void Accept(ICoreSyntaxVisitor visitor)
 	    {
 	        visitor.VisitDictionaryInitializerExpression(this);
+	    }
+	}
+	
+	public sealed class LambdaSignatureSyntax : CoreSyntaxNode
+	{
+	    private ImplicitLambdaSignatureSyntax implicitLambdaSignature;
+	    private ExplicitLambdaSignatureSyntax explicitLambdaSignature;
+	
+	    public LambdaSignatureSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public LambdaSignatureSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ImplicitLambdaSignatureSyntax ImplicitLambdaSignature 
+		{ 
+			get { return this.GetRed(ref this.implicitLambdaSignature, 0); } 
+		}
+	    public ExplicitLambdaSignatureSyntax ExplicitLambdaSignature 
+		{ 
+			get { return this.GetRed(ref this.explicitLambdaSignature, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.implicitLambdaSignature, 0);
+				case 1: return this.GetRed(ref this.explicitLambdaSignature, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.implicitLambdaSignature;
+				case 1: return this.explicitLambdaSignature;
+				default: return null;
+	        }
+	    }
+	
+	    public LambdaSignatureSyntax WithImplicitLambdaSignature(ImplicitLambdaSignatureSyntax implicitLambdaSignature)
+		{
+			return this.Update(implicitLambdaSignature);
+		}
+	
+	    public LambdaSignatureSyntax WithExplicitLambdaSignature(ExplicitLambdaSignatureSyntax explicitLambdaSignature)
+		{
+			return this.Update(explicitLambdaSignature);
+		}
+	
+	    public LambdaSignatureSyntax Update(ImplicitLambdaSignatureSyntax implicitLambdaSignature)
+	    {
+	        if (this.ImplicitLambdaSignature != implicitLambdaSignature)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.LambdaSignature(implicitLambdaSignature);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaSignatureSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public LambdaSignatureSyntax Update(ExplicitLambdaSignatureSyntax explicitLambdaSignature)
+	    {
+	        if (this.ExplicitLambdaSignature != explicitLambdaSignature)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.LambdaSignature(explicitLambdaSignature);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaSignatureSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitLambdaSignature(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitLambdaSignature(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitLambdaSignature(this);
+	    }
+	}
+	
+	public sealed class ImplicitLambdaSignatureSyntax : CoreSyntaxNode
+	{
+	    private ImplicitParameterSyntax implicitParameter;
+	    private ImplicitParameterListSyntax implicitParameterList;
+	
+	    public ImplicitLambdaSignatureSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ImplicitLambdaSignatureSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ImplicitParameterSyntax ImplicitParameter 
+		{ 
+			get { return this.GetRed(ref this.implicitParameter, 0); } 
+		}
+	    public ImplicitParameterListSyntax ImplicitParameterList 
+		{ 
+			get { return this.GetRed(ref this.implicitParameterList, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.implicitParameter, 0);
+				case 1: return this.GetRed(ref this.implicitParameterList, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.implicitParameter;
+				case 1: return this.implicitParameterList;
+				default: return null;
+	        }
+	    }
+	
+	    public ImplicitLambdaSignatureSyntax WithImplicitParameter(ImplicitParameterSyntax implicitParameter)
+		{
+			return this.Update(implicitParameter);
+		}
+	
+	    public ImplicitLambdaSignatureSyntax WithImplicitParameterList(ImplicitParameterListSyntax implicitParameterList)
+		{
+			return this.Update(implicitParameterList);
+		}
+	
+	    public ImplicitLambdaSignatureSyntax Update(ImplicitParameterSyntax implicitParameter)
+	    {
+	        if (this.ImplicitParameter != implicitParameter)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ImplicitLambdaSignature(implicitParameter);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitLambdaSignatureSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public ImplicitLambdaSignatureSyntax Update(ImplicitParameterListSyntax implicitParameterList)
+	    {
+	        if (this.ImplicitParameterList != implicitParameterList)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ImplicitLambdaSignature(implicitParameterList);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitLambdaSignatureSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitImplicitLambdaSignature(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitImplicitLambdaSignature(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitImplicitLambdaSignature(this);
+	    }
+	}
+	
+	public sealed class ImplicitParameterListSyntax : CoreSyntaxNode
+	{
+	    private SyntaxNode implicitParameter;
+	
+	    public ImplicitParameterListSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ImplicitParameterListSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.ImplicitParameterListGreen)this.Green;
+				var greenToken = green.TOpenParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public Microsoft.CodeAnalysis.SeparatedSyntaxList<ImplicitParameterSyntax> ImplicitParameter 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.implicitParameter, 1);
+				if (red != null)
+				{
+					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<ImplicitParameterSyntax>(red, this.GetChildIndex(1));
+				}
+				return default;
+			} 
+		}
+	    public SyntaxToken TCloseParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.ImplicitParameterListGreen)this.Green;
+				var greenToken = green.TCloseParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.implicitParameter, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.implicitParameter;
+				default: return null;
+	        }
+	    }
+	
+	    public ImplicitParameterListSyntax WithTOpenParen(SyntaxToken tOpenParen)
+		{
+			return this.Update(TOpenParen, this.ImplicitParameter, this.TCloseParen);
+		}
+	
+	    public ImplicitParameterListSyntax WithImplicitParameter(Microsoft.CodeAnalysis.SeparatedSyntaxList<ImplicitParameterSyntax> implicitParameter)
+		{
+			return this.Update(this.TOpenParen, ImplicitParameter, this.TCloseParen);
+		}
+	
+	    public ImplicitParameterListSyntax AddImplicitParameter(params ImplicitParameterSyntax[] implicitParameter)
+		{
+			return this.WithImplicitParameter(this.ImplicitParameter.AddRange(implicitParameter));
+		}
+	
+	    public ImplicitParameterListSyntax WithTCloseParen(SyntaxToken tCloseParen)
+		{
+			return this.Update(this.TOpenParen, this.ImplicitParameter, TCloseParen);
+		}
+	
+	    public ImplicitParameterListSyntax Update(SyntaxToken tOpenParen, Microsoft.CodeAnalysis.SeparatedSyntaxList<ImplicitParameterSyntax> implicitParameter, SyntaxToken tCloseParen)
+	    {
+	        if (this.TOpenParen != tOpenParen ||
+				this.ImplicitParameter != implicitParameter ||
+				this.TCloseParen != tCloseParen)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ImplicitParameterList(tOpenParen, implicitParameter, tCloseParen);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitParameterListSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitImplicitParameterList(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitImplicitParameterList(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitImplicitParameterList(this);
+	    }
+	}
+	
+	public sealed class ImplicitParameterSyntax : CoreSyntaxNode
+	{
+	    private NameSyntax name;
+	
+	    public ImplicitParameterSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ImplicitParameterSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 0); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.name, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.name;
+				default: return null;
+	        }
+	    }
+	
+	    public ImplicitParameterSyntax WithName(NameSyntax name)
+		{
+			return this.Update(Name);
+		}
+	
+	    public ImplicitParameterSyntax Update(NameSyntax name)
+	    {
+	        if (this.Name != name)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ImplicitParameter(name);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ImplicitParameterSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitImplicitParameter(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitImplicitParameter(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitImplicitParameter(this);
+	    }
+	}
+	
+	public sealed class ExplicitLambdaSignatureSyntax : CoreSyntaxNode
+	{
+	    private ExplicitParameterListSyntax explicitParameterList;
+	
+	    public ExplicitLambdaSignatureSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ExplicitLambdaSignatureSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ExplicitParameterListSyntax ExplicitParameterList 
+		{ 
+			get { return this.GetRed(ref this.explicitParameterList, 0); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.explicitParameterList, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.explicitParameterList;
+				default: return null;
+	        }
+	    }
+	
+	    public ExplicitLambdaSignatureSyntax WithExplicitParameterList(ExplicitParameterListSyntax explicitParameterList)
+		{
+			return this.Update(ExplicitParameterList);
+		}
+	
+	    public ExplicitLambdaSignatureSyntax Update(ExplicitParameterListSyntax explicitParameterList)
+	    {
+	        if (this.ExplicitParameterList != explicitParameterList)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ExplicitLambdaSignature(explicitParameterList);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExplicitLambdaSignatureSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitExplicitLambdaSignature(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitExplicitLambdaSignature(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitExplicitLambdaSignature(this);
+	    }
+	}
+	
+	public sealed class ExplicitParameterListSyntax : CoreSyntaxNode
+	{
+	    private SyntaxNode explicitParameter;
+	
+	    public ExplicitParameterListSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ExplicitParameterListSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.ExplicitParameterListGreen)this.Green;
+				var greenToken = green.TOpenParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public Microsoft.CodeAnalysis.SeparatedSyntaxList<ExplicitParameterSyntax> ExplicitParameter 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.explicitParameter, 1);
+				if (red != null)
+				{
+					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<ExplicitParameterSyntax>(red, this.GetChildIndex(1));
+				}
+				return default;
+			} 
+		}
+	    public SyntaxToken TCloseParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.ExplicitParameterListGreen)this.Green;
+				var greenToken = green.TCloseParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.explicitParameter, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.explicitParameter;
+				default: return null;
+	        }
+	    }
+	
+	    public ExplicitParameterListSyntax WithTOpenParen(SyntaxToken tOpenParen)
+		{
+			return this.Update(TOpenParen, this.ExplicitParameter, this.TCloseParen);
+		}
+	
+	    public ExplicitParameterListSyntax WithExplicitParameter(Microsoft.CodeAnalysis.SeparatedSyntaxList<ExplicitParameterSyntax> explicitParameter)
+		{
+			return this.Update(this.TOpenParen, ExplicitParameter, this.TCloseParen);
+		}
+	
+	    public ExplicitParameterListSyntax AddExplicitParameter(params ExplicitParameterSyntax[] explicitParameter)
+		{
+			return this.WithExplicitParameter(this.ExplicitParameter.AddRange(explicitParameter));
+		}
+	
+	    public ExplicitParameterListSyntax WithTCloseParen(SyntaxToken tCloseParen)
+		{
+			return this.Update(this.TOpenParen, this.ExplicitParameter, TCloseParen);
+		}
+	
+	    public ExplicitParameterListSyntax Update(SyntaxToken tOpenParen, Microsoft.CodeAnalysis.SeparatedSyntaxList<ExplicitParameterSyntax> explicitParameter, SyntaxToken tCloseParen)
+	    {
+	        if (this.TOpenParen != tOpenParen ||
+				this.ExplicitParameter != explicitParameter ||
+				this.TCloseParen != tCloseParen)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ExplicitParameterList(tOpenParen, explicitParameter, tCloseParen);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExplicitParameterListSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitExplicitParameterList(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitExplicitParameterList(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitExplicitParameterList(this);
+	    }
+	}
+	
+	public sealed class ExplicitParameterSyntax : CoreSyntaxNode
+	{
+	    private TypeReferenceSyntax typeReference;
+	    private NameSyntax name;
+	
+	    public ExplicitParameterSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ExplicitParameterSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public TypeReferenceSyntax TypeReference 
+		{ 
+			get { return this.GetRed(ref this.typeReference, 0); } 
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.typeReference, 0);
+				case 1: return this.GetRed(ref this.name, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.typeReference;
+				case 1: return this.name;
+				default: return null;
+	        }
+	    }
+	
+	    public ExplicitParameterSyntax WithTypeReference(TypeReferenceSyntax typeReference)
+		{
+			return this.Update(TypeReference, this.Name);
+		}
+	
+	    public ExplicitParameterSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.TypeReference, Name);
+		}
+	
+	    public ExplicitParameterSyntax Update(TypeReferenceSyntax typeReference, NameSyntax name)
+	    {
+	        if (this.TypeReference != typeReference ||
+				this.Name != name)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ExplicitParameter(typeReference, name);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExplicitParameterSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitExplicitParameter(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitExplicitParameter(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitExplicitParameter(this);
+	    }
+	}
+	
+	public sealed class LambdaBodySyntax : CoreSyntaxNode
+	{
+	    private ExpressionSyntax expression;
+	    private BlockStatementSyntax blockStatement;
+	
+	    public LambdaBodySyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public LambdaBodySyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 0); } 
+		}
+	    public BlockStatementSyntax BlockStatement 
+		{ 
+			get { return this.GetRed(ref this.blockStatement, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.expression, 0);
+				case 1: return this.GetRed(ref this.blockStatement, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.expression;
+				case 1: return this.blockStatement;
+				default: return null;
+	        }
+	    }
+	
+	    public LambdaBodySyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(expression);
+		}
+	
+	    public LambdaBodySyntax WithBlockStatement(BlockStatementSyntax blockStatement)
+		{
+			return this.Update(blockStatement);
+		}
+	
+	    public LambdaBodySyntax Update(ExpressionSyntax expression)
+	    {
+	        if (this.Expression != expression)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.LambdaBody(expression);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaBodySyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public LambdaBodySyntax Update(BlockStatementSyntax blockStatement)
+	    {
+	        if (this.BlockStatement != blockStatement)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.LambdaBody(blockStatement);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LambdaBodySyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitLambdaBody(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitLambdaBody(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitLambdaBody(this);
 	    }
 	}
 	
@@ -7525,6 +8477,8 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitStatement(StatementSyntax node);
 		
+		void VisitBlockStatement(BlockStatementSyntax node);
+		
 		void VisitParenthesizedExpr(ParenthesizedExprSyntax node);
 		
 		void VisitDefaultExpr(DefaultExprSyntax node);
@@ -7593,6 +8547,8 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitCompAssignExpr(CompAssignExprSyntax node);
 		
+		void VisitLambdaExpr(LambdaExprSyntax node);
+		
 		void VisitArgumentList(ArgumentListSyntax node);
 		
 		void VisitArgumentExpression(ArgumentExpressionSyntax node);
@@ -7608,6 +8564,22 @@ namespace MetaDslx.Languages.Core
 		void VisitDictionaryInitializerExpressions(DictionaryInitializerExpressionsSyntax node);
 		
 		void VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax node);
+		
+		void VisitLambdaSignature(LambdaSignatureSyntax node);
+		
+		void VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node);
+		
+		void VisitImplicitParameterList(ImplicitParameterListSyntax node);
+		
+		void VisitImplicitParameter(ImplicitParameterSyntax node);
+		
+		void VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node);
+		
+		void VisitExplicitParameterList(ExplicitParameterListSyntax node);
+		
+		void VisitExplicitParameter(ExplicitParameterSyntax node);
+		
+		void VisitLambdaBody(LambdaBodySyntax node);
 		
 		void VisitDotOperator(DotOperatorSyntax node);
 		
@@ -7696,6 +8668,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual void VisitStatement(StatementSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitBlockStatement(BlockStatementSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -7870,6 +8847,11 @@ namespace MetaDslx.Languages.Core
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitLambdaExpr(LambdaExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitArgumentList(ArgumentListSyntax node)
 		{
 		    this.DefaultVisit(node);
@@ -7906,6 +8888,46 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual void VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitLambdaSignature(LambdaSignatureSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitImplicitParameterList(ImplicitParameterListSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitImplicitParameter(ImplicitParameterSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitExplicitParameterList(ExplicitParameterListSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitExplicitParameter(ExplicitParameterSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitLambdaBody(LambdaBodySyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -8093,6 +9115,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitStatement(StatementSyntax node, TArg argument);
 		
+		TResult VisitBlockStatement(BlockStatementSyntax node, TArg argument);
+		
 		TResult VisitParenthesizedExpr(ParenthesizedExprSyntax node, TArg argument);
 		
 		TResult VisitDefaultExpr(DefaultExprSyntax node, TArg argument);
@@ -8161,6 +9185,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitCompAssignExpr(CompAssignExprSyntax node, TArg argument);
 		
+		TResult VisitLambdaExpr(LambdaExprSyntax node, TArg argument);
+		
 		TResult VisitArgumentList(ArgumentListSyntax node, TArg argument);
 		
 		TResult VisitArgumentExpression(ArgumentExpressionSyntax node, TArg argument);
@@ -8176,6 +9202,22 @@ namespace MetaDslx.Languages.Core
 		TResult VisitDictionaryInitializerExpressions(DictionaryInitializerExpressionsSyntax node, TArg argument);
 		
 		TResult VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax node, TArg argument);
+		
+		TResult VisitLambdaSignature(LambdaSignatureSyntax node, TArg argument);
+		
+		TResult VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node, TArg argument);
+		
+		TResult VisitImplicitParameterList(ImplicitParameterListSyntax node, TArg argument);
+		
+		TResult VisitImplicitParameter(ImplicitParameterSyntax node, TArg argument);
+		
+		TResult VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node, TArg argument);
+		
+		TResult VisitExplicitParameterList(ExplicitParameterListSyntax node, TArg argument);
+		
+		TResult VisitExplicitParameter(ExplicitParameterSyntax node, TArg argument);
+		
+		TResult VisitLambdaBody(LambdaBodySyntax node, TArg argument);
 		
 		TResult VisitDotOperator(DotOperatorSyntax node, TArg argument);
 		
@@ -8264,6 +9306,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitStatement(StatementSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitBlockStatement(BlockStatementSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -8438,6 +9485,11 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node, argument);
 		}
 		
+		public virtual TResult VisitLambdaExpr(LambdaExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
 		public virtual TResult VisitArgumentList(ArgumentListSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
@@ -8474,6 +9526,46 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitLambdaSignature(LambdaSignatureSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitImplicitParameterList(ImplicitParameterListSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitImplicitParameter(ImplicitParameterSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitExplicitParameterList(ExplicitParameterListSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitExplicitParameter(ExplicitParameterSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitLambdaBody(LambdaBodySyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -8659,6 +9751,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitStatement(StatementSyntax node);
 		
+		TResult VisitBlockStatement(BlockStatementSyntax node);
+		
 		TResult VisitParenthesizedExpr(ParenthesizedExprSyntax node);
 		
 		TResult VisitDefaultExpr(DefaultExprSyntax node);
@@ -8727,6 +9821,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitCompAssignExpr(CompAssignExprSyntax node);
 		
+		TResult VisitLambdaExpr(LambdaExprSyntax node);
+		
 		TResult VisitArgumentList(ArgumentListSyntax node);
 		
 		TResult VisitArgumentExpression(ArgumentExpressionSyntax node);
@@ -8742,6 +9838,22 @@ namespace MetaDslx.Languages.Core
 		TResult VisitDictionaryInitializerExpressions(DictionaryInitializerExpressionsSyntax node);
 		
 		TResult VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax node);
+		
+		TResult VisitLambdaSignature(LambdaSignatureSyntax node);
+		
+		TResult VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node);
+		
+		TResult VisitImplicitParameterList(ImplicitParameterListSyntax node);
+		
+		TResult VisitImplicitParameter(ImplicitParameterSyntax node);
+		
+		TResult VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node);
+		
+		TResult VisitExplicitParameterList(ExplicitParameterListSyntax node);
+		
+		TResult VisitExplicitParameter(ExplicitParameterSyntax node);
+		
+		TResult VisitLambdaBody(LambdaBodySyntax node);
 		
 		TResult VisitDotOperator(DotOperatorSyntax node);
 		
@@ -8830,6 +9942,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitStatement(StatementSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitBlockStatement(BlockStatementSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -9004,6 +10121,11 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node);
 		}
 		
+		public virtual TResult VisitLambdaExpr(LambdaExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
 		public virtual TResult VisitArgumentList(ArgumentListSyntax node)
 		{
 		    return this.DefaultVisit(node);
@@ -9040,6 +10162,46 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitLambdaSignature(LambdaSignatureSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitImplicitParameterList(ImplicitParameterListSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitImplicitParameter(ImplicitParameterSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitExplicitParameterList(ExplicitParameterListSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitExplicitParameter(ExplicitParameterSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitLambdaBody(LambdaBodySyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -9251,6 +10413,14 @@ namespace MetaDslx.Languages.Core
 		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
 			return node.Update(expression, tSemicolon);
+		}
+		
+		public virtual SyntaxNode VisitBlockStatement(BlockStatementSyntax node)
+		{
+		    var tOpenBrace = this.VisitToken(node.TOpenBrace);
+		    var statement = this.VisitList(node.Statement);
+		    var tCloseBrace = this.VisitToken(node.TCloseBrace);
+			return node.Update(tOpenBrace, statement, tCloseBrace);
 		}
 		
 		public virtual SyntaxNode VisitParenthesizedExpr(ParenthesizedExprSyntax node)
@@ -9529,6 +10699,14 @@ namespace MetaDslx.Languages.Core
 			return node.Update(target, compoundAssignmentOperator, value);
 		}
 		
+		public virtual SyntaxNode VisitLambdaExpr(LambdaExprSyntax node)
+		{
+		    var lambdaSignature = (LambdaSignatureSyntax)this.Visit(node.LambdaSignature);
+		    var tArrow = this.VisitToken(node.TArrow);
+		    var lambdaBody = (LambdaBodySyntax)this.Visit(node.LambdaBody);
+			return node.Update(lambdaSignature, tArrow, lambdaBody);
+		}
+		
 		public virtual SyntaxNode VisitArgumentList(ArgumentListSyntax node)
 		{
 		    var argumentExpression = this.VisitList(node.ArgumentExpression);
@@ -9600,6 +10778,92 @@ namespace MetaDslx.Languages.Core
 		    var tAssign = this.VisitToken(node.TAssign);
 		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
 			return node.Update(tOpenBracket, identifier, tCloseBracket, tAssign, expression);
+		}
+		
+		public virtual SyntaxNode VisitLambdaSignature(LambdaSignatureSyntax node)
+		{
+			var oldImplicitLambdaSignature = node.ImplicitLambdaSignature;
+			if (oldImplicitLambdaSignature != null)
+			{
+			    var newImplicitLambdaSignature = (ImplicitLambdaSignatureSyntax)this.Visit(oldImplicitLambdaSignature);
+				return node.Update(newImplicitLambdaSignature);
+			}
+			var oldExplicitLambdaSignature = node.ExplicitLambdaSignature;
+			if (oldExplicitLambdaSignature != null)
+			{
+			    var newExplicitLambdaSignature = (ExplicitLambdaSignatureSyntax)this.Visit(oldExplicitLambdaSignature);
+				return node.Update(newExplicitLambdaSignature);
+			}
+			return node;   
+		}
+		
+		public virtual SyntaxNode VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node)
+		{
+			var oldImplicitParameter = node.ImplicitParameter;
+			if (oldImplicitParameter != null)
+			{
+			    var newImplicitParameter = (ImplicitParameterSyntax)this.Visit(oldImplicitParameter);
+				return node.Update(newImplicitParameter);
+			}
+			var oldImplicitParameterList = node.ImplicitParameterList;
+			if (oldImplicitParameterList != null)
+			{
+			    var newImplicitParameterList = (ImplicitParameterListSyntax)this.Visit(oldImplicitParameterList);
+				return node.Update(newImplicitParameterList);
+			}
+			return node;   
+		}
+		
+		public virtual SyntaxNode VisitImplicitParameterList(ImplicitParameterListSyntax node)
+		{
+		    var tOpenParen = this.VisitToken(node.TOpenParen);
+		    var implicitParameter = this.VisitList(node.ImplicitParameter);
+		    var tCloseParen = this.VisitToken(node.TCloseParen);
+			return node.Update(tOpenParen, implicitParameter, tCloseParen);
+		}
+		
+		public virtual SyntaxNode VisitImplicitParameter(ImplicitParameterSyntax node)
+		{
+		    var name = (NameSyntax)this.Visit(node.Name);
+			return node.Update(name);
+		}
+		
+		public virtual SyntaxNode VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node)
+		{
+		    var explicitParameterList = (ExplicitParameterListSyntax)this.Visit(node.ExplicitParameterList);
+			return node.Update(explicitParameterList);
+		}
+		
+		public virtual SyntaxNode VisitExplicitParameterList(ExplicitParameterListSyntax node)
+		{
+		    var tOpenParen = this.VisitToken(node.TOpenParen);
+		    var explicitParameter = this.VisitList(node.ExplicitParameter);
+		    var tCloseParen = this.VisitToken(node.TCloseParen);
+			return node.Update(tOpenParen, explicitParameter, tCloseParen);
+		}
+		
+		public virtual SyntaxNode VisitExplicitParameter(ExplicitParameterSyntax node)
+		{
+		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
+		    var name = (NameSyntax)this.Visit(node.Name);
+			return node.Update(typeReference, name);
+		}
+		
+		public virtual SyntaxNode VisitLambdaBody(LambdaBodySyntax node)
+		{
+			var oldExpression = node.Expression;
+			if (oldExpression != null)
+			{
+			    var newExpression = (ExpressionSyntax)this.Visit(oldExpression);
+				return node.Update(newExpression);
+			}
+			var oldBlockStatement = node.BlockStatement;
+			if (oldBlockStatement != null)
+			{
+			    var newBlockStatement = (BlockStatementSyntax)this.Visit(oldBlockStatement);
+				return node.Update(newBlockStatement);
+			}
+			return node;   
 		}
 		
 		public virtual SyntaxNode VisitDotOperator(DotOperatorSyntax node)
@@ -10147,6 +11411,20 @@ namespace MetaDslx.Languages.Core
 			return this.Statement(expression, this.Token(CoreSyntaxKind.TSemicolon));
 		}
 		
+		public BlockStatementSyntax BlockStatement(SyntaxToken tOpenBrace, Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement, SyntaxToken tCloseBrace)
+		{
+		    if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
+		    if (tOpenBrace.GetKind() != CoreSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
+		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
+		    if (tCloseBrace.GetKind() != CoreSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
+		    return (BlockStatementSyntax)CoreLanguage.Instance.InternalSyntaxFactory.BlockStatement((InternalSyntaxToken)tOpenBrace.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<StatementGreen>(statement.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		}
+		
+		public BlockStatementSyntax BlockStatement()
+		{
+			return this.BlockStatement(this.Token(CoreSyntaxKind.TOpenBrace), default, this.Token(CoreSyntaxKind.TCloseBrace));
+		}
+		
 		public ParenthesizedExprSyntax ParenthesizedExpr(SyntaxToken tOpenParen, ExpressionSyntax expression, SyntaxToken tCloseParen)
 		{
 		    if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
@@ -10582,6 +11860,20 @@ namespace MetaDslx.Languages.Core
 		    return (CompAssignExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.CompAssignExpr((Syntax.InternalSyntax.ExpressionGreen)target.Green, (Syntax.InternalSyntax.CompoundAssignmentOperatorGreen)compoundAssignmentOperator.Green, (Syntax.InternalSyntax.ExpressionGreen)value.Green).CreateRed();
 		}
 		
+		public LambdaExprSyntax LambdaExpr(LambdaSignatureSyntax lambdaSignature, SyntaxToken tArrow, LambdaBodySyntax lambdaBody)
+		{
+		    if (lambdaSignature == null) throw new ArgumentNullException(nameof(lambdaSignature));
+		    if (tArrow == null) throw new ArgumentNullException(nameof(tArrow));
+		    if (tArrow.GetKind() != CoreSyntaxKind.TArrow) throw new ArgumentException(nameof(tArrow));
+		    if (lambdaBody == null) throw new ArgumentNullException(nameof(lambdaBody));
+		    return (LambdaExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.LambdaExpr((Syntax.InternalSyntax.LambdaSignatureGreen)lambdaSignature.Green, (InternalSyntaxToken)tArrow.Node, (Syntax.InternalSyntax.LambdaBodyGreen)lambdaBody.Green).CreateRed();
+		}
+		
+		public LambdaExprSyntax LambdaExpr(LambdaSignatureSyntax lambdaSignature, LambdaBodySyntax lambdaBody)
+		{
+			return this.LambdaExpr(lambdaSignature, this.Token(CoreSyntaxKind.TArrow), lambdaBody);
+		}
+		
 		public ArgumentListSyntax ArgumentList(Microsoft.CodeAnalysis.SeparatedSyntaxList<ArgumentExpressionSyntax> argumentExpression)
 		{
 		    if (argumentExpression == null) throw new ArgumentNullException(nameof(argumentExpression));
@@ -10666,6 +11958,91 @@ namespace MetaDslx.Languages.Core
 		public DictionaryInitializerExpressionSyntax DictionaryInitializerExpression(IdentifierSyntax identifier, ExpressionSyntax expression)
 		{
 			return this.DictionaryInitializerExpression(this.Token(CoreSyntaxKind.TOpenBracket), identifier, this.Token(CoreSyntaxKind.TCloseBracket), this.Token(CoreSyntaxKind.TAssign), expression);
+		}
+		
+		public LambdaSignatureSyntax LambdaSignature(ImplicitLambdaSignatureSyntax implicitLambdaSignature)
+		{
+		    if (implicitLambdaSignature == null) throw new ArgumentNullException(nameof(implicitLambdaSignature));
+		    return (LambdaSignatureSyntax)CoreLanguage.Instance.InternalSyntaxFactory.LambdaSignature((Syntax.InternalSyntax.ImplicitLambdaSignatureGreen)implicitLambdaSignature.Green).CreateRed();
+		}
+		
+		public LambdaSignatureSyntax LambdaSignature(ExplicitLambdaSignatureSyntax explicitLambdaSignature)
+		{
+		    if (explicitLambdaSignature == null) throw new ArgumentNullException(nameof(explicitLambdaSignature));
+		    return (LambdaSignatureSyntax)CoreLanguage.Instance.InternalSyntaxFactory.LambdaSignature((Syntax.InternalSyntax.ExplicitLambdaSignatureGreen)explicitLambdaSignature.Green).CreateRed();
+		}
+		
+		public ImplicitLambdaSignatureSyntax ImplicitLambdaSignature(ImplicitParameterSyntax implicitParameter)
+		{
+		    if (implicitParameter == null) throw new ArgumentNullException(nameof(implicitParameter));
+		    return (ImplicitLambdaSignatureSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ImplicitLambdaSignature((Syntax.InternalSyntax.ImplicitParameterGreen)implicitParameter.Green).CreateRed();
+		}
+		
+		public ImplicitLambdaSignatureSyntax ImplicitLambdaSignature(ImplicitParameterListSyntax implicitParameterList)
+		{
+		    if (implicitParameterList == null) throw new ArgumentNullException(nameof(implicitParameterList));
+		    return (ImplicitLambdaSignatureSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ImplicitLambdaSignature((Syntax.InternalSyntax.ImplicitParameterListGreen)implicitParameterList.Green).CreateRed();
+		}
+		
+		public ImplicitParameterListSyntax ImplicitParameterList(SyntaxToken tOpenParen, Microsoft.CodeAnalysis.SeparatedSyntaxList<ImplicitParameterSyntax> implicitParameter, SyntaxToken tCloseParen)
+		{
+		    if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
+		    if (tOpenParen.GetKind() != CoreSyntaxKind.TOpenParen) throw new ArgumentException(nameof(tOpenParen));
+		    if (implicitParameter == null) throw new ArgumentNullException(nameof(implicitParameter));
+		    if (tCloseParen == null) throw new ArgumentNullException(nameof(tCloseParen));
+		    if (tCloseParen.GetKind() != CoreSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
+		    return (ImplicitParameterListSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ImplicitParameterList((InternalSyntaxToken)tOpenParen.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ImplicitParameterGreen>(implicitParameter.Node), (InternalSyntaxToken)tCloseParen.Node).CreateRed();
+		}
+		
+		public ImplicitParameterListSyntax ImplicitParameterList(Microsoft.CodeAnalysis.SeparatedSyntaxList<ImplicitParameterSyntax> implicitParameter)
+		{
+			return this.ImplicitParameterList(this.Token(CoreSyntaxKind.TOpenParen), implicitParameter, this.Token(CoreSyntaxKind.TCloseParen));
+		}
+		
+		public ImplicitParameterSyntax ImplicitParameter(NameSyntax name)
+		{
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    return (ImplicitParameterSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ImplicitParameter((Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		}
+		
+		public ExplicitLambdaSignatureSyntax ExplicitLambdaSignature(ExplicitParameterListSyntax explicitParameterList)
+		{
+		    if (explicitParameterList == null) throw new ArgumentNullException(nameof(explicitParameterList));
+		    return (ExplicitLambdaSignatureSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ExplicitLambdaSignature((Syntax.InternalSyntax.ExplicitParameterListGreen)explicitParameterList.Green).CreateRed();
+		}
+		
+		public ExplicitParameterListSyntax ExplicitParameterList(SyntaxToken tOpenParen, Microsoft.CodeAnalysis.SeparatedSyntaxList<ExplicitParameterSyntax> explicitParameter, SyntaxToken tCloseParen)
+		{
+		    if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
+		    if (tOpenParen.GetKind() != CoreSyntaxKind.TOpenParen) throw new ArgumentException(nameof(tOpenParen));
+		    if (explicitParameter == null) throw new ArgumentNullException(nameof(explicitParameter));
+		    if (tCloseParen == null) throw new ArgumentNullException(nameof(tCloseParen));
+		    if (tCloseParen.GetKind() != CoreSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
+		    return (ExplicitParameterListSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ExplicitParameterList((InternalSyntaxToken)tOpenParen.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ExplicitParameterGreen>(explicitParameter.Node), (InternalSyntaxToken)tCloseParen.Node).CreateRed();
+		}
+		
+		public ExplicitParameterListSyntax ExplicitParameterList(Microsoft.CodeAnalysis.SeparatedSyntaxList<ExplicitParameterSyntax> explicitParameter)
+		{
+			return this.ExplicitParameterList(this.Token(CoreSyntaxKind.TOpenParen), explicitParameter, this.Token(CoreSyntaxKind.TCloseParen));
+		}
+		
+		public ExplicitParameterSyntax ExplicitParameter(TypeReferenceSyntax typeReference, NameSyntax name)
+		{
+		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    return (ExplicitParameterSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ExplicitParameter((Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		}
+		
+		public LambdaBodySyntax LambdaBody(ExpressionSyntax expression)
+		{
+		    if (expression == null) throw new ArgumentNullException(nameof(expression));
+		    return (LambdaBodySyntax)CoreLanguage.Instance.InternalSyntaxFactory.LambdaBody((Syntax.InternalSyntax.ExpressionGreen)expression.Green).CreateRed();
+		}
+		
+		public LambdaBodySyntax LambdaBody(BlockStatementSyntax blockStatement)
+		{
+		    if (blockStatement == null) throw new ArgumentNullException(nameof(blockStatement));
+		    return (LambdaBodySyntax)CoreLanguage.Instance.InternalSyntaxFactory.LambdaBody((Syntax.InternalSyntax.BlockStatementGreen)blockStatement.Green).CreateRed();
 		}
 		
 		public DotOperatorSyntax DotOperator(SyntaxToken dotOperator)
@@ -10968,6 +12345,7 @@ namespace MetaDslx.Languages.Core
 				typeof(MainSyntax),
 				typeof(UsingNamespaceSyntax),
 				typeof(StatementSyntax),
+				typeof(BlockStatementSyntax),
 				typeof(ParenthesizedExprSyntax),
 				typeof(DefaultExprSyntax),
 				typeof(ThisExprSyntax),
@@ -11002,6 +12380,7 @@ namespace MetaDslx.Languages.Core
 				typeof(CondExprSyntax),
 				typeof(AssignExprSyntax),
 				typeof(CompAssignExprSyntax),
+				typeof(LambdaExprSyntax),
 				typeof(ArgumentListSyntax),
 				typeof(ArgumentExpressionSyntax),
 				typeof(InitializerExpressionSyntax),
@@ -11010,6 +12389,14 @@ namespace MetaDslx.Languages.Core
 				typeof(CollectionInitializerExpressionsSyntax),
 				typeof(DictionaryInitializerExpressionsSyntax),
 				typeof(DictionaryInitializerExpressionSyntax),
+				typeof(LambdaSignatureSyntax),
+				typeof(ImplicitLambdaSignatureSyntax),
+				typeof(ImplicitParameterListSyntax),
+				typeof(ImplicitParameterSyntax),
+				typeof(ExplicitLambdaSignatureSyntax),
+				typeof(ExplicitParameterListSyntax),
+				typeof(ExplicitParameterSyntax),
+				typeof(LambdaBodySyntax),
 				typeof(DotOperatorSyntax),
 				typeof(IndexerOperatorSyntax),
 				typeof(PostfixOperatorSyntax),

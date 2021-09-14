@@ -196,6 +196,57 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseBlockStatement(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.blockStatement();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseBlockStatement(BlockStatementSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.BlockStatementContext _Antlr4ParseBlockStatement()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.BlockStatementContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseBlockStatement(CurrentNode as BlockStatementSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseBlockStatement();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.BlockStatementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseExpression(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -649,6 +700,414 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		        if (cached)
 		        {
 					context = new CoreParser.DictionaryInitializerExpressionContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseLambdaSignature(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.lambdaSignature();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseLambdaSignature(LambdaSignatureSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.LambdaSignatureContext _Antlr4ParseLambdaSignature()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.LambdaSignatureContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseLambdaSignature(CurrentNode as LambdaSignatureSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseLambdaSignature();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.LambdaSignatureContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseImplicitLambdaSignature(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.implicitLambdaSignature();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.ImplicitLambdaSignatureContext _Antlr4ParseImplicitLambdaSignature()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.ImplicitLambdaSignatureContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseImplicitLambdaSignature(CurrentNode as ImplicitLambdaSignatureSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseImplicitLambdaSignature();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.ImplicitLambdaSignatureContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseImplicitParameterList(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.implicitParameterList();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseImplicitParameterList(ImplicitParameterListSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.ImplicitParameterListContext _Antlr4ParseImplicitParameterList()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.ImplicitParameterListContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseImplicitParameterList(CurrentNode as ImplicitParameterListSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseImplicitParameterList();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.ImplicitParameterListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseImplicitParameter(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.implicitParameter();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseImplicitParameter(ImplicitParameterSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.ImplicitParameterContext _Antlr4ParseImplicitParameter()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.ImplicitParameterContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseImplicitParameter(CurrentNode as ImplicitParameterSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseImplicitParameter();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.ImplicitParameterContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseExplicitLambdaSignature(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.explicitLambdaSignature();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.ExplicitLambdaSignatureContext _Antlr4ParseExplicitLambdaSignature()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.ExplicitLambdaSignatureContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseExplicitLambdaSignature(CurrentNode as ExplicitLambdaSignatureSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseExplicitLambdaSignature();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.ExplicitLambdaSignatureContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseExplicitParameterList(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.explicitParameterList();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseExplicitParameterList(ExplicitParameterListSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.ExplicitParameterListContext _Antlr4ParseExplicitParameterList()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.ExplicitParameterListContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseExplicitParameterList(CurrentNode as ExplicitParameterListSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseExplicitParameterList();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.ExplicitParameterListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseExplicitParameter(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.explicitParameter();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseExplicitParameter(ExplicitParameterSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.ExplicitParameterContext _Antlr4ParseExplicitParameter()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.ExplicitParameterContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseExplicitParameter(CurrentNode as ExplicitParameterSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseExplicitParameter();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.ExplicitParameterContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseLambdaBody(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.lambdaBody();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseLambdaBody(LambdaBodySyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.LambdaBodyContext _Antlr4ParseLambdaBody()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.LambdaBodyContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseLambdaBody(CurrentNode as LambdaBodySyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseLambdaBody();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.LambdaBodyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -2315,6 +2774,22 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.Statement(expression, tSemicolon);
 			}
 			
+			public override GreenNode VisitBlockStatement(CoreParser.BlockStatementContext context)
+			{
+				if (context == null) return BlockStatementGreen.__Missing;
+				InternalSyntaxToken tOpenBrace = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBrace(), CoreSyntaxKind.TOpenBrace);
+			    CoreParser.StatementContext[] statementContext = context.statement();
+			    var statementBuilder = _pool.Allocate<StatementGreen>();
+			    for (int i = 0; i < statementContext.Length; i++)
+			    {
+			        statementBuilder.Add((StatementGreen)this.Visit(statementContext[i]));
+			    }
+				var statement = statementBuilder.ToList();
+				_pool.Free(statementBuilder);
+				InternalSyntaxToken tCloseBrace = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBrace(), CoreSyntaxKind.TCloseBrace);
+				return _factory.BlockStatement(tOpenBrace, statement, tCloseBrace);
+			}
+			
 			public override GreenNode VisitParenthesizedExpr(CoreParser.ParenthesizedExprContext context)
 			{
 				if (context == null) return ParenthesizedExprGreen.__Missing;
@@ -2818,6 +3293,21 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.CompAssignExpr(target, compoundAssignmentOperator, value);
 			}
 			
+			public override GreenNode VisitLambdaExpr(CoreParser.LambdaExprContext context)
+			{
+				if (context == null) return LambdaExprGreen.__Missing;
+				CoreParser.LambdaSignatureContext lambdaSignatureContext = context.lambdaSignature();
+				LambdaSignatureGreen lambdaSignature = null;
+				if (lambdaSignatureContext != null) lambdaSignature = (LambdaSignatureGreen)this.Visit(lambdaSignatureContext);
+				if (lambdaSignature == null) lambdaSignature = LambdaSignatureGreen.__Missing;
+				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), CoreSyntaxKind.TArrow);
+				CoreParser.LambdaBodyContext lambdaBodyContext = context.lambdaBody();
+				LambdaBodyGreen lambdaBody = null;
+				if (lambdaBodyContext != null) lambdaBody = (LambdaBodyGreen)this.Visit(lambdaBodyContext);
+				if (lambdaBody == null) lambdaBody = LambdaBodyGreen.__Missing;
+				return _factory.LambdaExpr(lambdaSignature, tArrow, lambdaBody);
+			}
+			
 			public override GreenNode VisitArgumentList(CoreParser.ArgumentListContext context)
 			{
 				if (context == null) return ArgumentListGreen.__Missing;
@@ -2959,6 +3449,130 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
 				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.DictionaryInitializerExpression(tOpenBracket, identifier, tCloseBracket, tAssign, expression);
+			}
+			
+			public override GreenNode VisitLambdaSignature(CoreParser.LambdaSignatureContext context)
+			{
+				if (context == null) return LambdaSignatureGreen.__Missing;
+				CoreParser.ImplicitLambdaSignatureContext implicitLambdaSignatureContext = context.implicitLambdaSignature();
+				if (implicitLambdaSignatureContext != null) 
+				{
+					return _factory.LambdaSignature((ImplicitLambdaSignatureGreen)this.Visit(implicitLambdaSignatureContext));
+				}
+				CoreParser.ExplicitLambdaSignatureContext explicitLambdaSignatureContext = context.explicitLambdaSignature();
+				if (explicitLambdaSignatureContext != null) 
+				{
+					return _factory.LambdaSignature((ExplicitLambdaSignatureGreen)this.Visit(explicitLambdaSignatureContext));
+				}
+				return LambdaSignatureGreen.__Missing;
+			}
+			
+			public override GreenNode VisitImplicitLambdaSignature(CoreParser.ImplicitLambdaSignatureContext context)
+			{
+				if (context == null) return ImplicitLambdaSignatureGreen.__Missing;
+				CoreParser.ImplicitParameterContext implicitParameterContext = context.implicitParameter();
+				if (implicitParameterContext != null) 
+				{
+					return _factory.ImplicitLambdaSignature((ImplicitParameterGreen)this.Visit(implicitParameterContext));
+				}
+				CoreParser.ImplicitParameterListContext implicitParameterListContext = context.implicitParameterList();
+				if (implicitParameterListContext != null) 
+				{
+					return _factory.ImplicitLambdaSignature((ImplicitParameterListGreen)this.Visit(implicitParameterListContext));
+				}
+				return ImplicitLambdaSignatureGreen.__Missing;
+			}
+			
+			public override GreenNode VisitImplicitParameterList(CoreParser.ImplicitParameterListContext context)
+			{
+				if (context == null) return ImplicitParameterListGreen.__Missing;
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+			    CoreParser.ImplicitParameterContext[] implicitParameterContext = context.implicitParameter();
+			    ITerminalNode[] tCommaContext = context.TComma();
+			    var implicitParameterBuilder = _pool.AllocateSeparated<ImplicitParameterGreen>();
+			    for (int i = 0; i < implicitParameterContext.Length; i++)
+			    {
+			        implicitParameterBuilder.Add((ImplicitParameterGreen)this.Visit(implicitParameterContext[i]));
+			        if (i < tCommaContext.Length)
+			        {
+			            implicitParameterBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i], CoreSyntaxKind.TComma));
+			        }
+			    }
+				var implicitParameter = implicitParameterBuilder.ToList();
+				_pool.Free(implicitParameterBuilder);
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				return _factory.ImplicitParameterList(tOpenParen, implicitParameter, tCloseParen);
+			}
+			
+			public override GreenNode VisitImplicitParameter(CoreParser.ImplicitParameterContext context)
+			{
+				if (context == null) return ImplicitParameterGreen.__Missing;
+				CoreParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
+				return _factory.ImplicitParameter(name);
+			}
+			
+			public override GreenNode VisitExplicitLambdaSignature(CoreParser.ExplicitLambdaSignatureContext context)
+			{
+				if (context == null) return ExplicitLambdaSignatureGreen.__Missing;
+				CoreParser.ExplicitParameterListContext explicitParameterListContext = context.explicitParameterList();
+				ExplicitParameterListGreen explicitParameterList = null;
+				if (explicitParameterListContext != null) explicitParameterList = (ExplicitParameterListGreen)this.Visit(explicitParameterListContext);
+				if (explicitParameterList == null) explicitParameterList = ExplicitParameterListGreen.__Missing;
+				return _factory.ExplicitLambdaSignature(explicitParameterList);
+			}
+			
+			public override GreenNode VisitExplicitParameterList(CoreParser.ExplicitParameterListContext context)
+			{
+				if (context == null) return ExplicitParameterListGreen.__Missing;
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+			    CoreParser.ExplicitParameterContext[] explicitParameterContext = context.explicitParameter();
+			    ITerminalNode[] tCommaContext = context.TComma();
+			    var explicitParameterBuilder = _pool.AllocateSeparated<ExplicitParameterGreen>();
+			    for (int i = 0; i < explicitParameterContext.Length; i++)
+			    {
+			        explicitParameterBuilder.Add((ExplicitParameterGreen)this.Visit(explicitParameterContext[i]));
+			        if (i < tCommaContext.Length)
+			        {
+			            explicitParameterBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i], CoreSyntaxKind.TComma));
+			        }
+			    }
+				var explicitParameter = explicitParameterBuilder.ToList();
+				_pool.Free(explicitParameterBuilder);
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				return _factory.ExplicitParameterList(tOpenParen, explicitParameter, tCloseParen);
+			}
+			
+			public override GreenNode VisitExplicitParameter(CoreParser.ExplicitParameterContext context)
+			{
+				if (context == null) return ExplicitParameterGreen.__Missing;
+				CoreParser.TypeReferenceContext typeReferenceContext = context.typeReference();
+				TypeReferenceGreen typeReference = null;
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
+				CoreParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
+				return _factory.ExplicitParameter(typeReference, name);
+			}
+			
+			public override GreenNode VisitLambdaBody(CoreParser.LambdaBodyContext context)
+			{
+				if (context == null) return LambdaBodyGreen.__Missing;
+				CoreParser.ExpressionContext expressionContext = context.expression();
+				if (expressionContext != null) 
+				{
+					return _factory.LambdaBody((ExpressionGreen)this.Visit(expressionContext));
+				}
+				CoreParser.BlockStatementContext blockStatementContext = context.blockStatement();
+				if (blockStatementContext != null) 
+				{
+					return _factory.LambdaBody((BlockStatementGreen)this.Visit(blockStatementContext));
+				}
+				return LambdaBodyGreen.__Missing;
 			}
 			
 			public override GreenNode VisitDotOperator(CoreParser.DotOperatorContext context)
@@ -3609,6 +4223,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
+		internal class BlockStatementContext_Cached : BlockStatementContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public BlockStatementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
 		internal class ExpressionContext_Cached : ExpressionContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
@@ -3701,6 +4326,94 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public DictionaryInitializerExpressionContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class LambdaSignatureContext_Cached : LambdaSignatureContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public LambdaSignatureContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ImplicitLambdaSignatureContext_Cached : ImplicitLambdaSignatureContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ImplicitLambdaSignatureContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ImplicitParameterListContext_Cached : ImplicitParameterListContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ImplicitParameterListContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ImplicitParameterContext_Cached : ImplicitParameterContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ImplicitParameterContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ExplicitLambdaSignatureContext_Cached : ExplicitLambdaSignatureContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ExplicitLambdaSignatureContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ExplicitParameterListContext_Cached : ExplicitParameterListContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ExplicitParameterListContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ExplicitParameterContext_Cached : ExplicitParameterContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ExplicitParameterContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class LambdaBodyContext_Cached : LambdaBodyContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public LambdaBodyContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

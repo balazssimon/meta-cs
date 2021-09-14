@@ -94,6 +94,7 @@ TExclamation : '!';
 TSlash : '/';
 TAsterisk : '*';
 TPercent : '%';
+TArrow : '=>';
 TLessThanOrEqual : '<=';
 TGreaterThanOrEqual : '>=';
 TEqual : '==';

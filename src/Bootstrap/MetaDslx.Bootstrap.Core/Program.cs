@@ -18,8 +18,8 @@ namespace MetaDslx.Bootstrap.Core
             var assemblyPath = Path.GetDirectoryName(coreAssembly);
             var coreRef = MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll"));
 
-            //string text = "3*4;";
-            string text = "3*true;";
+            string text = "3*4;";
+            //string text = "3*true;";
             var syntaxTree = CoreSyntaxTree.ParseText(text);
             var compilation = CoreCompilation.Create("CoreTest")
                 .AddReferences(coreRef)

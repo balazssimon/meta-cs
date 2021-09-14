@@ -100,6 +100,33 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitBlockStatement(BlockStatementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(BlockStatement));
+			try
+			{
+				if (node.Statement != null)
+				{
+					foreach (var child in node.Statement)
+					{
+				        this.BeginProperty(child, name: "Statements");
+				        try
+				        {
+				        	this.Visit(child);
+				        }
+				        finally
+				        {
+				        	this.EndProperty(child, name: "Statements");
+				        }
+					}
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(BlockStatement));
+			}
+		}
+		
 		public virtual void VisitParenthesizedExpr(ParenthesizedExprSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(ParenthesizedExpression));
@@ -1332,6 +1359,26 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitLambdaExpr(LambdaExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LambdaExpression));
+			try
+			{
+				if (node.LambdaSignature != null)
+				{
+				    this.Visit(node.LambdaSignature);
+				}
+				if (node.LambdaBody != null)
+				{
+				    this.Visit(node.LambdaBody);
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LambdaExpression));
+			}
+		}
+		
 		public virtual void VisitArgumentList(ArgumentListSyntax node)
 		{
 			if (node.ArgumentExpression != null)
@@ -1425,6 +1472,172 @@ namespace MetaDslx.Languages.Core.Binding
 			if (node.Expression != null)
 			{
 			    this.Visit(node.Expression);
+			}
+		}
+		
+		public virtual void VisitLambdaSignature(LambdaSignatureSyntax node)
+		{
+			if (node.ImplicitLambdaSignature != null)
+			{
+			    this.Visit(node.ImplicitLambdaSignature);
+			}
+			if (node.ExplicitLambdaSignature != null)
+			{
+			    this.Visit(node.ExplicitLambdaSignature);
+			}
+		}
+		
+		public virtual void VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax node)
+		{
+			if (node.ImplicitParameter != null)
+			{
+			    this.Visit(node.ImplicitParameter);
+			}
+			if (node.ImplicitParameterList != null)
+			{
+			    this.Visit(node.ImplicitParameterList);
+			}
+		}
+		
+		public virtual void VisitImplicitParameterList(ImplicitParameterListSyntax node)
+		{
+			this.BeginProperty(node, name: "Parameters");
+			try
+			{
+				if (node.ImplicitParameter != null)
+				{
+					foreach (var child in node.ImplicitParameter)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Parameters");
+			}
+		}
+		
+		public virtual void VisitImplicitParameter(ImplicitParameterSyntax node)
+		{
+			this.BeginProperty(node, name: "Parameters");
+			try
+			{
+				this.BeginDefine(node, type: typeof(Parameter));
+				try
+				{
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(Parameter));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Parameters");
+			}
+		}
+		
+		public virtual void VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax node)
+		{
+			if (node.ExplicitParameterList != null)
+			{
+			    this.Visit(node.ExplicitParameterList);
+			}
+		}
+		
+		public virtual void VisitExplicitParameterList(ExplicitParameterListSyntax node)
+		{
+			this.BeginProperty(node, name: "Parameters");
+			try
+			{
+				if (node.ExplicitParameter != null)
+				{
+					foreach (var child in node.ExplicitParameter)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Parameters");
+			}
+		}
+		
+		public virtual void VisitExplicitParameter(ExplicitParameterSyntax node)
+		{
+			this.BeginProperty(node, name: "Parameters");
+			try
+			{
+				this.BeginDefine(node, type: typeof(Parameter));
+				try
+				{
+					if (node.TypeReference != null)
+					{
+					    this.BeginProperty(node.TypeReference, name: "Type");
+					    try
+					    {
+					    	this.Visit(node.TypeReference);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.TypeReference, name: "Type");
+					    }
+					}
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(Parameter));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Parameters");
+			}
+		}
+		
+		public virtual void VisitLambdaBody(LambdaBodySyntax node)
+		{
+			this.BeginProperty(node, name: "Body");
+			try
+			{
+				if (node.Expression != null)
+				{
+				    this.BeginDefine(node.Expression, type: typeof(ExpressionStatement));
+				    try
+				    {
+				    	this.BeginProperty(node.Expression, name: "Expression");
+				    	try
+				    	{
+				    		this.Visit(node.Expression);
+				    	}
+				    	finally
+				    	{
+				    		this.EndProperty(node.Expression, name: "Expression");
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndDefine(node.Expression, type: typeof(ExpressionStatement));
+				    }
+				}
+				if (node.BlockStatement != null)
+				{
+				    this.Visit(node.BlockStatement);
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Body");
 			}
 		}
 		

@@ -55,6 +55,12 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] CoreParser.StatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.blockStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlockStatement([NotNull] CoreParser.BlockStatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>newExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>
@@ -145,6 +151,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitUnaryExpr([NotNull] CoreParser.UnaryExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>lambdaExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLambdaExpr([NotNull] CoreParser.LambdaExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>parenthesizedExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
@@ -340,6 +353,54 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitDictionaryInitializerExpression([NotNull] CoreParser.DictionaryInitializerExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.lambdaSignature"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLambdaSignature([NotNull] CoreParser.LambdaSignatureContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.implicitLambdaSignature"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitImplicitLambdaSignature([NotNull] CoreParser.ImplicitLambdaSignatureContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.implicitParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitImplicitParameterList([NotNull] CoreParser.ImplicitParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.implicitParameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitImplicitParameter([NotNull] CoreParser.ImplicitParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.explicitLambdaSignature"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExplicitLambdaSignature([NotNull] CoreParser.ExplicitLambdaSignatureContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.explicitParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExplicitParameterList([NotNull] CoreParser.ExplicitParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.explicitParameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExplicitParameter([NotNull] CoreParser.ExplicitParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.lambdaBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLambdaBody([NotNull] CoreParser.LambdaBodyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.dotOperator"/>.
 	/// </summary>
