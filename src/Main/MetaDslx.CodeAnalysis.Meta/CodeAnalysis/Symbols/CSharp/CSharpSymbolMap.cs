@@ -175,7 +175,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         public ImmutableArray<AttributeData> GetAttributes(ImmutableArray<CSharpSymbols.CSharpAttributeData> attributes, ref ImmutableArray<AttributeData> cachedAttributes)
         {
             if (!cachedAttributes.IsDefault) return cachedAttributes;
-            else return ImmutableArray<AttributeData>.Empty; // TODO:MetaDslx
+            else return ImmutableArray<AttributeData>.Empty;
+            // TODO:MetaDslx
+                /*var mappedAttributes = attributes.Select(attr => (AttributeSymbol)new CSharpAttributeSymbol(container, _module, attr)).ToImmutableArray();
+                ImmutableInterlocked.InterlockedInitialize(ref cachedAttributes, mappedAttributes);
+                return cachedAttributes;*/
         }
     }
 }

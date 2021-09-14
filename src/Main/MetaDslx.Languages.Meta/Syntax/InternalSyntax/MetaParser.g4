@@ -24,8 +24,8 @@ qualifiedName : qualifier;
 qualifier : identifier (TDot identifier)*;
 
                      
-                   
-attribute : TOpenBracket qualifier TCloseBracket;
+                      
+attribute : TOpenBracket                                 qualifier TCloseBracket;
 
 usingNamespaceOrMetamodel: usingNamespace | usingMetamodel;
 

@@ -39,7 +39,7 @@
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\MetaDslx.Languages.Core\MetaDslx.Languages.Core.csproj" PrivateAssets="all" />
+    <!--ProjectReference Include="..\MetaDslx.Languages.Core\MetaDslx.Languages.Core.csproj" PrivateAssets="all" /-->
   </ItemGroup>
 
   <ItemGroup>
@@ -48,14 +48,14 @@
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Meta.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Core.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+    <!--None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Core.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" /-->
 
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Common.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Meta.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Meta.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Core.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+    <!--None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Core.xml" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" /-->
   </ItemGroup>
 
   <ItemGroup>
@@ -64,14 +64,14 @@
     <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Meta.dll" Pack="true" PackagePath="lib\net461" Visible="true" />
     <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\net461" Visible="true" />
     <None Include="$(OutputPath)\net461\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="lib\net461" Visible="true" />
-    <None Include="$(OutputPath)\net461\MetaDslx.Languages.Core.dll" Pack="true" PackagePath="lib\net461" Visible="true" />
+    <!--None Include="$(OutputPath)\net461\MetaDslx.Languages.Core.dll" Pack="true" PackagePath="lib\net461" Visible="true" /-->
 
     <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Common.xml" Pack="true" PackagePath="lib\net461" Visible="true" />
     <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.CSharp.xml" Pack="true" PackagePath="lib\net461" Visible="true" />
     <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Meta.xml" Pack="true" PackagePath="lib\net461" Visible="true" />
     <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Antlr4.xml" Pack="true" PackagePath="lib\net461" Visible="true" />
     <None Include="$(OutputPath)\net461\MetaDslx.Languages.Meta.xml" Pack="true" PackagePath="lib\net461" Visible="true" />
-    <None Include="$(OutputPath)\net461\MetaDslx.Languages.Core.xml" Pack="true" PackagePath="lib\net461" Visible="true" />
+    <!--None Include="$(OutputPath)\net461\MetaDslx.Languages.Core.xml" Pack="true" PackagePath="lib\net461" Visible="true" /-->
   </ItemGroup>
 
   <ItemGroup>

@@ -9,10 +9,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a compound assignment that mutates the target with the result of a binary operation.
     /// </summary>
     [Symbol]
-    public abstract partial class CompoundAssignmentExpressionSymbol : ExpressionSymbol
+    public abstract partial class CompoundAssignmentExpressionSymbol : AssignmentExpressionSymbol
     {
         /// <summary>
-        /// Conversion applied to <see cref="IAssignmentOperation.Target" /> before the operation occurs.
+        /// Conversion applied to <see cref="AssignmentExpressionSymbol.Target" /> before the operation occurs.
         /// </summary>
         public virtual Conversion InConversion { get; }
 

@@ -162,9 +162,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
         }
 
-        protected override ImmutableArray<Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<AttributeSymbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<AttributeSymbol>.Empty;
         }
 
         protected override ImmutableArray<DeclaredSymbol> CompleteSymbolProperty_Members(DiagnosticBag diagnostics, CancellationToken cancellationToken)

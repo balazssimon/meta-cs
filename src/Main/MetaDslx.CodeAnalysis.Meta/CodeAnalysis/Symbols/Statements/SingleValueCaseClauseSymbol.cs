@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a case clause with a single value for comparison.
     /// </summary>
     [Symbol]
-    public abstract class SingleValueCaseClauseSymbol
+    public abstract partial class SingleValueCaseClauseSymbol : CaseClauseSymbol
     {
         /// <summary>
         /// Case value.

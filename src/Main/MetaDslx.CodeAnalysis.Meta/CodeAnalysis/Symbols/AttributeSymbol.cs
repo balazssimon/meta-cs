@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -6,16 +7,16 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     /// <summary>
-    /// Represents creation of an object instance.
+    /// Represents some metadata assigned to symbols.
     /// </summary>
     [Symbol]
-    public abstract partial class ObjectCreationExpressionSymbol : ExpressionSymbol
+    public partial class AttributeSymbol : NonDeclaredSymbol
     {
         /// <summary>
-        /// The type of the object to be created.
+        /// The type of the attribute to be created.
         /// </summary>
         [SymbolProperty]
-        public abstract TypeSymbol ObjectType { get; }
+        public abstract TypeSymbol AttributeType { get; }
 
         /// <summary>
         /// Arguments of the object creation, excluding the instance argument. Arguments are in evaluation order.
@@ -37,5 +38,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Constructor to be invoked on the created instance.
         /// </summary>
         public virtual ConstructorSymbol? Constructor { get; }
+
+        public virtual AttributeData AttributeData { get; }
     }
 }

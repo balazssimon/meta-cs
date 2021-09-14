@@ -5,15 +5,12 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MetaDslx.Languages.Core</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
     <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
     <MetaDslxDisableSymbolSourceGenerator>false</MetaDslxDisableSymbolSourceGenerator>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/*/**/*.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
@@ -22,5 +19,11 @@
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MetaModel Update="Model\Core.mm">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </MetaModel>
   </ItemGroup>
 </Project>

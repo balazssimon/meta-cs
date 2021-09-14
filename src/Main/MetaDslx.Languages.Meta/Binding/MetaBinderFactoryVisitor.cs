@@ -22,13 +22,13 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class MetaBinderFactoryVisitor : BinderFactoryVisitor, IMetaSyntaxVisitor<Binder>
     {
+		public static object UseQualifier = new object();
 		public static object UseStringLiteral = new object();
 		public static object UseIntegerLiteral = new object();
 		public static object UseEnumValues = new object();
 		public static object UseOperationDeclaration = new object();
 		public static object UseKAbstract = new object();
 		public static object UseClassAncestors = new object();
-		public static object UseQualifier = new object();
 		public static object UseFieldDeclaration = new object();
 		public static object UseTypeReference = new object();
 		public static object UseIdentifier = new object();
@@ -201,13 +201,23 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Attributes");
-				resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaAttribute)));
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(MetaAttribute));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseQualifier)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Qualifier, name: "Type");
+					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Qualifier, types: ImmutableArray.Create(typeof(MetaClass)));
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

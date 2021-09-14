@@ -1964,7 +1964,6 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Attributes")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SymbolTypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SymbolType",
 			        immutableType: typeof(System.Type),

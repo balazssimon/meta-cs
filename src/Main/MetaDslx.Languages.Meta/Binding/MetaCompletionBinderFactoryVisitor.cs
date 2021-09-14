@@ -3560,7 +3560,7 @@ namespace MetaDslx.Languages.Meta.Binding
             _visited[4] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Attributes", forCompletion: true);
-            ruleBinder = this.BinderFactory.CreateUseBinder(ruleBinder, null, types: ImmutableArray.Create(typeof(MetaAttribute)), forCompletion: true);
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(MetaAttribute), forCompletion: true);
             if (use == UnassignedUse)
             {
                 var binder = ruleBinder;
@@ -3570,6 +3570,8 @@ namespace MetaDslx.Languages.Meta.Binding
             if (use == UnassignedUse || use == Use_Attribute_Qualifier)
             {
                 var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Type", forCompletion: true);
+            	binder = this.BinderFactory.CreateUseBinder(binder, null, types: ImmutableArray.Create(typeof(MetaClass)), forCompletion: true);
                 AddResultsForQualifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }

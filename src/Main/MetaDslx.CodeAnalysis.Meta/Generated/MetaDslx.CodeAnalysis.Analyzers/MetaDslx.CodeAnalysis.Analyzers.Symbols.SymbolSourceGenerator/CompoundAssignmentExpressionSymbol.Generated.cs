@@ -24,13 +24,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             public static readonly CompletionPart StartComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.StartComputingProperty_Attributes;
             public static readonly CompletionPart FinishComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.FinishComputingProperty_Attributes;
+            public static readonly CompletionPart StartComputingProperty_Target = MetaDslx.CodeAnalysis.Symbols.AssignmentExpressionSymbol.CompletionParts.StartComputingProperty_Target;
+            public static readonly CompletionPart FinishComputingProperty_Target = MetaDslx.CodeAnalysis.Symbols.AssignmentExpressionSymbol.CompletionParts.FinishComputingProperty_Target;
+            public static readonly CompletionPart StartComputingProperty_Value = MetaDslx.CodeAnalysis.Symbols.AssignmentExpressionSymbol.CompletionParts.StartComputingProperty_Value;
+            public static readonly CompletionPart FinishComputingProperty_Value = MetaDslx.CodeAnalysis.Symbols.AssignmentExpressionSymbol.CompletionParts.FinishComputingProperty_Value;
             public static readonly CompletionPart StartComputingProperty_OperatorKind = new CompletionPart(nameof(StartComputingProperty_OperatorKind));
             public static readonly CompletionPart FinishComputingProperty_OperatorKind = new CompletionPart(nameof(FinishComputingProperty_OperatorKind));
             public static readonly CompletionPart StartComputingProperty_IsChecked = new CompletionPart(nameof(StartComputingProperty_IsChecked));
             public static readonly CompletionPart FinishComputingProperty_IsChecked = new CompletionPart(nameof(FinishComputingProperty_IsChecked));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_OperatorKind, FinishComputingProperty_OperatorKind, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_OperatorKind, FinishComputingProperty_OperatorKind, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_OperatorKind, FinishComputingProperty_OperatorKind, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Target, FinishComputingProperty_Target, StartComputingProperty_Value, FinishComputingProperty_Value, StartComputingProperty_OperatorKind, FinishComputingProperty_OperatorKind, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Target, FinishComputingProperty_Target, StartComputingProperty_Value, FinishComputingProperty_Value, StartComputingProperty_OperatorKind, FinishComputingProperty_OperatorKind, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Target, FinishComputingProperty_Target, StartComputingProperty_Value, FinishComputingProperty_Value, StartComputingProperty_OperatorKind, FinishComputingProperty_OperatorKind, StartComputingProperty_IsChecked, FinishComputingProperty_IsChecked, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
         }
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
@@ -62,7 +66,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private ImmutableArray<Symbol> _childSymbols;
         private string _name;
         private string _metadataName;
-        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
+        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol> _attributes;
+        private global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol _target;
+        private global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol _value;
         private global::MetaDslx.CodeAnalysis.Symbols.BinaryOperatorKind _operatorKind;
         private bool _isChecked;
 
@@ -113,12 +119,30 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes
+        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol> Attributes
         {
             get
             {
                 this.ForceComplete(CompletionParts.FinishComputingProperty_Attributes, null, default);
                 return _attributes;
+            }
+        }
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Target
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_Target, null, default);
+                return _target;
+            }
+        }
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Value
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_Value, null, default);
+                return _value;
             }
         }
 
@@ -190,6 +214,28 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Attributes);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartComputingProperty_Target || incompletePart == CompletionParts.FinishComputingProperty_Target)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Target))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _target = CompleteSymbolProperty_Target(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_Target);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartComputingProperty_Value || incompletePart == CompletionParts.FinishComputingProperty_Value)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Value))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _value = CompleteSymbolProperty_Value(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_Value);
                     }
                 }
                 else if (incompletePart == CompletionParts.StartComputingProperty_OperatorKind || incompletePart == CompletionParts.FinishComputingProperty_OperatorKind)
@@ -311,9 +357,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             SymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
         }
 
-        protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken, out var result);
+            SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol>(this, nameof(Attributes), diagnostics, cancellationToken, out var result);
+            return result;
+        }
+
+        protected virtual global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Target(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Target), diagnostics, cancellationToken, out var result);
+            return result;
+        }
+
+        protected virtual global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Value(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Value), diagnostics, cancellationToken, out var result);
             return result;
         }
 

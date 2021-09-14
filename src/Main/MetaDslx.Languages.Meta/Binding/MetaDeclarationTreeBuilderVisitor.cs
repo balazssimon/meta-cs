@@ -159,17 +159,33 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginProperty(node, name: "Attributes");
 			try
 			{
-				this.BeginUse(node, types: ImmutableArray.Create(typeof(MetaAttribute)));
+				this.BeginDefine(node, type: typeof(MetaAttribute));
 				try
 				{
 					if (node.Qualifier != null)
 					{
-					    this.Visit(node.Qualifier);
+					    this.BeginProperty(node.Qualifier, name: "Type");
+					    try
+					    {
+					    	this.BeginUse(node.Qualifier, types: ImmutableArray.Create(typeof(MetaClass)));
+					    	try
+					    	{
+					    		this.Visit(node.Qualifier);
+					    	}
+					    	finally
+					    	{
+					    		this.EndUse(node.Qualifier, types: ImmutableArray.Create(typeof(MetaClass)));
+					    	}
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.Qualifier, name: "Type");
+					    }
 					}
 				}
 				finally
 				{
-					this.EndUse(node, types: ImmutableArray.Create(typeof(MetaAttribute)));
+					this.EndDefine(node, type: typeof(MetaAttribute));
 				}
 			}
 			finally

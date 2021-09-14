@@ -24,8 +24,8 @@ $Qualifier
 qualifier : identifier (TDot identifier)*;
 
 $Property(Attributes)
-$Use(MetaAttribute)
-attribute : TOpenBracket qualifier TCloseBracket;
+$Define(MetaAttribute)
+attribute : TOpenBracket $Property(Type) $Use(MetaClass) qualifier TCloseBracket;
 
 usingNamespaceOrMetamodel: usingNamespace | usingMetamodel;
 

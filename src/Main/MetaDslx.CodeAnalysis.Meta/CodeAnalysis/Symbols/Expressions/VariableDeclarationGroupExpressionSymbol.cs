@@ -9,7 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a declarator that declares multiple individual variables.
     /// </summary>
     [Symbol]
-    public abstract partial class VariableDeclarationGroupExpressionSymbol : NonDeclaredSymbol
+    public abstract partial class VariableDeclarationGroupExpressionSymbol : ExpressionSymbol
     {
         /// <summary>
         /// Individual variable declarations declared by this multiple declaration.

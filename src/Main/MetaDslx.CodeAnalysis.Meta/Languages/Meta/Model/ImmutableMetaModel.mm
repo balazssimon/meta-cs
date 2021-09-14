@@ -153,7 +153,6 @@
 	[type: Class]
 	class MetaClass : MetaNamedType
 	{
-		[property: Attributes]
 		SystemType SymbolType;
 		bool IsAbstract;
 		[property: BaseTypes]

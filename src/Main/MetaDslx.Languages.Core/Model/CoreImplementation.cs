@@ -11,11 +11,20 @@ using System.Diagnostics;
 
 namespace MetaDslx.Languages.Core.Model.Internal
 {
-	/// <summary>
-	/// Class for implementing the behavior of the model elements.
-	/// </summary>
-	public class CoreImplementation : CoreImplementationBase
-	{
-	}
+    /// <summary>
+    /// Class for implementing the behavior of the model elements.
+    /// </summary>
+    public class CoreImplementation : CoreImplementationBase
+    {
+        public override EnumTypeBuilder EnumLiteral_ComputeProperty_Type(EnumLiteralBuilder _this)
+        {
+            return _this.MParent as EnumTypeBuilder;
+        }
+
+        public override IReadOnlyList<EnumLiteralBuilder> EnumType_ComputeProperty_Literals(EnumTypeBuilder _this)
+        {
+            return _this.Members.OfType<EnumLiteralBuilder>().ToList();
+        }
+    }
 }
 

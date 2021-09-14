@@ -361,7 +361,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         [SymbolProperty]
-        public virtual ImmutableArray<Symbol> Attributes => ImmutableArray<Symbol>.Empty;
+        public virtual ImmutableArray<AttributeSymbol> Attributes => ImmutableArray<AttributeSymbol>.Empty;
 
         public virtual ImmutableArray<AttributeData> GetAttributes()
         {

@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a statement with a label.
     /// </summary>
     [Symbol]
-    public abstract partial class LabeledStatementSymbol
+    public abstract partial class LabeledStatementSymbol : StatementSymbol
     {
         /// <summary>
         /// Label that can be the target of branches.
