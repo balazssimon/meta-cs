@@ -278,7 +278,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     bool symIsHidden = false;
                     foreach (var hidingSym in hidingSymbols)
                     {
-                        var hiddenIsSystemObject = hiddenContainer.IsSpecialSymbol(SpecialType.System_Object);
+                        var hiddenIsSystemObject = hiddenContainer.IsSpecialSymbol(SpecialSymbol.System_Object);
                         var hidingContainer = hidingSym.ContainingType;
                         if (!IsDerivedType(baseType: hiddenContainer, derivedType: hidingContainer, useSiteDiagnostics: resultHiding.UseSiteDiagnostics) &&
                             (hiddenContainer == null || !hiddenIsSystemObject))

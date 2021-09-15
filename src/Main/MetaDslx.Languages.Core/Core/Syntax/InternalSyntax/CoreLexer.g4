@@ -29,6 +29,7 @@ KNew : 'new';
 KNull : 'null';
 KTrue : 'true';
 KFalse : 'false';
+KDynamic : 'dynamic';
 KObject : 'object';
 KVoid : 'void';
 KBool : 'bool';
@@ -56,8 +57,12 @@ KIs : 'is';
 KNot : 'not';
 KThis : 'this';
 KBase : 'base';
+KAsync : 'async';
+KAwait : 'await';
 KConst : 'const';
 KReadonly : 'readonly';
+KDiscard : '_';
+KThrow : 'throw';
 KStatic : 'static';
 
 // Tokens

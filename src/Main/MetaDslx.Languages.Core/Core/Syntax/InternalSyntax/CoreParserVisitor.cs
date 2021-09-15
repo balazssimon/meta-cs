@@ -187,6 +187,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitRelExpr([NotNull] CoreParser.RelExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>discardExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDiscardExpr([NotNull] CoreParser.DiscardExprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>assignExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>
@@ -201,6 +208,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitQualifierExpr([NotNull] CoreParser.QualifierExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>throwExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitThrowExpr([NotNull] CoreParser.ThrowExprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>orExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>
@@ -214,6 +228,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAndAlsoExpr([NotNull] CoreParser.AndAlsoExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>awaitExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAwaitExpr([NotNull] CoreParser.AwaitExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>nameofExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
@@ -257,6 +278,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSizeofExpr([NotNull] CoreParser.SizeofExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>nullForgivingExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNullForgivingExpr([NotNull] CoreParser.NullForgivingExprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>
@@ -292,6 +320,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBaseExpr([NotNull] CoreParser.BaseExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>tupleExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTupleExpr([NotNull] CoreParser.TupleExprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>identifierExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>
@@ -305,6 +340,12 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAndExpr([NotNull] CoreParser.AndExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.tupleArguments"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTupleArguments([NotNull] CoreParser.TupleArgumentsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.argumentList"/>.
 	/// </summary>

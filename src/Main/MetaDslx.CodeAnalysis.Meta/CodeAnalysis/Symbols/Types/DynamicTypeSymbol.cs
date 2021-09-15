@@ -64,7 +64,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             // return the distinguished value for 'object' because the hash code ignores the distinction
             // between dynamic and object.  It also ignores custom modifiers.
-            return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
+            return (int)SpecialSymbol.System_Object;
         }
 
         public override bool Equals(TypeSymbol? t2, TypeCompareKind comparison)
@@ -82,7 +82,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 var other = t2 as NamedTypeSymbol;
-                return (object?)other != null && other.IsSpecialSymbol(SpecialType.System_Object);
+                return (object?)other != null && other.IsSpecialSymbol(SpecialSymbol.System_Object);
             }
 
             return false;

@@ -218,7 +218,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             constraints.MergeHidingLookupCandidates(result, tmp);
             tmp.Free();
 
-            //this.AddCandidateSymbolsInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object))); // TODO:MetaDslx
+            //this.AddCandidateSymbolsInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialSymbol(SpecialSymbol.System_Object))); // TODO:MetaDslx
         }
 
         private void AddCandidateSymbolsWithoutInheritance(LookupCandidates result, LookupConstraints constraints)

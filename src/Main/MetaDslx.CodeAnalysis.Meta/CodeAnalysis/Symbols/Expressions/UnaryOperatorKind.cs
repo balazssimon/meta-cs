@@ -6,7 +6,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public class UnaryOperatorKind
     {
-        // IMPORTANT: make sure to keep the index values in sync with StandardUnaryOperatorSignatures
+        // IMPORTANT: make sure to keep the index values in sync with StandardUnaryOperators
         public static readonly UnaryOperatorKind UnaryPlus = new UnaryOperatorKind(nameof(UnaryPlus), 0);
         public static readonly UnaryOperatorKind UnaryMinus = new UnaryOperatorKind(nameof(UnaryMinus), 1);
         public static readonly UnaryOperatorKind LogicalNegation = new UnaryOperatorKind(nameof(LogicalNegation), 2);
@@ -15,6 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly UnaryOperatorKind PostfixIncrement = new UnaryOperatorKind(nameof(PostfixIncrement), 5);
         public static readonly UnaryOperatorKind PrefixDecrement = new UnaryOperatorKind(nameof(PrefixDecrement), 6);
         public static readonly UnaryOperatorKind PostfixDecrement = new UnaryOperatorKind(nameof(PostfixDecrement), 7);
+        public static readonly UnaryOperatorKind IndexFromEnd = new UnaryOperatorKind(nameof(IndexFromEnd), 8);
 
         private readonly string _name;
         private readonly int _index;

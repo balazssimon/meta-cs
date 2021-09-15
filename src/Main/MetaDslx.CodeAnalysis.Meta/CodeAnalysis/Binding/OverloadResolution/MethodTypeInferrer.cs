@@ -80,7 +80,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 internal override TypeWithAnnotations GetMethodGroupResultType(ReferenceExpressionSymbol group, MethodSymbol method)
                 {
-                    return method.ReturnTypeWithAnnotations;
+                    return method.Result?.TypeWithAnnotations;
                 }
             }
         }

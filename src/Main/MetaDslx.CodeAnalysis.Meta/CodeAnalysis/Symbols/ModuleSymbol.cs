@@ -257,6 +257,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <param name="specialSymbolId">The identifier of the special symbol.</param>
         internal Symbol? GetDeclaredSpecialSymbol(object specialSymbolId)
         {
+            if (specialSymbolId is SpecialType st) specialSymbolId = st.ToSpecialSymbol();
             if (!this.Language.SymbolFacts.SpecialSymbols.Contains(specialSymbolId)) return null;
             if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(specialSymbolId))
             {
@@ -287,15 +288,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Register declaration of predefined symbol in this Module.
         /// </summary>
         /// <param name="corType"></param>
-        private void RegisterDeclaredSpecialSymbol(object specialType, ref Symbol symbol)
+        private void RegisterDeclaredSpecialSymbol(object specialSymbol, ref Symbol symbol)
         {
-            Debug.Assert(specialType != null);
+            Debug.Assert(specialSymbol != null);
             Debug.Assert(ReferenceEquals(symbol.ContainingModule, this));
             if (_lazySpecialSymbols == null)
             {
                 Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, Symbol>(), null);
             }
-            _lazySpecialSymbols.TryAdd(specialType, symbol);
+            _lazySpecialSymbols.TryAdd(specialSymbol, symbol);
         }
 
         internal protected abstract Symbol? GetDeclaredModelSymbol(object modelObject);

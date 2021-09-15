@@ -27,9 +27,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
             var srcSpecialSymbol = source.GetSpecialSymbol(CSharpLanguage.Instance);
             var srcIndex = -1;
-            if (srcSpecialSymbol is SpecialType srcSpecialType)
+            if (srcSpecialSymbol is SpecialSymbol srcSpecialType)
             {
-                srcIndex = srcSpecialType.TypeToIndex();
+                srcIndex = srcSpecialType.ToSpecialType().TypeToIndex();
             }
             var trgNullable = false;
             if (target is NullableTypeSymbol trgNts)
@@ -39,9 +39,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
             var trgSpecialSymbol = target.GetSpecialSymbol(CSharpLanguage.Instance);
             var trgIndex = -1;
-            if (trgSpecialSymbol is SpecialType trgSpecialType)
+            if (trgSpecialSymbol is SpecialSymbol trgSpecialType)
             {
-                trgIndex = trgSpecialType.TypeToIndex();
+                trgIndex = trgSpecialType.ToSpecialType().TypeToIndex();
             }
             var kind = UnsetConversion;
             if (srcIndex >= 0 && trgIndex >= 0)

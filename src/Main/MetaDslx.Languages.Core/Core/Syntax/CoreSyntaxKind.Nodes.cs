@@ -30,6 +30,8 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string Statement = nameof(Statement);
 		public const string BlockStatement = nameof(BlockStatement);
 		public const string ParenthesizedExpr = nameof(ParenthesizedExpr);
+		public const string TupleExpr = nameof(TupleExpr);
+		public const string DiscardExpr = nameof(DiscardExpr);
 		public const string DefaultExpr = nameof(DefaultExpr);
 		public const string ThisExpr = nameof(ThisExpr);
 		public const string BaseExpr = nameof(BaseExpr);
@@ -45,8 +47,10 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string UncheckedExpr = nameof(UncheckedExpr);
 		public const string NewExpr = nameof(NewExpr);
 		public const string PostfixUnaryExpr = nameof(PostfixUnaryExpr);
+		public const string NullForgivingExpr = nameof(NullForgivingExpr);
 		public const string UnaryExpr = nameof(UnaryExpr);
 		public const string TypeCastExpr = nameof(TypeCastExpr);
+		public const string AwaitExpr = nameof(AwaitExpr);
 		public const string MultExpr = nameof(MultExpr);
 		public const string AddExpr = nameof(AddExpr);
 		public const string ShiftExpr = nameof(ShiftExpr);
@@ -59,11 +63,13 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string OrExpr = nameof(OrExpr);
 		public const string AndAlsoExpr = nameof(AndAlsoExpr);
 		public const string OrElseExpr = nameof(OrElseExpr);
+		public const string ThrowExpr = nameof(ThrowExpr);
 		public const string CoalExpr = nameof(CoalExpr);
 		public const string CondExpr = nameof(CondExpr);
 		public const string AssignExpr = nameof(AssignExpr);
 		public const string CompAssignExpr = nameof(CompAssignExpr);
 		public const string LambdaExpr = nameof(LambdaExpr);
+		public const string TupleArguments = nameof(TupleArguments);
 		public const string ArgumentList = nameof(ArgumentList);
 		public const string ArgumentExpression = nameof(ArgumentExpression);
 		public const string InitializerExpression = nameof(InitializerExpression);

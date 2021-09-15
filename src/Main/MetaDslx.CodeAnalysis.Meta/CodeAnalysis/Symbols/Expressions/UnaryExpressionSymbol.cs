@@ -92,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             protected UnaryOperatorAnalysisResult BindMetadataOperator(UnaryOperatorSymbol? result, DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
                 UnaryOperatorAnalysisResult analysisResult;
-                var returnType = result?.ReturnType;
+                var returnType = result?.Result?.Type;
                 var operandType = Operand?.Type;
                 var isLifted = false;
                 if (operandType is NullableTypeSymbol nullableType)

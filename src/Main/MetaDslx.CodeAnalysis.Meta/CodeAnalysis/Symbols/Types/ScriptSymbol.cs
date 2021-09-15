@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 return ImmutableArray<NamedTypeSymbol>.Empty;
-                //return ImmutableArray.Create(this.DeclaringCompilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Object));
+                //return ImmutableArray.Create(this.DeclaringCompilation.GetSpecialSymbol(SpecialSymbol.System_Object));
             }
         }
     }

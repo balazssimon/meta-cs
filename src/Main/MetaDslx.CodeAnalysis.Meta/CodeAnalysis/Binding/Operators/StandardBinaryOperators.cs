@@ -283,6 +283,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 CreateSignatures(BinaryOperatorKind.BitwiseAnd, GetLogical()),
                 CreateSignatures(BinaryOperatorKind.BitwiseXor, GetLogical()),
                 CreateSignatures(BinaryOperatorKind.BitwiseOr, GetLogical()),
+                CreateSignatures(BinaryOperatorKind.Range, GetLogical()),
             };
         }
 
@@ -319,9 +320,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
             var leftSpecialSymbol = left.GetSpecialSymbol(Compilation.Language);
             var leftIndex = -1;
-            if (leftSpecialSymbol is SpecialType leftSpecialType)
+            if (leftSpecialSymbol is SpecialSymbol leftSpecialType)
             {
-                leftIndex = leftSpecialType.TypeToIndex();
+                leftIndex = leftSpecialType.ToSpecialType().TypeToIndex();
             }
             if (leftIndex < 0)
             {
@@ -335,9 +336,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
             var rightSpecialSymbol = right.GetSpecialSymbol(Compilation.Language);
             var rightIndex = -1;
-            if (rightSpecialSymbol is SpecialType rightSpecialType)
+            if (rightSpecialSymbol is SpecialSymbol rightSpecialType)
             {
-                rightIndex = rightSpecialType.TypeToIndex();
+                rightIndex = rightSpecialType.ToSpecialType().TypeToIndex();
             }
             if (rightIndex < 0)
             {

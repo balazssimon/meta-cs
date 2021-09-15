@@ -22,6 +22,8 @@
 	const PrimitiveType String;
 	const PrimitiveType SystemType;
 	const PrimitiveType SystemEnum;
+	const PrimitiveType SystemRange;
+	const PrimitiveType SystemIndex;
 
 	//=============================
 	// Base classes
@@ -263,8 +265,8 @@
 	{
 		[property: IsAsync]
 		bool IsAsync;
-		[property: ReturnType]
-		DataType ReturnType;
+		[property: Result]
+		Parameter Result;
 		[property: Parameters]
 		containment list<Parameter> Parameters;
 		[property: Body]
@@ -718,6 +720,13 @@
 	{
 		[property: Argument]
 		containment Expression Argument;
+	}
+	
+	[expression: NullForgiving]
+	class NullForgivingExpression : Expression
+	{
+		[property: Operand]
+		containment Expression Operand;
 	}
 	
 	[expression: ObjectCreation]

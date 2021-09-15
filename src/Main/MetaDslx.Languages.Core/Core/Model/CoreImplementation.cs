@@ -37,6 +37,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
             _this.String.DotNetName = "System.String";
             _this.SystemType.DotNetName = "System.Type";
             _this.SystemEnum.DotNetName = "System.Enum";
+            _this.SystemRange.DotNetName = "System.Range";
+            _this.SystemIndex.DotNetName = "System.Index";
         }
 
         public override EnumTypeBuilder EnumLiteral_ComputeProperty_Type(EnumLiteralBuilder _this)

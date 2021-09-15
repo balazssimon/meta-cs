@@ -371,6 +371,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsSpecialSymbol(object specialSymbolId, Language? language = null)
         {
             if (specialSymbolId is null) throw new ArgumentNullException(nameof(specialSymbolId));
+            if (specialSymbolId is SpecialType st) specialSymbolId = st.ToSpecialSymbol();
             if (language is null) language = this.Language;
             var metadataName = language.SymbolFacts.GetMetadataNameOfSpecialSymbol(specialSymbolId);
             if (!string.IsNullOrEmpty(metadataName) && (this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == metadataName || this.ContainingSymbol is ModuleSymbol && this.MetadataName == metadataName)) return true;

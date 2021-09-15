@@ -638,7 +638,7 @@ namespace MetaDslx.CodeAnalysis
                         var model = GetSemanticModel(tree);
                         var expression = expressionStatement.Expression;
                         var info = model.GetTypeInfo(expression);
-                        return info.ConvertedType?.SpecialType != SpecialType.System_Void;
+                        return info.ConvertedType?.SpecialType != SpecialSymbol.System_Void;
                     }
                 }
             }
@@ -1401,12 +1401,17 @@ namespace MetaDslx.CodeAnalysis
             {
                 return GetSpecialType(specialType);
             }
-            else
+            else if (specialSymbolId is SpecialSymbol specialSymbol)
             {
-                var result = SourceAssembly.GetSpecialSymbol(specialSymbolId);
-                //Debug.Assert(specialSymbolId.Equals(result.SpecialSymbol));
-                return result;
+                specialType = specialSymbol.ToSpecialType();
+                if (specialType != SpecialType.None)
+                {
+                    return GetSpecialType(specialType);
+                }
             }
+            var result = SourceAssembly.GetSpecialSymbol(specialSymbolId);
+            //Debug.Assert(specialSymbolId.Equals(result.SpecialSymbol));
+            return result;
         }
 
         /// <summary>
@@ -1869,7 +1874,7 @@ namespace MetaDslx.CodeAnalysis
             return false;
             // TODO:MetaDslx
             /*// Common case optimization
-            if (method.ReturnType.IsVoidType() || method.ReturnType.SpecialType == SpecialType.System_Int32)
+            if (method.ReturnType.IsVoidType() || method.ReturnType.SpecialType == SpecialSymbol.System_Int32)
             {
                 return false;
             }
@@ -1894,7 +1899,7 @@ namespace MetaDslx.CodeAnalysis
 
             RoslynDebug.Assert(!namedType.IsDynamic());
             return success &&
-                (result!.Type!.IsVoidType() || result.Type!.SpecialType == SpecialType.System_Int32);*/
+                (result!.Type!.IsVoidType() || result.Type!.SpecialType == SpecialSymbol.System_Int32);*/
         }
 
         /// <summary>
@@ -1915,7 +1920,7 @@ namespace MetaDslx.CodeAnalysis
 
             TypeSymbol returnType = method.ReturnType;
             bool returnsTaskOrTaskOfInt = false;
-            if (returnType.SpecialType != SpecialType.System_Int32 && !returnType.IsVoidType())
+            if (returnType.SpecialType != SpecialSymbol.System_Int32 && !returnType.IsVoidType())
             {
                 // Never look for ReturnsAwaitableToVoidOrInt on int32 or void
                 returnsTaskOrTaskOfInt = ReturnsAwaitableToVoidOrInt(method, bag);
@@ -1952,7 +1957,7 @@ namespace MetaDslx.CodeAnalysis
             }
 
             var array = (ArrayTypeSymbol)firstType.Type;
-            return (array.IsSZArray && array.ElementType.SpecialType == SpecialType.System_String, returnsTaskOrTaskOfInt);*/
+            return (array.IsSZArray && array.ElementType.SpecialType == SpecialSymbol.System_String, returnsTaskOrTaskOfInt);*/
         }
 
         internal override bool IsUnreferencedAssemblyIdentityDiagnosticCode(int code)

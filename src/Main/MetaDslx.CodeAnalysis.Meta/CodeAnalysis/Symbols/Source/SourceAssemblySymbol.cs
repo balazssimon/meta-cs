@@ -1350,7 +1350,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     return false;
                 }
 
-                var obj = (NamedTypeSymbol)GetSpecialSymbol(SpecialType.System_Object);
+                var obj = (NamedTypeSymbol)GetSpecialSymbol(SpecialSymbol.System_Object);
 
                 return !obj.IsError && obj.DeclaredAccessibility == Accessibility.Public;
             }

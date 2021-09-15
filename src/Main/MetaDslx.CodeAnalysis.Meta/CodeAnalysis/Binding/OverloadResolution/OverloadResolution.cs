@@ -449,7 +449,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 var method = (MethodSymbol)(Symbol)result.Member;
                 bool returnsMatch;
 
-                if (returnType is null || method.ReturnType.Equals(returnType, TypeCompareKind.AllIgnoreOptions))
+                if (returnType is null || returnType.Equals(method.Result?.Type, TypeCompareKind.AllIgnoreOptions))
                 {
                     returnsMatch = true;
                 }
@@ -463,7 +463,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     results[f] = new MemberResolutionResult<TMember>(
                         result.Member, result.LeastOverriddenMember, MemberAnalysisResult.WrongReturnType());
                 }
-                else if (method.ReturnRefKind != returnRefKind)
+                else if (method.Result?.RefKind != returnRefKind)
                 {
                     results[f] = new MemberResolutionResult<TMember>(
                         result.Member, result.LeastOverriddenMember, MemberAnalysisResult.WrongRefKind());
@@ -1054,7 +1054,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 // UNDONE: Do we also need to special-case System.Array being a base type of array,
                 // and so on?
 
-                if (type.IsSpecialSymbol(SpecialType.System_Object) && !currentType.IsSpecialSymbol(SpecialType.System_Object))
+                if (type.IsSpecialSymbol(SpecialSymbol.System_Object) && !currentType.IsSpecialSymbol(SpecialSymbol.System_Object))
                 {
                     return true;
                 }
@@ -1112,7 +1112,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
 
                 var type = result.LeastOverriddenMember.ContainingType;
-                if (type is ClassTypeSymbol && !type.IsSpecialSymbol(SpecialType.System_Object))
+                if (type is ClassTypeSymbol && !type.IsSpecialSymbol(SpecialSymbol.System_Object))
                 {
                     anyClassOtherThanObject = true;
                     break;
@@ -2031,8 +2031,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (t1.Equals(AssemblySymbol.DynamicType) || t2.Equals(AssemblySymbol.DynamicType))
             {
                 Debug.Assert(t1.Equals(AssemblySymbol.DynamicType) && t2.Equals(AssemblySymbol.DynamicType) ||
-                             t1.Equals(AssemblySymbol.DynamicType) && t2.IsSpecialSymbol(SpecialType.System_Object) ||
-                             t2.Equals(AssemblySymbol.DynamicType) && t1.IsSpecialSymbol(SpecialType.System_Object));
+                             t1.Equals(AssemblySymbol.DynamicType) && t2.IsSpecialSymbol(SpecialSymbol.System_Object) ||
+                             t2.Equals(AssemblySymbol.DynamicType) && t1.IsSpecialSymbol(SpecialSymbol.System_Object));
 
                 return BetterResult.Neither;
             }
@@ -2222,7 +2222,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             if (expression is LambdaExpressionSymbol lambda &&
                 t is DelegateTypeSymbol d &&
-                !(y = d.ReturnType).IsSpecialSymbol(SpecialType.System_Void))
+                !(y = d.ReturnType).IsSpecialSymbol(SpecialSymbol.System_Void))
             {
                 lambda = lambda.BindForReturnTypeInference(d);
 
@@ -2725,11 +2725,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             switch (type.GetSpecialSymbol(CSharpLanguage.Instance))
             {
-                case SpecialType.System_SByte:
-                case SpecialType.System_Int16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_IntPtr:
+                case SpecialSymbol.System_SByte:
+                case SpecialSymbol.System_Int16:
+                case SpecialSymbol.System_Int32:
+                case SpecialSymbol.System_Int64:
+                case SpecialSymbol.System_IntPtr:
                     return true;
 
                 default:
@@ -2746,11 +2746,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             switch (type.GetSpecialSymbol(CSharpLanguage.Instance))
             {
-                case SpecialType.System_Byte:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_UInt64:
-                case SpecialType.System_UIntPtr:
+                case SpecialSymbol.System_Byte:
+                case SpecialSymbol.System_UInt16:
+                case SpecialSymbol.System_UInt32:
+                case SpecialSymbol.System_UInt64:
+                case SpecialSymbol.System_UIntPtr:
                     return true;
 
                 default:

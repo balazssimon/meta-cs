@@ -19,8 +19,8 @@ namespace MetaDslx.Bootstrap.Core
             var coreRef = MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll"));
 
             //string text = "x => (int)5*true;";
-            //string text = "x => 5*true;";
-            string text = "x => 5*7.0;";
+            string text = "x => 5*true;";
+            //string text = "x => 5*7.0;";
             //string text = "3*4;";
             var syntaxTree = CoreSyntaxTree.ParseText(text);
             var compilation = CoreCompilation.Create("CoreTest")

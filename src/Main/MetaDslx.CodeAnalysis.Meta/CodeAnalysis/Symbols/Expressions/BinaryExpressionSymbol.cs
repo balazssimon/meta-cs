@@ -126,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     isLifted = true;
                     rightType = rightNullableType.InnerType;
                 }
-                var returnType = result?.ReturnType;
+                var returnType = result?.Result?.Type;
                 if (result is not null && result.Parameters.Length >= 2)
                 {
                     var leftParamType = result.Parameters[0].Type;

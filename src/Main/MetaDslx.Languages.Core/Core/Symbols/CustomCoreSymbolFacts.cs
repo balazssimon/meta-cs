@@ -1,4 +1,5 @@
-﻿using MetaDslx.Languages.Core.Model;
+﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Core.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -21,24 +22,26 @@ namespace MetaDslx.Languages.Meta.Symbols
                 if (_specialModelObjects.IsDefault)
                 {
                     var objects = ArrayBuilder<object>.GetInstance();
-                    objects.Add(SpecialType.System_Object);
-                    objects.Add(SpecialType.System_Void);
-                    objects.Add(SpecialType.System_Boolean);
-                    objects.Add(SpecialType.System_Char);
-                    objects.Add(SpecialType.System_SByte);
-                    objects.Add(SpecialType.System_Byte);
-                    objects.Add(SpecialType.System_Int16);
-                    objects.Add(SpecialType.System_UInt16);
-                    objects.Add(SpecialType.System_Int32);
-                    objects.Add(SpecialType.System_UInt32);
-                    objects.Add(SpecialType.System_Int64);
-                    objects.Add(SpecialType.System_UInt64);
-                    objects.Add(SpecialType.System_Decimal);
-                    objects.Add(SpecialType.System_Single);
-                    objects.Add(SpecialType.System_Double);
-                    objects.Add(SpecialType.System_String);
-                    objects.Add(SpecialType.System_Enum);
-                    objects.Add(CoreInstance.SystemType);
+                    objects.Add(SpecialSymbol.System_Object);
+                    objects.Add(SpecialSymbol.System_Void);
+                    objects.Add(SpecialSymbol.System_Boolean);
+                    objects.Add(SpecialSymbol.System_Char);
+                    objects.Add(SpecialSymbol.System_SByte);
+                    objects.Add(SpecialSymbol.System_Byte);
+                    objects.Add(SpecialSymbol.System_Int16);
+                    objects.Add(SpecialSymbol.System_UInt16);
+                    objects.Add(SpecialSymbol.System_Int32);
+                    objects.Add(SpecialSymbol.System_UInt32);
+                    objects.Add(SpecialSymbol.System_Int64);
+                    objects.Add(SpecialSymbol.System_UInt64);
+                    objects.Add(SpecialSymbol.System_Decimal);
+                    objects.Add(SpecialSymbol.System_Single);
+                    objects.Add(SpecialSymbol.System_Double);
+                    objects.Add(SpecialSymbol.System_String);
+                    objects.Add(SpecialSymbol.System_Enum);
+                    objects.Add(SpecialSymbol.System_Type);
+                    objects.Add(SpecialSymbol.System_Index);
+                    objects.Add(SpecialSymbol.System_Range);
                     ImmutableInterlocked.InterlockedInitialize(ref _specialModelObjects, objects.ToImmutableAndFree());
                 }
                 return _specialModelObjects;
@@ -47,108 +50,114 @@ namespace MetaDslx.Languages.Meta.Symbols
 
         public override string? GetMetadataNameOfSpecialSymbol(object specialSymbol)
         {
-            if (specialSymbol is SpecialType st) return st.GetMetadataName();
+            if (specialSymbol is SpecialSymbol ss) return ss.GetMetadataName();
             if (ReferenceEquals(specialSymbol, CoreInstance.SystemType)) return "System.Type";
             return null;
         }
 
         public override object? GetModelObjectOfSpecialSymbol(object specialSymbol)
         {
-            if (specialSymbol is SpecialType st)
+            if (specialSymbol is SpecialSymbol ss)
             {
-                switch (st)
+                switch (ss)
                 {
-                    case SpecialType.None:
+                    case SpecialSymbol.None:
                         break;
-                    case SpecialType.System_Object:
+                    case SpecialSymbol.System_Object:
                         return CoreInstance.Object;
-                    case SpecialType.System_Enum:
+                    case SpecialSymbol.System_Enum:
+                        return CoreInstance.SystemEnum;
+                    case SpecialSymbol.System_MulticastDelegate:
                         break;
-                    case SpecialType.System_MulticastDelegate:
+                    case SpecialSymbol.System_Delegate:
                         break;
-                    case SpecialType.System_Delegate:
+                    case SpecialSymbol.System_ValueType:
                         break;
-                    case SpecialType.System_ValueType:
-                        break;
-                    case SpecialType.System_Void:
+                    case SpecialSymbol.System_Void:
                         return CoreInstance.Void;
-                    case SpecialType.System_Boolean:
+                    case SpecialSymbol.System_Boolean:
                         return CoreInstance.Boolean;
-                    case SpecialType.System_Char:
+                    case SpecialSymbol.System_Char:
                         return CoreInstance.Char;
-                    case SpecialType.System_SByte:
+                    case SpecialSymbol.System_SByte:
                         return CoreInstance.SByte;
-                    case SpecialType.System_Byte:
+                    case SpecialSymbol.System_Byte:
                         return CoreInstance.Byte;
-                    case SpecialType.System_Int16:
+                    case SpecialSymbol.System_Int16:
                         return CoreInstance.Int16;
-                    case SpecialType.System_UInt16:
+                    case SpecialSymbol.System_UInt16:
                         return CoreInstance.UInt16;
-                    case SpecialType.System_Int32:
+                    case SpecialSymbol.System_Int32:
                         return CoreInstance.Int32;
-                    case SpecialType.System_UInt32:
+                    case SpecialSymbol.System_UInt32:
                         return CoreInstance.UInt32;
-                    case SpecialType.System_Int64:
+                    case SpecialSymbol.System_Int64:
                         return CoreInstance.Int64;
-                    case SpecialType.System_UInt64:
+                    case SpecialSymbol.System_UInt64:
                         return CoreInstance.UInt64;
-                    case SpecialType.System_Decimal:
+                    case SpecialSymbol.System_Decimal:
                         return CoreInstance.Decimal;
-                    case SpecialType.System_Single:
+                    case SpecialSymbol.System_Single:
                         return CoreInstance.Single;
-                    case SpecialType.System_Double:
+                    case SpecialSymbol.System_Double:
                         return CoreInstance.Double;
-                    case SpecialType.System_String:
+                    case SpecialSymbol.System_String:
                         return CoreInstance.String;
-                    case SpecialType.System_IntPtr:
+                    case SpecialSymbol.System_Type:
+                        return CoreInstance.SystemType;
+                    case SpecialSymbol.System_Range:
+                        return CoreInstance.SystemRange;
+                    case SpecialSymbol.System_Index:
+                        return CoreInstance.SystemIndex;
+                    case SpecialSymbol.System_IntPtr:
                         break;
-                    case SpecialType.System_UIntPtr:
+                    case SpecialSymbol.System_UIntPtr:
                         break;
-                    case SpecialType.System_Array:
+                    case SpecialSymbol.System_Array:
                         break;
-                    case SpecialType.System_Collections_IEnumerable:
+                    case SpecialSymbol.System_Collections_IEnumerable:
                         break;
-                    case SpecialType.System_Collections_Generic_IEnumerable_T:
+                    case SpecialSymbol.System_Collections_Generic_IEnumerable_T:
                         break;
-                    case SpecialType.System_Collections_Generic_IList_T:
+                    case SpecialSymbol.System_Collections_Generic_IList_T:
                         break;
-                    case SpecialType.System_Collections_Generic_ICollection_T:
+                    case SpecialSymbol.System_Collections_Generic_ICollection_T:
                         break;
-                    case SpecialType.System_Collections_IEnumerator:
+                    case SpecialSymbol.System_Collections_IEnumerator:
                         break;
-                    case SpecialType.System_Collections_Generic_IEnumerator_T:
+                    case SpecialSymbol.System_Collections_Generic_IEnumerator_T:
                         break;
-                    case SpecialType.System_Collections_Generic_IReadOnlyList_T:
+                    case SpecialSymbol.System_Collections_Generic_IReadOnlyList_T:
                         break;
-                    case SpecialType.System_Collections_Generic_IReadOnlyCollection_T:
+                    case SpecialSymbol.System_Collections_Generic_IReadOnlyCollection_T:
                         break;
-                    case SpecialType.System_Nullable_T:
+                    case SpecialSymbol.System_Nullable_T:
                         break;
-                    case SpecialType.System_DateTime:
+                    case SpecialSymbol.System_DateTime:
                         break;
-                    case SpecialType.System_Runtime_CompilerServices_IsVolatile:
+                    case SpecialSymbol.System_Runtime_CompilerServices_IsVolatile:
                         break;
-                    case SpecialType.System_IDisposable:
+                    case SpecialSymbol.System_IDisposable:
                         break;
-                    case SpecialType.System_TypedReference:
+                    case SpecialSymbol.System_TypedReference:
                         break;
-                    case SpecialType.System_ArgIterator:
+                    case SpecialSymbol.System_ArgIterator:
                         break;
-                    case SpecialType.System_RuntimeArgumentHandle:
+                    case SpecialSymbol.System_RuntimeArgumentHandle:
                         break;
-                    case SpecialType.System_RuntimeFieldHandle:
+                    case SpecialSymbol.System_RuntimeFieldHandle:
                         break;
-                    case SpecialType.System_RuntimeMethodHandle:
+                    case SpecialSymbol.System_RuntimeMethodHandle:
                         break;
-                    case SpecialType.System_RuntimeTypeHandle:
+                    case SpecialSymbol.System_RuntimeTypeHandle:
                         break;
-                    case SpecialType.System_IAsyncResult:
+                    case SpecialSymbol.System_IAsyncResult:
                         break;
-                    case SpecialType.System_AsyncCallback:
+                    case SpecialSymbol.System_AsyncCallback:
                         break;
-                    case SpecialType.System_Runtime_CompilerServices_RuntimeFeature:
+                    case SpecialSymbol.System_Runtime_CompilerServices_RuntimeFeature:
                         break;
-                    case SpecialType.System_Runtime_CompilerServices_PreserveBaseOverridesAttribute:
+                    case SpecialSymbol.System_Runtime_CompilerServices_PreserveBaseOverridesAttribute:
                         break;
                     default:
                         break;

@@ -151,9 +151,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // return a distinguished value for 'object' so we can return the same value for 'dynamic'.
             // That's because the hash code ignores the distinction between dynamic and object.  It also
             // ignores custom modifiers.
-            if (this.IsSpecialSymbol(SpecialType.System_Object))
+            if (this.IsSpecialSymbol(SpecialSymbol.System_Object))
             {
-                return (int)SpecialType.System_Object;
+                return (int)SpecialSymbol.System_Object;
             }
 
             // OriginalDefinition must be object-equivalent.
@@ -175,7 +175,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if (t2 is DynamicTypeSymbol)
                 {
                     // if ignoring dynamic, then treat dynamic the same as the type 'object'
-                    if (this.IsSpecialSymbol(SpecialType.System_Object))
+                    if (this.IsSpecialSymbol(SpecialSymbol.System_Object))
                     {
                         return true;
                     }

@@ -719,6 +719,180 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
+	public sealed class TupleExprSyntax : ExpressionSyntax
+	{
+	    private TupleArgumentsSyntax tupleArguments;
+	
+	    public TupleExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public TupleExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.TupleExprGreen)this.Green;
+				var greenToken = green.TOpenParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public TupleArgumentsSyntax TupleArguments 
+		{ 
+			get { return this.GetRed(ref this.tupleArguments, 1); } 
+		}
+	    public SyntaxToken TCloseParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.TupleExprGreen)this.Green;
+				var greenToken = green.TCloseParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.tupleArguments, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.tupleArguments;
+				default: return null;
+	        }
+	    }
+	
+	    public TupleExprSyntax WithTOpenParen(SyntaxToken tOpenParen)
+		{
+			return this.Update(TOpenParen, this.TupleArguments, this.TCloseParen);
+		}
+	
+	    public TupleExprSyntax WithTupleArguments(TupleArgumentsSyntax tupleArguments)
+		{
+			return this.Update(this.TOpenParen, TupleArguments, this.TCloseParen);
+		}
+	
+	    public TupleExprSyntax WithTCloseParen(SyntaxToken tCloseParen)
+		{
+			return this.Update(this.TOpenParen, this.TupleArguments, TCloseParen);
+		}
+	
+	    public TupleExprSyntax Update(SyntaxToken tOpenParen, TupleArgumentsSyntax tupleArguments, SyntaxToken tCloseParen)
+	    {
+	        if (this.TOpenParen != tOpenParen ||
+				this.TupleArguments != tupleArguments ||
+				this.TCloseParen != tCloseParen)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.TupleExpr(tOpenParen, tupleArguments, tCloseParen);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (TupleExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitTupleExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitTupleExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitTupleExpr(this);
+	    }
+	}
+	
+	public sealed class DiscardExprSyntax : ExpressionSyntax
+	{
+	
+	    public DiscardExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public DiscardExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KDiscard 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.DiscardExprGreen)this.Green;
+				var greenToken = green.KDiscard;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public DiscardExprSyntax WithKDiscard(SyntaxToken kDiscard)
+		{
+			return this.Update(KDiscard);
+		}
+	
+	    public DiscardExprSyntax Update(SyntaxToken kDiscard)
+	    {
+	        if (this.KDiscard != kDiscard)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.DiscardExpr(kDiscard);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DiscardExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitDiscardExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitDiscardExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitDiscardExpr(this);
+	    }
+	}
+	
 	public sealed class DefaultExprSyntax : ExpressionSyntax
 	{
 	
@@ -2235,6 +2409,92 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
+	public sealed class NullForgivingExprSyntax : ExpressionSyntax
+	{
+	    private ExpressionSyntax expression;
+	
+	    public NullForgivingExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public NullForgivingExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 0); } 
+		}
+	    public SyntaxToken TExclamation 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.NullForgivingExprGreen)this.Green;
+				var greenToken = green.TExclamation;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.expression, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.expression;
+				default: return null;
+	        }
+	    }
+	
+	    public NullForgivingExprSyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(Expression, this.TExclamation);
+		}
+	
+	    public NullForgivingExprSyntax WithTExclamation(SyntaxToken tExclamation)
+		{
+			return this.Update(this.Expression, TExclamation);
+		}
+	
+	    public NullForgivingExprSyntax Update(ExpressionSyntax expression, SyntaxToken tExclamation)
+	    {
+	        if (this.Expression != expression ||
+				this.TExclamation != tExclamation)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.NullForgivingExpr(expression, tExclamation);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (NullForgivingExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNullForgivingExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitNullForgivingExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitNullForgivingExpr(this);
+	    }
+	}
+	
 	public sealed class UnaryExprSyntax : ExpressionSyntax
 	{
 	    private UnaryOperatorSyntax unaryOperator;
@@ -2430,6 +2690,92 @@ namespace MetaDslx.Languages.Core.Syntax
 	    public override void Accept(ICoreSyntaxVisitor visitor)
 	    {
 	        visitor.VisitTypeCastExpr(this);
+	    }
+	}
+	
+	public sealed class AwaitExprSyntax : ExpressionSyntax
+	{
+	    private ExpressionSyntax expression;
+	
+	    public AwaitExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public AwaitExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KAwait 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.AwaitExprGreen)this.Green;
+				var greenToken = green.KAwait;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.expression, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.expression;
+				default: return null;
+	        }
+	    }
+	
+	    public AwaitExprSyntax WithKAwait(SyntaxToken kAwait)
+		{
+			return this.Update(KAwait, this.Expression);
+		}
+	
+	    public AwaitExprSyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(this.KAwait, Expression);
+		}
+	
+	    public AwaitExprSyntax Update(SyntaxToken kAwait, ExpressionSyntax expression)
+	    {
+	        if (this.KAwait != kAwait ||
+				this.Expression != expression)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.AwaitExpr(kAwait, expression);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (AwaitExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitAwaitExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitAwaitExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitAwaitExpr(this);
 	    }
 	}
 	
@@ -3626,6 +3972,92 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
+	public sealed class ThrowExprSyntax : ExpressionSyntax
+	{
+	    private ExpressionSyntax expression;
+	
+	    public ThrowExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ThrowExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KThrow 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.ThrowExprGreen)this.Green;
+				var greenToken = green.KThrow;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.expression, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.expression;
+				default: return null;
+	        }
+	    }
+	
+	    public ThrowExprSyntax WithKThrow(SyntaxToken kThrow)
+		{
+			return this.Update(KThrow, this.Expression);
+		}
+	
+	    public ThrowExprSyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(this.KThrow, Expression);
+		}
+	
+	    public ThrowExprSyntax Update(SyntaxToken kThrow, ExpressionSyntax expression)
+	    {
+	        if (this.KThrow != kThrow ||
+				this.Expression != expression)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.ThrowExpr(kThrow, expression);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ThrowExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitThrowExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitThrowExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitThrowExpr(this);
+	    }
+	}
+	
 	public sealed class CoalExprSyntax : ExpressionSyntax
 	{
 	    private ExpressionSyntax value;
@@ -4144,6 +4576,105 @@ namespace MetaDslx.Languages.Core.Syntax
 	    public override void Accept(ICoreSyntaxVisitor visitor)
 	    {
 	        visitor.VisitLambdaExpr(this);
+	    }
+	}
+	
+	public sealed class TupleArgumentsSyntax : CoreSyntaxNode
+	{
+	    private ArgumentExpressionSyntax argumentExpression;
+	    private ArgumentListSyntax argumentList;
+	
+	    public TupleArgumentsSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public TupleArgumentsSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ArgumentExpressionSyntax ArgumentExpression 
+		{ 
+			get { return this.GetRed(ref this.argumentExpression, 0); } 
+		}
+	    public SyntaxToken TComma 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.TupleArgumentsGreen)this.Green;
+				var greenToken = green.TComma;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public ArgumentListSyntax ArgumentList 
+		{ 
+			get { return this.GetRed(ref this.argumentList, 2); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.argumentExpression, 0);
+				case 2: return this.GetRed(ref this.argumentList, 2);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.argumentExpression;
+				case 2: return this.argumentList;
+				default: return null;
+	        }
+	    }
+	
+	    public TupleArgumentsSyntax WithArgumentExpression(ArgumentExpressionSyntax argumentExpression)
+		{
+			return this.Update(ArgumentExpression, this.TComma, this.ArgumentList);
+		}
+	
+	    public TupleArgumentsSyntax WithTComma(SyntaxToken tComma)
+		{
+			return this.Update(this.ArgumentExpression, TComma, this.ArgumentList);
+		}
+	
+	    public TupleArgumentsSyntax WithArgumentList(ArgumentListSyntax argumentList)
+		{
+			return this.Update(this.ArgumentExpression, this.TComma, ArgumentList);
+		}
+	
+	    public TupleArgumentsSyntax Update(ArgumentExpressionSyntax argumentExpression, SyntaxToken tComma, ArgumentListSyntax argumentList)
+	    {
+	        if (this.ArgumentExpression != argumentExpression ||
+				this.TComma != tComma ||
+				this.ArgumentList != argumentList)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.TupleArguments(argumentExpression, tComma, argumentList);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (TupleArgumentsSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitTupleArguments(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitTupleArguments(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitTupleArguments(this);
 	    }
 	}
 	
@@ -8481,6 +9012,10 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitParenthesizedExpr(ParenthesizedExprSyntax node);
 		
+		void VisitTupleExpr(TupleExprSyntax node);
+		
+		void VisitDiscardExpr(DiscardExprSyntax node);
+		
 		void VisitDefaultExpr(DefaultExprSyntax node);
 		
 		void VisitThisExpr(ThisExprSyntax node);
@@ -8511,9 +9046,13 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node);
 		
+		void VisitNullForgivingExpr(NullForgivingExprSyntax node);
+		
 		void VisitUnaryExpr(UnaryExprSyntax node);
 		
 		void VisitTypeCastExpr(TypeCastExprSyntax node);
+		
+		void VisitAwaitExpr(AwaitExprSyntax node);
 		
 		void VisitMultExpr(MultExprSyntax node);
 		
@@ -8539,6 +9078,8 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitOrElseExpr(OrElseExprSyntax node);
 		
+		void VisitThrowExpr(ThrowExprSyntax node);
+		
 		void VisitCoalExpr(CoalExprSyntax node);
 		
 		void VisitCondExpr(CondExprSyntax node);
@@ -8548,6 +9089,8 @@ namespace MetaDslx.Languages.Core
 		void VisitCompAssignExpr(CompAssignExprSyntax node);
 		
 		void VisitLambdaExpr(LambdaExprSyntax node);
+		
+		void VisitTupleArguments(TupleArgumentsSyntax node);
 		
 		void VisitArgumentList(ArgumentListSyntax node);
 		
@@ -8682,6 +9225,16 @@ namespace MetaDslx.Languages.Core
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitTupleExpr(TupleExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitDiscardExpr(DiscardExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitDefaultExpr(DefaultExprSyntax node)
 		{
 		    this.DefaultVisit(node);
@@ -8757,12 +9310,22 @@ namespace MetaDslx.Languages.Core
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitNullForgivingExpr(NullForgivingExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitUnaryExpr(UnaryExprSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
 		public virtual void VisitTypeCastExpr(TypeCastExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitAwaitExpr(AwaitExprSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -8827,6 +9390,11 @@ namespace MetaDslx.Languages.Core
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitThrowExpr(ThrowExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitCoalExpr(CoalExprSyntax node)
 		{
 		    this.DefaultVisit(node);
@@ -8848,6 +9416,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual void VisitLambdaExpr(LambdaExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitTupleArguments(TupleArgumentsSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -9119,6 +9692,10 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitParenthesizedExpr(ParenthesizedExprSyntax node, TArg argument);
 		
+		TResult VisitTupleExpr(TupleExprSyntax node, TArg argument);
+		
+		TResult VisitDiscardExpr(DiscardExprSyntax node, TArg argument);
+		
 		TResult VisitDefaultExpr(DefaultExprSyntax node, TArg argument);
 		
 		TResult VisitThisExpr(ThisExprSyntax node, TArg argument);
@@ -9149,9 +9726,13 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node, TArg argument);
 		
+		TResult VisitNullForgivingExpr(NullForgivingExprSyntax node, TArg argument);
+		
 		TResult VisitUnaryExpr(UnaryExprSyntax node, TArg argument);
 		
 		TResult VisitTypeCastExpr(TypeCastExprSyntax node, TArg argument);
+		
+		TResult VisitAwaitExpr(AwaitExprSyntax node, TArg argument);
 		
 		TResult VisitMultExpr(MultExprSyntax node, TArg argument);
 		
@@ -9177,6 +9758,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitOrElseExpr(OrElseExprSyntax node, TArg argument);
 		
+		TResult VisitThrowExpr(ThrowExprSyntax node, TArg argument);
+		
 		TResult VisitCoalExpr(CoalExprSyntax node, TArg argument);
 		
 		TResult VisitCondExpr(CondExprSyntax node, TArg argument);
@@ -9186,6 +9769,8 @@ namespace MetaDslx.Languages.Core
 		TResult VisitCompAssignExpr(CompAssignExprSyntax node, TArg argument);
 		
 		TResult VisitLambdaExpr(LambdaExprSyntax node, TArg argument);
+		
+		TResult VisitTupleArguments(TupleArgumentsSyntax node, TArg argument);
 		
 		TResult VisitArgumentList(ArgumentListSyntax node, TArg argument);
 		
@@ -9320,6 +9905,16 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node, argument);
 		}
 		
+		public virtual TResult VisitTupleExpr(TupleExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitDiscardExpr(DiscardExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
 		public virtual TResult VisitDefaultExpr(DefaultExprSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
@@ -9395,12 +9990,22 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node, argument);
 		}
 		
+		public virtual TResult VisitNullForgivingExpr(NullForgivingExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
 		public virtual TResult VisitUnaryExpr(UnaryExprSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
 		public virtual TResult VisitTypeCastExpr(TypeCastExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitAwaitExpr(AwaitExprSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -9465,6 +10070,11 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node, argument);
 		}
 		
+		public virtual TResult VisitThrowExpr(ThrowExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
 		public virtual TResult VisitCoalExpr(CoalExprSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
@@ -9486,6 +10096,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitLambdaExpr(LambdaExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitTupleArguments(TupleArgumentsSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -9755,6 +10370,10 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitParenthesizedExpr(ParenthesizedExprSyntax node);
 		
+		TResult VisitTupleExpr(TupleExprSyntax node);
+		
+		TResult VisitDiscardExpr(DiscardExprSyntax node);
+		
 		TResult VisitDefaultExpr(DefaultExprSyntax node);
 		
 		TResult VisitThisExpr(ThisExprSyntax node);
@@ -9785,9 +10404,13 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node);
 		
+		TResult VisitNullForgivingExpr(NullForgivingExprSyntax node);
+		
 		TResult VisitUnaryExpr(UnaryExprSyntax node);
 		
 		TResult VisitTypeCastExpr(TypeCastExprSyntax node);
+		
+		TResult VisitAwaitExpr(AwaitExprSyntax node);
 		
 		TResult VisitMultExpr(MultExprSyntax node);
 		
@@ -9813,6 +10436,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitOrElseExpr(OrElseExprSyntax node);
 		
+		TResult VisitThrowExpr(ThrowExprSyntax node);
+		
 		TResult VisitCoalExpr(CoalExprSyntax node);
 		
 		TResult VisitCondExpr(CondExprSyntax node);
@@ -9822,6 +10447,8 @@ namespace MetaDslx.Languages.Core
 		TResult VisitCompAssignExpr(CompAssignExprSyntax node);
 		
 		TResult VisitLambdaExpr(LambdaExprSyntax node);
+		
+		TResult VisitTupleArguments(TupleArgumentsSyntax node);
 		
 		TResult VisitArgumentList(ArgumentListSyntax node);
 		
@@ -9956,6 +10583,16 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node);
 		}
 		
+		public virtual TResult VisitTupleExpr(TupleExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitDiscardExpr(DiscardExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
 		public virtual TResult VisitDefaultExpr(DefaultExprSyntax node)
 		{
 		    return this.DefaultVisit(node);
@@ -10031,12 +10668,22 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node);
 		}
 		
+		public virtual TResult VisitNullForgivingExpr(NullForgivingExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
 		public virtual TResult VisitUnaryExpr(UnaryExprSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
 		public virtual TResult VisitTypeCastExpr(TypeCastExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitAwaitExpr(AwaitExprSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -10101,6 +10748,11 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node);
 		}
 		
+		public virtual TResult VisitThrowExpr(ThrowExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
 		public virtual TResult VisitCoalExpr(CoalExprSyntax node)
 		{
 		    return this.DefaultVisit(node);
@@ -10122,6 +10774,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitLambdaExpr(LambdaExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitTupleArguments(TupleArgumentsSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -10431,6 +11088,20 @@ namespace MetaDslx.Languages.Core
 			return node.Update(tOpenParen, expression, tCloseParen);
 		}
 		
+		public virtual SyntaxNode VisitTupleExpr(TupleExprSyntax node)
+		{
+		    var tOpenParen = this.VisitToken(node.TOpenParen);
+		    var tupleArguments = (TupleArgumentsSyntax)this.Visit(node.TupleArguments);
+		    var tCloseParen = this.VisitToken(node.TCloseParen);
+			return node.Update(tOpenParen, tupleArguments, tCloseParen);
+		}
+		
+		public virtual SyntaxNode VisitDiscardExpr(DiscardExprSyntax node)
+		{
+		    var kDiscard = this.VisitToken(node.KDiscard);
+			return node.Update(kDiscard);
+		}
+		
 		public virtual SyntaxNode VisitDefaultExpr(DefaultExprSyntax node)
 		{
 		    var kDefault = this.VisitToken(node.KDefault);
@@ -10552,6 +11223,13 @@ namespace MetaDslx.Languages.Core
 			return node.Update(expression, postfixOperator);
 		}
 		
+		public virtual SyntaxNode VisitNullForgivingExpr(NullForgivingExprSyntax node)
+		{
+		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
+		    var tExclamation = this.VisitToken(node.TExclamation);
+			return node.Update(expression, tExclamation);
+		}
+		
 		public virtual SyntaxNode VisitUnaryExpr(UnaryExprSyntax node)
 		{
 		    var unaryOperator = (UnaryOperatorSyntax)this.Visit(node.UnaryOperator);
@@ -10566,6 +11244,13 @@ namespace MetaDslx.Languages.Core
 		    var tCloseParen = this.VisitToken(node.TCloseParen);
 		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
 			return node.Update(tOpenParen, typeReference, tCloseParen, expression);
+		}
+		
+		public virtual SyntaxNode VisitAwaitExpr(AwaitExprSyntax node)
+		{
+		    var kAwait = this.VisitToken(node.KAwait);
+		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
+			return node.Update(kAwait, expression);
 		}
 		
 		public virtual SyntaxNode VisitMultExpr(MultExprSyntax node)
@@ -10665,6 +11350,13 @@ namespace MetaDslx.Languages.Core
 			return node.Update(left, tOrElse, right);
 		}
 		
+		public virtual SyntaxNode VisitThrowExpr(ThrowExprSyntax node)
+		{
+		    var kThrow = this.VisitToken(node.KThrow);
+		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
+			return node.Update(kThrow, expression);
+		}
+		
 		public virtual SyntaxNode VisitCoalExpr(CoalExprSyntax node)
 		{
 		    var value = (ExpressionSyntax)this.Visit(node.Value);
@@ -10705,6 +11397,14 @@ namespace MetaDslx.Languages.Core
 		    var tArrow = this.VisitToken(node.TArrow);
 		    var lambdaBody = (LambdaBodySyntax)this.Visit(node.LambdaBody);
 			return node.Update(lambdaSignature, tArrow, lambdaBody);
+		}
+		
+		public virtual SyntaxNode VisitTupleArguments(TupleArgumentsSyntax node)
+		{
+		    var argumentExpression = (ArgumentExpressionSyntax)this.Visit(node.ArgumentExpression);
+		    var tComma = this.VisitToken(node.TComma);
+		    var argumentList = (ArgumentListSyntax)this.Visit(node.ArgumentList);
+			return node.Update(argumentExpression, tComma, argumentList);
 		}
 		
 		public virtual SyntaxNode VisitArgumentList(ArgumentListSyntax node)
@@ -11440,6 +12140,33 @@ namespace MetaDslx.Languages.Core
 			return this.ParenthesizedExpr(this.Token(CoreSyntaxKind.TOpenParen), expression, this.Token(CoreSyntaxKind.TCloseParen));
 		}
 		
+		public TupleExprSyntax TupleExpr(SyntaxToken tOpenParen, TupleArgumentsSyntax tupleArguments, SyntaxToken tCloseParen)
+		{
+		    if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
+		    if (tOpenParen.GetKind() != CoreSyntaxKind.TOpenParen) throw new ArgumentException(nameof(tOpenParen));
+		    if (tupleArguments == null) throw new ArgumentNullException(nameof(tupleArguments));
+		    if (tCloseParen == null) throw new ArgumentNullException(nameof(tCloseParen));
+		    if (tCloseParen.GetKind() != CoreSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
+		    return (TupleExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.TupleExpr((InternalSyntaxToken)tOpenParen.Node, (Syntax.InternalSyntax.TupleArgumentsGreen)tupleArguments.Green, (InternalSyntaxToken)tCloseParen.Node).CreateRed();
+		}
+		
+		public TupleExprSyntax TupleExpr(TupleArgumentsSyntax tupleArguments)
+		{
+			return this.TupleExpr(this.Token(CoreSyntaxKind.TOpenParen), tupleArguments, this.Token(CoreSyntaxKind.TCloseParen));
+		}
+		
+		public DiscardExprSyntax DiscardExpr(SyntaxToken kDiscard)
+		{
+		    if (kDiscard == null) throw new ArgumentNullException(nameof(kDiscard));
+		    if (kDiscard.GetKind() != CoreSyntaxKind.KDiscard) throw new ArgumentException(nameof(kDiscard));
+		    return (DiscardExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.DiscardExpr((InternalSyntaxToken)kDiscard.Node).CreateRed();
+		}
+		
+		public DiscardExprSyntax DiscardExpr()
+		{
+			return this.DiscardExpr(this.Token(CoreSyntaxKind.KDiscard));
+		}
+		
 		public DefaultExprSyntax DefaultExpr(SyntaxToken kDefault)
 		{
 		    if (kDefault == null) throw new ArgumentNullException(nameof(kDefault));
@@ -11645,6 +12372,19 @@ namespace MetaDslx.Languages.Core
 		    return (PostfixUnaryExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.PostfixUnaryExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (Syntax.InternalSyntax.PostfixOperatorGreen)postfixOperator.Green).CreateRed();
 		}
 		
+		public NullForgivingExprSyntax NullForgivingExpr(ExpressionSyntax expression, SyntaxToken tExclamation)
+		{
+		    if (expression == null) throw new ArgumentNullException(nameof(expression));
+		    if (tExclamation == null) throw new ArgumentNullException(nameof(tExclamation));
+		    if (tExclamation.GetKind() != CoreSyntaxKind.TExclamation) throw new ArgumentException(nameof(tExclamation));
+		    return (NullForgivingExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.NullForgivingExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (InternalSyntaxToken)tExclamation.Node).CreateRed();
+		}
+		
+		public NullForgivingExprSyntax NullForgivingExpr(ExpressionSyntax expression)
+		{
+			return this.NullForgivingExpr(expression, this.Token(CoreSyntaxKind.TExclamation));
+		}
+		
 		public UnaryExprSyntax UnaryExpr(UnaryOperatorSyntax unaryOperator, ExpressionSyntax expression)
 		{
 		    if (unaryOperator == null) throw new ArgumentNullException(nameof(unaryOperator));
@@ -11666,6 +12406,19 @@ namespace MetaDslx.Languages.Core
 		public TypeCastExprSyntax TypeCastExpr(TypeReferenceSyntax typeReference, ExpressionSyntax expression)
 		{
 			return this.TypeCastExpr(this.Token(CoreSyntaxKind.TOpenParen), typeReference, this.Token(CoreSyntaxKind.TCloseParen), expression);
+		}
+		
+		public AwaitExprSyntax AwaitExpr(SyntaxToken kAwait, ExpressionSyntax expression)
+		{
+		    if (kAwait == null) throw new ArgumentNullException(nameof(kAwait));
+		    if (kAwait.GetKind() != CoreSyntaxKind.KAwait) throw new ArgumentException(nameof(kAwait));
+		    if (expression == null) throw new ArgumentNullException(nameof(expression));
+		    return (AwaitExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.AwaitExpr((InternalSyntaxToken)kAwait.Node, (Syntax.InternalSyntax.ExpressionGreen)expression.Green).CreateRed();
+		}
+		
+		public AwaitExprSyntax AwaitExpr(ExpressionSyntax expression)
+		{
+			return this.AwaitExpr(this.Token(CoreSyntaxKind.KAwait), expression);
 		}
 		
 		public MultExprSyntax MultExpr(ExpressionSyntax left, MultiplicativeOperatorSyntax multiplicativeOperator, ExpressionSyntax right)
@@ -11807,6 +12560,19 @@ namespace MetaDslx.Languages.Core
 			return this.OrElseExpr(left, this.Token(CoreSyntaxKind.TOrElse), right);
 		}
 		
+		public ThrowExprSyntax ThrowExpr(SyntaxToken kThrow, ExpressionSyntax expression)
+		{
+		    if (kThrow == null) throw new ArgumentNullException(nameof(kThrow));
+		    if (kThrow.GetKind() != CoreSyntaxKind.KThrow) throw new ArgumentException(nameof(kThrow));
+		    if (expression == null) throw new ArgumentNullException(nameof(expression));
+		    return (ThrowExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ThrowExpr((InternalSyntaxToken)kThrow.Node, (Syntax.InternalSyntax.ExpressionGreen)expression.Green).CreateRed();
+		}
+		
+		public ThrowExprSyntax ThrowExpr(ExpressionSyntax expression)
+		{
+			return this.ThrowExpr(this.Token(CoreSyntaxKind.KThrow), expression);
+		}
+		
 		public CoalExprSyntax CoalExpr(ExpressionSyntax value, SyntaxToken tQuestionQuestion, ExpressionSyntax whenNull)
 		{
 		    if (value == null) throw new ArgumentNullException(nameof(value));
@@ -11872,6 +12638,20 @@ namespace MetaDslx.Languages.Core
 		public LambdaExprSyntax LambdaExpr(LambdaSignatureSyntax lambdaSignature, LambdaBodySyntax lambdaBody)
 		{
 			return this.LambdaExpr(lambdaSignature, this.Token(CoreSyntaxKind.TArrow), lambdaBody);
+		}
+		
+		public TupleArgumentsSyntax TupleArguments(ArgumentExpressionSyntax argumentExpression, SyntaxToken tComma, ArgumentListSyntax argumentList)
+		{
+		    if (argumentExpression == null) throw new ArgumentNullException(nameof(argumentExpression));
+		    if (tComma == null) throw new ArgumentNullException(nameof(tComma));
+		    if (tComma.GetKind() != CoreSyntaxKind.TComma) throw new ArgumentException(nameof(tComma));
+		    if (argumentList == null) throw new ArgumentNullException(nameof(argumentList));
+		    return (TupleArgumentsSyntax)CoreLanguage.Instance.InternalSyntaxFactory.TupleArguments((Syntax.InternalSyntax.ArgumentExpressionGreen)argumentExpression.Green, (InternalSyntaxToken)tComma.Node, (Syntax.InternalSyntax.ArgumentListGreen)argumentList.Green).CreateRed();
+		}
+		
+		public TupleArgumentsSyntax TupleArguments(ArgumentExpressionSyntax argumentExpression, ArgumentListSyntax argumentList)
+		{
+			return this.TupleArguments(argumentExpression, this.Token(CoreSyntaxKind.TComma), argumentList);
 		}
 		
 		public ArgumentListSyntax ArgumentList(Microsoft.CodeAnalysis.SeparatedSyntaxList<ArgumentExpressionSyntax> argumentExpression)
@@ -12347,6 +13127,8 @@ namespace MetaDslx.Languages.Core
 				typeof(StatementSyntax),
 				typeof(BlockStatementSyntax),
 				typeof(ParenthesizedExprSyntax),
+				typeof(TupleExprSyntax),
+				typeof(DiscardExprSyntax),
 				typeof(DefaultExprSyntax),
 				typeof(ThisExprSyntax),
 				typeof(BaseExprSyntax),
@@ -12362,8 +13144,10 @@ namespace MetaDslx.Languages.Core
 				typeof(UncheckedExprSyntax),
 				typeof(NewExprSyntax),
 				typeof(PostfixUnaryExprSyntax),
+				typeof(NullForgivingExprSyntax),
 				typeof(UnaryExprSyntax),
 				typeof(TypeCastExprSyntax),
+				typeof(AwaitExprSyntax),
 				typeof(MultExprSyntax),
 				typeof(AddExprSyntax),
 				typeof(ShiftExprSyntax),
@@ -12376,11 +13160,13 @@ namespace MetaDslx.Languages.Core
 				typeof(OrExprSyntax),
 				typeof(AndAlsoExprSyntax),
 				typeof(OrElseExprSyntax),
+				typeof(ThrowExprSyntax),
 				typeof(CoalExprSyntax),
 				typeof(CondExprSyntax),
 				typeof(AssignExprSyntax),
 				typeof(CompAssignExprSyntax),
 				typeof(LambdaExprSyntax),
+				typeof(TupleArgumentsSyntax),
 				typeof(ArgumentListSyntax),
 				typeof(ArgumentExpressionSyntax),
 				typeof(InitializerExpressionSyntax),

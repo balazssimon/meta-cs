@@ -6,6 +6,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public class BinaryOperatorKind
     {
+        // IMPORTANT: make sure to keep the index values in sync with StandardBinaryOperators
         public static readonly BinaryOperatorKind Multiplication = new BinaryOperatorKind(nameof(Multiplication), 0);
         public static readonly BinaryOperatorKind Addition = new BinaryOperatorKind(nameof(Addition), 1);
         public static readonly BinaryOperatorKind Subtraction = new BinaryOperatorKind(nameof(Subtraction), 2);
@@ -25,6 +26,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly BinaryOperatorKind BitwiseAnd = new BinaryOperatorKind(nameof(BitwiseAnd), 16);
         public static readonly BinaryOperatorKind BitwiseXor = new BinaryOperatorKind(nameof(BitwiseXor), 17);
         public static readonly BinaryOperatorKind BitwiseOr = new BinaryOperatorKind(nameof(BitwiseOr), 18);
+        public static readonly BinaryOperatorKind Range = new BinaryOperatorKind(nameof(Range), 19);
 
         private readonly string _name;
         private readonly int _index;

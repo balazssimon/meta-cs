@@ -8,7 +8,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis
 {
-    public static class SpecialTypes
+    internal static class SpecialTypes
     {
         /// <summary>
         /// Array of names for types from Cor Library.

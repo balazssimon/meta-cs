@@ -376,6 +376,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined.</returns>
         public Symbol GetSpecialSymbol(object specialSymbolId)
         {
+            if (specialSymbolId is SpecialType st) specialSymbolId = st.ToSpecialSymbol();
             var results = ArrayBuilder<Symbol>.GetInstance();
             foreach (var module in this.Modules)
             {
@@ -495,7 +496,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return (NamedTypeSymbol)GetSpecialSymbol(SpecialType.System_Object);
+                return (NamedTypeSymbol)GetSpecialSymbol(SpecialSymbol.System_Object);
             }
         }
 

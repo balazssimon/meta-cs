@@ -640,7 +640,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (!mismatch.IsNull)
             {
                 var method = mismatch.Member as MethodLikeSymbol;
-                diagnostics.Add(InternalErrorCode.ERR_BadRetType, location, method, method.ReturnType);
+                diagnostics.Add(InternalErrorCode.ERR_BadRetType, location, method, method.Result?.Type);
                 return true;
             }
 

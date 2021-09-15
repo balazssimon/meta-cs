@@ -298,6 +298,57 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseTupleArguments(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.tupleArguments();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseTupleArguments(TupleArgumentsSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.TupleArgumentsContext _Antlr4ParseTupleArguments()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.TupleArgumentsContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseTupleArguments(CurrentNode as TupleArgumentsSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseTupleArguments();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.TupleArgumentsContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseArgumentList(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2802,6 +2853,25 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.ParenthesizedExpr(tOpenParen, expression, tCloseParen);
 			}
 			
+			public override GreenNode VisitTupleExpr(CoreParser.TupleExprContext context)
+			{
+				if (context == null) return TupleExprGreen.__Missing;
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.TupleArgumentsContext tupleArgumentsContext = context.tupleArguments();
+				TupleArgumentsGreen tupleArguments = null;
+				if (tupleArgumentsContext != null) tupleArguments = (TupleArgumentsGreen)this.Visit(tupleArgumentsContext);
+				if (tupleArguments == null) tupleArguments = TupleArgumentsGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				return _factory.TupleExpr(tOpenParen, tupleArguments, tCloseParen);
+			}
+			
+			public override GreenNode VisitDiscardExpr(CoreParser.DiscardExprContext context)
+			{
+				if (context == null) return DiscardExprGreen.__Missing;
+				InternalSyntaxToken kDiscard = (InternalSyntaxToken)this.VisitTerminal(context.KDiscard(), CoreSyntaxKind.KDiscard);
+				return _factory.DiscardExpr(kDiscard);
+			}
+			
 			public override GreenNode VisitDefaultExpr(CoreParser.DefaultExprContext context)
 			{
 				if (context == null) return DefaultExprGreen.__Missing;
@@ -2999,6 +3069,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.PostfixUnaryExpr(expression, postfixOperator);
 			}
 			
+			public override GreenNode VisitNullForgivingExpr(CoreParser.NullForgivingExprContext context)
+			{
+				if (context == null) return NullForgivingExprGreen.__Missing;
+				CoreParser.ExpressionContext expressionContext = context.expression();
+				ExpressionGreen expression = null;
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
+				InternalSyntaxToken tExclamation = (InternalSyntaxToken)this.VisitTerminal(context.TExclamation(), CoreSyntaxKind.TExclamation);
+				return _factory.NullForgivingExpr(expression, tExclamation);
+			}
+			
 			public override GreenNode VisitUnaryExpr(CoreParser.UnaryExprContext context)
 			{
 				if (context == null) return UnaryExprGreen.__Missing;
@@ -3027,6 +3108,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
 				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.TypeCastExpr(tOpenParen, typeReference, tCloseParen, expression);
+			}
+			
+			public override GreenNode VisitAwaitExpr(CoreParser.AwaitExprContext context)
+			{
+				if (context == null) return AwaitExprGreen.__Missing;
+				InternalSyntaxToken kAwait = (InternalSyntaxToken)this.VisitTerminal(context.KAwait(), CoreSyntaxKind.KAwait);
+				CoreParser.ExpressionContext expressionContext = context.expression();
+				ExpressionGreen expression = null;
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
+				return _factory.AwaitExpr(kAwait, expression);
 			}
 			
 			public override GreenNode VisitMultExpr(CoreParser.MultExprContext context)
@@ -3225,6 +3317,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.OrElseExpr(left, tOrElse, right);
 			}
 			
+			public override GreenNode VisitThrowExpr(CoreParser.ThrowExprContext context)
+			{
+				if (context == null) return ThrowExprGreen.__Missing;
+				InternalSyntaxToken kThrow = (InternalSyntaxToken)this.VisitTerminal(context.KThrow(), CoreSyntaxKind.KThrow);
+				CoreParser.ExpressionContext expressionContext = context.expression();
+				ExpressionGreen expression = null;
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
+				return _factory.ThrowExpr(kThrow, expression);
+			}
+			
 			public override GreenNode VisitCoalExpr(CoreParser.CoalExprContext context)
 			{
 				if (context == null) return CoalExprGreen.__Missing;
@@ -3306,6 +3409,21 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				if (lambdaBodyContext != null) lambdaBody = (LambdaBodyGreen)this.Visit(lambdaBodyContext);
 				if (lambdaBody == null) lambdaBody = LambdaBodyGreen.__Missing;
 				return _factory.LambdaExpr(lambdaSignature, tArrow, lambdaBody);
+			}
+			
+			public override GreenNode VisitTupleArguments(CoreParser.TupleArgumentsContext context)
+			{
+				if (context == null) return TupleArgumentsGreen.__Missing;
+				CoreParser.ArgumentExpressionContext argumentExpressionContext = context.argumentExpression();
+				ArgumentExpressionGreen argumentExpression = null;
+				if (argumentExpressionContext != null) argumentExpression = (ArgumentExpressionGreen)this.Visit(argumentExpressionContext);
+				if (argumentExpression == null) argumentExpression = ArgumentExpressionGreen.__Missing;
+				InternalSyntaxToken tComma = (InternalSyntaxToken)this.VisitTerminal(context.TComma(), CoreSyntaxKind.TComma);
+				CoreParser.ArgumentListContext argumentListContext = context.argumentList();
+				ArgumentListGreen argumentList = null;
+				if (argumentListContext != null) argumentList = (ArgumentListGreen)this.Visit(argumentListContext);
+				if (argumentList == null) argumentList = ArgumentListGreen.__Missing;
+				return _factory.TupleArguments(argumentExpression, tComma, argumentList);
 			}
 			
 			public override GreenNode VisitArgumentList(CoreParser.ArgumentListContext context)
@@ -3624,10 +3742,6 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				else 	if (context.TMinusMinus() != null)
 				{
 					postfixOperator = (InternalSyntaxToken)this.VisitTerminal(context.TMinusMinus());
-				}
-				else 	if (context.TExclamation() != null)
-				{
-					postfixOperator = (InternalSyntaxToken)this.VisitTerminal(context.TExclamation());
 				}
 				else
 				{
@@ -4238,6 +4352,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public ExpressionContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class TupleArgumentsContext_Cached : TupleArgumentsContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public TupleArgumentsContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

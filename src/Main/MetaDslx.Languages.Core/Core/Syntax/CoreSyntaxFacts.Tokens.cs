@@ -74,6 +74,7 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNull:
 				case CoreTokensSyntaxKind.KTrue:
 				case CoreTokensSyntaxKind.KFalse:
+				case CoreTokensSyntaxKind.KDynamic:
 				case CoreTokensSyntaxKind.KObject:
 				case CoreTokensSyntaxKind.KVoid:
 				case CoreTokensSyntaxKind.KBool:
@@ -101,8 +102,12 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNot:
 				case CoreTokensSyntaxKind.KThis:
 				case CoreTokensSyntaxKind.KBase:
+				case CoreTokensSyntaxKind.KAsync:
+				case CoreTokensSyntaxKind.KAwait:
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
+				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KThrow:
 				case CoreTokensSyntaxKind.KStatic:
 				case CoreTokensSyntaxKind.TSemicolon:
 				case CoreTokensSyntaxKind.TColon:
@@ -194,6 +199,7 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNull:
 				case CoreTokensSyntaxKind.KTrue:
 				case CoreTokensSyntaxKind.KFalse:
+				case CoreTokensSyntaxKind.KDynamic:
 				case CoreTokensSyntaxKind.KObject:
 				case CoreTokensSyntaxKind.KVoid:
 				case CoreTokensSyntaxKind.KBool:
@@ -221,8 +227,12 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNot:
 				case CoreTokensSyntaxKind.KThis:
 				case CoreTokensSyntaxKind.KBase:
+				case CoreTokensSyntaxKind.KAsync:
+				case CoreTokensSyntaxKind.KAwait:
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
+				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KThrow:
 				case CoreTokensSyntaxKind.KStatic:
 				case CoreTokensSyntaxKind.TSemicolon:
 				case CoreTokensSyntaxKind.TColon:
@@ -308,6 +318,8 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.KTrue;
 				case "false":
 					return CoreTokensSyntaxKind.KFalse;
+				case "dynamic":
+					return CoreTokensSyntaxKind.KDynamic;
 				case "object":
 					return CoreTokensSyntaxKind.KObject;
 				case "void":
@@ -362,10 +374,18 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.KThis;
 				case "base":
 					return CoreTokensSyntaxKind.KBase;
+				case "async":
+					return CoreTokensSyntaxKind.KAsync;
+				case "await":
+					return CoreTokensSyntaxKind.KAwait;
 				case "const":
 					return CoreTokensSyntaxKind.KConst;
 				case "readonly":
 					return CoreTokensSyntaxKind.KReadonly;
+				case "_":
+					return CoreTokensSyntaxKind.KDiscard;
+				case "throw":
+					return CoreTokensSyntaxKind.KThrow;
 				case "static":
 					return CoreTokensSyntaxKind.KStatic;
 				case ";":
@@ -501,6 +521,8 @@ namespace MetaDslx.Languages.Core.Syntax
 					return "true";
 				case CoreTokensSyntaxKind.KFalse:
 					return "false";
+				case CoreTokensSyntaxKind.KDynamic:
+					return "dynamic";
 				case CoreTokensSyntaxKind.KObject:
 					return "object";
 				case CoreTokensSyntaxKind.KVoid:
@@ -555,10 +577,18 @@ namespace MetaDslx.Languages.Core.Syntax
 					return "this";
 				case CoreTokensSyntaxKind.KBase:
 					return "base";
+				case CoreTokensSyntaxKind.KAsync:
+					return "async";
+				case CoreTokensSyntaxKind.KAwait:
+					return "await";
 				case CoreTokensSyntaxKind.KConst:
 					return "const";
 				case CoreTokensSyntaxKind.KReadonly:
 					return "readonly";
+				case CoreTokensSyntaxKind.KDiscard:
+					return "_";
+				case CoreTokensSyntaxKind.KThrow:
+					return "throw";
 				case CoreTokensSyntaxKind.KStatic:
 					return "static";
 				case CoreTokensSyntaxKind.TSemicolon:
@@ -687,6 +717,7 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNull:
 				case CoreTokensSyntaxKind.KTrue:
 				case CoreTokensSyntaxKind.KFalse:
+				case CoreTokensSyntaxKind.KDynamic:
 				case CoreTokensSyntaxKind.KObject:
 				case CoreTokensSyntaxKind.KVoid:
 				case CoreTokensSyntaxKind.KBool:
@@ -714,8 +745,12 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNot:
 				case CoreTokensSyntaxKind.KThis:
 				case CoreTokensSyntaxKind.KBase:
+				case CoreTokensSyntaxKind.KAsync:
+				case CoreTokensSyntaxKind.KAwait:
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
+				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KThrow:
 				case CoreTokensSyntaxKind.KStatic:
 					return CoreTokenKind.ReservedKeyword;
 				case CoreTokensSyntaxKind.IdentifierNormal:
@@ -816,6 +851,7 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNull:
 				case CoreTokensSyntaxKind.KTrue:
 				case CoreTokensSyntaxKind.KFalse:
+				case CoreTokensSyntaxKind.KDynamic:
 				case CoreTokensSyntaxKind.KObject:
 				case CoreTokensSyntaxKind.KVoid:
 				case CoreTokensSyntaxKind.KBool:
@@ -843,8 +879,12 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KNot:
 				case CoreTokensSyntaxKind.KThis:
 				case CoreTokensSyntaxKind.KBase:
+				case CoreTokensSyntaxKind.KAsync:
+				case CoreTokensSyntaxKind.KAwait:
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
+				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KThrow:
 				case CoreTokensSyntaxKind.KStatic:
 					return true;
 				default:
@@ -866,6 +906,7 @@ namespace MetaDslx.Languages.Core.Syntax
 				yield return CoreTokensSyntaxKind.KNull;
 				yield return CoreTokensSyntaxKind.KTrue;
 				yield return CoreTokensSyntaxKind.KFalse;
+				yield return CoreTokensSyntaxKind.KDynamic;
 				yield return CoreTokensSyntaxKind.KObject;
 				yield return CoreTokensSyntaxKind.KVoid;
 				yield return CoreTokensSyntaxKind.KBool;
@@ -893,8 +934,12 @@ namespace MetaDslx.Languages.Core.Syntax
 				yield return CoreTokensSyntaxKind.KNot;
 				yield return CoreTokensSyntaxKind.KThis;
 				yield return CoreTokensSyntaxKind.KBase;
+				yield return CoreTokensSyntaxKind.KAsync;
+				yield return CoreTokensSyntaxKind.KAwait;
 				yield return CoreTokensSyntaxKind.KConst;
 				yield return CoreTokensSyntaxKind.KReadonly;
+				yield return CoreTokensSyntaxKind.KDiscard;
+				yield return CoreTokensSyntaxKind.KThrow;
 				yield return CoreTokensSyntaxKind.KStatic;
         }
 
@@ -926,6 +971,8 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.KTrue;
 				case "false":
 					return CoreTokensSyntaxKind.KFalse;
+				case "dynamic":
+					return CoreTokensSyntaxKind.KDynamic;
 				case "object":
 					return CoreTokensSyntaxKind.KObject;
 				case "void":
@@ -980,10 +1027,18 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.KThis;
 				case "base":
 					return CoreTokensSyntaxKind.KBase;
+				case "async":
+					return CoreTokensSyntaxKind.KAsync;
+				case "await":
+					return CoreTokensSyntaxKind.KAwait;
 				case "const":
 					return CoreTokensSyntaxKind.KConst;
 				case "readonly":
 					return CoreTokensSyntaxKind.KReadonly;
+				case "_":
+					return CoreTokensSyntaxKind.KDiscard;
+				case "throw":
+					return CoreTokensSyntaxKind.KThrow;
 				case "static":
 					return CoreTokensSyntaxKind.KStatic;
 				default:

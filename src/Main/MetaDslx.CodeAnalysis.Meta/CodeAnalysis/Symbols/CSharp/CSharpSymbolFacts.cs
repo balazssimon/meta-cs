@@ -100,12 +100,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
                 if (_specialTypes.IsDefault)
                 {
                     var types = ArrayBuilder<object>.GetInstance();
-                    foreach (var type in Enum.GetValues(typeof(SpecialType)))
+                    foreach (var type in Enum.GetValues(typeof(SpecialSymbol)))
                     {
-                        if (!types.Any(t => (SpecialType)t == (SpecialType)type))
-                        {
-                            types.Add(type);
-                        }
+                        types.Add(type);
                     }
                     ImmutableInterlocked.InterlockedInitialize(ref _specialTypes, types.ToImmutableAndFree());
                 }
@@ -115,13 +112,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override object? GetModelObjectOfSpecialSymbol(object specialSymbolId)
         {
-            if (specialSymbolId is SpecialType) return specialSymbolId;
+            if (specialSymbolId is SpecialSymbol) return specialSymbolId;
             else return null;
         }
 
         public override string? GetMetadataNameOfSpecialSymbol(object specialSymbolId)
         {
-            if (specialSymbolId is SpecialType st) return st.GetMetadataName();
+            if (specialSymbolId is SpecialSymbol st) return st.GetMetadataName();
             else return null;
         }
     }

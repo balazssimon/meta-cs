@@ -17,10 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsAsync => false;
 
         [SymbolProperty]
-        public abstract TypeSymbol ReturnType { get; }
-
-        [SymbolProperty]
-        public virtual RefKind ReturnRefKind { get; }
+        public abstract ParameterSymbol? Result { get; }
 
         [SymbolProperty]
         public abstract ImmutableArray<ParameterSymbol> Parameters { get; }
@@ -29,8 +26,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract StatementSymbol Body { get; }
 
         public bool IsVarArg => this.Parameters.Any(p => p.IsVarArg);
-
-        public TypeWithAnnotations ReturnTypeWithAnnotations => null;
 
         internal bool CheckConstraints(LanguageCompilation compilation, Location location, DiagnosticBag diagnostics)
         {

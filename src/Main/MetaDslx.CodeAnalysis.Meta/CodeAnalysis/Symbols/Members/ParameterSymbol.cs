@@ -7,7 +7,7 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public partial class ParameterSymbol : VariableSymbol
+    public abstract partial class ParameterSymbol : VariableSymbol
     {
         [SymbolProperty]
         public virtual bool IsVarArg => false;

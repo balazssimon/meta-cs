@@ -151,6 +151,34 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitTupleExpr(TupleExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(TupleExpression));
+			try
+			{
+				if (node.TupleArguments != null)
+				{
+				    this.Visit(node.TupleArguments);
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(TupleExpression));
+			}
+		}
+		
+		public virtual void VisitDiscardExpr(DiscardExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(DiscardExpression));
+			try
+			{
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(DiscardExpression));
+			}
+		}
+		
 		public virtual void VisitDefaultExpr(DefaultExprSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(DefaultValueExpression));
@@ -507,6 +535,30 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitNullForgivingExpr(NullForgivingExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(NullForgivingExpression));
+			try
+			{
+				if (node.Expression != null)
+				{
+				    this.BeginProperty(node.Expression, name: "Operand");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Operand");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(NullForgivingExpression));
+			}
+		}
+		
 		public virtual void VisitUnaryExpr(UnaryExprSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(UnaryExpression));
@@ -576,6 +628,30 @@ namespace MetaDslx.Languages.Core.Binding
 			finally
 			{
 				this.EndDefine(node, type: typeof(ConversionExpression));
+			}
+		}
+		
+		public virtual void VisitAwaitExpr(AwaitExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(AwaitExpression));
+			try
+			{
+				if (node.Expression != null)
+				{
+				    this.BeginProperty(node.Expression, name: "Operation");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Operation");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(AwaitExpression));
 			}
 		}
 		
@@ -1191,6 +1267,30 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitThrowExpr(ThrowExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(ThrowExpression));
+			try
+			{
+				if (node.Expression != null)
+				{
+				    this.BeginProperty(node.Expression, name: "Exception");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Exception");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(ThrowExpression));
+			}
+		}
+		
 		public virtual void VisitCoalExpr(CoalExprSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(CoalesceExpression));
@@ -1379,26 +1479,70 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitTupleArguments(TupleArgumentsSyntax node)
+		{
+			this.BeginProperty(node, name: "Arguments");
+			try
+			{
+				if (node.ArgumentExpression != null)
+				{
+				    this.Visit(node.ArgumentExpression);
+				}
+				if (node.ArgumentList != null)
+				{
+				    this.Visit(node.ArgumentList);
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Arguments");
+			}
+		}
+		
 		public virtual void VisitArgumentList(ArgumentListSyntax node)
 		{
-			if (node.ArgumentExpression != null)
+			this.BeginProperty(node, name: "Arguments");
+			try
 			{
-				foreach (var child in node.ArgumentExpression)
+				if (node.ArgumentExpression != null)
 				{
-			        this.Visit(child);
+					foreach (var child in node.ArgumentExpression)
+					{
+				        this.Visit(child);
+					}
 				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Arguments");
 			}
 		}
 		
 		public virtual void VisitArgumentExpression(ArgumentExpressionSyntax node)
 		{
-			if (node.Name != null)
+			this.BeginDefine(node, type: typeof(Argument));
+			try
 			{
-			    this.Visit(node.Name);
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
+				if (node.Expression != null)
+				{
+				    this.BeginProperty(node.Expression, name: "Value");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Value");
+				    }
+				}
 			}
-			if (node.Expression != null)
+			finally
 			{
-			    this.Visit(node.Expression);
+				this.EndDefine(node, type: typeof(Argument));
 			}
 		}
 		
@@ -1431,13 +1575,45 @@ namespace MetaDslx.Languages.Core.Binding
 		
 		public virtual void VisitFieldInitializerExpression(FieldInitializerExpressionSyntax node)
 		{
-			if (node.Identifier != null)
+			this.BeginDefine(node, type: typeof(AssignmentExpression));
+			try
 			{
-			    this.Visit(node.Identifier);
+				if (node.Identifier != null)
+				{
+				    this.BeginProperty(node.Identifier, name: "Target");
+				    try
+				    {
+				    	this.BeginUse(node.Identifier, types: ImmutableArray.Create(typeof(FieldLikeMember)));
+				    	try
+				    	{
+				    		this.Visit(node.Identifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.Identifier, types: ImmutableArray.Create(typeof(FieldLikeMember)));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Identifier, name: "Target");
+				    }
+				}
+				if (node.Expression != null)
+				{
+				    this.BeginProperty(node.Expression, name: "Value");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Value");
+				    }
+				}
 			}
-			if (node.Expression != null)
+			finally
 			{
-			    this.Visit(node.Expression);
+				this.EndDefine(node, type: typeof(AssignmentExpression));
 			}
 		}
 		
@@ -1720,9 +1896,6 @@ namespace MetaDslx.Languages.Core.Binding
 			    		{
 			    			this.EndValue(node.PostfixOperator, value: UnaryOperatorKind.PostfixDecrement);
 			    		}
-			    		break;
-			    	case CoreSyntaxKind.TExclamation:
-			    		this.Visit(node.PostfixOperator);
 			    		break;
 			    	default:
 			    		break;

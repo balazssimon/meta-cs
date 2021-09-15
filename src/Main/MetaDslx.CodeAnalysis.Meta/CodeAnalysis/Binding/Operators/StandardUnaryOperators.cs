@@ -127,6 +127,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 CreateSignatures(UnaryOperatorKind.PostfixIncrement, GetIncrementTypes()),
                 CreateSignatures(UnaryOperatorKind.PrefixDecrement, GetIncrementTypes()),
                 CreateSignatures(UnaryOperatorKind.PostfixDecrement, GetIncrementTypes()),
+                CreateSignatures(UnaryOperatorKind.IndexFromEnd, GetBitwiseComplementTypes()),
             };
         }
 
@@ -155,9 +156,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
             var opSpecialSymbol = operand.GetSpecialSymbol(Compilation.Language);
             var opIndex = -1;
-            if (opSpecialSymbol is SpecialType opSpecialType)
+            if (opSpecialSymbol is SpecialSymbol opSpecialType)
             {
-                opIndex = opSpecialType.TypeToIndex();
+                opIndex = opSpecialType.ToSpecialType().TypeToIndex();
             }
             if (opIndex < 0)
             {

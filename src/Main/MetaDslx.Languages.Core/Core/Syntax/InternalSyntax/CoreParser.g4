@@ -29,6 +29,8 @@ blockStatement: TOpenBrace                       statement* TCloseBrace;
 
 expression
 	: TOpenParen                    expression TCloseParen #parenthesizedExpr                                 
+	| TOpenParen tupleArguments TCloseParen #tupleExpr                         
+	| KDiscard #discardExpr                           
 	| KDefault #defaultExpr                                
 	| KThis #thisExpr                                     
 	| KBase #baseExpr                                     
@@ -44,8 +46,10 @@ expression
 	| KUnchecked TOpenParen expression TCloseParen #uncheckedExpr
 	| KNew                       typeReference TOpenParen argumentList? TCloseParen initializerExpression? #newExpr                                  
 	|                    expression                         postfixOperator #postfixUnaryExpr                         
+	|                    expression TExclamation #nullForgivingExpr                                 
 	|                         unaryOperator                    expression #unaryExpr                         
 	| TOpenParen                       typeReference TCloseParen                    expression #typeCastExpr                              
+	| KAwait                      expression #awaitExpr                         
 	|                        left=expression                         multiplicativeOperator                         right=expression #multExpr                          
 	|                        left=expression                         additiveOperator                         right=expression #addExpr                          
 	|                        left=expression                         shiftOperator                         right=expression #shiftExpr                          
@@ -58,6 +62,7 @@ expression
 	|                        left=expression                                                              TBar                         right=expression #orExpr                          
 	|                        left=expression                                                               TAndAlso                         right=expression #andAlsoExpr                          
 	|                        left=expression                                                              TOrElse                         right=expression #orElseExpr                          
+	| KThrow                      expression #throwExpr                         
 	|                  value=expression TQuestionQuestion                     whenNull=expression #coalExpr                            
 	|                      condition=expression TQuestion                     whenTrue=expression TColon                      whenFalse=expression #condExpr                               
 	|                   target=expression TAssign                  value=expression #assignExpr                              
@@ -65,8 +70,12 @@ expression
 	| lambdaSignature TArrow lambdaBody #lambdaExpr                          
 	;
 
+                    
+tupleArguments : argumentExpression TComma argumentList;
+                    
 argumentList: argumentExpression (TComma argumentExpression)*;
-argumentExpression: (name TColon)? expression;
+                 
+argumentExpression: (name TColon)?                  expression;
 
 initializerExpression
 	: fieldInitializerExpressions
@@ -75,7 +84,8 @@ initializerExpression
 	;
 
 fieldInitializerExpressions: fieldInitializerExpression (TComma fieldInitializerExpression)*;
-fieldInitializerExpression: identifier TAssign expression;
+                             
+fieldInitializerExpression:                                         identifier TAssign                  expression;
 collectionInitializerExpressions: expression (TComma expression)*;
 dictionaryInitializerExpressions: dictionaryInitializerExpression (TComma dictionaryInitializerExpression)*;
 dictionaryInitializerExpression: TOpenBracket identifier TCloseBracket TAssign expression;
@@ -111,7 +121,6 @@ indexerOperator
 postfixOperator
 	:                                            TPlusPlus
 	|                                            TMinusMinus
-	| TExclamation
 	;
 
 unaryOperator
