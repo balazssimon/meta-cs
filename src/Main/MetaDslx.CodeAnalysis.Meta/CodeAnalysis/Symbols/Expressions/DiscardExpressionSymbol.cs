@@ -15,5 +15,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override bool Equals(object obj) => obj is DiscardExpressionSymbol other && this.Type.Equals(other.Type);
         public override int GetHashCode() => this.Type.GetHashCode();
 
+        public override void CheckExpressionType(TypeSymbol? expectedType, DiagnosticBag diagnostics)
+        {
+        }
     }
 }

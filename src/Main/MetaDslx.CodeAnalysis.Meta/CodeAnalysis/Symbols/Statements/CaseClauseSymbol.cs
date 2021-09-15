@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,5 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract LabelSymbol? Label { get; }
+
+        public abstract void CheckExpressionType(TypeSymbol? expectedType, DiagnosticBag diagnostics);
     }
 }

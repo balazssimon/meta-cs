@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,5 +16,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract ExpressionSymbol Operand { get; }
+
+        public override bool IsConstant => Operand?.IsConstant ?? false;
+
+        public override TypeSymbol? Type => Operand?.Type;
     }
 }

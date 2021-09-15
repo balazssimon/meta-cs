@@ -50,6 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual Conversion OperandConversion { get; }
 
+        public override bool IsConstant => Operand?.IsConstant ?? false;
     }
 
     namespace Completion
@@ -86,6 +87,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
                     return _analysisResult.Conversion;
+                }
+            }
+
+            public override TypeSymbol? Type
+            {
+                get
+                {
+                    ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
+                    return _analysisResult.Signature.ReturnType;
                 }
             }
 

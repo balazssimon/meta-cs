@@ -493,15 +493,7 @@ namespace MetaDslx.Languages.Core.Binding
 				{
 					foreach (var child in node.SwitchCase)
 					{
-				        this.BeginProperty(child, name: "Cases");
-				        try
-				        {
-				        	this.Visit(child);
-				        }
-				        finally
-				        {
-				        	this.EndProperty(child, name: "Cases");
-				        }
+				        this.Visit(child);
 					}
 				}
 			}
@@ -529,15 +521,7 @@ namespace MetaDslx.Languages.Core.Binding
 			{
 				foreach (var child in node.CatchClause)
 				{
-			        this.BeginProperty(child, name: "Catches");
-			        try
-			        {
-			        	this.Visit(child);
-			        }
-			        finally
-			        {
-			        	this.EndProperty(child, name: "Catches");
-			        }
+			        this.Visit(child);
 				}
 			}
 			if (node.FinallyClause != null)
@@ -678,20 +662,20 @@ namespace MetaDslx.Languages.Core.Binding
 			this.BeginDefine(node, type: typeof(BlockStatement));
 			try
 			{
-				if (node.Statement != null)
+				this.BeginProperty(node, name: "Statements");
+				try
 				{
-					foreach (var child in node.Statement)
+					if (node.Statement != null)
 					{
-				        this.BeginProperty(child, name: "Statements");
-				        try
-				        {
-				        	this.Visit(child);
-				        }
-				        finally
-				        {
-				        	this.EndProperty(child, name: "Statements");
-				        }
+						foreach (var child in node.Statement)
+						{
+					        this.Visit(child);
+						}
 					}
+				}
+				finally
+				{
+					this.EndProperty(node, name: "Statements");
 				}
 			}
 			finally
@@ -705,20 +689,20 @@ namespace MetaDslx.Languages.Core.Binding
 			this.BeginDefine(node, type: typeof(BlockStatement));
 			try
 			{
-				if (node.Statement != null)
+				this.BeginProperty(node, name: "Statements");
+				try
 				{
-					foreach (var child in node.Statement)
+					if (node.Statement != null)
 					{
-				        this.BeginProperty(child, name: "Statements");
-				        try
-				        {
-				        	this.Visit(child);
-				        }
-				        finally
-				        {
-				        	this.EndProperty(child, name: "Statements");
-				        }
+						foreach (var child in node.Statement)
+						{
+					        this.Visit(child);
+						}
 					}
+				}
+				finally
+				{
+					this.EndProperty(node, name: "Statements");
 				}
 			}
 			finally
@@ -729,52 +713,60 @@ namespace MetaDslx.Languages.Core.Binding
 		
 		public virtual void VisitSwitchCase(SwitchCaseSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(SwitchCase));
+			this.BeginProperty(node, name: "Cases");
 			try
 			{
-				if (node.CaseClause != null)
+				this.BeginDefine(node, type: typeof(SwitchCase));
+				try
 				{
-					foreach (var child in node.CaseClause)
+					if (node.CaseClause != null)
 					{
-				        this.BeginProperty(child, name: "Clauses");
-				        try
-				        {
-				        	this.Visit(child);
-				        }
-				        finally
-				        {
-				        	this.EndProperty(child, name: "Clauses");
-				        }
+						foreach (var child in node.CaseClause)
+						{
+					        this.Visit(child);
+						}
+					}
+					if (node.BareBlockStatement != null)
+					{
+					    this.BeginProperty(node.BareBlockStatement, name: "Body");
+					    try
+					    {
+					    	this.Visit(node.BareBlockStatement);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.BareBlockStatement, name: "Body");
+					    }
 					}
 				}
-				if (node.BareBlockStatement != null)
+				finally
 				{
-				    this.BeginProperty(node.BareBlockStatement, name: "Body");
-				    try
-				    {
-				    	this.Visit(node.BareBlockStatement);
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.BareBlockStatement, name: "Body");
-				    }
+					this.EndDefine(node, type: typeof(SwitchCase));
 				}
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(SwitchCase));
+				this.EndProperty(node, name: "Cases");
 			}
 		}
 		
 		public virtual void VisitCaseClause(CaseClauseSyntax node)
 		{
-			if (node.SingleValueCaseClause != null)
+			this.BeginProperty(node, name: "Clauses");
+			try
 			{
-			    this.Visit(node.SingleValueCaseClause);
+				if (node.SingleValueCaseClause != null)
+				{
+				    this.Visit(node.SingleValueCaseClause);
+				}
+				if (node.DefaultCaseClause != null)
+				{
+				    this.Visit(node.DefaultCaseClause);
+				}
 			}
-			if (node.DefaultCaseClause != null)
+			finally
 			{
-			    this.Visit(node.DefaultCaseClause);
+				this.EndProperty(node, name: "Clauses");
 			}
 		}
 		
@@ -816,41 +808,49 @@ namespace MetaDslx.Languages.Core.Binding
 		
 		public virtual void VisitCatchClause(CatchClauseSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(CatchClause));
+			this.BeginProperty(node, name: "Catches");
 			try
 			{
-				if (node.Value != null)
+				this.BeginDefine(node, type: typeof(CatchClause));
+				try
 				{
-				    this.BeginProperty(node.Value, name: "ExceptionDeclarationOrExpression");
-				    try
-				    {
-				    	this.Visit(node.Value);
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.Value, name: "ExceptionDeclarationOrExpression");
-				    }
+					if (node.Value != null)
+					{
+					    this.BeginProperty(node.Value, name: "ExceptionDeclarationOrExpression");
+					    try
+					    {
+					    	this.Visit(node.Value);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.Value, name: "ExceptionDeclarationOrExpression");
+					    }
+					}
+					if (node.CatchFilter != null)
+					{
+					    this.Visit(node.CatchFilter);
+					}
+					if (node.Handler != null)
+					{
+					    this.BeginProperty(node.Handler, name: "Handler");
+					    try
+					    {
+					    	this.Visit(node.Handler);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.Handler, name: "Handler");
+					    }
+					}
 				}
-				if (node.CatchFilter != null)
+				finally
 				{
-				    this.Visit(node.CatchFilter);
-				}
-				if (node.Handler != null)
-				{
-				    this.BeginProperty(node.Handler, name: "Handler");
-				    try
-				    {
-				    	this.Visit(node.Handler);
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.Handler, name: "Handler");
-				    }
+					this.EndDefine(node, type: typeof(CatchClause));
 				}
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(CatchClause));
+				this.EndProperty(node, name: "Catches");
 			}
 		}
 		
@@ -2315,7 +2315,7 @@ namespace MetaDslx.Languages.Core.Binding
 		
 		public virtual void VisitVarDefExpr(VarDefExprSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(VariableDeclarationExpressionSymbol));
+			this.BeginDefine(node, type: typeof(VariableDeclarationExpression));
 			try
 			{
 				if (node.KConst.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
@@ -2357,7 +2357,7 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(VariableDeclarationExpressionSymbol));
+				this.EndDefine(node, type: typeof(VariableDeclarationExpression));
 			}
 		}
 		

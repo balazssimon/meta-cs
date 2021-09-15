@@ -15,5 +15,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract TypeSymbol TypeOperand { get; }
+
+        public override bool IsConstant => true;
+
+        public override TypeSymbol? Type => (TypeSymbol?)this.DeclaringCompilation?.GetSpecialSymbol(SpecialSymbol.System_Int32);
     }
 }

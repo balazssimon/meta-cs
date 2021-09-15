@@ -32,26 +32,31 @@ statement
 	| $Property(Label) $Define(Label) name TColon $Property(Statement) statement #labeledStmt $Define(LabeledStatement)
 	| KLock TOpenParen $Property(LockedValue) lockedValue=expression TCloseParen $Property(Body) body=statement #lockStmt $Define(LockStatement)
 	| KReturn $Property(ReturnedValue) returnedValue=expression TSemicolon #returnStmt $Define(ReturnStatement)
-	| KSwitch TOpenParen $Property(Value) value=expression TCloseParen TOpenBrace $Property(Cases) switchCase* TCloseBrace #switchStmt $Define(SwitchStatement)
-	| KTry $Property(Body) body=blockStatement $Property(Catches) catchClause* $Property(Finally) finallyClause? #tryStmt
+	| KSwitch TOpenParen $Property(Value) value=expression TCloseParen TOpenBrace switchCase* TCloseBrace #switchStmt $Define(SwitchStatement)
+	| KTry $Property(Body) body=blockStatement catchClause* $Property(Finally) finallyClause? #tryStmt
 	| usingHeader+ $Property(Body) body=statement #usingStmt $Define(UsingStatement)
 	| KWhile TOpenParen $Property(name=ConditionIsTop,value=true) $Property(Condition) condition=expression TCloseParen $Property(Body) body=statement #whileStmt $Define(WhileLoopStatement)
 	| KDo $Property(Body) body=statement KWhile TOpenParen $Property(name=ConditionIsTop,value=false) $Property(Condition) condition=expression TCloseParen TSemicolon #doWhileStmt $Define(WhileLoopStatement)
 	;
 
 $Define(BlockStatement)
-blockStatement : TOpenBrace $Property(Statements) statement* TCloseBrace;
+$Property(Statements) 
+blockStatement : TOpenBrace statement* TCloseBrace;
 $Define(BlockStatement)
-bareBlockStatement : $Property(Statements) statement+;
+$Property(Statements) 
+bareBlockStatement : statement+;
 
+$Property(Cases)
 $Define(SwitchCase)
-switchCase: $Property(Clauses) caseClause+ $Property(Body) bareBlockStatement;
+switchCase: caseClause+ $Property(Body) bareBlockStatement;
+$Property(Clauses) 
 caseClause: singleValueCaseClause | defaultCaseClause; 
 $Define(SingleValueCaseClause)
 singleValueCaseClause: KCase $Property(Value) value=expression TColon;
 $Define(DefaultCaseClause)
 defaultCaseClause: KDefault TColon;
 
+$Property(Catches)
 $Define(CatchClause)
 catchClause: KCatch (TOpenParen $Property(ExceptionDeclarationOrExpression) value=expression TCloseParen catchFilter?)? $Property(Handler) handler=blockStatement;
 catchFilter: KWhen $Property(Filter) filter=expression;
@@ -105,7 +110,7 @@ expression
 	| $Property(Target) target=expression TAssign $Property(Value) value=expression #assignExpr $Define(AssignmentExpression)
 	| $Property(Target) target=expression $Property(OperatorKind) compoundAssignmentOperator $Property(Value) value=expression #compAssignExpr $Define(CompoundAssignmentExpression)
 	| lambdaSignature TArrow lambdaBody #lambdaExpr $Define(LambdaExpression)
-	| $Property(name=IsConst,value=true) KConst? $Property(Type) variableType $Property(Variables) variableDefList #varDefExpr $Define(VariableDeclarationExpressionSymbol)
+	| $Property(name=IsConst,value=true) KConst? $Property(Type) variableType $Property(Variables) variableDefList #varDefExpr $Define(VariableDeclarationExpression)
 	;
 
 $Property(Arguments)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -23,5 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// conversion context, in which the tuple is used.
         /// </summary>
         public virtual TypeSymbol? NaturalType { get; }
+
+        public override bool IsConstant => this.Arguments.All(arg => arg?.Value?.IsConstant ?? false);
     }
 }

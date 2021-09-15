@@ -40,10 +40,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseBody = new object();
 		public static object UseReturnedValue = new object();
 		public static object UseValue = new object();
-		public static object UseSwitchCase = new object();
-		public static object UseCatchClause = new object();
 		public static object UseFinallyClause = new object();
-		public static object UseCaseClause = new object();
 		public static object UseBareBlockStatement = new object();
 		public static object UseHandler = new object();
 		public static object UseFilter = new object();
@@ -122,6 +119,9 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use = new object();
 		public static object UseQualifier = new object();
 		public static object UseBlockStatement = new object();
+		public static object UseSwitchCase = new object();
+		public static object UseCatchClause = new object();
+		public static object UseCaseClause = new object();
 		public static object UseSingleValueCaseClause = new object();
 		public static object UseDefaultCaseClause = new object();
 		public static object UseTupleArguments = new object();
@@ -571,7 +571,6 @@ namespace MetaDslx.Languages.Core.Binding
 			if (this.ForChild)
 			{
 				if (LookupPosition.IsInNode(this.Position, parent.Value)) use = UseValue;
-				if (LookupPosition.IsInNode(this.Position, parent.SwitchCase.Node)) use = UseSwitchCase;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
@@ -582,11 +581,6 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseValue)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Value, name: "Value");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-				if (use == UseSwitchCase)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.SwitchCase.Node, name: "Cases");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -603,7 +597,6 @@ namespace MetaDslx.Languages.Core.Binding
 			if (this.ForChild)
 			{
 				if (LookupPosition.IsInNode(this.Position, parent.Body)) use = UseBody;
-				if (LookupPosition.IsInNode(this.Position, parent.CatchClause.Node)) use = UseCatchClause;
 				if (LookupPosition.IsInNode(this.Position, parent.FinallyClause)) use = UseFinallyClause;
 			}
 			Binder resultBinder = null;
@@ -614,11 +607,6 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseBody)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Body, name: "Body");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-				if (use == UseCatchClause)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.CatchClause.Node, name: "Catches");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 				if (use == UseFinallyClause)
@@ -729,21 +717,13 @@ namespace MetaDslx.Languages.Core.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.Statement.Node)) use = UseStatement;
-			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(BlockStatement));
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Statements");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseStatement)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement.Node, name: "Statements");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -755,21 +735,13 @@ namespace MetaDslx.Languages.Core.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.Statement.Node)) use = UseStatement;
-			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(BlockStatement));
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Statements");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseStatement)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement.Node, name: "Statements");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -783,20 +755,15 @@ namespace MetaDslx.Languages.Core.Binding
 			object use = null;
 			if (this.ForChild)
 			{
-				if (LookupPosition.IsInNode(this.Position, parent.CaseClause.Node)) use = UseCaseClause;
 				if (LookupPosition.IsInNode(this.Position, parent.BareBlockStatement)) use = UseBareBlockStatement;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Cases");
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(SwitchCase));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseCaseClause)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.CaseClause.Node, name: "Clauses");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 				if (use == UseBareBlockStatement)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.BareBlockStatement, name: "Body");
@@ -817,6 +784,7 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Clauses");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -881,6 +849,7 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Catches");
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(CatchClause));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseValue)
@@ -2198,7 +2167,7 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(VariableDeclarationExpressionSymbol));
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(VariableDeclarationExpression));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseKConst)
 				{

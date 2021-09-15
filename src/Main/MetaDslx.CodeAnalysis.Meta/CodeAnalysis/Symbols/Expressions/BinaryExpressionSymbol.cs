@@ -61,6 +61,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract Conversion RightConversion { get; }
 
+        public override bool IsConstant => (LeftOperand?.IsConstant ?? false) && (RightOperand?.IsConstant ?? false);
     }
 
 
@@ -107,6 +108,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
                     return _analysisResult.LeftConversion;
+                }
+            }
+
+            public override TypeSymbol? Type
+            {
+                get
+                {
+                    ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
+                    return _analysisResult.Signature.ReturnType;
                 }
             }
 

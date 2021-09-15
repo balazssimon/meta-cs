@@ -32,5 +32,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// unwrapped <see cref="Value" />, otherwise to the <see cref="Value" /> itself.
         /// </summary>
         public virtual Conversion ValueConversion { get; }
+
+        public override bool IsConstant => (Value?.IsConstant ?? false) && (WhenNull?.IsConstant ?? false);
+
+        public override TypeSymbol? Type => WhenNull?.Type;
     }
 }

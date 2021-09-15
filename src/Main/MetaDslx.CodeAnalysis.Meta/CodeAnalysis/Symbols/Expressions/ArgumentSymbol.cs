@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -54,6 +55,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     if (this.Parameter.Type is not null) return this.Parameter.Type;
                 }
                 return string.Empty;
+            }
+        }
+
+        protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            base.CompleteValidatingSymbol(diagnostics, cancellationToken);
+            if (this.Parameter?.Type is not null)
+            {
+                Value?.CheckExpressionType(this.Parameter.Type, diagnostics);
             }
         }
     }

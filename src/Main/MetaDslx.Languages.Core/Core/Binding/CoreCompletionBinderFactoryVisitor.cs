@@ -6296,7 +6296,6 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == UnassignedUse || use == Use_SwitchStmt_SwitchCase)
             {
                 var binder = ruleBinder;
-            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Cases", forCompletion: true);
                 AddResultsForSwitchCase(UnassignedUse, operation, binder);
             }
             if (use == UnassignedUse)
@@ -6329,7 +6328,6 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == UnassignedUse || use == Use_TryStmt_CatchClause)
             {
                 var binder = ruleBinder;
-            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Catches", forCompletion: true);
                 AddResultsForCatchClause(UnassignedUse, operation, binder);
             }
             if (use == UnassignedUse || use == Use_TryStmt_FinallyClause)
@@ -6465,6 +6463,7 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[3] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(BlockStatement), forCompletion: true);
+            ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Statements", forCompletion: true);
             if (use == UnassignedUse)
             {
                 var binder = ruleBinder;
@@ -6474,7 +6473,6 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == UnassignedUse || use == Use_BlockStatement_Statement)
             {
                 var binder = ruleBinder;
-            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Statements", forCompletion: true);
                 AddResultsForStatement(UnassignedUse, operation, binder);
             }
             if (use == UnassignedUse)
@@ -6492,10 +6490,10 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[4] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(BlockStatement), forCompletion: true);
+            ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Statements", forCompletion: true);
             if (use == UnassignedUse || use == Use_BareBlockStatement_Statement)
             {
                 var binder = ruleBinder;
-            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Statements", forCompletion: true);
                 AddResultsForStatement(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
@@ -6507,11 +6505,11 @@ namespace MetaDslx.Languages.Core.Binding
             if (_visited[5]) return;
             _visited[5] = true;
             var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Cases", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(SwitchCase), forCompletion: true);
             if (use == UnassignedUse || use == Use_SwitchCase_CaseClause)
             {
                 var binder = ruleBinder;
-            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Clauses", forCompletion: true);
                 AddResultsForCaseClause(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
@@ -6530,6 +6528,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (_visited[6]) return;
             _visited[6] = true;
             var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Clauses", forCompletion: true);
             if (use == UnassignedUse || use == Use_CaseClause_SingleValueCaseClause)
             {
                 var binder = ruleBinder;
@@ -6597,6 +6596,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (_visited[9]) return;
             _visited[9] = true;
             var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Catches", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(CatchClause), forCompletion: true);
             if (use == UnassignedUse)
             {
@@ -8027,7 +8027,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (_visited[-1]) return;
             _visited[-1] = true;
             var ruleBinder = parentBinder;
-            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(VariableDeclarationExpressionSymbol), forCompletion: true);
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(VariableDeclarationExpression), forCompletion: true);
             if (use == UnassignedUse || use == Use_VarDefExpr_KConst)
             {
                 var binder = ruleBinder;

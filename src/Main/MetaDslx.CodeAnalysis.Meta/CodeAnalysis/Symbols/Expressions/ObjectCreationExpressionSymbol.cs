@@ -37,5 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Constructor to be invoked on the created instance.
         /// </summary>
         public virtual ConstructorSymbol? Constructor { get; }
+
+        public override TypeSymbol? Type => ObjectType;
     }
 }

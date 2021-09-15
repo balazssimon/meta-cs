@@ -18,5 +18,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract ExpressionSymbol Operand { get; }
+
+        public override bool IsConstant => Operand?.IsConstant ?? false; 
+
+        public override TypeSymbol? Type => Operand?.Type;
     }
 }

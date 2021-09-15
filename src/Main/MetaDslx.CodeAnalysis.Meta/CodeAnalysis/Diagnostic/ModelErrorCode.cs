@@ -92,5 +92,9 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_CannotSetSymbolProperty = new ModelErrorCode(51, "Cannot set value to property", "Cannot assign value '{0}' to property '{1}' in symbol '{2}'. The expected type is '{3}'. The actual type is '{4}'.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotResolveModelObject = new ModelErrorCode(52, "Cannot resolve model object", "Cannot resolve the model object '{0}' within the model or model group '{1}'. Are you missing a reference to the model '{2}'?", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotResolveModelByUri = new ModelErrorCode(53, "Cannot resolve model", "Cannot resolve the model based on the uri '{0}'. Are you missing a reference to the model?", DiagnosticSeverity.Error);
+
+        public static readonly ModelErrorCode ERR_ExpressionOfTypeExpected = new ModelErrorCode(54, "Invalid expression", "Expression of type '{0}' expected.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_ReturnValueExpected = new ModelErrorCode(55, "Missing return value", "Return value of type '{0}' expected.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_UnexpectedReturnValue = new ModelErrorCode(56, "Unexpected return value", "Unexpected return value.", DiagnosticSeverity.Error);
     }
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -42,5 +44,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Locals declared by the <see cref="ExceptionDeclarationOrExpression" /> and/or <see cref="Filter" /> clause.
         /// </summary>
         public virtual ImmutableArray<LocalSymbol> Locals { get; }
+
+        protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            base.CompleteValidatingSymbol(diagnostics, cancellationToken);
+            Filter?.CheckExpressionType(SpecialSymbol.System_Boolean, diagnostics);
+        }
     }
 }

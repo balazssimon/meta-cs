@@ -1,4 +1,5 @@
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -48,14 +49,33 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return false;
         }
 
-        public virtual void CheckExpressionConstaints(Conversions conversions, TypeSymbol expectedType, bool mustBeConstant, DiagnosticBag diagnostics)
+        public virtual void CheckExpressionIsConstant(DiagnosticBag diagnostics)
         {
-            if (mustBeConstant && !IsConstant)
+            if (this.DeclaringCompilation is null) return;
+            if (!IsConstant)
             {
                 diagnostics.Add(InternalErrorCode.ERR_ConstantExpected.ToDiagnostic(this.GetLocation()));
             }
+        }
+
+        public virtual void CheckExpressionType(TypeSymbol? expectedType, DiagnosticBag diagnostics)
+        {
+            if (this.DeclaringCompilation is null) return;
+            if (this.Type is null)
+            {
+                if (expectedType is not null)
+                {
+                    diagnostics.Add(ModelErrorCode.ERR_ExpressionOfTypeExpected.ToDiagnostic(this.GetLocation(), expectedType));
+                }
+                else
+                {
+                    diagnostics.Add(ModelErrorCode.ERR_ExpressionOfTypeExpected.ToDiagnostic(this.GetLocation(), "<ERROR>"));
+                }
+                return;
+            }
+            var conversions = this.DeclaringCompilation.Conversions;
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            conversions.ClassifyImplicitConversionFromType(this.Type, expectedType, ref useSiteDiagnostics);
+            var conversion = conversions.ClassifyImplicitConversionFromType(this.Type, expectedType, ref useSiteDiagnostics);
             if (useSiteDiagnostics is not null)
             {
                 var location = this.GetLocation();
@@ -64,6 +84,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     diagnostics.Add(diag.ToDiagnostic(location));
                 }
             }
+            else if (conversion == Conversions.NoConversion)
+            {
+                if (expectedType is not null)
+                {
+                    diagnostics.Add(ModelErrorCode.ERR_ExpressionOfTypeExpected.ToDiagnostic(this.GetLocation(), expectedType));
+                }
+                else
+                {
+                    diagnostics.Add(ModelErrorCode.ERR_ExpressionOfTypeExpected.ToDiagnostic(this.GetLocation(), "<ERROR>"));
+                }
+            }
+        }
+
+        public virtual void CheckExpressionType(SpecialSymbol specialSymbol, DiagnosticBag diagnostics)
+        {
+            if (this.DeclaringCompilation is null) return;
+            var expectedType = this.DeclaringCompilation.GetSpecialSymbol(specialSymbol) as TypeSymbol;
+            this.CheckExpressionType(expectedType, diagnostics);
         }
 
         public virtual bool IsInferencePending => false;

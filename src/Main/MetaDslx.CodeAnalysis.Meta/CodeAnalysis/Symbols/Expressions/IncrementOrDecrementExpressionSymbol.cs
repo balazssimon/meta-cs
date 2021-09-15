@@ -42,5 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Operator method used by the operation, null if the operation does not use an operator method.
         /// </summary>
         public virtual BinaryOperatorSymbol? OperatorMethod { get; }
+
+        public override TypeSymbol? Type => Target?.Type;
     }
 }

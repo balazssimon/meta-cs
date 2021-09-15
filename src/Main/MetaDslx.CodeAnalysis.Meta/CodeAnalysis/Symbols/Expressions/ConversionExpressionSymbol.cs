@@ -46,5 +46,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public abstract bool IsChecked { get; }
 
+        public override bool IsConstant => Operand?.IsConstant ?? false;
+
+        public override TypeSymbol? Type => TargetType;
+
     }
 }

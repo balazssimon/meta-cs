@@ -32,26 +32,31 @@ statement
 	|                                 name TColon                      statement #labeledStmt                          
 	| KLock TOpenParen                        lockedValue=expression TCloseParen                 body=statement #lockStmt                       
 	| KReturn                          returnedValue=expression TSemicolon #returnStmt                         
-	| KSwitch TOpenParen                  value=expression TCloseParen TOpenBrace                  switchCase* TCloseBrace #switchStmt                         
-	| KTry                 body=blockStatement                    catchClause*                    finallyClause? #tryStmt
+	| KSwitch TOpenParen                  value=expression TCloseParen TOpenBrace switchCase* TCloseBrace #switchStmt                         
+	| KTry                 body=blockStatement catchClause*                    finallyClause? #tryStmt
 	| usingHeader+                 body=statement #usingStmt                        
 	| KWhile TOpenParen                                                                condition=expression TCloseParen                 body=statement #whileStmt                            
 	| KDo                 body=statement KWhile TOpenParen                                                                 condition=expression TCloseParen TSemicolon #doWhileStmt                            
 	;
 
                        
-blockStatement : TOpenBrace                       statement* TCloseBrace;
+                      
+blockStatement : TOpenBrace statement* TCloseBrace;
                        
-bareBlockStatement :                       statement+;
+                      
+bareBlockStatement : statement+;
 
+                
                    
-switchCase:                    caseClause+                 bareBlockStatement;
+switchCase: caseClause+                 bareBlockStatement;
+                   
 caseClause: singleValueCaseClause | defaultCaseClause; 
                               
 singleValueCaseClause: KCase                  value=expression TColon;
                           
 defaultCaseClause: KDefault TColon;
 
+                  
                     
 catchClause: KCatch (TOpenParen                                             value=expression TCloseParen catchFilter?)?                    handler=blockStatement;
 catchFilter: KWhen                   filter=expression;
@@ -105,7 +110,7 @@ expression
 	|                   target=expression TAssign                  value=expression #assignExpr                              
 	|                   target=expression                         compoundAssignmentOperator                  value=expression #compAssignExpr                                      
 	| lambdaSignature TArrow lambdaBody #lambdaExpr                          
-	|                                    KConst?                 variableType                      variableDefList #varDefExpr                                             
+	|                                    KConst?                 variableType                      variableDefList #varDefExpr                                       
 	;
 
                     

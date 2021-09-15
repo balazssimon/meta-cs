@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -15,5 +17,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         [SymbolProperty]
         public abstract StatementSymbol? IfFalse { get; }
+
+        protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            base.CompleteValidatingSymbol(diagnostics, cancellationToken);
+            Condition?.CheckExpressionType(SpecialSymbol.System_Boolean, diagnostics);
+        }
     }
 }

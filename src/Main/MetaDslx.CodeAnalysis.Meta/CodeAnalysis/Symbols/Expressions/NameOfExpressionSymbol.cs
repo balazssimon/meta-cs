@@ -15,5 +15,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract ExpressionSymbol Argument { get; }
+
+
+        public override bool IsConstant => true;
+
+        public override TypeSymbol? Type => (TypeSymbol?)this.DeclaringCompilation?.GetSpecialSymbol(SpecialSymbol.System_String);
     }
 }

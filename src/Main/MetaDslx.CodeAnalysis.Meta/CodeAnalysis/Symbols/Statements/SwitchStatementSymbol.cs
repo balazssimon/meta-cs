@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -32,5 +34,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Locals declared within the switch operation with scope spanning across all <see cref="Cases" />.
         /// </summary>
         public virtual ImmutableArray<LocalSymbol> Locals { get; }
+
+        protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            base.CompleteValidatingSymbol(diagnostics, cancellationToken);
+            var valueType = Value?.Type;
+            if (valueType is not null)
+            {
+                foreach (var switchCase in this.Cases)
+                {
+                    foreach (var clause in switchCase.Clauses)
+                    {
+                        clause.CheckExpressionType(valueType, diagnostics);
+                    }
+                }
+            }
+        }
     }
 }

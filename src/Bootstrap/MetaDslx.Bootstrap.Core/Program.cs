@@ -22,8 +22,19 @@ namespace MetaDslx.Bootstrap.Core
             //string text = "x => 5*true;";
             //string text = "x => 5*7.0;";
             //string text = "3*4;";
-            //string text = "3..4;";
-            string text = "if (x) 5; else 6;";
+            //string text = "3..^4;";
+            //            string text = @"
+            //bool x = true; 
+            //if (4==5) 5; else 6;
+            //switch(4)
+            //{
+            //    case x:
+            //    case true: 
+            //    default: break;
+            //}
+            //";
+            //string text = "int x = 5; x = 10;";
+            string text = "var x = 5; x = 10;";
             var syntaxTree = CoreSyntaxTree.ParseText(text);
             var compilation = CoreCompilation.Create("CoreTest")
                 .AddReferences(coreRef)

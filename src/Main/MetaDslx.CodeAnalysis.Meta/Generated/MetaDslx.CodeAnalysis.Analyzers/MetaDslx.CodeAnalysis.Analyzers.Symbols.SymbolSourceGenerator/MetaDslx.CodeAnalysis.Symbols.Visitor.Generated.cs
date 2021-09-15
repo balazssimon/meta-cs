@@ -47,6 +47,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(TypeOfExpressionSymbol symbol);
         void Visit(UnaryExpressionSymbol symbol);
         void Visit(VariableDeclarationExpressionSymbol symbol);
+        void Visit(VariableSymbol symbol);
         void Visit(MemberSymbol symbol);
         void Visit(BinaryOperatorSymbol symbol);
         void Visit(ConstructorSymbol symbol);
@@ -57,7 +58,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(IndexerSymbol symbol);
         void Visit(LambdaSymbol symbol);
         void Visit(MethodSymbol symbol);
-        void Visit(VariableSymbol symbol);
         void Visit(ParameterSymbol symbol);
         void Visit(UnaryOperatorSymbol symbol);
         void Visit(ModuleSymbol symbol);
@@ -138,6 +138,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(TypeOfExpressionSymbol symbol);
         TResult Visit(UnaryExpressionSymbol symbol);
         TResult Visit(VariableDeclarationExpressionSymbol symbol);
+        TResult Visit(VariableSymbol symbol);
         TResult Visit(MemberSymbol symbol);
         TResult Visit(BinaryOperatorSymbol symbol);
         TResult Visit(ConstructorSymbol symbol);
@@ -148,7 +149,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(IndexerSymbol symbol);
         TResult Visit(LambdaSymbol symbol);
         TResult Visit(MethodSymbol symbol);
-        TResult Visit(VariableSymbol symbol);
         TResult Visit(ParameterSymbol symbol);
         TResult Visit(UnaryOperatorSymbol symbol);
         TResult Visit(ModuleSymbol symbol);
@@ -229,6 +229,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(TypeOfExpressionSymbol symbol, TArgument argument);
         TResult Visit(UnaryExpressionSymbol symbol, TArgument argument);
         TResult Visit(VariableDeclarationExpressionSymbol symbol, TArgument argument);
+        TResult Visit(VariableSymbol symbol, TArgument argument);
         TResult Visit(MemberSymbol symbol, TArgument argument);
         TResult Visit(BinaryOperatorSymbol symbol, TArgument argument);
         TResult Visit(ConstructorSymbol symbol, TArgument argument);
@@ -239,7 +240,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(IndexerSymbol symbol, TArgument argument);
         TResult Visit(LambdaSymbol symbol, TArgument argument);
         TResult Visit(MethodSymbol symbol, TArgument argument);
-        TResult Visit(VariableSymbol symbol, TArgument argument);
         TResult Visit(ParameterSymbol symbol, TArgument argument);
         TResult Visit(UnaryOperatorSymbol symbol, TArgument argument);
         TResult Visit(ModuleSymbol symbol, TArgument argument);

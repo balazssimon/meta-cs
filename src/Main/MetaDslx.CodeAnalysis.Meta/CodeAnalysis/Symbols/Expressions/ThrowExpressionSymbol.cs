@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,5 +16,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract ExpressionSymbol? Exception { get; }
+
+        public override void CheckExpressionIsConstant(DiagnosticBag diagnostics)
+        {
+        }
+
+        public override void CheckExpressionType(TypeSymbol? expectedType, DiagnosticBag diagnostics)
+        {
+        }
     }
 }

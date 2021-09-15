@@ -20,5 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public override TypeSymbol? Type { get; }
+
+        public override bool IsConstant => true;
     }
 }

@@ -53,6 +53,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual DeclaredSymbol ReferencedSymbol { get; }
 
+        public override bool IsConstant => ReferencedSymbol is TypeSymbol;
+
+        public override TypeSymbol? Type => ReferencedSymbol as TypeSymbol;
     }
 
 

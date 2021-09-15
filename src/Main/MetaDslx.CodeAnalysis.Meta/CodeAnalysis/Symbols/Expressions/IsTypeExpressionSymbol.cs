@@ -29,5 +29,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract bool IsNegated { get; }
+
+        public override bool IsConstant => ValueOperand?.IsConstant ?? false;
+
+        public override TypeSymbol? Type => (TypeSymbol?)this.DeclaringCompilation?.GetSpecialSymbol(SpecialSymbol.System_Boolean);
     }
 }

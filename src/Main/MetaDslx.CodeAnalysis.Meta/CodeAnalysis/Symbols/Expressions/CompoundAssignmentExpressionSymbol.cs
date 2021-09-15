@@ -43,5 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Operator method used by the operation, null if the operation does not use an operator method.
         /// </summary>
         public virtual MethodSymbol? OperatorMethod { get; }
+
+        public override bool IsConstant => false;
     }
 }
