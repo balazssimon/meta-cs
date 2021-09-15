@@ -36,12 +36,18 @@ namespace MetaDslx.CodeAnalysis.Binding
         private TypeSymbol FLT;
         private TypeSymbol DBL;
 
+        private TypeSymbol IDX;
+        private TypeSymbol RNG;
+
         private TypeSymbol SOC = null;
         private TypeSymbol OSC = null;
 
         private TypeSymbol[] _types;
+        private TypeSymbol[] _indexTypes;
         private BinaryOperatorSignature[][,] _table;
         private BinaryOperatorSignature[][,] _liftedTable;
+        private BinaryOperatorSignature[,] _rangeTable;
+        private BinaryOperatorSignature[,] _liftedRangeTable;
 
         public StandardBinaryOperators(LanguageCompilation compilation) 
             : base(compilation)
@@ -52,6 +58,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             Interlocked.CompareExchange(ref _table, CreateTable(), null);
             Interlocked.CompareExchange(ref _liftedTable, CreateLiftedTable(), null);
+            Interlocked.CompareExchange(ref _rangeTable, CreateRangeTable(), null);
+            Interlocked.CompareExchange(ref _liftedRangeTable, CreateLiftedRangeTable(), null);
         }
 
         private void CreateSpecialTypes()
@@ -73,6 +81,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             Interlocked.CompareExchange(ref R32, Compilation.GetSpecialType(SpecialType.System_Single), null);
             Interlocked.CompareExchange(ref R64, Compilation.GetSpecialType(SpecialType.System_Double), null);
             Interlocked.CompareExchange(ref DEC, Compilation.GetSpecialType(SpecialType.System_Decimal), null);
+            Interlocked.CompareExchange(ref IDX, (TypeSymbol)Compilation.GetSpecialSymbol(SpecialSymbol.System_Index), null);
+            Interlocked.CompareExchange(ref RNG, (TypeSymbol)Compilation.GetSpecialSymbol(SpecialSymbol.System_Range), null);
 
             Interlocked.CompareExchange(ref INT, I32, null);
             Interlocked.CompareExchange(ref LNG, I64, null);
@@ -83,6 +93,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             var types = new TypeSymbol[] { OBJ, STR, BOL, CHR, I08, I16, I32, I64, U08, U16, U32, U64, NIN, NUI, R32, R64, DEC };
             Interlocked.CompareExchange(ref _types, types, null);
+            var indexTypes = new TypeSymbol[] { IDX, OBJ, STR, BOL, CHR, I08, I16, I32, I64, U08, U16, U32, U64, NIN, NUI, R32, R64, DEC };
+            Interlocked.CompareExchange(ref _indexTypes, indexTypes, null);
         }
 
         // Overload resolution for Y * / - % < > <= >= X
@@ -214,7 +226,34 @@ namespace MetaDslx.CodeAnalysis.Binding
             };
         }
 
-        private BinaryOperatorSignature[,] CreateSignatures(BinaryOperatorKind kind, TypeSymbol[,] operandTypes)
+        // Overload resolution for Y..X
+        private TypeSymbol[,] GetRange()
+        {
+            return new TypeSymbol[,] {
+                //          idx, obj  str  bool chr  i08  i16  i32  i64  u08  u16  u32  u64 nint nuint r32  r64  dec  
+                /*  idx */{ IDX, ERR, ERR, ERR, IDX, IDX, IDX, IDX, ERR, IDX, IDX, ERR, ERR, IDX, ERR, ERR, ERR, ERR },
+                /*  obj */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /*  str */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /* bool */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /*  chr */{ IDX, ERR, ERR, ERR, INT, INT, INT, INT, ERR, INT, INT, ERR, ERR, INT, ERR, ERR, ERR, ERR },
+                /*  i08 */{ IDX, ERR, ERR, ERR, INT, INT, INT, INT, ERR, INT, INT, ERR, ERR, INT, ERR, ERR, ERR, ERR },
+                /*  i16 */{ IDX, ERR, ERR, ERR, INT, INT, INT, INT, ERR, INT, INT, ERR, ERR, INT, ERR, ERR, ERR, ERR },
+                /*  i32 */{ IDX, ERR, ERR, ERR, INT, INT, INT, INT, ERR, INT, INT, ERR, ERR, INT, ERR, ERR, ERR, ERR },
+                /*  i64 */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /*  u08 */{ IDX, ERR, ERR, ERR, INT, INT, INT, INT, ERR, INT, INT, ERR, ERR, INT, ERR, ERR, ERR, ERR },
+                /*  u16 */{ IDX, ERR, ERR, ERR, INT, INT, INT, INT, ERR, INT, INT, ERR, ERR, INT, ERR, ERR, ERR, ERR },
+                /*  u32 */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /*  u64 */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /* nint */{ IDX, ERR, ERR, ERR, INT, INT, INT, INT, ERR, INT, INT, ERR, ERR, INT, ERR, ERR, ERR, ERR },
+                /*nuint */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /*  r32 */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /*  r64 */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+                /*  dec */{ ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR },
+            };
+        }
+
+
+        private BinaryOperatorSignature[,] CreateSignatures(BinaryOperatorKind kind, TypeSymbol[] types, TypeSymbol[,] operandTypes)
         {
             var rows = operandTypes.GetLength(0);
             var cols = operandTypes.GetLength(1);
@@ -224,8 +263,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 for (int j = 0; j < cols; j++)
                 {
                     var opType = operandTypes[i, j];
-                    var originalLeftType = _types[i];
-                    var originalRightType = _types[j];
+                    var originalLeftType = types[i];
+                    var originalRightType = types[j];
                     var leftType = opType;
                     var rightType = opType;
                     var returnType = opType;
@@ -253,6 +292,12 @@ namespace MetaDslx.CodeAnalysis.Binding
                             rightType = ERR;
                         }
                     }
+                    if (kind == BinaryOperatorKind.Range)
+                    {
+                        if (originalLeftType == IDX) leftType = originalLeftType;
+                        if (originalRightType == IDX) leftType = originalRightType;
+                        if (returnType != ERR) returnType = RNG;
+                    }
                     result[i, j] = (leftType == ERR || rightType == ERR || returnType == ERR) ? BinaryOperatorSignature.Error : new BinaryOperatorSignature(kind, leftType, rightType, returnType);
                 }
             }
@@ -264,26 +309,25 @@ namespace MetaDslx.CodeAnalysis.Binding
             CreateSpecialTypes();
             return new BinaryOperatorSignature[][,]
             {
-                CreateSignatures(BinaryOperatorKind.Multiplication, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.Addition, GetAddition()),
-                CreateSignatures(BinaryOperatorKind.Subtraction, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.Division, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.Remainder, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.LeftShift, GetShift()),
-                CreateSignatures(BinaryOperatorKind.RightShift, GetShift()),
-                CreateSignatures(BinaryOperatorKind.Equal, GetEquality()),
-                CreateSignatures(BinaryOperatorKind.NotEqual, GetEquality()),
-                CreateSignatures(BinaryOperatorKind.GreaterThan, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.LessThan, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.GreaterThanOrEqual, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.LessThanOrEqual, GetArithmetic()),
-                CreateSignatures(BinaryOperatorKind.LogicalAnd, GetLogical()),
-                CreateSignatures(BinaryOperatorKind.LogicalXor, GetLogical()),
-                CreateSignatures(BinaryOperatorKind.LogicalOr, GetLogical()),
-                CreateSignatures(BinaryOperatorKind.BitwiseAnd, GetLogical()),
-                CreateSignatures(BinaryOperatorKind.BitwiseXor, GetLogical()),
-                CreateSignatures(BinaryOperatorKind.BitwiseOr, GetLogical()),
-                CreateSignatures(BinaryOperatorKind.Range, GetLogical()),
+                CreateSignatures(BinaryOperatorKind.Multiplication, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.Addition, _types, GetAddition()),
+                CreateSignatures(BinaryOperatorKind.Subtraction, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.Division, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.Remainder, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.LeftShift, _types, GetShift()),
+                CreateSignatures(BinaryOperatorKind.RightShift, _types, GetShift()),
+                CreateSignatures(BinaryOperatorKind.Equal, _types, GetEquality()),
+                CreateSignatures(BinaryOperatorKind.NotEqual, _types, GetEquality()),
+                CreateSignatures(BinaryOperatorKind.GreaterThan, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.LessThan, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.GreaterThanOrEqual, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.LessThanOrEqual, _types, GetArithmetic()),
+                CreateSignatures(BinaryOperatorKind.LogicalAnd, _types, GetLogical()),
+                CreateSignatures(BinaryOperatorKind.LogicalXor, _types, GetLogical()),
+                CreateSignatures(BinaryOperatorKind.LogicalOr, _types, GetLogical()),
+                CreateSignatures(BinaryOperatorKind.BitwiseAnd, _types, GetLogical()),
+                CreateSignatures(BinaryOperatorKind.BitwiseXor, _types, GetLogical()),
+                CreateSignatures(BinaryOperatorKind.BitwiseOr, _types, GetLogical()),
             };
         }
 
@@ -292,61 +336,102 @@ namespace MetaDslx.CodeAnalysis.Binding
             var result = new BinaryOperatorSignature[_table.Length][,];
             for (int k = 0; k < _table.Length; k++)
             {
-                var entry = _table[k];
-                var rows = entry.GetLength(0);
-                var cols = entry.GetLength(1);
-                var lifted = new BinaryOperatorSignature[rows, cols];
-                result[k] = lifted;
-                for (int i = 0; i < rows; i++)
-                {
-                    for (int j = 0; j < cols; j++)
-                    {
-                        var signature = entry[i, j];
-                        lifted[i, j] = signature.AsLifted();
-                    }
-                }
+                result[k] = CreateLiftedTable(_table[k]);
             }
             return result;
+        }
+
+        private BinaryOperatorSignature[,] CreateLiftedRangeTable()
+        {
+            return CreateLiftedTable(_rangeTable);
+        }
+
+        private BinaryOperatorSignature[,] CreateRangeTable()
+        {
+            CreateSpecialTypes();
+            return CreateSignatures(BinaryOperatorKind.Range, _indexTypes, GetRange());
+        }
+
+        private BinaryOperatorSignature[,] CreateLiftedTable(BinaryOperatorSignature[,] entry)
+        {
+            var rows = entry.GetLength(0);
+            var cols = entry.GetLength(1);
+            var lifted = new BinaryOperatorSignature[rows, cols];
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    var signature = entry[i, j];
+                    lifted[i, j] = signature.AsLifted();
+                }
+            }
+            return lifted;
         }
 
         public override BinaryOperatorSignature ClassifyOperatorByType(BinaryOperatorKind kind, TypeSymbol left, TypeSymbol right)
         {
             if (_table is null) ComputeTable();
-            var leftNullable = false;
-            if (left is NullableTypeSymbol leftNts)
-            {
-                left = leftNts.InnerType;
-                leftNullable = true;
-            }
-            var leftSpecialSymbol = left.GetSpecialSymbol(Compilation.Language);
-            var leftIndex = -1;
-            if (leftSpecialSymbol is SpecialSymbol leftSpecialType)
-            {
-                leftIndex = leftSpecialType.ToSpecialType().TypeToIndex();
-            }
-            if (leftIndex < 0)
-            {
-                return BinaryOperatorSignature.Error;
-            }
-            var rightNullable = false;
-            if (right is NullableTypeSymbol rightNts)
-            {
-                right = rightNts.InnerType;
-                rightNullable = true;
-            }
-            var rightSpecialSymbol = right.GetSpecialSymbol(Compilation.Language);
-            var rightIndex = -1;
-            if (rightSpecialSymbol is SpecialSymbol rightSpecialType)
-            {
-                rightIndex = rightSpecialType.ToSpecialType().TypeToIndex();
-            }
-            if (rightIndex < 0)
-            {
-                return BinaryOperatorSignature.Error;
-            }
+            if (kind == BinaryOperatorKind.Range) return this.ClassifyRange(left, right);
+
+            var leftNullable = IsNullable(ref left);
+            var leftIndex = GetIndex(left);
+            if (leftIndex < 0) return BinaryOperatorSignature.Error;
+
+            var rightNullable = IsNullable(ref right);
+            var rightIndex = GetIndex(right);
+            if (rightIndex < 0) return BinaryOperatorSignature.Error;
+
             int kindIndex = kind.StandardIndex;
             if (kindIndex < 0 || kindIndex >= _table.Length) return BinaryOperatorSignature.Error;
             else return leftNullable || rightNullable ? _liftedTable[kindIndex][leftIndex, rightIndex] : _table[kindIndex][leftIndex, rightIndex];
+        }
+
+
+        protected virtual BinaryOperatorSignature ClassifyRange(TypeSymbol left, TypeSymbol right)
+        {
+            var leftNullable = IsNullable(ref left);
+            var leftIndex = GetRangeIndex(left);
+            if (leftIndex < 0) return BinaryOperatorSignature.Error;
+
+            var rightNullable = IsNullable(ref right);
+            var rightIndex = GetRangeIndex(right);
+            if (rightIndex < 0) return BinaryOperatorSignature.Error;
+
+            return leftNullable || rightNullable ? _liftedRangeTable[leftIndex, rightIndex] : _rangeTable[leftIndex, rightIndex];
+        }
+
+        private bool IsNullable(ref TypeSymbol type)
+        {
+            if (type is NullableTypeSymbol nts)
+            {
+                type = nts.InnerType;
+                return true;
+            }
+            return false;
+        }
+
+        private int GetIndex(TypeSymbol type)
+        {
+            var specialSymbol = type.GetSpecialSymbol(Compilation.Language);
+            var index = -1;
+            if (specialSymbol is SpecialSymbol specialSymbolType)
+            {
+                index = specialSymbolType.ToSpecialType().TypeToIndex();
+            }
+            return index;
+        }
+
+        private int GetRangeIndex(TypeSymbol type)
+        {
+            if (type.IsSpecialSymbol(SpecialSymbol.System_Index, Compilation.Language)) return 0;
+            var specialSymbol = type.GetSpecialSymbol(Compilation.Language);
+            var index = -1;
+            if (specialSymbol is SpecialSymbol specialSymbolType)
+            {
+                index = specialSymbolType.ToSpecialType().TypeToIndex();
+                if (index >= 0) index += 1;
+            }
+            return index;
         }
     }
 }

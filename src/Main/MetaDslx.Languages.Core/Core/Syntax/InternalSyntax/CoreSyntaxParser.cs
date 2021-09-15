@@ -3121,6 +3121,21 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.AwaitExpr(kAwait, expression);
 			}
 			
+			public override GreenNode VisitRangeExpr(CoreParser.RangeExprContext context)
+			{
+				if (context == null) return RangeExprGreen.__Missing;
+				CoreParser.ExpressionContext leftContext = context.left;
+				ExpressionGreen left = null;
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
+				InternalSyntaxToken tDotDot = (InternalSyntaxToken)this.VisitTerminal(context.TDotDot(), CoreSyntaxKind.TDotDot);
+				CoreParser.ExpressionContext rightContext = context.right;
+				ExpressionGreen right = null;
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
+				return _factory.RangeExpr(left, tDotDot, right);
+			}
+			
 			public override GreenNode VisitMultExpr(CoreParser.MultExprContext context)
 			{
 				if (context == null) return MultExprGreen.__Missing;

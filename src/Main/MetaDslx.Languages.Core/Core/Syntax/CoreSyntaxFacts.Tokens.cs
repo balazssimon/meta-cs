@@ -109,20 +109,6 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KDiscard:
 				case CoreTokensSyntaxKind.KThrow:
 				case CoreTokensSyntaxKind.KStatic:
-				case CoreTokensSyntaxKind.TSemicolon:
-				case CoreTokensSyntaxKind.TColon:
-				case CoreTokensSyntaxKind.TDot:
-				case CoreTokensSyntaxKind.TComma:
-				case CoreTokensSyntaxKind.TAssign:
-				case CoreTokensSyntaxKind.TOpenParen:
-				case CoreTokensSyntaxKind.TCloseParen:
-				case CoreTokensSyntaxKind.TOpenBracket:
-				case CoreTokensSyntaxKind.TCloseBracket:
-				case CoreTokensSyntaxKind.TOpenBrace:
-				case CoreTokensSyntaxKind.TCloseBrace:
-				case CoreTokensSyntaxKind.TLessThan:
-				case CoreTokensSyntaxKind.TGreaterThan:
-				case CoreTokensSyntaxKind.TQuestion:
 				case CoreTokensSyntaxKind.TQuestionDot:
 				case CoreTokensSyntaxKind.TQuestionOpenBracket:
 				case CoreTokensSyntaxKind.TQuestionQuestion:
@@ -155,6 +141,21 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.TAmpersandAssign:
 				case CoreTokensSyntaxKind.THatAssign:
 				case CoreTokensSyntaxKind.TBarAssign:
+				case CoreTokensSyntaxKind.TDotDot:
+				case CoreTokensSyntaxKind.TSemicolon:
+				case CoreTokensSyntaxKind.TColon:
+				case CoreTokensSyntaxKind.TDot:
+				case CoreTokensSyntaxKind.TComma:
+				case CoreTokensSyntaxKind.TAssign:
+				case CoreTokensSyntaxKind.TOpenParen:
+				case CoreTokensSyntaxKind.TCloseParen:
+				case CoreTokensSyntaxKind.TOpenBracket:
+				case CoreTokensSyntaxKind.TCloseBracket:
+				case CoreTokensSyntaxKind.TOpenBrace:
+				case CoreTokensSyntaxKind.TCloseBrace:
+				case CoreTokensSyntaxKind.TLessThan:
+				case CoreTokensSyntaxKind.TGreaterThan:
+				case CoreTokensSyntaxKind.TQuestion:
 				case CoreTokensSyntaxKind.IdentifierNormal:
 				case CoreTokensSyntaxKind.IdentifierVerbatim:
 				case CoreTokensSyntaxKind.LInteger:
@@ -234,20 +235,6 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KDiscard:
 				case CoreTokensSyntaxKind.KThrow:
 				case CoreTokensSyntaxKind.KStatic:
-				case CoreTokensSyntaxKind.TSemicolon:
-				case CoreTokensSyntaxKind.TColon:
-				case CoreTokensSyntaxKind.TDot:
-				case CoreTokensSyntaxKind.TComma:
-				case CoreTokensSyntaxKind.TAssign:
-				case CoreTokensSyntaxKind.TOpenParen:
-				case CoreTokensSyntaxKind.TCloseParen:
-				case CoreTokensSyntaxKind.TOpenBracket:
-				case CoreTokensSyntaxKind.TCloseBracket:
-				case CoreTokensSyntaxKind.TOpenBrace:
-				case CoreTokensSyntaxKind.TCloseBrace:
-				case CoreTokensSyntaxKind.TLessThan:
-				case CoreTokensSyntaxKind.TGreaterThan:
-				case CoreTokensSyntaxKind.TQuestion:
 				case CoreTokensSyntaxKind.TQuestionDot:
 				case CoreTokensSyntaxKind.TQuestionOpenBracket:
 				case CoreTokensSyntaxKind.TQuestionQuestion:
@@ -279,6 +266,21 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.TAmpersandAssign:
 				case CoreTokensSyntaxKind.THatAssign:
 				case CoreTokensSyntaxKind.TBarAssign:
+				case CoreTokensSyntaxKind.TDotDot:
+				case CoreTokensSyntaxKind.TSemicolon:
+				case CoreTokensSyntaxKind.TColon:
+				case CoreTokensSyntaxKind.TDot:
+				case CoreTokensSyntaxKind.TComma:
+				case CoreTokensSyntaxKind.TAssign:
+				case CoreTokensSyntaxKind.TOpenParen:
+				case CoreTokensSyntaxKind.TCloseParen:
+				case CoreTokensSyntaxKind.TOpenBracket:
+				case CoreTokensSyntaxKind.TCloseBracket:
+				case CoreTokensSyntaxKind.TOpenBrace:
+				case CoreTokensSyntaxKind.TCloseBrace:
+				case CoreTokensSyntaxKind.TLessThan:
+				case CoreTokensSyntaxKind.TGreaterThan:
+				case CoreTokensSyntaxKind.TQuestion:
 				case CoreTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 				case CoreTokensSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
 				case CoreTokensSyntaxKind.LCommentStart:
@@ -388,34 +390,6 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.KThrow;
 				case "static":
 					return CoreTokensSyntaxKind.KStatic;
-				case ";":
-					return CoreTokensSyntaxKind.TSemicolon;
-				case ":":
-					return CoreTokensSyntaxKind.TColon;
-				case ".":
-					return CoreTokensSyntaxKind.TDot;
-				case ",":
-					return CoreTokensSyntaxKind.TComma;
-				case "=":
-					return CoreTokensSyntaxKind.TAssign;
-				case "(":
-					return CoreTokensSyntaxKind.TOpenParen;
-				case ")":
-					return CoreTokensSyntaxKind.TCloseParen;
-				case "[":
-					return CoreTokensSyntaxKind.TOpenBracket;
-				case "]":
-					return CoreTokensSyntaxKind.TCloseBracket;
-				case "{":
-					return CoreTokensSyntaxKind.TOpenBrace;
-				case "}":
-					return CoreTokensSyntaxKind.TCloseBrace;
-				case "<":
-					return CoreTokensSyntaxKind.TLessThan;
-				case ">":
-					return CoreTokensSyntaxKind.TGreaterThan;
-				case "?":
-					return CoreTokensSyntaxKind.TQuestion;
 				case "?.":
 					return CoreTokensSyntaxKind.TQuestionDot;
 				case "?[":
@@ -478,6 +452,36 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.THatAssign;
 				case "|=":
 					return CoreTokensSyntaxKind.TBarAssign;
+				case "..":
+					return CoreTokensSyntaxKind.TDotDot;
+				case ";":
+					return CoreTokensSyntaxKind.TSemicolon;
+				case ":":
+					return CoreTokensSyntaxKind.TColon;
+				case ".":
+					return CoreTokensSyntaxKind.TDot;
+				case ",":
+					return CoreTokensSyntaxKind.TComma;
+				case "=":
+					return CoreTokensSyntaxKind.TAssign;
+				case "(":
+					return CoreTokensSyntaxKind.TOpenParen;
+				case ")":
+					return CoreTokensSyntaxKind.TCloseParen;
+				case "[":
+					return CoreTokensSyntaxKind.TOpenBracket;
+				case "]":
+					return CoreTokensSyntaxKind.TCloseBracket;
+				case "{":
+					return CoreTokensSyntaxKind.TOpenBrace;
+				case "}":
+					return CoreTokensSyntaxKind.TCloseBrace;
+				case "<":
+					return CoreTokensSyntaxKind.TLessThan;
+				case ">":
+					return CoreTokensSyntaxKind.TGreaterThan;
+				case "?":
+					return CoreTokensSyntaxKind.TQuestion;
 				case "@\"":
 					return CoreTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
 				case "@\'":
@@ -591,34 +595,6 @@ namespace MetaDslx.Languages.Core.Syntax
 					return "throw";
 				case CoreTokensSyntaxKind.KStatic:
 					return "static";
-				case CoreTokensSyntaxKind.TSemicolon:
-					return ";";
-				case CoreTokensSyntaxKind.TColon:
-					return ":";
-				case CoreTokensSyntaxKind.TDot:
-					return ".";
-				case CoreTokensSyntaxKind.TComma:
-					return ",";
-				case CoreTokensSyntaxKind.TAssign:
-					return "=";
-				case CoreTokensSyntaxKind.TOpenParen:
-					return "(";
-				case CoreTokensSyntaxKind.TCloseParen:
-					return ")";
-				case CoreTokensSyntaxKind.TOpenBracket:
-					return "[";
-				case CoreTokensSyntaxKind.TCloseBracket:
-					return "]";
-				case CoreTokensSyntaxKind.TOpenBrace:
-					return "{";
-				case CoreTokensSyntaxKind.TCloseBrace:
-					return "}";
-				case CoreTokensSyntaxKind.TLessThan:
-					return "<";
-				case CoreTokensSyntaxKind.TGreaterThan:
-					return ">";
-				case CoreTokensSyntaxKind.TQuestion:
-					return "?";
 				case CoreTokensSyntaxKind.TQuestionDot:
 					return "?.";
 				case CoreTokensSyntaxKind.TQuestionOpenBracket:
@@ -681,6 +657,36 @@ namespace MetaDslx.Languages.Core.Syntax
 					return "^=";
 				case CoreTokensSyntaxKind.TBarAssign:
 					return "|=";
+				case CoreTokensSyntaxKind.TDotDot:
+					return "..";
+				case CoreTokensSyntaxKind.TSemicolon:
+					return ";";
+				case CoreTokensSyntaxKind.TColon:
+					return ":";
+				case CoreTokensSyntaxKind.TDot:
+					return ".";
+				case CoreTokensSyntaxKind.TComma:
+					return ",";
+				case CoreTokensSyntaxKind.TAssign:
+					return "=";
+				case CoreTokensSyntaxKind.TOpenParen:
+					return "(";
+				case CoreTokensSyntaxKind.TCloseParen:
+					return ")";
+				case CoreTokensSyntaxKind.TOpenBracket:
+					return "[";
+				case CoreTokensSyntaxKind.TCloseBracket:
+					return "]";
+				case CoreTokensSyntaxKind.TOpenBrace:
+					return "{";
+				case CoreTokensSyntaxKind.TCloseBrace:
+					return "}";
+				case CoreTokensSyntaxKind.TLessThan:
+					return "<";
+				case CoreTokensSyntaxKind.TGreaterThan:
+					return ">";
+				case CoreTokensSyntaxKind.TQuestion:
+					return "?";
 				case CoreTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 					return "@\"";
 				case CoreTokensSyntaxKind.SingleQuoteVerbatimStringLiteralStart:

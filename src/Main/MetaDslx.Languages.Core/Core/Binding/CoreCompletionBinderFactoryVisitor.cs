@@ -60,6 +60,9 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_TypeCastExpr_TypeReference = new object();
 		public static object Use_TypeCastExpr_Expression = new object();
 		public static object Use_AwaitExpr_Expression = new object();
+		public static object Use_RangeExpr_Left = new object();
+		public static object Use_RangeExpr_TDotDot = new object();
+		public static object Use_RangeExpr_Right = new object();
 		public static object Use_MultExpr_Left = new object();
 		public static object Use_MultExpr_MultiplicativeOperator = new object();
 		public static object Use_MultExpr_Right = new object();
@@ -1365,6 +1368,67 @@ namespace MetaDslx.Languages.Core.Binding
 		        }
 		    }
 		    position += parent.Expression.FullSpan.Length;
+		}
+		
+		public void VisitRangeExpr(RangeExprSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.Left.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Left.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Left);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForRangeExpr(Use_RangeExpr_Left, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Left);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Left == null || parent.Left.IsMissing) AddResultsForRangeExpr(Use_RangeExpr_Left, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Left);
+		        }
+		    }
+		    position += parent.Left.FullSpan.Length;
+		    if (parent.TDotDot.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.TDotDot.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TDotDot);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForRangeExpr(Use_RangeExpr_TDotDot, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TDotDot);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TDotDot.GetKind() == SyntaxKind.None || parent.TDotDot.IsMissing) AddResultsForRangeExpr(Use_RangeExpr_TDotDot, operation, Compilation.GetBinder(parent));
+		            else AddBinder(parent.TDotDot, operation);
+		        }
+		    }
+		    position += parent.TDotDot.FullSpan.Length;
+		    if (parent.Right.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Right.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Right);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForRangeExpr(Use_RangeExpr_Right, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Right);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Right == null || parent.Right.IsMissing) AddResultsForRangeExpr(Use_RangeExpr_Right, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Right);
+		        }
+		    }
+		    position += parent.Right.FullSpan.Length;
 		}
 		
 		public void VisitMultExpr(MultExprSyntax parent) // -1
@@ -4203,6 +4267,9 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_AwaitExpr_Expression) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForAwaitExpr(altUse, operation, parentBinder);
+            if (use == Use_RangeExpr_Left || use == Use_RangeExpr_TDotDot || use == Use_RangeExpr_Right) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForRangeExpr(altUse, operation, parentBinder);
             if (use == Use_MultExpr_Left || use == Use_MultExpr_MultiplicativeOperator || use == Use_MultExpr_Right) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForMultExpr(altUse, operation, parentBinder);
@@ -4843,6 +4910,37 @@ namespace MetaDslx.Languages.Core.Binding
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Operation", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForRangeExpr(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(BinaryExpression), forCompletion: true);
+            if (use == UnassignedUse || use == Use_RangeExpr_Left)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "LeftOperand", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_RangeExpr_TDotDot)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "OperatorKind", forCompletion: true);
+            	binder = this.BinderFactory.CreateValueBinder(binder, null, value: BinaryOperatorKind.Range, forCompletion: true);
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TDotDot, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_RangeExpr_Right)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "RightOperand", forCompletion: true);
                 AddResultsForExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
@@ -5845,6 +5943,7 @@ namespace MetaDslx.Languages.Core.Binding
             	TMinusMinusBinder = this.BinderFactory.CreateValueBinder(TMinusMinusBinder, this.SyntaxFactory.MissingToken((CoreSyntaxKind)CoreSyntaxKind.TMinusMinus), value: UnaryOperatorKind.PrefixDecrement, forCompletion: true);
             	AddBinder(TMinusMinusBinder, (CoreSyntaxKind)CoreSyntaxKind.TMinusMinus, operation);
             	var THatBinder = binder;
+            	THatBinder = this.BinderFactory.CreateValueBinder(THatBinder, this.SyntaxFactory.MissingToken((CoreSyntaxKind)CoreSyntaxKind.THat), value: UnaryOperatorKind.IndexFromEnd, forCompletion: true);
             	AddBinder(THatBinder, (CoreSyntaxKind)CoreSyntaxKind.THat, operation);
                 use = FinishedUse;
             }

@@ -51,6 +51,7 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string UnaryExpr = nameof(UnaryExpr);
 		public const string TypeCastExpr = nameof(TypeCastExpr);
 		public const string AwaitExpr = nameof(AwaitExpr);
+		public const string RangeExpr = nameof(RangeExpr);
 		public const string MultExpr = nameof(MultExpr);
 		public const string AddExpr = nameof(AddExpr);
 		public const string ShiftExpr = nameof(ShiftExpr);

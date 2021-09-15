@@ -2779,6 +2779,105 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
+	public sealed class RangeExprSyntax : ExpressionSyntax
+	{
+	    private ExpressionSyntax left;
+	    private ExpressionSyntax right;
+	
+	    public RangeExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public RangeExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ExpressionSyntax Left 
+		{ 
+			get { return this.GetRed(ref this.left, 0); } 
+		}
+	    public SyntaxToken TDotDot 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.RangeExprGreen)this.Green;
+				var greenToken = green.TDotDot;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public ExpressionSyntax Right 
+		{ 
+			get { return this.GetRed(ref this.right, 2); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.left, 0);
+				case 2: return this.GetRed(ref this.right, 2);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.left;
+				case 2: return this.right;
+				default: return null;
+	        }
+	    }
+	
+	    public RangeExprSyntax WithLeft(ExpressionSyntax left)
+		{
+			return this.Update(Left, this.TDotDot, this.Right);
+		}
+	
+	    public RangeExprSyntax WithTDotDot(SyntaxToken tDotDot)
+		{
+			return this.Update(this.Left, TDotDot, this.Right);
+		}
+	
+	    public RangeExprSyntax WithRight(ExpressionSyntax right)
+		{
+			return this.Update(this.Left, this.TDotDot, Right);
+		}
+	
+	    public RangeExprSyntax Update(ExpressionSyntax left, SyntaxToken tDotDot, ExpressionSyntax right)
+	    {
+	        if (this.Left != left ||
+				this.TDotDot != tDotDot ||
+				this.Right != right)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.RangeExpr(left, tDotDot, right);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (RangeExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitRangeExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitRangeExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitRangeExpr(this);
+	    }
+	}
+	
 	public sealed class MultExprSyntax : ExpressionSyntax
 	{
 	    private ExpressionSyntax left;
@@ -9054,6 +9153,8 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitAwaitExpr(AwaitExprSyntax node);
 		
+		void VisitRangeExpr(RangeExprSyntax node);
+		
 		void VisitMultExpr(MultExprSyntax node);
 		
 		void VisitAddExpr(AddExprSyntax node);
@@ -9326,6 +9427,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual void VisitAwaitExpr(AwaitExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitRangeExpr(RangeExprSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -9734,6 +9840,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitAwaitExpr(AwaitExprSyntax node, TArg argument);
 		
+		TResult VisitRangeExpr(RangeExprSyntax node, TArg argument);
+		
 		TResult VisitMultExpr(MultExprSyntax node, TArg argument);
 		
 		TResult VisitAddExpr(AddExprSyntax node, TArg argument);
@@ -10006,6 +10114,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitAwaitExpr(AwaitExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitRangeExpr(RangeExprSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -10412,6 +10525,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitAwaitExpr(AwaitExprSyntax node);
 		
+		TResult VisitRangeExpr(RangeExprSyntax node);
+		
 		TResult VisitMultExpr(MultExprSyntax node);
 		
 		TResult VisitAddExpr(AddExprSyntax node);
@@ -10684,6 +10799,11 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitAwaitExpr(AwaitExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitRangeExpr(RangeExprSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -11251,6 +11371,14 @@ namespace MetaDslx.Languages.Core
 		    var kAwait = this.VisitToken(node.KAwait);
 		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
 			return node.Update(kAwait, expression);
+		}
+		
+		public virtual SyntaxNode VisitRangeExpr(RangeExprSyntax node)
+		{
+		    var left = (ExpressionSyntax)this.Visit(node.Left);
+		    var tDotDot = this.VisitToken(node.TDotDot);
+		    var right = (ExpressionSyntax)this.Visit(node.Right);
+			return node.Update(left, tDotDot, right);
 		}
 		
 		public virtual SyntaxNode VisitMultExpr(MultExprSyntax node)
@@ -12421,6 +12549,20 @@ namespace MetaDslx.Languages.Core
 			return this.AwaitExpr(this.Token(CoreSyntaxKind.KAwait), expression);
 		}
 		
+		public RangeExprSyntax RangeExpr(ExpressionSyntax left, SyntaxToken tDotDot, ExpressionSyntax right)
+		{
+		    if (left == null) throw new ArgumentNullException(nameof(left));
+		    if (tDotDot == null) throw new ArgumentNullException(nameof(tDotDot));
+		    if (tDotDot.GetKind() != CoreSyntaxKind.TDotDot) throw new ArgumentException(nameof(tDotDot));
+		    if (right == null) throw new ArgumentNullException(nameof(right));
+		    return (RangeExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.RangeExpr((Syntax.InternalSyntax.ExpressionGreen)left.Green, (InternalSyntaxToken)tDotDot.Node, (Syntax.InternalSyntax.ExpressionGreen)right.Green).CreateRed();
+		}
+		
+		public RangeExprSyntax RangeExpr(ExpressionSyntax left, ExpressionSyntax right)
+		{
+			return this.RangeExpr(left, this.Token(CoreSyntaxKind.TDotDot), right);
+		}
+		
 		public MultExprSyntax MultExpr(ExpressionSyntax left, MultiplicativeOperatorSyntax multiplicativeOperator, ExpressionSyntax right)
 		{
 		    if (left == null) throw new ArgumentNullException(nameof(left));
@@ -13148,6 +13290,7 @@ namespace MetaDslx.Languages.Core
 				typeof(UnaryExprSyntax),
 				typeof(TypeCastExprSyntax),
 				typeof(AwaitExprSyntax),
+				typeof(RangeExprSyntax),
 				typeof(MultExprSyntax),
 				typeof(AddExprSyntax),
 				typeof(ShiftExprSyntax),

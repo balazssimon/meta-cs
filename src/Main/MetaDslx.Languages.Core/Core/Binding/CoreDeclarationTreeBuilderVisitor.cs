@@ -655,6 +655,62 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitRangeExpr(RangeExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(BinaryExpression));
+			try
+			{
+				if (node.Left != null)
+				{
+				    this.BeginProperty(node.Left, name: "LeftOperand");
+				    try
+				    {
+				    	this.Visit(node.Left);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Left, name: "LeftOperand");
+				    }
+				}
+				if (node.TDotDot.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+				{
+				    this.BeginProperty(node.TDotDot, name: "OperatorKind");
+				    try
+				    {
+				    	this.BeginValue(node.TDotDot, value: BinaryOperatorKind.Range);
+				    	try
+				    	{
+				    		this.Visit(node.TDotDot);
+				    	}
+				    	finally
+				    	{
+				    		this.EndValue(node.TDotDot, value: BinaryOperatorKind.Range);
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.TDotDot, name: "OperatorKind");
+				    }
+				}
+				if (node.Right != null)
+				{
+				    this.BeginProperty(node.Right, name: "RightOperand");
+				    try
+				    {
+				    	this.Visit(node.Right);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Right, name: "RightOperand");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(BinaryExpression));
+			}
+		}
+		
 		public virtual void VisitMultExpr(MultExprSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(BinaryExpression));
@@ -1976,7 +2032,15 @@ namespace MetaDslx.Languages.Core.Binding
 			    		}
 			    		break;
 			    	case CoreSyntaxKind.THat:
-			    		this.Visit(node.UnaryOperator);
+			    		this.BeginValue(node.UnaryOperator, value: UnaryOperatorKind.IndexFromEnd);
+			    		try
+			    		{
+			    			this.Visit(node.UnaryOperator);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.UnaryOperator, value: UnaryOperatorKind.IndexFromEnd);
+			    		}
 			    		break;
 			    	default:
 			    		break;

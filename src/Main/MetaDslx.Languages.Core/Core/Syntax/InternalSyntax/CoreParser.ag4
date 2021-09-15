@@ -50,6 +50,7 @@ expression
 	| $Property(OperatorKind) unaryOperator $Property(Operand) expression #unaryExpr $Define(UnaryExpression)
 	| TOpenParen $Property(TargetType) typeReference TCloseParen $Property(Operand) expression #typeCastExpr $Define(ConversionExpression)
 	| KAwait $Property(Operation) expression #awaitExpr $Define(AwaitExpression)
+	| $Property(LeftOperand) left=expression $Property(OperatorKind) $Value(BinaryOperatorKind.Range) TDotDot $Property(RightOperand) right=expression #rangeExpr $Define(BinaryExpression)
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) multiplicativeOperator $Property(RightOperand) right=expression #multExpr $Define(BinaryExpression)
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) additiveOperator $Property(RightOperand) right=expression #addExpr $Define(BinaryExpression)
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) shiftOperator $Property(RightOperand) right=expression #shiftExpr $Define(BinaryExpression)
@@ -130,7 +131,7 @@ unaryOperator
 	| $Value(UnaryOperatorKind.BitwiseComplement) TTilde
 	| $Value(UnaryOperatorKind.PrefixIncrement) TPlusPlus
 	| $Value(UnaryOperatorKind.PrefixDecrement) TMinusMinus
-	| THat
+	| $Value(UnaryOperatorKind.IndexFromEnd) THat
 	;
 
 multiplicativeOperator

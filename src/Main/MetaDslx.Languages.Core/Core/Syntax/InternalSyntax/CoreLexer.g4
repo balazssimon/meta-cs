@@ -66,22 +66,6 @@ KThrow : 'throw';
 KStatic : 'static';
 
 // Tokens
-TSemicolon : ';';
-TColon : ':';
-TDot : '.';
-                             
-TComma : ',';
-TAssign : '=';
-TOpenParen : '(';
-TCloseParen : ')';
-TOpenBracket : '[' { _brackets++; };
-TCloseBracket : ']' { _brackets--; };
-TOpenBrace : '{';
-TCloseBrace : '}';
-TLessThan : '<';
-TGreaterThan : '>';
-TQuestion : '?';
-
 TQuestionDot : '?.';
 TQuestionOpenBracket : '?[';
 TQuestionQuestion : '??';
@@ -114,6 +98,23 @@ TRightShiftAssign : '>>=';
 TAmpersandAssign : '&=';
 THatAssign : '^=';
 TBarAssign : '|=';
+TDotDot : '..';
+
+TSemicolon : ';';
+TColon : ':';
+TDot : '.';
+                             
+TComma : ',';
+TAssign : '=';
+TOpenParen : '(';
+TCloseParen : ')';
+TOpenBracket : '[' { _brackets++; };
+TCloseBracket : ']' { _brackets--; };
+TOpenBrace : '{';
+TCloseBrace : '}';
+TLessThan : '<';
+TGreaterThan : '>';
+TQuestion : '?';
 
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
                                                

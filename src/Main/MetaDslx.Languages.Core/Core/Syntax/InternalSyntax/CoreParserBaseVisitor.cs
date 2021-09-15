@@ -498,6 +498,17 @@ public partial class CoreParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitTupleExpr([NotNull] CoreParser.TupleExprContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>rangeExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitRangeExpr([NotNull] CoreParser.RangeExprContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>identifierExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// <para>

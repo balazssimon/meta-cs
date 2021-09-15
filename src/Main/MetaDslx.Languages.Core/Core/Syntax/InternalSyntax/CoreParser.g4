@@ -50,6 +50,7 @@ expression
 	|                         unaryOperator                    expression #unaryExpr                         
 	| TOpenParen                       typeReference TCloseParen                    expression #typeCastExpr                              
 	| KAwait                      expression #awaitExpr                         
+	|                        left=expression                                                          TDotDot                         right=expression #rangeExpr                          
 	|                        left=expression                         multiplicativeOperator                         right=expression #multExpr                          
 	|                        left=expression                         additiveOperator                         right=expression #addExpr                          
 	|                        left=expression                         shiftOperator                         right=expression #shiftExpr                          
@@ -130,7 +131,7 @@ unaryOperator
 	|                                             TTilde
 	|                                           TPlusPlus
 	|                                           TMinusMinus
-	| THat
+	|                                        THat
 	;
 
 multiplicativeOperator

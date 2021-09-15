@@ -4099,6 +4099,120 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    }
 	}
 	
+	internal class RangeExprGreen : ExpressionGreen
+	{
+	    internal static new readonly RangeExprGreen __Missing = new RangeExprGreen();
+	    private ExpressionGreen left;
+	    private InternalSyntaxToken tDotDot;
+	    private ExpressionGreen right;
+	
+	    public RangeExprGreen(CoreSyntaxKind kind, ExpressionGreen left, InternalSyntaxToken tDotDot, ExpressionGreen right)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (left != null)
+			{
+				this.AdjustFlagsAndWidth(left);
+				this.left = left;
+			}
+			if (tDotDot != null)
+			{
+				this.AdjustFlagsAndWidth(tDotDot);
+				this.tDotDot = tDotDot;
+			}
+			if (right != null)
+			{
+				this.AdjustFlagsAndWidth(right);
+				this.right = right;
+			}
+	    }
+	
+	    public RangeExprGreen(CoreSyntaxKind kind, ExpressionGreen left, InternalSyntaxToken tDotDot, ExpressionGreen right, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (left != null)
+			{
+				this.AdjustFlagsAndWidth(left);
+				this.left = left;
+			}
+			if (tDotDot != null)
+			{
+				this.AdjustFlagsAndWidth(tDotDot);
+				this.tDotDot = tDotDot;
+			}
+			if (right != null)
+			{
+				this.AdjustFlagsAndWidth(right);
+				this.right = right;
+			}
+	    }
+	
+		private RangeExprGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.RangeExpr, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public ExpressionGreen Left { get { return this.left; } }
+	    public InternalSyntaxToken TDotDot { get { return this.tDotDot; } }
+	    public ExpressionGreen Right { get { return this.right; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.RangeExprSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.left;
+	            case 1: return this.tDotDot;
+	            case 2: return this.right;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitRangeExprGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitRangeExprGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new RangeExprGreen(this.Kind, this.left, this.tDotDot, this.right, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new RangeExprGreen(this.Kind, this.left, this.tDotDot, this.right, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new RangeExprGreen(this.Kind, this.left, this.tDotDot, this.right, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public RangeExprGreen Update(ExpressionGreen left, InternalSyntaxToken tDotDot, ExpressionGreen right)
+	    {
+	        if (this.Left != left ||
+				this.TDotDot != tDotDot ||
+				this.Right != right)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.RangeExpr(left, tDotDot, right);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (RangeExprGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
 	internal class MultExprGreen : ExpressionGreen
 	{
 	    internal static new readonly MultExprGreen __Missing = new MultExprGreen();
@@ -11275,6 +11389,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual void VisitUnaryExprGreen(UnaryExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTypeCastExprGreen(TypeCastExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitAwaitExprGreen(AwaitExprGreen node) => this.DefaultVisit(node);
+		public virtual void VisitRangeExprGreen(RangeExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitMultExprGreen(MultExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitAddExprGreen(AddExprGreen node) => this.DefaultVisit(node);
 		public virtual void VisitShiftExprGreen(ShiftExprGreen node) => this.DefaultVisit(node);
@@ -11375,6 +11490,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		public virtual TResult VisitUnaryExprGreen(UnaryExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTypeCastExprGreen(TypeCastExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitAwaitExprGreen(AwaitExprGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitRangeExprGreen(RangeExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitMultExprGreen(MultExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitAddExprGreen(AddExprGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitShiftExprGreen(ShiftExprGreen node) => this.DefaultVisit(node);
@@ -12144,6 +12260,25 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.AwaitExpr, kAwait, expression, out hash);
 			if (cached != null) return (AwaitExprGreen)cached;
 			var result = new AwaitExprGreen(CoreSyntaxKind.AwaitExpr, kAwait, expression);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public RangeExprGreen RangeExpr(ExpressionGreen left, InternalSyntaxToken tDotDot, ExpressionGreen right)
+	    {
+	#if DEBUG
+			if (left == null) throw new ArgumentNullException(nameof(left));
+			if (tDotDot == null) throw new ArgumentNullException(nameof(tDotDot));
+			if (tDotDot.Kind != CoreSyntaxKind.TDotDot) throw new ArgumentException(nameof(tDotDot));
+			if (right == null) throw new ArgumentNullException(nameof(right));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.RangeExpr, left, tDotDot, right, out hash);
+			if (cached != null) return (RangeExprGreen)cached;
+			var result = new RangeExprGreen(CoreSyntaxKind.RangeExpr, left, tDotDot, right);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -13493,6 +13628,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				typeof(UnaryExprGreen),
 				typeof(TypeCastExprGreen),
 				typeof(AwaitExprGreen),
+				typeof(RangeExprGreen),
 				typeof(MultExprGreen),
 				typeof(AddExprGreen),
 				typeof(ShiftExprGreen),

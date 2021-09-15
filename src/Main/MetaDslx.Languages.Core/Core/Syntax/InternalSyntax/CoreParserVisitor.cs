@@ -327,6 +327,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTupleExpr([NotNull] CoreParser.TupleExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>rangeExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRangeExpr([NotNull] CoreParser.RangeExprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>identifierExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>

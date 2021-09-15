@@ -32,6 +32,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private TypeSymbol R32;
         private TypeSymbol R64;
         private TypeSymbol DEC;
+        private TypeSymbol IDX;
 
         private TypeSymbol[] _types;
         private UnaryOperatorSignature[][] _table;
@@ -67,6 +68,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Interlocked.CompareExchange(ref R32, Compilation.GetSpecialType(SpecialType.System_Single), null);
             Interlocked.CompareExchange(ref R64, Compilation.GetSpecialType(SpecialType.System_Double), null);
             Interlocked.CompareExchange(ref DEC, Compilation.GetSpecialType(SpecialType.System_Decimal), null);
+            Interlocked.CompareExchange(ref IDX, (TypeSymbol)Compilation.GetSpecialSymbol(SpecialSymbol.System_Index), null);
 
             var types = new TypeSymbol[] { OBJ, STR, BOL, CHR, I08, I16, I32, I64, U08, U16, U32, U64, NIN, NUI, R32, R64, DEC };
             Interlocked.CompareExchange(ref _types, types, null);
@@ -102,6 +104,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new TypeSymbol[] { ERR,  ERR,  ERR,  I32,  I32,  I32,  I32,  I64,  I32,  I32,  U32,  U64,  NIN,  NUI,  ERR,  ERR,  ERR };
         }
 
+        private TypeSymbol[] GetIndexTypes()
+        {
+                                    //obj   str  bool   chr   i08   i16   i32   i64   u08   u16   u32   u64  nint nuint   r32   r64   dec  
+            return new TypeSymbol[] { ERR,  ERR,  ERR,  ERR,  IDX,  IDX,  IDX,  ERR,  IDX,  IDX,  ERR,  ERR,  IDX,  ERR,  ERR,  ERR,  ERR };
+        }
+
 
         private UnaryOperatorSignature[] CreateSignatures(UnaryOperatorKind kind, TypeSymbol[] returnTypes)
         {
@@ -127,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 CreateSignatures(UnaryOperatorKind.PostfixIncrement, GetIncrementTypes()),
                 CreateSignatures(UnaryOperatorKind.PrefixDecrement, GetIncrementTypes()),
                 CreateSignatures(UnaryOperatorKind.PostfixDecrement, GetIncrementTypes()),
-                CreateSignatures(UnaryOperatorKind.IndexFromEnd, GetBitwiseComplementTypes()),
+                CreateSignatures(UnaryOperatorKind.IndexFromEnd, GetIndexTypes()),
             };
         }
 

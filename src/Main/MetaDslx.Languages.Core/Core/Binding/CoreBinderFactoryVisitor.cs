@@ -30,8 +30,9 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UsePostfixOperator = new object();
 		public static object UseUnaryOperator = new object();
 		public static object UseLeft = new object();
-		public static object UseMultiplicativeOperator = new object();
+		public static object UseTDotDot = new object();
 		public static object UseRight = new object();
+		public static object UseMultiplicativeOperator = new object();
 		public static object UseAdditiveOperator = new object();
 		public static object UseShiftOperator = new object();
 		public static object UseRelationalOperator = new object();
@@ -746,6 +747,45 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseExpression)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Operation");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitRangeExpr(RangeExprSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Left)) use = UseLeft;
+				if (LookupPosition.IsInNode(this.Position, parent.TDotDot)) use = UseTDotDot;
+				if (LookupPosition.IsInNode(this.Position, parent.Right)) use = UseRight;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(BinaryExpression));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseLeft)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Left, name: "LeftOperand");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseTDotDot)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.TDotDot, name: "OperatorKind");
+					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.TDotDot, value: BinaryOperatorKind.Range);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseRight)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Right, name: "RightOperand");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -1860,6 +1900,7 @@ namespace MetaDslx.Languages.Core.Binding
 							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.UnaryOperator, value: UnaryOperatorKind.PrefixDecrement);
 							break;
 						case CoreSyntaxKind.THat:
+							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.UnaryOperator, value: UnaryOperatorKind.IndexFromEnd);
 							break;
 						default:
 							break;
