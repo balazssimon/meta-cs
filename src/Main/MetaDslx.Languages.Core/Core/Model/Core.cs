@@ -140,7 +140,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Variable;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Variable_IsConst;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Variable_Type;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Variable_DefaultValue;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Variable_Initializer;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Label;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass BlockStatement;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty BlockStatement_Statements;
@@ -184,7 +184,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty SwitchCase_Body;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass CaseClause;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty CaseClause_Label;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DefaultValueCaseClause;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DefaultCaseClause;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass SingleValueCaseClause;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty SingleValueCaseClause_Value;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass TryStatement;
@@ -292,11 +292,10 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty UnaryExpression_IsChecked;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty UnaryExpression_OperatorMethod;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass VariableDeclarationExpression;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty VariableDeclarationExpression_Symbol;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty VariableDeclarationExpression_IsConst;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty VariableDeclarationExpression_Type;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty VariableDeclarationExpression_Variables;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty VariableDeclarationExpression_Initializer;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass VariableDeclarationGroupExpression;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty VariableDeclarationGroupExpression_Declarations;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty VariableDeclarationGroupExpression_Initializer;
 	
 		static CoreInstance()
 		{
@@ -419,7 +418,7 @@ namespace MetaDslx.Languages.Core.Model
 			Variable = CoreBuilderInstance.instance.Variable.ToImmutable(MModel);
 			Variable_IsConst = CoreBuilderInstance.instance.Variable_IsConst.ToImmutable(MModel);
 			Variable_Type = CoreBuilderInstance.instance.Variable_Type.ToImmutable(MModel);
-			Variable_DefaultValue = CoreBuilderInstance.instance.Variable_DefaultValue.ToImmutable(MModel);
+			Variable_Initializer = CoreBuilderInstance.instance.Variable_Initializer.ToImmutable(MModel);
 			Label = CoreBuilderInstance.instance.Label.ToImmutable(MModel);
 			BlockStatement = CoreBuilderInstance.instance.BlockStatement.ToImmutable(MModel);
 			BlockStatement_Statements = CoreBuilderInstance.instance.BlockStatement_Statements.ToImmutable(MModel);
@@ -463,7 +462,7 @@ namespace MetaDslx.Languages.Core.Model
 			SwitchCase_Body = CoreBuilderInstance.instance.SwitchCase_Body.ToImmutable(MModel);
 			CaseClause = CoreBuilderInstance.instance.CaseClause.ToImmutable(MModel);
 			CaseClause_Label = CoreBuilderInstance.instance.CaseClause_Label.ToImmutable(MModel);
-			DefaultValueCaseClause = CoreBuilderInstance.instance.DefaultValueCaseClause.ToImmutable(MModel);
+			DefaultCaseClause = CoreBuilderInstance.instance.DefaultCaseClause.ToImmutable(MModel);
 			SingleValueCaseClause = CoreBuilderInstance.instance.SingleValueCaseClause.ToImmutable(MModel);
 			SingleValueCaseClause_Value = CoreBuilderInstance.instance.SingleValueCaseClause_Value.ToImmutable(MModel);
 			TryStatement = CoreBuilderInstance.instance.TryStatement.ToImmutable(MModel);
@@ -571,11 +570,10 @@ namespace MetaDslx.Languages.Core.Model
 			UnaryExpression_IsChecked = CoreBuilderInstance.instance.UnaryExpression_IsChecked.ToImmutable(MModel);
 			UnaryExpression_OperatorMethod = CoreBuilderInstance.instance.UnaryExpression_OperatorMethod.ToImmutable(MModel);
 			VariableDeclarationExpression = CoreBuilderInstance.instance.VariableDeclarationExpression.ToImmutable(MModel);
-			VariableDeclarationExpression_Symbol = CoreBuilderInstance.instance.VariableDeclarationExpression_Symbol.ToImmutable(MModel);
+			VariableDeclarationExpression_IsConst = CoreBuilderInstance.instance.VariableDeclarationExpression_IsConst.ToImmutable(MModel);
+			VariableDeclarationExpression_Type = CoreBuilderInstance.instance.VariableDeclarationExpression_Type.ToImmutable(MModel);
+			VariableDeclarationExpression_Variables = CoreBuilderInstance.instance.VariableDeclarationExpression_Variables.ToImmutable(MModel);
 			VariableDeclarationExpression_Initializer = CoreBuilderInstance.instance.VariableDeclarationExpression_Initializer.ToImmutable(MModel);
-			VariableDeclarationGroupExpression = CoreBuilderInstance.instance.VariableDeclarationGroupExpression.ToImmutable(MModel);
-			VariableDeclarationGroupExpression_Declarations = CoreBuilderInstance.instance.VariableDeclarationGroupExpression_Declarations.ToImmutable(MModel);
-			VariableDeclarationGroupExpression_Initializer = CoreBuilderInstance.instance.VariableDeclarationGroupExpression_Initializer.ToImmutable(MModel);
 	
 			CoreInstance.initialized = true;
 		}
@@ -639,7 +637,7 @@ namespace MetaDslx.Languages.Core.Model
 				case "ReturnStatement": return this.ReturnStatement();
 				case "SwitchStatement": return this.SwitchStatement();
 				case "SwitchCase": return this.SwitchCase();
-				case "DefaultValueCaseClause": return this.DefaultValueCaseClause();
+				case "DefaultCaseClause": return this.DefaultCaseClause();
 				case "SingleValueCaseClause": return this.SingleValueCaseClause();
 				case "TryStatement": return this.TryStatement();
 				case "CatchClause": return this.CatchClause();
@@ -674,7 +672,6 @@ namespace MetaDslx.Languages.Core.Model
 				case "TupleExpression": return this.TupleExpression();
 				case "UnaryExpression": return this.UnaryExpression();
 				case "VariableDeclarationExpression": return this.VariableDeclarationExpression();
-				case "VariableDeclarationGroupExpression": return this.VariableDeclarationGroupExpression();
 				default:
 					throw new global::MetaDslx.Modeling.ModelException(global::MetaDslx.Modeling.ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(type));
 			}
@@ -1050,12 +1047,12 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		/// <summary>
-		/// Creates a new instance of DefaultValueCaseClause.
+		/// Creates a new instance of DefaultCaseClause.
 		/// </summary>
-		public DefaultValueCaseClauseBuilder DefaultValueCaseClause()
+		public DefaultCaseClauseBuilder DefaultCaseClause()
 		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new DefaultValueCaseClauseId());
-			return (DefaultValueCaseClauseBuilder)obj;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new DefaultCaseClauseId());
+			return (DefaultCaseClauseBuilder)obj;
 		}
 	
 		/// <summary>
@@ -1362,15 +1359,6 @@ namespace MetaDslx.Languages.Core.Model
 		{
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new VariableDeclarationExpressionId());
 			return (VariableDeclarationExpressionBuilder)obj;
-		}
-	
-		/// <summary>
-		/// Creates a new instance of VariableDeclarationGroupExpression.
-		/// </summary>
-		public VariableDeclarationGroupExpressionBuilder VariableDeclarationGroupExpression()
-		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new VariableDeclarationGroupExpressionId());
-			return (VariableDeclarationGroupExpressionBuilder)obj;
 		}
 	}
 
@@ -2933,7 +2921,7 @@ namespace MetaDslx.Languages.Core.Model
 	{
 		bool IsConst { get; }
 		DataType Type { get; }
-		Expression DefaultValue { get; }
+		Expression Initializer { get; }
 	
 	
 		/// <summary>
@@ -2958,10 +2946,10 @@ namespace MetaDslx.Languages.Core.Model
 		void SetTypeLazy(global::System.Func<DataTypeBuilder> lazy);
 		void SetTypeLazy(global::System.Func<VariableBuilder, DataTypeBuilder> lazy);
 		void SetTypeLazy(global::System.Func<Variable, DataType> immutableLazy, global::System.Func<VariableBuilder, DataTypeBuilder> mutableLazy);
-		ExpressionBuilder DefaultValue { get; set; }
-		void SetDefaultValueLazy(global::System.Func<ExpressionBuilder> lazy);
-		void SetDefaultValueLazy(global::System.Func<VariableBuilder, ExpressionBuilder> lazy);
-		void SetDefaultValueLazy(global::System.Func<Variable, Expression> immutableLazy, global::System.Func<VariableBuilder, ExpressionBuilder> mutableLazy);
+		ExpressionBuilder Initializer { get; set; }
+		void SetInitializerLazy(global::System.Func<ExpressionBuilder> lazy);
+		void SetInitializerLazy(global::System.Func<VariableBuilder, ExpressionBuilder> lazy);
+		void SetInitializerLazy(global::System.Func<Variable, Expression> immutableLazy, global::System.Func<VariableBuilder, ExpressionBuilder> mutableLazy);
 	
 	
 		/// <summary>
@@ -3608,36 +3596,36 @@ namespace MetaDslx.Languages.Core.Model
 		new CaseClause ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface DefaultValueCaseClause : CaseClause
+	public interface DefaultCaseClause : CaseClause
 	{
 	
 	
 		/// <summary>
-		/// Convert the <see cref="DefaultValueCaseClause"/> object to a builder <see cref="DefaultValueCaseClauseBuilder"/> object.
+		/// Convert the <see cref="DefaultCaseClause"/> object to a builder <see cref="DefaultCaseClauseBuilder"/> object.
 		/// </summary>
-		new DefaultValueCaseClauseBuilder ToMutable();
+		new DefaultCaseClauseBuilder ToMutable();
 		/// <summary>
-		/// Convert the <see cref="DefaultValueCaseClause"/> object to a builder <see cref="DefaultValueCaseClauseBuilder"/> object
+		/// Convert the <see cref="DefaultCaseClause"/> object to a builder <see cref="DefaultCaseClauseBuilder"/> object
 		/// by taking the builder version from the given model.
 		/// </summary>
 		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new DefaultValueCaseClauseBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+		new DefaultCaseClauseBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface DefaultValueCaseClauseBuilder : CaseClauseBuilder
+	public interface DefaultCaseClauseBuilder : CaseClauseBuilder
 	{
 	
 	
 		/// <summary>
-		/// Convert the <see cref="DefaultValueCaseClauseBuilder"/> object to an immutable <see cref="DefaultValueCaseClause"/> object.
+		/// Convert the <see cref="DefaultCaseClauseBuilder"/> object to an immutable <see cref="DefaultCaseClause"/> object.
 		/// </summary>
-		new DefaultValueCaseClause ToImmutable();
+		new DefaultCaseClause ToImmutable();
 		/// <summary>
-		/// Convert the <see cref="DefaultValueCaseClauseBuilder"/> object to an immutable <see cref="DefaultValueCaseClause"/> object
+		/// Convert the <see cref="DefaultCaseClauseBuilder"/> object to an immutable <see cref="DefaultCaseClause"/> object
 		/// by taking the immutable version from the given model.
 		/// </summary>
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new DefaultValueCaseClause ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+		new DefaultCaseClause ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
 	public interface SingleValueCaseClause : CaseClause
@@ -5063,7 +5051,9 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface VariableDeclarationExpression : Expression
 	{
-		Variable Symbol { get; }
+		bool IsConst { get; }
+		new DataType Type { get; }
+		global::MetaDslx.Modeling.ImmutableModelList<Variable> Variables { get; }
 		Expression Initializer { get; }
 	
 	
@@ -5081,10 +5071,15 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface VariableDeclarationExpressionBuilder : ExpressionBuilder
 	{
-		VariableBuilder Symbol { get; set; }
-		void SetSymbolLazy(global::System.Func<VariableBuilder> lazy);
-		void SetSymbolLazy(global::System.Func<VariableDeclarationExpressionBuilder, VariableBuilder> lazy);
-		void SetSymbolLazy(global::System.Func<VariableDeclarationExpression, Variable> immutableLazy, global::System.Func<VariableDeclarationExpressionBuilder, VariableBuilder> mutableLazy);
+		bool IsConst { get; set; }
+		void SetIsConstLazy(global::System.Func<bool> lazy);
+		void SetIsConstLazy(global::System.Func<VariableDeclarationExpressionBuilder, bool> lazy);
+		void SetIsConstLazy(global::System.Func<VariableDeclarationExpression, bool> immutableLazy, global::System.Func<VariableDeclarationExpressionBuilder, bool> mutableLazy);
+		new DataTypeBuilder Type { get; set; }
+		new void SetTypeLazy(global::System.Func<DataTypeBuilder> lazy);
+		new void SetTypeLazy(global::System.Func<VariableDeclarationExpressionBuilder, DataTypeBuilder> lazy);
+		new void SetTypeLazy(global::System.Func<VariableDeclarationExpression, DataType> immutableLazy, global::System.Func<VariableDeclarationExpressionBuilder, DataTypeBuilder> mutableLazy);
+		global::MetaDslx.Modeling.MutableModelList<VariableBuilder> Variables { get; }
 		ExpressionBuilder Initializer { get; set; }
 		void SetInitializerLazy(global::System.Func<ExpressionBuilder> lazy);
 		void SetInitializerLazy(global::System.Func<VariableDeclarationExpressionBuilder, ExpressionBuilder> lazy);
@@ -5101,45 +5096,6 @@ namespace MetaDslx.Languages.Core.Model
 		/// </summary>
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new VariableDeclarationExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
-	
-	public interface VariableDeclarationGroupExpression : Expression
-	{
-		global::MetaDslx.Modeling.ImmutableModelList<VariableDeclarationExpression> Declarations { get; }
-		Expression Initializer { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="VariableDeclarationGroupExpression"/> object to a builder <see cref="VariableDeclarationGroupExpressionBuilder"/> object.
-		/// </summary>
-		new VariableDeclarationGroupExpressionBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="VariableDeclarationGroupExpression"/> object to a builder <see cref="VariableDeclarationGroupExpressionBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new VariableDeclarationGroupExpressionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface VariableDeclarationGroupExpressionBuilder : ExpressionBuilder
-	{
-		global::MetaDslx.Modeling.MutableModelList<VariableDeclarationExpressionBuilder> Declarations { get; }
-		ExpressionBuilder Initializer { get; set; }
-		void SetInitializerLazy(global::System.Func<ExpressionBuilder> lazy);
-		void SetInitializerLazy(global::System.Func<VariableDeclarationGroupExpressionBuilder, ExpressionBuilder> lazy);
-		void SetInitializerLazy(global::System.Func<VariableDeclarationGroupExpression, Expression> immutableLazy, global::System.Func<VariableDeclarationGroupExpressionBuilder, ExpressionBuilder> mutableLazy);
-	
-	
-		/// <summary>
-		/// Convert the <see cref="VariableDeclarationGroupExpressionBuilder"/> object to an immutable <see cref="VariableDeclarationGroupExpression"/> object.
-		/// </summary>
-		new VariableDeclarationGroupExpression ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="VariableDeclarationGroupExpressionBuilder"/> object to an immutable <see cref="VariableDeclarationGroupExpression"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new VariableDeclarationGroupExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 
 	public static class CoreDescriptor
@@ -5208,7 +5164,7 @@ namespace MetaDslx.Languages.Core.Model
 			SwitchStatement.Initialize();
 			SwitchCase.Initialize();
 			CaseClause.Initialize();
-			DefaultValueCaseClause.Initialize();
+			DefaultCaseClause.Initialize();
 			SingleValueCaseClause.Initialize();
 			TryStatement.Initialize();
 			CatchClause.Initialize();
@@ -5244,7 +5200,6 @@ namespace MetaDslx.Languages.Core.Model
 			TupleExpression.Initialize();
 			UnaryExpression.Initialize();
 			VariableDeclarationExpression.Initialize();
-			VariableDeclarationGroupExpression.Initialize();
 			properties.Add(CoreDescriptor.Element.AttributesProperty);
 			properties.Add(CoreDescriptor.Attribute.TypeProperty);
 			properties.Add(CoreDescriptor.NamedElement.NameProperty);
@@ -5295,7 +5250,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.BinaryOperator.OperatorKindProperty);
 			properties.Add(CoreDescriptor.Variable.IsConstProperty);
 			properties.Add(CoreDescriptor.Variable.TypeProperty);
-			properties.Add(CoreDescriptor.Variable.DefaultValueProperty);
+			properties.Add(CoreDescriptor.Variable.InitializerProperty);
 			properties.Add(CoreDescriptor.BlockStatement.StatementsProperty);
 			properties.Add(CoreDescriptor.ExpressionStatement.ExpressionProperty);
 			properties.Add(CoreDescriptor.ForEachLoopStatement.LoopControlVariableProperty);
@@ -5395,10 +5350,10 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.UnaryExpression.OperandProperty);
 			properties.Add(CoreDescriptor.UnaryExpression.IsCheckedProperty);
 			properties.Add(CoreDescriptor.UnaryExpression.OperatorMethodProperty);
-			properties.Add(CoreDescriptor.VariableDeclarationExpression.SymbolProperty);
+			properties.Add(CoreDescriptor.VariableDeclarationExpression.IsConstProperty);
+			properties.Add(CoreDescriptor.VariableDeclarationExpression.TypeProperty);
+			properties.Add(CoreDescriptor.VariableDeclarationExpression.VariablesProperty);
 			properties.Add(CoreDescriptor.VariableDeclarationExpression.InitializerProperty);
-			properties.Add(CoreDescriptor.VariableDeclarationGroupExpression.DeclarationsProperty);
-			properties.Add(CoreDescriptor.VariableDeclarationGroupExpression.InitializerProperty);
 		}
 	
 		public static void Initialize()
@@ -6956,13 +6911,13 @@ namespace MetaDslx.Languages.Core.Model
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Variable_Type,
 					defaultValue: null);
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("DefaultValue")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Initializer")]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty DefaultValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Variable), name: "DefaultValue",
+			public static readonly global::MetaDslx.Modeling.ModelProperty InitializerProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Variable), name: "Initializer",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Expression),
 			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ExpressionBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Variable_DefaultValue,
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Variable_Initializer,
 					defaultValue: null);
 		}
 	
@@ -7634,14 +7589,14 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.DefaultCaseClauseSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.DefaultValueCaseClauseId), typeof(global::MetaDslx.Languages.Core.Model.DefaultValueCaseClause), typeof(global::MetaDslx.Languages.Core.Model.DefaultValueCaseClauseBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.CaseClause) })]
-		public static class DefaultValueCaseClause
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.DefaultCaseClauseId), typeof(global::MetaDslx.Languages.Core.Model.DefaultCaseClause), typeof(global::MetaDslx.Languages.Core.Model.DefaultCaseClauseBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.CaseClause) })]
+		public static class DefaultCaseClause
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
-			static DefaultValueCaseClause()
+			static DefaultCaseClause()
 			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(DefaultValueCaseClause));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(DefaultCaseClause));
 			}
 		
 			internal static void Initialize()
@@ -7655,7 +7610,7 @@ namespace MetaDslx.Languages.Core.Model
 		
 			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
 			{
-				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.DefaultValueCaseClause; }
+				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.DefaultCaseClause; }
 			}
 		}
 	
@@ -9201,13 +9156,31 @@ namespace MetaDslx.Languages.Core.Model
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationExpression; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Symbol")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsConst")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsConstProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(VariableDeclarationExpression), name: "IsConst",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationExpression_IsConst,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Type")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(VariableDeclarationExpression), name: "Type",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationExpression_Type,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Variables")]
+			[global::MetaDslx.Modeling.CollectionAttribute]
+			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty SymbolProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(VariableDeclarationExpression), name: "Symbol",
+			public static readonly global::MetaDslx.Modeling.ModelProperty VariablesProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(VariableDeclarationExpression), name: "Variables",
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Variable),
 			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.VariableBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationExpression_Symbol,
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationExpression_Variables,
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Initializer")]
@@ -9217,52 +9190,6 @@ namespace MetaDslx.Languages.Core.Model
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Expression),
 			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ExpressionBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationExpression_Initializer,
-					defaultValue: null);
-		}
-	
-		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.VariableDeclarationGroupExpressionSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.VariableDeclarationGroupExpressionId), typeof(global::MetaDslx.Languages.Core.Model.VariableDeclarationGroupExpression), typeof(global::MetaDslx.Languages.Core.Model.VariableDeclarationGroupExpressionBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Expression) })]
-		public static class VariableDeclarationGroupExpression
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static VariableDeclarationGroupExpression()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(VariableDeclarationGroupExpression));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationGroupExpression; }
-			}
-			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Declarations")]
-			[global::MetaDslx.Modeling.CollectionAttribute]
-			[global::MetaDslx.Modeling.OrderedAttribute]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty DeclarationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(VariableDeclarationGroupExpression), name: "Declarations",
-			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.VariableDeclarationExpression),
-			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.VariableDeclarationExpressionBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationGroupExpression_Declarations,
-					defaultValue: null);
-			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Initializer")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty InitializerProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(VariableDeclarationGroupExpression), name: "Initializer",
-			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Expression),
-			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ExpressionBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.VariableDeclarationGroupExpression_Initializer,
 					defaultValue: null);
 		}
 	}
@@ -19668,7 +19595,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Expression defaultValue0;
+		private Expression initializer0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isVarArg0;
 	
@@ -19778,9 +19705,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public Expression DefaultValue
+		public Expression Initializer
 		{
-		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty, ref defaultValue0); }
+		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.InitializerProperty, ref initializer0); }
 		}
 	
 		
@@ -19955,25 +19882,25 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public ExpressionBuilder DefaultValue
+		public ExpressionBuilder Initializer
 		{
-			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty); }
-			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty, value); }
+			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.InitializerProperty); }
+			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.InitializerProperty, value); }
 		}
 		
-		void VariableBuilder.SetDefaultValueLazy(global::System.Func<ExpressionBuilder> lazy)
+		void VariableBuilder.SetInitializerLazy(global::System.Func<ExpressionBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.Variable.InitializerProperty, lazy);
 		}
 		
-		void VariableBuilder.SetDefaultValueLazy(global::System.Func<VariableBuilder, ExpressionBuilder> lazy)
+		void VariableBuilder.SetInitializerLazy(global::System.Func<VariableBuilder, ExpressionBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.Variable.InitializerProperty, lazy);
 		}
 		
-		void VariableBuilder.SetDefaultValueLazy(global::System.Func<Variable, Expression> immutableLazy, global::System.Func<VariableBuilder, ExpressionBuilder> mutableLazy)
+		void VariableBuilder.SetInitializerLazy(global::System.Func<Variable, Expression> immutableLazy, global::System.Func<VariableBuilder, ExpressionBuilder> mutableLazy)
 		{
-			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, immutableLazy, mutableLazy);
+			this.SetLazyReference(CoreDescriptor.Variable.InitializerProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -23953,7 +23880,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Expression defaultValue0;
+		private Expression initializer0;
 	
 		internal VariableImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -24051,9 +23978,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public Expression DefaultValue
+		public Expression Initializer
 		{
-		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty, ref defaultValue0); }
+		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.InitializerProperty, ref initializer0); }
 		}
 	}
 	
@@ -24212,25 +24139,25 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public ExpressionBuilder DefaultValue
+		public ExpressionBuilder Initializer
 		{
-			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty); }
-			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.DefaultValueProperty, value); }
+			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.InitializerProperty); }
+			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Variable.InitializerProperty, value); }
 		}
 		
-		void VariableBuilder.SetDefaultValueLazy(global::System.Func<ExpressionBuilder> lazy)
+		void VariableBuilder.SetInitializerLazy(global::System.Func<ExpressionBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.Variable.InitializerProperty, lazy);
 		}
 		
-		void VariableBuilder.SetDefaultValueLazy(global::System.Func<VariableBuilder, ExpressionBuilder> lazy)
+		void VariableBuilder.SetInitializerLazy(global::System.Func<VariableBuilder, ExpressionBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.Variable.InitializerProperty, lazy);
 		}
 		
-		void VariableBuilder.SetDefaultValueLazy(global::System.Func<Variable, Expression> immutableLazy, global::System.Func<VariableBuilder, ExpressionBuilder> mutableLazy)
+		void VariableBuilder.SetInitializerLazy(global::System.Func<Variable, Expression> immutableLazy, global::System.Func<VariableBuilder, ExpressionBuilder> mutableLazy)
 		{
-			this.SetLazyReference(CoreDescriptor.Variable.DefaultValueProperty, immutableLazy, mutableLazy);
+			this.SetLazyReference(CoreDescriptor.Variable.InitializerProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -27115,45 +27042,45 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	}
 	
-	internal class DefaultValueCaseClauseId : global::MetaDslx.Modeling.ObjectId
+	internal class DefaultCaseClauseId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.DefaultValueCaseClause.MDescriptor; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.DefaultCaseClause.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
-			return new DefaultValueCaseClauseImpl(this, model);
+			return new DefaultCaseClauseImpl(this, model);
 		}
 	
 		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
 		{
-			return new DefaultValueCaseClauseBuilderImpl(this, model, creating);
+			return new DefaultCaseClauseBuilderImpl(this, model, creating);
 		}
 	}
 	
-	internal class DefaultValueCaseClauseImpl : global::MetaDslx.Modeling.ImmutableObjectBase, DefaultValueCaseClause
+	internal class DefaultCaseClauseImpl : global::MetaDslx.Modeling.ImmutableObjectBase, DefaultCaseClause
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Label label0;
 	
-		internal DefaultValueCaseClauseImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+		internal DefaultCaseClauseImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
 		{
 		}
 	
 		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
 	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.DefaultValueCaseClause;
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.DefaultCaseClause;
 	
-		public new DefaultValueCaseClauseBuilder ToMutable()
+		public new DefaultCaseClauseBuilder ToMutable()
 		{
-			return (DefaultValueCaseClauseBuilder)base.ToMutable();
+			return (DefaultCaseClauseBuilder)base.ToMutable();
 		}
 	
-		public new DefaultValueCaseClauseBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		public new DefaultCaseClauseBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
-			return (DefaultValueCaseClauseBuilder)base.ToMutable(model);
+			return (DefaultCaseClauseBuilder)base.ToMutable(model);
 		}
 	
 		ElementBuilder Element.ToMutable()
@@ -27189,32 +27116,32 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	}
 	
-	internal class DefaultValueCaseClauseBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, DefaultValueCaseClauseBuilder
+	internal class DefaultCaseClauseBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, DefaultCaseClauseBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
 	
-		internal DefaultValueCaseClauseBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+		internal DefaultCaseClauseBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
 	
 		protected override void MInit()
 		{
-			CoreImplementationProvider.Implementation.DefaultValueCaseClause(this);
+			CoreImplementationProvider.Implementation.DefaultCaseClause(this);
 		}
 	
 		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
 	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.DefaultValueCaseClause;
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.DefaultCaseClause;
 	
-		public new DefaultValueCaseClause ToImmutable()
+		public new DefaultCaseClause ToImmutable()
 		{
-			return (DefaultValueCaseClause)base.ToImmutable();
+			return (DefaultCaseClause)base.ToImmutable();
 		}
 	
-		public new DefaultValueCaseClause ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		public new DefaultCaseClause ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
-			return (DefaultValueCaseClause)base.ToImmutable(model);
+			return (DefaultCaseClause)base.ToImmutable(model);
 		}
 	
 		Element ElementBuilder.ToImmutable()
@@ -34439,7 +34366,11 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Variable symbol0;
+		private bool isConst0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private DataType type1;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Variable> variables0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression initializer0;
 	
@@ -34489,15 +34420,28 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataType Type
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		DataType Expression.Type
 		{
 		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
 		}
 	
 		
-		public Variable Symbol
+		public bool IsConst
 		{
-		    get { return this.GetReference<Variable>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.SymbolProperty, ref symbol0); }
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.IsConstProperty, ref isConst0); }
+		}
+	
+		
+		public DataType Type
+		{
+		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.TypeProperty, ref type1); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Variable> Variables
+		{
+		    get { return this.GetList<Variable>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.VariablesProperty, ref variables0); }
 		}
 	
 		
@@ -34510,6 +34454,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	internal class VariableDeclarationExpressionBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, VariableDeclarationExpressionBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
+		private global::MetaDslx.Modeling.MutableModelList<VariableBuilder> variables0;
 	
 		internal VariableDeclarationExpressionBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -34562,7 +34507,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataTypeBuilder Type
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		DataTypeBuilder ExpressionBuilder.Type
 		{
 			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
 			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
@@ -34584,25 +34530,53 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public VariableBuilder Symbol
+		public bool IsConst
 		{
-			get { return this.GetReference<VariableBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.SymbolProperty); }
-			set { this.SetReference<VariableBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.SymbolProperty, value); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.IsConstProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.IsConstProperty, value); }
 		}
 		
-		void VariableDeclarationExpressionBuilder.SetSymbolLazy(global::System.Func<VariableBuilder> lazy)
+		void VariableDeclarationExpressionBuilder.SetIsConstLazy(global::System.Func<bool> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.VariableDeclarationExpression.SymbolProperty, lazy);
+			this.SetLazyValue(CoreDescriptor.VariableDeclarationExpression.IsConstProperty, lazy);
 		}
 		
-		void VariableDeclarationExpressionBuilder.SetSymbolLazy(global::System.Func<VariableDeclarationExpressionBuilder, VariableBuilder> lazy)
+		void VariableDeclarationExpressionBuilder.SetIsConstLazy(global::System.Func<VariableDeclarationExpressionBuilder, bool> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.VariableDeclarationExpression.SymbolProperty, lazy);
+			this.SetLazyValue(CoreDescriptor.VariableDeclarationExpression.IsConstProperty, lazy);
 		}
 		
-		void VariableDeclarationExpressionBuilder.SetSymbolLazy(global::System.Func<VariableDeclarationExpression, Variable> immutableLazy, global::System.Func<VariableDeclarationExpressionBuilder, VariableBuilder> mutableLazy)
+		void VariableDeclarationExpressionBuilder.SetIsConstLazy(global::System.Func<VariableDeclarationExpression, bool> immutableLazy, global::System.Func<VariableDeclarationExpressionBuilder, bool> mutableLazy)
 		{
-			this.SetLazyReference(CoreDescriptor.VariableDeclarationExpression.SymbolProperty, immutableLazy, mutableLazy);
+			this.SetLazyValue(CoreDescriptor.VariableDeclarationExpression.IsConstProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public DataTypeBuilder Type
+		{
+			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.TypeProperty); }
+			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.TypeProperty, value); }
+		}
+		
+		void VariableDeclarationExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.VariableDeclarationExpression.TypeProperty, lazy);
+		}
+		
+		void VariableDeclarationExpressionBuilder.SetTypeLazy(global::System.Func<VariableDeclarationExpressionBuilder, DataTypeBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.VariableDeclarationExpression.TypeProperty, lazy);
+		}
+		
+		void VariableDeclarationExpressionBuilder.SetTypeLazy(global::System.Func<VariableDeclarationExpression, DataType> immutableLazy, global::System.Func<VariableDeclarationExpressionBuilder, DataTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.VariableDeclarationExpression.TypeProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<VariableBuilder> Variables
+		{
+			get { return this.GetList<VariableBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationExpression.VariablesProperty, ref variables0); }
 		}
 	
 		
@@ -34625,202 +34599,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		void VariableDeclarationExpressionBuilder.SetInitializerLazy(global::System.Func<VariableDeclarationExpression, Expression> immutableLazy, global::System.Func<VariableDeclarationExpressionBuilder, ExpressionBuilder> mutableLazy)
 		{
 			this.SetLazyReference(CoreDescriptor.VariableDeclarationExpression.InitializerProperty, immutableLazy, mutableLazy);
-		}
-	}
-	
-	internal class VariableDeclarationGroupExpressionId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationGroupExpression.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new VariableDeclarationGroupExpressionImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new VariableDeclarationGroupExpressionBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class VariableDeclarationGroupExpressionImpl : global::MetaDslx.Modeling.ImmutableObjectBase, VariableDeclarationGroupExpression
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private DataType type0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<VariableDeclarationExpression> declarations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Expression initializer0;
-	
-		internal VariableDeclarationGroupExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.VariableDeclarationGroupExpression;
-	
-		public new VariableDeclarationGroupExpressionBuilder ToMutable()
-		{
-			return (VariableDeclarationGroupExpressionBuilder)base.ToMutable();
-		}
-	
-		public new VariableDeclarationGroupExpressionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (VariableDeclarationGroupExpressionBuilder)base.ToMutable(model);
-		}
-	
-		ElementBuilder Element.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		ExpressionBuilder Expression.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		ExpressionBuilder Expression.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
-		{
-		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
-		}
-	
-		
-		public DataType Type
-		{
-		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
-		}
-	
-		
-		public global::MetaDslx.Modeling.ImmutableModelList<VariableDeclarationExpression> Declarations
-		{
-		    get { return this.GetList<VariableDeclarationExpression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationGroupExpression.DeclarationsProperty, ref declarations0); }
-		}
-	
-		
-		public Expression Initializer
-		{
-		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationGroupExpression.InitializerProperty, ref initializer0); }
-		}
-	}
-	
-	internal class VariableDeclarationGroupExpressionBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, VariableDeclarationGroupExpressionBuilder
-	{
-		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
-		private global::MetaDslx.Modeling.MutableModelList<VariableDeclarationExpressionBuilder> declarations0;
-	
-		internal VariableDeclarationGroupExpressionBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CoreImplementationProvider.Implementation.VariableDeclarationGroupExpression(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.VariableDeclarationGroupExpression;
-	
-		public new VariableDeclarationGroupExpression ToImmutable()
-		{
-			return (VariableDeclarationGroupExpression)base.ToImmutable();
-		}
-	
-		public new VariableDeclarationGroupExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (VariableDeclarationGroupExpression)base.ToImmutable(model);
-		}
-	
-		Element ElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		Expression ExpressionBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Expression ExpressionBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
-		{
-			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
-		}
-	
-		
-		public DataTypeBuilder Type
-		{
-			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
-			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
-		}
-		
-		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
-		}
-		
-		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
-		}
-		
-		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
-		{
-			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<VariableDeclarationExpressionBuilder> Declarations
-		{
-			get { return this.GetList<VariableDeclarationExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationGroupExpression.DeclarationsProperty, ref declarations0); }
-		}
-	
-		
-		public ExpressionBuilder Initializer
-		{
-			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationGroupExpression.InitializerProperty); }
-			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.VariableDeclarationGroupExpression.InitializerProperty, value); }
-		}
-		
-		void VariableDeclarationGroupExpressionBuilder.SetInitializerLazy(global::System.Func<ExpressionBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.VariableDeclarationGroupExpression.InitializerProperty, lazy);
-		}
-		
-		void VariableDeclarationGroupExpressionBuilder.SetInitializerLazy(global::System.Func<VariableDeclarationGroupExpressionBuilder, ExpressionBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.VariableDeclarationGroupExpression.InitializerProperty, lazy);
-		}
-		
-		void VariableDeclarationGroupExpressionBuilder.SetInitializerLazy(global::System.Func<VariableDeclarationGroupExpression, Expression> immutableLazy, global::System.Func<VariableDeclarationGroupExpressionBuilder, ExpressionBuilder> mutableLazy)
-		{
-			this.SetLazyReference(CoreDescriptor.VariableDeclarationGroupExpression.InitializerProperty, immutableLazy, mutableLazy);
 		}
 	}
 
@@ -34973,7 +34751,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Variable;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Variable_IsConst;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Variable_Type;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Variable_DefaultValue;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Variable_Initializer;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Label;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder BlockStatement;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder BlockStatement_Statements;
@@ -35017,7 +34795,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder SwitchCase_Body;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder CaseClause;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder CaseClause_Label;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DefaultValueCaseClause;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DefaultCaseClause;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder SingleValueCaseClause;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder SingleValueCaseClause_Value;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder TryStatement;
@@ -35125,11 +34903,10 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder UnaryExpression_IsChecked;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder UnaryExpression_OperatorMethod;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder VariableDeclarationExpression;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationExpression_Symbol;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationExpression_IsConst;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationExpression_Type;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationExpression_Variables;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationExpression_Initializer;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder VariableDeclarationGroupExpression;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationGroupExpression_Declarations;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder VariableDeclarationGroupExpression_Initializer;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp26;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp27;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp28;
@@ -35353,7 +35130,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Variable = factory.MetaClass();
 			Variable_IsConst = factory.MetaProperty();
 			Variable_Type = factory.MetaProperty();
-			Variable_DefaultValue = factory.MetaProperty();
+			Variable_Initializer = factory.MetaProperty();
 			Label = factory.MetaClass();
 			BlockStatement = factory.MetaClass();
 			BlockStatement_Statements = factory.MetaProperty();
@@ -35397,7 +35174,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			SwitchCase_Body = factory.MetaProperty();
 			CaseClause = factory.MetaClass();
 			CaseClause_Label = factory.MetaProperty();
-			DefaultValueCaseClause = factory.MetaClass();
+			DefaultCaseClause = factory.MetaClass();
 			SingleValueCaseClause = factory.MetaClass();
 			SingleValueCaseClause_Value = factory.MetaProperty();
 			TryStatement = factory.MetaClass();
@@ -35505,11 +35282,10 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			UnaryExpression_IsChecked = factory.MetaProperty();
 			UnaryExpression_OperatorMethod = factory.MetaProperty();
 			VariableDeclarationExpression = factory.MetaClass();
-			VariableDeclarationExpression_Symbol = factory.MetaProperty();
+			VariableDeclarationExpression_IsConst = factory.MetaProperty();
+			VariableDeclarationExpression_Type = factory.MetaProperty();
+			VariableDeclarationExpression_Variables = factory.MetaProperty();
 			VariableDeclarationExpression_Initializer = factory.MetaProperty();
-			VariableDeclarationGroupExpression = factory.MetaClass();
-			VariableDeclarationGroupExpression_Declarations = factory.MetaProperty();
-			VariableDeclarationGroupExpression_Initializer = factory.MetaProperty();
 			__tmp26 = factory.MetaCollectionType();
 			__tmp27 = factory.MetaCollectionType();
 			__tmp28 = factory.MetaCollectionType();
@@ -35634,7 +35410,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Declarations.AddLazy(() => SwitchStatement);
 			__tmp4.Declarations.AddLazy(() => SwitchCase);
 			__tmp4.Declarations.AddLazy(() => CaseClause);
-			__tmp4.Declarations.AddLazy(() => DefaultValueCaseClause);
+			__tmp4.Declarations.AddLazy(() => DefaultCaseClause);
 			__tmp4.Declarations.AddLazy(() => SingleValueCaseClause);
 			__tmp4.Declarations.AddLazy(() => TryStatement);
 			__tmp4.Declarations.AddLazy(() => CatchClause);
@@ -35670,7 +35446,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Declarations.AddLazy(() => TupleExpression);
 			__tmp4.Declarations.AddLazy(() => UnaryExpression);
 			__tmp4.Declarations.AddLazy(() => VariableDeclarationExpression);
-			__tmp4.Declarations.AddLazy(() => VariableDeclarationGroupExpression);
 			__tmp5.Documentation = null;
 			__tmp5.Name = "Core";
 			__tmp5.MajorVersion = 1;
@@ -36480,7 +36255,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Variable.SuperClasses.AddLazy(() => Local);
 			Variable.Properties.AddLazy(() => Variable_IsConst);
 			Variable.Properties.AddLazy(() => Variable_Type);
-			Variable.Properties.AddLazy(() => Variable_DefaultValue);
+			Variable.Properties.AddLazy(() => Variable_Initializer);
 			Variable_IsConst.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
 			Variable_IsConst.Documentation = null;
 			Variable_IsConst.Name = "IsConst";
@@ -36497,14 +36272,14 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Variable_Type.SetClassLazy(() => Variable);
 			Variable_Type.DefaultValue = null;
 			Variable_Type.IsContainment = false;
-			Variable_DefaultValue.SetTypeLazy(() => Expression);
-			Variable_DefaultValue.Documentation = null;
-			Variable_DefaultValue.Name = "DefaultValue";
-			Variable_DefaultValue.SymbolProperty = "DefaultValue";
-			Variable_DefaultValue.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			Variable_DefaultValue.SetClassLazy(() => Variable);
-			Variable_DefaultValue.DefaultValue = null;
-			Variable_DefaultValue.IsContainment = true;
+			Variable_Initializer.SetTypeLazy(() => Expression);
+			Variable_Initializer.Documentation = null;
+			Variable_Initializer.Name = "Initializer";
+			Variable_Initializer.SymbolProperty = "Initializer";
+			Variable_Initializer.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Variable_Initializer.SetClassLazy(() => Variable);
+			Variable_Initializer.DefaultValue = null;
+			Variable_Initializer.IsContainment = true;
 			Label.Documentation = null;
 			Label.Name = "Label";
 			Label.SetNamespaceLazy(() => __tmp4);
@@ -36844,12 +36619,12 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			CaseClause_Label.SetClassLazy(() => CaseClause);
 			CaseClause_Label.DefaultValue = null;
 			CaseClause_Label.IsContainment = true;
-			DefaultValueCaseClause.Documentation = null;
-			DefaultValueCaseClause.Name = "DefaultValueCaseClause";
-			DefaultValueCaseClause.SetNamespaceLazy(() => __tmp4);
-			DefaultValueCaseClause.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.DefaultCaseClauseSymbol);
-			DefaultValueCaseClause.IsAbstract = false;
-			DefaultValueCaseClause.SuperClasses.AddLazy(() => CaseClause);
+			DefaultCaseClause.Documentation = null;
+			DefaultCaseClause.Name = "DefaultCaseClause";
+			DefaultCaseClause.SetNamespaceLazy(() => __tmp4);
+			DefaultCaseClause.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.DefaultCaseClauseSymbol);
+			DefaultCaseClause.IsAbstract = false;
+			DefaultCaseClause.SuperClasses.AddLazy(() => CaseClause);
 			SingleValueCaseClause.Documentation = null;
 			SingleValueCaseClause.Name = "SingleValueCaseClause";
 			SingleValueCaseClause.SetNamespaceLazy(() => __tmp4);
@@ -37709,16 +37484,34 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			VariableDeclarationExpression.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.VariableDeclarationExpressionSymbol);
 			VariableDeclarationExpression.IsAbstract = false;
 			VariableDeclarationExpression.SuperClasses.AddLazy(() => Expression);
-			VariableDeclarationExpression.Properties.AddLazy(() => VariableDeclarationExpression_Symbol);
+			VariableDeclarationExpression.Properties.AddLazy(() => VariableDeclarationExpression_IsConst);
+			VariableDeclarationExpression.Properties.AddLazy(() => VariableDeclarationExpression_Type);
+			VariableDeclarationExpression.Properties.AddLazy(() => VariableDeclarationExpression_Variables);
 			VariableDeclarationExpression.Properties.AddLazy(() => VariableDeclarationExpression_Initializer);
-			VariableDeclarationExpression_Symbol.SetTypeLazy(() => Variable);
-			VariableDeclarationExpression_Symbol.Documentation = null;
-			VariableDeclarationExpression_Symbol.Name = "Symbol";
-			VariableDeclarationExpression_Symbol.SymbolProperty = "Symbol";
-			VariableDeclarationExpression_Symbol.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			VariableDeclarationExpression_Symbol.SetClassLazy(() => VariableDeclarationExpression);
-			VariableDeclarationExpression_Symbol.DefaultValue = null;
-			VariableDeclarationExpression_Symbol.IsContainment = true;
+			VariableDeclarationExpression_IsConst.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			VariableDeclarationExpression_IsConst.Documentation = null;
+			VariableDeclarationExpression_IsConst.Name = "IsConst";
+			VariableDeclarationExpression_IsConst.SymbolProperty = "IsConst";
+			VariableDeclarationExpression_IsConst.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			VariableDeclarationExpression_IsConst.SetClassLazy(() => VariableDeclarationExpression);
+			VariableDeclarationExpression_IsConst.DefaultValue = null;
+			VariableDeclarationExpression_IsConst.IsContainment = false;
+			VariableDeclarationExpression_Type.SetTypeLazy(() => DataType);
+			VariableDeclarationExpression_Type.Documentation = null;
+			VariableDeclarationExpression_Type.Name = "Type";
+			VariableDeclarationExpression_Type.SymbolProperty = "Type";
+			VariableDeclarationExpression_Type.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			VariableDeclarationExpression_Type.SetClassLazy(() => VariableDeclarationExpression);
+			VariableDeclarationExpression_Type.DefaultValue = null;
+			VariableDeclarationExpression_Type.IsContainment = false;
+			VariableDeclarationExpression_Variables.SetTypeLazy(() => __tmp50);
+			VariableDeclarationExpression_Variables.Documentation = null;
+			VariableDeclarationExpression_Variables.Name = "Variables";
+			VariableDeclarationExpression_Variables.SymbolProperty = "Variables";
+			VariableDeclarationExpression_Variables.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			VariableDeclarationExpression_Variables.SetClassLazy(() => VariableDeclarationExpression);
+			VariableDeclarationExpression_Variables.DefaultValue = null;
+			VariableDeclarationExpression_Variables.IsContainment = true;
 			VariableDeclarationExpression_Initializer.SetTypeLazy(() => Expression);
 			VariableDeclarationExpression_Initializer.Documentation = null;
 			VariableDeclarationExpression_Initializer.Name = "Initializer";
@@ -37727,30 +37520,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			VariableDeclarationExpression_Initializer.SetClassLazy(() => VariableDeclarationExpression);
 			VariableDeclarationExpression_Initializer.DefaultValue = null;
 			VariableDeclarationExpression_Initializer.IsContainment = true;
-			VariableDeclarationGroupExpression.Documentation = null;
-			VariableDeclarationGroupExpression.Name = "VariableDeclarationGroupExpression";
-			VariableDeclarationGroupExpression.SetNamespaceLazy(() => __tmp4);
-			VariableDeclarationGroupExpression.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.VariableDeclarationGroupExpressionSymbol);
-			VariableDeclarationGroupExpression.IsAbstract = false;
-			VariableDeclarationGroupExpression.SuperClasses.AddLazy(() => Expression);
-			VariableDeclarationGroupExpression.Properties.AddLazy(() => VariableDeclarationGroupExpression_Declarations);
-			VariableDeclarationGroupExpression.Properties.AddLazy(() => VariableDeclarationGroupExpression_Initializer);
-			VariableDeclarationGroupExpression_Declarations.SetTypeLazy(() => __tmp50);
-			VariableDeclarationGroupExpression_Declarations.Documentation = null;
-			VariableDeclarationGroupExpression_Declarations.Name = "Declarations";
-			VariableDeclarationGroupExpression_Declarations.SymbolProperty = "Declarations";
-			VariableDeclarationGroupExpression_Declarations.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			VariableDeclarationGroupExpression_Declarations.SetClassLazy(() => VariableDeclarationGroupExpression);
-			VariableDeclarationGroupExpression_Declarations.DefaultValue = null;
-			VariableDeclarationGroupExpression_Declarations.IsContainment = true;
-			VariableDeclarationGroupExpression_Initializer.SetTypeLazy(() => Expression);
-			VariableDeclarationGroupExpression_Initializer.Documentation = null;
-			VariableDeclarationGroupExpression_Initializer.Name = "Initializer";
-			VariableDeclarationGroupExpression_Initializer.SymbolProperty = "Initializer";
-			VariableDeclarationGroupExpression_Initializer.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			VariableDeclarationGroupExpression_Initializer.SetClassLazy(() => VariableDeclarationGroupExpression);
-			VariableDeclarationGroupExpression_Initializer.DefaultValue = null;
-			VariableDeclarationGroupExpression_Initializer.IsContainment = true;
 			__tmp26.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp26.SetInnerTypeLazy(() => Attribute);
 			__tmp27.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
@@ -37800,7 +37569,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp49.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp49.SetInnerTypeLazy(() => Argument);
 			__tmp50.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp50.SetInnerTypeLazy(() => VariableDeclarationExpression);
+			__tmp50.SetInnerTypeLazy(() => Variable);
 		}
 	}
 
@@ -39750,7 +39519,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	
 	
 		/// <summary>
-		/// Implements the constructor: DefaultValueCaseClause()
+		/// Implements the constructor: DefaultCaseClause()
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
@@ -39761,15 +39530,15 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		///     <li>Element</li>
 		///     <li>CaseClause</li>
 		/// </ul>
-		public virtual void DefaultValueCaseClause(DefaultValueCaseClauseBuilder _this)
+		public virtual void DefaultCaseClause(DefaultCaseClauseBuilder _this)
 		{
-			this.CallDefaultValueCaseClauseSuperConstructors(_this);
+			this.CallDefaultCaseClauseSuperConstructors(_this);
 		}
 	
 		/// <summary>
-		/// Calls the super constructors of DefaultValueCaseClause
+		/// Calls the super constructors of DefaultCaseClause
 		/// </summary>
-		protected virtual void CallDefaultValueCaseClauseSuperConstructors(DefaultValueCaseClauseBuilder _this)
+		protected virtual void CallDefaultCaseClauseSuperConstructors(DefaultCaseClauseBuilder _this)
 		{
 			this.Element(_this);
 			this.CaseClause(_this);
@@ -40788,35 +40557,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// Calls the super constructors of VariableDeclarationExpression
 		/// </summary>
 		protected virtual void CallVariableDeclarationExpressionSuperConstructors(VariableDeclarationExpressionBuilder _this)
-		{
-			this.Element(_this);
-			this.Expression(_this);
-		}
-	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: VariableDeclarationGroupExpression()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>Expression</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>Element</li>
-		///     <li>Expression</li>
-		/// </ul>
-		public virtual void VariableDeclarationGroupExpression(VariableDeclarationGroupExpressionBuilder _this)
-		{
-			this.CallVariableDeclarationGroupExpressionSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of VariableDeclarationGroupExpression
-		/// </summary>
-		protected virtual void CallVariableDeclarationGroupExpressionSuperConstructors(VariableDeclarationGroupExpressionBuilder _this)
 		{
 			this.Element(_this);
 			this.Expression(_this);

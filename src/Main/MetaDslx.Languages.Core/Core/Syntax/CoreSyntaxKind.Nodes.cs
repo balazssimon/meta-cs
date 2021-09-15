@@ -31,7 +31,7 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string BlockStmt = nameof(BlockStmt);
 		public const string ExprStmt = nameof(ExprStmt);
 		public const string ForeachStmt = nameof(ForeachStmt);
-		public const string ForeachStmt = nameof(ForeachStmt);
+		public const string ForStmt = nameof(ForStmt);
 		public const string IfStmt = nameof(IfStmt);
 		public const string BreakStmt = nameof(BreakStmt);
 		public const string ContinueStmt = nameof(ContinueStmt);
@@ -39,11 +39,11 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string LabeledStmt = nameof(LabeledStmt);
 		public const string LockStmt = nameof(LockStmt);
 		public const string ReturnStmt = nameof(ReturnStmt);
-		public const string ReturnStmt = nameof(ReturnStmt);
+		public const string SwitchStmt = nameof(SwitchStmt);
 		public const string TryStmt = nameof(TryStmt);
 		public const string UsingStmt = nameof(UsingStmt);
 		public const string WhileStmt = nameof(WhileStmt);
-		public const string WhileStmt = nameof(WhileStmt);
+		public const string DoWhileStmt = nameof(DoWhileStmt);
 		public const string BlockStatement = nameof(BlockStatement);
 		public const string BareBlockStatement = nameof(BareBlockStatement);
 		public const string SwitchCase = nameof(SwitchCase);
@@ -96,6 +96,7 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string AssignExpr = nameof(AssignExpr);
 		public const string CompAssignExpr = nameof(CompAssignExpr);
 		public const string LambdaExpr = nameof(LambdaExpr);
+		public const string VarDefExpr = nameof(VarDefExpr);
 		public const string TupleArguments = nameof(TupleArguments);
 		public const string ArgumentList = nameof(ArgumentList);
 		public const string ArgumentExpression = nameof(ArgumentExpression);
@@ -113,6 +114,8 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string ExplicitParameterList = nameof(ExplicitParameterList);
 		public const string ExplicitParameter = nameof(ExplicitParameter);
 		public const string LambdaBody = nameof(LambdaBody);
+		public const string VariableDefList = nameof(VariableDefList);
+		public const string VariableDef = nameof(VariableDef);
 		public const string DotOperator = nameof(DotOperator);
 		public const string IndexerOperator = nameof(IndexerOperator);
 		public const string PostfixOperator = nameof(PostfixOperator);
@@ -126,6 +129,7 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string EqualityOperator = nameof(EqualityOperator);
 		public const string CompoundAssignmentOperator = nameof(CompoundAssignmentOperator);
 		public const string ReturnType = nameof(ReturnType);
+		public const string VariableType = nameof(VariableType);
 		public const string PrimitiveTypeRef = nameof(PrimitiveTypeRef);
 		public const string GenericTypeRef = nameof(GenericTypeRef);
 		public const string NamedTypeRef = nameof(NamedTypeRef);
@@ -136,6 +140,7 @@ namespace MetaDslx.Languages.Core.Syntax
 		public const string GenericTypeArgument = nameof(GenericTypeArgument);
 		public const string PrimitiveType = nameof(PrimitiveType);
 		public const string VoidType = nameof(VoidType);
+		public const string VarType = nameof(VarType);
 		public const string Name = nameof(Name);
 		public const string QualifiedName = nameof(QualifiedName);
 		public const string Qualifier = nameof(Qualifier);
@@ -162,7 +167,7 @@ namespace MetaDslx.Languages.Core.Syntax
         {
             EnumObject.AutoInit<CoreSyntaxKind>();
             __FirstToken = KNamespace;
-            __LastToken = KWhen;
+            __LastToken = LCommentStart;
             __FirstFixedToken = KNamespace;
             __LastFixedToken = LCommentStart;
             __FirstRule = Main;

@@ -47,7 +47,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(TypeOfExpressionSymbol symbol);
         void Visit(UnaryExpressionSymbol symbol);
         void Visit(VariableDeclarationExpressionSymbol symbol);
-        void Visit(VariableDeclarationGroupExpressionSymbol symbol);
         void Visit(MemberSymbol symbol);
         void Visit(BinaryOperatorSymbol symbol);
         void Visit(ConstructorSymbol symbol);
@@ -139,7 +138,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(TypeOfExpressionSymbol symbol);
         TResult Visit(UnaryExpressionSymbol symbol);
         TResult Visit(VariableDeclarationExpressionSymbol symbol);
-        TResult Visit(VariableDeclarationGroupExpressionSymbol symbol);
         TResult Visit(MemberSymbol symbol);
         TResult Visit(BinaryOperatorSymbol symbol);
         TResult Visit(ConstructorSymbol symbol);
@@ -231,7 +229,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(TypeOfExpressionSymbol symbol, TArgument argument);
         TResult Visit(UnaryExpressionSymbol symbol, TArgument argument);
         TResult Visit(VariableDeclarationExpressionSymbol symbol, TArgument argument);
-        TResult Visit(VariableDeclarationGroupExpressionSymbol symbol, TArgument argument);
         TResult Visit(MemberSymbol symbol, TArgument argument);
         TResult Visit(BinaryOperatorSymbol symbol, TArgument argument);
         TResult Visit(ConstructorSymbol symbol, TArgument argument);

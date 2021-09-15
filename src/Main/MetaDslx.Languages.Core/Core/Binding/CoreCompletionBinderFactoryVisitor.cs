@@ -33,10 +33,10 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_ForeachStmt_Variable = new object();
 		public static object Use_ForeachStmt_Collection = new object();
 		public static object Use_ForeachStmt_Statement = new object();
-		public static object Use_ForeachStmt_Before = new object();
-		public static object Use_ForeachStmt_Condition = new object();
-		public static object Use_ForeachStmt_AtLoopBottom = new object();
-		public static object Use_ForeachStmt_Statement = new object();
+		public static object Use_ForStmt_Before = new object();
+		public static object Use_ForStmt_Condition = new object();
+		public static object Use_ForStmt_AtLoopBottom = new object();
+		public static object Use_ForStmt_Statement = new object();
 		public static object Use_IfStmt_Condition = new object();
 		public static object Use_IfStmt_IfTrue = new object();
 		public static object Use_IfStmt_IfFalse = new object();
@@ -49,8 +49,8 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_LockStmt_LockedValue = new object();
 		public static object Use_LockStmt_Body = new object();
 		public static object Use_ReturnStmt_ReturnedValue = new object();
-		public static object Use_ReturnStmt_Value = new object();
-		public static object Use_ReturnStmt_SwitchCase = new object();
+		public static object Use_SwitchStmt_Value = new object();
+		public static object Use_SwitchStmt_SwitchCase = new object();
 		public static object Use_TryStmt_Body = new object();
 		public static object Use_TryStmt_CatchClause = new object();
 		public static object Use_TryStmt_FinallyClause = new object();
@@ -58,8 +58,8 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_UsingStmt_Body = new object();
 		public static object Use_WhileStmt_Condition = new object();
 		public static object Use_WhileStmt_Body = new object();
-		public static object Use_WhileStmt_Body = new object();
-		public static object Use_WhileStmt_Condition = new object();
+		public static object Use_DoWhileStmt_Body = new object();
+		public static object Use_DoWhileStmt_Condition = new object();
 		public static object Use_BlockStatement_Statement = new object();
 		public static object Use_BareBlockStatement_Statement = new object();
 		public static object Use_SwitchCase_CaseClause = new object();
@@ -155,6 +155,9 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_CompAssignExpr_Value = new object();
 		public static object Use_LambdaExpr_LambdaSignature = new object();
 		public static object Use_LambdaExpr_LambdaBody = new object();
+		public static object Use_VarDefExpr_KConst = new object();
+		public static object Use_VarDefExpr_VariableType = new object();
+		public static object Use_VarDefExpr_VariableDefList = new object();
 		public static object Use_TupleArguments_ArgumentExpression = new object();
 		public static object Use_TupleArguments_ArgumentList = new object();
 		public static object Use_ArgumentList_ArgumentExpression = new object();
@@ -182,6 +185,9 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_ExplicitParameter_Name = new object();
 		public static object Use_LambdaBody_Expression = new object();
 		public static object Use_LambdaBody_BlockStatement = new object();
+		public static object Use_VariableDefList_VariableDef = new object();
+		public static object Use_VariableDef_Name = new object();
+		public static object Use_VariableDef_Initializer = new object();
 		public static object Use_DotOperator_DotOperator = new object();
 		public static object Use_IndexerOperator_IndexerOperator = new object();
 		public static object Use_PostfixOperator_PostfixOperator = new object();
@@ -195,6 +201,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_CompoundAssignmentOperator_CompoundAssignmentOperator = new object();
 		public static object Use_ReturnType_TypeReference = new object();
 		public static object Use_ReturnType_VoidType = new object();
+		public static object Use_VariableType_TypeReference = new object();
 		public static object Use_PrimitiveTypeRef_PrimitiveType = new object();
 		public static object Use_GenericTypeRef_NamedType = new object();
 		public static object Use_GenericTypeRef_GenericTypeArguments = new object();
@@ -215,7 +222,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_Literal_ScientificLiteral = new object();
 		public static object Use_Literal_StringLiteral = new object();
 
-        private bool[] _visited = new bool[62];
+        private bool[] _visited = new bool[66];
 
         public CoreCompletionBinderFactoryVisitor(BinderFactory binderFactory)
 			: base(binderFactory)
@@ -516,7 +523,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Statement.FullSpan.Length;
 		}
 		
-		public void VisitForeachStmt(ForeachStmtSyntax parent) // -1
+		public void VisitForStmt(ForStmtSyntax parent) // -1
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -546,13 +553,13 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.Before);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForForeachStmt(Use_ForeachStmt_Before, operation, Compilation.GetBinder(parent));
+		                AddResultsForForStmt(Use_ForStmt_Before, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.Before);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Before == null || parent.Before.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Before, operation, Compilation.GetBinder(parent));
+		            if (parent.Before == null || parent.Before.IsMissing) AddResultsForForStmt(Use_ForStmt_Before, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.Before);
 		        }
 		    }
@@ -565,13 +572,13 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.Condition);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForForeachStmt(Use_ForeachStmt_Condition, operation, Compilation.GetBinder(parent));
+		                AddResultsForForStmt(Use_ForStmt_Condition, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.Condition);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Condition, operation, Compilation.GetBinder(parent));
+		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForForStmt(Use_ForStmt_Condition, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.Condition);
 		        }
 		    }
@@ -584,13 +591,13 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.AtLoopBottom);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForForeachStmt(Use_ForeachStmt_AtLoopBottom, operation, Compilation.GetBinder(parent));
+		                AddResultsForForStmt(Use_ForStmt_AtLoopBottom, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.AtLoopBottom);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.AtLoopBottom == null || parent.AtLoopBottom.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_AtLoopBottom, operation, Compilation.GetBinder(parent));
+		            if (parent.AtLoopBottom == null || parent.AtLoopBottom.IsMissing) AddResultsForForStmt(Use_ForStmt_AtLoopBottom, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.AtLoopBottom);
 		        }
 		    }
@@ -611,13 +618,13 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.Statement);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForForeachStmt(Use_ForeachStmt_Statement, operation, Compilation.GetBinder(parent));
+		                AddResultsForForStmt(Use_ForStmt_Statement, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.Statement);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Statement == null || parent.Statement.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Statement, operation, Compilation.GetBinder(parent));
+		            if (parent.Statement == null || parent.Statement.IsMissing) AddResultsForForStmt(Use_ForStmt_Statement, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.Statement);
 		        }
 		    }
@@ -1006,7 +1013,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
-		public void VisitReturnStmt(ReturnStmtSyntax parent) // -1
+		public void VisitSwitchStmt(SwitchStmtSyntax parent) // -1
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1036,13 +1043,13 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.Value);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForReturnStmt(Use_ReturnStmt_Value, operation, Compilation.GetBinder(parent));
+		                AddResultsForSwitchStmt(Use_SwitchStmt_Value, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.Value);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Value == null || parent.Value.IsMissing) AddResultsForReturnStmt(Use_ReturnStmt_Value, operation, Compilation.GetBinder(parent));
+		            if (parent.Value == null || parent.Value.IsMissing) AddResultsForSwitchStmt(Use_SwitchStmt_Value, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.Value);
 		        }
 		    }
@@ -1072,7 +1079,7 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.SwitchCase.Node);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForReturnStmt(Use_ReturnStmt_SwitchCase, operation, Compilation.GetBinder(parent));
+		                AddResultsForSwitchStmt(Use_SwitchStmt_SwitchCase, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        foreach (var item in parent.SwitchCase)
@@ -1283,7 +1290,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Body.FullSpan.Length;
 		}
 		
-		public void VisitWhileStmt(WhileStmtSyntax parent) // -1
+		public void VisitDoWhileStmt(DoWhileStmtSyntax parent) // -1
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1304,13 +1311,13 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.Body);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForWhileStmt(Use_WhileStmt_Body, operation, Compilation.GetBinder(parent));
+		                AddResultsForDoWhileStmt(Use_DoWhileStmt_Body, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.Body);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Body == null || parent.Body.IsMissing) AddResultsForWhileStmt(Use_WhileStmt_Body, operation, Compilation.GetBinder(parent));
+		            if (parent.Body == null || parent.Body.IsMissing) AddResultsForDoWhileStmt(Use_DoWhileStmt_Body, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.Body);
 		        }
 		    }
@@ -1340,13 +1347,13 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.Condition);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForWhileStmt(Use_WhileStmt_Condition, operation, Compilation.GetBinder(parent));
+		                AddResultsForDoWhileStmt(Use_DoWhileStmt_Condition, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.Condition);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForWhileStmt(Use_WhileStmt_Condition, operation, Compilation.GetBinder(parent));
+		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForDoWhileStmt(Use_DoWhileStmt_Condition, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.Condition);
 		        }
 		    }
@@ -1692,6 +1699,14 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
+		    if (parent.KWhen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KWhen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KWhen, operation);
+		        }
+		    }
 		    position += parent.KWhen.FullSpan.Length;
 		    if (parent.Filter.FullSpan.IntersectsWith(FullSpan))
 		    {
@@ -3941,6 +3956,67 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LambdaBody.FullSpan.Length;
 		}
 		
+		public void VisitVarDefExpr(VarDefExprSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KConst.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.KConst.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.KConst);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVarDefExpr(Use_VarDefExpr_KConst, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.KConst);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.KConst.GetKind() == SyntaxKind.None || parent.KConst.IsMissing) AddResultsForVarDefExpr(Use_VarDefExpr_KConst, operation, Compilation.GetBinder(parent));
+		            else AddBinder(parent.KConst, operation);
+		        }
+		    }
+		    position += parent.KConst.FullSpan.Length;
+		    if (parent.VariableType.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.VariableType.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.VariableType);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVarDefExpr(Use_VarDefExpr_VariableType, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.VariableType);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.VariableType == null || parent.VariableType.IsMissing) AddResultsForVarDefExpr(Use_VarDefExpr_VariableType, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.VariableType);
+		        }
+		    }
+		    position += parent.VariableType.FullSpan.Length;
+		    if (parent.VariableDefList.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.VariableDefList.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.VariableDefList);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVarDefExpr(Use_VarDefExpr_VariableDefList, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.VariableDefList);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.VariableDefList == null || parent.VariableDefList.IsMissing) AddResultsForVarDefExpr(Use_VarDefExpr_VariableDefList, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.VariableDefList);
+		        }
+		    }
+		    position += parent.VariableDefList.FullSpan.Length;
+		}
+		
 		public void VisitTupleArguments(TupleArgumentsSyntax parent) // 15
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
@@ -4654,7 +4730,87 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.BlockStatement != null) position += parent.BlockStatement.FullSpan.Length;
 		}
 		
-		public void VisitDotOperator(DotOperatorSyntax parent) // 32
+		public void VisitVariableDefList(VariableDefListSyntax parent) // 32
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.VariableDef.Node == null || parent.VariableDef.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.VariableDef.Node == null || !parent.VariableDef.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.VariableDef.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVariableDefList(Use_VariableDefList_VariableDef, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.VariableDef.GetWithSeparators())
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                if (item.IsToken) AddBinder(item, operation);
+		                else VisitCore(item.AsNode());
+		            }
+		        }
+		    }
+		    position += parent.VariableDef.FullSpan.Length;
+		}
+		
+		public void VisitVariableDef(VariableDefSyntax parent) // 33
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVariableDef(Use_VariableDef_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForVariableDef(Use_VariableDef_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
+		    }
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.TAssign.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TAssign);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TAssign, operation);
+		        }
+		    }
+		    position += parent.TAssign.FullSpan.Length;
+		    if (parent.Initializer.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Initializer.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Initializer);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVariableDef(Use_VariableDef_Initializer, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Initializer);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Initializer == null || parent.Initializer.IsMissing) AddResultsForVariableDef(Use_VariableDef_Initializer, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Initializer);
+		        }
+		    }
+		    position += parent.Initializer.FullSpan.Length;
+		}
+		
+		public void VisitDotOperator(DotOperatorSyntax parent) // 34
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4678,7 +4834,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.DotOperator.FullSpan.Length;
 		}
 		
-		public void VisitIndexerOperator(IndexerOperatorSyntax parent) // 33
+		public void VisitIndexerOperator(IndexerOperatorSyntax parent) // 35
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4702,7 +4858,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.IndexerOperator.FullSpan.Length;
 		}
 		
-		public void VisitPostfixOperator(PostfixOperatorSyntax parent) // 34
+		public void VisitPostfixOperator(PostfixOperatorSyntax parent) // 36
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4726,7 +4882,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.PostfixOperator.FullSpan.Length;
 		}
 		
-		public void VisitUnaryOperator(UnaryOperatorSyntax parent) // 35
+		public void VisitUnaryOperator(UnaryOperatorSyntax parent) // 37
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4750,7 +4906,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.UnaryOperator.FullSpan.Length;
 		}
 		
-		public void VisitMultiplicativeOperator(MultiplicativeOperatorSyntax parent) // 36
+		public void VisitMultiplicativeOperator(MultiplicativeOperatorSyntax parent) // 38
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4774,7 +4930,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.MultiplicativeOperator.FullSpan.Length;
 		}
 		
-		public void VisitAdditiveOperator(AdditiveOperatorSyntax parent) // 37
+		public void VisitAdditiveOperator(AdditiveOperatorSyntax parent) // 39
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4798,7 +4954,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.AdditiveOperator.FullSpan.Length;
 		}
 		
-		public void VisitShiftOperator(ShiftOperatorSyntax parent) // 38
+		public void VisitShiftOperator(ShiftOperatorSyntax parent) // 40
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4841,7 +4997,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.RightShiftOperator != null) position += parent.RightShiftOperator.FullSpan.Length;
 		}
 		
-		public void VisitLeftShiftOperator(LeftShiftOperatorSyntax parent) // 39
+		public void VisitLeftShiftOperator(LeftShiftOperatorSyntax parent) // 41
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4850,7 +5006,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Second.FullSpan.Length;
 		}
 		
-		public void VisitRightShiftOperator(RightShiftOperatorSyntax parent) // 40
+		public void VisitRightShiftOperator(RightShiftOperatorSyntax parent) // 42
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4859,7 +5015,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Second.FullSpan.Length;
 		}
 		
-		public void VisitRelationalOperator(RelationalOperatorSyntax parent) // 41
+		public void VisitRelationalOperator(RelationalOperatorSyntax parent) // 43
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4883,7 +5039,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.RelationalOperator.FullSpan.Length;
 		}
 		
-		public void VisitEqualityOperator(EqualityOperatorSyntax parent) // 42
+		public void VisitEqualityOperator(EqualityOperatorSyntax parent) // 44
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4907,7 +5063,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.EqualityOperator.FullSpan.Length;
 		}
 		
-		public void VisitCompoundAssignmentOperator(CompoundAssignmentOperatorSyntax parent) // 43
+		public void VisitCompoundAssignmentOperator(CompoundAssignmentOperatorSyntax parent) // 45
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4931,7 +5087,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.CompoundAssignmentOperator.FullSpan.Length;
 		}
 		
-		public void VisitReturnType(ReturnTypeSyntax parent) // 44
+		public void VisitReturnType(ReturnTypeSyntax parent) // 46
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4972,6 +5128,32 @@ namespace MetaDslx.Languages.Core.Binding
 		        }
 		    }
 		    if (parent.VoidType != null) position += parent.VoidType.FullSpan.Length;
+		}
+		
+		public void VisitVariableType(VariableTypeSyntax parent) // 47
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.TypeReference == null || parent.TypeReference.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.TypeReference == null || !parent.TypeReference.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.TypeReference);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForVariableType(Use_VariableType_TypeReference, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.TypeReference);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.TypeReference == null || parent.TypeReference.IsMissing) AddResultsForVariableType(Use_VariableType_TypeReference, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.TypeReference);
+		        }
+		    }
+		    if (parent.TypeReference != null) position += parent.TypeReference.FullSpan.Length;
+		    if (parent.VarType != null) position += parent.VarType.FullSpan.Length;
 		}
 		
 		public void VisitPrimitiveTypeRef(PrimitiveTypeRefSyntax parent) // -1
@@ -5144,7 +5326,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TQuestion.FullSpan.Length;
 		}
 		
-		public void VisitNamedType(NamedTypeSyntax parent) // 46
+		public void VisitNamedType(NamedTypeSyntax parent) // 49
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5169,7 +5351,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
-		public void VisitGenericTypeArguments(GenericTypeArgumentsSyntax parent) // 47
+		public void VisitGenericTypeArguments(GenericTypeArgumentsSyntax parent) // 50
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5215,7 +5397,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TGreaterThan.FullSpan.Length;
 		}
 		
-		public void VisitGenericTypeArgument(GenericTypeArgumentSyntax parent) // 48
+		public void VisitGenericTypeArgument(GenericTypeArgumentSyntax parent) // 51
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5240,7 +5422,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TypeReference.FullSpan.Length;
 		}
 		
-		public void VisitPrimitiveType(PrimitiveTypeSyntax parent) // 49
+		public void VisitPrimitiveType(PrimitiveTypeSyntax parent) // 52
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5264,7 +5446,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.PrimitiveType.FullSpan.Length;
 		}
 		
-		public void VisitVoidType(VoidTypeSyntax parent) // 50
+		public void VisitVoidType(VoidTypeSyntax parent) // 53
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5280,7 +5462,23 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.KVoid.FullSpan.Length;
 		}
 		
-		public void VisitName(NameSyntax parent) // 51
+		public void VisitVarType(VarTypeSyntax parent) // 54
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KVar.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KVar);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KVar, operation);
+		        }
+		    }
+		    position += parent.KVar.FullSpan.Length;
+		}
+		
+		public void VisitName(NameSyntax parent) // 55
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5305,7 +5503,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitQualifiedName(QualifiedNameSyntax parent) // 52
+		public void VisitQualifiedName(QualifiedNameSyntax parent) // 56
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5330,7 +5528,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
-		public void VisitQualifier(QualifierSyntax parent) // 53
+		public void VisitQualifier(QualifierSyntax parent) // 57
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5358,7 +5556,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitIdentifier(IdentifierSyntax parent) // 54
+		public void VisitIdentifier(IdentifierSyntax parent) // 58
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5366,7 +5564,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitLiteral(LiteralSyntax parent) // 55
+		public void VisitLiteral(LiteralSyntax parent) // 59
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5481,7 +5679,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.StringLiteral != null) position += parent.StringLiteral.FullSpan.Length;
 		}
 		
-		public void VisitNullLiteral(NullLiteralSyntax parent) // 56
+		public void VisitNullLiteral(NullLiteralSyntax parent) // 60
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5497,7 +5695,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.KNull.FullSpan.Length;
 		}
 		
-		public void VisitBooleanLiteral(BooleanLiteralSyntax parent) // 57
+		public void VisitBooleanLiteral(BooleanLiteralSyntax parent) // 61
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5505,7 +5703,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.BooleanLiteral.FullSpan.Length;
 		}
 		
-		public void VisitIntegerLiteral(IntegerLiteralSyntax parent) // 58
+		public void VisitIntegerLiteral(IntegerLiteralSyntax parent) // 62
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5513,7 +5711,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LInteger.FullSpan.Length;
 		}
 		
-		public void VisitDecimalLiteral(DecimalLiteralSyntax parent) // 59
+		public void VisitDecimalLiteral(DecimalLiteralSyntax parent) // 63
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5521,7 +5719,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LDecimal.FullSpan.Length;
 		}
 		
-		public void VisitScientificLiteral(ScientificLiteralSyntax parent) // 60
+		public void VisitScientificLiteral(ScientificLiteralSyntax parent) // 64
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5529,7 +5727,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LScientific.FullSpan.Length;
 		}
 		
-		public void VisitStringLiteral(StringLiteralSyntax parent) // 61
+		public void VisitStringLiteral(StringLiteralSyntax parent) // 65
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -5608,6 +5806,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (_visited[2]) return;
             _visited[2] = true;
             object altUse;
+            altUse = UnassignedUse;
             AddResultsForEmptyStmt(altUse, operation, parentBinder);
             if (use == Use_BlockStmt_BlockStatement) altUse = use;
             else altUse = UnassignedUse;
@@ -5618,9 +5817,9 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_ForeachStmt_Variable || use == Use_ForeachStmt_Collection || use == Use_ForeachStmt_Statement) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForForeachStmt(altUse, operation, parentBinder);
-            if (use == Use_ForeachStmt_Before || use == Use_ForeachStmt_Condition || use == Use_ForeachStmt_AtLoopBottom || use == Use_ForeachStmt_Statement) altUse = use;
+            if (use == Use_ForStmt_Before || use == Use_ForStmt_Condition || use == Use_ForStmt_AtLoopBottom || use == Use_ForStmt_Statement) altUse = use;
             else altUse = UnassignedUse;
-            AddResultsForForeachStmt(altUse, operation, parentBinder);
+            AddResultsForForStmt(altUse, operation, parentBinder);
             if (use == Use_IfStmt_Condition || use == Use_IfStmt_IfTrue || use == Use_IfStmt_IfFalse) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForIfStmt(altUse, operation, parentBinder);
@@ -5642,9 +5841,9 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_ReturnStmt_ReturnedValue) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForReturnStmt(altUse, operation, parentBinder);
-            if (use == Use_ReturnStmt_Value || use == Use_ReturnStmt_SwitchCase) altUse = use;
+            if (use == Use_SwitchStmt_Value || use == Use_SwitchStmt_SwitchCase) altUse = use;
             else altUse = UnassignedUse;
-            AddResultsForReturnStmt(altUse, operation, parentBinder);
+            AddResultsForSwitchStmt(altUse, operation, parentBinder);
             if (use == Use_TryStmt_Body || use == Use_TryStmt_CatchClause || use == Use_TryStmt_FinallyClause) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForTryStmt(altUse, operation, parentBinder);
@@ -5654,9 +5853,9 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_WhileStmt_Condition || use == Use_WhileStmt_Body) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForWhileStmt(altUse, operation, parentBinder);
-            if (use == Use_WhileStmt_Body || use == Use_WhileStmt_Condition) altUse = use;
+            if (use == Use_DoWhileStmt_Body || use == Use_DoWhileStmt_Condition) altUse = use;
             else altUse = UnassignedUse;
-            AddResultsForWhileStmt(altUse, operation, parentBinder);
+            AddResultsForDoWhileStmt(altUse, operation, parentBinder);
             _visited[2] = false;
         }
         
@@ -5765,7 +5964,7 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = false;
         }
         
-        public void AddResultsForForeachStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        public void AddResultsForForStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
         {
             if (_visited[-1]) return;
             _visited[-1] = true;
@@ -5783,7 +5982,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_ForeachStmt_Before)
+            if (use == UnassignedUse || use == Use_ForStmt_Before)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Before", forCompletion: true);
@@ -5795,7 +5994,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_ForeachStmt_Condition)
+            if (use == UnassignedUse || use == Use_ForStmt_Condition)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Condition", forCompletion: true);
@@ -5808,7 +6007,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_ForeachStmt_AtLoopBottom)
+            if (use == UnassignedUse || use == Use_ForStmt_AtLoopBottom)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "AtLoopBottom", forCompletion: true);
@@ -5820,7 +6019,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_ForeachStmt_Statement)
+            if (use == UnassignedUse || use == Use_ForStmt_Statement)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
@@ -5937,7 +6136,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == UnassignedUse || use == Use_GotoStmt_KGoto)
             {
                 var binder = ruleBinder;
-            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "JumpKind", value: JumpKind.Goto, forCompletion: true);
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "JumpKind", value: JumpKind.GoTo, forCompletion: true);
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KGoto, operation);
                 use = FinishedUse;
             }
@@ -6057,7 +6256,7 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = false;
         }
         
-        public void AddResultsForReturnStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        public void AddResultsForSwitchStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
         {
             if (_visited[-1]) return;
             _visited[-1] = true;
@@ -6075,7 +6274,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_ReturnStmt_Value)
+            if (use == UnassignedUse || use == Use_SwitchStmt_Value)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Value", forCompletion: true);
@@ -6094,7 +6293,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenBrace, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_ReturnStmt_SwitchCase)
+            if (use == UnassignedUse || use == Use_SwitchStmt_SwitchCase)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Cases", forCompletion: true);
@@ -6206,7 +6405,7 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = false;
         }
         
-        public void AddResultsForWhileStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        public void AddResultsForDoWhileStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
         {
             if (_visited[-1]) return;
             _visited[-1] = true;
@@ -6218,7 +6417,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KDo, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_WhileStmt_Body)
+            if (use == UnassignedUse || use == Use_DoWhileStmt_Body)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
@@ -6237,7 +6436,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_WhileStmt_Condition)
+            if (use == UnassignedUse || use == Use_DoWhileStmt_Condition)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ConditionIsTop", value: false, forCompletion: true);
@@ -6535,9 +6734,13 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_TupleExpr_TupleArguments) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForTupleExpr(altUse, operation, parentBinder);
+            altUse = UnassignedUse;
             AddResultsForDiscardExpr(altUse, operation, parentBinder);
+            altUse = UnassignedUse;
             AddResultsForDefaultExpr(altUse, operation, parentBinder);
+            altUse = UnassignedUse;
             AddResultsForThisExpr(altUse, operation, parentBinder);
+            altUse = UnassignedUse;
             AddResultsForBaseExpr(altUse, operation, parentBinder);
             if (use == Use_LiteralExpr_Literal) altUse = use;
             else altUse = UnassignedUse;
@@ -6644,6 +6847,9 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_LambdaExpr_LambdaSignature || use == Use_LambdaExpr_LambdaBody) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForLambdaExpr(altUse, operation, parentBinder);
+            if (use == Use_VarDefExpr_KConst || use == Use_VarDefExpr_VariableType || use == Use_VarDefExpr_VariableDefList) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForVarDefExpr(altUse, operation, parentBinder);
             _visited[14] = false;
         }
         
@@ -7816,6 +8022,35 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = false;
         }
         
+        public void AddResultsForVarDefExpr(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(VariableDeclarationExpressionSymbol), forCompletion: true);
+            if (use == UnassignedUse || use == Use_VarDefExpr_KConst)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "IsConst", value: true, forCompletion: true);
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KConst, operation);
+            }
+            if (use == UnassignedUse || use == Use_VarDefExpr_VariableType)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Type", forCompletion: true);
+                AddResultsForVariableType(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_VarDefExpr_VariableDefList)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Variables", forCompletion: true);
+                AddResultsForVariableDefList(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
         public void AddResultsForTupleArguments(object use, CompletionSearchFlags operation, Binder parentBinder) // 15
         {
             if (_visited[15]) return;
@@ -8181,10 +8416,52 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[31] = false;
         }
         
-        public void AddResultsForDotOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 32
+        public void AddResultsForVariableDefList(object use, CompletionSearchFlags operation, Binder parentBinder) // 32
         {
             if (_visited[32]) return;
             _visited[32] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse || use == Use_VariableDefList_VariableDef)
+            {
+                var binder = ruleBinder;
+                AddResultsForVariableDef(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[32] = false;
+        }
+        
+        public void AddResultsForVariableDef(object use, CompletionSearchFlags operation, Binder parentBinder) // 33
+        {
+            if (_visited[33]) return;
+            _visited[33] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(Variable), forCompletion: true);
+            if (use == UnassignedUse || use == Use_VariableDef_Name)
+            {
+                var binder = ruleBinder;
+                AddResultsForName(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TAssign, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_VariableDef_Initializer)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Initializer", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[33] = false;
+        }
+        
+        public void AddResultsForDotOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 34
+        {
+            if (_visited[34]) return;
+            _visited[34] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_DotOperator_DotOperator)
             {
@@ -8196,13 +8473,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TQuestionDotBinder, (CoreSyntaxKind)CoreSyntaxKind.TQuestionDot, operation);
                 use = FinishedUse;
             }
-            _visited[32] = false;
+            _visited[34] = false;
         }
         
-        public void AddResultsForIndexerOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 33
+        public void AddResultsForIndexerOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 35
         {
-            if (_visited[33]) return;
-            _visited[33] = true;
+            if (_visited[35]) return;
+            _visited[35] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_IndexerOperator_IndexerOperator)
             {
@@ -8214,13 +8491,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TQuestionOpenBracketBinder, (CoreSyntaxKind)CoreSyntaxKind.TQuestionOpenBracket, operation);
                 use = FinishedUse;
             }
-            _visited[33] = false;
+            _visited[35] = false;
         }
         
-        public void AddResultsForPostfixOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 34
+        public void AddResultsForPostfixOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 36
         {
-            if (_visited[34]) return;
-            _visited[34] = true;
+            if (_visited[36]) return;
+            _visited[36] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_PostfixOperator_PostfixOperator)
             {
@@ -8233,13 +8510,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TMinusMinusBinder, (CoreSyntaxKind)CoreSyntaxKind.TMinusMinus, operation);
                 use = FinishedUse;
             }
-            _visited[34] = false;
+            _visited[36] = false;
         }
         
-        public void AddResultsForUnaryOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 35
+        public void AddResultsForUnaryOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 37
         {
-            if (_visited[35]) return;
-            _visited[35] = true;
+            if (_visited[37]) return;
+            _visited[37] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_UnaryOperator_UnaryOperator)
             {
@@ -8267,13 +8544,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(THatBinder, (CoreSyntaxKind)CoreSyntaxKind.THat, operation);
                 use = FinishedUse;
             }
-            _visited[35] = false;
+            _visited[37] = false;
         }
         
-        public void AddResultsForMultiplicativeOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 36
+        public void AddResultsForMultiplicativeOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 38
         {
-            if (_visited[36]) return;
-            _visited[36] = true;
+            if (_visited[38]) return;
+            _visited[38] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_MultiplicativeOperator_MultiplicativeOperator)
             {
@@ -8289,13 +8566,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TPercentBinder, (CoreSyntaxKind)CoreSyntaxKind.TPercent, operation);
                 use = FinishedUse;
             }
-            _visited[36] = false;
+            _visited[38] = false;
         }
         
-        public void AddResultsForAdditiveOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 37
+        public void AddResultsForAdditiveOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 39
         {
-            if (_visited[37]) return;
-            _visited[37] = true;
+            if (_visited[39]) return;
+            _visited[39] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "OperatorKind", forCompletion: true);
             if (use == UnassignedUse || use == Use_AdditiveOperator_AdditiveOperator)
@@ -8309,13 +8586,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TMinusBinder, (CoreSyntaxKind)CoreSyntaxKind.TMinus, operation);
                 use = FinishedUse;
             }
-            _visited[37] = false;
+            _visited[39] = false;
         }
         
-        public void AddResultsForShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 38
+        public void AddResultsForShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 40
         {
-            if (_visited[38]) return;
-            _visited[38] = true;
+            if (_visited[40]) return;
+            _visited[40] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_ShiftOperator_LeftShiftOperator)
             {
@@ -8327,13 +8604,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForRightShiftOperator(UnassignedUse, operation, binder);
             }
-            _visited[38] = false;
+            _visited[40] = false;
         }
         
-        public void AddResultsForLeftShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 39
+        public void AddResultsForLeftShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 41
         {
-            if (_visited[39]) return;
-            _visited[39] = true;
+            if (_visited[41]) return;
+            _visited[41] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, value: BinaryOperatorKind.LeftShift, forCompletion: true);
             if (use == UnassignedUse)
@@ -8348,13 +8625,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TLessThan, operation);
                 use = FinishedUse;
             }
-            _visited[39] = false;
+            _visited[41] = false;
         }
         
-        public void AddResultsForRightShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 40
+        public void AddResultsForRightShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 42
         {
-            if (_visited[40]) return;
-            _visited[40] = true;
+            if (_visited[42]) return;
+            _visited[42] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, value: BinaryOperatorKind.RightShift, forCompletion: true);
             if (use == UnassignedUse)
@@ -8369,13 +8646,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TLessThan, operation);
                 use = FinishedUse;
             }
-            _visited[40] = false;
+            _visited[42] = false;
         }
         
-        public void AddResultsForRelationalOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 41
+        public void AddResultsForRelationalOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 43
         {
-            if (_visited[41]) return;
-            _visited[41] = true;
+            if (_visited[43]) return;
+            _visited[43] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_RelationalOperator_RelationalOperator)
             {
@@ -8394,13 +8671,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TGreaterThanOrEqualBinder, (CoreSyntaxKind)CoreSyntaxKind.TGreaterThanOrEqual, operation);
                 use = FinishedUse;
             }
-            _visited[41] = false;
+            _visited[43] = false;
         }
         
-        public void AddResultsForEqualityOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 42
+        public void AddResultsForEqualityOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 44
         {
-            if (_visited[42]) return;
-            _visited[42] = true;
+            if (_visited[44]) return;
+            _visited[44] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_EqualityOperator_EqualityOperator)
             {
@@ -8413,13 +8690,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TNotEqualBinder, (CoreSyntaxKind)CoreSyntaxKind.TNotEqual, operation);
                 use = FinishedUse;
             }
-            _visited[42] = false;
+            _visited[44] = false;
         }
         
-        public void AddResultsForCompoundAssignmentOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 43
+        public void AddResultsForCompoundAssignmentOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 45
         {
-            if (_visited[43]) return;
-            _visited[43] = true;
+            if (_visited[45]) return;
+            _visited[45] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_CompoundAssignmentOperator_CompoundAssignmentOperator)
             {
@@ -8456,13 +8733,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TRightShiftAssignBinder, (CoreSyntaxKind)CoreSyntaxKind.TRightShiftAssign, operation);
                 use = FinishedUse;
             }
-            _visited[43] = false;
+            _visited[45] = false;
         }
         
-        public void AddResultsForReturnType(object use, CompletionSearchFlags operation, Binder parentBinder) // 44
+        public void AddResultsForReturnType(object use, CompletionSearchFlags operation, Binder parentBinder) // 46
         {
-            if (_visited[44]) return;
-            _visited[44] = true;
+            if (_visited[46]) return;
+            _visited[46] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_ReturnType_TypeReference)
             {
@@ -8474,13 +8751,31 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForVoidType(UnassignedUse, operation, binder);
             }
-            _visited[44] = false;
+            _visited[46] = false;
         }
         
-        public void AddResultsForTypeReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 45
+        public void AddResultsForVariableType(object use, CompletionSearchFlags operation, Binder parentBinder) // 47
         {
-            if (_visited[45]) return;
-            _visited[45] = true;
+            if (_visited[47]) return;
+            _visited[47] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse || use == Use_VariableType_TypeReference)
+            {
+                var binder = ruleBinder;
+                AddResultsForTypeReference(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+                AddResultsForVarType(UnassignedUse, operation, binder);
+            }
+            _visited[47] = false;
+        }
+        
+        public void AddResultsForTypeReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 48
+        {
+            if (_visited[48]) return;
+            _visited[48] = true;
             object altUse;
             if (use == Use_PrimitiveTypeRef_PrimitiveType) altUse = use;
             else altUse = UnassignedUse;
@@ -8497,7 +8792,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_NullableTypeRef_TypeReference) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForNullableTypeRef(altUse, operation, parentBinder);
-            _visited[45] = false;
+            _visited[48] = false;
         }
         
         public void AddResultsForPrimitiveTypeRef(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
@@ -8605,10 +8900,10 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = false;
         }
         
-        public void AddResultsForNamedType(object use, CompletionSearchFlags operation, Binder parentBinder) // 46
+        public void AddResultsForNamedType(object use, CompletionSearchFlags operation, Binder parentBinder) // 49
         {
-            if (_visited[46]) return;
-            _visited[46] = true;
+            if (_visited[49]) return;
+            _visited[49] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateUseBinder(ruleBinder, null, types: ImmutableArray.Create(typeof(ClassifierType), typeof(EnumType), typeof(DelegateType)), forCompletion: true);
             if (use == UnassignedUse || use == Use_NamedType_Qualifier)
@@ -8617,13 +8912,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForQualifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[46] = false;
+            _visited[49] = false;
         }
         
-        public void AddResultsForGenericTypeArguments(object use, CompletionSearchFlags operation, Binder parentBinder) // 47
+        public void AddResultsForGenericTypeArguments(object use, CompletionSearchFlags operation, Binder parentBinder) // 50
         {
-            if (_visited[47]) return;
-            _visited[47] = true;
+            if (_visited[50]) return;
+            _visited[50] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "TypeArguments", forCompletion: true);
             if (use == UnassignedUse)
@@ -8644,13 +8939,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TGreaterThan, operation);
                 use = FinishedUse;
             }
-            _visited[47] = false;
+            _visited[50] = false;
         }
         
-        public void AddResultsForGenericTypeArgument(object use, CompletionSearchFlags operation, Binder parentBinder) // 48
+        public void AddResultsForGenericTypeArgument(object use, CompletionSearchFlags operation, Binder parentBinder) // 51
         {
-            if (_visited[48]) return;
-            _visited[48] = true;
+            if (_visited[51]) return;
+            _visited[51] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_GenericTypeArgument_TypeReference)
             {
@@ -8658,13 +8953,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForTypeReference(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[48] = false;
+            _visited[51] = false;
         }
         
-        public void AddResultsForPrimitiveType(object use, CompletionSearchFlags operation, Binder parentBinder) // 49
+        public void AddResultsForPrimitiveType(object use, CompletionSearchFlags operation, Binder parentBinder) // 52
         {
-            if (_visited[49]) return;
-            _visited[49] = true;
+            if (_visited[52]) return;
+            _visited[52] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_PrimitiveType_PrimitiveType)
             {
@@ -8716,13 +9011,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(KStringBinder, (CoreSyntaxKind)CoreSyntaxKind.KString, operation);
                 use = FinishedUse;
             }
-            _visited[49] = false;
+            _visited[52] = false;
         }
         
-        public void AddResultsForVoidType(object use, CompletionSearchFlags operation, Binder parentBinder) // 50
+        public void AddResultsForVoidType(object use, CompletionSearchFlags operation, Binder parentBinder) // 53
         {
-            if (_visited[50]) return;
-            _visited[50] = true;
+            if (_visited[53]) return;
+            _visited[53] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, value: CoreInstance.Void, forCompletion: true);
             if (use == UnassignedUse)
@@ -8731,13 +9026,27 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KVoid, operation);
                 use = FinishedUse;
             }
-            _visited[50] = false;
+            _visited[53] = false;
         }
         
-        public void AddResultsForName(object use, CompletionSearchFlags operation, Binder parentBinder) // 51
+        public void AddResultsForVarType(object use, CompletionSearchFlags operation, Binder parentBinder) // 54
         {
-            if (_visited[51]) return;
-            _visited[51] = true;
+            if (_visited[54]) return;
+            _visited[54] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KVar, operation);
+                use = FinishedUse;
+            }
+            _visited[54] = false;
+        }
+        
+        public void AddResultsForName(object use, CompletionSearchFlags operation, Binder parentBinder) // 55
+        {
+            if (_visited[55]) return;
+            _visited[55] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_Name_Identifier)
@@ -8746,13 +9055,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[51] = false;
+            _visited[55] = false;
         }
         
-        public void AddResultsForQualifiedName(object use, CompletionSearchFlags operation, Binder parentBinder) // 52
+        public void AddResultsForQualifiedName(object use, CompletionSearchFlags operation, Binder parentBinder) // 56
         {
-            if (_visited[52]) return;
-            _visited[52] = true;
+            if (_visited[56]) return;
+            _visited[56] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_QualifiedName_Qualifier)
@@ -8761,13 +9070,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForQualifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[52] = false;
+            _visited[56] = false;
         }
         
-        public void AddResultsForQualifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 53
+        public void AddResultsForQualifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 57
         {
-            if (_visited[53]) return;
-            _visited[53] = true;
+            if (_visited[57]) return;
+            _visited[57] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateQualifierBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_Qualifier_Identifier)
@@ -8776,13 +9085,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[53] = false;
+            _visited[57] = false;
         }
         
-        public void AddResultsForIdentifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 54
+        public void AddResultsForIdentifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 58
         {
-            if (_visited[54]) return;
-            _visited[54] = true;
+            if (_visited[58]) return;
+            _visited[58] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateIdentifierBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -8794,13 +9103,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(IdentifierVerbatimBinder, (CoreSyntaxKind)CoreSyntaxKind.IdentifierVerbatim, operation);
                 use = FinishedUse;
             }
-            _visited[54] = false;
+            _visited[58] = false;
         }
         
-        public void AddResultsForLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 55
+        public void AddResultsForLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 59
         {
-            if (_visited[55]) return;
-            _visited[55] = true;
+            if (_visited[59]) return;
+            _visited[59] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_Literal_NullLiteral)
             {
@@ -8832,13 +9141,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForStringLiteral(UnassignedUse, operation, binder);
             }
-            _visited[55] = false;
+            _visited[59] = false;
         }
         
-        public void AddResultsForNullLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 56
+        public void AddResultsForNullLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 60
         {
-            if (_visited[56]) return;
-            _visited[56] = true;
+            if (_visited[60]) return;
+            _visited[60] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -8847,13 +9156,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KNull, operation);
                 use = FinishedUse;
             }
-            _visited[56] = false;
+            _visited[60] = false;
         }
         
-        public void AddResultsForBooleanLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 57
+        public void AddResultsForBooleanLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 61
         {
-            if (_visited[57]) return;
-            _visited[57] = true;
+            if (_visited[61]) return;
+            _visited[61] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Boolean, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -8866,13 +9175,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(KFalseBinder, (CoreSyntaxKind)CoreSyntaxKind.KFalse, operation);
                 use = FinishedUse;
             }
-            _visited[57] = false;
+            _visited[61] = false;
         }
         
-        public void AddResultsForIntegerLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 58
+        public void AddResultsForIntegerLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 62
         {
-            if (_visited[58]) return;
-            _visited[58] = true;
+            if (_visited[62]) return;
+            _visited[62] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Int32, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -8882,13 +9191,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LInteger, operation);
                 use = FinishedUse;
             }
-            _visited[58] = false;
+            _visited[62] = false;
         }
         
-        public void AddResultsForDecimalLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 59
+        public void AddResultsForDecimalLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 63
         {
-            if (_visited[59]) return;
-            _visited[59] = true;
+            if (_visited[63]) return;
+            _visited[63] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Decimal, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -8898,13 +9207,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LDecimal, operation);
                 use = FinishedUse;
             }
-            _visited[59] = false;
+            _visited[63] = false;
         }
         
-        public void AddResultsForScientificLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 60
+        public void AddResultsForScientificLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 64
         {
-            if (_visited[60]) return;
-            _visited[60] = true;
+            if (_visited[64]) return;
+            _visited[64] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Double, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -8914,13 +9223,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LScientific, operation);
                 use = FinishedUse;
             }
-            _visited[60] = false;
+            _visited[64] = false;
         }
         
-        public void AddResultsForStringLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 61
+        public void AddResultsForStringLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 65
         {
-            if (_visited[61]) return;
-            _visited[61] = true;
+            if (_visited[65]) return;
+            _visited[65] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.String, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -8930,7 +9239,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LRegularString, operation);
                 use = FinishedUse;
             }
-            _visited[61] = false;
+            _visited[65] = false;
         }
     }
 }

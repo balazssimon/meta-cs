@@ -168,7 +168,7 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
-		public virtual void VisitForeachStmt(ForeachStmtSyntax node)
+		public virtual void VisitForStmt(ForStmtSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(ForLoopStatement));
 			try
@@ -331,14 +331,14 @@ namespace MetaDslx.Languages.Core.Binding
 			{
 				if (node.KGoto.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
 				{
-				    this.BeginProperty(node.KGoto, name: "JumpKind", value: JumpKind.Goto);
+				    this.BeginProperty(node.KGoto, name: "JumpKind", value: JumpKind.GoTo);
 				    try
 				    {
 				    	this.Visit(node.KGoto);
 				    }
 				    finally
 				    {
-				    	this.EndProperty(node.KGoto, name: "JumpKind", value: JumpKind.Goto);
+				    	this.EndProperty(node.KGoto, name: "JumpKind", value: JumpKind.GoTo);
 				    }
 				}
 				if (node.Identifier != null)
@@ -472,7 +472,7 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
-		public virtual void VisitReturnStmt(ReturnStmtSyntax node)
+		public virtual void VisitSwitchStmt(SwitchStmtSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(SwitchStatement));
 			try
@@ -629,7 +629,7 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
-		public virtual void VisitWhileStmt(WhileStmtSyntax node)
+		public virtual void VisitDoWhileStmt(DoWhileStmtSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(WhileLoopStatement));
 			try
@@ -2313,6 +2313,54 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitVarDefExpr(VarDefExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(VariableDeclarationExpressionSymbol));
+			try
+			{
+				if (node.KConst.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+				{
+				    this.BeginProperty(node.KConst, name: "IsConst", value: true);
+				    try
+				    {
+				    	this.Visit(node.KConst);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.KConst, name: "IsConst", value: true);
+				    }
+				}
+				if (node.VariableType != null)
+				{
+				    this.BeginProperty(node.VariableType, name: "Type");
+				    try
+				    {
+				    	this.Visit(node.VariableType);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.VariableType, name: "Type");
+				    }
+				}
+				if (node.VariableDefList != null)
+				{
+				    this.BeginProperty(node.VariableDefList, name: "Variables");
+				    try
+				    {
+				    	this.Visit(node.VariableDefList);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.VariableDefList, name: "Variables");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(VariableDeclarationExpressionSymbol));
+			}
+		}
+		
 		public virtual void VisitTupleArguments(TupleArgumentsSyntax node)
 		{
 			this.BeginProperty(node, name: "Arguments");
@@ -2648,6 +2696,45 @@ namespace MetaDslx.Languages.Core.Binding
 			finally
 			{
 				this.EndProperty(node, name: "Body");
+			}
+		}
+		
+		public virtual void VisitVariableDefList(VariableDefListSyntax node)
+		{
+			if (node.VariableDef != null)
+			{
+				foreach (var child in node.VariableDef)
+				{
+			        this.Visit(child);
+				}
+			}
+		}
+		
+		public virtual void VisitVariableDef(VariableDefSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(Variable));
+			try
+			{
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
+				if (node.Initializer != null)
+				{
+				    this.BeginProperty(node.Initializer, name: "Initializer");
+				    try
+				    {
+				    	this.Visit(node.Initializer);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Initializer, name: "Initializer");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(Variable));
 			}
 		}
 		
@@ -3173,6 +3260,14 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
+		public virtual void VisitVariableType(VariableTypeSyntax node)
+		{
+			if (node.TypeReference != null)
+			{
+			    this.Visit(node.TypeReference);
+			}
+		}
+		
 		public virtual void VisitPrimitiveTypeRef(PrimitiveTypeRefSyntax node)
 		{
 			this.BeginUse(node, types: ImmutableArray.Create(typeof(DataType)));
@@ -3535,6 +3630,10 @@ namespace MetaDslx.Languages.Core.Binding
 			{
 				this.EndValue(node, value: CoreInstance.Void);
 			}
+		}
+		
+		public virtual void VisitVarType(VarTypeSyntax node)
+		{
 		}
 		
 		public virtual void VisitName(NameSyntax node)

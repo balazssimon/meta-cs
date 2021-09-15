@@ -345,8 +345,8 @@
 		bool IsConst;
 		[property: Type]
 		DataType Type;
-		[property: DefaultValue]
-		containment Expression DefaultValue;
+		[property: Initializer]
+		containment Expression Initializer;
 	}
 
 	[symbol: Label]
@@ -484,7 +484,7 @@
 	}
 	
 	[symbol: DefaultCaseClause]
-	class DefaultValueCaseClause : CaseClause
+	class DefaultCaseClause : CaseClause
 	{
 	}
 	
@@ -808,18 +808,14 @@
 	[expression: VariableDeclaration]
 	class VariableDeclarationExpression : Expression
 	{
-		[property: Symbol]
-		containment Variable Symbol;
+		[property: IsConst]
+		bool IsConst;
+		[property: Type]
+		DataType Type;
+		[property: Variables]
+		containment list<Variable> Variables;
 		[property: Initializer]
 		containment Expression Initializer;
 	}
 	
-	[expression: VariableDeclarationGroup]
-	class VariableDeclarationGroupExpression : Expression
-	{
-		[property: Declarations]
-		containment list<VariableDeclarationExpression> Declarations;
-		[property: Initializer]
-		containment Expression Initializer;
-	}
 }

@@ -5411,6 +5411,8 @@ public void AddResultsFor[rule.PlainName()](object use, CompletionSearchFlags op
         [if (hasloop(elem:alt.AllElements where elem.ContainsBinderAnnotations))]
     if ([loop(elem:alt.AllElements where elem.ContainsBinderAnnotations; separator delim = " || ")]use == Use_[alt.PlainName()]_[elem.RedName()][delim][end loop]) altUse = use;
     else altUse = UnassignedUse;
+        [else]
+    altUse = UnassignedUse;
         [end if]
     AddResultsFor[alt.PlainName()](altUse, operation, parentBinder);
     [end loop]

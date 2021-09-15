@@ -15,6 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual RefKind RefKind => RefKind.None;
 
-        public bool IsOptional => DefaultValue is not null;
+        public bool IsOptional => Initializer is not null;
     }
 }

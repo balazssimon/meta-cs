@@ -1675,6 +1675,108 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseVariableDefList(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.variableDefList();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseVariableDefList(VariableDefListSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.VariableDefListContext _Antlr4ParseVariableDefList()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.VariableDefListContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseVariableDefList(CurrentNode as VariableDefListSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseVariableDefList();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.VariableDefListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseVariableDef(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.variableDef();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseVariableDef(VariableDefSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.VariableDefContext _Antlr4ParseVariableDef()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.VariableDefContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseVariableDef(CurrentNode as VariableDefSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseVariableDef();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.VariableDefContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseDotOperator(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2338,6 +2440,57 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseVariableType(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.variableType();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseVariableType(VariableTypeSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.VariableTypeContext _Antlr4ParseVariableType()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.VariableTypeContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseVariableType(CurrentNode as VariableTypeSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseVariableType();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.VariableTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseTypeReference(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2638,6 +2791,57 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		        if (cached)
 		        {
 					context = new CoreParser.VoidTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseVarType(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.varType();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseVarType(VarTypeSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.VarTypeContext _Antlr4ParseVarType()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.VarTypeContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseVarType(CurrentNode as VarTypeSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseVarType();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.VarTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -3374,9 +3578,9 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.ForeachStmt(kForEach, tOpenParen, variable, tColon, collection, tCloseParen, statement);
 			}
 			
-			public override GreenNode VisitForeachStmt(CoreParser.ForeachStmtContext context)
+			public override GreenNode VisitForStmt(CoreParser.ForStmtContext context)
 			{
-				if (context == null) return ForeachStmtGreen.__Missing;
+				if (context == null) return ForStmtGreen.__Missing;
 				InternalSyntaxToken kFor = (InternalSyntaxToken)this.VisitTerminal(context.KFor(), CoreSyntaxKind.KFor);
 				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
 				CoreParser.ExpressionListContext beforeContext = context.before;
@@ -3396,7 +3600,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				StatementGreen statement = null;
 				if (statementContext != null) statement = (StatementGreen)this.Visit(statementContext);
 				if (statement == null) statement = StatementGreen.__Missing;
-				return _factory.ForeachStmt(kFor, tOpenParen, before, semicolonBefore, condition, semicolonAfter, atLoopBottom, tCloseParen, statement);
+				return _factory.ForStmt(kFor, tOpenParen, before, semicolonBefore, condition, semicolonAfter, atLoopBottom, tCloseParen, statement);
 			}
 			
 			public override GreenNode VisitIfStmt(CoreParser.IfStmtContext context)
@@ -3493,9 +3697,9 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.ReturnStmt(kReturn, returnedValue, tSemicolon);
 			}
 			
-			public override GreenNode VisitReturnStmt(CoreParser.ReturnStmtContext context)
+			public override GreenNode VisitSwitchStmt(CoreParser.SwitchStmtContext context)
 			{
-				if (context == null) return ReturnStmtGreen.__Missing;
+				if (context == null) return SwitchStmtGreen.__Missing;
 				InternalSyntaxToken kSwitch = (InternalSyntaxToken)this.VisitTerminal(context.KSwitch(), CoreSyntaxKind.KSwitch);
 				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
 				CoreParser.ExpressionContext valueContext = context.value;
@@ -3513,7 +3717,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				var switchCase = switchCaseBuilder.ToList();
 				_pool.Free(switchCaseBuilder);
 				InternalSyntaxToken tCloseBrace = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBrace(), CoreSyntaxKind.TCloseBrace);
-				return _factory.ReturnStmt(kSwitch, tOpenParen, value, tCloseParen, tOpenBrace, switchCase, tCloseBrace);
+				return _factory.SwitchStmt(kSwitch, tOpenParen, value, tCloseParen, tOpenBrace, switchCase, tCloseBrace);
 			}
 			
 			public override GreenNode VisitTryStmt(CoreParser.TryStmtContext context)
@@ -3573,9 +3777,9 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.WhileStmt(kWhile, tOpenParen, condition, tCloseParen, body);
 			}
 			
-			public override GreenNode VisitWhileStmt(CoreParser.WhileStmtContext context)
+			public override GreenNode VisitDoWhileStmt(CoreParser.DoWhileStmtContext context)
 			{
-				if (context == null) return WhileStmtGreen.__Missing;
+				if (context == null) return DoWhileStmtGreen.__Missing;
 				InternalSyntaxToken kDo = (InternalSyntaxToken)this.VisitTerminal(context.KDo(), CoreSyntaxKind.KDo);
 				CoreParser.StatementContext bodyContext = context.body;
 				StatementGreen body = null;
@@ -3589,7 +3793,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				if (condition == null) condition = ExpressionGreen.__Missing;
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
-				return _factory.WhileStmt(kDo, body, kWhile, tOpenParen, condition, tCloseParen, tSemicolon);
+				return _factory.DoWhileStmt(kDo, body, kWhile, tOpenParen, condition, tCloseParen, tSemicolon);
 			}
 			
 			public override GreenNode VisitBlockStatement(CoreParser.BlockStatementContext context)
@@ -4334,6 +4538,21 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.LambdaExpr(lambdaSignature, tArrow, lambdaBody);
 			}
 			
+			public override GreenNode VisitVarDefExpr(CoreParser.VarDefExprContext context)
+			{
+				if (context == null) return VarDefExprGreen.__Missing;
+				InternalSyntaxToken kConst = (InternalSyntaxToken)this.VisitTerminal(context.KConst());
+				CoreParser.VariableTypeContext variableTypeContext = context.variableType();
+				VariableTypeGreen variableType = null;
+				if (variableTypeContext != null) variableType = (VariableTypeGreen)this.Visit(variableTypeContext);
+				if (variableType == null) variableType = VariableTypeGreen.__Missing;
+				CoreParser.VariableDefListContext variableDefListContext = context.variableDefList();
+				VariableDefListGreen variableDefList = null;
+				if (variableDefListContext != null) variableDefList = (VariableDefListGreen)this.Visit(variableDefListContext);
+				if (variableDefList == null) variableDefList = VariableDefListGreen.__Missing;
+				return _factory.VarDefExpr(kConst, variableType, variableDefList);
+			}
+			
 			public override GreenNode VisitTupleArguments(CoreParser.TupleArgumentsContext context)
 			{
 				if (context == null) return TupleArgumentsGreen.__Missing;
@@ -4614,6 +4833,40 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 					return _factory.LambdaBody((BlockStatementGreen)this.Visit(blockStatementContext));
 				}
 				return LambdaBodyGreen.__Missing;
+			}
+			
+			public override GreenNode VisitVariableDefList(CoreParser.VariableDefListContext context)
+			{
+				if (context == null) return VariableDefListGreen.__Missing;
+			    CoreParser.VariableDefContext[] variableDefContext = context.variableDef();
+			    ITerminalNode[] tCommaContext = context.TComma();
+			    var variableDefBuilder = _pool.AllocateSeparated<VariableDefGreen>();
+			    for (int i = 0; i < variableDefContext.Length; i++)
+			    {
+			        variableDefBuilder.Add((VariableDefGreen)this.Visit(variableDefContext[i]));
+			        if (i < tCommaContext.Length)
+			        {
+			            variableDefBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i], CoreSyntaxKind.TComma));
+			        }
+			    }
+				var variableDef = variableDefBuilder.ToList();
+				_pool.Free(variableDefBuilder);
+				return _factory.VariableDefList(variableDef);
+			}
+			
+			public override GreenNode VisitVariableDef(CoreParser.VariableDefContext context)
+			{
+				if (context == null) return VariableDefGreen.__Missing;
+				CoreParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), CoreSyntaxKind.TAssign);
+				CoreParser.ExpressionContext initializerContext = context.initializer;
+				ExpressionGreen initializer = null;
+				if (initializerContext != null) initializer = (ExpressionGreen)this.Visit(initializerContext);
+				if (initializer == null) initializer = ExpressionGreen.__Missing;
+				return _factory.VariableDef(name, tAssign, initializer);
 			}
 			
 			public override GreenNode VisitDotOperator(CoreParser.DotOperatorContext context)
@@ -4899,6 +5152,22 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return ReturnTypeGreen.__Missing;
 			}
 			
+			public override GreenNode VisitVariableType(CoreParser.VariableTypeContext context)
+			{
+				if (context == null) return VariableTypeGreen.__Missing;
+				CoreParser.TypeReferenceContext typeReferenceContext = context.typeReference();
+				if (typeReferenceContext != null) 
+				{
+					return _factory.VariableType((TypeReferenceGreen)this.Visit(typeReferenceContext));
+				}
+				CoreParser.VarTypeContext varTypeContext = context.varType();
+				if (varTypeContext != null) 
+				{
+					return _factory.VariableType((VarTypeGreen)this.Visit(varTypeContext));
+				}
+				return VariableTypeGreen.__Missing;
+			}
+			
 			public override GreenNode VisitPrimitiveTypeRef(CoreParser.PrimitiveTypeRefContext context)
 			{
 				if (context == null) return PrimitiveTypeRefGreen.__Missing;
@@ -5073,6 +5342,13 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				if (context == null) return VoidTypeGreen.__Missing;
 				InternalSyntaxToken kVoid = (InternalSyntaxToken)this.VisitTerminal(context.KVoid(), CoreSyntaxKind.KVoid);
 				return _factory.VoidType(kVoid);
+			}
+			
+			public override GreenNode VisitVarType(CoreParser.VarTypeContext context)
+			{
+				if (context == null) return VarTypeGreen.__Missing;
+				InternalSyntaxToken kVar = (InternalSyntaxToken)this.VisitTerminal(context.KVar(), CoreSyntaxKind.KVar);
+				return _factory.VarType(kVar);
 			}
 			
 			public override GreenNode VisitName(CoreParser.NameContext context)
@@ -5579,6 +5855,28 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
+		internal class VariableDefListContext_Cached : VariableDefListContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public VariableDefListContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class VariableDefContext_Cached : VariableDefContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public VariableDefContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
 		internal class DotOperatorContext_Cached : DotOperatorContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
@@ -5722,6 +6020,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
+		internal class VariableTypeContext_Cached : VariableTypeContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public VariableTypeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
 		internal class TypeReferenceContext_Cached : TypeReferenceContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
@@ -5781,6 +6090,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public VoidTypeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class VarTypeContext_Cached : VarTypeContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public VarTypeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

@@ -24,19 +24,19 @@ statement
 	| blockStatement #blockStmt 
 	| $Property(Expression) expression TSemicolon #exprStmt $Define(ExpressionStatement)
 	| KForEach TOpenParen $Property(LoopControlVariable) variable=expression TColon $Property(Collection) collection=expression TCloseParen $Property(Body) statement #foreachStmt $Define(ForEachLoopStatement)
-	| KFor TOpenParen $Property(Before) before=expressionList? semicolonBefore=TSemicolon $Property(Condition) condition=expression semicolonAfter=TSemicolon $Property(AtLoopBottom) atLoopBottom=expressionList? TCloseParen $Property(Body) statement #foreachStmt $Define(ForLoopStatement)
+	| KFor TOpenParen $Property(Before) before=expressionList? semicolonBefore=TSemicolon $Property(Condition) condition=expression semicolonAfter=TSemicolon $Property(AtLoopBottom) atLoopBottom=expressionList? TCloseParen $Property(Body) statement #forStmt $Define(ForLoopStatement)
 	| KIf TOpenParen $Property(Condition) condition=expression TCloseParen $Property(IfTrue) ifTrue=statement (KElse $Property(IfFalse) ifFalse=statement) #ifStmt $Define(IfStatement)
 	| $Property(name=JumpKind,value=JumpKind.Break) KBreak TSemicolon #breakStmt $Define(JumpStatement)
 	| $Property(name=JumpKind,value=JumpKind.Continue) KContinue TSemicolon #continueStmt $Define(JumpStatement)
-	| $Property(name=JumpKind,value=JumpKind.Goto) KGoto $Property(Target) $Use(Label) identifier TSemicolon #gotoStmt $Define(JumpStatement)
+	| $Property(name=JumpKind,value=JumpKind.GoTo) KGoto $Property(Target) $Use(Label) identifier TSemicolon #gotoStmt $Define(JumpStatement)
 	| $Property(Label) $Define(Label) name TColon $Property(Statement) statement #labeledStmt $Define(LabeledStatement)
 	| KLock TOpenParen $Property(LockedValue) lockedValue=expression TCloseParen $Property(Body) body=statement #lockStmt $Define(LockStatement)
 	| KReturn $Property(ReturnedValue) returnedValue=expression TSemicolon #returnStmt $Define(ReturnStatement)
-	| KSwitch TOpenParen $Property(Value) value=expression TCloseParen TOpenBrace $Property(Cases) switchCase* TCloseBrace #returnStmt $Define(SwitchStatement)
+	| KSwitch TOpenParen $Property(Value) value=expression TCloseParen TOpenBrace $Property(Cases) switchCase* TCloseBrace #switchStmt $Define(SwitchStatement)
 	| KTry $Property(Body) body=blockStatement $Property(Catches) catchClause* $Property(Finally) finallyClause? #tryStmt
 	| usingHeader+ $Property(Body) body=statement #usingStmt $Define(UsingStatement)
 	| KWhile TOpenParen $Property(name=ConditionIsTop,value=true) $Property(Condition) condition=expression TCloseParen $Property(Body) body=statement #whileStmt $Define(WhileLoopStatement)
-	| KDo $Property(Body) body=statement KWhile TOpenParen $Property(name=ConditionIsTop,value=false) $Property(Condition) condition=expression TCloseParen TSemicolon #whileStmt $Define(WhileLoopStatement)
+	| KDo $Property(Body) body=statement KWhile TOpenParen $Property(name=ConditionIsTop,value=false) $Property(Condition) condition=expression TCloseParen TSemicolon #doWhileStmt $Define(WhileLoopStatement)
 	;
 
 $Define(BlockStatement)
@@ -105,6 +105,7 @@ expression
 	| $Property(Target) target=expression TAssign $Property(Value) value=expression #assignExpr $Define(AssignmentExpression)
 	| $Property(Target) target=expression $Property(OperatorKind) compoundAssignmentOperator $Property(Value) value=expression #compAssignExpr $Define(CompoundAssignmentExpression)
 	| lambdaSignature TArrow lambdaBody #lambdaExpr $Define(LambdaExpression)
+	| $Property(name=IsConst,value=true) KConst? $Property(Type) variableType $Property(Variables) variableDefList #varDefExpr $Define(VariableDeclarationExpressionSymbol)
 	;
 
 $Property(Arguments)
@@ -144,6 +145,10 @@ explicitParameter : $Property(Type) typeReference name;
 
 $Property(Body)
 lambdaBody: $Define(ExpressionStatement) $Property(Expression) expression | blockStatement;
+
+variableDefList: variableDef (TComma variableDef)*;
+$Define(Variable)
+variableDef: name (TAssign $Property(Initializer) initializer=expression);
 
 dotOperator
 	: TDot
@@ -221,6 +226,8 @@ compoundAssignmentOperator
 
 returnType : typeReference | voidType;
 
+variableType : typeReference | varType;
+
 $Use(DataType)
 typeReference 
 	: primitiveType #primitiveTypeRef
@@ -257,7 +264,7 @@ primitiveType
 $Value(CoreInstance.Void) 
 voidType : KVoid;
 
-
+varType : KVar;
 
 // Additional rules for lexer:
 

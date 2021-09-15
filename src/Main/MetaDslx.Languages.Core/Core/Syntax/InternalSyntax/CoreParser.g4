@@ -24,7 +24,7 @@ statement
 	| blockStatement #blockStmt 
 	|                       expression TSemicolon #exprStmt                             
 	| KForEach TOpenParen                                variable=expression TColon                       collection=expression TCloseParen                 statement #foreachStmt                              
-	| KFor TOpenParen                   before=expressionList? semicolonBefore=TSemicolon                      condition=expression semicolonAfter=TSemicolon                         atLoopBottom=expressionList? TCloseParen                 statement #foreachStmt                          
+	| KFor TOpenParen                   before=expressionList? semicolonBefore=TSemicolon                      condition=expression semicolonAfter=TSemicolon                         atLoopBottom=expressionList? TCloseParen                 statement #forStmt                          
 	| KIf TOpenParen                      condition=expression TCloseParen                   ifTrue=statement (KElse                    ifFalse=statement) #ifStmt                     
 	|                                               KBreak TSemicolon #breakStmt                       
 	|                                                  KContinue TSemicolon #continueStmt                       
@@ -32,11 +32,11 @@ statement
 	|                                 name TColon                      statement #labeledStmt                          
 	| KLock TOpenParen                        lockedValue=expression TCloseParen                 body=statement #lockStmt                       
 	| KReturn                          returnedValue=expression TSemicolon #returnStmt                         
-	| KSwitch TOpenParen                  value=expression TCloseParen TOpenBrace                  switchCase* TCloseBrace #returnStmt                         
+	| KSwitch TOpenParen                  value=expression TCloseParen TOpenBrace                  switchCase* TCloseBrace #switchStmt                         
 	| KTry                 body=blockStatement                    catchClause*                    finallyClause? #tryStmt
 	| usingHeader+                 body=statement #usingStmt                        
 	| KWhile TOpenParen                                                                condition=expression TCloseParen                 body=statement #whileStmt                            
-	| KDo                 body=statement KWhile TOpenParen                                                                 condition=expression TCloseParen TSemicolon #whileStmt                            
+	| KDo                 body=statement KWhile TOpenParen                                                                 condition=expression TCloseParen TSemicolon #doWhileStmt                            
 	;
 
                        
@@ -105,6 +105,7 @@ expression
 	|                   target=expression TAssign                  value=expression #assignExpr                              
 	|                   target=expression                         compoundAssignmentOperator                  value=expression #compAssignExpr                                      
 	| lambdaSignature TArrow lambdaBody #lambdaExpr                          
+	|                                    KConst?                 variableType                      variableDefList #varDefExpr                                             
 	;
 
                     
@@ -144,6 +145,10 @@ explicitParameter :                 typeReference name;
 
                
 lambdaBody:                                                    expression | blockStatement;
+
+variableDefList: variableDef (TComma variableDef)*;
+                 
+variableDef: name (TAssign                        initializer=expression);
 
 dotOperator
 	: TDot
@@ -221,6 +226,8 @@ compoundAssignmentOperator
 
 returnType : typeReference | voidType;
 
+variableType : typeReference | varType;
+
               
 typeReference 
 	: primitiveType #primitiveTypeRef
@@ -257,7 +264,7 @@ primitiveType
                           
 voidType : KVoid;
 
-
+varType : KVar;
 
 // Additional rules for lexer:
 

@@ -71,6 +71,10 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseWhenFalse = new object();
 		public static object UseTarget = new object();
 		public static object UseCompoundAssignmentOperator = new object();
+		public static object UseKConst = new object();
+		public static object UseVariableType = new object();
+		public static object UseVariableDefList = new object();
+		public static object UseInitializer = new object();
 		public static object UseTQuestionDot = new object();
 		public static object UseTQuestionOpenBracket = new object();
 		public static object UseTPlusPlus = new object();
@@ -130,6 +134,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseImplicitParameterList = new object();
 		public static object UseExplicitParameterList = new object();
 		public static object UseExplicitParameter = new object();
+		public static object UseVariableDef = new object();
 		public static object UseDotOperator = new object();
 		public static object UseIndexerOperator = new object();
 		public static object UseLeftShiftOperator = new object();
@@ -298,7 +303,7 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitForeachStmt(ForeachStmtSyntax parent)
+		public Binder VisitForStmt(ForStmtSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -452,7 +457,7 @@ namespace MetaDslx.Languages.Core.Binding
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseKGoto)
 				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.KGoto, name: "JumpKind", value: JumpKind.Goto);
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.KGoto, name: "JumpKind", value: JumpKind.GoTo);
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 				if (use == UseIdentifier)
@@ -556,7 +561,7 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitReturnStmt(ReturnStmtSyntax parent)
+		public Binder VisitSwitchStmt(SwitchStmtSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -684,7 +689,7 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitWhileStmt(WhileStmtSyntax parent)
+		public Binder VisitDoWhileStmt(DoWhileStmtSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2176,6 +2181,44 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitVarDefExpr(VarDefExprSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.KConst)) use = UseKConst;
+				if (LookupPosition.IsInNode(this.Position, parent.VariableType)) use = UseVariableType;
+				if (LookupPosition.IsInNode(this.Position, parent.VariableDefList)) use = UseVariableDefList;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(VariableDeclarationExpressionSymbol));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseKConst)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.KConst, name: "IsConst", value: true);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseVariableType)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.VariableType, name: "Type");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseVariableDefList)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.VariableDefList, name: "Variables");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitTupleArguments(TupleArgumentsSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -2497,6 +2540,48 @@ namespace MetaDslx.Languages.Core.Binding
 				{
 					resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent.Expression, type: typeof(ExpressionStatement));
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Expression");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitVariableDefList(VariableDefListSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitVariableDef(VariableDefSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Initializer)) use = UseInitializer;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Variable));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseInitializer)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Initializer, name: "Initializer");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -2931,6 +3016,22 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitVariableType(VariableTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitPrimitiveTypeRef(PrimitiveTypeRefSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -3182,6 +3283,22 @@ namespace MetaDslx.Languages.Core.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent, value: CoreInstance.Void);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitVarType(VarTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

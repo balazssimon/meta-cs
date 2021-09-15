@@ -77,6 +77,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitForeachStmt([NotNull] CoreParser.ForeachStmtContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>forStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForStmt([NotNull] CoreParser.ForStmtContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>ifStmt</c>
 	/// labeled alternative in <see cref="CoreParser.statement"/>.
 	/// </summary>
@@ -126,6 +133,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitReturnStmt([NotNull] CoreParser.ReturnStmtContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>switchStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSwitchStmt([NotNull] CoreParser.SwitchStmtContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>tryStmt</c>
 	/// labeled alternative in <see cref="CoreParser.statement"/>.
 	/// </summary>
@@ -146,6 +160,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitWhileStmt([NotNull] CoreParser.WhileStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>doWhileStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDoWhileStmt([NotNull] CoreParser.DoWhileStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.blockStatement"/>.
 	/// </summary>
@@ -479,6 +500,13 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTupleExpr([NotNull] CoreParser.TupleExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>varDefExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarDefExpr([NotNull] CoreParser.VarDefExprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>rangeExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>
@@ -602,6 +630,18 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLambdaBody([NotNull] CoreParser.LambdaBodyContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.variableDefList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVariableDefList([NotNull] CoreParser.VariableDefListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.variableDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVariableDef([NotNull] CoreParser.VariableDefContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.dotOperator"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -680,6 +720,12 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitReturnType([NotNull] CoreParser.ReturnTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.variableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVariableType([NotNull] CoreParser.VariableTypeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>primitiveTypeRef</c>
 	/// labeled alternative in <see cref="CoreParser.typeReference"/>.
 	/// </summary>
@@ -744,6 +790,12 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitVoidType([NotNull] CoreParser.VoidTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.varType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarType([NotNull] CoreParser.VarTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.name"/>.
 	/// </summary>
