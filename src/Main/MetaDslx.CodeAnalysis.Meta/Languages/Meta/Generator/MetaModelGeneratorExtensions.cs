@@ -57,12 +57,6 @@ namespace MetaDslx.Languages.Meta.Generator
             return result;
         }
 
-        public MetaElement GetReturnType(MetaOperation mop)
-        {
-            //return MetaImplementation.GetMetaType(mop);
-            return (MetaElement)mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
-        }
-
         public MetaElement GetType(MetaTypedElement melem)
         {
             //return MetaImplementation.GetMetaType(melem);

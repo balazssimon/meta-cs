@@ -7655,14 +7655,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    internal static readonly OperationDeclarationGreen __Missing = new OperationDeclarationGreen();
 	    private GreenNode attribute;
 	    private GreenNode operationModifier;
-	    private ReturnTypeGreen returnType;
+	    private ReturnParameterGreen returnParameter;
 	    private NameGreen name;
 	    private InternalSyntaxToken tOpenParen;
 	    private ParameterListGreen parameterList;
 	    private InternalSyntaxToken tCloseParen;
 	    private InternalSyntaxToken tSemicolon;
 	
-	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, GreenNode operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, GreenNode operationModifier, ReturnParameterGreen returnParameter, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 8;
@@ -7676,10 +7676,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(operationModifier);
 				this.operationModifier = operationModifier;
 			}
-			if (returnType != null)
+			if (returnParameter != null)
 			{
-				this.AdjustFlagsAndWidth(returnType);
-				this.returnType = returnType;
+				this.AdjustFlagsAndWidth(returnParameter);
+				this.returnParameter = returnParameter;
 			}
 			if (name != null)
 			{
@@ -7708,7 +7708,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, GreenNode operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, GreenNode operationModifier, ReturnParameterGreen returnParameter, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 8;
@@ -7722,10 +7722,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(operationModifier);
 				this.operationModifier = operationModifier;
 			}
-			if (returnType != null)
+			if (returnParameter != null)
 			{
-				this.AdjustFlagsAndWidth(returnType);
-				this.returnType = returnType;
+				this.AdjustFlagsAndWidth(returnParameter);
+				this.returnParameter = returnParameter;
 			}
 			if (name != null)
 			{
@@ -7762,7 +7762,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> OperationModifier { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen>(this.operationModifier); } }
-	    public ReturnTypeGreen ReturnType { get { return this.returnType; } }
+	    public ReturnParameterGreen ReturnParameter { get { return this.returnParameter; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TOpenParen { get { return this.tOpenParen; } }
 	    public ParameterListGreen ParameterList { get { return this.parameterList; } }
@@ -7780,7 +7780,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        {
 	            case 0: return this.attribute;
 	            case 1: return this.operationModifier;
-	            case 2: return this.returnType;
+	            case 2: return this.returnParameter;
 	            case 3: return this.name;
 	            case 4: return this.tOpenParen;
 	            case 5: return this.parameterList;
@@ -7796,32 +7796,32 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, diagnostics, this.GetAnnotations());
+	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnParameter, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
+	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnParameter, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), this.GetAnnotations());
+			return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnParameter, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
-	    public OperationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public OperationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnParameterGreen returnParameter, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.OperationModifier != operationModifier ||
-				this.ReturnType != returnType ||
+				this.ReturnParameter != returnParameter ||
 				this.Name != name ||
 				this.TOpenParen != tOpenParen ||
 				this.ParameterList != parameterList ||
 				this.TCloseParen != tCloseParen ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(attribute, operationModifier, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(attribute, operationModifier, returnParameter, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -8202,6 +8202,92 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (ParameterListGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ReturnParameterGreen : GreenSyntaxNode
+	{
+	    internal static readonly ReturnParameterGreen __Missing = new ReturnParameterGreen();
+	    private ReturnTypeGreen returnType;
+	
+	    public ReturnParameterGreen(MetaSyntaxKind kind, ReturnTypeGreen returnType)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (returnType != null)
+			{
+				this.AdjustFlagsAndWidth(returnType);
+				this.returnType = returnType;
+			}
+	    }
+	
+	    public ReturnParameterGreen(MetaSyntaxKind kind, ReturnTypeGreen returnType, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (returnType != null)
+			{
+				this.AdjustFlagsAndWidth(returnType);
+				this.returnType = returnType;
+			}
+	    }
+	
+		private ReturnParameterGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ReturnParameter, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public ReturnTypeGreen ReturnType { get { return this.returnType; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Meta.Syntax.ReturnParameterSyntax(this, (MetaSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.returnType;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitReturnParameterGreen(this);
+	
+	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitReturnParameterGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ReturnParameterGreen(this.Kind, this.returnType, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ReturnParameterGreen(this.Kind, this.returnType, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new ReturnParameterGreen(this.Kind, this.returnType, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public ReturnParameterGreen Update(ReturnTypeGreen returnType)
+	    {
+	        if (this.ReturnType != returnType)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.ReturnParameter(returnType);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ReturnParameterGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -9373,6 +9459,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual void VisitOperationModifierBuilderGreen(OperationModifierBuilderGreen node) => this.DefaultVisit(node);
 		public virtual void VisitOperationModifierReadonlyGreen(OperationModifierReadonlyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitParameterListGreen(ParameterListGreen node) => this.DefaultVisit(node);
+		public virtual void VisitReturnParameterGreen(ReturnParameterGreen node) => this.DefaultVisit(node);
 		public virtual void VisitParameterGreen(ParameterGreen node) => this.DefaultVisit(node);
 		public virtual void VisitAssociationDeclarationGreen(AssociationDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitIdentifierGreen(IdentifierGreen node) => this.DefaultVisit(node);
@@ -9448,6 +9535,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual TResult VisitOperationModifierBuilderGreen(OperationModifierBuilderGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitOperationModifierReadonlyGreen(OperationModifierReadonlyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitParameterListGreen(ParameterListGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitReturnParameterGreen(ReturnParameterGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitParameterGreen(ParameterGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitAssociationDeclarationGreen(AssociationDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitIdentifierGreen(IdentifierGreen node) => this.DefaultVisit(node);
@@ -10788,10 +10876,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public OperationDeclarationGreen OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+		public OperationDeclarationGreen OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnParameterGreen returnParameter, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
-			if (returnType == null) throw new ArgumentNullException(nameof(returnType));
+			if (returnParameter == null) throw new ArgumentNullException(nameof(returnParameter));
 			if (name == null) throw new ArgumentNullException(nameof(name));
 			if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
 			if (tOpenParen.Kind != MetaSyntaxKind.TOpenParen) throw new ArgumentException(nameof(tOpenParen));
@@ -10800,7 +10888,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 			if (tSemicolon.Kind != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 	#endif
-	        return new OperationDeclarationGreen(MetaSyntaxKind.OperationDeclaration, attribute.Node, operationModifier.Node, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	        return new OperationDeclarationGreen(MetaSyntaxKind.OperationDeclaration, attribute.Node, operationModifier.Node, returnParameter, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	    }
 	
 		public OperationModifierGreen OperationModifier(OperationModifierBuilderGreen operationModifierBuilder)
@@ -10877,6 +10965,22 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.ParameterList, parameter.Node, out hash);
 			if (cached != null) return (ParameterListGreen)cached;
 			var result = new ParameterListGreen(MetaSyntaxKind.ParameterList, parameter.Node);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ReturnParameterGreen ReturnParameter(ReturnTypeGreen returnType)
+	    {
+	#if DEBUG
+			if (returnType == null) throw new ArgumentNullException(nameof(returnType));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.ReturnParameter, returnType, out hash);
+			if (cached != null) return (ReturnParameterGreen)cached;
+			var result = new ReturnParameterGreen(MetaSyntaxKind.ReturnParameter, returnType);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -11144,6 +11248,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				typeof(OperationModifierBuilderGreen),
 				typeof(OperationModifierReadonlyGreen),
 				typeof(ParameterListGreen),
+				typeof(ReturnParameterGreen),
 				typeof(ParameterGreen),
 				typeof(AssociationDeclarationGreen),
 				typeof(IdentifierGreen),

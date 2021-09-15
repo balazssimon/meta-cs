@@ -27,8 +27,34 @@ namespace MetaDslx.Languages.Core.Syntax
 		// Rules:
 		public const string Main = nameof(Main);
 		public const string UsingNamespace = nameof(UsingNamespace);
-		public const string Statement = nameof(Statement);
+		public const string EmptyStmt = nameof(EmptyStmt);
+		public const string BlockStmt = nameof(BlockStmt);
+		public const string ExprStmt = nameof(ExprStmt);
+		public const string ForeachStmt = nameof(ForeachStmt);
+		public const string ForeachStmt = nameof(ForeachStmt);
+		public const string IfStmt = nameof(IfStmt);
+		public const string BreakStmt = nameof(BreakStmt);
+		public const string ContinueStmt = nameof(ContinueStmt);
+		public const string GotoStmt = nameof(GotoStmt);
+		public const string LabeledStmt = nameof(LabeledStmt);
+		public const string LockStmt = nameof(LockStmt);
+		public const string ReturnStmt = nameof(ReturnStmt);
+		public const string ReturnStmt = nameof(ReturnStmt);
+		public const string TryStmt = nameof(TryStmt);
+		public const string UsingStmt = nameof(UsingStmt);
+		public const string WhileStmt = nameof(WhileStmt);
+		public const string WhileStmt = nameof(WhileStmt);
 		public const string BlockStatement = nameof(BlockStatement);
+		public const string BareBlockStatement = nameof(BareBlockStatement);
+		public const string SwitchCase = nameof(SwitchCase);
+		public const string CaseClause = nameof(CaseClause);
+		public const string SingleValueCaseClause = nameof(SingleValueCaseClause);
+		public const string DefaultCaseClause = nameof(DefaultCaseClause);
+		public const string CatchClause = nameof(CatchClause);
+		public const string CatchFilter = nameof(CatchFilter);
+		public const string FinallyClause = nameof(FinallyClause);
+		public const string UsingHeader = nameof(UsingHeader);
+		public const string ExpressionList = nameof(ExpressionList);
 		public const string ParenthesizedExpr = nameof(ParenthesizedExpr);
 		public const string TupleExpr = nameof(TupleExpr);
 		public const string DiscardExpr = nameof(DiscardExpr);
@@ -136,7 +162,7 @@ namespace MetaDslx.Languages.Core.Syntax
         {
             EnumObject.AutoInit<CoreSyntaxKind>();
             __FirstToken = KNamespace;
-            __LastToken = LCommentStart;
+            __LastToken = KWhen;
             __FirstFixedToken = KNamespace;
             __LastFixedToken = LCommentStart;
             __FirstRule = Main;

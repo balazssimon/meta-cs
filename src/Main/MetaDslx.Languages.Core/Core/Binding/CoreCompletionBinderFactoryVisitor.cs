@@ -28,8 +28,52 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_Main_Statement = new object();
 		public static object Use_UsingNamespace_Name = new object();
 		public static object Use_UsingNamespace_Qualifier = new object();
-		public static object Use_Statement_Expression = new object();
+		public static object Use_BlockStmt_BlockStatement = new object();
+		public static object Use_ExprStmt_Expression = new object();
+		public static object Use_ForeachStmt_Variable = new object();
+		public static object Use_ForeachStmt_Collection = new object();
+		public static object Use_ForeachStmt_Statement = new object();
+		public static object Use_ForeachStmt_Before = new object();
+		public static object Use_ForeachStmt_Condition = new object();
+		public static object Use_ForeachStmt_AtLoopBottom = new object();
+		public static object Use_ForeachStmt_Statement = new object();
+		public static object Use_IfStmt_Condition = new object();
+		public static object Use_IfStmt_IfTrue = new object();
+		public static object Use_IfStmt_IfFalse = new object();
+		public static object Use_BreakStmt_KBreak = new object();
+		public static object Use_ContinueStmt_KContinue = new object();
+		public static object Use_GotoStmt_KGoto = new object();
+		public static object Use_GotoStmt_Identifier = new object();
+		public static object Use_LabeledStmt_Name = new object();
+		public static object Use_LabeledStmt_Statement = new object();
+		public static object Use_LockStmt_LockedValue = new object();
+		public static object Use_LockStmt_Body = new object();
+		public static object Use_ReturnStmt_ReturnedValue = new object();
+		public static object Use_ReturnStmt_Value = new object();
+		public static object Use_ReturnStmt_SwitchCase = new object();
+		public static object Use_TryStmt_Body = new object();
+		public static object Use_TryStmt_CatchClause = new object();
+		public static object Use_TryStmt_FinallyClause = new object();
+		public static object Use_UsingStmt_UsingHeader = new object();
+		public static object Use_UsingStmt_Body = new object();
+		public static object Use_WhileStmt_Condition = new object();
+		public static object Use_WhileStmt_Body = new object();
+		public static object Use_WhileStmt_Body = new object();
+		public static object Use_WhileStmt_Condition = new object();
 		public static object Use_BlockStatement_Statement = new object();
+		public static object Use_BareBlockStatement_Statement = new object();
+		public static object Use_SwitchCase_CaseClause = new object();
+		public static object Use_SwitchCase_BareBlockStatement = new object();
+		public static object Use_CaseClause_SingleValueCaseClause = new object();
+		public static object Use_CaseClause_DefaultCaseClause = new object();
+		public static object Use_SingleValueCaseClause_Value = new object();
+		public static object Use_CatchClause_Value = new object();
+		public static object Use_CatchClause_CatchFilter = new object();
+		public static object Use_CatchClause_Handler = new object();
+		public static object Use_CatchFilter_Filter = new object();
+		public static object Use_FinallyClause_Handler = new object();
+		public static object Use_UsingHeader_Resource = new object();
+		public static object Use_ExpressionList_Expression = new object();
 		public static object Use_ParenthesizedExpr_Expression = new object();
 		public static object Use_TupleExpr_TupleArguments = new object();
 		public static object Use_LiteralExpr_Literal = new object();
@@ -171,7 +215,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_Literal_ScientificLiteral = new object();
 		public static object Use_Literal_StringLiteral = new object();
 
-        private bool[] _visited = new bool[52];
+        private bool[] _visited = new bool[62];
 
         public CoreCompletionBinderFactoryVisitor(BinderFactory binderFactory)
 			: base(binderFactory)
@@ -300,7 +344,48 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
-		public void VisitStatement(StatementSyntax parent) // 2
+		public void VisitEmptyStmt(EmptyStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		}
+		
+		public void VisitBlockStmt(BlockStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.BlockStatement.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.BlockStatement.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.BlockStatement);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForBlockStmt(Use_BlockStmt_BlockStatement, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.BlockStatement);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.BlockStatement == null || parent.BlockStatement.IsMissing) AddResultsForBlockStmt(Use_BlockStmt_BlockStatement, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.BlockStatement);
+		        }
+		    }
+		    position += parent.BlockStatement.FullSpan.Length;
+		}
+		
+		public void VisitExprStmt(ExprStmtSyntax parent) // -1
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -312,17 +397,969 @@ namespace MetaDslx.Languages.Core.Binding
 		            operation = GetOperation(position, parent.Expression);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForStatement(Use_Statement_Expression, operation, Compilation.GetBinder(parent));
+		                AddResultsForExprStmt(Use_ExprStmt_Expression, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.Expression);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Expression == null || parent.Expression.IsMissing) AddResultsForStatement(Use_Statement_Expression, operation, Compilation.GetBinder(parent));
+		            if (parent.Expression == null || parent.Expression.IsMissing) AddResultsForExprStmt(Use_ExprStmt_Expression, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.Expression);
 		        }
 		    }
 		    position += parent.Expression.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		}
+		
+		public void VisitForeachStmt(ForeachStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KForEach.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KForEach);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KForEach, operation);
+		        }
+		    }
+		    position += parent.KForEach.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Variable.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Variable.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Variable);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForForeachStmt(Use_ForeachStmt_Variable, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Variable);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Variable == null || parent.Variable.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Variable, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Variable);
+		        }
+		    }
+		    position += parent.Variable.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
+		    }
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.Collection.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Collection.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Collection);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForForeachStmt(Use_ForeachStmt_Collection, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Collection);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Collection == null || parent.Collection.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Collection, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Collection);
+		        }
+		    }
+		    position += parent.Collection.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.Statement.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Statement.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Statement);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForForeachStmt(Use_ForeachStmt_Statement, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Statement);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Statement == null || parent.Statement.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Statement, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Statement);
+		        }
+		    }
+		    position += parent.Statement.FullSpan.Length;
+		}
+		
+		public void VisitForeachStmt(ForeachStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KFor.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KFor);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KFor, operation);
+		        }
+		    }
+		    position += parent.KFor.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Before == null || parent.Before.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Before == null || !parent.Before.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Before);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForForeachStmt(Use_ForeachStmt_Before, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Before);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Before == null || parent.Before.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Before, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Before);
+		        }
+		    }
+		    if (parent.Before != null) position += parent.Before.FullSpan.Length;
+		    position += parent.SemicolonBefore.FullSpan.Length;
+		    if (parent.Condition.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Condition.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Condition);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForForeachStmt(Use_ForeachStmt_Condition, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Condition);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Condition, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Condition);
+		        }
+		    }
+		    position += parent.Condition.FullSpan.Length;
+		    position += parent.SemicolonAfter.FullSpan.Length;
+		    if (parent.AtLoopBottom == null || parent.AtLoopBottom.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.AtLoopBottom == null || !parent.AtLoopBottom.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.AtLoopBottom);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForForeachStmt(Use_ForeachStmt_AtLoopBottom, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.AtLoopBottom);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.AtLoopBottom == null || parent.AtLoopBottom.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_AtLoopBottom, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.AtLoopBottom);
+		        }
+		    }
+		    if (parent.AtLoopBottom != null) position += parent.AtLoopBottom.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.Statement.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Statement.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Statement);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForForeachStmt(Use_ForeachStmt_Statement, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Statement);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Statement == null || parent.Statement.IsMissing) AddResultsForForeachStmt(Use_ForeachStmt_Statement, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Statement);
+		        }
+		    }
+		    position += parent.Statement.FullSpan.Length;
+		}
+		
+		public void VisitIfStmt(IfStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KIf.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KIf);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KIf, operation);
+		        }
+		    }
+		    position += parent.KIf.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Condition.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Condition.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Condition);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForIfStmt(Use_IfStmt_Condition, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Condition);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForIfStmt(Use_IfStmt_Condition, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Condition);
+		        }
+		    }
+		    position += parent.Condition.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.IfTrue.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.IfTrue.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.IfTrue);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForIfStmt(Use_IfStmt_IfTrue, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.IfTrue);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.IfTrue == null || parent.IfTrue.IsMissing) AddResultsForIfStmt(Use_IfStmt_IfTrue, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.IfTrue);
+		        }
+		    }
+		    position += parent.IfTrue.FullSpan.Length;
+		    if (parent.KElse.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KElse);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KElse, operation);
+		        }
+		    }
+		    position += parent.KElse.FullSpan.Length;
+		    if (parent.IfFalse.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.IfFalse.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.IfFalse);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForIfStmt(Use_IfStmt_IfFalse, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.IfFalse);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.IfFalse == null || parent.IfFalse.IsMissing) AddResultsForIfStmt(Use_IfStmt_IfFalse, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.IfFalse);
+		        }
+		    }
+		    position += parent.IfFalse.FullSpan.Length;
+		}
+		
+		public void VisitBreakStmt(BreakStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KBreak.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.KBreak.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.KBreak);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForBreakStmt(Use_BreakStmt_KBreak, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.KBreak);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.KBreak.GetKind() == SyntaxKind.None || parent.KBreak.IsMissing) AddResultsForBreakStmt(Use_BreakStmt_KBreak, operation, Compilation.GetBinder(parent));
+		            else AddBinder(parent.KBreak, operation);
+		        }
+		    }
+		    position += parent.KBreak.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		}
+		
+		public void VisitContinueStmt(ContinueStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KContinue.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.KContinue.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.KContinue);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForContinueStmt(Use_ContinueStmt_KContinue, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.KContinue);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.KContinue.GetKind() == SyntaxKind.None || parent.KContinue.IsMissing) AddResultsForContinueStmt(Use_ContinueStmt_KContinue, operation, Compilation.GetBinder(parent));
+		            else AddBinder(parent.KContinue, operation);
+		        }
+		    }
+		    position += parent.KContinue.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		}
+		
+		public void VisitGotoStmt(GotoStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KGoto.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.KGoto.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.KGoto);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForGotoStmt(Use_GotoStmt_KGoto, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.KGoto);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.KGoto.GetKind() == SyntaxKind.None || parent.KGoto.IsMissing) AddResultsForGotoStmt(Use_GotoStmt_KGoto, operation, Compilation.GetBinder(parent));
+		            else AddBinder(parent.KGoto, operation);
+		        }
+		    }
+		    position += parent.KGoto.FullSpan.Length;
+		    if (parent.Identifier.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Identifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Identifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForGotoStmt(Use_GotoStmt_Identifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Identifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Identifier == null || parent.Identifier.IsMissing) AddResultsForGotoStmt(Use_GotoStmt_Identifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Identifier);
+		        }
+		    }
+		    position += parent.Identifier.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		}
+		
+		public void VisitLabeledStmt(LabeledStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLabeledStmt(Use_LabeledStmt_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForLabeledStmt(Use_LabeledStmt_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
+		    }
+		    position += parent.Name.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
+		    }
+		    position += parent.TColon.FullSpan.Length;
+		    if (parent.Statement.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Statement.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Statement);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLabeledStmt(Use_LabeledStmt_Statement, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Statement);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Statement == null || parent.Statement.IsMissing) AddResultsForLabeledStmt(Use_LabeledStmt_Statement, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Statement);
+		        }
+		    }
+		    position += parent.Statement.FullSpan.Length;
+		}
+		
+		public void VisitLockStmt(LockStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KLock.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KLock);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KLock, operation);
+		        }
+		    }
+		    position += parent.KLock.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.LockedValue.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.LockedValue.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.LockedValue);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLockStmt(Use_LockStmt_LockedValue, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.LockedValue);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.LockedValue == null || parent.LockedValue.IsMissing) AddResultsForLockStmt(Use_LockStmt_LockedValue, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.LockedValue);
+		        }
+		    }
+		    position += parent.LockedValue.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.Body.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Body.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Body);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLockStmt(Use_LockStmt_Body, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Body);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Body == null || parent.Body.IsMissing) AddResultsForLockStmt(Use_LockStmt_Body, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Body);
+		        }
+		    }
+		    position += parent.Body.FullSpan.Length;
+		}
+		
+		public void VisitReturnStmt(ReturnStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KReturn.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KReturn);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KReturn, operation);
+		        }
+		    }
+		    position += parent.KReturn.FullSpan.Length;
+		    if (parent.ReturnedValue.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.ReturnedValue.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.ReturnedValue);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForReturnStmt(Use_ReturnStmt_ReturnedValue, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.ReturnedValue);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.ReturnedValue == null || parent.ReturnedValue.IsMissing) AddResultsForReturnStmt(Use_ReturnStmt_ReturnedValue, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.ReturnedValue);
+		        }
+		    }
+		    position += parent.ReturnedValue.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		}
+		
+		public void VisitReturnStmt(ReturnStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KSwitch.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KSwitch);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KSwitch, operation);
+		        }
+		    }
+		    position += parent.KSwitch.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Value.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Value.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Value);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForReturnStmt(Use_ReturnStmt_Value, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Value);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Value == null || parent.Value.IsMissing) AddResultsForReturnStmt(Use_ReturnStmt_Value, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Value);
+		        }
+		    }
+		    position += parent.Value.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.TOpenBrace.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenBrace, operation);
+		        }
+		    }
+		    position += parent.TOpenBrace.FullSpan.Length;
+		    if (parent.SwitchCase.Node == null || parent.SwitchCase.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.SwitchCase.Node == null || !parent.SwitchCase.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.SwitchCase.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForReturnStmt(Use_ReturnStmt_SwitchCase, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.SwitchCase)
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                VisitCore(item);
+		            }
+		        }
+		    }
+		    position += parent.SwitchCase.FullSpan.Length;
+		    if (parent.TCloseBrace.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseBrace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseBrace, operation);
+		        }
+		    }
+		    position += parent.TCloseBrace.FullSpan.Length;
+		}
+		
+		public void VisitTryStmt(TryStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KTry.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KTry);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KTry, operation);
+		        }
+		    }
+		    position += parent.KTry.FullSpan.Length;
+		    if (parent.Body.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Body.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Body);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTryStmt(Use_TryStmt_Body, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Body);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Body == null || parent.Body.IsMissing) AddResultsForTryStmt(Use_TryStmt_Body, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Body);
+		        }
+		    }
+		    position += parent.Body.FullSpan.Length;
+		    if (parent.CatchClause.Node == null || parent.CatchClause.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.CatchClause.Node == null || !parent.CatchClause.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.CatchClause.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTryStmt(Use_TryStmt_CatchClause, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.CatchClause)
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                VisitCore(item);
+		            }
+		        }
+		    }
+		    position += parent.CatchClause.FullSpan.Length;
+		    if (parent.FinallyClause == null || parent.FinallyClause.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.FinallyClause == null || !parent.FinallyClause.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.FinallyClause);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTryStmt(Use_TryStmt_FinallyClause, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.FinallyClause);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.FinallyClause == null || parent.FinallyClause.IsMissing) AddResultsForTryStmt(Use_TryStmt_FinallyClause, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.FinallyClause);
+		        }
+		    }
+		    if (parent.FinallyClause != null) position += parent.FinallyClause.FullSpan.Length;
+		}
+		
+		public void VisitUsingStmt(UsingStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.UsingHeader.Node == null || parent.UsingHeader.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.UsingHeader.Node == null || !parent.UsingHeader.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.UsingHeader.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForUsingStmt(Use_UsingStmt_UsingHeader, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.UsingHeader)
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                VisitCore(item);
+		            }
+		        }
+		    }
+		    position += parent.UsingHeader.FullSpan.Length;
+		    if (parent.Body.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Body.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Body);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForUsingStmt(Use_UsingStmt_Body, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Body);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Body == null || parent.Body.IsMissing) AddResultsForUsingStmt(Use_UsingStmt_Body, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Body);
+		        }
+		    }
+		    position += parent.Body.FullSpan.Length;
+		}
+		
+		public void VisitWhileStmt(WhileStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KWhile.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KWhile);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KWhile, operation);
+		        }
+		    }
+		    position += parent.KWhile.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Condition.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Condition.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Condition);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForWhileStmt(Use_WhileStmt_Condition, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Condition);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForWhileStmt(Use_WhileStmt_Condition, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Condition);
+		        }
+		    }
+		    position += parent.Condition.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.Body.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Body.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Body);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForWhileStmt(Use_WhileStmt_Body, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Body);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Body == null || parent.Body.IsMissing) AddResultsForWhileStmt(Use_WhileStmt_Body, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Body);
+		        }
+		    }
+		    position += parent.Body.FullSpan.Length;
+		}
+		
+		public void VisitWhileStmt(WhileStmtSyntax parent) // -1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KDo.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KDo);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KDo, operation);
+		        }
+		    }
+		    position += parent.KDo.FullSpan.Length;
+		    if (parent.Body.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Body.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Body);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForWhileStmt(Use_WhileStmt_Body, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Body);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Body == null || parent.Body.IsMissing) AddResultsForWhileStmt(Use_WhileStmt_Body, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Body);
+		        }
+		    }
+		    position += parent.Body.FullSpan.Length;
+		    if (parent.KWhile.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KWhile);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KWhile, operation);
+		        }
+		    }
+		    position += parent.KWhile.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Condition.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Condition.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Condition);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForWhileStmt(Use_WhileStmt_Condition, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Condition);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Condition == null || parent.Condition.IsMissing) AddResultsForWhileStmt(Use_WhileStmt_Condition, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Condition);
+		        }
+		    }
+		    position += parent.Condition.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
 		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
 		        operation = this.GetOperation(position, parent.TSemicolon);
@@ -377,6 +1414,417 @@ namespace MetaDslx.Languages.Core.Binding
 		        }
 		    }
 		    position += parent.TCloseBrace.FullSpan.Length;
+		}
+		
+		public void VisitBareBlockStatement(BareBlockStatementSyntax parent) // 4
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.Statement.Node == null || parent.Statement.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Statement.Node == null || !parent.Statement.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Statement.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForBareBlockStatement(Use_BareBlockStatement_Statement, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.Statement)
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                VisitCore(item);
+		            }
+		        }
+		    }
+		    position += parent.Statement.FullSpan.Length;
+		}
+		
+		public void VisitSwitchCase(SwitchCaseSyntax parent) // 5
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.CaseClause.Node == null || parent.CaseClause.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.CaseClause.Node == null || !parent.CaseClause.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.CaseClause.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSwitchCase(Use_SwitchCase_CaseClause, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.CaseClause)
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                VisitCore(item);
+		            }
+		        }
+		    }
+		    position += parent.CaseClause.FullSpan.Length;
+		    if (parent.BareBlockStatement.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.BareBlockStatement.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.BareBlockStatement);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSwitchCase(Use_SwitchCase_BareBlockStatement, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.BareBlockStatement);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.BareBlockStatement == null || parent.BareBlockStatement.IsMissing) AddResultsForSwitchCase(Use_SwitchCase_BareBlockStatement, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.BareBlockStatement);
+		        }
+		    }
+		    position += parent.BareBlockStatement.FullSpan.Length;
+		}
+		
+		public void VisitCaseClause(CaseClauseSyntax parent) // 6
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.SingleValueCaseClause == null || parent.SingleValueCaseClause.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.SingleValueCaseClause == null || !parent.SingleValueCaseClause.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.SingleValueCaseClause);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCaseClause(Use_CaseClause_SingleValueCaseClause, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.SingleValueCaseClause);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.SingleValueCaseClause == null || parent.SingleValueCaseClause.IsMissing) AddResultsForCaseClause(Use_CaseClause_SingleValueCaseClause, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.SingleValueCaseClause);
+		        }
+		    }
+		    if (parent.SingleValueCaseClause != null) position += parent.SingleValueCaseClause.FullSpan.Length;
+		    if (parent.DefaultCaseClause == null || parent.DefaultCaseClause.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.DefaultCaseClause == null || !parent.DefaultCaseClause.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.DefaultCaseClause);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCaseClause(Use_CaseClause_DefaultCaseClause, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.DefaultCaseClause);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.DefaultCaseClause == null || parent.DefaultCaseClause.IsMissing) AddResultsForCaseClause(Use_CaseClause_DefaultCaseClause, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.DefaultCaseClause);
+		        }
+		    }
+		    if (parent.DefaultCaseClause != null) position += parent.DefaultCaseClause.FullSpan.Length;
+		}
+		
+		public void VisitSingleValueCaseClause(SingleValueCaseClauseSyntax parent) // 7
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KCase.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KCase);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KCase, operation);
+		        }
+		    }
+		    position += parent.KCase.FullSpan.Length;
+		    if (parent.Value.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Value.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Value);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForSingleValueCaseClause(Use_SingleValueCaseClause_Value, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Value);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Value == null || parent.Value.IsMissing) AddResultsForSingleValueCaseClause(Use_SingleValueCaseClause_Value, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Value);
+		        }
+		    }
+		    position += parent.Value.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
+		    }
+		    position += parent.TColon.FullSpan.Length;
+		}
+		
+		public void VisitDefaultCaseClause(DefaultCaseClauseSyntax parent) // 8
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KDefault.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KDefault);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KDefault, operation);
+		        }
+		    }
+		    position += parent.KDefault.FullSpan.Length;
+		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TColon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TColon, operation);
+		        }
+		    }
+		    position += parent.TColon.FullSpan.Length;
+		}
+		
+		public void VisitCatchClause(CatchClauseSyntax parent) // 9
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KCatch.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KCatch);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KCatch, operation);
+		        }
+		    }
+		    position += parent.KCatch.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Value == null || parent.Value.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Value == null || !parent.Value.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Value);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCatchClause(Use_CatchClause_Value, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Value);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Value == null || parent.Value.IsMissing) AddResultsForCatchClause(Use_CatchClause_Value, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Value);
+		        }
+		    }
+		    if (parent.Value != null) position += parent.Value.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		    if (parent.CatchFilter == null || parent.CatchFilter.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.CatchFilter == null || !parent.CatchFilter.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.CatchFilter);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCatchClause(Use_CatchClause_CatchFilter, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.CatchFilter);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.CatchFilter == null || parent.CatchFilter.IsMissing) AddResultsForCatchClause(Use_CatchClause_CatchFilter, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.CatchFilter);
+		        }
+		    }
+		    if (parent.CatchFilter != null) position += parent.CatchFilter.FullSpan.Length;
+		    if (parent.Handler.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Handler.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Handler);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCatchClause(Use_CatchClause_Handler, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Handler);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Handler == null || parent.Handler.IsMissing) AddResultsForCatchClause(Use_CatchClause_Handler, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Handler);
+		        }
+		    }
+		    position += parent.Handler.FullSpan.Length;
+		}
+		
+		public void VisitCatchFilter(CatchFilterSyntax parent) // 10
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    position += parent.KWhen.FullSpan.Length;
+		    if (parent.Filter.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Filter.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Filter);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForCatchFilter(Use_CatchFilter_Filter, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Filter);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Filter == null || parent.Filter.IsMissing) AddResultsForCatchFilter(Use_CatchFilter_Filter, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Filter);
+		        }
+		    }
+		    position += parent.Filter.FullSpan.Length;
+		}
+		
+		public void VisitFinallyClause(FinallyClauseSyntax parent) // 11
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KFinally.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KFinally);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KFinally, operation);
+		        }
+		    }
+		    position += parent.KFinally.FullSpan.Length;
+		    if (parent.Handler.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Handler.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Handler);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForFinallyClause(Use_FinallyClause_Handler, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Handler);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Handler == null || parent.Handler.IsMissing) AddResultsForFinallyClause(Use_FinallyClause_Handler, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Handler);
+		        }
+		    }
+		    position += parent.Handler.FullSpan.Length;
+		}
+		
+		public void VisitUsingHeader(UsingHeaderSyntax parent) // 12
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KUsing.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KUsing);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KUsing, operation);
+		        }
+		    }
+		    position += parent.KUsing.FullSpan.Length;
+		    if (parent.TOpenParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TOpenParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TOpenParen, operation);
+		        }
+		    }
+		    position += parent.TOpenParen.FullSpan.Length;
+		    if (parent.Resource.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Resource.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Resource);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForUsingHeader(Use_UsingHeader_Resource, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Resource);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Resource == null || parent.Resource.IsMissing) AddResultsForUsingHeader(Use_UsingHeader_Resource, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Resource);
+		        }
+		    }
+		    position += parent.Resource.FullSpan.Length;
+		    if (parent.TCloseParen.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TCloseParen);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TCloseParen, operation);
+		        }
+		    }
+		    position += parent.TCloseParen.FullSpan.Length;
+		}
+		
+		public void VisitExpressionList(ExpressionListSyntax parent) // 13
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.Expression.Node == null || parent.Expression.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Expression.Node == null || !parent.Expression.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Expression.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForExpressionList(Use_ExpressionList_Expression, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.Expression.GetWithSeparators())
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                if (item.IsToken) AddBinder(item, operation);
+		                else VisitCore(item.AsNode());
+		            }
+		        }
+		    }
+		    position += parent.Expression.FullSpan.Length;
 		}
 		
 		public void VisitParenthesizedExpr(ParenthesizedExprSyntax parent) // -1
@@ -2493,7 +3941,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LambdaBody.FullSpan.Length;
 		}
 		
-		public void VisitTupleArguments(TupleArgumentsSyntax parent) // 5
+		public void VisitTupleArguments(TupleArgumentsSyntax parent) // 15
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2545,7 +3993,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.ArgumentList.FullSpan.Length;
 		}
 		
-		public void VisitArgumentList(ArgumentListSyntax parent) // 6
+		public void VisitArgumentList(ArgumentListSyntax parent) // 16
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2573,7 +4021,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.ArgumentExpression.FullSpan.Length;
 		}
 		
-		public void VisitArgumentExpression(ArgumentExpressionSyntax parent) // 7
+		public void VisitArgumentExpression(ArgumentExpressionSyntax parent) // 17
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2625,7 +4073,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Expression.FullSpan.Length;
 		}
 		
-		public void VisitInitializerExpression(InitializerExpressionSyntax parent) // 8
+		public void VisitInitializerExpression(InitializerExpressionSyntax parent) // 18
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2686,7 +4134,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.DictionaryInitializerExpressions != null) position += parent.DictionaryInitializerExpressions.FullSpan.Length;
 		}
 		
-		public void VisitFieldInitializerExpressions(FieldInitializerExpressionsSyntax parent) // 9
+		public void VisitFieldInitializerExpressions(FieldInitializerExpressionsSyntax parent) // 19
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2714,7 +4162,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.FieldInitializerExpression.FullSpan.Length;
 		}
 		
-		public void VisitFieldInitializerExpression(FieldInitializerExpressionSyntax parent) // 10
+		public void VisitFieldInitializerExpression(FieldInitializerExpressionSyntax parent) // 20
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2766,7 +4214,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Expression.FullSpan.Length;
 		}
 		
-		public void VisitCollectionInitializerExpressions(CollectionInitializerExpressionsSyntax parent) // 11
+		public void VisitCollectionInitializerExpressions(CollectionInitializerExpressionsSyntax parent) // 21
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2794,7 +4242,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Expression.FullSpan.Length;
 		}
 		
-		public void VisitDictionaryInitializerExpressions(DictionaryInitializerExpressionsSyntax parent) // 12
+		public void VisitDictionaryInitializerExpressions(DictionaryInitializerExpressionsSyntax parent) // 22
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2822,7 +4270,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.DictionaryInitializerExpression.FullSpan.Length;
 		}
 		
-		public void VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax parent) // 13
+		public void VisitDictionaryInitializerExpression(DictionaryInitializerExpressionSyntax parent) // 23
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2892,7 +4340,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Expression.FullSpan.Length;
 		}
 		
-		public void VisitLambdaSignature(LambdaSignatureSyntax parent) // 14
+		public void VisitLambdaSignature(LambdaSignatureSyntax parent) // 24
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2935,7 +4383,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.ExplicitLambdaSignature != null) position += parent.ExplicitLambdaSignature.FullSpan.Length;
 		}
 		
-		public void VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax parent) // 15
+		public void VisitImplicitLambdaSignature(ImplicitLambdaSignatureSyntax parent) // 25
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -2978,7 +4426,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.ImplicitParameterList != null) position += parent.ImplicitParameterList.FullSpan.Length;
 		}
 		
-		public void VisitImplicitParameterList(ImplicitParameterListSyntax parent) // 16
+		public void VisitImplicitParameterList(ImplicitParameterListSyntax parent) // 26
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3024,7 +4472,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TCloseParen.FullSpan.Length;
 		}
 		
-		public void VisitImplicitParameter(ImplicitParameterSyntax parent) // 17
+		public void VisitImplicitParameter(ImplicitParameterSyntax parent) // 27
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3049,7 +4497,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Name.FullSpan.Length;
 		}
 		
-		public void VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax parent) // 18
+		public void VisitExplicitLambdaSignature(ExplicitLambdaSignatureSyntax parent) // 28
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3074,7 +4522,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.ExplicitParameterList.FullSpan.Length;
 		}
 		
-		public void VisitExplicitParameterList(ExplicitParameterListSyntax parent) // 19
+		public void VisitExplicitParameterList(ExplicitParameterListSyntax parent) // 29
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3120,7 +4568,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TCloseParen.FullSpan.Length;
 		}
 		
-		public void VisitExplicitParameter(ExplicitParameterSyntax parent) // 20
+		public void VisitExplicitParameter(ExplicitParameterSyntax parent) // 30
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3163,7 +4611,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Name.FullSpan.Length;
 		}
 		
-		public void VisitLambdaBody(LambdaBodySyntax parent) // 21
+		public void VisitLambdaBody(LambdaBodySyntax parent) // 31
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3206,7 +4654,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.BlockStatement != null) position += parent.BlockStatement.FullSpan.Length;
 		}
 		
-		public void VisitDotOperator(DotOperatorSyntax parent) // 22
+		public void VisitDotOperator(DotOperatorSyntax parent) // 32
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3230,7 +4678,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.DotOperator.FullSpan.Length;
 		}
 		
-		public void VisitIndexerOperator(IndexerOperatorSyntax parent) // 23
+		public void VisitIndexerOperator(IndexerOperatorSyntax parent) // 33
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3254,7 +4702,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.IndexerOperator.FullSpan.Length;
 		}
 		
-		public void VisitPostfixOperator(PostfixOperatorSyntax parent) // 24
+		public void VisitPostfixOperator(PostfixOperatorSyntax parent) // 34
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3278,7 +4726,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.PostfixOperator.FullSpan.Length;
 		}
 		
-		public void VisitUnaryOperator(UnaryOperatorSyntax parent) // 25
+		public void VisitUnaryOperator(UnaryOperatorSyntax parent) // 35
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3302,7 +4750,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.UnaryOperator.FullSpan.Length;
 		}
 		
-		public void VisitMultiplicativeOperator(MultiplicativeOperatorSyntax parent) // 26
+		public void VisitMultiplicativeOperator(MultiplicativeOperatorSyntax parent) // 36
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3326,7 +4774,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.MultiplicativeOperator.FullSpan.Length;
 		}
 		
-		public void VisitAdditiveOperator(AdditiveOperatorSyntax parent) // 27
+		public void VisitAdditiveOperator(AdditiveOperatorSyntax parent) // 37
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3350,7 +4798,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.AdditiveOperator.FullSpan.Length;
 		}
 		
-		public void VisitShiftOperator(ShiftOperatorSyntax parent) // 28
+		public void VisitShiftOperator(ShiftOperatorSyntax parent) // 38
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3393,7 +4841,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.RightShiftOperator != null) position += parent.RightShiftOperator.FullSpan.Length;
 		}
 		
-		public void VisitLeftShiftOperator(LeftShiftOperatorSyntax parent) // 29
+		public void VisitLeftShiftOperator(LeftShiftOperatorSyntax parent) // 39
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3402,7 +4850,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Second.FullSpan.Length;
 		}
 		
-		public void VisitRightShiftOperator(RightShiftOperatorSyntax parent) // 30
+		public void VisitRightShiftOperator(RightShiftOperatorSyntax parent) // 40
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3411,7 +4859,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Second.FullSpan.Length;
 		}
 		
-		public void VisitRelationalOperator(RelationalOperatorSyntax parent) // 31
+		public void VisitRelationalOperator(RelationalOperatorSyntax parent) // 41
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3435,7 +4883,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.RelationalOperator.FullSpan.Length;
 		}
 		
-		public void VisitEqualityOperator(EqualityOperatorSyntax parent) // 32
+		public void VisitEqualityOperator(EqualityOperatorSyntax parent) // 42
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3459,7 +4907,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.EqualityOperator.FullSpan.Length;
 		}
 		
-		public void VisitCompoundAssignmentOperator(CompoundAssignmentOperatorSyntax parent) // 33
+		public void VisitCompoundAssignmentOperator(CompoundAssignmentOperatorSyntax parent) // 43
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3483,7 +4931,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.CompoundAssignmentOperator.FullSpan.Length;
 		}
 		
-		public void VisitReturnType(ReturnTypeSyntax parent) // 34
+		public void VisitReturnType(ReturnTypeSyntax parent) // 44
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3696,7 +5144,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TQuestion.FullSpan.Length;
 		}
 		
-		public void VisitNamedType(NamedTypeSyntax parent) // 36
+		public void VisitNamedType(NamedTypeSyntax parent) // 46
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3721,7 +5169,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
-		public void VisitGenericTypeArguments(GenericTypeArgumentsSyntax parent) // 37
+		public void VisitGenericTypeArguments(GenericTypeArgumentsSyntax parent) // 47
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3767,7 +5215,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TGreaterThan.FullSpan.Length;
 		}
 		
-		public void VisitGenericTypeArgument(GenericTypeArgumentSyntax parent) // 38
+		public void VisitGenericTypeArgument(GenericTypeArgumentSyntax parent) // 48
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3792,7 +5240,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.TypeReference.FullSpan.Length;
 		}
 		
-		public void VisitPrimitiveType(PrimitiveTypeSyntax parent) // 39
+		public void VisitPrimitiveType(PrimitiveTypeSyntax parent) // 49
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3816,7 +5264,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.PrimitiveType.FullSpan.Length;
 		}
 		
-		public void VisitVoidType(VoidTypeSyntax parent) // 40
+		public void VisitVoidType(VoidTypeSyntax parent) // 50
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3832,7 +5280,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.KVoid.FullSpan.Length;
 		}
 		
-		public void VisitName(NameSyntax parent) // 41
+		public void VisitName(NameSyntax parent) // 51
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3857,7 +5305,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitQualifiedName(QualifiedNameSyntax parent) // 42
+		public void VisitQualifiedName(QualifiedNameSyntax parent) // 52
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3882,7 +5330,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Qualifier.FullSpan.Length;
 		}
 		
-		public void VisitQualifier(QualifierSyntax parent) // 43
+		public void VisitQualifier(QualifierSyntax parent) // 53
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3910,7 +5358,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitIdentifier(IdentifierSyntax parent) // 44
+		public void VisitIdentifier(IdentifierSyntax parent) // 54
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -3918,7 +5366,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitLiteral(LiteralSyntax parent) // 45
+		public void VisitLiteral(LiteralSyntax parent) // 55
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4033,7 +5481,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (parent.StringLiteral != null) position += parent.StringLiteral.FullSpan.Length;
 		}
 		
-		public void VisitNullLiteral(NullLiteralSyntax parent) // 46
+		public void VisitNullLiteral(NullLiteralSyntax parent) // 56
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4049,7 +5497,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.KNull.FullSpan.Length;
 		}
 		
-		public void VisitBooleanLiteral(BooleanLiteralSyntax parent) // 47
+		public void VisitBooleanLiteral(BooleanLiteralSyntax parent) // 57
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4057,7 +5505,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.BooleanLiteral.FullSpan.Length;
 		}
 		
-		public void VisitIntegerLiteral(IntegerLiteralSyntax parent) // 48
+		public void VisitIntegerLiteral(IntegerLiteralSyntax parent) // 58
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4065,7 +5513,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LInteger.FullSpan.Length;
 		}
 		
-		public void VisitDecimalLiteral(DecimalLiteralSyntax parent) // 49
+		public void VisitDecimalLiteral(DecimalLiteralSyntax parent) // 59
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4073,7 +5521,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LDecimal.FullSpan.Length;
 		}
 		
-		public void VisitScientificLiteral(ScientificLiteralSyntax parent) // 50
+		public void VisitScientificLiteral(ScientificLiteralSyntax parent) // 60
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4081,7 +5529,7 @@ namespace MetaDslx.Languages.Core.Binding
 		    position += parent.LScientific.FullSpan.Length;
 		}
 		
-		public void VisitStringLiteral(StringLiteralSyntax parent) // 51
+		public void VisitStringLiteral(StringLiteralSyntax parent) // 61
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -4159,9 +5607,95 @@ namespace MetaDslx.Languages.Core.Binding
         {
             if (_visited[2]) return;
             _visited[2] = true;
+            object altUse;
+            AddResultsForEmptyStmt(altUse, operation, parentBinder);
+            if (use == Use_BlockStmt_BlockStatement) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForBlockStmt(altUse, operation, parentBinder);
+            if (use == Use_ExprStmt_Expression) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForExprStmt(altUse, operation, parentBinder);
+            if (use == Use_ForeachStmt_Variable || use == Use_ForeachStmt_Collection || use == Use_ForeachStmt_Statement) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForForeachStmt(altUse, operation, parentBinder);
+            if (use == Use_ForeachStmt_Before || use == Use_ForeachStmt_Condition || use == Use_ForeachStmt_AtLoopBottom || use == Use_ForeachStmt_Statement) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForForeachStmt(altUse, operation, parentBinder);
+            if (use == Use_IfStmt_Condition || use == Use_IfStmt_IfTrue || use == Use_IfStmt_IfFalse) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForIfStmt(altUse, operation, parentBinder);
+            if (use == Use_BreakStmt_KBreak) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForBreakStmt(altUse, operation, parentBinder);
+            if (use == Use_ContinueStmt_KContinue) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForContinueStmt(altUse, operation, parentBinder);
+            if (use == Use_GotoStmt_KGoto || use == Use_GotoStmt_Identifier) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForGotoStmt(altUse, operation, parentBinder);
+            if (use == Use_LabeledStmt_Name || use == Use_LabeledStmt_Statement) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForLabeledStmt(altUse, operation, parentBinder);
+            if (use == Use_LockStmt_LockedValue || use == Use_LockStmt_Body) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForLockStmt(altUse, operation, parentBinder);
+            if (use == Use_ReturnStmt_ReturnedValue) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForReturnStmt(altUse, operation, parentBinder);
+            if (use == Use_ReturnStmt_Value || use == Use_ReturnStmt_SwitchCase) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForReturnStmt(altUse, operation, parentBinder);
+            if (use == Use_TryStmt_Body || use == Use_TryStmt_CatchClause || use == Use_TryStmt_FinallyClause) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForTryStmt(altUse, operation, parentBinder);
+            if (use == Use_UsingStmt_UsingHeader || use == Use_UsingStmt_Body) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForUsingStmt(altUse, operation, parentBinder);
+            if (use == Use_WhileStmt_Condition || use == Use_WhileStmt_Body) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForWhileStmt(altUse, operation, parentBinder);
+            if (use == Use_WhileStmt_Body || use == Use_WhileStmt_Condition) altUse = use;
+            else altUse = UnassignedUse;
+            AddResultsForWhileStmt(altUse, operation, parentBinder);
+            _visited[2] = false;
+        }
+        
+        public void AddResultsForEmptyStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(EmptyStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForBlockStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse || use == Use_BlockStmt_BlockStatement)
+            {
+                var binder = ruleBinder;
+                AddResultsForBlockStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForExprStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(ExpressionStatement), forCompletion: true);
-            if (use == UnassignedUse || use == Use_Statement_Expression)
+            if (use == UnassignedUse || use == Use_ExprStmt_Expression)
             {
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Expression", forCompletion: true);
@@ -4174,7 +5708,556 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
                 use = FinishedUse;
             }
-            _visited[2] = false;
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForForeachStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(ForEachLoopStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KForEach, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ForeachStmt_Variable)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "LoopControlVariable", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TColon, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ForeachStmt_Collection)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Collection", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ForeachStmt_Statement)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForForeachStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(ForLoopStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KFor, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ForeachStmt_Before)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Before", forCompletion: true);
+                AddResultsForExpressionList(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ForeachStmt_Condition)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Condition", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ForeachStmt_AtLoopBottom)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "AtLoopBottom", forCompletion: true);
+                AddResultsForExpressionList(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ForeachStmt_Statement)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForIfStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(IfStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KIf, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_IfStmt_Condition)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Condition", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_IfStmt_IfTrue)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "IfTrue", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KElse, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_IfStmt_IfFalse)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "IfFalse", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForBreakStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(JumpStatement), forCompletion: true);
+            if (use == UnassignedUse || use == Use_BreakStmt_KBreak)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "JumpKind", value: JumpKind.Break, forCompletion: true);
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KBreak, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForContinueStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(JumpStatement), forCompletion: true);
+            if (use == UnassignedUse || use == Use_ContinueStmt_KContinue)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "JumpKind", value: JumpKind.Continue, forCompletion: true);
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KContinue, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForGotoStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(JumpStatement), forCompletion: true);
+            if (use == UnassignedUse || use == Use_GotoStmt_KGoto)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "JumpKind", value: JumpKind.Goto, forCompletion: true);
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KGoto, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_GotoStmt_Identifier)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Target", forCompletion: true);
+            	binder = this.BinderFactory.CreateUseBinder(binder, null, types: ImmutableArray.Create(typeof(Label)), forCompletion: true);
+                AddResultsForIdentifier(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForLabeledStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(LabeledStatement), forCompletion: true);
+            if (use == UnassignedUse || use == Use_LabeledStmt_Name)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Label", forCompletion: true);
+            	binder = this.BinderFactory.CreateDefineBinder(binder, null, type: typeof(Label), forCompletion: true);
+                AddResultsForName(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TColon, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_LabeledStmt_Statement)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Statement", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForLockStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(LockStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KLock, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_LockStmt_LockedValue)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "LockedValue", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_LockStmt_Body)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForReturnStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(ReturnStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KReturn, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ReturnStmt_ReturnedValue)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ReturnedValue", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForReturnStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(SwitchStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KSwitch, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ReturnStmt_Value)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Value", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenBrace, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_ReturnStmt_SwitchCase)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Cases", forCompletion: true);
+                AddResultsForSwitchCase(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseBrace, operation);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForTryStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KTry, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_TryStmt_Body)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForBlockStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_TryStmt_CatchClause)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Catches", forCompletion: true);
+                AddResultsForCatchClause(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse || use == Use_TryStmt_FinallyClause)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Finally", forCompletion: true);
+                AddResultsForFinallyClause(UnassignedUse, operation, binder);
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForUsingStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(UsingStatement), forCompletion: true);
+            if (use == UnassignedUse || use == Use_UsingStmt_UsingHeader)
+            {
+                var binder = ruleBinder;
+                AddResultsForUsingHeader(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_UsingStmt_Body)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForWhileStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(WhileLoopStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KWhile, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_WhileStmt_Condition)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ConditionIsTop", value: true, forCompletion: true);
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Condition", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_WhileStmt_Body)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
+        }
+        
+        public void AddResultsForWhileStmt(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
+        {
+            if (_visited[-1]) return;
+            _visited[-1] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(WhileLoopStatement), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KDo, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_WhileStmt_Body)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KWhile, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_WhileStmt_Condition)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ConditionIsTop", value: false, forCompletion: true);
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Condition", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            _visited[-1] = false;
         }
         
         public void AddResultsForBlockStatement(object use, CompletionSearchFlags operation, Binder parentBinder) // 3
@@ -4204,10 +6287,247 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[3] = false;
         }
         
-        public void AddResultsForExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 4
+        public void AddResultsForBareBlockStatement(object use, CompletionSearchFlags operation, Binder parentBinder) // 4
         {
             if (_visited[4]) return;
             _visited[4] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(BlockStatement), forCompletion: true);
+            if (use == UnassignedUse || use == Use_BareBlockStatement_Statement)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Statements", forCompletion: true);
+                AddResultsForStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[4] = false;
+        }
+        
+        public void AddResultsForSwitchCase(object use, CompletionSearchFlags operation, Binder parentBinder) // 5
+        {
+            if (_visited[5]) return;
+            _visited[5] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(SwitchCase), forCompletion: true);
+            if (use == UnassignedUse || use == Use_SwitchCase_CaseClause)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Clauses", forCompletion: true);
+                AddResultsForCaseClause(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_SwitchCase_BareBlockStatement)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Body", forCompletion: true);
+                AddResultsForBareBlockStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[5] = false;
+        }
+        
+        public void AddResultsForCaseClause(object use, CompletionSearchFlags operation, Binder parentBinder) // 6
+        {
+            if (_visited[6]) return;
+            _visited[6] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse || use == Use_CaseClause_SingleValueCaseClause)
+            {
+                var binder = ruleBinder;
+                AddResultsForSingleValueCaseClause(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse || use == Use_CaseClause_DefaultCaseClause)
+            {
+                var binder = ruleBinder;
+                AddResultsForDefaultCaseClause(UnassignedUse, operation, binder);
+            }
+            _visited[6] = false;
+        }
+        
+        public void AddResultsForSingleValueCaseClause(object use, CompletionSearchFlags operation, Binder parentBinder) // 7
+        {
+            if (_visited[7]) return;
+            _visited[7] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(SingleValueCaseClause), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KCase, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_SingleValueCaseClause_Value)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Value", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TColon, operation);
+                use = FinishedUse;
+            }
+            _visited[7] = false;
+        }
+        
+        public void AddResultsForDefaultCaseClause(object use, CompletionSearchFlags operation, Binder parentBinder) // 8
+        {
+            if (_visited[8]) return;
+            _visited[8] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(DefaultCaseClause), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KDefault, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TColon, operation);
+                use = FinishedUse;
+            }
+            _visited[8] = false;
+        }
+        
+        public void AddResultsForCatchClause(object use, CompletionSearchFlags operation, Binder parentBinder) // 9
+        {
+            if (_visited[9]) return;
+            _visited[9] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(CatchClause), forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KCatch, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+            }
+            if (use == UnassignedUse || use == Use_CatchClause_Value)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ExceptionDeclarationOrExpression", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+            }
+            if (use == UnassignedUse || use == Use_CatchClause_CatchFilter)
+            {
+                var binder = ruleBinder;
+                AddResultsForCatchFilter(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse || use == Use_CatchClause_Handler)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Handler", forCompletion: true);
+                AddResultsForBlockStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[9] = false;
+        }
+        
+        public void AddResultsForCatchFilter(object use, CompletionSearchFlags operation, Binder parentBinder) // 10
+        {
+            if (_visited[10]) return;
+            _visited[10] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KWhen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_CatchFilter_Filter)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Filter", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[10] = false;
+        }
+        
+        public void AddResultsForFinallyClause(object use, CompletionSearchFlags operation, Binder parentBinder) // 11
+        {
+            if (_visited[11]) return;
+            _visited[11] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KFinally, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_FinallyClause_Handler)
+            {
+                var binder = ruleBinder;
+                AddResultsForBlockStatement(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[11] = false;
+        }
+        
+        public void AddResultsForUsingHeader(object use, CompletionSearchFlags operation, Binder parentBinder) // 12
+        {
+            if (_visited[12]) return;
+            _visited[12] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KUsing, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TOpenParen, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_UsingHeader_Resource)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Resources", forCompletion: true);
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
+                use = FinishedUse;
+            }
+            _visited[12] = false;
+        }
+        
+        public void AddResultsForExpressionList(object use, CompletionSearchFlags operation, Binder parentBinder) // 13
+        {
+            if (_visited[13]) return;
+            _visited[13] = true;
+            var ruleBinder = parentBinder;
+            if (use == UnassignedUse || use == Use_ExpressionList_Expression)
+            {
+                var binder = ruleBinder;
+                AddResultsForExpression(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[13] = false;
+        }
+        
+        public void AddResultsForExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 14
+        {
+            if (_visited[14]) return;
+            _visited[14] = true;
             object altUse;
             if (use == Use_ParenthesizedExpr_Expression) altUse = use;
             else altUse = UnassignedUse;
@@ -4324,7 +6644,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_LambdaExpr_LambdaSignature || use == Use_LambdaExpr_LambdaBody) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForLambdaExpr(altUse, operation, parentBinder);
-            _visited[4] = false;
+            _visited[14] = false;
         }
         
         public void AddResultsForParenthesizedExpr(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
@@ -5496,10 +7816,10 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = false;
         }
         
-        public void AddResultsForTupleArguments(object use, CompletionSearchFlags operation, Binder parentBinder) // 5
+        public void AddResultsForTupleArguments(object use, CompletionSearchFlags operation, Binder parentBinder) // 15
         {
-            if (_visited[5]) return;
-            _visited[5] = true;
+            if (_visited[15]) return;
+            _visited[15] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Arguments", forCompletion: true);
             if (use == UnassignedUse || use == Use_TupleArguments_ArgumentExpression)
@@ -5520,13 +7840,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForArgumentList(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[5] = false;
+            _visited[15] = false;
         }
         
-        public void AddResultsForArgumentList(object use, CompletionSearchFlags operation, Binder parentBinder) // 6
+        public void AddResultsForArgumentList(object use, CompletionSearchFlags operation, Binder parentBinder) // 16
         {
-            if (_visited[6]) return;
-            _visited[6] = true;
+            if (_visited[16]) return;
+            _visited[16] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Arguments", forCompletion: true);
             if (use == UnassignedUse || use == Use_ArgumentList_ArgumentExpression)
@@ -5535,13 +7855,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForArgumentExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[6] = false;
+            _visited[16] = false;
         }
         
-        public void AddResultsForArgumentExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 7
+        public void AddResultsForArgumentExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 17
         {
-            if (_visited[7]) return;
-            _visited[7] = true;
+            if (_visited[17]) return;
+            _visited[17] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(Argument), forCompletion: true);
             if (use == UnassignedUse || use == Use_ArgumentExpression_Name)
@@ -5561,13 +7881,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[7] = false;
+            _visited[17] = false;
         }
         
-        public void AddResultsForInitializerExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 8
+        public void AddResultsForInitializerExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 18
         {
-            if (_visited[8]) return;
-            _visited[8] = true;
+            if (_visited[18]) return;
+            _visited[18] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_InitializerExpression_FieldInitializerExpressions)
             {
@@ -5584,13 +7904,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForDictionaryInitializerExpressions(UnassignedUse, operation, binder);
             }
-            _visited[8] = false;
+            _visited[18] = false;
         }
         
-        public void AddResultsForFieldInitializerExpressions(object use, CompletionSearchFlags operation, Binder parentBinder) // 9
+        public void AddResultsForFieldInitializerExpressions(object use, CompletionSearchFlags operation, Binder parentBinder) // 19
         {
-            if (_visited[9]) return;
-            _visited[9] = true;
+            if (_visited[19]) return;
+            _visited[19] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_FieldInitializerExpressions_FieldInitializerExpression)
             {
@@ -5598,13 +7918,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForFieldInitializerExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[9] = false;
+            _visited[19] = false;
         }
         
-        public void AddResultsForFieldInitializerExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 10
+        public void AddResultsForFieldInitializerExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 20
         {
-            if (_visited[10]) return;
-            _visited[10] = true;
+            if (_visited[20]) return;
+            _visited[20] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(AssignmentExpression), forCompletion: true);
             if (use == UnassignedUse || use == Use_FieldInitializerExpression_Identifier)
@@ -5628,13 +7948,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[10] = false;
+            _visited[20] = false;
         }
         
-        public void AddResultsForCollectionInitializerExpressions(object use, CompletionSearchFlags operation, Binder parentBinder) // 11
+        public void AddResultsForCollectionInitializerExpressions(object use, CompletionSearchFlags operation, Binder parentBinder) // 21
         {
-            if (_visited[11]) return;
-            _visited[11] = true;
+            if (_visited[21]) return;
+            _visited[21] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_CollectionInitializerExpressions_Expression)
             {
@@ -5642,13 +7962,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[11] = false;
+            _visited[21] = false;
         }
         
-        public void AddResultsForDictionaryInitializerExpressions(object use, CompletionSearchFlags operation, Binder parentBinder) // 12
+        public void AddResultsForDictionaryInitializerExpressions(object use, CompletionSearchFlags operation, Binder parentBinder) // 22
         {
-            if (_visited[12]) return;
-            _visited[12] = true;
+            if (_visited[22]) return;
+            _visited[22] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_DictionaryInitializerExpressions_DictionaryInitializerExpression)
             {
@@ -5656,13 +7976,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForDictionaryInitializerExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[12] = false;
+            _visited[22] = false;
         }
         
-        public void AddResultsForDictionaryInitializerExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 13
+        public void AddResultsForDictionaryInitializerExpression(object use, CompletionSearchFlags operation, Binder parentBinder) // 23
         {
-            if (_visited[13]) return;
-            _visited[13] = true;
+            if (_visited[23]) return;
+            _visited[23] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse)
             {
@@ -5694,13 +8014,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[13] = false;
+            _visited[23] = false;
         }
         
-        public void AddResultsForLambdaSignature(object use, CompletionSearchFlags operation, Binder parentBinder) // 14
+        public void AddResultsForLambdaSignature(object use, CompletionSearchFlags operation, Binder parentBinder) // 24
         {
-            if (_visited[14]) return;
-            _visited[14] = true;
+            if (_visited[24]) return;
+            _visited[24] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_LambdaSignature_ImplicitLambdaSignature)
             {
@@ -5712,13 +8032,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForExplicitLambdaSignature(UnassignedUse, operation, binder);
             }
-            _visited[14] = false;
+            _visited[24] = false;
         }
         
-        public void AddResultsForImplicitLambdaSignature(object use, CompletionSearchFlags operation, Binder parentBinder) // 15
+        public void AddResultsForImplicitLambdaSignature(object use, CompletionSearchFlags operation, Binder parentBinder) // 25
         {
-            if (_visited[15]) return;
-            _visited[15] = true;
+            if (_visited[25]) return;
+            _visited[25] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_ImplicitLambdaSignature_ImplicitParameter)
             {
@@ -5730,13 +8050,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForImplicitParameterList(UnassignedUse, operation, binder);
             }
-            _visited[15] = false;
+            _visited[25] = false;
         }
         
-        public void AddResultsForImplicitParameterList(object use, CompletionSearchFlags operation, Binder parentBinder) // 16
+        public void AddResultsForImplicitParameterList(object use, CompletionSearchFlags operation, Binder parentBinder) // 26
         {
-            if (_visited[16]) return;
-            _visited[16] = true;
+            if (_visited[26]) return;
+            _visited[26] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Parameters", forCompletion: true);
             if (use == UnassignedUse)
@@ -5757,13 +8077,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
                 use = FinishedUse;
             }
-            _visited[16] = false;
+            _visited[26] = false;
         }
         
-        public void AddResultsForImplicitParameter(object use, CompletionSearchFlags operation, Binder parentBinder) // 17
+        public void AddResultsForImplicitParameter(object use, CompletionSearchFlags operation, Binder parentBinder) // 27
         {
-            if (_visited[17]) return;
-            _visited[17] = true;
+            if (_visited[27]) return;
+            _visited[27] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Parameters", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(Parameter), forCompletion: true);
@@ -5773,13 +8093,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForName(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[17] = false;
+            _visited[27] = false;
         }
         
-        public void AddResultsForExplicitLambdaSignature(object use, CompletionSearchFlags operation, Binder parentBinder) // 18
+        public void AddResultsForExplicitLambdaSignature(object use, CompletionSearchFlags operation, Binder parentBinder) // 28
         {
-            if (_visited[18]) return;
-            _visited[18] = true;
+            if (_visited[28]) return;
+            _visited[28] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_ExplicitLambdaSignature_ExplicitParameterList)
             {
@@ -5787,13 +8107,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForExplicitParameterList(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[18] = false;
+            _visited[28] = false;
         }
         
-        public void AddResultsForExplicitParameterList(object use, CompletionSearchFlags operation, Binder parentBinder) // 19
+        public void AddResultsForExplicitParameterList(object use, CompletionSearchFlags operation, Binder parentBinder) // 29
         {
-            if (_visited[19]) return;
-            _visited[19] = true;
+            if (_visited[29]) return;
+            _visited[29] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Parameters", forCompletion: true);
             if (use == UnassignedUse)
@@ -5814,13 +8134,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TCloseParen, operation);
                 use = FinishedUse;
             }
-            _visited[19] = false;
+            _visited[29] = false;
         }
         
-        public void AddResultsForExplicitParameter(object use, CompletionSearchFlags operation, Binder parentBinder) // 20
+        public void AddResultsForExplicitParameter(object use, CompletionSearchFlags operation, Binder parentBinder) // 30
         {
-            if (_visited[20]) return;
-            _visited[20] = true;
+            if (_visited[30]) return;
+            _visited[30] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Parameters", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(Parameter), forCompletion: true);
@@ -5837,13 +8157,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForName(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[20] = false;
+            _visited[30] = false;
         }
         
-        public void AddResultsForLambdaBody(object use, CompletionSearchFlags operation, Binder parentBinder) // 21
+        public void AddResultsForLambdaBody(object use, CompletionSearchFlags operation, Binder parentBinder) // 31
         {
-            if (_visited[21]) return;
-            _visited[21] = true;
+            if (_visited[31]) return;
+            _visited[31] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Body", forCompletion: true);
             if (use == UnassignedUse || use == Use_LambdaBody_Expression)
@@ -5858,13 +8178,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForBlockStatement(UnassignedUse, operation, binder);
             }
-            _visited[21] = false;
+            _visited[31] = false;
         }
         
-        public void AddResultsForDotOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 22
+        public void AddResultsForDotOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 32
         {
-            if (_visited[22]) return;
-            _visited[22] = true;
+            if (_visited[32]) return;
+            _visited[32] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_DotOperator_DotOperator)
             {
@@ -5876,13 +8196,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TQuestionDotBinder, (CoreSyntaxKind)CoreSyntaxKind.TQuestionDot, operation);
                 use = FinishedUse;
             }
-            _visited[22] = false;
+            _visited[32] = false;
         }
         
-        public void AddResultsForIndexerOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 23
+        public void AddResultsForIndexerOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 33
         {
-            if (_visited[23]) return;
-            _visited[23] = true;
+            if (_visited[33]) return;
+            _visited[33] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_IndexerOperator_IndexerOperator)
             {
@@ -5894,13 +8214,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TQuestionOpenBracketBinder, (CoreSyntaxKind)CoreSyntaxKind.TQuestionOpenBracket, operation);
                 use = FinishedUse;
             }
-            _visited[23] = false;
+            _visited[33] = false;
         }
         
-        public void AddResultsForPostfixOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 24
+        public void AddResultsForPostfixOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 34
         {
-            if (_visited[24]) return;
-            _visited[24] = true;
+            if (_visited[34]) return;
+            _visited[34] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_PostfixOperator_PostfixOperator)
             {
@@ -5913,13 +8233,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TMinusMinusBinder, (CoreSyntaxKind)CoreSyntaxKind.TMinusMinus, operation);
                 use = FinishedUse;
             }
-            _visited[24] = false;
+            _visited[34] = false;
         }
         
-        public void AddResultsForUnaryOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 25
+        public void AddResultsForUnaryOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 35
         {
-            if (_visited[25]) return;
-            _visited[25] = true;
+            if (_visited[35]) return;
+            _visited[35] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_UnaryOperator_UnaryOperator)
             {
@@ -5947,13 +8267,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(THatBinder, (CoreSyntaxKind)CoreSyntaxKind.THat, operation);
                 use = FinishedUse;
             }
-            _visited[25] = false;
+            _visited[35] = false;
         }
         
-        public void AddResultsForMultiplicativeOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 26
+        public void AddResultsForMultiplicativeOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 36
         {
-            if (_visited[26]) return;
-            _visited[26] = true;
+            if (_visited[36]) return;
+            _visited[36] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_MultiplicativeOperator_MultiplicativeOperator)
             {
@@ -5969,13 +8289,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TPercentBinder, (CoreSyntaxKind)CoreSyntaxKind.TPercent, operation);
                 use = FinishedUse;
             }
-            _visited[26] = false;
+            _visited[36] = false;
         }
         
-        public void AddResultsForAdditiveOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 27
+        public void AddResultsForAdditiveOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 37
         {
-            if (_visited[27]) return;
-            _visited[27] = true;
+            if (_visited[37]) return;
+            _visited[37] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "OperatorKind", forCompletion: true);
             if (use == UnassignedUse || use == Use_AdditiveOperator_AdditiveOperator)
@@ -5989,13 +8309,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TMinusBinder, (CoreSyntaxKind)CoreSyntaxKind.TMinus, operation);
                 use = FinishedUse;
             }
-            _visited[27] = false;
+            _visited[37] = false;
         }
         
-        public void AddResultsForShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 28
+        public void AddResultsForShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 38
         {
-            if (_visited[28]) return;
-            _visited[28] = true;
+            if (_visited[38]) return;
+            _visited[38] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_ShiftOperator_LeftShiftOperator)
             {
@@ -6007,13 +8327,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForRightShiftOperator(UnassignedUse, operation, binder);
             }
-            _visited[28] = false;
+            _visited[38] = false;
         }
         
-        public void AddResultsForLeftShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 29
+        public void AddResultsForLeftShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 39
         {
-            if (_visited[29]) return;
-            _visited[29] = true;
+            if (_visited[39]) return;
+            _visited[39] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, value: BinaryOperatorKind.LeftShift, forCompletion: true);
             if (use == UnassignedUse)
@@ -6028,13 +8348,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TLessThan, operation);
                 use = FinishedUse;
             }
-            _visited[29] = false;
+            _visited[39] = false;
         }
         
-        public void AddResultsForRightShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 30
+        public void AddResultsForRightShiftOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 40
         {
-            if (_visited[30]) return;
-            _visited[30] = true;
+            if (_visited[40]) return;
+            _visited[40] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, value: BinaryOperatorKind.RightShift, forCompletion: true);
             if (use == UnassignedUse)
@@ -6049,13 +8369,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TLessThan, operation);
                 use = FinishedUse;
             }
-            _visited[30] = false;
+            _visited[40] = false;
         }
         
-        public void AddResultsForRelationalOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 31
+        public void AddResultsForRelationalOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 41
         {
-            if (_visited[31]) return;
-            _visited[31] = true;
+            if (_visited[41]) return;
+            _visited[41] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_RelationalOperator_RelationalOperator)
             {
@@ -6074,13 +8394,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TGreaterThanOrEqualBinder, (CoreSyntaxKind)CoreSyntaxKind.TGreaterThanOrEqual, operation);
                 use = FinishedUse;
             }
-            _visited[31] = false;
+            _visited[41] = false;
         }
         
-        public void AddResultsForEqualityOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 32
+        public void AddResultsForEqualityOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 42
         {
-            if (_visited[32]) return;
-            _visited[32] = true;
+            if (_visited[42]) return;
+            _visited[42] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_EqualityOperator_EqualityOperator)
             {
@@ -6093,13 +8413,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TNotEqualBinder, (CoreSyntaxKind)CoreSyntaxKind.TNotEqual, operation);
                 use = FinishedUse;
             }
-            _visited[32] = false;
+            _visited[42] = false;
         }
         
-        public void AddResultsForCompoundAssignmentOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 33
+        public void AddResultsForCompoundAssignmentOperator(object use, CompletionSearchFlags operation, Binder parentBinder) // 43
         {
-            if (_visited[33]) return;
-            _visited[33] = true;
+            if (_visited[43]) return;
+            _visited[43] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_CompoundAssignmentOperator_CompoundAssignmentOperator)
             {
@@ -6136,13 +8456,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(TRightShiftAssignBinder, (CoreSyntaxKind)CoreSyntaxKind.TRightShiftAssign, operation);
                 use = FinishedUse;
             }
-            _visited[33] = false;
+            _visited[43] = false;
         }
         
-        public void AddResultsForReturnType(object use, CompletionSearchFlags operation, Binder parentBinder) // 34
+        public void AddResultsForReturnType(object use, CompletionSearchFlags operation, Binder parentBinder) // 44
         {
-            if (_visited[34]) return;
-            _visited[34] = true;
+            if (_visited[44]) return;
+            _visited[44] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_ReturnType_TypeReference)
             {
@@ -6154,13 +8474,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForVoidType(UnassignedUse, operation, binder);
             }
-            _visited[34] = false;
+            _visited[44] = false;
         }
         
-        public void AddResultsForTypeReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 35
+        public void AddResultsForTypeReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 45
         {
-            if (_visited[35]) return;
-            _visited[35] = true;
+            if (_visited[45]) return;
+            _visited[45] = true;
             object altUse;
             if (use == Use_PrimitiveTypeRef_PrimitiveType) altUse = use;
             else altUse = UnassignedUse;
@@ -6177,7 +8497,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_NullableTypeRef_TypeReference) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForNullableTypeRef(altUse, operation, parentBinder);
-            _visited[35] = false;
+            _visited[45] = false;
         }
         
         public void AddResultsForPrimitiveTypeRef(object use, CompletionSearchFlags operation, Binder parentBinder) // -1
@@ -6285,10 +8605,10 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = false;
         }
         
-        public void AddResultsForNamedType(object use, CompletionSearchFlags operation, Binder parentBinder) // 36
+        public void AddResultsForNamedType(object use, CompletionSearchFlags operation, Binder parentBinder) // 46
         {
-            if (_visited[36]) return;
-            _visited[36] = true;
+            if (_visited[46]) return;
+            _visited[46] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateUseBinder(ruleBinder, null, types: ImmutableArray.Create(typeof(ClassifierType), typeof(EnumType), typeof(DelegateType)), forCompletion: true);
             if (use == UnassignedUse || use == Use_NamedType_Qualifier)
@@ -6297,13 +8617,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForQualifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[36] = false;
+            _visited[46] = false;
         }
         
-        public void AddResultsForGenericTypeArguments(object use, CompletionSearchFlags operation, Binder parentBinder) // 37
+        public void AddResultsForGenericTypeArguments(object use, CompletionSearchFlags operation, Binder parentBinder) // 47
         {
-            if (_visited[37]) return;
-            _visited[37] = true;
+            if (_visited[47]) return;
+            _visited[47] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "TypeArguments", forCompletion: true);
             if (use == UnassignedUse)
@@ -6324,13 +8644,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.TGreaterThan, operation);
                 use = FinishedUse;
             }
-            _visited[37] = false;
+            _visited[47] = false;
         }
         
-        public void AddResultsForGenericTypeArgument(object use, CompletionSearchFlags operation, Binder parentBinder) // 38
+        public void AddResultsForGenericTypeArgument(object use, CompletionSearchFlags operation, Binder parentBinder) // 48
         {
-            if (_visited[38]) return;
-            _visited[38] = true;
+            if (_visited[48]) return;
+            _visited[48] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_GenericTypeArgument_TypeReference)
             {
@@ -6338,13 +8658,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForTypeReference(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[38] = false;
+            _visited[48] = false;
         }
         
-        public void AddResultsForPrimitiveType(object use, CompletionSearchFlags operation, Binder parentBinder) // 39
+        public void AddResultsForPrimitiveType(object use, CompletionSearchFlags operation, Binder parentBinder) // 49
         {
-            if (_visited[39]) return;
-            _visited[39] = true;
+            if (_visited[49]) return;
+            _visited[49] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_PrimitiveType_PrimitiveType)
             {
@@ -6396,13 +8716,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(KStringBinder, (CoreSyntaxKind)CoreSyntaxKind.KString, operation);
                 use = FinishedUse;
             }
-            _visited[39] = false;
+            _visited[49] = false;
         }
         
-        public void AddResultsForVoidType(object use, CompletionSearchFlags operation, Binder parentBinder) // 40
+        public void AddResultsForVoidType(object use, CompletionSearchFlags operation, Binder parentBinder) // 50
         {
-            if (_visited[40]) return;
-            _visited[40] = true;
+            if (_visited[50]) return;
+            _visited[50] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, value: CoreInstance.Void, forCompletion: true);
             if (use == UnassignedUse)
@@ -6411,13 +8731,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KVoid, operation);
                 use = FinishedUse;
             }
-            _visited[40] = false;
+            _visited[50] = false;
         }
         
-        public void AddResultsForName(object use, CompletionSearchFlags operation, Binder parentBinder) // 41
+        public void AddResultsForName(object use, CompletionSearchFlags operation, Binder parentBinder) // 51
         {
-            if (_visited[41]) return;
-            _visited[41] = true;
+            if (_visited[51]) return;
+            _visited[51] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_Name_Identifier)
@@ -6426,13 +8746,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[41] = false;
+            _visited[51] = false;
         }
         
-        public void AddResultsForQualifiedName(object use, CompletionSearchFlags operation, Binder parentBinder) // 42
+        public void AddResultsForQualifiedName(object use, CompletionSearchFlags operation, Binder parentBinder) // 52
         {
-            if (_visited[42]) return;
-            _visited[42] = true;
+            if (_visited[52]) return;
+            _visited[52] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_QualifiedName_Qualifier)
@@ -6441,13 +8761,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForQualifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[42] = false;
+            _visited[52] = false;
         }
         
-        public void AddResultsForQualifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 43
+        public void AddResultsForQualifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 53
         {
-            if (_visited[43]) return;
-            _visited[43] = true;
+            if (_visited[53]) return;
+            _visited[53] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateQualifierBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_Qualifier_Identifier)
@@ -6456,13 +8776,13 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[43] = false;
+            _visited[53] = false;
         }
         
-        public void AddResultsForIdentifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 44
+        public void AddResultsForIdentifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 54
         {
-            if (_visited[44]) return;
-            _visited[44] = true;
+            if (_visited[54]) return;
+            _visited[54] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateIdentifierBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -6474,13 +8794,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(IdentifierVerbatimBinder, (CoreSyntaxKind)CoreSyntaxKind.IdentifierVerbatim, operation);
                 use = FinishedUse;
             }
-            _visited[44] = false;
+            _visited[54] = false;
         }
         
-        public void AddResultsForLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 45
+        public void AddResultsForLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 55
         {
-            if (_visited[45]) return;
-            _visited[45] = true;
+            if (_visited[55]) return;
+            _visited[55] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_Literal_NullLiteral)
             {
@@ -6512,13 +8832,13 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
                 AddResultsForStringLiteral(UnassignedUse, operation, binder);
             }
-            _visited[45] = false;
+            _visited[55] = false;
         }
         
-        public void AddResultsForNullLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 46
+        public void AddResultsForNullLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 56
         {
-            if (_visited[46]) return;
-            _visited[46] = true;
+            if (_visited[56]) return;
+            _visited[56] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -6527,13 +8847,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.KNull, operation);
                 use = FinishedUse;
             }
-            _visited[46] = false;
+            _visited[56] = false;
         }
         
-        public void AddResultsForBooleanLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 47
+        public void AddResultsForBooleanLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 57
         {
-            if (_visited[47]) return;
-            _visited[47] = true;
+            if (_visited[57]) return;
+            _visited[57] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Boolean, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -6546,13 +8866,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(KFalseBinder, (CoreSyntaxKind)CoreSyntaxKind.KFalse, operation);
                 use = FinishedUse;
             }
-            _visited[47] = false;
+            _visited[57] = false;
         }
         
-        public void AddResultsForIntegerLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 48
+        public void AddResultsForIntegerLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 58
         {
-            if (_visited[48]) return;
-            _visited[48] = true;
+            if (_visited[58]) return;
+            _visited[58] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Int32, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -6562,13 +8882,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LInteger, operation);
                 use = FinishedUse;
             }
-            _visited[48] = false;
+            _visited[58] = false;
         }
         
-        public void AddResultsForDecimalLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 49
+        public void AddResultsForDecimalLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 59
         {
-            if (_visited[49]) return;
-            _visited[49] = true;
+            if (_visited[59]) return;
+            _visited[59] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Decimal, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -6578,13 +8898,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LDecimal, operation);
                 use = FinishedUse;
             }
-            _visited[49] = false;
+            _visited[59] = false;
         }
         
-        public void AddResultsForScientificLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 50
+        public void AddResultsForScientificLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 60
         {
-            if (_visited[50]) return;
-            _visited[50] = true;
+            if (_visited[60]) return;
+            _visited[60] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.Double, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -6594,13 +8914,13 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LScientific, operation);
                 use = FinishedUse;
             }
-            _visited[50] = false;
+            _visited[60] = false;
         }
         
-        public void AddResultsForStringLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 51
+        public void AddResultsForStringLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 61
         {
-            if (_visited[51]) return;
-            _visited[51] = true;
+            if (_visited[61]) return;
+            _visited[61] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Type", value: CoreInstance.String, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
@@ -6610,7 +8930,7 @@ namespace MetaDslx.Languages.Core.Binding
             	AddBinder(binder, (CoreSyntaxKind)CoreSyntaxKind.LRegularString, operation);
                 use = FinishedUse;
             }
-            _visited[51] = false;
+            _visited[61] = false;
         }
     }
 }

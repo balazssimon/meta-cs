@@ -3103,6 +3103,57 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseReturnParameter(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.returnParameter();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseReturnParameter(ReturnParameterSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.ReturnParameterContext _Antlr4ParseReturnParameter()
+		{
+			BeginNode();
+		    bool cached = false;
+		    MetaParser.ReturnParameterContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseReturnParameter(CurrentNode as ReturnParameterSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseReturnParameter();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new MetaParser.ReturnParameterContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseParameter(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -4681,10 +4732,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			    }
 				var operationModifier = operationModifierBuilder.ToList();
 				_pool.Free(operationModifierBuilder);
-				MetaParser.ReturnTypeContext returnTypeContext = context.returnType();
-				ReturnTypeGreen returnType = null;
-				if (returnTypeContext != null) returnType = (ReturnTypeGreen)this.Visit(returnTypeContext);
-				if (returnType == null) returnType = ReturnTypeGreen.__Missing;
+				MetaParser.ReturnParameterContext returnParameterContext = context.returnParameter();
+				ReturnParameterGreen returnParameter = null;
+				if (returnParameterContext != null) returnParameter = (ReturnParameterGreen)this.Visit(returnParameterContext);
+				if (returnParameter == null) returnParameter = ReturnParameterGreen.__Missing;
 				MetaParser.NameContext nameContext = context.name();
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
@@ -4695,7 +4746,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				if (parameterListContext != null) parameterList = (ParameterListGreen)this.Visit(parameterListContext);
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), MetaSyntaxKind.TCloseParen);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return _factory.OperationDeclaration(attribute, operationModifier, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+				return _factory.OperationDeclaration(attribute, operationModifier, returnParameter, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 			}
 			
 			public override GreenNode VisitOperationModifier(MetaParser.OperationModifierContext context)
@@ -4745,6 +4796,16 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				var parameter = parameterBuilder.ToList();
 				_pool.Free(parameterBuilder);
 				return _factory.ParameterList(parameter);
+			}
+			
+			public override GreenNode VisitReturnParameter(MetaParser.ReturnParameterContext context)
+			{
+				if (context == null) return ReturnParameterGreen.__Missing;
+				MetaParser.ReturnTypeContext returnTypeContext = context.returnType();
+				ReturnTypeGreen returnType = null;
+				if (returnTypeContext != null) returnType = (ReturnTypeGreen)this.Visit(returnTypeContext);
+				if (returnType == null) returnType = ReturnTypeGreen.__Missing;
+				return _factory.ReturnParameter(returnType);
 			}
 			
 			public override GreenNode VisitParameter(MetaParser.ParameterContext context)
@@ -5576,6 +5637,17 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public ParameterListContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ReturnParameterContext_Cached : ReturnParameterContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ReturnParameterContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

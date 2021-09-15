@@ -397,6 +397,12 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParameterList([NotNull] MetaParser.ParameterListContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.returnParameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturnParameter([NotNull] MetaParser.ReturnParameterContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.parameter"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

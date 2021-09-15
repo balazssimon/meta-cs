@@ -62,7 +62,26 @@ KAwait : 'await';
 KConst : 'const';
 KReadonly : 'readonly';
 KDiscard : '_';
+KFor : 'for';
+KTo : 'to';
+KForEach : 'foreach';
+KIn : 'in';
+KWhile : 'while';
+KDo : 'do';
+KRepeat : 'repeat';
+KUntil : 'until';
+KIf : 'if';
+KElse : 'else';
+KSwitch : 'switch';
+KCase : 'case';
+KTry : 'try';
 KThrow : 'throw';
+KCatch : 'catch';
+KFinally : 'finally';
+KBreak : 'break';
+KContinue : 'continue';
+KReturn : 'return';
+KLock : 'lock';
 KStatic : 'static';
 
 // Tokens

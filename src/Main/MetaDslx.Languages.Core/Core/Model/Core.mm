@@ -374,7 +374,7 @@
 	}
 	
 	[statement: ForEachLoop]
-	class ForEachLoopStatement : Statement
+	class ForEachLoopStatement : LoopStatement
 	{
 		[property: LoopControlVariable]
 		containment Expression LoopControlVariable;
@@ -383,18 +383,18 @@
 	}
 
 	[statement: ForLoop]
-	class ForLoopStatement : Statement
+	class ForLoopStatement : LoopStatement
 	{
 		[property: Before]
-		containment list<Statement> Before;
+		containment list<Expression> Before;
 		[property: Condition]
 		containment Expression Condition;
 		[property: AtLoopBottom]
-		containment list<Statement> AtLoopBottom;
+		containment list<Expression> AtLoopBottom;
 	}
 	
 	[statement: ForToLoop]
-	class ForToLoopStatement : Statement
+	class ForToLoopStatement : LoopStatement
 	{
 		[property: LoopControlVariable]
 		containment Expression LoopControlVariable;
@@ -523,13 +523,13 @@
 	class UsingStatement : Statement
 	{
 		[property: Resources]
-		containment Expression Resources;
+		containment list<Expression> Resources;
 		[property: Body]
 		containment Statement Body;
 	}
 	
 	[statement: WhileLoop]
-	class WhileLoopStatement : Statement
+	class WhileLoopStatement : LoopStatement
 	{
 		[property: Condition]
 		containment Expression Condition;

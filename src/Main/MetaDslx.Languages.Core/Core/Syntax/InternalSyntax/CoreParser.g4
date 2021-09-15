@@ -19,11 +19,47 @@ usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
 
 // Statements
 
-                            
-statement:                       expression TSemicolon;
+statement
+	: TSemicolon #emptyStmt                        
+	| blockStatement #blockStmt 
+	|                       expression TSemicolon #exprStmt                             
+	| KForEach TOpenParen                                variable=expression TColon                       collection=expression TCloseParen                 statement #foreachStmt                              
+	| KFor TOpenParen                   before=expressionList? semicolonBefore=TSemicolon                      condition=expression semicolonAfter=TSemicolon                         atLoopBottom=expressionList? TCloseParen                 statement #foreachStmt                          
+	| KIf TOpenParen                      condition=expression TCloseParen                   ifTrue=statement (KElse                    ifFalse=statement) #ifStmt                     
+	|                                               KBreak TSemicolon #breakStmt                       
+	|                                                  KContinue TSemicolon #continueStmt                       
+	|                                              KGoto                               identifier TSemicolon #gotoStmt                       
+	|                                 name TColon                      statement #labeledStmt                          
+	| KLock TOpenParen                        lockedValue=expression TCloseParen                 body=statement #lockStmt                       
+	| KReturn                          returnedValue=expression TSemicolon #returnStmt                         
+	| KSwitch TOpenParen                  value=expression TCloseParen TOpenBrace                  switchCase* TCloseBrace #returnStmt                         
+	| KTry                 body=blockStatement                    catchClause*                    finallyClause? #tryStmt
+	| usingHeader+                 body=statement #usingStmt                        
+	| KWhile TOpenParen                                                                condition=expression TCloseParen                 body=statement #whileStmt                            
+	| KDo                 body=statement KWhile TOpenParen                                                                 condition=expression TCloseParen TSemicolon #whileStmt                            
+	;
 
                        
-blockStatement: TOpenBrace                       statement* TCloseBrace;
+blockStatement : TOpenBrace                       statement* TCloseBrace;
+                       
+bareBlockStatement :                       statement+;
+
+                   
+switchCase:                    caseClause+                 bareBlockStatement;
+caseClause: singleValueCaseClause | defaultCaseClause; 
+                              
+singleValueCaseClause: KCase                  value=expression TColon;
+                          
+defaultCaseClause: KDefault TColon;
+
+                    
+catchClause: KCatch (TOpenParen                                             value=expression TCloseParen catchFilter?)?                    handler=blockStatement;
+catchFilter: KWhen                   filter=expression;
+finallyClause: KFinally handler=blockStatement;
+
+usingHeader: KUsing TOpenParen                      resource=expression TCloseParen;
+
+expressionList: expression (TComma expression)*;
 
 // Expressions
 

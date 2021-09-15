@@ -55,8 +55,9 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseKMultiSet = new object();
 		public static object UseKMultiList = new object();
 		public static object UseKEnumerable = new object();
-		public static object UseReturnType = new object();
+		public static object UseReturnParameter = new object();
 		public static object UseParameterList = new object();
+		public static object UseReturnType = new object();
 		public static object UseSource = new object();
 		public static object UseTarget = new object();
 		public static object UseNamespaceDeclaration = new object();
@@ -1373,7 +1374,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			object use = null;
 			if (this.ForChild)
 			{
-				if (LookupPosition.IsInNode(this.Position, parent.ReturnType)) use = UseReturnType;
+				if (LookupPosition.IsInNode(this.Position, parent.ReturnParameter)) use = UseReturnParameter;
 				if (LookupPosition.IsInNode(this.Position, parent.ParameterList)) use = UseParameterList;
 			}
 			Binder resultBinder = null;
@@ -1384,9 +1385,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Documentation");
 				resultBinder = this.BinderFactory.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseReturnType)
+				if (use == UseReturnParameter)
 				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.ReturnType, name: "ReturnType");
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.ReturnParameter, name: "Result");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 				if (use == UseParameterList)
@@ -1460,6 +1461,32 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitReturnParameter(ReturnParameterSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.ReturnType)) use = UseReturnType;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(MetaParameter));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseReturnType)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.ReturnType, name: "Type");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

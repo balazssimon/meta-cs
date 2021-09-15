@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
@@ -12,7 +13,6 @@ using MetaDslx.Languages.Meta.Symbols;
 
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
-using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
@@ -1600,16 +1600,16 @@ namespace MetaDslx.Languages.Meta.Binding
 						        this.Visit(child);
 							}
 						}
-						if (node.ReturnType != null)
+						if (node.ReturnParameter != null)
 						{
-						    this.BeginProperty(node.ReturnType, name: "ReturnType");
+						    this.BeginProperty(node.ReturnParameter, name: "Result");
 						    try
 						    {
-						    	this.Visit(node.ReturnType);
+						    	this.Visit(node.ReturnParameter);
 						    }
 						    finally
 						    {
-						    	this.EndProperty(node.ReturnType, name: "ReturnType");
+						    	this.EndProperty(node.ReturnParameter, name: "Result");
 						    }
 						}
 						if (node.Name != null)
@@ -1689,6 +1689,30 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 			        this.Visit(child);
 				}
+			}
+		}
+		
+		public virtual void VisitReturnParameter(ReturnParameterSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(MetaParameter));
+			try
+			{
+				if (node.ReturnType != null)
+				{
+				    this.BeginProperty(node.ReturnType, name: "Type");
+				    try
+				    {
+				    	this.Visit(node.ReturnType);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.ReturnType, name: "Type");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(MetaParameter));
 			}
 		}
 		

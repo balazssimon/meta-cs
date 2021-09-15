@@ -179,7 +179,7 @@ collectionKind
                       
                         
               
-operationDeclaration : attribute* operationModifier*                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* operationModifier*                   returnParameter name TOpenParen                       parameterList? TCloseParen TSemicolon;
 
 operationModifier : operationModifierBuilder | operationModifierReadonly;
                                      
@@ -189,6 +189,8 @@ operationModifierReadonly : KReadonly;
 
 parameterList : parameter (TComma parameter)*;
 
+                      
+returnParameter :                 returnType;
                       
 parameter : attribute*                 typeReference name;
 

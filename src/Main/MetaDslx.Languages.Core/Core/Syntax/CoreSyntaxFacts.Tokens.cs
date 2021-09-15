@@ -107,7 +107,26 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
 				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KFor:
+				case CoreTokensSyntaxKind.KTo:
+				case CoreTokensSyntaxKind.KForEach:
+				case CoreTokensSyntaxKind.KIn:
+				case CoreTokensSyntaxKind.KWhile:
+				case CoreTokensSyntaxKind.KDo:
+				case CoreTokensSyntaxKind.KRepeat:
+				case CoreTokensSyntaxKind.KUntil:
+				case CoreTokensSyntaxKind.KIf:
+				case CoreTokensSyntaxKind.KElse:
+				case CoreTokensSyntaxKind.KSwitch:
+				case CoreTokensSyntaxKind.KCase:
+				case CoreTokensSyntaxKind.KTry:
 				case CoreTokensSyntaxKind.KThrow:
+				case CoreTokensSyntaxKind.KCatch:
+				case CoreTokensSyntaxKind.KFinally:
+				case CoreTokensSyntaxKind.KBreak:
+				case CoreTokensSyntaxKind.KContinue:
+				case CoreTokensSyntaxKind.KReturn:
+				case CoreTokensSyntaxKind.KLock:
 				case CoreTokensSyntaxKind.KStatic:
 				case CoreTokensSyntaxKind.TQuestionDot:
 				case CoreTokensSyntaxKind.TQuestionOpenBracket:
@@ -233,7 +252,26 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
 				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KFor:
+				case CoreTokensSyntaxKind.KTo:
+				case CoreTokensSyntaxKind.KForEach:
+				case CoreTokensSyntaxKind.KIn:
+				case CoreTokensSyntaxKind.KWhile:
+				case CoreTokensSyntaxKind.KDo:
+				case CoreTokensSyntaxKind.KRepeat:
+				case CoreTokensSyntaxKind.KUntil:
+				case CoreTokensSyntaxKind.KIf:
+				case CoreTokensSyntaxKind.KElse:
+				case CoreTokensSyntaxKind.KSwitch:
+				case CoreTokensSyntaxKind.KCase:
+				case CoreTokensSyntaxKind.KTry:
 				case CoreTokensSyntaxKind.KThrow:
+				case CoreTokensSyntaxKind.KCatch:
+				case CoreTokensSyntaxKind.KFinally:
+				case CoreTokensSyntaxKind.KBreak:
+				case CoreTokensSyntaxKind.KContinue:
+				case CoreTokensSyntaxKind.KReturn:
+				case CoreTokensSyntaxKind.KLock:
 				case CoreTokensSyntaxKind.KStatic:
 				case CoreTokensSyntaxKind.TQuestionDot:
 				case CoreTokensSyntaxKind.TQuestionOpenBracket:
@@ -386,8 +424,46 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.KReadonly;
 				case "_":
 					return CoreTokensSyntaxKind.KDiscard;
+				case "for":
+					return CoreTokensSyntaxKind.KFor;
+				case "to":
+					return CoreTokensSyntaxKind.KTo;
+				case "foreach":
+					return CoreTokensSyntaxKind.KForEach;
+				case "in":
+					return CoreTokensSyntaxKind.KIn;
+				case "while":
+					return CoreTokensSyntaxKind.KWhile;
+				case "do":
+					return CoreTokensSyntaxKind.KDo;
+				case "repeat":
+					return CoreTokensSyntaxKind.KRepeat;
+				case "until":
+					return CoreTokensSyntaxKind.KUntil;
+				case "if":
+					return CoreTokensSyntaxKind.KIf;
+				case "else":
+					return CoreTokensSyntaxKind.KElse;
+				case "switch":
+					return CoreTokensSyntaxKind.KSwitch;
+				case "case":
+					return CoreTokensSyntaxKind.KCase;
+				case "try":
+					return CoreTokensSyntaxKind.KTry;
 				case "throw":
 					return CoreTokensSyntaxKind.KThrow;
+				case "catch":
+					return CoreTokensSyntaxKind.KCatch;
+				case "finally":
+					return CoreTokensSyntaxKind.KFinally;
+				case "break":
+					return CoreTokensSyntaxKind.KBreak;
+				case "continue":
+					return CoreTokensSyntaxKind.KContinue;
+				case "return":
+					return CoreTokensSyntaxKind.KReturn;
+				case "lock":
+					return CoreTokensSyntaxKind.KLock;
 				case "static":
 					return CoreTokensSyntaxKind.KStatic;
 				case "?.":
@@ -591,8 +667,46 @@ namespace MetaDslx.Languages.Core.Syntax
 					return "readonly";
 				case CoreTokensSyntaxKind.KDiscard:
 					return "_";
+				case CoreTokensSyntaxKind.KFor:
+					return "for";
+				case CoreTokensSyntaxKind.KTo:
+					return "to";
+				case CoreTokensSyntaxKind.KForEach:
+					return "foreach";
+				case CoreTokensSyntaxKind.KIn:
+					return "in";
+				case CoreTokensSyntaxKind.KWhile:
+					return "while";
+				case CoreTokensSyntaxKind.KDo:
+					return "do";
+				case CoreTokensSyntaxKind.KRepeat:
+					return "repeat";
+				case CoreTokensSyntaxKind.KUntil:
+					return "until";
+				case CoreTokensSyntaxKind.KIf:
+					return "if";
+				case CoreTokensSyntaxKind.KElse:
+					return "else";
+				case CoreTokensSyntaxKind.KSwitch:
+					return "switch";
+				case CoreTokensSyntaxKind.KCase:
+					return "case";
+				case CoreTokensSyntaxKind.KTry:
+					return "try";
 				case CoreTokensSyntaxKind.KThrow:
 					return "throw";
+				case CoreTokensSyntaxKind.KCatch:
+					return "catch";
+				case CoreTokensSyntaxKind.KFinally:
+					return "finally";
+				case CoreTokensSyntaxKind.KBreak:
+					return "break";
+				case CoreTokensSyntaxKind.KContinue:
+					return "continue";
+				case CoreTokensSyntaxKind.KReturn:
+					return "return";
+				case CoreTokensSyntaxKind.KLock:
+					return "lock";
 				case CoreTokensSyntaxKind.KStatic:
 					return "static";
 				case CoreTokensSyntaxKind.TQuestionDot:
@@ -756,7 +870,26 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
 				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KFor:
+				case CoreTokensSyntaxKind.KTo:
+				case CoreTokensSyntaxKind.KForEach:
+				case CoreTokensSyntaxKind.KIn:
+				case CoreTokensSyntaxKind.KWhile:
+				case CoreTokensSyntaxKind.KDo:
+				case CoreTokensSyntaxKind.KRepeat:
+				case CoreTokensSyntaxKind.KUntil:
+				case CoreTokensSyntaxKind.KIf:
+				case CoreTokensSyntaxKind.KElse:
+				case CoreTokensSyntaxKind.KSwitch:
+				case CoreTokensSyntaxKind.KCase:
+				case CoreTokensSyntaxKind.KTry:
 				case CoreTokensSyntaxKind.KThrow:
+				case CoreTokensSyntaxKind.KCatch:
+				case CoreTokensSyntaxKind.KFinally:
+				case CoreTokensSyntaxKind.KBreak:
+				case CoreTokensSyntaxKind.KContinue:
+				case CoreTokensSyntaxKind.KReturn:
+				case CoreTokensSyntaxKind.KLock:
 				case CoreTokensSyntaxKind.KStatic:
 					return CoreTokenKind.ReservedKeyword;
 				case CoreTokensSyntaxKind.IdentifierNormal:
@@ -890,7 +1023,26 @@ namespace MetaDslx.Languages.Core.Syntax
 				case CoreTokensSyntaxKind.KConst:
 				case CoreTokensSyntaxKind.KReadonly:
 				case CoreTokensSyntaxKind.KDiscard:
+				case CoreTokensSyntaxKind.KFor:
+				case CoreTokensSyntaxKind.KTo:
+				case CoreTokensSyntaxKind.KForEach:
+				case CoreTokensSyntaxKind.KIn:
+				case CoreTokensSyntaxKind.KWhile:
+				case CoreTokensSyntaxKind.KDo:
+				case CoreTokensSyntaxKind.KRepeat:
+				case CoreTokensSyntaxKind.KUntil:
+				case CoreTokensSyntaxKind.KIf:
+				case CoreTokensSyntaxKind.KElse:
+				case CoreTokensSyntaxKind.KSwitch:
+				case CoreTokensSyntaxKind.KCase:
+				case CoreTokensSyntaxKind.KTry:
 				case CoreTokensSyntaxKind.KThrow:
+				case CoreTokensSyntaxKind.KCatch:
+				case CoreTokensSyntaxKind.KFinally:
+				case CoreTokensSyntaxKind.KBreak:
+				case CoreTokensSyntaxKind.KContinue:
+				case CoreTokensSyntaxKind.KReturn:
+				case CoreTokensSyntaxKind.KLock:
 				case CoreTokensSyntaxKind.KStatic:
 					return true;
 				default:
@@ -945,7 +1097,26 @@ namespace MetaDslx.Languages.Core.Syntax
 				yield return CoreTokensSyntaxKind.KConst;
 				yield return CoreTokensSyntaxKind.KReadonly;
 				yield return CoreTokensSyntaxKind.KDiscard;
+				yield return CoreTokensSyntaxKind.KFor;
+				yield return CoreTokensSyntaxKind.KTo;
+				yield return CoreTokensSyntaxKind.KForEach;
+				yield return CoreTokensSyntaxKind.KIn;
+				yield return CoreTokensSyntaxKind.KWhile;
+				yield return CoreTokensSyntaxKind.KDo;
+				yield return CoreTokensSyntaxKind.KRepeat;
+				yield return CoreTokensSyntaxKind.KUntil;
+				yield return CoreTokensSyntaxKind.KIf;
+				yield return CoreTokensSyntaxKind.KElse;
+				yield return CoreTokensSyntaxKind.KSwitch;
+				yield return CoreTokensSyntaxKind.KCase;
+				yield return CoreTokensSyntaxKind.KTry;
 				yield return CoreTokensSyntaxKind.KThrow;
+				yield return CoreTokensSyntaxKind.KCatch;
+				yield return CoreTokensSyntaxKind.KFinally;
+				yield return CoreTokensSyntaxKind.KBreak;
+				yield return CoreTokensSyntaxKind.KContinue;
+				yield return CoreTokensSyntaxKind.KReturn;
+				yield return CoreTokensSyntaxKind.KLock;
 				yield return CoreTokensSyntaxKind.KStatic;
         }
 
@@ -1043,8 +1214,46 @@ namespace MetaDslx.Languages.Core.Syntax
 					return CoreTokensSyntaxKind.KReadonly;
 				case "_":
 					return CoreTokensSyntaxKind.KDiscard;
+				case "for":
+					return CoreTokensSyntaxKind.KFor;
+				case "to":
+					return CoreTokensSyntaxKind.KTo;
+				case "foreach":
+					return CoreTokensSyntaxKind.KForEach;
+				case "in":
+					return CoreTokensSyntaxKind.KIn;
+				case "while":
+					return CoreTokensSyntaxKind.KWhile;
+				case "do":
+					return CoreTokensSyntaxKind.KDo;
+				case "repeat":
+					return CoreTokensSyntaxKind.KRepeat;
+				case "until":
+					return CoreTokensSyntaxKind.KUntil;
+				case "if":
+					return CoreTokensSyntaxKind.KIf;
+				case "else":
+					return CoreTokensSyntaxKind.KElse;
+				case "switch":
+					return CoreTokensSyntaxKind.KSwitch;
+				case "case":
+					return CoreTokensSyntaxKind.KCase;
+				case "try":
+					return CoreTokensSyntaxKind.KTry;
 				case "throw":
 					return CoreTokensSyntaxKind.KThrow;
+				case "catch":
+					return CoreTokensSyntaxKind.KCatch;
+				case "finally":
+					return CoreTokensSyntaxKind.KFinally;
+				case "break":
+					return CoreTokensSyntaxKind.KBreak;
+				case "continue":
+					return CoreTokensSyntaxKind.KContinue;
+				case "return":
+					return CoreTokensSyntaxKind.KReturn;
+				case "lock":
+					return CoreTokensSyntaxKind.KLock;
 				case "static":
 					return CoreTokensSyntaxKind.KStatic;
 				default:

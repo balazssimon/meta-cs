@@ -76,7 +76,27 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
-		public virtual void VisitStatement(StatementSyntax node)
+		public virtual void VisitEmptyStmt(EmptyStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(EmptyStatement));
+			try
+			{
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(EmptyStatement));
+			}
+		}
+		
+		public virtual void VisitBlockStmt(BlockStmtSyntax node)
+		{
+			if (node.BlockStatement != null)
+			{
+			    this.Visit(node.BlockStatement);
+			}
+		}
+		
+		public virtual void VisitExprStmt(ExprStmtSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(ExpressionStatement));
 			try
@@ -97,6 +117,559 @@ namespace MetaDslx.Languages.Core.Binding
 			finally
 			{
 				this.EndDefine(node, type: typeof(ExpressionStatement));
+			}
+		}
+		
+		public virtual void VisitForeachStmt(ForeachStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(ForEachLoopStatement));
+			try
+			{
+				if (node.Variable != null)
+				{
+				    this.BeginProperty(node.Variable, name: "LoopControlVariable");
+				    try
+				    {
+				    	this.Visit(node.Variable);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Variable, name: "LoopControlVariable");
+				    }
+				}
+				if (node.Collection != null)
+				{
+				    this.BeginProperty(node.Collection, name: "Collection");
+				    try
+				    {
+				    	this.Visit(node.Collection);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Collection, name: "Collection");
+				    }
+				}
+				if (node.Statement != null)
+				{
+				    this.BeginProperty(node.Statement, name: "Body");
+				    try
+				    {
+				    	this.Visit(node.Statement);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Statement, name: "Body");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(ForEachLoopStatement));
+			}
+		}
+		
+		public virtual void VisitForeachStmt(ForeachStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(ForLoopStatement));
+			try
+			{
+				if (node.Before != null)
+				{
+				    this.BeginProperty(node.Before, name: "Before");
+				    try
+				    {
+				    	this.Visit(node.Before);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Before, name: "Before");
+				    }
+				}
+				if (node.Condition != null)
+				{
+				    this.BeginProperty(node.Condition, name: "Condition");
+				    try
+				    {
+				    	this.Visit(node.Condition);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Condition, name: "Condition");
+				    }
+				}
+				if (node.AtLoopBottom != null)
+				{
+				    this.BeginProperty(node.AtLoopBottom, name: "AtLoopBottom");
+				    try
+				    {
+				    	this.Visit(node.AtLoopBottom);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.AtLoopBottom, name: "AtLoopBottom");
+				    }
+				}
+				if (node.Statement != null)
+				{
+				    this.BeginProperty(node.Statement, name: "Body");
+				    try
+				    {
+				    	this.Visit(node.Statement);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Statement, name: "Body");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(ForLoopStatement));
+			}
+		}
+		
+		public virtual void VisitIfStmt(IfStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(IfStatement));
+			try
+			{
+				if (node.Condition != null)
+				{
+				    this.BeginProperty(node.Condition, name: "Condition");
+				    try
+				    {
+				    	this.Visit(node.Condition);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Condition, name: "Condition");
+				    }
+				}
+				if (node.IfTrue != null)
+				{
+				    this.BeginProperty(node.IfTrue, name: "IfTrue");
+				    try
+				    {
+				    	this.Visit(node.IfTrue);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.IfTrue, name: "IfTrue");
+				    }
+				}
+				if (node.IfFalse != null)
+				{
+				    this.BeginProperty(node.IfFalse, name: "IfFalse");
+				    try
+				    {
+				    	this.Visit(node.IfFalse);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.IfFalse, name: "IfFalse");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(IfStatement));
+			}
+		}
+		
+		public virtual void VisitBreakStmt(BreakStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(JumpStatement));
+			try
+			{
+				if (node.KBreak.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+				{
+				    this.BeginProperty(node.KBreak, name: "JumpKind", value: JumpKind.Break);
+				    try
+				    {
+				    	this.Visit(node.KBreak);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.KBreak, name: "JumpKind", value: JumpKind.Break);
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(JumpStatement));
+			}
+		}
+		
+		public virtual void VisitContinueStmt(ContinueStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(JumpStatement));
+			try
+			{
+				if (node.KContinue.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+				{
+				    this.BeginProperty(node.KContinue, name: "JumpKind", value: JumpKind.Continue);
+				    try
+				    {
+				    	this.Visit(node.KContinue);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.KContinue, name: "JumpKind", value: JumpKind.Continue);
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(JumpStatement));
+			}
+		}
+		
+		public virtual void VisitGotoStmt(GotoStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(JumpStatement));
+			try
+			{
+				if (node.KGoto.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+				{
+				    this.BeginProperty(node.KGoto, name: "JumpKind", value: JumpKind.Goto);
+				    try
+				    {
+				    	this.Visit(node.KGoto);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.KGoto, name: "JumpKind", value: JumpKind.Goto);
+				    }
+				}
+				if (node.Identifier != null)
+				{
+				    this.BeginProperty(node.Identifier, name: "Target");
+				    try
+				    {
+				    	this.BeginUse(node.Identifier, types: ImmutableArray.Create(typeof(Label)));
+				    	try
+				    	{
+				    		this.Visit(node.Identifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.Identifier, types: ImmutableArray.Create(typeof(Label)));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Identifier, name: "Target");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(JumpStatement));
+			}
+		}
+		
+		public virtual void VisitLabeledStmt(LabeledStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LabeledStatement));
+			try
+			{
+				if (node.Name != null)
+				{
+				    this.BeginProperty(node.Name, name: "Label");
+				    try
+				    {
+				    	this.BeginDefine(node.Name, type: typeof(Label));
+				    	try
+				    	{
+				    		this.Visit(node.Name);
+				    	}
+				    	finally
+				    	{
+				    		this.EndDefine(node.Name, type: typeof(Label));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Name, name: "Label");
+				    }
+				}
+				if (node.Statement != null)
+				{
+				    this.BeginProperty(node.Statement, name: "Statement");
+				    try
+				    {
+				    	this.Visit(node.Statement);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Statement, name: "Statement");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LabeledStatement));
+			}
+		}
+		
+		public virtual void VisitLockStmt(LockStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LockStatement));
+			try
+			{
+				if (node.LockedValue != null)
+				{
+				    this.BeginProperty(node.LockedValue, name: "LockedValue");
+				    try
+				    {
+				    	this.Visit(node.LockedValue);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.LockedValue, name: "LockedValue");
+				    }
+				}
+				if (node.Body != null)
+				{
+				    this.BeginProperty(node.Body, name: "Body");
+				    try
+				    {
+				    	this.Visit(node.Body);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Body, name: "Body");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LockStatement));
+			}
+		}
+		
+		public virtual void VisitReturnStmt(ReturnStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(ReturnStatement));
+			try
+			{
+				if (node.ReturnedValue != null)
+				{
+				    this.BeginProperty(node.ReturnedValue, name: "ReturnedValue");
+				    try
+				    {
+				    	this.Visit(node.ReturnedValue);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.ReturnedValue, name: "ReturnedValue");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(ReturnStatement));
+			}
+		}
+		
+		public virtual void VisitReturnStmt(ReturnStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(SwitchStatement));
+			try
+			{
+				if (node.Value != null)
+				{
+				    this.BeginProperty(node.Value, name: "Value");
+				    try
+				    {
+				    	this.Visit(node.Value);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Value, name: "Value");
+				    }
+				}
+				if (node.SwitchCase != null)
+				{
+					foreach (var child in node.SwitchCase)
+					{
+				        this.BeginProperty(child, name: "Cases");
+				        try
+				        {
+				        	this.Visit(child);
+				        }
+				        finally
+				        {
+				        	this.EndProperty(child, name: "Cases");
+				        }
+					}
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(SwitchStatement));
+			}
+		}
+		
+		public virtual void VisitTryStmt(TryStmtSyntax node)
+		{
+			if (node.Body != null)
+			{
+			    this.BeginProperty(node.Body, name: "Body");
+			    try
+			    {
+			    	this.Visit(node.Body);
+			    }
+			    finally
+			    {
+			    	this.EndProperty(node.Body, name: "Body");
+			    }
+			}
+			if (node.CatchClause != null)
+			{
+				foreach (var child in node.CatchClause)
+				{
+			        this.BeginProperty(child, name: "Catches");
+			        try
+			        {
+			        	this.Visit(child);
+			        }
+			        finally
+			        {
+			        	this.EndProperty(child, name: "Catches");
+			        }
+				}
+			}
+			if (node.FinallyClause != null)
+			{
+			    this.BeginProperty(node.FinallyClause, name: "Finally");
+			    try
+			    {
+			    	this.Visit(node.FinallyClause);
+			    }
+			    finally
+			    {
+			    	this.EndProperty(node.FinallyClause, name: "Finally");
+			    }
+			}
+		}
+		
+		public virtual void VisitUsingStmt(UsingStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(UsingStatement));
+			try
+			{
+				if (node.UsingHeader != null)
+				{
+					foreach (var child in node.UsingHeader)
+					{
+				        this.Visit(child);
+					}
+				}
+				if (node.Body != null)
+				{
+				    this.BeginProperty(node.Body, name: "Body");
+				    try
+				    {
+				    	this.Visit(node.Body);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Body, name: "Body");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(UsingStatement));
+			}
+		}
+		
+		public virtual void VisitWhileStmt(WhileStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(WhileLoopStatement));
+			try
+			{
+				if (node.Condition != null)
+				{
+				    this.BeginProperty(node.Condition, name: "ConditionIsTop", value: true);
+				    try
+				    {
+				    	this.BeginProperty(node.Condition, name: "Condition");
+				    	try
+				    	{
+				    		this.Visit(node.Condition);
+				    	}
+				    	finally
+				    	{
+				    		this.EndProperty(node.Condition, name: "Condition");
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Condition, name: "ConditionIsTop", value: true);
+				    }
+				}
+				if (node.Body != null)
+				{
+				    this.BeginProperty(node.Body, name: "Body");
+				    try
+				    {
+				    	this.Visit(node.Body);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Body, name: "Body");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(WhileLoopStatement));
+			}
+		}
+		
+		public virtual void VisitWhileStmt(WhileStmtSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(WhileLoopStatement));
+			try
+			{
+				if (node.Body != null)
+				{
+				    this.BeginProperty(node.Body, name: "Body");
+				    try
+				    {
+				    	this.Visit(node.Body);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Body, name: "Body");
+				    }
+				}
+				if (node.Condition != null)
+				{
+				    this.BeginProperty(node.Condition, name: "ConditionIsTop", value: false);
+				    try
+				    {
+				    	this.BeginProperty(node.Condition, name: "Condition");
+				    	try
+				    	{
+				    		this.Visit(node.Condition);
+				    	}
+				    	finally
+				    	{
+				    		this.EndProperty(node.Condition, name: "Condition");
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Condition, name: "ConditionIsTop", value: false);
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(WhileLoopStatement));
 			}
 		}
 		
@@ -124,6 +697,211 @@ namespace MetaDslx.Languages.Core.Binding
 			finally
 			{
 				this.EndDefine(node, type: typeof(BlockStatement));
+			}
+		}
+		
+		public virtual void VisitBareBlockStatement(BareBlockStatementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(BlockStatement));
+			try
+			{
+				if (node.Statement != null)
+				{
+					foreach (var child in node.Statement)
+					{
+				        this.BeginProperty(child, name: "Statements");
+				        try
+				        {
+				        	this.Visit(child);
+				        }
+				        finally
+				        {
+				        	this.EndProperty(child, name: "Statements");
+				        }
+					}
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(BlockStatement));
+			}
+		}
+		
+		public virtual void VisitSwitchCase(SwitchCaseSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(SwitchCase));
+			try
+			{
+				if (node.CaseClause != null)
+				{
+					foreach (var child in node.CaseClause)
+					{
+				        this.BeginProperty(child, name: "Clauses");
+				        try
+				        {
+				        	this.Visit(child);
+				        }
+				        finally
+				        {
+				        	this.EndProperty(child, name: "Clauses");
+				        }
+					}
+				}
+				if (node.BareBlockStatement != null)
+				{
+				    this.BeginProperty(node.BareBlockStatement, name: "Body");
+				    try
+				    {
+				    	this.Visit(node.BareBlockStatement);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.BareBlockStatement, name: "Body");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(SwitchCase));
+			}
+		}
+		
+		public virtual void VisitCaseClause(CaseClauseSyntax node)
+		{
+			if (node.SingleValueCaseClause != null)
+			{
+			    this.Visit(node.SingleValueCaseClause);
+			}
+			if (node.DefaultCaseClause != null)
+			{
+			    this.Visit(node.DefaultCaseClause);
+			}
+		}
+		
+		public virtual void VisitSingleValueCaseClause(SingleValueCaseClauseSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(SingleValueCaseClause));
+			try
+			{
+				if (node.Value != null)
+				{
+				    this.BeginProperty(node.Value, name: "Value");
+				    try
+				    {
+				    	this.Visit(node.Value);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Value, name: "Value");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(SingleValueCaseClause));
+			}
+		}
+		
+		public virtual void VisitDefaultCaseClause(DefaultCaseClauseSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(DefaultCaseClause));
+			try
+			{
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(DefaultCaseClause));
+			}
+		}
+		
+		public virtual void VisitCatchClause(CatchClauseSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(CatchClause));
+			try
+			{
+				if (node.Value != null)
+				{
+				    this.BeginProperty(node.Value, name: "ExceptionDeclarationOrExpression");
+				    try
+				    {
+				    	this.Visit(node.Value);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Value, name: "ExceptionDeclarationOrExpression");
+				    }
+				}
+				if (node.CatchFilter != null)
+				{
+				    this.Visit(node.CatchFilter);
+				}
+				if (node.Handler != null)
+				{
+				    this.BeginProperty(node.Handler, name: "Handler");
+				    try
+				    {
+				    	this.Visit(node.Handler);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Handler, name: "Handler");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(CatchClause));
+			}
+		}
+		
+		public virtual void VisitCatchFilter(CatchFilterSyntax node)
+		{
+			if (node.Filter != null)
+			{
+			    this.BeginProperty(node.Filter, name: "Filter");
+			    try
+			    {
+			    	this.Visit(node.Filter);
+			    }
+			    finally
+			    {
+			    	this.EndProperty(node.Filter, name: "Filter");
+			    }
+			}
+		}
+		
+		public virtual void VisitFinallyClause(FinallyClauseSyntax node)
+		{
+			if (node.Handler != null)
+			{
+			    this.Visit(node.Handler);
+			}
+		}
+		
+		public virtual void VisitUsingHeader(UsingHeaderSyntax node)
+		{
+			if (node.Resource != null)
+			{
+			    this.BeginProperty(node.Resource, name: "Resources");
+			    try
+			    {
+			    	this.Visit(node.Resource);
+			    }
+			    finally
+			    {
+			    	this.EndProperty(node.Resource, name: "Resources");
+			    }
+			}
+		}
+		
+		public virtual void VisitExpressionList(ExpressionListSyntax node)
+		{
+			if (node.Expression != null)
+			{
+				foreach (var child in node.Expression)
+				{
+			        this.Visit(child);
+				}
 			}
 		}
 		

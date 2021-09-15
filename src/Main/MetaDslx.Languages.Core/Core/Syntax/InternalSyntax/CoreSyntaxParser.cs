@@ -247,6 +247,516 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseBareBlockStatement(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.bareBlockStatement();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseBareBlockStatement(BareBlockStatementSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.BareBlockStatementContext _Antlr4ParseBareBlockStatement()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.BareBlockStatementContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseBareBlockStatement(CurrentNode as BareBlockStatementSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseBareBlockStatement();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.BareBlockStatementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseSwitchCase(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.switchCase();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseSwitchCase(SwitchCaseSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.SwitchCaseContext _Antlr4ParseSwitchCase()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.SwitchCaseContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseSwitchCase(CurrentNode as SwitchCaseSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseSwitchCase();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.SwitchCaseContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseCaseClause(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.caseClause();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseCaseClause(CaseClauseSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.CaseClauseContext _Antlr4ParseCaseClause()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.CaseClauseContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseCaseClause(CurrentNode as CaseClauseSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseCaseClause();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.CaseClauseContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseSingleValueCaseClause(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.singleValueCaseClause();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseSingleValueCaseClause(SingleValueCaseClauseSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.SingleValueCaseClauseContext _Antlr4ParseSingleValueCaseClause()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.SingleValueCaseClauseContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseSingleValueCaseClause(CurrentNode as SingleValueCaseClauseSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseSingleValueCaseClause();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.SingleValueCaseClauseContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseDefaultCaseClause(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.defaultCaseClause();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseDefaultCaseClause(DefaultCaseClauseSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.DefaultCaseClauseContext _Antlr4ParseDefaultCaseClause()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.DefaultCaseClauseContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseDefaultCaseClause(CurrentNode as DefaultCaseClauseSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseDefaultCaseClause();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.DefaultCaseClauseContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseCatchClause(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.catchClause();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseCatchClause(CatchClauseSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.CatchClauseContext _Antlr4ParseCatchClause()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.CatchClauseContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseCatchClause(CurrentNode as CatchClauseSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseCatchClause();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.CatchClauseContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseCatchFilter(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.catchFilter();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseCatchFilter(CatchFilterSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.CatchFilterContext _Antlr4ParseCatchFilter()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.CatchFilterContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseCatchFilter(CurrentNode as CatchFilterSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseCatchFilter();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.CatchFilterContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseFinallyClause(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.finallyClause();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseFinallyClause(FinallyClauseSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.FinallyClauseContext _Antlr4ParseFinallyClause()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.FinallyClauseContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseFinallyClause(CurrentNode as FinallyClauseSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseFinallyClause();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.FinallyClauseContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseUsingHeader(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.usingHeader();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseUsingHeader(UsingHeaderSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.UsingHeaderContext _Antlr4ParseUsingHeader()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.UsingHeaderContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseUsingHeader(CurrentNode as UsingHeaderSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseUsingHeader();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.UsingHeaderContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseExpressionList(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.expressionList();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseExpressionList(ExpressionListSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.ExpressionListContext _Antlr4ParseExpressionList()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.ExpressionListContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseExpressionList(CurrentNode as ExpressionListSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseExpressionList();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.ExpressionListContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseExpression(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2814,15 +3324,272 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				return _factory.UsingNamespace(kUsing, name, tAssign, qualifier, tSemicolon);
 			}
 			
-			public override GreenNode VisitStatement(CoreParser.StatementContext context)
+			public override GreenNode VisitEmptyStmt(CoreParser.EmptyStmtContext context)
 			{
-				if (context == null) return StatementGreen.__Missing;
+				if (context == null) return EmptyStmtGreen.__Missing;
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
+				return _factory.EmptyStmt(tSemicolon);
+			}
+			
+			public override GreenNode VisitBlockStmt(CoreParser.BlockStmtContext context)
+			{
+				if (context == null) return BlockStmtGreen.__Missing;
+				CoreParser.BlockStatementContext blockStatementContext = context.blockStatement();
+				BlockStatementGreen blockStatement = null;
+				if (blockStatementContext != null) blockStatement = (BlockStatementGreen)this.Visit(blockStatementContext);
+				if (blockStatement == null) blockStatement = BlockStatementGreen.__Missing;
+				return _factory.BlockStmt(blockStatement);
+			}
+			
+			public override GreenNode VisitExprStmt(CoreParser.ExprStmtContext context)
+			{
+				if (context == null) return ExprStmtGreen.__Missing;
 				CoreParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
 				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
 				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
-				return _factory.Statement(expression, tSemicolon);
+				return _factory.ExprStmt(expression, tSemicolon);
+			}
+			
+			public override GreenNode VisitForeachStmt(CoreParser.ForeachStmtContext context)
+			{
+				if (context == null) return ForeachStmtGreen.__Missing;
+				InternalSyntaxToken kForEach = (InternalSyntaxToken)this.VisitTerminal(context.KForEach(), CoreSyntaxKind.KForEach);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionContext variableContext = context.variable;
+				ExpressionGreen variable = null;
+				if (variableContext != null) variable = (ExpressionGreen)this.Visit(variableContext);
+				if (variable == null) variable = ExpressionGreen.__Missing;
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), CoreSyntaxKind.TColon);
+				CoreParser.ExpressionContext collectionContext = context.collection;
+				ExpressionGreen collection = null;
+				if (collectionContext != null) collection = (ExpressionGreen)this.Visit(collectionContext);
+				if (collection == null) collection = ExpressionGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				CoreParser.StatementContext statementContext = context.statement();
+				StatementGreen statement = null;
+				if (statementContext != null) statement = (StatementGreen)this.Visit(statementContext);
+				if (statement == null) statement = StatementGreen.__Missing;
+				return _factory.ForeachStmt(kForEach, tOpenParen, variable, tColon, collection, tCloseParen, statement);
+			}
+			
+			public override GreenNode VisitForeachStmt(CoreParser.ForeachStmtContext context)
+			{
+				if (context == null) return ForeachStmtGreen.__Missing;
+				InternalSyntaxToken kFor = (InternalSyntaxToken)this.VisitTerminal(context.KFor(), CoreSyntaxKind.KFor);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionListContext beforeContext = context.before;
+				ExpressionListGreen before = null;
+				if (beforeContext != null) before = (ExpressionListGreen)this.Visit(beforeContext);
+				InternalSyntaxToken semicolonBefore = (InternalSyntaxToken)this.VisitTerminal(context.semicolonBefore, CoreSyntaxKind.TSemicolon);
+				CoreParser.ExpressionContext conditionContext = context.condition;
+				ExpressionGreen condition = null;
+				if (conditionContext != null) condition = (ExpressionGreen)this.Visit(conditionContext);
+				if (condition == null) condition = ExpressionGreen.__Missing;
+				InternalSyntaxToken semicolonAfter = (InternalSyntaxToken)this.VisitTerminal(context.semicolonAfter, CoreSyntaxKind.TSemicolon);
+				CoreParser.ExpressionListContext atLoopBottomContext = context.atLoopBottom;
+				ExpressionListGreen atLoopBottom = null;
+				if (atLoopBottomContext != null) atLoopBottom = (ExpressionListGreen)this.Visit(atLoopBottomContext);
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				CoreParser.StatementContext statementContext = context.statement();
+				StatementGreen statement = null;
+				if (statementContext != null) statement = (StatementGreen)this.Visit(statementContext);
+				if (statement == null) statement = StatementGreen.__Missing;
+				return _factory.ForeachStmt(kFor, tOpenParen, before, semicolonBefore, condition, semicolonAfter, atLoopBottom, tCloseParen, statement);
+			}
+			
+			public override GreenNode VisitIfStmt(CoreParser.IfStmtContext context)
+			{
+				if (context == null) return IfStmtGreen.__Missing;
+				InternalSyntaxToken kIf = (InternalSyntaxToken)this.VisitTerminal(context.KIf(), CoreSyntaxKind.KIf);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionContext conditionContext = context.condition;
+				ExpressionGreen condition = null;
+				if (conditionContext != null) condition = (ExpressionGreen)this.Visit(conditionContext);
+				if (condition == null) condition = ExpressionGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				CoreParser.StatementContext ifTrueContext = context.ifTrue;
+				StatementGreen ifTrue = null;
+				if (ifTrueContext != null) ifTrue = (StatementGreen)this.Visit(ifTrueContext);
+				if (ifTrue == null) ifTrue = StatementGreen.__Missing;
+				InternalSyntaxToken kElse = (InternalSyntaxToken)this.VisitTerminal(context.KElse(), CoreSyntaxKind.KElse);
+				CoreParser.StatementContext ifFalseContext = context.ifFalse;
+				StatementGreen ifFalse = null;
+				if (ifFalseContext != null) ifFalse = (StatementGreen)this.Visit(ifFalseContext);
+				if (ifFalse == null) ifFalse = StatementGreen.__Missing;
+				return _factory.IfStmt(kIf, tOpenParen, condition, tCloseParen, ifTrue, kElse, ifFalse);
+			}
+			
+			public override GreenNode VisitBreakStmt(CoreParser.BreakStmtContext context)
+			{
+				if (context == null) return BreakStmtGreen.__Missing;
+				InternalSyntaxToken kBreak = (InternalSyntaxToken)this.VisitTerminal(context.KBreak(), CoreSyntaxKind.KBreak);
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
+				return _factory.BreakStmt(kBreak, tSemicolon);
+			}
+			
+			public override GreenNode VisitContinueStmt(CoreParser.ContinueStmtContext context)
+			{
+				if (context == null) return ContinueStmtGreen.__Missing;
+				InternalSyntaxToken kContinue = (InternalSyntaxToken)this.VisitTerminal(context.KContinue(), CoreSyntaxKind.KContinue);
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
+				return _factory.ContinueStmt(kContinue, tSemicolon);
+			}
+			
+			public override GreenNode VisitGotoStmt(CoreParser.GotoStmtContext context)
+			{
+				if (context == null) return GotoStmtGreen.__Missing;
+				InternalSyntaxToken kGoto = (InternalSyntaxToken)this.VisitTerminal(context.KGoto(), CoreSyntaxKind.KGoto);
+				CoreParser.IdentifierContext identifierContext = context.identifier();
+				IdentifierGreen identifier = null;
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
+				return _factory.GotoStmt(kGoto, identifier, tSemicolon);
+			}
+			
+			public override GreenNode VisitLabeledStmt(CoreParser.LabeledStmtContext context)
+			{
+				if (context == null) return LabeledStmtGreen.__Missing;
+				CoreParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), CoreSyntaxKind.TColon);
+				CoreParser.StatementContext statementContext = context.statement();
+				StatementGreen statement = null;
+				if (statementContext != null) statement = (StatementGreen)this.Visit(statementContext);
+				if (statement == null) statement = StatementGreen.__Missing;
+				return _factory.LabeledStmt(name, tColon, statement);
+			}
+			
+			public override GreenNode VisitLockStmt(CoreParser.LockStmtContext context)
+			{
+				if (context == null) return LockStmtGreen.__Missing;
+				InternalSyntaxToken kLock = (InternalSyntaxToken)this.VisitTerminal(context.KLock(), CoreSyntaxKind.KLock);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionContext lockedValueContext = context.lockedValue;
+				ExpressionGreen lockedValue = null;
+				if (lockedValueContext != null) lockedValue = (ExpressionGreen)this.Visit(lockedValueContext);
+				if (lockedValue == null) lockedValue = ExpressionGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				CoreParser.StatementContext bodyContext = context.body;
+				StatementGreen body = null;
+				if (bodyContext != null) body = (StatementGreen)this.Visit(bodyContext);
+				if (body == null) body = StatementGreen.__Missing;
+				return _factory.LockStmt(kLock, tOpenParen, lockedValue, tCloseParen, body);
+			}
+			
+			public override GreenNode VisitReturnStmt(CoreParser.ReturnStmtContext context)
+			{
+				if (context == null) return ReturnStmtGreen.__Missing;
+				InternalSyntaxToken kReturn = (InternalSyntaxToken)this.VisitTerminal(context.KReturn(), CoreSyntaxKind.KReturn);
+				CoreParser.ExpressionContext returnedValueContext = context.returnedValue;
+				ExpressionGreen returnedValue = null;
+				if (returnedValueContext != null) returnedValue = (ExpressionGreen)this.Visit(returnedValueContext);
+				if (returnedValue == null) returnedValue = ExpressionGreen.__Missing;
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
+				return _factory.ReturnStmt(kReturn, returnedValue, tSemicolon);
+			}
+			
+			public override GreenNode VisitReturnStmt(CoreParser.ReturnStmtContext context)
+			{
+				if (context == null) return ReturnStmtGreen.__Missing;
+				InternalSyntaxToken kSwitch = (InternalSyntaxToken)this.VisitTerminal(context.KSwitch(), CoreSyntaxKind.KSwitch);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionContext valueContext = context.value;
+				ExpressionGreen value = null;
+				if (valueContext != null) value = (ExpressionGreen)this.Visit(valueContext);
+				if (value == null) value = ExpressionGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				InternalSyntaxToken tOpenBrace = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBrace(), CoreSyntaxKind.TOpenBrace);
+			    CoreParser.SwitchCaseContext[] switchCaseContext = context.switchCase();
+			    var switchCaseBuilder = _pool.Allocate<SwitchCaseGreen>();
+			    for (int i = 0; i < switchCaseContext.Length; i++)
+			    {
+			        switchCaseBuilder.Add((SwitchCaseGreen)this.Visit(switchCaseContext[i]));
+			    }
+				var switchCase = switchCaseBuilder.ToList();
+				_pool.Free(switchCaseBuilder);
+				InternalSyntaxToken tCloseBrace = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBrace(), CoreSyntaxKind.TCloseBrace);
+				return _factory.ReturnStmt(kSwitch, tOpenParen, value, tCloseParen, tOpenBrace, switchCase, tCloseBrace);
+			}
+			
+			public override GreenNode VisitTryStmt(CoreParser.TryStmtContext context)
+			{
+				if (context == null) return TryStmtGreen.__Missing;
+				InternalSyntaxToken kTry = (InternalSyntaxToken)this.VisitTerminal(context.KTry(), CoreSyntaxKind.KTry);
+				CoreParser.BlockStatementContext bodyContext = context.body;
+				BlockStatementGreen body = null;
+				if (bodyContext != null) body = (BlockStatementGreen)this.Visit(bodyContext);
+				if (body == null) body = BlockStatementGreen.__Missing;
+			    CoreParser.CatchClauseContext[] catchClauseContext = context.catchClause();
+			    var catchClauseBuilder = _pool.Allocate<CatchClauseGreen>();
+			    for (int i = 0; i < catchClauseContext.Length; i++)
+			    {
+			        catchClauseBuilder.Add((CatchClauseGreen)this.Visit(catchClauseContext[i]));
+			    }
+				var catchClause = catchClauseBuilder.ToList();
+				_pool.Free(catchClauseBuilder);
+				CoreParser.FinallyClauseContext finallyClauseContext = context.finallyClause();
+				FinallyClauseGreen finallyClause = null;
+				if (finallyClauseContext != null) finallyClause = (FinallyClauseGreen)this.Visit(finallyClauseContext);
+				return _factory.TryStmt(kTry, body, catchClause, finallyClause);
+			}
+			
+			public override GreenNode VisitUsingStmt(CoreParser.UsingStmtContext context)
+			{
+				if (context == null) return UsingStmtGreen.__Missing;
+			    CoreParser.UsingHeaderContext[] usingHeaderContext = context.usingHeader();
+			    var usingHeaderBuilder = _pool.Allocate<UsingHeaderGreen>();
+			    for (int i = 0; i < usingHeaderContext.Length; i++)
+			    {
+			        usingHeaderBuilder.Add((UsingHeaderGreen)this.Visit(usingHeaderContext[i]));
+			    }
+				var usingHeader = usingHeaderBuilder.ToList();
+				_pool.Free(usingHeaderBuilder);
+				CoreParser.StatementContext bodyContext = context.body;
+				StatementGreen body = null;
+				if (bodyContext != null) body = (StatementGreen)this.Visit(bodyContext);
+				if (body == null) body = StatementGreen.__Missing;
+				return _factory.UsingStmt(usingHeader, body);
+			}
+			
+			public override GreenNode VisitWhileStmt(CoreParser.WhileStmtContext context)
+			{
+				if (context == null) return WhileStmtGreen.__Missing;
+				InternalSyntaxToken kWhile = (InternalSyntaxToken)this.VisitTerminal(context.KWhile(), CoreSyntaxKind.KWhile);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionContext conditionContext = context.condition;
+				ExpressionGreen condition = null;
+				if (conditionContext != null) condition = (ExpressionGreen)this.Visit(conditionContext);
+				if (condition == null) condition = ExpressionGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				CoreParser.StatementContext bodyContext = context.body;
+				StatementGreen body = null;
+				if (bodyContext != null) body = (StatementGreen)this.Visit(bodyContext);
+				if (body == null) body = StatementGreen.__Missing;
+				return _factory.WhileStmt(kWhile, tOpenParen, condition, tCloseParen, body);
+			}
+			
+			public override GreenNode VisitWhileStmt(CoreParser.WhileStmtContext context)
+			{
+				if (context == null) return WhileStmtGreen.__Missing;
+				InternalSyntaxToken kDo = (InternalSyntaxToken)this.VisitTerminal(context.KDo(), CoreSyntaxKind.KDo);
+				CoreParser.StatementContext bodyContext = context.body;
+				StatementGreen body = null;
+				if (bodyContext != null) body = (StatementGreen)this.Visit(bodyContext);
+				if (body == null) body = StatementGreen.__Missing;
+				InternalSyntaxToken kWhile = (InternalSyntaxToken)this.VisitTerminal(context.KWhile(), CoreSyntaxKind.KWhile);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionContext conditionContext = context.condition;
+				ExpressionGreen condition = null;
+				if (conditionContext != null) condition = (ExpressionGreen)this.Visit(conditionContext);
+				if (condition == null) condition = ExpressionGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
+				return _factory.WhileStmt(kDo, body, kWhile, tOpenParen, condition, tCloseParen, tSemicolon);
 			}
 			
 			public override GreenNode VisitBlockStatement(CoreParser.BlockStatementContext context)
@@ -2839,6 +3606,147 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				_pool.Free(statementBuilder);
 				InternalSyntaxToken tCloseBrace = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBrace(), CoreSyntaxKind.TCloseBrace);
 				return _factory.BlockStatement(tOpenBrace, statement, tCloseBrace);
+			}
+			
+			public override GreenNode VisitBareBlockStatement(CoreParser.BareBlockStatementContext context)
+			{
+				if (context == null) return BareBlockStatementGreen.__Missing;
+			    CoreParser.StatementContext[] statementContext = context.statement();
+			    var statementBuilder = _pool.Allocate<StatementGreen>();
+			    for (int i = 0; i < statementContext.Length; i++)
+			    {
+			        statementBuilder.Add((StatementGreen)this.Visit(statementContext[i]));
+			    }
+				var statement = statementBuilder.ToList();
+				_pool.Free(statementBuilder);
+				return _factory.BareBlockStatement(statement);
+			}
+			
+			public override GreenNode VisitSwitchCase(CoreParser.SwitchCaseContext context)
+			{
+				if (context == null) return SwitchCaseGreen.__Missing;
+			    CoreParser.CaseClauseContext[] caseClauseContext = context.caseClause();
+			    var caseClauseBuilder = _pool.Allocate<CaseClauseGreen>();
+			    for (int i = 0; i < caseClauseContext.Length; i++)
+			    {
+			        caseClauseBuilder.Add((CaseClauseGreen)this.Visit(caseClauseContext[i]));
+			    }
+				var caseClause = caseClauseBuilder.ToList();
+				_pool.Free(caseClauseBuilder);
+				CoreParser.BareBlockStatementContext bareBlockStatementContext = context.bareBlockStatement();
+				BareBlockStatementGreen bareBlockStatement = null;
+				if (bareBlockStatementContext != null) bareBlockStatement = (BareBlockStatementGreen)this.Visit(bareBlockStatementContext);
+				if (bareBlockStatement == null) bareBlockStatement = BareBlockStatementGreen.__Missing;
+				return _factory.SwitchCase(caseClause, bareBlockStatement);
+			}
+			
+			public override GreenNode VisitCaseClause(CoreParser.CaseClauseContext context)
+			{
+				if (context == null) return CaseClauseGreen.__Missing;
+				CoreParser.SingleValueCaseClauseContext singleValueCaseClauseContext = context.singleValueCaseClause();
+				if (singleValueCaseClauseContext != null) 
+				{
+					return _factory.CaseClause((SingleValueCaseClauseGreen)this.Visit(singleValueCaseClauseContext));
+				}
+				CoreParser.DefaultCaseClauseContext defaultCaseClauseContext = context.defaultCaseClause();
+				if (defaultCaseClauseContext != null) 
+				{
+					return _factory.CaseClause((DefaultCaseClauseGreen)this.Visit(defaultCaseClauseContext));
+				}
+				return CaseClauseGreen.__Missing;
+			}
+			
+			public override GreenNode VisitSingleValueCaseClause(CoreParser.SingleValueCaseClauseContext context)
+			{
+				if (context == null) return SingleValueCaseClauseGreen.__Missing;
+				InternalSyntaxToken kCase = (InternalSyntaxToken)this.VisitTerminal(context.KCase(), CoreSyntaxKind.KCase);
+				CoreParser.ExpressionContext valueContext = context.value;
+				ExpressionGreen value = null;
+				if (valueContext != null) value = (ExpressionGreen)this.Visit(valueContext);
+				if (value == null) value = ExpressionGreen.__Missing;
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), CoreSyntaxKind.TColon);
+				return _factory.SingleValueCaseClause(kCase, value, tColon);
+			}
+			
+			public override GreenNode VisitDefaultCaseClause(CoreParser.DefaultCaseClauseContext context)
+			{
+				if (context == null) return DefaultCaseClauseGreen.__Missing;
+				InternalSyntaxToken kDefault = (InternalSyntaxToken)this.VisitTerminal(context.KDefault(), CoreSyntaxKind.KDefault);
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), CoreSyntaxKind.TColon);
+				return _factory.DefaultCaseClause(kDefault, tColon);
+			}
+			
+			public override GreenNode VisitCatchClause(CoreParser.CatchClauseContext context)
+			{
+				if (context == null) return CatchClauseGreen.__Missing;
+				InternalSyntaxToken kCatch = (InternalSyntaxToken)this.VisitTerminal(context.KCatch(), CoreSyntaxKind.KCatch);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen());
+				CoreParser.ExpressionContext valueContext = context.value;
+				ExpressionGreen value = null;
+				if (valueContext != null) value = (ExpressionGreen)this.Visit(valueContext);
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen());
+				CoreParser.CatchFilterContext catchFilterContext = context.catchFilter();
+				CatchFilterGreen catchFilter = null;
+				if (catchFilterContext != null) catchFilter = (CatchFilterGreen)this.Visit(catchFilterContext);
+				CoreParser.BlockStatementContext handlerContext = context.handler;
+				BlockStatementGreen handler = null;
+				if (handlerContext != null) handler = (BlockStatementGreen)this.Visit(handlerContext);
+				if (handler == null) handler = BlockStatementGreen.__Missing;
+				return _factory.CatchClause(kCatch, tOpenParen, value, tCloseParen, catchFilter, handler);
+			}
+			
+			public override GreenNode VisitCatchFilter(CoreParser.CatchFilterContext context)
+			{
+				if (context == null) return CatchFilterGreen.__Missing;
+				InternalSyntaxToken kWhen = (InternalSyntaxToken)this.VisitTerminal(context.KWhen(), CoreSyntaxKind.KWhen);
+				CoreParser.ExpressionContext filterContext = context.filter;
+				ExpressionGreen filter = null;
+				if (filterContext != null) filter = (ExpressionGreen)this.Visit(filterContext);
+				if (filter == null) filter = ExpressionGreen.__Missing;
+				return _factory.CatchFilter(kWhen, filter);
+			}
+			
+			public override GreenNode VisitFinallyClause(CoreParser.FinallyClauseContext context)
+			{
+				if (context == null) return FinallyClauseGreen.__Missing;
+				InternalSyntaxToken kFinally = (InternalSyntaxToken)this.VisitTerminal(context.KFinally(), CoreSyntaxKind.KFinally);
+				CoreParser.BlockStatementContext handlerContext = context.handler;
+				BlockStatementGreen handler = null;
+				if (handlerContext != null) handler = (BlockStatementGreen)this.Visit(handlerContext);
+				if (handler == null) handler = BlockStatementGreen.__Missing;
+				return _factory.FinallyClause(kFinally, handler);
+			}
+			
+			public override GreenNode VisitUsingHeader(CoreParser.UsingHeaderContext context)
+			{
+				if (context == null) return UsingHeaderGreen.__Missing;
+				InternalSyntaxToken kUsing = (InternalSyntaxToken)this.VisitTerminal(context.KUsing(), CoreSyntaxKind.KUsing);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CoreSyntaxKind.TOpenParen);
+				CoreParser.ExpressionContext resourceContext = context.resource;
+				ExpressionGreen resource = null;
+				if (resourceContext != null) resource = (ExpressionGreen)this.Visit(resourceContext);
+				if (resource == null) resource = ExpressionGreen.__Missing;
+				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CoreSyntaxKind.TCloseParen);
+				return _factory.UsingHeader(kUsing, tOpenParen, resource, tCloseParen);
+			}
+			
+			public override GreenNode VisitExpressionList(CoreParser.ExpressionListContext context)
+			{
+				if (context == null) return ExpressionListGreen.__Missing;
+			    CoreParser.ExpressionContext[] expressionContext = context.expression();
+			    ITerminalNode[] tCommaContext = context.TComma();
+			    var expressionBuilder = _pool.AllocateSeparated<ExpressionGreen>();
+			    for (int i = 0; i < expressionContext.Length; i++)
+			    {
+			        expressionBuilder.Add((ExpressionGreen)this.Visit(expressionContext[i]));
+			        if (i < tCommaContext.Length)
+			        {
+			            expressionBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i], CoreSyntaxKind.TComma));
+			        }
+			    }
+				var expression = expressionBuilder.ToList();
+				_pool.Free(expressionBuilder);
+				return _factory.ExpressionList(expression);
 			}
 			
 			public override GreenNode VisitParenthesizedExpr(CoreParser.ParenthesizedExprContext context)
@@ -4356,6 +5264,116 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public BlockStatementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class BareBlockStatementContext_Cached : BareBlockStatementContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public BareBlockStatementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class SwitchCaseContext_Cached : SwitchCaseContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public SwitchCaseContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class CaseClauseContext_Cached : CaseClauseContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public CaseClauseContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class SingleValueCaseClauseContext_Cached : SingleValueCaseClauseContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public SingleValueCaseClauseContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class DefaultCaseClauseContext_Cached : DefaultCaseClauseContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public DefaultCaseClauseContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class CatchClauseContext_Cached : CatchClauseContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public CatchClauseContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class CatchFilterContext_Cached : CatchFilterContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public CatchFilterContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class FinallyClauseContext_Cached : FinallyClauseContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public FinallyClauseContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class UsingHeaderContext_Cached : UsingHeaderContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public UsingHeaderContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ExpressionListContext_Cached : ExpressionListContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ExpressionListContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

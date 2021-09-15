@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Declaration introduced or resource held by the using.
         /// </summary>
         [SymbolProperty]
-        public abstract ExpressionSymbol Resources { get; }
+        public abstract ImmutableArray<ExpressionSymbol> Resources { get; }
 
         /// <summary>
         /// Body of the using, over which the resources of the using are maintained.

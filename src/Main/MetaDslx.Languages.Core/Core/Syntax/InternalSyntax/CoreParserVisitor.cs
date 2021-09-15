@@ -49,17 +49,169 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitUsingNamespace([NotNull] CoreParser.UsingNamespaceContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoreParser.statement"/>.
+	/// Visit a parse tree produced by the <c>emptyStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStatement([NotNull] CoreParser.StatementContext context);
+	Result VisitEmptyStmt([NotNull] CoreParser.EmptyStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>blockStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlockStmt([NotNull] CoreParser.BlockStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>exprStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExprStmt([NotNull] CoreParser.ExprStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>foreachStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForeachStmt([NotNull] CoreParser.ForeachStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ifStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfStmt([NotNull] CoreParser.IfStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>breakStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBreakStmt([NotNull] CoreParser.BreakStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>continueStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitContinueStmt([NotNull] CoreParser.ContinueStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>gotoStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGotoStmt([NotNull] CoreParser.GotoStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>labeledStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLabeledStmt([NotNull] CoreParser.LabeledStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>lockStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLockStmt([NotNull] CoreParser.LockStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>returnStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturnStmt([NotNull] CoreParser.ReturnStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>tryStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTryStmt([NotNull] CoreParser.TryStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>usingStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUsingStmt([NotNull] CoreParser.UsingStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>whileStmt</c>
+	/// labeled alternative in <see cref="CoreParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileStmt([NotNull] CoreParser.WhileStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.blockStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBlockStatement([NotNull] CoreParser.BlockStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.bareBlockStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBareBlockStatement([NotNull] CoreParser.BareBlockStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.switchCase"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSwitchCase([NotNull] CoreParser.SwitchCaseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.caseClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCaseClause([NotNull] CoreParser.CaseClauseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.singleValueCaseClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSingleValueCaseClause([NotNull] CoreParser.SingleValueCaseClauseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.defaultCaseClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDefaultCaseClause([NotNull] CoreParser.DefaultCaseClauseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.catchClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCatchClause([NotNull] CoreParser.CatchClauseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.catchFilter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCatchFilter([NotNull] CoreParser.CatchFilterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.finallyClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFinallyClause([NotNull] CoreParser.FinallyClauseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.usingHeader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUsingHeader([NotNull] CoreParser.UsingHeaderContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.expressionList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionList([NotNull] CoreParser.ExpressionListContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>newExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.

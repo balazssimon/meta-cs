@@ -1393,15 +1393,8 @@ namespace MetaDslx.CodeAnalysis
 
         public Symbol GetSpecialSymbol(object specialSymbolId)
         {
-            if (!Language.SymbolFacts.SpecialSymbols.Contains(specialSymbolId))
-            {
-                throw new ArgumentOutOfRangeException(nameof(specialSymbolId), $"Unexpected SpecialSymbol: '{specialSymbolId}'.");
-            }
-            if (specialSymbolId is SpecialType specialType)
-            {
-                return GetSpecialType(specialType);
-            }
-            else if (specialSymbolId is SpecialSymbol specialSymbol)
+            if (specialSymbolId is SpecialType specialType) specialSymbolId = specialType.ToSpecialSymbol();
+            if (specialSymbolId is SpecialSymbol specialSymbol)
             {
                 specialType = specialSymbol.ToSpecialType();
                 if (specialType != SpecialType.None)
@@ -1409,8 +1402,15 @@ namespace MetaDslx.CodeAnalysis
                     return GetSpecialType(specialType);
                 }
             }
+            else
+            {
+                if (!Language.SymbolFacts.SpecialSymbols.Contains(specialSymbolId))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(specialSymbolId), $"Unexpected SpecialSymbol: '{specialSymbolId}'.");
+                }
+            }
             var result = SourceAssembly.GetSpecialSymbol(specialSymbolId);
-            //Debug.Assert(specialSymbolId.Equals(result.SpecialSymbol));
+            Debug.Assert(result.IsSpecialSymbol(specialSymbolId, this.Language));
             return result;
         }
 

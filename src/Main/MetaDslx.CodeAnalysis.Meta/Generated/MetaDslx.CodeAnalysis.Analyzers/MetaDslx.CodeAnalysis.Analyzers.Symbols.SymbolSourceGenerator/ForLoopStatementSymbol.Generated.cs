@@ -68,9 +68,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private string _metadataName;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol> _attributes;
         private global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol _body;
-        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol> _before;
+        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> _before;
         private global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol _condition;
-        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol> _atLoopBottom;
+        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> _atLoopBottom;
 
         public CompletionForLoopStatementSymbol(Symbol container, object? modelObject, bool isError = false)
         {
@@ -137,7 +137,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol> Before
+        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> Before
         {
             get
             {
@@ -155,7 +155,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol> AtLoopBottom
+        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> AtLoopBottom
         {
             get
             {
@@ -369,9 +369,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return result;
         }
 
-        protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol> CompleteSymbolProperty_Before(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> CompleteSymbolProperty_Before(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol>(this, nameof(Before), diagnostics, cancellationToken, out var result);
+            SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Before), diagnostics, cancellationToken, out var result);
             return result;
         }
 
@@ -381,9 +381,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return result;
         }
 
-        protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol> CompleteSymbolProperty_AtLoopBottom(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> CompleteSymbolProperty_AtLoopBottom(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol>(this, nameof(AtLoopBottom), diagnostics, cancellationToken, out var result);
+            SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(AtLoopBottom), diagnostics, cancellationToken, out var result);
             return result;
         }
 

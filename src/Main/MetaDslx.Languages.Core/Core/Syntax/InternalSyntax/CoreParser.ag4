@@ -19,11 +19,47 @@ usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
 
 // Statements
 
-$Define(ExpressionStatement)
-statement: $Property(Expression) expression TSemicolon;
+statement
+	: TSemicolon #emptyStmt $Define(EmptyStatement)
+	| blockStatement #blockStmt 
+	| $Property(Expression) expression TSemicolon #exprStmt $Define(ExpressionStatement)
+	| KForEach TOpenParen $Property(LoopControlVariable) variable=expression TColon $Property(Collection) collection=expression TCloseParen $Property(Body) statement #foreachStmt $Define(ForEachLoopStatement)
+	| KFor TOpenParen $Property(Before) before=expressionList? semicolonBefore=TSemicolon $Property(Condition) condition=expression semicolonAfter=TSemicolon $Property(AtLoopBottom) atLoopBottom=expressionList? TCloseParen $Property(Body) statement #foreachStmt $Define(ForLoopStatement)
+	| KIf TOpenParen $Property(Condition) condition=expression TCloseParen $Property(IfTrue) ifTrue=statement (KElse $Property(IfFalse) ifFalse=statement) #ifStmt $Define(IfStatement)
+	| $Property(name=JumpKind,value=JumpKind.Break) KBreak TSemicolon #breakStmt $Define(JumpStatement)
+	| $Property(name=JumpKind,value=JumpKind.Continue) KContinue TSemicolon #continueStmt $Define(JumpStatement)
+	| $Property(name=JumpKind,value=JumpKind.Goto) KGoto $Property(Target) $Use(Label) identifier TSemicolon #gotoStmt $Define(JumpStatement)
+	| $Property(Label) $Define(Label) name TColon $Property(Statement) statement #labeledStmt $Define(LabeledStatement)
+	| KLock TOpenParen $Property(LockedValue) lockedValue=expression TCloseParen $Property(Body) body=statement #lockStmt $Define(LockStatement)
+	| KReturn $Property(ReturnedValue) returnedValue=expression TSemicolon #returnStmt $Define(ReturnStatement)
+	| KSwitch TOpenParen $Property(Value) value=expression TCloseParen TOpenBrace $Property(Cases) switchCase* TCloseBrace #returnStmt $Define(SwitchStatement)
+	| KTry $Property(Body) body=blockStatement $Property(Catches) catchClause* $Property(Finally) finallyClause? #tryStmt
+	| usingHeader+ $Property(Body) body=statement #usingStmt $Define(UsingStatement)
+	| KWhile TOpenParen $Property(name=ConditionIsTop,value=true) $Property(Condition) condition=expression TCloseParen $Property(Body) body=statement #whileStmt $Define(WhileLoopStatement)
+	| KDo $Property(Body) body=statement KWhile TOpenParen $Property(name=ConditionIsTop,value=false) $Property(Condition) condition=expression TCloseParen TSemicolon #whileStmt $Define(WhileLoopStatement)
+	;
 
 $Define(BlockStatement)
-blockStatement: TOpenBrace $Property(Statements) statement* TCloseBrace;
+blockStatement : TOpenBrace $Property(Statements) statement* TCloseBrace;
+$Define(BlockStatement)
+bareBlockStatement : $Property(Statements) statement+;
+
+$Define(SwitchCase)
+switchCase: $Property(Clauses) caseClause+ $Property(Body) bareBlockStatement;
+caseClause: singleValueCaseClause | defaultCaseClause; 
+$Define(SingleValueCaseClause)
+singleValueCaseClause: KCase $Property(Value) value=expression TColon;
+$Define(DefaultCaseClause)
+defaultCaseClause: KDefault TColon;
+
+$Define(CatchClause)
+catchClause: KCatch (TOpenParen $Property(ExceptionDeclarationOrExpression) value=expression TCloseParen catchFilter?)? $Property(Handler) handler=blockStatement;
+catchFilter: KWhen $Property(Filter) filter=expression;
+finallyClause: KFinally handler=blockStatement;
+
+usingHeader: KUsing TOpenParen $Property(Resources) resource=expression TCloseParen;
+
+expressionList: expression (TComma expression)*;
 
 // Expressions
 

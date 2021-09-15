@@ -814,7 +814,7 @@ namespace MetaDslx.Languages.Meta.Generator
 
         public string GetImmBldReturn(MetaModel mmodel, MetaOperation operation, ClassKind kind)
         {
-            return this.GetImmBldConversion(mmodel, GetMetaType(operation), kind);
+            return this.GetImmBldConversion(mmodel, GetMetaType(operation.Result), kind);
         }
 
         private string GetImmBldConversion(MetaModel mmodel, MetaType type, ClassKind kind)
@@ -871,11 +871,6 @@ namespace MetaDslx.Languages.Meta.Generator
         public MetaType GetMetaType(MetaTypedElement mtypedElement)
         {
             return MetaImplementation.GetMetaType(mtypedElement);
-        }
-
-        public MetaType GetMetaType(MetaOperation mop)
-        {
-            return MetaImplementation.GetMetaType(mop);
         }
 
         public bool UseConstValueForProperty(ImmutableObject obj, ModelProperty prop)

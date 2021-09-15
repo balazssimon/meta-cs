@@ -23,9 +23,32 @@ namespace MetaDslx.Languages.Core.Binding
     public class CoreBinderFactoryVisitor : BinderFactoryVisitor, ICoreSyntaxVisitor<Binder>
     {
 		public static object UseExpression = new object();
+		public static object UseVariable = new object();
+		public static object UseCollection = new object();
 		public static object UseStatement = new object();
-		public static object UseLiteral = new object();
+		public static object UseBefore = new object();
+		public static object UseCondition = new object();
+		public static object UseAtLoopBottom = new object();
+		public static object UseIfTrue = new object();
+		public static object UseIfFalse = new object();
+		public static object UseKBreak = new object();
+		public static object UseKContinue = new object();
+		public static object UseKGoto = new object();
 		public static object UseIdentifier = new object();
+		public static object UseName = new object();
+		public static object UseLockedValue = new object();
+		public static object UseBody = new object();
+		public static object UseReturnedValue = new object();
+		public static object UseValue = new object();
+		public static object UseSwitchCase = new object();
+		public static object UseCatchClause = new object();
+		public static object UseFinallyClause = new object();
+		public static object UseCaseClause = new object();
+		public static object UseBareBlockStatement = new object();
+		public static object UseHandler = new object();
+		public static object UseFilter = new object();
+		public static object UseResource = new object();
+		public static object UseLiteral = new object();
 		public static object UseTypeReference = new object();
 		public static object UsePostfixOperator = new object();
 		public static object UseUnaryOperator = new object();
@@ -43,9 +66,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseTBar = new object();
 		public static object UseTAndAlso = new object();
 		public static object UseTOrElse = new object();
-		public static object UseValue = new object();
 		public static object UseWhenNull = new object();
-		public static object UseCondition = new object();
 		public static object UseWhenTrue = new object();
 		public static object UseWhenFalse = new object();
 		public static object UseTarget = new object();
@@ -95,8 +116,10 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseKString = new object();
 		public static object UseUsingNamespace = new object();
 		public static object Use = new object();
-		public static object UseName = new object();
 		public static object UseQualifier = new object();
+		public static object UseBlockStatement = new object();
+		public static object UseSingleValueCaseClause = new object();
+		public static object UseDefaultCaseClause = new object();
 		public static object UseTupleArguments = new object();
 		public static object UseGenericTypeArguments = new object();
 		public static object UseArgumentList = new object();
@@ -107,7 +130,6 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseImplicitParameterList = new object();
 		public static object UseExplicitParameterList = new object();
 		public static object UseExplicitParameter = new object();
-		public static object UseBlockStatement = new object();
 		public static object UseDotOperator = new object();
 		public static object UseIndexerOperator = new object();
 		public static object UseLeftShiftOperator = new object();
@@ -120,6 +142,8 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
 		public static object UseStringLiteral = new object();
+		public static object UseUsingHeader = new object();
+		public static object UseCatchFilter = new object();
 		public static object UseFieldInitializerExpressions = new object();
 		public static object UseCollectionInitializerExpressions = new object();
 		public static object UseDictionaryInitializerExpression = new object();
@@ -177,7 +201,40 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitStatement(StatementSyntax parent)
+		public Binder VisitEmptyStmt(EmptyStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(EmptyStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitBlockStmt(BlockStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExprStmt(ExprStmtSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -197,6 +254,463 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseExpression)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Expression");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitForeachStmt(ForeachStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Variable)) use = UseVariable;
+				if (LookupPosition.IsInNode(this.Position, parent.Collection)) use = UseCollection;
+				if (LookupPosition.IsInNode(this.Position, parent.Statement)) use = UseStatement;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(ForEachLoopStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseVariable)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Variable, name: "LoopControlVariable");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseCollection)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Collection, name: "Collection");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseStatement)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitForeachStmt(ForeachStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Before)) use = UseBefore;
+				if (LookupPosition.IsInNode(this.Position, parent.Condition)) use = UseCondition;
+				if (LookupPosition.IsInNode(this.Position, parent.AtLoopBottom)) use = UseAtLoopBottom;
+				if (LookupPosition.IsInNode(this.Position, parent.Statement)) use = UseStatement;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(ForLoopStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseBefore)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Before, name: "Before");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseCondition)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Condition, name: "Condition");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseAtLoopBottom)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.AtLoopBottom, name: "AtLoopBottom");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseStatement)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitIfStmt(IfStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Condition)) use = UseCondition;
+				if (LookupPosition.IsInNode(this.Position, parent.IfTrue)) use = UseIfTrue;
+				if (LookupPosition.IsInNode(this.Position, parent.IfFalse)) use = UseIfFalse;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(IfStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseCondition)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Condition, name: "Condition");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseIfTrue)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.IfTrue, name: "IfTrue");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseIfFalse)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.IfFalse, name: "IfFalse");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitBreakStmt(BreakStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.KBreak)) use = UseKBreak;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(JumpStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseKBreak)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.KBreak, name: "JumpKind", value: JumpKind.Break);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitContinueStmt(ContinueStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.KContinue)) use = UseKContinue;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(JumpStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseKContinue)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.KContinue, name: "JumpKind", value: JumpKind.Continue);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitGotoStmt(GotoStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.KGoto)) use = UseKGoto;
+				if (LookupPosition.IsInNode(this.Position, parent.Identifier)) use = UseIdentifier;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(JumpStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseKGoto)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.KGoto, name: "JumpKind", value: JumpKind.Goto);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseIdentifier)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Identifier, name: "Target");
+					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Identifier, types: ImmutableArray.Create(typeof(Label)));
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitLabeledStmt(LabeledStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Name)) use = UseName;
+				if (LookupPosition.IsInNode(this.Position, parent.Statement)) use = UseStatement;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(LabeledStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseName)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Name, name: "Label");
+					resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent.Name, type: typeof(Label));
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseStatement)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement, name: "Statement");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitLockStmt(LockStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.LockedValue)) use = UseLockedValue;
+				if (LookupPosition.IsInNode(this.Position, parent.Body)) use = UseBody;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(LockStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseLockedValue)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.LockedValue, name: "LockedValue");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseBody)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Body, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitReturnStmt(ReturnStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.ReturnedValue)) use = UseReturnedValue;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(ReturnStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseReturnedValue)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.ReturnedValue, name: "ReturnedValue");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitReturnStmt(ReturnStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Value)) use = UseValue;
+				if (LookupPosition.IsInNode(this.Position, parent.SwitchCase.Node)) use = UseSwitchCase;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(SwitchStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseValue)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Value, name: "Value");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseSwitchCase)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.SwitchCase.Node, name: "Cases");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitTryStmt(TryStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Body)) use = UseBody;
+				if (LookupPosition.IsInNode(this.Position, parent.CatchClause.Node)) use = UseCatchClause;
+				if (LookupPosition.IsInNode(this.Position, parent.FinallyClause)) use = UseFinallyClause;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseBody)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Body, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseCatchClause)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.CatchClause.Node, name: "Catches");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseFinallyClause)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.FinallyClause, name: "Finally");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitUsingStmt(UsingStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Body)) use = UseBody;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(UsingStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseBody)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Body, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitWhileStmt(WhileStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Condition)) use = UseCondition;
+				if (LookupPosition.IsInNode(this.Position, parent.Body)) use = UseBody;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(WhileLoopStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseCondition)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Condition, name: "ConditionIsTop", value: true);
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Condition, name: "Condition");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseBody)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Body, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitWhileStmt(WhileStmtSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Body)) use = UseBody;
+				if (LookupPosition.IsInNode(this.Position, parent.Condition)) use = UseCondition;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(WhileLoopStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseBody)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Body, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseCondition)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Condition, name: "ConditionIsTop", value: false);
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Condition, name: "Condition");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -225,6 +739,237 @@ namespace MetaDslx.Languages.Core.Binding
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement.Node, name: "Statements");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitBareBlockStatement(BareBlockStatementSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Statement.Node)) use = UseStatement;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(BlockStatement));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseStatement)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Statement.Node, name: "Statements");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitSwitchCase(SwitchCaseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.CaseClause.Node)) use = UseCaseClause;
+				if (LookupPosition.IsInNode(this.Position, parent.BareBlockStatement)) use = UseBareBlockStatement;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(SwitchCase));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseCaseClause)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.CaseClause.Node, name: "Clauses");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseBareBlockStatement)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.BareBlockStatement, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitCaseClause(CaseClauseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitSingleValueCaseClause(SingleValueCaseClauseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Value)) use = UseValue;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(SingleValueCaseClause));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseValue)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Value, name: "Value");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitDefaultCaseClause(DefaultCaseClauseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(DefaultCaseClause));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitCatchClause(CatchClauseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Value)) use = UseValue;
+				if (LookupPosition.IsInNode(this.Position, parent.Handler)) use = UseHandler;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(CatchClause));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseValue)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Value, name: "ExceptionDeclarationOrExpression");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseHandler)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Handler, name: "Handler");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitCatchFilter(CatchFilterSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Filter)) use = UseFilter;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseFilter)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Filter, name: "Filter");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitFinallyClause(FinallyClauseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitUsingHeader(UsingHeaderSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Resource)) use = UseResource;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseResource)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Resource, name: "Resources");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExpressionList(ExpressionListSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
 		}

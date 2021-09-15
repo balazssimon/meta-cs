@@ -179,7 +179,7 @@ collectionKind
 $Define(MetaOperation)
 $Property(Documentation)
 $Documentation
-operationDeclaration : attribute* operationModifier* $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* operationModifier* $Property(Result) returnParameter name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
 operationModifier : operationModifierBuilder | operationModifierReadonly;
 $Property(name=IsBuilder,value=true) 
@@ -189,6 +189,8 @@ operationModifierReadonly : KReadonly;
 
 parameterList : parameter (TComma parameter)*;
 
+$Define(MetaParameter)
+returnParameter : $Property(Type) returnType;
 $Define(MetaParameter)
 parameter : attribute* $Property(Type) typeReference name;
 

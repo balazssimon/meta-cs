@@ -209,8 +209,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             if (_this.Parameters.Count != operation.Parameters.Count) return false;
             if (_this.Class != null && !_this.Class.ConformsTo(operation.Class)) return false;
             if (_this.Enum != null && !_this.Enum.ConformsTo(operation.Enum)) return false;
-            var thisReturnType = GetMetaType(_this);
-            var otherReturnType = GetMetaType(operation);
+            var thisReturnType = GetMetaType(_this.Result);
+            var otherReturnType = GetMetaType(operation.Result);
             if (thisReturnType == null && otherReturnType != null) return false;
             if (thisReturnType != null && otherReturnType == null) return false;
             if (thisReturnType != null && !thisReturnType.ConformsTo(otherReturnType)) return false;
@@ -246,25 +246,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             return null;
         }
 
-        public static MetaTypeBuilder GetMetaType(MetaOperationBuilder mop)
-        {
-            var type = mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
-            if (type is MetaTypeBuilder mtype) return mtype;
-            if (type is MetaConstantBuilder mconst) return GetMetaConstantType(mconst.Name)?.ToMutable();
-            return null;
-        }
-
         public static MetaType GetMetaType(MetaTypedElement mtypedElement)
         {
             var type = mtypedElement.MGet(MetaDescriptor.MetaTypedElement.TypeProperty);
-            if (type is MetaType mtype) return mtype;
-            if (type is MetaConstant mconst) return GetMetaConstantType(mconst.Name);
-            return null;
-        }
-
-        public static MetaType GetMetaType(MetaOperation mop)
-        {
-            var type = mop.MGet(MetaDescriptor.MetaOperation.ReturnTypeProperty);
             if (type is MetaType mtype) return mtype;
             if (type is MetaConstant mconst) return GetMetaConstantType(mconst.Name);
             return null;

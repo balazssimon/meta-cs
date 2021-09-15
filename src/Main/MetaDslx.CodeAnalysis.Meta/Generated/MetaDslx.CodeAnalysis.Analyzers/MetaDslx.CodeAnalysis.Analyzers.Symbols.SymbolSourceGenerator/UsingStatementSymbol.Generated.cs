@@ -63,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private string _name;
         private string _metadataName;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol> _attributes;
-        private global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol _resources;
+        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> _resources;
         private global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol _body;
 
         public CompletionUsingStatementSymbol(Symbol container, object? modelObject, bool isError = false)
@@ -122,7 +122,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Resources
+        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> Resources
         {
             get
             {
@@ -317,9 +317,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return result;
         }
 
-        protected virtual global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Resources(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected virtual global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol> CompleteSymbolProperty_Resources(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Resources), diagnostics, cancellationToken, out var result);
+            SymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Resources), diagnostics, cancellationToken, out var result);
             return result;
         }
 

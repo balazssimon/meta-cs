@@ -180,8 +180,8 @@
 		bool IsReadonly;
 		[property: Members]
 		containment list<MetaParameter> Parameters;
-		[property: ReturnType]
-		MetaType ReturnType;
+		[property: Result]
+		MetaParameter Result;
 		bool ConformsTo(MetaOperation operation);
 	}
 

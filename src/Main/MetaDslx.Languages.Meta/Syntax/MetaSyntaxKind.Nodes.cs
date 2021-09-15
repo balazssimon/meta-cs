@@ -85,6 +85,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string OperationModifierBuilder = nameof(OperationModifierBuilder);
 		public const string OperationModifierReadonly = nameof(OperationModifierReadonly);
 		public const string ParameterList = nameof(ParameterList);
+		public const string ReturnParameter = nameof(ReturnParameter);
 		public const string Parameter = nameof(Parameter);
 		public const string AssociationDeclaration = nameof(AssociationDeclaration);
 		public const string Identifier = nameof(Identifier);

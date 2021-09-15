@@ -3111,7 +3111,7 @@ namespace MetaDslx.Languages.Core.Model
 		new ExpressionStatement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface ForEachLoopStatement : Statement
+	public interface ForEachLoopStatement : LoopStatement
 	{
 		Expression LoopControlVariable { get; }
 		Expression Collection { get; }
@@ -3129,7 +3129,7 @@ namespace MetaDslx.Languages.Core.Model
 		new ForEachLoopStatementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface ForEachLoopStatementBuilder : StatementBuilder
+	public interface ForEachLoopStatementBuilder : LoopStatementBuilder
 	{
 		ExpressionBuilder LoopControlVariable { get; set; }
 		void SetLoopControlVariableLazy(global::System.Func<ExpressionBuilder> lazy);
@@ -3153,11 +3153,11 @@ namespace MetaDslx.Languages.Core.Model
 		new ForEachLoopStatement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface ForLoopStatement : Statement
+	public interface ForLoopStatement : LoopStatement
 	{
-		global::MetaDslx.Modeling.ImmutableModelList<Statement> Before { get; }
+		global::MetaDslx.Modeling.ImmutableModelList<Expression> Before { get; }
 		Expression Condition { get; }
-		global::MetaDslx.Modeling.ImmutableModelList<Statement> AtLoopBottom { get; }
+		global::MetaDslx.Modeling.ImmutableModelList<Expression> AtLoopBottom { get; }
 	
 	
 		/// <summary>
@@ -3172,14 +3172,14 @@ namespace MetaDslx.Languages.Core.Model
 		new ForLoopStatementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface ForLoopStatementBuilder : StatementBuilder
+	public interface ForLoopStatementBuilder : LoopStatementBuilder
 	{
-		global::MetaDslx.Modeling.MutableModelList<StatementBuilder> Before { get; }
+		global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> Before { get; }
 		ExpressionBuilder Condition { get; set; }
 		void SetConditionLazy(global::System.Func<ExpressionBuilder> lazy);
 		void SetConditionLazy(global::System.Func<ForLoopStatementBuilder, ExpressionBuilder> lazy);
 		void SetConditionLazy(global::System.Func<ForLoopStatement, Expression> immutableLazy, global::System.Func<ForLoopStatementBuilder, ExpressionBuilder> mutableLazy);
-		global::MetaDslx.Modeling.MutableModelList<StatementBuilder> AtLoopBottom { get; }
+		global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> AtLoopBottom { get; }
 	
 	
 		/// <summary>
@@ -3194,7 +3194,7 @@ namespace MetaDslx.Languages.Core.Model
 		new ForLoopStatement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface ForToLoopStatement : Statement
+	public interface ForToLoopStatement : LoopStatement
 	{
 		Expression LoopControlVariable { get; }
 		Expression InitialValue { get; }
@@ -3214,7 +3214,7 @@ namespace MetaDslx.Languages.Core.Model
 		new ForToLoopStatementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface ForToLoopStatementBuilder : StatementBuilder
+	public interface ForToLoopStatementBuilder : LoopStatementBuilder
 	{
 		ExpressionBuilder LoopControlVariable { get; set; }
 		void SetLoopControlVariableLazy(global::System.Func<ExpressionBuilder> lazy);
@@ -3775,7 +3775,7 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface UsingStatement : Statement
 	{
-		Expression Resources { get; }
+		global::MetaDslx.Modeling.ImmutableModelList<Expression> Resources { get; }
 		Statement Body { get; }
 	
 	
@@ -3793,10 +3793,7 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface UsingStatementBuilder : StatementBuilder
 	{
-		ExpressionBuilder Resources { get; set; }
-		void SetResourcesLazy(global::System.Func<ExpressionBuilder> lazy);
-		void SetResourcesLazy(global::System.Func<UsingStatementBuilder, ExpressionBuilder> lazy);
-		void SetResourcesLazy(global::System.Func<UsingStatement, Expression> immutableLazy, global::System.Func<UsingStatementBuilder, ExpressionBuilder> mutableLazy);
+		global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> Resources { get; }
 		StatementBuilder Body { get; set; }
 		void SetBodyLazy(global::System.Func<StatementBuilder> lazy);
 		void SetBodyLazy(global::System.Func<UsingStatementBuilder, StatementBuilder> lazy);
@@ -3815,7 +3812,7 @@ namespace MetaDslx.Languages.Core.Model
 		new UsingStatement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface WhileLoopStatement : Statement
+	public interface WhileLoopStatement : LoopStatement
 	{
 		Expression Condition { get; }
 		bool ConditionIsTop { get; }
@@ -3834,7 +3831,7 @@ namespace MetaDslx.Languages.Core.Model
 		new WhileLoopStatementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface WhileLoopStatementBuilder : StatementBuilder
+	public interface WhileLoopStatementBuilder : LoopStatementBuilder
 	{
 		ExpressionBuilder Condition { get; set; }
 		void SetConditionLazy(global::System.Func<ExpressionBuilder> lazy);
@@ -7094,7 +7091,7 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ForEachLoopStatementSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ForEachLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.ForEachLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.ForEachLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Statement) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ForEachLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.ForEachLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.ForEachLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.LoopStatement) })]
 		public static class ForEachLoopStatement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -7138,7 +7135,7 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ForLoopStatementSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ForLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.ForLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.ForLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Statement) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ForLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.ForLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.ForLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.LoopStatement) })]
 		public static class ForLoopStatement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -7168,8 +7165,8 @@ namespace MetaDslx.Languages.Core.Model
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty BeforeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ForLoopStatement), name: "Before",
-			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Statement),
-			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.StatementBuilder),
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Expression),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ExpressionBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.ForLoopStatement_Before,
 					defaultValue: null);
 			
@@ -7188,14 +7185,14 @@ namespace MetaDslx.Languages.Core.Model
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty AtLoopBottomProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ForLoopStatement), name: "AtLoopBottom",
-			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Statement),
-			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.StatementBuilder),
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Expression),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ExpressionBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.ForLoopStatement_AtLoopBottom,
 					defaultValue: null);
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.ForToLoopStatementSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ForToLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.ForToLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.ForToLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Statement) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.ForToLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.ForToLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.ForToLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.LoopStatement) })]
 		public static class ForToLoopStatement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -7840,6 +7837,8 @@ namespace MetaDslx.Languages.Core.Model
 			}
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Resources")]
+			[global::MetaDslx.Modeling.CollectionAttribute]
+			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ResourcesProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(UsingStatement), name: "Resources",
@@ -7859,7 +7858,7 @@ namespace MetaDslx.Languages.Core.Model
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.WhileLoopStatementSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.WhileLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.WhileLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.WhileLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Statement) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.WhileLoopStatementId), typeof(global::MetaDslx.Languages.Core.Model.WhileLoopStatement), typeof(global::MetaDslx.Languages.Core.Model.WhileLoopStatementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.LoopStatement) })]
 		public static class WhileLoopStatement
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -24884,6 +24883,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Statement body0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression loopControlVariable0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression collection0;
@@ -24927,10 +24928,26 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		LoopStatementBuilder LoopStatement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		LoopStatementBuilder LoopStatement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public Statement Body
+		{
+		    get { return this.GetReference<Statement>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, ref body0); }
 		}
 	
 		
@@ -24994,10 +25011,42 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		LoopStatement LoopStatementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		LoopStatement LoopStatementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public StatementBuilder Body
+		{
+			get { return this.GetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty); }
+			set { this.SetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, value); }
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatementBuilder, StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatement, Statement> immutableLazy, global::System.Func<LoopStatementBuilder, StatementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -25065,11 +25114,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<Statement> before0;
+		private Statement body0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Expression> before0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression condition0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<Statement> atLoopBottom0;
+		private global::MetaDslx.Modeling.ImmutableModelList<Expression> atLoopBottom0;
 	
 		internal ForLoopStatementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -25110,6 +25161,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		LoopStatementBuilder LoopStatement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		LoopStatementBuilder LoopStatement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
@@ -25117,9 +25178,15 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<Statement> Before
+		public Statement Body
 		{
-		    get { return this.GetList<Statement>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.BeforeProperty, ref before0); }
+		    get { return this.GetReference<Statement>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, ref body0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Expression> Before
+		{
+		    get { return this.GetList<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.BeforeProperty, ref before0); }
 		}
 	
 		
@@ -25129,17 +25196,17 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<Statement> AtLoopBottom
+		public global::MetaDslx.Modeling.ImmutableModelList<Expression> AtLoopBottom
 		{
-		    get { return this.GetList<Statement>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.AtLoopBottomProperty, ref atLoopBottom0); }
+		    get { return this.GetList<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.AtLoopBottomProperty, ref atLoopBottom0); }
 		}
 	}
 	
 	internal class ForLoopStatementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ForLoopStatementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
-		private global::MetaDslx.Modeling.MutableModelList<StatementBuilder> before0;
-		private global::MetaDslx.Modeling.MutableModelList<StatementBuilder> atLoopBottom0;
+		private global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> before0;
+		private global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> atLoopBottom0;
 	
 		internal ForLoopStatementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -25185,6 +25252,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		LoopStatement LoopStatementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		LoopStatement LoopStatementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
@@ -25192,9 +25269,31 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.MutableModelList<StatementBuilder> Before
+		public StatementBuilder Body
 		{
-			get { return this.GetList<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.BeforeProperty, ref before0); }
+			get { return this.GetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty); }
+			set { this.SetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, value); }
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatementBuilder, StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatement, Statement> immutableLazy, global::System.Func<LoopStatementBuilder, StatementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> Before
+		{
+			get { return this.GetList<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.BeforeProperty, ref before0); }
 		}
 	
 		
@@ -25220,9 +25319,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.MutableModelList<StatementBuilder> AtLoopBottom
+		public global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> AtLoopBottom
 		{
-			get { return this.GetList<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.AtLoopBottomProperty, ref atLoopBottom0); }
+			get { return this.GetList<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ForLoopStatement.AtLoopBottomProperty, ref atLoopBottom0); }
 		}
 	}
 	
@@ -25245,6 +25344,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Statement body0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression loopControlVariable0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -25293,10 +25394,26 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		LoopStatementBuilder LoopStatement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		LoopStatementBuilder LoopStatement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public Statement Body
+		{
+		    get { return this.GetReference<Statement>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, ref body0); }
 		}
 	
 		
@@ -25372,10 +25489,42 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		LoopStatement LoopStatementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		LoopStatement LoopStatementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public StatementBuilder Body
+		{
+			get { return this.GetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty); }
+			set { this.SetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, value); }
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatementBuilder, StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatement, Statement> immutableLazy, global::System.Func<LoopStatementBuilder, StatementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -27735,7 +27884,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Expression resources0;
+		private global::MetaDslx.Modeling.ImmutableModelList<Expression> resources0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Statement body0;
 	
@@ -27785,9 +27934,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public Expression Resources
+		public global::MetaDslx.Modeling.ImmutableModelList<Expression> Resources
 		{
-		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.UsingStatement.ResourcesProperty, ref resources0); }
+		    get { return this.GetList<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.UsingStatement.ResourcesProperty, ref resources0); }
 		}
 	
 		
@@ -27800,6 +27949,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	internal class UsingStatementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, UsingStatementBuilder
 	{
 		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
+		private global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> resources0;
 	
 		internal UsingStatementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -27852,25 +28002,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public ExpressionBuilder Resources
+		public global::MetaDslx.Modeling.MutableModelList<ExpressionBuilder> Resources
 		{
-			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.UsingStatement.ResourcesProperty); }
-			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.UsingStatement.ResourcesProperty, value); }
-		}
-		
-		void UsingStatementBuilder.SetResourcesLazy(global::System.Func<ExpressionBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.UsingStatement.ResourcesProperty, lazy);
-		}
-		
-		void UsingStatementBuilder.SetResourcesLazy(global::System.Func<UsingStatementBuilder, ExpressionBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.UsingStatement.ResourcesProperty, lazy);
-		}
-		
-		void UsingStatementBuilder.SetResourcesLazy(global::System.Func<UsingStatement, Expression> immutableLazy, global::System.Func<UsingStatementBuilder, ExpressionBuilder> mutableLazy)
-		{
-			this.SetLazyReference(CoreDescriptor.UsingStatement.ResourcesProperty, immutableLazy, mutableLazy);
+			get { return this.GetList<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.UsingStatement.ResourcesProperty, ref resources0); }
 		}
 	
 		
@@ -27915,6 +28049,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Statement body0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression condition0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -27961,10 +28097,26 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		LoopStatementBuilder LoopStatement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		LoopStatementBuilder LoopStatement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
 		{
 		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public Statement Body
+		{
+		    get { return this.GetReference<Statement>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, ref body0); }
 		}
 	
 		
@@ -28034,10 +28186,42 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		LoopStatement LoopStatementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		LoopStatement LoopStatementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		
 		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
 		{
 			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public StatementBuilder Body
+		{
+			get { return this.GetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty); }
+			set { this.SetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LoopStatement.BodyProperty, value); }
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatementBuilder, StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, lazy);
+		}
+		
+		void LoopStatementBuilder.SetBodyLazy(global::System.Func<LoopStatement, Statement> immutableLazy, global::System.Func<LoopStatementBuilder, StatementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.LoopStatement.BodyProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -34970,6 +35154,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp47;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp48;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp49;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp50;
 	
 		internal CoreBuilderInstance()
 		{
@@ -35349,6 +35534,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp47 = factory.MetaCollectionType();
 			__tmp48 = factory.MetaCollectionType();
 			__tmp49 = factory.MetaCollectionType();
+			__tmp50 = factory.MetaCollectionType();
 	
 			__tmp1.Documentation = null;
 			__tmp1.Name = "MetaDslx";
@@ -36366,7 +36552,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ForEachLoopStatement.SetNamespaceLazy(() => __tmp4);
 			ForEachLoopStatement.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.ForEachLoopStatementSymbol);
 			ForEachLoopStatement.IsAbstract = false;
-			ForEachLoopStatement.SuperClasses.AddLazy(() => Statement);
+			ForEachLoopStatement.SuperClasses.AddLazy(() => LoopStatement);
 			ForEachLoopStatement.Properties.AddLazy(() => ForEachLoopStatement_LoopControlVariable);
 			ForEachLoopStatement.Properties.AddLazy(() => ForEachLoopStatement_Collection);
 			ForEachLoopStatement_LoopControlVariable.SetTypeLazy(() => Expression);
@@ -36390,7 +36576,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ForLoopStatement.SetNamespaceLazy(() => __tmp4);
 			ForLoopStatement.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.ForLoopStatementSymbol);
 			ForLoopStatement.IsAbstract = false;
-			ForLoopStatement.SuperClasses.AddLazy(() => Statement);
+			ForLoopStatement.SuperClasses.AddLazy(() => LoopStatement);
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_Before);
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_Condition);
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_AtLoopBottom);
@@ -36423,7 +36609,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ForToLoopStatement.SetNamespaceLazy(() => __tmp4);
 			ForToLoopStatement.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.ForToLoopStatementSymbol);
 			ForToLoopStatement.IsAbstract = false;
-			ForToLoopStatement.SuperClasses.AddLazy(() => Statement);
+			ForToLoopStatement.SuperClasses.AddLazy(() => LoopStatement);
 			ForToLoopStatement.Properties.AddLazy(() => ForToLoopStatement_LoopControlVariable);
 			ForToLoopStatement.Properties.AddLazy(() => ForToLoopStatement_InitialValue);
 			ForToLoopStatement.Properties.AddLazy(() => ForToLoopStatement_LimitValue);
@@ -36762,7 +36948,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			UsingStatement.SuperClasses.AddLazy(() => Statement);
 			UsingStatement.Properties.AddLazy(() => UsingStatement_Resources);
 			UsingStatement.Properties.AddLazy(() => UsingStatement_Body);
-			UsingStatement_Resources.SetTypeLazy(() => Expression);
+			UsingStatement_Resources.SetTypeLazy(() => __tmp42);
 			UsingStatement_Resources.Documentation = null;
 			UsingStatement_Resources.Name = "Resources";
 			UsingStatement_Resources.SymbolProperty = "Resources";
@@ -36783,7 +36969,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			WhileLoopStatement.SetNamespaceLazy(() => __tmp4);
 			WhileLoopStatement.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.WhileLoopStatementSymbol);
 			WhileLoopStatement.IsAbstract = false;
-			WhileLoopStatement.SuperClasses.AddLazy(() => Statement);
+			WhileLoopStatement.SuperClasses.AddLazy(() => LoopStatement);
 			WhileLoopStatement.Properties.AddLazy(() => WhileLoopStatement_Condition);
 			WhileLoopStatement.Properties.AddLazy(() => WhileLoopStatement_ConditionIsTop);
 			WhileLoopStatement.Properties.AddLazy(() => WhileLoopStatement_ConditionIsUntil);
@@ -37132,7 +37318,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IndexerAccessExpression_IsNullConditional.SetClassLazy(() => IndexerAccessExpression);
 			IndexerAccessExpression_IsNullConditional.DefaultValue = null;
 			IndexerAccessExpression_IsNullConditional.IsContainment = false;
-			IndexerAccessExpression_Arguments.SetTypeLazy(() => __tmp42);
+			IndexerAccessExpression_Arguments.SetTypeLazy(() => __tmp43);
 			IndexerAccessExpression_Arguments.Documentation = null;
 			IndexerAccessExpression_Arguments.Name = "Arguments";
 			IndexerAccessExpression_Arguments.SymbolProperty = "Arguments";
@@ -37179,7 +37365,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			InvocationExpression_Receiver.SetClassLazy(() => InvocationExpression);
 			InvocationExpression_Receiver.DefaultValue = null;
 			InvocationExpression_Receiver.IsContainment = true;
-			InvocationExpression_Arguments.SetTypeLazy(() => __tmp43);
+			InvocationExpression_Arguments.SetTypeLazy(() => __tmp44);
 			InvocationExpression_Arguments.Documentation = null;
 			InvocationExpression_Arguments.Name = "Arguments";
 			InvocationExpression_Arguments.SymbolProperty = "Arguments";
@@ -37237,7 +37423,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			LambdaExpression_ReturnType.SetClassLazy(() => LambdaExpression);
 			LambdaExpression_ReturnType.DefaultValue = null;
 			LambdaExpression_ReturnType.IsContainment = false;
-			LambdaExpression_Parameters.SetTypeLazy(() => __tmp44);
+			LambdaExpression_Parameters.SetTypeLazy(() => __tmp45);
 			LambdaExpression_Parameters.Documentation = null;
 			LambdaExpression_Parameters.Name = "Parameters";
 			LambdaExpression_Parameters.SymbolProperty = "Parameters";
@@ -37324,7 +37510,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ObjectCreationExpression_ObjectType.SetClassLazy(() => ObjectCreationExpression);
 			ObjectCreationExpression_ObjectType.DefaultValue = null;
 			ObjectCreationExpression_ObjectType.IsContainment = false;
-			ObjectCreationExpression_Arguments.SetTypeLazy(() => __tmp45);
+			ObjectCreationExpression_Arguments.SetTypeLazy(() => __tmp46);
 			ObjectCreationExpression_Arguments.Documentation = null;
 			ObjectCreationExpression_Arguments.Name = "Arguments";
 			ObjectCreationExpression_Arguments.SymbolProperty = "Arguments";
@@ -37332,7 +37518,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ObjectCreationExpression_Arguments.SetClassLazy(() => ObjectCreationExpression);
 			ObjectCreationExpression_Arguments.DefaultValue = null;
 			ObjectCreationExpression_Arguments.IsContainment = true;
-			ObjectCreationExpression_Initializers.SetTypeLazy(() => __tmp46);
+			ObjectCreationExpression_Initializers.SetTypeLazy(() => __tmp47);
 			ObjectCreationExpression_Initializers.Documentation = null;
 			ObjectCreationExpression_Initializers.Name = "Initializers";
 			ObjectCreationExpression_Initializers.SymbolProperty = "Arguments";
@@ -37383,7 +37569,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ReferenceExpression_IsNullConditional.SetClassLazy(() => ReferenceExpression);
 			ReferenceExpression_IsNullConditional.DefaultValue = null;
 			ReferenceExpression_IsNullConditional.IsContainment = false;
-			ReferenceExpression_TypeArguments.SetTypeLazy(() => __tmp47);
+			ReferenceExpression_TypeArguments.SetTypeLazy(() => __tmp48);
 			ReferenceExpression_TypeArguments.Documentation = null;
 			ReferenceExpression_TypeArguments.Name = "TypeArguments";
 			ReferenceExpression_TypeArguments.SymbolProperty = "TypeArguments";
@@ -37467,7 +37653,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			TupleExpression.IsAbstract = false;
 			TupleExpression.SuperClasses.AddLazy(() => Expression);
 			TupleExpression.Properties.AddLazy(() => TupleExpression_Arguments);
-			TupleExpression_Arguments.SetTypeLazy(() => __tmp48);
+			TupleExpression_Arguments.SetTypeLazy(() => __tmp49);
 			TupleExpression_Arguments.Documentation = null;
 			TupleExpression_Arguments.Name = "Arguments";
 			TupleExpression_Arguments.SymbolProperty = "Arguments";
@@ -37549,7 +37735,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			VariableDeclarationGroupExpression.SuperClasses.AddLazy(() => Expression);
 			VariableDeclarationGroupExpression.Properties.AddLazy(() => VariableDeclarationGroupExpression_Declarations);
 			VariableDeclarationGroupExpression.Properties.AddLazy(() => VariableDeclarationGroupExpression_Initializer);
-			VariableDeclarationGroupExpression_Declarations.SetTypeLazy(() => __tmp49);
+			VariableDeclarationGroupExpression_Declarations.SetTypeLazy(() => __tmp50);
 			VariableDeclarationGroupExpression_Declarations.Documentation = null;
 			VariableDeclarationGroupExpression_Declarations.Name = "Declarations";
 			VariableDeclarationGroupExpression_Declarations.SymbolProperty = "Declarations";
@@ -37588,9 +37774,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp36.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp36.SetInnerTypeLazy(() => Statement);
 			__tmp37.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp37.SetInnerTypeLazy(() => Statement);
+			__tmp37.SetInnerTypeLazy(() => Expression);
 			__tmp38.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp38.SetInnerTypeLazy(() => Statement);
+			__tmp38.SetInnerTypeLazy(() => Expression);
 			__tmp39.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp39.SetInnerTypeLazy(() => SwitchCase);
 			__tmp40.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
@@ -37598,21 +37784,23 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp41.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp41.SetInnerTypeLazy(() => CatchClause);
 			__tmp42.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp42.SetInnerTypeLazy(() => Argument);
+			__tmp42.SetInnerTypeLazy(() => Expression);
 			__tmp43.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp43.SetInnerTypeLazy(() => Argument);
 			__tmp44.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp44.SetInnerTypeLazy(() => Parameter);
+			__tmp44.SetInnerTypeLazy(() => Argument);
 			__tmp45.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp45.SetInnerTypeLazy(() => Argument);
+			__tmp45.SetInnerTypeLazy(() => Parameter);
 			__tmp46.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp46.SetInnerTypeLazy(() => Expression);
+			__tmp46.SetInnerTypeLazy(() => Argument);
 			__tmp47.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp47.SetInnerTypeLazy(() => DataType);
+			__tmp47.SetInnerTypeLazy(() => Expression);
 			__tmp48.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp48.SetInnerTypeLazy(() => Argument);
+			__tmp48.SetInnerTypeLazy(() => DataType);
 			__tmp49.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp49.SetInnerTypeLazy(() => VariableDeclarationExpression);
+			__tmp49.SetInnerTypeLazy(() => Argument);
+			__tmp50.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp50.SetInnerTypeLazy(() => VariableDeclarationExpression);
 		}
 	}
 
@@ -39216,12 +39404,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>Element</li>
 		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		public virtual void ForEachLoopStatement(ForEachLoopStatementBuilder _this)
 		{
@@ -39235,6 +39424,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			this.Element(_this);
 			this.Statement(_this);
+			this.LoopStatement(_this);
 		}
 	
 	
@@ -39245,12 +39435,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>Element</li>
 		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		public virtual void ForLoopStatement(ForLoopStatementBuilder _this)
 		{
@@ -39264,6 +39455,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			this.Element(_this);
 			this.Statement(_this);
+			this.LoopStatement(_this);
 		}
 	
 	
@@ -39274,12 +39466,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>Element</li>
 		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		public virtual void ForToLoopStatement(ForToLoopStatementBuilder _this)
 		{
@@ -39293,6 +39486,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			this.Element(_this);
 			this.Statement(_this);
+			this.LoopStatement(_this);
 		}
 	
 	
@@ -39703,12 +39897,13 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>Element</li>
 		///     <li>Statement</li>
+		///     <li>LoopStatement</li>
 		/// </ul>
 		public virtual void WhileLoopStatement(WhileLoopStatementBuilder _this)
 		{
@@ -39722,6 +39917,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		{
 			this.Element(_this);
 			this.Statement(_this);
+			this.LoopStatement(_this);
 		}
 	
 	

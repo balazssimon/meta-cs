@@ -11,7 +11,6 @@ extern function string ToCSharpAlias(string name)
 extern function string GenerateDefaultValue(MetaProperty property)
 extern function IEnumerable<ValueTuple<MetaProperty,MetaProperty>> GetAssociations(IEnumerable<ImmutableObject> objects)
 extern function MetaElement GetType(MetaTypedElement melem)
-extern function MetaElement GetReturnType(MetaOperation mop)
 
 template Generate(MetaModel metaModel)
 namespace [metaModel.Namespace.FullName]
@@ -152,7 +151,7 @@ template GenerateOperation(MetaOperation op)
 end template
 
 template GenerateReturnType(MetaOperation op)
-[var returnType = GetReturnType(op)]
+[var returnType = GetType(op.Result)]
 [if (op.IsReadonly)]
 readonly \
 [end if]
