@@ -36,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <see cref="LoopStatementSymbol.Body" /> and <see cref="AtLoopBottom" />.
         /// They are considered to be declared per iteration.
         /// </summary>
-        public virtual ImmutableArray<LocalSymbol> ConditionLocals { get; }
+        public virtual ImmutableArray<LocalSymbol> ConditionLocals => Condition.DeclaredLocals;
 
         protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

@@ -16,10 +16,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract ImmutableArray<StatementSymbol> Statements { get; }
-        
-        /// <summary>
-        /// Local declarations contained within the block.
-        /// </summary>
-        public virtual ImmutableArray<LocalSymbol> Locals { get; }
     }
 }

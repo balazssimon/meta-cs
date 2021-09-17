@@ -26,15 +26,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
             public static readonly CompletionPart FinishComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.FinishComputingProperty_Attributes;
             public static readonly CompletionPart StartComputingProperty_Body = MetaDslx.CodeAnalysis.Symbols.LoopStatementSymbol.CompletionParts.StartComputingProperty_Body;
             public static readonly CompletionPart FinishComputingProperty_Body = MetaDslx.CodeAnalysis.Symbols.LoopStatementSymbol.CompletionParts.FinishComputingProperty_Body;
+            public static readonly CompletionPart StartComputingProperty_ContinueLabel = MetaDslx.CodeAnalysis.Symbols.LoopStatementSymbol.CompletionParts.StartComputingProperty_ContinueLabel;
+            public static readonly CompletionPart FinishComputingProperty_ContinueLabel = MetaDslx.CodeAnalysis.Symbols.LoopStatementSymbol.CompletionParts.FinishComputingProperty_ContinueLabel;
+            public static readonly CompletionPart StartComputingProperty_ExitLabel = MetaDslx.CodeAnalysis.Symbols.LoopStatementSymbol.CompletionParts.StartComputingProperty_ExitLabel;
+            public static readonly CompletionPart FinishComputingProperty_ExitLabel = MetaDslx.CodeAnalysis.Symbols.LoopStatementSymbol.CompletionParts.FinishComputingProperty_ExitLabel;
             public static readonly CompletionPart StartComputingProperty_Condition = new CompletionPart(nameof(StartComputingProperty_Condition));
             public static readonly CompletionPart FinishComputingProperty_Condition = new CompletionPart(nameof(FinishComputingProperty_Condition));
             public static readonly CompletionPart StartComputingProperty_ConditionIsTop = new CompletionPart(nameof(StartComputingProperty_ConditionIsTop));
             public static readonly CompletionPart FinishComputingProperty_ConditionIsTop = new CompletionPart(nameof(FinishComputingProperty_ConditionIsTop));
             public static readonly CompletionPart StartComputingProperty_ConditionIsUntil = new CompletionPart(nameof(StartComputingProperty_ConditionIsUntil));
             public static readonly CompletionPart FinishComputingProperty_ConditionIsUntil = new CompletionPart(nameof(FinishComputingProperty_ConditionIsUntil));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_ConditionIsTop, FinishComputingProperty_ConditionIsTop, StartComputingProperty_ConditionIsUntil, FinishComputingProperty_ConditionIsUntil, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_ConditionIsTop, FinishComputingProperty_ConditionIsTop, StartComputingProperty_ConditionIsUntil, FinishComputingProperty_ConditionIsUntil, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_ConditionIsTop, FinishComputingProperty_ConditionIsTop, StartComputingProperty_ConditionIsUntil, FinishComputingProperty_ConditionIsUntil, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_ContinueLabel, FinishComputingProperty_ContinueLabel, StartComputingProperty_ExitLabel, FinishComputingProperty_ExitLabel, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_ConditionIsTop, FinishComputingProperty_ConditionIsTop, StartComputingProperty_ConditionIsUntil, FinishComputingProperty_ConditionIsUntil, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_ContinueLabel, FinishComputingProperty_ContinueLabel, StartComputingProperty_ExitLabel, FinishComputingProperty_ExitLabel, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_ConditionIsTop, FinishComputingProperty_ConditionIsTop, StartComputingProperty_ConditionIsUntil, FinishComputingProperty_ConditionIsUntil, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Body, FinishComputingProperty_Body, StartComputingProperty_ContinueLabel, FinishComputingProperty_ContinueLabel, StartComputingProperty_ExitLabel, FinishComputingProperty_ExitLabel, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_ConditionIsTop, FinishComputingProperty_ConditionIsTop, StartComputingProperty_ConditionIsUntil, FinishComputingProperty_ConditionIsUntil, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
         }
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
@@ -68,6 +72,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private string _metadataName;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol> _attributes;
         private global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol _body;
+        private global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol _continueLabel;
+        private global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol _exitLabel;
         private global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol _condition;
         private bool _conditionIsTop;
         private bool _conditionIsUntil;
@@ -134,6 +140,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             {
                 this.ForceComplete(CompletionParts.FinishComputingProperty_Body, null, default);
                 return _body;
+            }
+        }
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol ContinueLabel
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_ContinueLabel, null, default);
+                return _continueLabel;
+            }
+        }
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol ExitLabel
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_ExitLabel, null, default);
+                return _exitLabel;
             }
         }
 
@@ -225,6 +249,28 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Body);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartComputingProperty_ContinueLabel || incompletePart == CompletionParts.FinishComputingProperty_ContinueLabel)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ContinueLabel))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _continueLabel = CompleteSymbolProperty_ContinueLabel(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ContinueLabel);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartComputingProperty_ExitLabel || incompletePart == CompletionParts.FinishComputingProperty_ExitLabel)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ExitLabel))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _exitLabel = CompleteSymbolProperty_ExitLabel(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ExitLabel);
                     }
                 }
                 else if (incompletePart == CompletionParts.StartComputingProperty_Condition || incompletePart == CompletionParts.FinishComputingProperty_Condition)
@@ -366,6 +412,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         protected virtual global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol CompleteSymbolProperty_Body(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol>(this, nameof(Body), diagnostics, cancellationToken, out var result);
+            return result;
+        }
+
+        protected virtual global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol CompleteSymbolProperty_ContinueLabel(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol>(this, nameof(ContinueLabel), diagnostics, cancellationToken, out var result);
+            return result;
+        }
+
+        protected virtual global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol CompleteSymbolProperty_ExitLabel(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol>(this, nameof(ExitLabel), diagnostics, cancellationToken, out var result);
             return result;
         }
 

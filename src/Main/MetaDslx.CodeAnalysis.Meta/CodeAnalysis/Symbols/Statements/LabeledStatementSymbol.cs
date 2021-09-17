@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.PooledObjects;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,5 +22,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract StatementSymbol? Statement { get; }
+
+        protected override void AddDeclaredLocals(ArrayBuilder<LocalSymbol> result)
+        {
+            base.AddDeclaredLocals(result);
+            result.Add(this.Label);
+        }
     }
 }

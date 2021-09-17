@@ -275,7 +275,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     continue;
                 }
                 var qualifiedName = syntaxFacts.ExtractQualifiedName(@using);
-                var imported = usingsBinder.BindQualifiedName(qualifiedName, null, diagnostics, new LookupConstraints(usingsBinder, inUsing: true)).LastOrDefault();
+                var imported = usingsBinder.BindQualifiedName(qualifiedName, null, diagnostics, new LookupConstraints(usingsBinder, location: null, inUsing: true)).LastOrDefault();
                 if (uniqueUsings.Add(imported))
                 {
                     boundUsings.Add(new DeclaredSymbolAndUsingDirective(imported, null));

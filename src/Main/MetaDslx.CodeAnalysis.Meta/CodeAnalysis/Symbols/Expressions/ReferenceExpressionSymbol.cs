@@ -53,9 +53,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual DeclaredSymbol ReferencedSymbol { get; }
 
-        public override bool IsConstant => ReferencedSymbol is TypeSymbol;
+        public override bool IsConstant
+        {
+            get
+            {
+                if (this.ReferencedSymbol is TypeSymbol) return true;
+                if (this.ReferencedSymbol is VariableSymbol variable) return variable.IsConst ?? false;
+                if (this.ReferencedSymbol is FieldLikeSymbol field) return false;
+                return false;
+            }
+        }
 
-        public override TypeSymbol? Type => ReferencedSymbol as TypeSymbol;
+        public override TypeSymbol? Type
+        {
+            get
+            {
+                if (this.ReferencedSymbol is TypeSymbol type) return type;
+                if (this.ReferencedSymbol is VariableSymbol variable) return variable.Type;
+                if (this.ReferencedSymbol is FieldLikeSymbol field) return field.Type;
+                return null;
+            }
+        }
     }
 
 
@@ -67,7 +85,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             protected virtual DeclaredSymbol? CompleteSymbolProperty_ReferencedSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
-                if (SymbolImplementation.AssignSymbolPropertyValue<UnaryOperatorSymbol>(this, nameof(ReferencedSymbol), diagnostics, cancellationToken, out var result))
+                if (SymbolImplementation.AssignSymbolPropertyValue<DeclaredSymbol>(this, nameof(ReferencedSymbol), diagnostics, cancellationToken, out var result))
                 {
                     return result;
                 }
@@ -90,7 +108,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     if (sourceLocation is null) continue;
                     var binder = compilation.GetBinder(sourceLocation.GetSyntax());
                     if (binder is null) continue;
-                    binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(binder, this.Name, this.MetadataName, qualifierOpt));
+                    binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(binder, sourceLocation, this.Name, this.MetadataName, qualifierOpt));
                 }
                 var isMethod = false;
                 var isProperty = false;

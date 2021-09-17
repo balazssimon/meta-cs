@@ -86,9 +86,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             candidates.Free();
         }
 
-        public void AddCompletionSymbols(LookupCandidates result, LookupConstraints? constraints = null)
+        public void AddCompletionSymbols(LookupCandidates result, LookupConstraints constraints)
         {
-            if (constraints is null) constraints = new LookupConstraints(this, diagnose: false);
             this.AddLookupCandidateSymbols(result, constraints);
         }
 

@@ -398,6 +398,8 @@ namespace MetaDslx.CodeAnalysis
             SyntaxToken token;
             position = CheckAndAdjustPosition(position, out token);
 
+            var location = this.SyntaxTree.GetLocation(TextSpan.FromBounds(position, position));
+
             if (container is null || container is NamespaceSymbol)
             {
                 options &= ~LookupOptions.IncludeExtensionMethods;
@@ -434,11 +436,11 @@ namespace MetaDslx.CodeAnalysis
 
             if (container is null)
             {
-                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(originalBinder: binder, name: name));
+                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(originalBinder: binder, location: location, name: name));
             }
             else
             {
-                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(originalBinder: binder, name: name, qualifierOpt: container));
+                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(originalBinder: binder, location: location, name: name, qualifierOpt: container));
             }
 
 

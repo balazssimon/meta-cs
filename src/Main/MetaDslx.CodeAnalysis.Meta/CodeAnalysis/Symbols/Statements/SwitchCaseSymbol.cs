@@ -22,10 +22,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract StatementSymbol Body { get; }
-
-        /// <summary>
-        /// Locals declared within the switch case section scoped to the section.
-        /// </summary>
-        public virtual ImmutableArray<LocalSymbol> Locals { get; }
     }
 }

@@ -1,14 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol]
-    public partial class LabelSymbol : LocalSymbol, IRandomAccessLocal
+    public interface ILocalDeclarator
     {
-
+        ImmutableArray<LocalSymbol> DeclaredLocals { get; }
     }
 }

@@ -15,6 +15,7 @@ using MetaDslx.Languages.Meta.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.RuntimeMembers;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
@@ -78,7 +79,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             var result = LookupResult.GetInstance();
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             var binder = identifierSyntax.IsNull ? this : this.GetBinder(identifierSyntax);
-            var constraints = new LookupConstraints(binder, name, qualifierOpt: qualifierOpt, isLookup: true, basesBeingResolved: recursionConstraints?.BasesBeingResolved, diagnose: recursionConstraints?.Diagnose ?? true, inUsing: recursionConstraints?.InUsing ?? false, validators: validators);
+            var location = identifierSyntax.IsNull ? null : (SourceLocation)identifierSyntax.GetLocation();
+            var constraints = new LookupConstraints(binder, location, name, qualifierOpt: qualifierOpt, isLookup: true, basesBeingResolved: recursionConstraints?.BasesBeingResolved, diagnose: recursionConstraints?.Diagnose ?? true, inUsing: recursionConstraints?.InUsing ?? false, validators: validators);
             constraints = binder.AdjustConstraints(constraints);
             LookupSymbols(result, constraints, ref useSiteDiagnostics);
             diagnostics.Add(identifierSyntax.GetLocation(), useSiteDiagnostics);

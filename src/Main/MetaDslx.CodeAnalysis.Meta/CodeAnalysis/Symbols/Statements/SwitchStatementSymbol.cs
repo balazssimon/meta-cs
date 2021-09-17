@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -30,11 +31,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual LabelSymbol ExitLabel { get; }
 
-        /// <summary>
-        /// Locals declared within the switch operation with scope spanning across all <see cref="Cases" />.
-        /// </summary>
-        public virtual ImmutableArray<LocalSymbol> Locals { get; }
-
         protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             base.CompleteValidatingSymbol(diagnostics, cancellationToken);
@@ -49,6 +45,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     }
                 }
             }
+        }
+
+        protected override void AddDeclaredLocals(ArrayBuilder<LocalSymbol> result)
+        {
+            base.AddDeclaredLocals(result);
+            foreach (var switchCase in this.Cases)
+            {
+                foreach (var clause in switchCase.Clauses)
+                {
+                    if (clause.Label is not null) result.Add(clause.Label);
+                }
+            }
+            if (this.ExitLabel is not null) result.Add(this.ExitLabel);
         }
     }
 }

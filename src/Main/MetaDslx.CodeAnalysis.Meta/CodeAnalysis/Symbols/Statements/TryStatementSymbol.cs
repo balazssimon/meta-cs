@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.PooledObjects;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -34,5 +35,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         [SymbolProperty]
         public abstract LabelSymbol? ExitLabel { get; }
+
+        protected override void AddDeclaredLocals(ArrayBuilder<LocalSymbol> result)
+        {
+            base.AddDeclaredLocals(result);
+            if (this.ExitLabel is not null) result.Add(this.ExitLabel);
+        }
     }
 }

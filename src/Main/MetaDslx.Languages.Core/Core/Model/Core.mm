@@ -342,8 +342,8 @@
 	[symbol: Variable]
 	class Variable : Local
 	{
-		[property: IsConst]
-		bool IsConst;
+		[property: IsDeclaredConst]
+		bool IsDeclaredConst;
 		[property: DeclaredType]
 		DataType DeclaredType;
 		[property: DeclaredInitializer]
@@ -811,14 +811,14 @@
 	[expression: VariableDeclaration]
 	class VariableDeclarationExpression : Expression
 	{
-		[property: IsConst]
-		bool IsConst;
-		[property: Type]
-		DataType Type;
+		[property: IsDeclaredConst]
+		bool IsDeclaredConst;
+		[property: DeclaredType]
+		DataType DeclaredType;
 		[property: Variables]
 		containment list<Variable> Variables;
-		[property: Initializer]
-		containment Expression Initializer;
+		[property: DeclaredInitializer]
+		containment Expression DeclaredInitializer;
 	}
 	
 }

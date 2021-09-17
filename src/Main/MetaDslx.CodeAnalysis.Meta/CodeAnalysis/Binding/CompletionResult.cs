@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 using System;
@@ -39,7 +40,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     Debug.Assert(binder.IsValidCompletionBinder);
                     var symbols = LookupCandidates.GetInstance();
-                    binder.AddCompletionSymbols(symbols);
+                    var location = (SourceLocation)syntaxTree.GetLocation(TextSpan.FromBounds(position, position));
+                    binder.AddCompletionSymbols(symbols, new LookupConstraints(binder, location, diagnose: false));
                     foreach (var symbol in symbols.Symbols)
                     {
                         if (symbol.CanBeReferencedByName && !string.IsNullOrEmpty(symbol.Name))

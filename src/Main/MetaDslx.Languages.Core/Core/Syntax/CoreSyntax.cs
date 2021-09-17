@@ -163,7 +163,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	public sealed class MainSyntax : CoreSyntaxNode, ICompilationUnitSyntax
 	{
 	    private SyntaxNode usingNamespace;
-	    private SyntaxNode statement;
+	    private MainBlockSyntax mainBlock;
 	
 	    public MainSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -184,14 +184,9 @@ namespace MetaDslx.Languages.Core.Syntax
 				return default;
 			} 
 		}
-	    public Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> Statement 
+	    public MainBlockSyntax MainBlock 
 		{ 
-			get
-			{
-				var red = this.GetRed(ref this.statement, 1);
-				if (red != null) return new Microsoft.CodeAnalysis.SyntaxList<StatementSyntax>(red);
-				return default;
-			} 
+			get { return this.GetRed(ref this.mainBlock, 1); } 
 		}
 	    public SyntaxToken EndOfFileToken 
 		{ 
@@ -208,7 +203,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	        switch (index)
 	        {
 				case 0: return this.GetRed(ref this.usingNamespace, 0);
-				case 1: return this.GetRed(ref this.statement, 1);
+				case 1: return this.GetRed(ref this.mainBlock, 1);
 				default: return null;
 	        }
 	    }
@@ -218,14 +213,14 @@ namespace MetaDslx.Languages.Core.Syntax
 	        switch (index)
 	        {
 				case 0: return this.usingNamespace;
-				case 1: return this.statement;
+				case 1: return this.mainBlock;
 				default: return null;
 	        }
 	    }
 	
 	    public MainSyntax WithUsingNamespace(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace)
 		{
-			return this.Update(UsingNamespace, this.Statement, this.EndOfFileToken);
+			return this.Update(UsingNamespace, this.MainBlock, this.EndOfFileToken);
 		}
 	
 	    public MainSyntax AddUsingNamespace(params UsingNamespaceSyntax[] usingNamespace)
@@ -233,28 +228,23 @@ namespace MetaDslx.Languages.Core.Syntax
 			return this.WithUsingNamespace(this.UsingNamespace.AddRange(usingNamespace));
 		}
 	
-	    public MainSyntax WithStatement(Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement)
+	    public MainSyntax WithMainBlock(MainBlockSyntax mainBlock)
 		{
-			return this.Update(this.UsingNamespace, Statement, this.EndOfFileToken);
-		}
-	
-	    public MainSyntax AddStatement(params StatementSyntax[] statement)
-		{
-			return this.WithStatement(this.Statement.AddRange(statement));
+			return this.Update(this.UsingNamespace, MainBlock, this.EndOfFileToken);
 		}
 	
 	    public MainSyntax WithEndOfFileToken(SyntaxToken eOF)
 		{
-			return this.Update(this.UsingNamespace, this.Statement, EndOfFileToken);
+			return this.Update(this.UsingNamespace, this.MainBlock, EndOfFileToken);
 		}
 	
-	    public MainSyntax Update(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement, SyntaxToken eOF)
+	    public MainSyntax Update(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, MainBlockSyntax mainBlock, SyntaxToken eOF)
 	    {
 	        if (this.UsingNamespace != usingNamespace ||
-				this.Statement != statement ||
+				this.MainBlock != mainBlock ||
 				this.EndOfFileToken != eOF)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.Main(usingNamespace, statement, eOF);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.Main(usingNamespace, mainBlock, eOF);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -276,6 +266,87 @@ namespace MetaDslx.Languages.Core.Syntax
 	    public override void Accept(ICoreSyntaxVisitor visitor)
 	    {
 	        visitor.VisitMain(this);
+	    }
+	}
+	
+	public sealed class MainBlockSyntax : CoreSyntaxNode
+	{
+	    private SyntaxNode statement;
+	
+	    public MainBlockSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public MainBlockSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> Statement 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.statement, 0);
+				if (red != null) return new Microsoft.CodeAnalysis.SyntaxList<StatementSyntax>(red);
+				return default;
+			} 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.statement, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.statement;
+				default: return null;
+	        }
+	    }
+	
+	    public MainBlockSyntax WithStatement(Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement)
+		{
+			return this.Update(Statement);
+		}
+	
+	    public MainBlockSyntax AddStatement(params StatementSyntax[] statement)
+		{
+			return this.WithStatement(this.Statement.AddRange(statement));
+		}
+	
+	    public MainBlockSyntax Update(Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement)
+	    {
+	        if (this.Statement != statement)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.MainBlock(statement);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (MainBlockSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMainBlock(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitMainBlock(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitMainBlock(this);
 	    }
 	}
 	
@@ -12476,6 +12547,8 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitMain(MainSyntax node);
 		
+		void VisitMainBlock(MainBlockSyntax node);
+		
 		void VisitUsingNamespace(UsingNamespaceSyntax node);
 		
 		void VisitEmptyStmt(EmptyStmtSyntax node);
@@ -12737,6 +12810,11 @@ namespace MetaDslx.Languages.Core
 	    }
 		
 		public virtual void VisitMain(MainSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitMainBlock(MainBlockSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -13380,6 +13458,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitMain(MainSyntax node, TArg argument);
 		
+		TResult VisitMainBlock(MainBlockSyntax node, TArg argument);
+		
 		TResult VisitUsingNamespace(UsingNamespaceSyntax node, TArg argument);
 		
 		TResult VisitEmptyStmt(EmptyStmtSyntax node, TArg argument);
@@ -13641,6 +13721,11 @@ namespace MetaDslx.Languages.Core
 	    }
 		
 		public virtual TResult VisitMain(MainSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitMainBlock(MainBlockSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -14282,6 +14367,8 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitMain(MainSyntax node);
 		
+		TResult VisitMainBlock(MainBlockSyntax node);
+		
 		TResult VisitUsingNamespace(UsingNamespaceSyntax node);
 		
 		TResult VisitEmptyStmt(EmptyStmtSyntax node);
@@ -14543,6 +14630,11 @@ namespace MetaDslx.Languages.Core
 	    }
 		
 		public virtual TResult VisitMain(MainSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitMainBlock(MainBlockSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -15194,9 +15286,15 @@ namespace MetaDslx.Languages.Core
 		public virtual SyntaxNode VisitMain(MainSyntax node)
 		{
 		    var usingNamespace = this.VisitList(node.UsingNamespace);
-		    var statement = this.VisitList(node.Statement);
+		    var mainBlock = (MainBlockSyntax)this.Visit(node.MainBlock);
 		    var eOF = this.VisitToken(node.EndOfFileToken);
-			return node.Update(usingNamespace, statement, eOF);
+			return node.Update(usingNamespace, mainBlock, eOF);
+		}
+		
+		public virtual SyntaxNode VisitMainBlock(MainBlockSyntax node)
+		{
+		    var statement = this.VisitList(node.Statement);
+			return node.Update(statement);
 		}
 		
 		public virtual SyntaxNode VisitUsingNamespace(UsingNamespaceSyntax node)
@@ -16501,16 +16599,27 @@ namespace MetaDslx.Languages.Core
 	        return new SyntaxToken(CoreLanguage.Instance.InternalSyntaxFactory.LComment(text, value));
 	    }
 		
-		public MainSyntax Main(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement, SyntaxToken eOF)
+		public MainSyntax Main(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, MainBlockSyntax mainBlock, SyntaxToken eOF)
 		{
+		    if (mainBlock == null) throw new ArgumentNullException(nameof(mainBlock));
 		    if (eOF == null) throw new ArgumentNullException(nameof(eOF));
 		    if (eOF.GetKind() != CoreSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
-		    return (MainSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<StatementGreen>(statement.Node), (InternalSyntaxToken)eOF.Node).CreateRed();
+		    return (MainSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.MainBlockGreen)mainBlock.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
 		}
 		
-		public MainSyntax Main(SyntaxToken eOF)
+		public MainSyntax Main(MainBlockSyntax mainBlock, SyntaxToken eOF)
 		{
-			return this.Main(default, default, eOF);
+			return this.Main(default, mainBlock, eOF);
+		}
+		
+		public MainBlockSyntax MainBlock(Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement)
+		{
+		    return (MainBlockSyntax)CoreLanguage.Instance.InternalSyntaxFactory.MainBlock(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<StatementGreen>(statement.Node)).CreateRed();
+		}
+		
+		public MainBlockSyntax MainBlock()
+		{
+			return this.MainBlock(default);
 		}
 		
 		public UsingNamespaceSyntax UsingNamespace(SyntaxToken kUsing, NameSyntax name, SyntaxToken tAssign, QualifierSyntax qualifier, SyntaxToken tSemicolon)
@@ -17663,10 +17772,13 @@ namespace MetaDslx.Languages.Core
 		public VariableDefSyntax VariableDef(NameSyntax name, SyntaxToken tAssign, ExpressionSyntax initializer)
 		{
 		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
-		    if (tAssign.GetKind() != CoreSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-		    if (initializer == null) throw new ArgumentNullException(nameof(initializer));
-		    return (VariableDefSyntax)CoreLanguage.Instance.InternalSyntaxFactory.VariableDef((Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.ExpressionGreen)initializer.Green).CreateRed();
+		    if (tAssign != null && tAssign.GetKind() != CoreSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
+		    return (VariableDefSyntax)CoreLanguage.Instance.InternalSyntaxFactory.VariableDef((Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tAssign.Node, initializer == null ? null : (Syntax.InternalSyntax.ExpressionGreen)initializer.Green).CreateRed();
+		}
+		
+		public VariableDefSyntax VariableDef(NameSyntax name)
+		{
+			return this.VariableDef(name, default, default);
 		}
 		
 		public DotOperatorSyntax DotOperator(SyntaxToken dotOperator)
@@ -17991,6 +18103,7 @@ namespace MetaDslx.Languages.Core
 	    {
 	        return new Type[] {
 				typeof(MainSyntax),
+				typeof(MainBlockSyntax),
 				typeof(UsingNamespaceSyntax),
 				typeof(EmptyStmtSyntax),
 				typeof(BlockStmtSyntax),

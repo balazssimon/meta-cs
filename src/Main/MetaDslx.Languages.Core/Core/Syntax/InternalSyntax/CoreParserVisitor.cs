@@ -43,6 +43,12 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMain([NotNull] CoreParser.MainContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.mainBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMainBlock([NotNull] CoreParser.MainBlockContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.usingNamespace"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

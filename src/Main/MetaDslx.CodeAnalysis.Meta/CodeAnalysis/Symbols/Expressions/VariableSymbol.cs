@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private TypeSymbol? _type;
 
         [SymbolProperty]
-        public virtual bool? IsConst => false;
+        public virtual bool? IsDeclaredConst => false;
         [SymbolProperty]
         public virtual TypeSymbol? DeclaredType => null;
         [SymbolProperty]
@@ -30,17 +31,38 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if (_type is null)
                 {
                     var type = this.DeclaredType;
-                    if (this.DeclaredType is null && this.ContainingSymbol is VariableDeclarationExpressionSymbol varDecl)
+                    var container = this.ContainingSymbol;
+                    if (this.DeclaredType is null)
                     {
-                        type = varDecl.DeclaredType;
+                        if (container is IVariableTypeInferrer inferrer)
+                        {
+                            type = inferrer.VariableType;
+                        }
                     }
                     if (type?.IsSpecialSymbol(SpecialSymbol.Var) ?? false)
                     {
-                        type = this.Initializer?.Type;
+                        if (this.Initializer is not null)
+                        {
+                            type = this.Initializer?.Type;
+                        }
+                        else if (container is IVariableTypeInferrer inferrer)
+                        {
+                            type = inferrer.VariableType;
+                        }
                     }
                     Interlocked.CompareExchange(ref _type, type, null);
                 }
                 return _type;
+            }
+        }
+
+        public virtual bool? IsConst
+        {
+            get
+            {
+                if (this.IsDeclaredConst is not null) return this.IsDeclaredConst;
+                else if (this.ContainingSymbol is IVariableTypeInferrer inferrer) return inferrer.IsConstVariable;
+                else return null;
             }
         }
 
@@ -49,7 +71,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 if (this.DeclaredInitializer is not null) return this.DeclaredInitializer;
-                else if (this.ContainingSymbol is VariableDeclarationExpressionSymbol varDecl) return varDecl.Initializer;
+                else if (this.ContainingSymbol is IVariableTypeInferrer inferrer) return inferrer.VariableInitializer;
                 else return null;
             }
         }
@@ -61,9 +83,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 this.Initializer?.CheckExpressionIsConstant(diagnostics);
             }
-            if (this.Type is not null)
+            var type = this.Type;
+            if (type is not null && !type.IsSpecialSymbol(SpecialSymbol.Var))
             {
                 this.Initializer?.CheckExpressionType(this.Type, diagnostics);
+            }
+            else
+            {
+                diagnostics.Add(ModelErrorCode.ERR_CannotInferVarType.ToDiagnostic(this.Locations.FirstOrNone(), this.Name));
             }
         }
     }

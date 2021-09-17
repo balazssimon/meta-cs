@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents an operation that tests if a value is of a specific type.
     /// </summary>
     [Symbol]
-    public abstract partial class IsTypeExpressionSymbol : ExpressionSymbol
+    public abstract partial class IsTypeExpressionSymbol : ExpressionSymbol, IVariableTypeInferrer
     {
         /// <summary>
         /// Value to test.
@@ -39,5 +39,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override bool IsConstant => ValueOperand?.IsConstant ?? false;
 
         public override TypeSymbol? Type => (TypeSymbol?)this.DeclaringCompilation?.GetSpecialSymbol(SpecialSymbol.System_Boolean);
+
+        TypeSymbol? IVariableTypeInferrer.VariableType => this.TypeOperand;
+
+        bool? IVariableTypeInferrer.IsConstVariable => null;
+
+        ExpressionSymbol? IVariableTypeInferrer.VariableInitializer => null;
     }
 }

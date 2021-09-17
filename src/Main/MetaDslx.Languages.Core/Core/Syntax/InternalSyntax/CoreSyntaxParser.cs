@@ -94,6 +94,57 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseMainBlock(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.mainBlock();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseMainBlock(MainBlockSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CoreParser.MainBlockContext _Antlr4ParseMainBlock()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CoreParser.MainBlockContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseMainBlock(CurrentNode as MainBlockSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseMainBlock();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CoreParser.MainBlockContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseUsingNamespace(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -3500,6 +3551,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			    }
 				var usingNamespace = usingNamespaceBuilder.ToList();
 				_pool.Free(usingNamespaceBuilder);
+				CoreParser.MainBlockContext mainBlockContext = context.mainBlock();
+				MainBlockGreen mainBlock = null;
+				if (mainBlockContext != null) mainBlock = (MainBlockGreen)this.Visit(mainBlockContext);
+				if (mainBlock == null) mainBlock = MainBlockGreen.__Missing;
+				InternalSyntaxToken eOF = (InternalSyntaxToken)this.VisitTerminal(context.Eof(), CoreSyntaxKind.Eof);
+				return _factory.Main(usingNamespace, mainBlock, eOF);
+			}
+			
+			public override GreenNode VisitMainBlock(CoreParser.MainBlockContext context)
+			{
+				if (context == null) return MainBlockGreen.__Missing;
 			    CoreParser.StatementContext[] statementContext = context.statement();
 			    var statementBuilder = _pool.Allocate<StatementGreen>();
 			    for (int i = 0; i < statementContext.Length; i++)
@@ -3508,8 +3570,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			    }
 				var statement = statementBuilder.ToList();
 				_pool.Free(statementBuilder);
-				InternalSyntaxToken eOF = (InternalSyntaxToken)this.VisitTerminal(context.Eof(), CoreSyntaxKind.Eof);
-				return _factory.Main(usingNamespace, statement, eOF);
+				return _factory.MainBlock(statement);
 			}
 			
 			public override GreenNode VisitUsingNamespace(CoreParser.UsingNamespaceContext context)
@@ -4864,11 +4925,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
 				if (name == null) name = NameGreen.__Missing;
-				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), CoreSyntaxKind.TAssign);
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				CoreParser.ExpressionContext initializerContext = context.initializer;
 				ExpressionGreen initializer = null;
 				if (initializerContext != null) initializer = (ExpressionGreen)this.Visit(initializerContext);
-				if (initializer == null) initializer = ExpressionGreen.__Missing;
 				return _factory.VariableDef(name, tAssign, initializer);
 			}
 			
@@ -5510,6 +5570,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public MainContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class MainBlockContext_Cached : MainBlockContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public MainBlockContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

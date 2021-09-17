@@ -40,11 +40,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual TypeSymbol? ExceptionType { get; }
 
-        /// <summary>
-        /// Locals declared by the <see cref="ExceptionDeclarationOrExpression" /> and/or <see cref="Filter" /> clause.
-        /// </summary>
-        public virtual ImmutableArray<LocalSymbol> Locals { get; }
-
         protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             base.CompleteValidatingSymbol(diagnostics, cancellationToken);

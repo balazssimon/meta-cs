@@ -1156,10 +1156,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	{
 	    internal static readonly MainGreen __Missing = new MainGreen();
 	    private GreenNode usingNamespace;
-	    private GreenNode statement;
+	    private MainBlockGreen mainBlock;
 	    private InternalSyntaxToken eOF;
 	
-	    public MainGreen(CoreSyntaxKind kind, GreenNode usingNamespace, GreenNode statement, InternalSyntaxToken eOF)
+	    public MainGreen(CoreSyntaxKind kind, GreenNode usingNamespace, MainBlockGreen mainBlock, InternalSyntaxToken eOF)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 3;
@@ -1168,10 +1168,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(usingNamespace);
 				this.usingNamespace = usingNamespace;
 			}
-			if (statement != null)
+			if (mainBlock != null)
 			{
-				this.AdjustFlagsAndWidth(statement);
-				this.statement = statement;
+				this.AdjustFlagsAndWidth(mainBlock);
+				this.mainBlock = mainBlock;
 			}
 			if (eOF != null)
 			{
@@ -1180,7 +1180,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public MainGreen(CoreSyntaxKind kind, GreenNode usingNamespace, GreenNode statement, InternalSyntaxToken eOF, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public MainGreen(CoreSyntaxKind kind, GreenNode usingNamespace, MainBlockGreen mainBlock, InternalSyntaxToken eOF, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 3;
@@ -1189,10 +1189,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(usingNamespace);
 				this.usingNamespace = usingNamespace;
 			}
-			if (statement != null)
+			if (mainBlock != null)
 			{
-				this.AdjustFlagsAndWidth(statement);
-				this.statement = statement;
+				this.AdjustFlagsAndWidth(mainBlock);
+				this.mainBlock = mainBlock;
 			}
 			if (eOF != null)
 			{
@@ -1208,7 +1208,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> UsingNamespace { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen>(this.usingNamespace); } }
-	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> Statement { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen>(this.statement); } }
+	    public MainBlockGreen MainBlock { get { return this.mainBlock; } }
 	    public InternalSyntaxToken EndOfFileToken { get { return this.eOF; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -1221,7 +1221,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.usingNamespace;
-	            case 1: return this.statement;
+	            case 1: return this.mainBlock;
 	            case 2: return this.eOF;
 	            default: return null;
 	        }
@@ -1233,27 +1233,27 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new MainGreen(this.Kind, this.usingNamespace, this.statement, this.eOF, diagnostics, this.GetAnnotations());
+	        return new MainGreen(this.Kind, this.usingNamespace, this.mainBlock, this.eOF, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new MainGreen(this.Kind, this.usingNamespace, this.statement, this.eOF, this.GetDiagnostics(), annotations);
+	        return new MainGreen(this.Kind, this.usingNamespace, this.mainBlock, this.eOF, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new MainGreen(this.Kind, this.usingNamespace, this.statement, this.eOF, this.GetDiagnostics(), this.GetAnnotations());
+			return new MainGreen(this.Kind, this.usingNamespace, this.mainBlock, this.eOF, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
-	    public MainGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> statement, InternalSyntaxToken eOF)
+	    public MainGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, MainBlockGreen mainBlock, InternalSyntaxToken eOF)
 	    {
 	        if (this.UsingNamespace != usingNamespace ||
-				this.Statement != statement ||
+				this.MainBlock != mainBlock ||
 				this.EndOfFileToken != eOF)
 	        {
-	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.Main(usingNamespace, statement, eOF);
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.Main(usingNamespace, mainBlock, eOF);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -1261,6 +1261,92 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (MainGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class MainBlockGreen : GreenSyntaxNode
+	{
+	    internal static readonly MainBlockGreen __Missing = new MainBlockGreen();
+	    private GreenNode statement;
+	
+	    public MainBlockGreen(CoreSyntaxKind kind, GreenNode statement)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (statement != null)
+			{
+				this.AdjustFlagsAndWidth(statement);
+				this.statement = statement;
+			}
+	    }
+	
+	    public MainBlockGreen(CoreSyntaxKind kind, GreenNode statement, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (statement != null)
+			{
+				this.AdjustFlagsAndWidth(statement);
+				this.statement = statement;
+			}
+	    }
+	
+		private MainBlockGreen()
+			: base((CoreSyntaxKind)CoreSyntaxKind.MainBlock, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> Statement { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen>(this.statement); } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Core.Syntax.MainBlockSyntax(this, (CoreSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.statement;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(CoreSyntaxVisitor<TResult> visitor) => visitor.VisitMainBlockGreen(this);
+	
+	    public override void Accept(CoreSyntaxVisitor visitor) => visitor.VisitMainBlockGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new MainBlockGreen(this.Kind, this.statement, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new MainBlockGreen(this.Kind, this.statement, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public override GreenNode Clone()
+	    {
+			return new MainBlockGreen(this.Kind, this.statement, this.GetDiagnostics(), this.GetAnnotations());
+		}
+	
+	
+	    public MainBlockGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> statement)
+	    {
+	        if (this.Statement != statement)
+	        {
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.MainBlock(statement);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (MainBlockGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -15093,6 +15179,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	{
 		public virtual void VisitSkippedTokensTrivia(GreenSkippedTokensTriviaSyntax node) => this.DefaultVisit(node);
 		public virtual void VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
+		public virtual void VisitMainBlockGreen(MainBlockGreen node) => this.DefaultVisit(node);
 		public virtual void VisitUsingNamespaceGreen(UsingNamespaceGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEmptyStmtGreen(EmptyStmtGreen node) => this.DefaultVisit(node);
 		public virtual void VisitBlockStmtGreen(BlockStmtGreen node) => this.DefaultVisit(node);
@@ -15225,6 +15312,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	{
 		public virtual TResult VisitSkippedTokensTrivia(GreenSkippedTokensTriviaSyntax node) => this.DefaultVisit(node);
 		public virtual TResult VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitMainBlockGreen(MainBlockGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitUsingNamespaceGreen(UsingNamespaceGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEmptyStmtGreen(EmptyStmtGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitBlockStmtGreen(BlockStmtGreen node) => this.DefaultVisit(node);
@@ -15650,16 +15738,32 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	        return Token(null, CoreSyntaxKind.LComment, text, value, null);
 	    }
 	
-		public MainGreen Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> statement, InternalSyntaxToken eOF)
+		public MainGreen Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, MainBlockGreen mainBlock, InternalSyntaxToken eOF)
 	    {
 	#if DEBUG
+			if (mainBlock == null) throw new ArgumentNullException(nameof(mainBlock));
 			if (eOF == null) throw new ArgumentNullException(nameof(eOF));
 			if (eOF.Kind != CoreSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.Main, usingNamespace.Node, statement.Node, eOF, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.Main, usingNamespace.Node, mainBlock, eOF, out hash);
 			if (cached != null) return (MainGreen)cached;
-			var result = new MainGreen(CoreSyntaxKind.Main, usingNamespace.Node, statement.Node, eOF);
+			var result = new MainGreen(CoreSyntaxKind.Main, usingNamespace.Node, mainBlock, eOF);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public MainBlockGreen MainBlock(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementGreen> statement)
+	    {
+	#if DEBUG
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.MainBlock, statement.Node, out hash);
+			if (cached != null) return (MainBlockGreen)cached;
+			var result = new MainBlockGreen(CoreSyntaxKind.MainBlock, statement.Node);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -17255,9 +17359,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    {
 	#if DEBUG
 			if (name == null) throw new ArgumentNullException(nameof(name));
-			if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
-			if (tAssign.Kind != CoreSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-			if (initializer == null) throw new ArgumentNullException(nameof(initializer));
+			if (tAssign != null && tAssign.Kind != CoreSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
 	#endif
 			int hash;
 			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.VariableDef, name, tAssign, initializer, out hash);
@@ -17952,6 +18054,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    {
 	        return new Type[] {
 				typeof(MainGreen),
+				typeof(MainBlockGreen),
 				typeof(UsingNamespaceGreen),
 				typeof(EmptyStmtGreen),
 				typeof(BlockStmtGreen),

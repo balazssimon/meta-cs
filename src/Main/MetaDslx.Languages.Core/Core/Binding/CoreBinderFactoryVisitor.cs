@@ -70,7 +70,6 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseCompoundAssignmentOperator = new object();
 		public static object UseKConst = new object();
 		public static object UseVariableType = new object();
-		public static object UseVariableDefList = new object();
 		public static object UseInitializer = new object();
 		public static object UseTQuestionDot = new object();
 		public static object UseTQuestionOpenBracket = new object();
@@ -116,6 +115,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseKDouble = new object();
 		public static object UseKString = new object();
 		public static object UseUsingNamespace = new object();
+		public static object UseMainBlock = new object();
 		public static object Use = new object();
 		public static object UseQualifier = new object();
 		public static object UseBlockStatement = new object();
@@ -140,6 +140,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseLeftShiftOperator = new object();
 		public static object UseRightShiftOperator = new object();
 		public static object UseVoidType = new object();
+		public static object UseVarType = new object();
 		public static object UsePrimitiveType = new object();
 		public static object UseNullLiteral = new object();
 		public static object UseBooleanLiteral = new object();
@@ -149,6 +150,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseStringLiteral = new object();
 		public static object UseUsingHeader = new object();
 		public static object UseCatchFilter = new object();
+		public static object UseVariableDefList = new object();
 		public static object UseFieldInitializerExpressions = new object();
 		public static object UseCollectionInitializerExpressions = new object();
 		public static object UseDictionaryInitializerExpression = new object();
@@ -184,6 +186,25 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 			    resultBinder = this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitMainBlock(MainBlockSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(BlockStatement));
+				resultBinder = this.BinderFactory.CreateLocalScopeBinder(resultBinder, parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Statements");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1700,7 +1721,7 @@ namespace MetaDslx.Languages.Core.Binding
 				}
 				if (use == UseName)
 				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Name, name: "Variable");
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Name, name: "DeclaredVariable");
 					resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent.Name, type: typeof(Variable));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
@@ -2168,7 +2189,6 @@ namespace MetaDslx.Languages.Core.Binding
 			{
 				if (LookupPosition.IsInNode(this.Position, parent.KConst)) use = UseKConst;
 				if (LookupPosition.IsInNode(this.Position, parent.VariableType)) use = UseVariableType;
-				if (LookupPosition.IsInNode(this.Position, parent.VariableDefList)) use = UseVariableDefList;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
@@ -2183,12 +2203,7 @@ namespace MetaDslx.Languages.Core.Binding
 				}
 				if (use == UseVariableType)
 				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.VariableType, name: "Type");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-				if (use == UseVariableDefList)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.VariableDefList, name: "Variables");
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.VariableType, name: "DeclaredType");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -2553,11 +2568,12 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Variables");
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Variable));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseInitializer)
 				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Initializer, name: "Initializer");
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Initializer, name: "DeclaredInitializer");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -3275,6 +3291,7 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent, value: CoreInstance.VarType);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

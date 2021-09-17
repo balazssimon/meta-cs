@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.PooledObjects;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -19,16 +20,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Loop continue label.
         /// </summary>
-        public virtual LabelSymbol ContinueLabel { get; }
+        [SymbolProperty]
+        public virtual LabelSymbol? ContinueLabel { get; }
 
         /// <summary>
         /// Loop exit/break label.
         /// </summary>
-        public virtual LabelSymbol ExitLabel { get; }
+        [SymbolProperty]
+        public virtual LabelSymbol? ExitLabel { get; }
 
-        /// <summary>
-        /// Declared locals.
-        /// </summary>
-        public virtual ImmutableArray<LocalSymbol> Locals { get; }
+        protected override void AddDeclaredLocals(ArrayBuilder<LocalSymbol> result)
+        {
+            base.AddDeclaredLocals(result);
+            if (this.ContinueLabel is not null) result.Add(this.ContinueLabel);
+            if (this.ExitLabel is not null) result.Add(this.ExitLabel);
+        }
     }
 }

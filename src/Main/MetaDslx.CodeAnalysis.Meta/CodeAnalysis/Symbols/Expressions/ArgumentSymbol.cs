@@ -11,7 +11,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents an argument to a method invocation.
     /// </summary>
     [Symbol]
-    public abstract partial class ArgumentSymbol : NonDeclaredSymbol
+    public abstract partial class ArgumentSymbol : NonDeclaredSymbol, IVariableTypeInferrer
     {
         /// <summary>
         /// Value supplied for the argument.
@@ -57,6 +57,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return string.Empty;
             }
         }
+
+        public TypeSymbol? VariableType => this.RefKind == RefKind.Out ? this.Parameter?.Type : null;
+
+        public bool? IsConstVariable => false;
+
+        public ExpressionSymbol? VariableInitializer => null;
 
         protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

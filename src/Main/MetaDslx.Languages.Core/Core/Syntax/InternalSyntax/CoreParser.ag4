@@ -12,7 +12,12 @@ options
 	generateCompiler=true;
 }
 
-main: usingNamespace* statement* EOF;
+main: usingNamespace* mainBlock EOF;
+
+$Define(BlockStatement)
+$LocalScope
+$Property(Statements) 
+mainBlock: statement*;
 
 $Import
 usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;

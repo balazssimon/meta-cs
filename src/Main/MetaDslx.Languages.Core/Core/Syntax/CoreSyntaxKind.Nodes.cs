@@ -26,6 +26,7 @@ namespace MetaDslx.Languages.Core.Syntax
 
 		// Rules:
 		public const string Main = nameof(Main);
+		public const string MainBlock = nameof(MainBlock);
 		public const string UsingNamespace = nameof(UsingNamespace);
 		public const string EmptyStmt = nameof(EmptyStmt);
 		public const string BlockStmt = nameof(BlockStmt);

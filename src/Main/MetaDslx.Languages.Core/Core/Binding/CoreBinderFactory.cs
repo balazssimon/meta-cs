@@ -19,6 +19,11 @@ namespace MetaDslx.Languages.Core.Binding
         {
         }
 
+
+        public virtual Binder CreateLocalScopeBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool forCompletion = false)
+        {
+            return new LocalScopeBinder(parentBinder, syntax, forCompletion);
+        }
     }
 }
 

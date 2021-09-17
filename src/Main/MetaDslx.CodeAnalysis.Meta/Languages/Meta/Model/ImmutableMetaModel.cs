@@ -1921,7 +1921,7 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Type")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("DeclaredType")]
 			[global::MetaDslx.Modeling.RedefinesAttribute(typeof(MetaDescriptor.MetaTypedElement), "Type")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "Type",
@@ -9042,7 +9042,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaConstant_Type.SetTypeLazy(() => MetaType);
 			MetaConstant_Type.Documentation = null;
 			MetaConstant_Type.Name = "Type";
-			MetaConstant_Type.SymbolProperty = "Type";
+			MetaConstant_Type.SymbolProperty = "DeclaredType";
 			MetaConstant_Type.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			MetaConstant_Type.SetClassLazy(() => MetaConstant);
 			MetaConstant_Type.DefaultValue = null;

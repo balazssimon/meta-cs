@@ -12,7 +12,12 @@ options
 	                      
 }
 
-main: usingNamespace* statement* EOF;
+main: usingNamespace* mainBlock EOF;
+
+                       
+           
+                      
+mainBlock: statement*;
 
        
 usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
@@ -96,7 +101,7 @@ expression
 	|                        left=expression                         additiveOperator                         right=expression #addExpr                          
 	|                        left=expression                         shiftOperator                         right=expression #shiftExpr                          
 	|                        left=expression                         relationalOperator                         right=expression #relExpr                          
-	|                         expression KIs                                      KNot?                        typeReference (                                      name)? #typeIsExpr                          
+	|                         expression KIs                                      KNot?                        typeReference (                                              name)? #typeIsExpr                          
 	|                    expression KAs                       typeReference #typeAsExpr                                                                   
 	|                        left=expression                         equalityOperator                         right=expression #eqExpr                          
 	|                        left=expression                                                               TAmpersand                         right=expression #andExpr                          
@@ -110,7 +115,7 @@ expression
 	|                   target=expression TAssign                  value=expression #assignExpr                              
 	|                   target=expression                         compoundAssignmentOperator                  value=expression #compAssignExpr                                      
 	| lambdaSignature TArrow lambdaBody #lambdaExpr                          
-	|                                    KConst?                 variableType                      variableDefList #varDefExpr                                       
+	|                                    KConst?                         variableType variableDefList #varDefExpr                                       
 	;
 
                     
@@ -152,8 +157,9 @@ explicitParameter :                 typeReference name;
 lambdaBody:                                                    expression | blockStatement;
 
 variableDefList: variableDef (TComma variableDef)*;
+                    
                  
-variableDef: name (TAssign                        initializer=expression);
+variableDef: name (TAssign                                initializer=expression)?;
 
 dotOperator
 	: TDot
@@ -269,6 +275,7 @@ primitiveType
                           
 voidType : KVoid;
 
+                             
 varType : KVar;
 
 // Additional rules for lexer:

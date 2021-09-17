@@ -145,7 +145,7 @@
 	[symbol: Variable]
 	class MetaConstant : MetaDeclaration, MetaTypedElement
 	{
-		[property: Type]
+		[property: DeclaredType]
 		MetaType Type redefines MetaTypedElement.Type;
 		readonly object Value;
 	}

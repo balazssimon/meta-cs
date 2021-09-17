@@ -34,7 +34,7 @@ namespace MetaDslx.Bootstrap.Core
             //}
             //";
             //string text = "int x = 5; x = 10;";
-            string text = "var x = 5; x = 10;";
+            string text = "var x = true; x = 10; y = 20; var y = 15;";
             var syntaxTree = CoreSyntaxTree.ParseText(text);
             var compilation = CoreCompilation.Create("CoreTest")
                 .AddReferences(coreRef)

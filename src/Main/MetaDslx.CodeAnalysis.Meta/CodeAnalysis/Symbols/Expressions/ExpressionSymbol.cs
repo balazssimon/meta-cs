@@ -1,6 +1,7 @@
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,8 +11,9 @@ using System.Threading;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(SymbolParts = SymbolParts.None)]
-    public abstract partial class ExpressionSymbol : NonDeclaredSymbol
+    public abstract partial class ExpressionSymbol : NonDeclaredSymbol, ILocalDeclarator
     {
+        private ImmutableArray<LocalSymbol> _declaredLocals;
         private ThreeState _isConstant;
         private object? _constantValue;
 
@@ -21,8 +23,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public virtual TypeSymbol? Type => null;
-
-        public virtual ImmutableArray<LocalSymbol> DeclaredLocals => ImmutableArray<LocalSymbol>.Empty;
 
         public virtual bool IsConstant
         {
@@ -106,6 +106,32 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var expectedType = this.DeclaringCompilation.GetSpecialSymbol(specialSymbol) as TypeSymbol;
             this.CheckExpressionType(expectedType, diagnostics);
         }
+
+        public ImmutableArray<LocalSymbol> DeclaredLocals
+        {
+            get
+            {
+                if (_declaredLocals.IsDefault)
+                {
+                    var result = ArrayBuilder<LocalSymbol>.GetInstance();
+                    this.AddDeclaredLocals(result);
+                    ImmutableInterlocked.InterlockedInitialize(ref _declaredLocals, result.ToImmutableAndFree());
+                }
+                return _declaredLocals;
+            }
+        }
+
+        protected virtual void AddDeclaredLocals(ArrayBuilder<LocalSymbol> result)
+        {
+            foreach (var child in this.ChildSymbols)
+            {
+                if (child is ILocalDeclarator localDeclarator)
+                {
+                    result.AddRange(localDeclarator.DeclaredLocals);
+                }
+            }
+        }
+
 
         public virtual bool IsInferencePending => false;
         public virtual bool IsStaticReceiver => false;
