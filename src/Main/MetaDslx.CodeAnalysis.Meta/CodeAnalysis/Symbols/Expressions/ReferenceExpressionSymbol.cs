@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
@@ -100,16 +101,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 DeclaredSymbol? result = null;
                 var compilation = this.DeclaringCompilation;
                 if (compilation is null) return null;
-                var qualifierOpt = ReferenceThroughType ?? Qualifier?.Type;
-                var candidates = LookupCandidates.GetInstance();
-                foreach (var location in this.Locations)
-                {
-                    var sourceLocation = location as SourceLocation;
-                    if (sourceLocation is null) continue;
-                    var binder = compilation.GetBinder(sourceLocation.GetSyntax());
-                    if (binder is null) continue;
-                    binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(binder, sourceLocation, this.Name, this.MetadataName, qualifierOpt));
-                }
                 var isMethod = false;
                 var isProperty = false;
                 var arguments = ImmutableArray<ArgumentSymbol>.Empty;
@@ -119,36 +110,73 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     isMethod = invocation.IsMethodInvocation;
                     isProperty = invocation.IsPropertyInvocation;
                 }
-                var analyzedArguments = AnalyzedArguments.GetInstance(arguments);
-                var typeArguments = ArrayBuilder<TypeWithAnnotations>.GetInstance();
-                typeArguments.AddRange(this.TypeArguments.Select(arg => TypeWithAnnotations.Create(arg)));
-                if (isMethod)
+                HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+                var qualifierOpt = ReferenceThroughType ?? Qualifier?.Type;
+                if (isMethod || isProperty)
                 {
-                    var methodResult = OverloadResolutionResult<MethodLikeSymbol>.GetInstance();
-                    HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                    var methods = ArrayBuilder<MethodLikeSymbol>.GetInstance();
-                    methods.AddRange(candidates.Symbols.OfType<MethodLikeSymbol>());
-                    compilation.OverloadResolution.MethodInvocationOverloadResolution(methods, typeArguments, Qualifier, analyzedArguments, ContainingType, false, methodResult, ref useSiteDiagnostics);
-                    methods.Free();
-                    AddSymbolDiagnostics(useSiteDiagnostics);
-                    result = methodResult.BestResult.Member;
-                    methodResult.Free();
+                    var candidates = LookupCandidates.GetInstance();
+                    foreach (var location in this.Locations)
+                    {
+                        var sourceLocation = location as SourceLocation;
+                        if (sourceLocation is null) continue;
+                        var binder = compilation.GetBinder(sourceLocation.GetSyntax());
+                        if (binder is null) continue;
+                        binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(binder, sourceLocation, this.Name, this.MetadataName, qualifierOpt));
+                    }
+                    if (candidates.IsClear)
+                    {
+                        diagnostics.Add(ModelErrorCode.ERR_NameDoesNotExist.ToDiagnostic(this.GetLocation(), this.Name));
+                        candidates.Free();
+                        return result;
+                    }
+                    var analyzedArguments = AnalyzedArguments.GetInstance(arguments);
+                    var typeArguments = ArrayBuilder<TypeWithAnnotations>.GetInstance();
+                    typeArguments.AddRange(this.TypeArguments.Select(arg => TypeWithAnnotations.Create(arg)));
+                    if (isMethod)
+                    {
+                        var methodResult = OverloadResolutionResult<MethodLikeSymbol>.GetInstance();
+                        var methods = ArrayBuilder<MethodLikeSymbol>.GetInstance();
+                        methods.AddRange(candidates.Symbols.OfType<MethodLikeSymbol>());
+                        compilation.OverloadResolution.MethodInvocationOverloadResolution(methods, typeArguments, Qualifier, analyzedArguments, ContainingType, false, methodResult, ref useSiteDiagnostics);
+                        methods.Free();
+                        AddSymbolDiagnostics(useSiteDiagnostics);
+                        if (methodResult.Succeeded) result = methodResult.BestResult.Member;
+                        methodResult.Free();
+                    }
+                    else if (isProperty)
+                    {
+                        var indexerResult = OverloadResolutionResult<IndexerSymbol>.GetInstance();
+                        var indexers = ArrayBuilder<IndexerSymbol>.GetInstance();
+                        indexers.AddRange(candidates.Symbols.OfType<IndexerSymbol>());
+                        compilation.OverloadResolution.IndexerOverloadResolution(indexers, Qualifier, analyzedArguments, ContainingType, false, indexerResult, false, ref useSiteDiagnostics);
+                        indexers.Free();
+                        AddSymbolDiagnostics(useSiteDiagnostics);
+                        if (indexerResult.Succeeded) result = indexerResult.BestResult.Member;
+                        indexerResult.Free();
+                    }
+                    candidates.Free();
+                    typeArguments.Free();
+                    analyzedArguments.Free();
                 }
-                else if (isProperty)
+                else
                 {
-                    var indexerResult = OverloadResolutionResult<IndexerSymbol>.GetInstance();
-                    HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                    var indexers = ArrayBuilder<IndexerSymbol>.GetInstance();
-                    indexers.AddRange(candidates.Symbols.OfType<IndexerSymbol>());
-                    compilation.OverloadResolution.IndexerOverloadResolution(indexers, Qualifier, analyzedArguments, ContainingType, false, indexerResult, false, ref useSiteDiagnostics);
-                    indexers.Free();
-                    AddSymbolDiagnostics(useSiteDiagnostics);
-                    result = indexerResult.BestResult.Member;
-                    indexerResult.Free();
+                    var results = LookupResult.GetInstance();
+                    Binder? lastBinder = null;
+                    foreach (var location in this.Locations)
+                    {
+                        var sourceLocation = location as SourceLocation;
+                        if (sourceLocation is null) continue;
+                        var binder = compilation.GetBinder(sourceLocation.GetSyntax());
+                        if (binder is null) continue;
+                        lastBinder = binder;
+                        binder.LookupSymbols(results, new LookupConstraints(binder, sourceLocation, this.Name, this.MetadataName, qualifierOpt), ref useSiteDiagnostics);
+                        AddSymbolDiagnostics(useSiteDiagnostics);
+                    }
+                    if (results.IsSingleViable)
+                    {
+                        result = results.SingleSymbolOrDefault;
+                    }
                 }
-                candidates.Free();
-                typeArguments.Free();
-                analyzedArguments.Free();
                 return result;
             }
         }

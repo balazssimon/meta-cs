@@ -28,8 +28,9 @@ namespace MetaDslx.CodeAnalysis.Binding
         [Flags]
         private enum Flags
         {
-            Implicit,
-            Nullable
+            None = 0,
+            Implicit = 1,
+            Nullable = 2
         }
     }
 }

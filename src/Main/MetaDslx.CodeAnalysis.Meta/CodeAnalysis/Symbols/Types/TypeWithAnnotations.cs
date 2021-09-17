@@ -7,13 +7,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public class TypeWithAnnotations
     {
-        public bool HasType => true;
+        private TypeSymbol? _type;
 
-        public TypeSymbol? Type => null;
+        private TypeWithAnnotations(TypeSymbol? type)
+        {
+            _type = type;
+        }
+
+        public bool HasType => _type is not null;
+
+        public TypeSymbol? Type => _type;
 
         internal static TypeWithAnnotations Create(TypeSymbol? type)
         {
-            throw new NotImplementedException();
+            return new TypeWithAnnotations(type);
         }
 
         internal bool Is(TypeParameterSymbol tp)

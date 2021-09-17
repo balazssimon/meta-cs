@@ -34,7 +34,26 @@ namespace MetaDslx.Bootstrap.Core
             //}
             //";
             //string text = "int x = 5; x = 10;";
-            string text = "var x = true; x = 10; y = 20; var y = 15;";
+            //string text = "var x = true; x = 10; y = 20; var y = 15; x &= true; x += 5; y = true ? 5 : true; var z = y++; x = y is bool w; w = 4;";
+            string text = @"
+enum Color { Red, Green, Blue }
+
+struct Flag
+{
+    string Name = ""hello"";
+    Color Color = Color.Red;
+}
+
+int Max(int a, int b) { return a > b ? a : b; }
+
+void Print(int a) {}
+
+int x = 5;
+int y = x+3;
+var z = 3;
+z = Maxi(x,y);
+Print(z);
+";
             var syntaxTree = CoreSyntaxTree.ParseText(text);
             var compilation = CoreCompilation.Create("CoreTest")
                 .AddReferences(coreRef)

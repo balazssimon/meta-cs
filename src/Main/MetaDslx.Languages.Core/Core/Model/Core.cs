@@ -104,6 +104,11 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GenericTypeReference_TypeArguments;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GenericTypeReference_ConstructedType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GenericTypeReference_ResolvedType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Function;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Function_IsAsync;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Function_Result;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Function_Parameters;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Function_Body;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Member;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Member_IsStatic;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Member_IsVirtual;
@@ -237,10 +242,6 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DefaultValueExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DiscardExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DynamicExpression;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass IncrementOrDecrementExpression;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IncrementOrDecrementExpression_Target;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IncrementOrDecrementExpression_IsPostfix;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IncrementOrDecrementExpression_IsChecked;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass IndexerAccessExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IndexerAccessExpression_Receiver;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IndexerAccessExpression_IsNullConditional;
@@ -384,6 +385,11 @@ namespace MetaDslx.Languages.Core.Model
 			GenericTypeReference_TypeArguments = CoreBuilderInstance.instance.GenericTypeReference_TypeArguments.ToImmutable(MModel);
 			GenericTypeReference_ConstructedType = CoreBuilderInstance.instance.GenericTypeReference_ConstructedType.ToImmutable(MModel);
 			GenericTypeReference_ResolvedType = CoreBuilderInstance.instance.GenericTypeReference_ResolvedType.ToImmutable(MModel);
+			Function = CoreBuilderInstance.instance.Function.ToImmutable(MModel);
+			Function_IsAsync = CoreBuilderInstance.instance.Function_IsAsync.ToImmutable(MModel);
+			Function_Result = CoreBuilderInstance.instance.Function_Result.ToImmutable(MModel);
+			Function_Parameters = CoreBuilderInstance.instance.Function_Parameters.ToImmutable(MModel);
+			Function_Body = CoreBuilderInstance.instance.Function_Body.ToImmutable(MModel);
 			Member = CoreBuilderInstance.instance.Member.ToImmutable(MModel);
 			Member_IsStatic = CoreBuilderInstance.instance.Member_IsStatic.ToImmutable(MModel);
 			Member_IsVirtual = CoreBuilderInstance.instance.Member_IsVirtual.ToImmutable(MModel);
@@ -517,10 +523,6 @@ namespace MetaDslx.Languages.Core.Model
 			DefaultValueExpression = CoreBuilderInstance.instance.DefaultValueExpression.ToImmutable(MModel);
 			DiscardExpression = CoreBuilderInstance.instance.DiscardExpression.ToImmutable(MModel);
 			DynamicExpression = CoreBuilderInstance.instance.DynamicExpression.ToImmutable(MModel);
-			IncrementOrDecrementExpression = CoreBuilderInstance.instance.IncrementOrDecrementExpression.ToImmutable(MModel);
-			IncrementOrDecrementExpression_Target = CoreBuilderInstance.instance.IncrementOrDecrementExpression_Target.ToImmutable(MModel);
-			IncrementOrDecrementExpression_IsPostfix = CoreBuilderInstance.instance.IncrementOrDecrementExpression_IsPostfix.ToImmutable(MModel);
-			IncrementOrDecrementExpression_IsChecked = CoreBuilderInstance.instance.IncrementOrDecrementExpression_IsChecked.ToImmutable(MModel);
 			IndexerAccessExpression = CoreBuilderInstance.instance.IndexerAccessExpression.ToImmutable(MModel);
 			IndexerAccessExpression_Receiver = CoreBuilderInstance.instance.IndexerAccessExpression_Receiver.ToImmutable(MModel);
 			IndexerAccessExpression_IsNullConditional = CoreBuilderInstance.instance.IndexerAccessExpression_IsNullConditional.ToImmutable(MModel);
@@ -618,6 +620,7 @@ namespace MetaDslx.Languages.Core.Model
 				case "TupleType": return this.TupleType();
 				case "TypeParameter": return this.TypeParameter();
 				case "GenericTypeReference": return this.GenericTypeReference();
+				case "Function": return this.Function();
 				case "Field": return this.Field();
 				case "Property": return this.Property();
 				case "Indexer": return this.Indexer();
@@ -658,7 +661,6 @@ namespace MetaDslx.Languages.Core.Model
 				case "DefaultValueExpression": return this.DefaultValueExpression();
 				case "DiscardExpression": return this.DiscardExpression();
 				case "DynamicExpression": return this.DynamicExpression();
-				case "IncrementOrDecrementExpression": return this.IncrementOrDecrementExpression();
 				case "IndexerAccessExpression": return this.IndexerAccessExpression();
 				case "InstanceReferenceExpression": return this.InstanceReferenceExpression();
 				case "InvocationExpression": return this.InvocationExpression();
@@ -841,6 +843,15 @@ namespace MetaDslx.Languages.Core.Model
 		{
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new GenericTypeReferenceId());
 			return (GenericTypeReferenceBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of Function.
+		/// </summary>
+		public FunctionBuilder Function()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new FunctionId());
+			return (FunctionBuilder)obj;
 		}
 	
 		/// <summary>
@@ -1201,15 +1212,6 @@ namespace MetaDslx.Languages.Core.Model
 		{
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new DynamicExpressionId());
 			return (DynamicExpressionBuilder)obj;
-		}
-	
-		/// <summary>
-		/// Creates a new instance of IncrementOrDecrementExpression.
-		/// </summary>
-		public IncrementOrDecrementExpressionBuilder IncrementOrDecrementExpression()
-		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new IncrementOrDecrementExpressionId());
-			return (IncrementOrDecrementExpressionBuilder)obj;
 		}
 	
 		/// <summary>
@@ -2296,6 +2298,55 @@ namespace MetaDslx.Languages.Core.Model
 		/// </summary>
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new GenericTypeReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface Function : Declaration
+	{
+		bool IsAsync { get; }
+		Parameter Result { get; }
+		global::MetaDslx.Modeling.ImmutableModelList<Parameter> Parameters { get; }
+		Statement Body { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="Function"/> object to a builder <see cref="FunctionBuilder"/> object.
+		/// </summary>
+		new FunctionBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="Function"/> object to a builder <see cref="FunctionBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new FunctionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface FunctionBuilder : DeclarationBuilder
+	{
+		bool IsAsync { get; set; }
+		void SetIsAsyncLazy(global::System.Func<bool> lazy);
+		void SetIsAsyncLazy(global::System.Func<FunctionBuilder, bool> lazy);
+		void SetIsAsyncLazy(global::System.Func<Function, bool> immutableLazy, global::System.Func<FunctionBuilder, bool> mutableLazy);
+		ParameterBuilder Result { get; set; }
+		void SetResultLazy(global::System.Func<ParameterBuilder> lazy);
+		void SetResultLazy(global::System.Func<FunctionBuilder, ParameterBuilder> lazy);
+		void SetResultLazy(global::System.Func<Function, Parameter> immutableLazy, global::System.Func<FunctionBuilder, ParameterBuilder> mutableLazy);
+		global::MetaDslx.Modeling.MutableModelList<ParameterBuilder> Parameters { get; }
+		StatementBuilder Body { get; set; }
+		void SetBodyLazy(global::System.Func<StatementBuilder> lazy);
+		void SetBodyLazy(global::System.Func<FunctionBuilder, StatementBuilder> lazy);
+		void SetBodyLazy(global::System.Func<Function, Statement> immutableLazy, global::System.Func<FunctionBuilder, StatementBuilder> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="FunctionBuilder"/> object to an immutable <see cref="Function"/> object.
+		/// </summary>
+		new Function ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="FunctionBuilder"/> object to an immutable <see cref="Function"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new Function ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
 	public interface Member : Declaration
@@ -4340,53 +4391,6 @@ namespace MetaDslx.Languages.Core.Model
 		new DynamicExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface IncrementOrDecrementExpression : Expression
-	{
-		Expression Target { get; }
-		bool IsPostfix { get; }
-		bool IsChecked { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="IncrementOrDecrementExpression"/> object to a builder <see cref="IncrementOrDecrementExpressionBuilder"/> object.
-		/// </summary>
-		new IncrementOrDecrementExpressionBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="IncrementOrDecrementExpression"/> object to a builder <see cref="IncrementOrDecrementExpressionBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new IncrementOrDecrementExpressionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface IncrementOrDecrementExpressionBuilder : ExpressionBuilder
-	{
-		ExpressionBuilder Target { get; set; }
-		void SetTargetLazy(global::System.Func<ExpressionBuilder> lazy);
-		void SetTargetLazy(global::System.Func<IncrementOrDecrementExpressionBuilder, ExpressionBuilder> lazy);
-		void SetTargetLazy(global::System.Func<IncrementOrDecrementExpression, Expression> immutableLazy, global::System.Func<IncrementOrDecrementExpressionBuilder, ExpressionBuilder> mutableLazy);
-		bool IsPostfix { get; set; }
-		void SetIsPostfixLazy(global::System.Func<bool> lazy);
-		void SetIsPostfixLazy(global::System.Func<IncrementOrDecrementExpressionBuilder, bool> lazy);
-		void SetIsPostfixLazy(global::System.Func<IncrementOrDecrementExpression, bool> immutableLazy, global::System.Func<IncrementOrDecrementExpressionBuilder, bool> mutableLazy);
-		bool IsChecked { get; set; }
-		void SetIsCheckedLazy(global::System.Func<bool> lazy);
-		void SetIsCheckedLazy(global::System.Func<IncrementOrDecrementExpressionBuilder, bool> lazy);
-		void SetIsCheckedLazy(global::System.Func<IncrementOrDecrementExpression, bool> immutableLazy, global::System.Func<IncrementOrDecrementExpressionBuilder, bool> mutableLazy);
-	
-	
-		/// <summary>
-		/// Convert the <see cref="IncrementOrDecrementExpressionBuilder"/> object to an immutable <see cref="IncrementOrDecrementExpression"/> object.
-		/// </summary>
-		new IncrementOrDecrementExpression ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="IncrementOrDecrementExpressionBuilder"/> object to an immutable <see cref="IncrementOrDecrementExpression"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new IncrementOrDecrementExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
-	
 	public interface IndexerAccessExpression : Expression
 	{
 		Expression Receiver { get; }
@@ -5139,6 +5143,7 @@ namespace MetaDslx.Languages.Core.Model
 			TupleType.Initialize();
 			TypeParameter.Initialize();
 			GenericTypeReference.Initialize();
+			Function.Initialize();
 			Member.Initialize();
 			FieldLikeMember.Initialize();
 			Field.Initialize();
@@ -5191,7 +5196,6 @@ namespace MetaDslx.Languages.Core.Model
 			DefaultValueExpression.Initialize();
 			DiscardExpression.Initialize();
 			DynamicExpression.Initialize();
-			IncrementOrDecrementExpression.Initialize();
 			IndexerAccessExpression.Initialize();
 			InstanceReferenceExpression.Initialize();
 			InvocationExpression.Initialize();
@@ -5240,6 +5244,10 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.GenericTypeReference.TypeArgumentsProperty);
 			properties.Add(CoreDescriptor.GenericTypeReference.ConstructedTypeProperty);
 			properties.Add(CoreDescriptor.GenericTypeReference.ResolvedTypeProperty);
+			properties.Add(CoreDescriptor.Function.IsAsyncProperty);
+			properties.Add(CoreDescriptor.Function.ResultProperty);
+			properties.Add(CoreDescriptor.Function.ParametersProperty);
+			properties.Add(CoreDescriptor.Function.BodyProperty);
 			properties.Add(CoreDescriptor.Member.IsStaticProperty);
 			properties.Add(CoreDescriptor.Member.IsVirtualProperty);
 			properties.Add(CoreDescriptor.Member.IsOverrideProperty);
@@ -5321,9 +5329,6 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.ConversionExpression.TargetTypeProperty);
 			properties.Add(CoreDescriptor.ConversionExpression.IsTryCastProperty);
 			properties.Add(CoreDescriptor.ConversionExpression.IsCheckedProperty);
-			properties.Add(CoreDescriptor.IncrementOrDecrementExpression.TargetProperty);
-			properties.Add(CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty);
-			properties.Add(CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty);
 			properties.Add(CoreDescriptor.IndexerAccessExpression.ReceiverProperty);
 			properties.Add(CoreDescriptor.IndexerAccessExpression.IsNullConditionalProperty);
 			properties.Add(CoreDescriptor.IndexerAccessExpression.ArgumentsProperty);
@@ -6290,6 +6295,68 @@ namespace MetaDslx.Languages.Core.Model
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
 			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.GenericTypeReference_ResolvedType,
+					defaultValue: null);
+		}
+	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.FunctionSymbol))]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.FunctionId), typeof(global::MetaDslx.Languages.Core.Model.Function), typeof(global::MetaDslx.Languages.Core.Model.FunctionBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Declaration) })]
+		public static class Function
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static Function()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(Function));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.Function; }
+			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsAsync")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsAsyncProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Function), name: "IsAsync",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Function_IsAsync,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Result")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ResultProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Function), name: "Result",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Parameter),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ParameterBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Function_Result,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Parameters")]
+			[global::MetaDslx.Modeling.CollectionAttribute]
+			[global::MetaDslx.Modeling.OrderedAttribute]
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ParametersProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Function), name: "Parameters",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Parameter),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ParameterBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Function_Parameters,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Body")]
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty BodyProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Function), name: "Body",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Statement),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.StatementBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.Function_Body,
 					defaultValue: null);
 		}
 	
@@ -8362,57 +8429,6 @@ namespace MetaDslx.Languages.Core.Model
 			{
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.DynamicExpression; }
 			}
-		}
-	
-		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.IncrementOrDecrementExpressionSymbol))]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Core.Model.Internal.IncrementOrDecrementExpressionId), typeof(global::MetaDslx.Languages.Core.Model.IncrementOrDecrementExpression), typeof(global::MetaDslx.Languages.Core.Model.IncrementOrDecrementExpressionBuilder), BaseDescriptors = new global::System.Type[] { typeof(CoreDescriptor.Expression) })]
-		public static class IncrementOrDecrementExpression
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static IncrementOrDecrementExpression()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(IncrementOrDecrementExpression));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.IncrementOrDecrementExpression; }
-			}
-			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Target")]
-			[global::MetaDslx.Modeling.ContainmentAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty TargetProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IncrementOrDecrementExpression), name: "Target",
-			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Expression),
-			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ExpressionBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.IncrementOrDecrementExpression_Target,
-					defaultValue: null);
-			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsPostfix")]
-			public static readonly global::MetaDslx.Modeling.ModelProperty IsPostfixProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IncrementOrDecrementExpression), name: "IsPostfix",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.IncrementOrDecrementExpression_IsPostfix,
-					defaultValue: null);
-			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsChecked")]
-			public static readonly global::MetaDslx.Modeling.ModelProperty IsCheckedProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(IncrementOrDecrementExpression), name: "IsChecked",
-			        immutableType: typeof(bool),
-			        mutableType: typeof(bool),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.IncrementOrDecrementExpression_IsChecked,
-					defaultValue: null);
 		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.IndexerAccessExpressionSymbol))]
@@ -16150,6 +16166,312 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		void GenericTypeReferenceBuilder.SetResolvedTypeLazy(global::System.Func<GenericTypeReference, DataType> immutableLazy, global::System.Func<GenericTypeReferenceBuilder, DataTypeBuilder> mutableLazy)
 		{
 			this.SetLazyReference(CoreDescriptor.GenericTypeReference.ResolvedTypeProperty, immutableLazy, mutableLazy);
+		}
+	}
+	
+	internal class FunctionId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new FunctionImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new FunctionBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class FunctionImpl : global::MetaDslx.Modeling.ImmutableObjectBase, Function
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> typeParameters0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> members0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isAsync0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Parameter result0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<Parameter> parameters0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Statement body0;
+	
+		internal FunctionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.Function;
+	
+		public new FunctionBuilder ToMutable()
+		{
+			return (FunctionBuilder)base.ToMutable();
+		}
+	
+		public new FunctionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (FunctionBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		DeclarationBuilder Declaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
+		{
+		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<TypeParameter> TypeParameters
+		{
+		    get { return this.GetList<TypeParameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Declaration> Members
+		{
+		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public bool IsAsync
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.IsAsyncProperty, ref isAsync0); }
+		}
+	
+		
+		public Parameter Result
+		{
+		    get { return this.GetReference<Parameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.ResultProperty, ref result0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<Parameter> Parameters
+		{
+		    get { return this.GetList<Parameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.ParametersProperty, ref parameters0); }
+		}
+	
+		
+		public Statement Body
+		{
+		    get { return this.GetReference<Statement>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.BodyProperty, ref body0); }
+		}
+	}
+	
+	internal class FunctionBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, FunctionBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
+		private global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> typeParameters0;
+		private global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> members0;
+		private global::MetaDslx.Modeling.MutableModelList<ParameterBuilder> parameters0;
+	
+		internal FunctionBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CoreImplementationProvider.Implementation.Function(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.Function;
+	
+		public new Function ToImmutable()
+		{
+			return (Function)base.ToImmutable();
+		}
+	
+		public new Function ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (Function)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		Declaration DeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
+		{
+			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<TypeParameterBuilder> TypeParameters
+		{
+			get { return this.GetList<TypeParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.TypeParametersProperty, ref typeParameters0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<DeclarationBuilder> Members
+		{
+			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Declaration.MembersProperty, ref members0); }
+		}
+	
+		
+		public bool IsAsync
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.IsAsyncProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.IsAsyncProperty, value); }
+		}
+		
+		void FunctionBuilder.SetIsAsyncLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Function.IsAsyncProperty, lazy);
+		}
+		
+		void FunctionBuilder.SetIsAsyncLazy(global::System.Func<FunctionBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Function.IsAsyncProperty, lazy);
+		}
+		
+		void FunctionBuilder.SetIsAsyncLazy(global::System.Func<Function, bool> immutableLazy, global::System.Func<FunctionBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CoreDescriptor.Function.IsAsyncProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public ParameterBuilder Result
+		{
+			get { return this.GetReference<ParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.ResultProperty); }
+			set { this.SetReference<ParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.ResultProperty, value); }
+		}
+		
+		void FunctionBuilder.SetResultLazy(global::System.Func<ParameterBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Function.ResultProperty, lazy);
+		}
+		
+		void FunctionBuilder.SetResultLazy(global::System.Func<FunctionBuilder, ParameterBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Function.ResultProperty, lazy);
+		}
+		
+		void FunctionBuilder.SetResultLazy(global::System.Func<Function, Parameter> immutableLazy, global::System.Func<FunctionBuilder, ParameterBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Function.ResultProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<ParameterBuilder> Parameters
+		{
+			get { return this.GetList<ParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.ParametersProperty, ref parameters0); }
+		}
+	
+		
+		public StatementBuilder Body
+		{
+			get { return this.GetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.BodyProperty); }
+			set { this.SetReference<StatementBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Function.BodyProperty, value); }
+		}
+		
+		void FunctionBuilder.SetBodyLazy(global::System.Func<StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Function.BodyProperty, lazy);
+		}
+		
+		void FunctionBuilder.SetBodyLazy(global::System.Func<FunctionBuilder, StatementBuilder> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Function.BodyProperty, lazy);
+		}
+		
+		void FunctionBuilder.SetBodyLazy(global::System.Func<Function, Statement> immutableLazy, global::System.Func<FunctionBuilder, StatementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.Function.BodyProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -30758,247 +31080,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	}
 	
-	internal class IncrementOrDecrementExpressionId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new IncrementOrDecrementExpressionImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new IncrementOrDecrementExpressionBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class IncrementOrDecrementExpressionImpl : global::MetaDslx.Modeling.ImmutableObjectBase, IncrementOrDecrementExpression
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<Attribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private DataType type0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Expression target0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private bool isPostfix0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private bool isChecked0;
-	
-		internal IncrementOrDecrementExpressionImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.IncrementOrDecrementExpression;
-	
-		public new IncrementOrDecrementExpressionBuilder ToMutable()
-		{
-			return (IncrementOrDecrementExpressionBuilder)base.ToMutable();
-		}
-	
-		public new IncrementOrDecrementExpressionBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (IncrementOrDecrementExpressionBuilder)base.ToMutable(model);
-		}
-	
-		ElementBuilder Element.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		ExpressionBuilder Expression.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		ExpressionBuilder Expression.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.ImmutableModelList<Attribute> Attributes
-		{
-		    get { return this.GetList<Attribute>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
-		}
-	
-		
-		public DataType Type
-		{
-		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, ref type0); }
-		}
-	
-		
-		public Expression Target
-		{
-		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.TargetProperty, ref target0); }
-		}
-	
-		
-		public bool IsPostfix
-		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty, ref isPostfix0); }
-		}
-	
-		
-		public bool IsChecked
-		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty, ref isChecked0); }
-		}
-	}
-	
-	internal class IncrementOrDecrementExpressionBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, IncrementOrDecrementExpressionBuilder
-	{
-		private global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> attributes0;
-	
-		internal IncrementOrDecrementExpressionBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CoreImplementationProvider.Implementation.IncrementOrDecrementExpression(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Core.Model.CoreInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CoreInstance.IncrementOrDecrementExpression;
-	
-		public new IncrementOrDecrementExpression ToImmutable()
-		{
-			return (IncrementOrDecrementExpression)base.ToImmutable();
-		}
-	
-		public new IncrementOrDecrementExpression ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (IncrementOrDecrementExpression)base.ToImmutable(model);
-		}
-	
-		Element ElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		Expression ExpressionBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Expression ExpressionBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<AttributeBuilder> Attributes
-		{
-			get { return this.GetList<AttributeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Element.AttributesProperty, ref attributes0); }
-		}
-	
-		
-		public DataTypeBuilder Type
-		{
-			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty); }
-			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.Expression.TypeProperty, value); }
-		}
-		
-		void ExpressionBuilder.SetTypeLazy(global::System.Func<DataTypeBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
-		}
-		
-		void ExpressionBuilder.SetTypeLazy(global::System.Func<ExpressionBuilder, DataTypeBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, lazy);
-		}
-		
-		void ExpressionBuilder.SetTypeLazy(global::System.Func<Expression, DataType> immutableLazy, global::System.Func<ExpressionBuilder, DataTypeBuilder> mutableLazy)
-		{
-			this.SetLazyReference(CoreDescriptor.Expression.TypeProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public ExpressionBuilder Target
-		{
-			get { return this.GetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.TargetProperty); }
-			set { this.SetReference<ExpressionBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.TargetProperty, value); }
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetTargetLazy(global::System.Func<ExpressionBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.IncrementOrDecrementExpression.TargetProperty, lazy);
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetTargetLazy(global::System.Func<IncrementOrDecrementExpressionBuilder, ExpressionBuilder> lazy)
-		{
-			this.SetLazyReference(CoreDescriptor.IncrementOrDecrementExpression.TargetProperty, lazy);
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetTargetLazy(global::System.Func<IncrementOrDecrementExpression, Expression> immutableLazy, global::System.Func<IncrementOrDecrementExpressionBuilder, ExpressionBuilder> mutableLazy)
-		{
-			this.SetLazyReference(CoreDescriptor.IncrementOrDecrementExpression.TargetProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public bool IsPostfix
-		{
-			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty); }
-			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty, value); }
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetIsPostfixLazy(global::System.Func<bool> lazy)
-		{
-			this.SetLazyValue(CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty, lazy);
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetIsPostfixLazy(global::System.Func<IncrementOrDecrementExpressionBuilder, bool> lazy)
-		{
-			this.SetLazyValue(CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty, lazy);
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetIsPostfixLazy(global::System.Func<IncrementOrDecrementExpression, bool> immutableLazy, global::System.Func<IncrementOrDecrementExpressionBuilder, bool> mutableLazy)
-		{
-			this.SetLazyValue(CoreDescriptor.IncrementOrDecrementExpression.IsPostfixProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public bool IsChecked
-		{
-			get { return this.GetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty); }
-			set { this.SetValue<bool>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty, value); }
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetIsCheckedLazy(global::System.Func<bool> lazy)
-		{
-			this.SetLazyValue(CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty, lazy);
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetIsCheckedLazy(global::System.Func<IncrementOrDecrementExpressionBuilder, bool> lazy)
-		{
-			this.SetLazyValue(CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty, lazy);
-		}
-		
-		void IncrementOrDecrementExpressionBuilder.SetIsCheckedLazy(global::System.Func<IncrementOrDecrementExpression, bool> immutableLazy, global::System.Func<IncrementOrDecrementExpressionBuilder, bool> mutableLazy)
-		{
-			this.SetLazyValue(CoreDescriptor.IncrementOrDecrementExpression.IsCheckedProperty, immutableLazy, mutableLazy);
-		}
-	}
-	
 	internal class IndexerAccessExpressionId : global::MetaDslx.Modeling.ObjectId
 	{
 		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Core.Model.CoreDescriptor.IndexerAccessExpression.MDescriptor; } }
@@ -34762,6 +34843,11 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GenericTypeReference_TypeArguments;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GenericTypeReference_ConstructedType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GenericTypeReference_ResolvedType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Function;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Function_IsAsync;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Function_Result;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Function_Parameters;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Function_Body;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Member;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Member_IsStatic;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Member_IsVirtual;
@@ -34895,10 +34981,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DefaultValueExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DiscardExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DynamicExpression;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder IncrementOrDecrementExpression;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IncrementOrDecrementExpression_Target;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IncrementOrDecrementExpression_IsPostfix;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IncrementOrDecrementExpression_IsChecked;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder IndexerAccessExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IndexerAccessExpression_Receiver;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IndexerAccessExpression_IsNullConditional;
@@ -34981,6 +35063,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp49;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp50;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp51;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp52;
 	
 		internal CoreBuilderInstance()
 		{
@@ -35145,6 +35228,11 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			GenericTypeReference_TypeArguments = factory.MetaProperty();
 			GenericTypeReference_ConstructedType = factory.MetaProperty();
 			GenericTypeReference_ResolvedType = factory.MetaProperty();
+			Function = factory.MetaClass();
+			Function_IsAsync = factory.MetaProperty();
+			Function_Result = factory.MetaProperty();
+			Function_Parameters = factory.MetaProperty();
+			Function_Body = factory.MetaProperty();
 			Member = factory.MetaClass();
 			Member_IsStatic = factory.MetaProperty();
 			Member_IsVirtual = factory.MetaProperty();
@@ -35278,10 +35366,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			DefaultValueExpression = factory.MetaClass();
 			DiscardExpression = factory.MetaClass();
 			DynamicExpression = factory.MetaClass();
-			IncrementOrDecrementExpression = factory.MetaClass();
-			IncrementOrDecrementExpression_Target = factory.MetaProperty();
-			IncrementOrDecrementExpression_IsPostfix = factory.MetaProperty();
-			IncrementOrDecrementExpression_IsChecked = factory.MetaProperty();
 			IndexerAccessExpression = factory.MetaClass();
 			IndexerAccessExpression_Receiver = factory.MetaProperty();
 			IndexerAccessExpression_IsNullConditional = factory.MetaProperty();
@@ -35364,6 +35448,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp49 = factory.MetaCollectionType();
 			__tmp50 = factory.MetaCollectionType();
 			__tmp51 = factory.MetaCollectionType();
+			__tmp52 = factory.MetaCollectionType();
 	
 			__tmp1.Documentation = null;
 			__tmp1.Name = "MetaDslx";
@@ -35430,6 +35515,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Declarations.AddLazy(() => TupleType);
 			__tmp4.Declarations.AddLazy(() => TypeParameter);
 			__tmp4.Declarations.AddLazy(() => GenericTypeReference);
+			__tmp4.Declarations.AddLazy(() => Function);
 			__tmp4.Declarations.AddLazy(() => Member);
 			__tmp4.Declarations.AddLazy(() => FieldLikeMember);
 			__tmp4.Declarations.AddLazy(() => Field);
@@ -35482,7 +35568,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp4.Declarations.AddLazy(() => DefaultValueExpression);
 			__tmp4.Declarations.AddLazy(() => DiscardExpression);
 			__tmp4.Declarations.AddLazy(() => DynamicExpression);
-			__tmp4.Declarations.AddLazy(() => IncrementOrDecrementExpression);
 			__tmp4.Declarations.AddLazy(() => IndexerAccessExpression);
 			__tmp4.Declarations.AddLazy(() => InstanceReferenceExpression);
 			__tmp4.Declarations.AddLazy(() => InvocationExpression);
@@ -36049,6 +36134,48 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			GenericTypeReference_ResolvedType.SetClassLazy(() => GenericTypeReference);
 			GenericTypeReference_ResolvedType.DefaultValue = null;
 			GenericTypeReference_ResolvedType.IsContainment = false;
+			Function.Documentation = null;
+			Function.Name = "Function";
+			Function.SetNamespaceLazy(() => __tmp4);
+			Function.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.FunctionSymbol);
+			Function.IsAbstract = false;
+			Function.SuperClasses.AddLazy(() => Declaration);
+			Function.Properties.AddLazy(() => Function_IsAsync);
+			Function.Properties.AddLazy(() => Function_Result);
+			Function.Properties.AddLazy(() => Function_Parameters);
+			Function.Properties.AddLazy(() => Function_Body);
+			Function_IsAsync.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			Function_IsAsync.Documentation = null;
+			Function_IsAsync.Name = "IsAsync";
+			Function_IsAsync.SymbolProperty = "IsAsync";
+			Function_IsAsync.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Function_IsAsync.SetClassLazy(() => Function);
+			Function_IsAsync.DefaultValue = null;
+			Function_IsAsync.IsContainment = false;
+			Function_Result.SetTypeLazy(() => Parameter);
+			Function_Result.Documentation = null;
+			Function_Result.Name = "Result";
+			Function_Result.SymbolProperty = "Result";
+			Function_Result.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Function_Result.SetClassLazy(() => Function);
+			Function_Result.DefaultValue = null;
+			Function_Result.IsContainment = false;
+			Function_Parameters.SetTypeLazy(() => __tmp35);
+			Function_Parameters.Documentation = null;
+			Function_Parameters.Name = "Parameters";
+			Function_Parameters.SymbolProperty = "Parameters";
+			Function_Parameters.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Function_Parameters.SetClassLazy(() => Function);
+			Function_Parameters.DefaultValue = null;
+			Function_Parameters.IsContainment = true;
+			Function_Body.SetTypeLazy(() => Statement);
+			Function_Body.Documentation = null;
+			Function_Body.Name = "Body";
+			Function_Body.SymbolProperty = "Body";
+			Function_Body.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Function_Body.SetClassLazy(() => Function);
+			Function_Body.DefaultValue = null;
+			Function_Body.IsContainment = true;
 			Member.Documentation = null;
 			Member.Name = "Member";
 			Member.SetNamespaceLazy(() => __tmp4);
@@ -36154,7 +36281,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			Indexer.IsAbstract = false;
 			Indexer.SuperClasses.AddLazy(() => Property);
 			Indexer.Properties.AddLazy(() => Indexer_Parameters);
-			Indexer_Parameters.SetTypeLazy(() => __tmp35);
+			Indexer_Parameters.SetTypeLazy(() => __tmp36);
 			Indexer_Parameters.Documentation = null;
 			Indexer_Parameters.Name = "Parameters";
 			Indexer_Parameters.SymbolProperty = "Parameters";
@@ -36188,7 +36315,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			MethodLikeMember_Result.SetClassLazy(() => MethodLikeMember);
 			MethodLikeMember_Result.DefaultValue = null;
 			MethodLikeMember_Result.IsContainment = false;
-			MethodLikeMember_Parameters.SetTypeLazy(() => __tmp36);
+			MethodLikeMember_Parameters.SetTypeLazy(() => __tmp37);
 			MethodLikeMember_Parameters.Documentation = null;
 			MethodLikeMember_Parameters.Name = "Parameters";
 			MethodLikeMember_Parameters.SymbolProperty = "Parameters";
@@ -36352,7 +36479,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			BlockStatement.IsAbstract = false;
 			BlockStatement.SuperClasses.AddLazy(() => Statement);
 			BlockStatement.Properties.AddLazy(() => BlockStatement_Statements);
-			BlockStatement_Statements.SetTypeLazy(() => __tmp37);
+			BlockStatement_Statements.SetTypeLazy(() => __tmp38);
 			BlockStatement_Statements.Documentation = null;
 			BlockStatement_Statements.Name = "Statements";
 			BlockStatement_Statements.SymbolProperty = "Statements";
@@ -36414,7 +36541,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_Before);
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_Condition);
 			ForLoopStatement.Properties.AddLazy(() => ForLoopStatement_AtLoopBottom);
-			ForLoopStatement_Before.SetTypeLazy(() => __tmp38);
+			ForLoopStatement_Before.SetTypeLazy(() => __tmp39);
 			ForLoopStatement_Before.Documentation = null;
 			ForLoopStatement_Before.Name = "Before";
 			ForLoopStatement_Before.SymbolProperty = "Before";
@@ -36430,7 +36557,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ForLoopStatement_Condition.SetClassLazy(() => ForLoopStatement);
 			ForLoopStatement_Condition.DefaultValue = null;
 			ForLoopStatement_Condition.IsContainment = true;
-			ForLoopStatement_AtLoopBottom.SetTypeLazy(() => __tmp39);
+			ForLoopStatement_AtLoopBottom.SetTypeLazy(() => __tmp40);
 			ForLoopStatement_AtLoopBottom.Documentation = null;
 			ForLoopStatement_AtLoopBottom.Name = "AtLoopBottom";
 			ForLoopStatement_AtLoopBottom.SymbolProperty = "AtLoopBottom";
@@ -36631,7 +36758,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			SwitchStatement_Value.SetClassLazy(() => SwitchStatement);
 			SwitchStatement_Value.DefaultValue = null;
 			SwitchStatement_Value.IsContainment = true;
-			SwitchStatement_Cases.SetTypeLazy(() => __tmp40);
+			SwitchStatement_Cases.SetTypeLazy(() => __tmp41);
 			SwitchStatement_Cases.Documentation = null;
 			SwitchStatement_Cases.Name = "Cases";
 			SwitchStatement_Cases.SymbolProperty = "Cases";
@@ -36647,7 +36774,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			SwitchCase.SuperClasses.AddLazy(() => Element);
 			SwitchCase.Properties.AddLazy(() => SwitchCase_Clauses);
 			SwitchCase.Properties.AddLazy(() => SwitchCase_Body);
-			SwitchCase_Clauses.SetTypeLazy(() => __tmp41);
+			SwitchCase_Clauses.SetTypeLazy(() => __tmp42);
 			SwitchCase_Clauses.Documentation = null;
 			SwitchCase_Clauses.Name = "Clauses";
 			SwitchCase_Clauses.SymbolProperty = "Clauses";
@@ -36717,7 +36844,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			TryStatement_Body.SetClassLazy(() => TryStatement);
 			TryStatement_Body.DefaultValue = null;
 			TryStatement_Body.IsContainment = true;
-			TryStatement_Catches.SetTypeLazy(() => __tmp42);
+			TryStatement_Catches.SetTypeLazy(() => __tmp43);
 			TryStatement_Catches.Documentation = null;
 			TryStatement_Catches.Name = "Catches";
 			TryStatement_Catches.SymbolProperty = "Catches";
@@ -36782,7 +36909,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			UsingStatement.SuperClasses.AddLazy(() => Statement);
 			UsingStatement.Properties.AddLazy(() => UsingStatement_Resources);
 			UsingStatement.Properties.AddLazy(() => UsingStatement_Body);
-			UsingStatement_Resources.SetTypeLazy(() => __tmp43);
+			UsingStatement_Resources.SetTypeLazy(() => __tmp44);
 			UsingStatement_Resources.Documentation = null;
 			UsingStatement_Resources.Name = "Resources";
 			UsingStatement_Resources.SymbolProperty = "Resources";
@@ -37093,39 +37220,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			DynamicExpression.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.DynamicExpressionSymbol);
 			DynamicExpression.IsAbstract = false;
 			DynamicExpression.SuperClasses.AddLazy(() => Expression);
-			IncrementOrDecrementExpression.Documentation = null;
-			IncrementOrDecrementExpression.Name = "IncrementOrDecrementExpression";
-			IncrementOrDecrementExpression.SetNamespaceLazy(() => __tmp4);
-			IncrementOrDecrementExpression.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.IncrementOrDecrementExpressionSymbol);
-			IncrementOrDecrementExpression.IsAbstract = false;
-			IncrementOrDecrementExpression.SuperClasses.AddLazy(() => Expression);
-			IncrementOrDecrementExpression.Properties.AddLazy(() => IncrementOrDecrementExpression_Target);
-			IncrementOrDecrementExpression.Properties.AddLazy(() => IncrementOrDecrementExpression_IsPostfix);
-			IncrementOrDecrementExpression.Properties.AddLazy(() => IncrementOrDecrementExpression_IsChecked);
-			IncrementOrDecrementExpression_Target.SetTypeLazy(() => Expression);
-			IncrementOrDecrementExpression_Target.Documentation = null;
-			IncrementOrDecrementExpression_Target.Name = "Target";
-			IncrementOrDecrementExpression_Target.SymbolProperty = "Target";
-			IncrementOrDecrementExpression_Target.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			IncrementOrDecrementExpression_Target.SetClassLazy(() => IncrementOrDecrementExpression);
-			IncrementOrDecrementExpression_Target.DefaultValue = null;
-			IncrementOrDecrementExpression_Target.IsContainment = true;
-			IncrementOrDecrementExpression_IsPostfix.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
-			IncrementOrDecrementExpression_IsPostfix.Documentation = null;
-			IncrementOrDecrementExpression_IsPostfix.Name = "IsPostfix";
-			IncrementOrDecrementExpression_IsPostfix.SymbolProperty = "IsPostfix";
-			IncrementOrDecrementExpression_IsPostfix.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			IncrementOrDecrementExpression_IsPostfix.SetClassLazy(() => IncrementOrDecrementExpression);
-			IncrementOrDecrementExpression_IsPostfix.DefaultValue = null;
-			IncrementOrDecrementExpression_IsPostfix.IsContainment = false;
-			IncrementOrDecrementExpression_IsChecked.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
-			IncrementOrDecrementExpression_IsChecked.Documentation = null;
-			IncrementOrDecrementExpression_IsChecked.Name = "IsChecked";
-			IncrementOrDecrementExpression_IsChecked.SymbolProperty = "IsChecked";
-			IncrementOrDecrementExpression_IsChecked.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			IncrementOrDecrementExpression_IsChecked.SetClassLazy(() => IncrementOrDecrementExpression);
-			IncrementOrDecrementExpression_IsChecked.DefaultValue = null;
-			IncrementOrDecrementExpression_IsChecked.IsContainment = false;
 			IndexerAccessExpression.Documentation = null;
 			IndexerAccessExpression.Name = "IndexerAccessExpression";
 			IndexerAccessExpression.SetNamespaceLazy(() => __tmp4);
@@ -37152,7 +37246,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IndexerAccessExpression_IsNullConditional.SetClassLazy(() => IndexerAccessExpression);
 			IndexerAccessExpression_IsNullConditional.DefaultValue = null;
 			IndexerAccessExpression_IsNullConditional.IsContainment = false;
-			IndexerAccessExpression_Arguments.SetTypeLazy(() => __tmp44);
+			IndexerAccessExpression_Arguments.SetTypeLazy(() => __tmp45);
 			IndexerAccessExpression_Arguments.Documentation = null;
 			IndexerAccessExpression_Arguments.Name = "Arguments";
 			IndexerAccessExpression_Arguments.SymbolProperty = "Arguments";
@@ -37199,7 +37293,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			InvocationExpression_Receiver.SetClassLazy(() => InvocationExpression);
 			InvocationExpression_Receiver.DefaultValue = null;
 			InvocationExpression_Receiver.IsContainment = true;
-			InvocationExpression_Arguments.SetTypeLazy(() => __tmp45);
+			InvocationExpression_Arguments.SetTypeLazy(() => __tmp46);
 			InvocationExpression_Arguments.Documentation = null;
 			InvocationExpression_Arguments.Name = "Arguments";
 			InvocationExpression_Arguments.SymbolProperty = "Arguments";
@@ -37266,7 +37360,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			LambdaExpression_ReturnType.SetClassLazy(() => LambdaExpression);
 			LambdaExpression_ReturnType.DefaultValue = null;
 			LambdaExpression_ReturnType.IsContainment = false;
-			LambdaExpression_Parameters.SetTypeLazy(() => __tmp46);
+			LambdaExpression_Parameters.SetTypeLazy(() => __tmp47);
 			LambdaExpression_Parameters.Documentation = null;
 			LambdaExpression_Parameters.Name = "Parameters";
 			LambdaExpression_Parameters.SymbolProperty = "Parameters";
@@ -37353,7 +37447,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ObjectCreationExpression_ObjectType.SetClassLazy(() => ObjectCreationExpression);
 			ObjectCreationExpression_ObjectType.DefaultValue = null;
 			ObjectCreationExpression_ObjectType.IsContainment = false;
-			ObjectCreationExpression_Arguments.SetTypeLazy(() => __tmp47);
+			ObjectCreationExpression_Arguments.SetTypeLazy(() => __tmp48);
 			ObjectCreationExpression_Arguments.Documentation = null;
 			ObjectCreationExpression_Arguments.Name = "Arguments";
 			ObjectCreationExpression_Arguments.SymbolProperty = "Arguments";
@@ -37361,7 +37455,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ObjectCreationExpression_Arguments.SetClassLazy(() => ObjectCreationExpression);
 			ObjectCreationExpression_Arguments.DefaultValue = null;
 			ObjectCreationExpression_Arguments.IsContainment = true;
-			ObjectCreationExpression_Initializers.SetTypeLazy(() => __tmp48);
+			ObjectCreationExpression_Initializers.SetTypeLazy(() => __tmp49);
 			ObjectCreationExpression_Initializers.Documentation = null;
 			ObjectCreationExpression_Initializers.Name = "Initializers";
 			ObjectCreationExpression_Initializers.SymbolProperty = "Arguments";
@@ -37412,7 +37506,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ReferenceExpression_IsNullConditional.SetClassLazy(() => ReferenceExpression);
 			ReferenceExpression_IsNullConditional.DefaultValue = null;
 			ReferenceExpression_IsNullConditional.IsContainment = false;
-			ReferenceExpression_TypeArguments.SetTypeLazy(() => __tmp49);
+			ReferenceExpression_TypeArguments.SetTypeLazy(() => __tmp50);
 			ReferenceExpression_TypeArguments.Documentation = null;
 			ReferenceExpression_TypeArguments.Name = "TypeArguments";
 			ReferenceExpression_TypeArguments.SymbolProperty = "TypeArguments";
@@ -37496,7 +37590,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			TupleExpression.IsAbstract = false;
 			TupleExpression.SuperClasses.AddLazy(() => Expression);
 			TupleExpression.Properties.AddLazy(() => TupleExpression_Arguments);
-			TupleExpression_Arguments.SetTypeLazy(() => __tmp50);
+			TupleExpression_Arguments.SetTypeLazy(() => __tmp51);
 			TupleExpression_Arguments.Documentation = null;
 			TupleExpression_Arguments.Name = "Arguments";
 			TupleExpression_Arguments.SymbolProperty = "Arguments";
@@ -37572,7 +37666,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			VariableDeclarationExpression_DeclaredType.SetClassLazy(() => VariableDeclarationExpression);
 			VariableDeclarationExpression_DeclaredType.DefaultValue = null;
 			VariableDeclarationExpression_DeclaredType.IsContainment = false;
-			VariableDeclarationExpression_Variables.SetTypeLazy(() => __tmp51);
+			VariableDeclarationExpression_Variables.SetTypeLazy(() => __tmp52);
 			VariableDeclarationExpression_Variables.Documentation = null;
 			VariableDeclarationExpression_Variables.Name = "Variables";
 			VariableDeclarationExpression_Variables.SymbolProperty = "Variables";
@@ -37609,35 +37703,37 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			__tmp36.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp36.SetInnerTypeLazy(() => Parameter);
 			__tmp37.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp37.SetInnerTypeLazy(() => Statement);
+			__tmp37.SetInnerTypeLazy(() => Parameter);
 			__tmp38.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp38.SetInnerTypeLazy(() => Expression);
+			__tmp38.SetInnerTypeLazy(() => Statement);
 			__tmp39.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp39.SetInnerTypeLazy(() => Expression);
 			__tmp40.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp40.SetInnerTypeLazy(() => SwitchCase);
+			__tmp40.SetInnerTypeLazy(() => Expression);
 			__tmp41.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp41.SetInnerTypeLazy(() => CaseClause);
+			__tmp41.SetInnerTypeLazy(() => SwitchCase);
 			__tmp42.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp42.SetInnerTypeLazy(() => CatchClause);
+			__tmp42.SetInnerTypeLazy(() => CaseClause);
 			__tmp43.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp43.SetInnerTypeLazy(() => Expression);
+			__tmp43.SetInnerTypeLazy(() => CatchClause);
 			__tmp44.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp44.SetInnerTypeLazy(() => Argument);
+			__tmp44.SetInnerTypeLazy(() => Expression);
 			__tmp45.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp45.SetInnerTypeLazy(() => Argument);
 			__tmp46.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp46.SetInnerTypeLazy(() => Parameter);
+			__tmp46.SetInnerTypeLazy(() => Argument);
 			__tmp47.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp47.SetInnerTypeLazy(() => Argument);
+			__tmp47.SetInnerTypeLazy(() => Parameter);
 			__tmp48.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp48.SetInnerTypeLazy(() => Expression);
+			__tmp48.SetInnerTypeLazy(() => Argument);
 			__tmp49.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp49.SetInnerTypeLazy(() => DataType);
+			__tmp49.SetInnerTypeLazy(() => Expression);
 			__tmp50.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp50.SetInnerTypeLazy(() => Argument);
+			__tmp50.SetInnerTypeLazy(() => DataType);
 			__tmp51.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp51.SetInnerTypeLazy(() => Variable);
+			__tmp51.SetInnerTypeLazy(() => Argument);
+			__tmp52.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp52.SetInnerTypeLazy(() => Variable);
 		}
 	}
 
@@ -38480,6 +38576,37 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// Computes the value of the property: GenericTypeReference.ResolvedType
 		/// </summary	
 		public abstract DataTypeBuilder GenericTypeReference_ComputeProperty_ResolvedType(GenericTypeReferenceBuilder _this);
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: Function()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Declaration</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		///     <li>NamedElement</li>
+		///     <li>Declaration</li>
+		/// </ul>
+		public virtual void Function(FunctionBuilder _this)
+		{
+			this.CallFunctionSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of Function
+		/// </summary>
+		protected virtual void CallFunctionSuperConstructors(FunctionBuilder _this)
+		{
+			this.Element(_this);
+			this.NamedElement(_this);
+			this.Declaration(_this);
+		}
+	
 	
 	
 	
@@ -40103,35 +40230,6 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		/// Calls the super constructors of DynamicExpression
 		/// </summary>
 		protected virtual void CallDynamicExpressionSuperConstructors(DynamicExpressionBuilder _this)
-		{
-			this.Element(_this);
-			this.Expression(_this);
-		}
-	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: IncrementOrDecrementExpression()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>Expression</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>Element</li>
-		///     <li>Expression</li>
-		/// </ul>
-		public virtual void IncrementOrDecrementExpression(IncrementOrDecrementExpressionBuilder _this)
-		{
-			this.CallIncrementOrDecrementExpressionSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of IncrementOrDecrementExpression
-		/// </summary>
-		protected virtual void CallIncrementOrDecrementExpressionSuperConstructors(IncrementOrDecrementExpressionBuilder _this)
 		{
 			this.Element(_this);
 			this.Expression(_this);

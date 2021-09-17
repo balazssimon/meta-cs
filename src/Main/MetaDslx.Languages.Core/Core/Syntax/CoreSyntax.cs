@@ -163,6 +163,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	public sealed class MainSyntax : CoreSyntaxNode, ICompilationUnitSyntax
 	{
 	    private SyntaxNode usingNamespace;
+	    private SyntaxNode declaration;
 	    private MainBlockSyntax mainBlock;
 	
 	    public MainSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
@@ -184,9 +185,18 @@ namespace MetaDslx.Languages.Core.Syntax
 				return default;
 			} 
 		}
+	    public Microsoft.CodeAnalysis.SyntaxList<DeclarationSyntax> Declaration 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.declaration, 1);
+				if (red != null) return new Microsoft.CodeAnalysis.SyntaxList<DeclarationSyntax>(red);
+				return default;
+			} 
+		}
 	    public MainBlockSyntax MainBlock 
 		{ 
-			get { return this.GetRed(ref this.mainBlock, 1); } 
+			get { return this.GetRed(ref this.mainBlock, 2); } 
 		}
 	    public SyntaxToken EndOfFileToken 
 		{ 
@@ -194,7 +204,7 @@ namespace MetaDslx.Languages.Core.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.MainGreen)this.Green;
 				var greenToken = green.EndOfFileToken;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
 		}
 	
@@ -203,7 +213,8 @@ namespace MetaDslx.Languages.Core.Syntax
 	        switch (index)
 	        {
 				case 0: return this.GetRed(ref this.usingNamespace, 0);
-				case 1: return this.GetRed(ref this.mainBlock, 1);
+				case 1: return this.GetRed(ref this.declaration, 1);
+				case 2: return this.GetRed(ref this.mainBlock, 2);
 				default: return null;
 	        }
 	    }
@@ -213,14 +224,15 @@ namespace MetaDslx.Languages.Core.Syntax
 	        switch (index)
 	        {
 				case 0: return this.usingNamespace;
-				case 1: return this.mainBlock;
+				case 1: return this.declaration;
+				case 2: return this.mainBlock;
 				default: return null;
 	        }
 	    }
 	
 	    public MainSyntax WithUsingNamespace(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace)
 		{
-			return this.Update(UsingNamespace, this.MainBlock, this.EndOfFileToken);
+			return this.Update(UsingNamespace, this.Declaration, this.MainBlock, this.EndOfFileToken);
 		}
 	
 	    public MainSyntax AddUsingNamespace(params UsingNamespaceSyntax[] usingNamespace)
@@ -228,23 +240,34 @@ namespace MetaDslx.Languages.Core.Syntax
 			return this.WithUsingNamespace(this.UsingNamespace.AddRange(usingNamespace));
 		}
 	
+	    public MainSyntax WithDeclaration(Microsoft.CodeAnalysis.SyntaxList<DeclarationSyntax> declaration)
+		{
+			return this.Update(this.UsingNamespace, Declaration, this.MainBlock, this.EndOfFileToken);
+		}
+	
+	    public MainSyntax AddDeclaration(params DeclarationSyntax[] declaration)
+		{
+			return this.WithDeclaration(this.Declaration.AddRange(declaration));
+		}
+	
 	    public MainSyntax WithMainBlock(MainBlockSyntax mainBlock)
 		{
-			return this.Update(this.UsingNamespace, MainBlock, this.EndOfFileToken);
+			return this.Update(this.UsingNamespace, this.Declaration, MainBlock, this.EndOfFileToken);
 		}
 	
 	    public MainSyntax WithEndOfFileToken(SyntaxToken eOF)
 		{
-			return this.Update(this.UsingNamespace, this.MainBlock, EndOfFileToken);
+			return this.Update(this.UsingNamespace, this.Declaration, this.MainBlock, EndOfFileToken);
 		}
 	
-	    public MainSyntax Update(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, MainBlockSyntax mainBlock, SyntaxToken eOF)
+	    public MainSyntax Update(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, Microsoft.CodeAnalysis.SyntaxList<DeclarationSyntax> declaration, MainBlockSyntax mainBlock, SyntaxToken eOF)
 	    {
 	        if (this.UsingNamespace != usingNamespace ||
+				this.Declaration != declaration ||
 				this.MainBlock != mainBlock ||
 				this.EndOfFileToken != eOF)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.Main(usingNamespace, mainBlock, eOF);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.Main(usingNamespace, declaration, mainBlock, eOF);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -476,6 +499,1223 @@ namespace MetaDslx.Languages.Core.Syntax
 	    public override void Accept(ICoreSyntaxVisitor visitor)
 	    {
 	        visitor.VisitUsingNamespace(this);
+	    }
+	}
+	
+	public sealed class DeclarationSyntax : CoreSyntaxNode
+	{
+	    private AliasDeclarationSyntax aliasDeclaration;
+	    private EnumDeclarationSyntax enumDeclaration;
+	    private StructDeclarationSyntax structDeclaration;
+	    private FunctionDeclarationSyntax functionDeclaration;
+	
+	    public DeclarationSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public DeclarationSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public AliasDeclarationSyntax AliasDeclaration 
+		{ 
+			get { return this.GetRed(ref this.aliasDeclaration, 0); } 
+		}
+	    public EnumDeclarationSyntax EnumDeclaration 
+		{ 
+			get { return this.GetRed(ref this.enumDeclaration, 1); } 
+		}
+	    public StructDeclarationSyntax StructDeclaration 
+		{ 
+			get { return this.GetRed(ref this.structDeclaration, 2); } 
+		}
+	    public FunctionDeclarationSyntax FunctionDeclaration 
+		{ 
+			get { return this.GetRed(ref this.functionDeclaration, 3); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.aliasDeclaration, 0);
+				case 1: return this.GetRed(ref this.enumDeclaration, 1);
+				case 2: return this.GetRed(ref this.structDeclaration, 2);
+				case 3: return this.GetRed(ref this.functionDeclaration, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.aliasDeclaration;
+				case 1: return this.enumDeclaration;
+				case 2: return this.structDeclaration;
+				case 3: return this.functionDeclaration;
+				default: return null;
+	        }
+	    }
+	
+	    public DeclarationSyntax WithAliasDeclaration(AliasDeclarationSyntax aliasDeclaration)
+		{
+			return this.Update(aliasDeclaration);
+		}
+	
+	    public DeclarationSyntax WithEnumDeclaration(EnumDeclarationSyntax enumDeclaration)
+		{
+			return this.Update(enumDeclaration);
+		}
+	
+	    public DeclarationSyntax WithStructDeclaration(StructDeclarationSyntax structDeclaration)
+		{
+			return this.Update(structDeclaration);
+		}
+	
+	    public DeclarationSyntax WithFunctionDeclaration(FunctionDeclarationSyntax functionDeclaration)
+		{
+			return this.Update(functionDeclaration);
+		}
+	
+	    public DeclarationSyntax Update(AliasDeclarationSyntax aliasDeclaration)
+	    {
+	        if (this.AliasDeclaration != aliasDeclaration)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.Declaration(aliasDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public DeclarationSyntax Update(EnumDeclarationSyntax enumDeclaration)
+	    {
+	        if (this.EnumDeclaration != enumDeclaration)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.Declaration(enumDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public DeclarationSyntax Update(StructDeclarationSyntax structDeclaration)
+	    {
+	        if (this.StructDeclaration != structDeclaration)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.Declaration(structDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public DeclarationSyntax Update(FunctionDeclarationSyntax functionDeclaration)
+	    {
+	        if (this.FunctionDeclaration != functionDeclaration)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.Declaration(functionDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitDeclaration(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitDeclaration(this);
+	    }
+	}
+	
+	public sealed class AliasDeclarationSyntax : CoreSyntaxNode
+	{
+	    private NameSyntax name;
+	    private QualifierSyntax qualifier;
+	
+	    public AliasDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public AliasDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KUsing 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.AliasDeclarationGreen)this.Green;
+				var greenToken = green.KUsing;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	    public SyntaxToken TAssign 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.AliasDeclarationGreen)this.Green;
+				var greenToken = green.TAssign;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 3); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.name, 1);
+				case 3: return this.GetRed(ref this.qualifier, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.name;
+				case 3: return this.qualifier;
+				default: return null;
+	        }
+	    }
+	
+	    public AliasDeclarationSyntax WithKUsing(SyntaxToken kUsing)
+		{
+			return this.Update(KUsing, this.Name, this.TAssign, this.Qualifier);
+		}
+	
+	    public AliasDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.KUsing, Name, this.TAssign, this.Qualifier);
+		}
+	
+	    public AliasDeclarationSyntax WithTAssign(SyntaxToken tAssign)
+		{
+			return this.Update(this.KUsing, this.Name, TAssign, this.Qualifier);
+		}
+	
+	    public AliasDeclarationSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.KUsing, this.Name, this.TAssign, Qualifier);
+		}
+	
+	    public AliasDeclarationSyntax Update(SyntaxToken kUsing, NameSyntax name, SyntaxToken tAssign, QualifierSyntax qualifier)
+	    {
+	        if (this.KUsing != kUsing ||
+				this.Name != name ||
+				this.TAssign != tAssign ||
+				this.Qualifier != qualifier)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.AliasDeclaration(kUsing, name, tAssign, qualifier);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (AliasDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitAliasDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitAliasDeclaration(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitAliasDeclaration(this);
+	    }
+	}
+	
+	public sealed class EnumDeclarationSyntax : CoreSyntaxNode
+	{
+	    private NameSyntax name;
+	    private EnumLiteralListSyntax enumLiteralList;
+	
+	    public EnumDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public EnumDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KEnum 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.EnumDeclarationGreen)this.Green;
+				var greenToken = green.KEnum;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	    public SyntaxToken TOpenBrace 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.EnumDeclarationGreen)this.Green;
+				var greenToken = green.TOpenBrace;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public EnumLiteralListSyntax EnumLiteralList 
+		{ 
+			get { return this.GetRed(ref this.enumLiteralList, 3); } 
+		}
+	    public SyntaxToken TCloseBrace 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.EnumDeclarationGreen)this.Green;
+				var greenToken = green.TCloseBrace;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.name, 1);
+				case 3: return this.GetRed(ref this.enumLiteralList, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.name;
+				case 3: return this.enumLiteralList;
+				default: return null;
+	        }
+	    }
+	
+	    public EnumDeclarationSyntax WithKEnum(SyntaxToken kEnum)
+		{
+			return this.Update(KEnum, this.Name, this.TOpenBrace, this.EnumLiteralList, this.TCloseBrace);
+		}
+	
+	    public EnumDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.KEnum, Name, this.TOpenBrace, this.EnumLiteralList, this.TCloseBrace);
+		}
+	
+	    public EnumDeclarationSyntax WithTOpenBrace(SyntaxToken tOpenBrace)
+		{
+			return this.Update(this.KEnum, this.Name, TOpenBrace, this.EnumLiteralList, this.TCloseBrace);
+		}
+	
+	    public EnumDeclarationSyntax WithEnumLiteralList(EnumLiteralListSyntax enumLiteralList)
+		{
+			return this.Update(this.KEnum, this.Name, this.TOpenBrace, EnumLiteralList, this.TCloseBrace);
+		}
+	
+	    public EnumDeclarationSyntax WithTCloseBrace(SyntaxToken tCloseBrace)
+		{
+			return this.Update(this.KEnum, this.Name, this.TOpenBrace, this.EnumLiteralList, TCloseBrace);
+		}
+	
+	    public EnumDeclarationSyntax Update(SyntaxToken kEnum, NameSyntax name, SyntaxToken tOpenBrace, EnumLiteralListSyntax enumLiteralList, SyntaxToken tCloseBrace)
+	    {
+	        if (this.KEnum != kEnum ||
+				this.Name != name ||
+				this.TOpenBrace != tOpenBrace ||
+				this.EnumLiteralList != enumLiteralList ||
+				this.TCloseBrace != tCloseBrace)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.EnumDeclaration(kEnum, name, tOpenBrace, enumLiteralList, tCloseBrace);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (EnumDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitEnumDeclaration(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitEnumDeclaration(this);
+	    }
+	}
+	
+	public sealed class EnumLiteralListSyntax : CoreSyntaxNode
+	{
+	    private SyntaxNode enumLiteral;
+	
+	    public EnumLiteralListSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public EnumLiteralListSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public Microsoft.CodeAnalysis.SeparatedSyntaxList<EnumLiteralSyntax> EnumLiteral 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.enumLiteral, 0);
+				if (red != null)
+				{
+					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<EnumLiteralSyntax>(red, this.GetChildIndex(0));
+				}
+				return default;
+			} 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.enumLiteral, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.enumLiteral;
+				default: return null;
+	        }
+	    }
+	
+	    public EnumLiteralListSyntax WithEnumLiteral(Microsoft.CodeAnalysis.SeparatedSyntaxList<EnumLiteralSyntax> enumLiteral)
+		{
+			return this.Update(EnumLiteral);
+		}
+	
+	    public EnumLiteralListSyntax AddEnumLiteral(params EnumLiteralSyntax[] enumLiteral)
+		{
+			return this.WithEnumLiteral(this.EnumLiteral.AddRange(enumLiteral));
+		}
+	
+	    public EnumLiteralListSyntax Update(Microsoft.CodeAnalysis.SeparatedSyntaxList<EnumLiteralSyntax> enumLiteral)
+	    {
+	        if (this.EnumLiteral != enumLiteral)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.EnumLiteralList(enumLiteral);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (EnumLiteralListSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumLiteralList(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitEnumLiteralList(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitEnumLiteralList(this);
+	    }
+	}
+	
+	public sealed class EnumLiteralSyntax : CoreSyntaxNode
+	{
+	    private NameSyntax name;
+	
+	    public EnumLiteralSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public EnumLiteralSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 0); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.name, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.name;
+				default: return null;
+	        }
+	    }
+	
+	    public EnumLiteralSyntax WithName(NameSyntax name)
+		{
+			return this.Update(Name);
+		}
+	
+	    public EnumLiteralSyntax Update(NameSyntax name)
+	    {
+	        if (this.Name != name)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.EnumLiteral(name);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (EnumLiteralSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumLiteral(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitEnumLiteral(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitEnumLiteral(this);
+	    }
+	}
+	
+	public sealed class StructDeclarationSyntax : CoreSyntaxNode
+	{
+	    private NameSyntax name;
+	    private SyntaxNode structField;
+	
+	    public StructDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public StructDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KStruct 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.StructDeclarationGreen)this.Green;
+				var greenToken = green.KStruct;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	    public SyntaxToken TOpenBrace 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.StructDeclarationGreen)this.Green;
+				var greenToken = green.TOpenBrace;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public Microsoft.CodeAnalysis.SyntaxList<StructFieldSyntax> StructField 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.structField, 3);
+				if (red != null) return new Microsoft.CodeAnalysis.SyntaxList<StructFieldSyntax>(red);
+				return default;
+			} 
+		}
+	    public SyntaxToken TCloseBrace 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.StructDeclarationGreen)this.Green;
+				var greenToken = green.TCloseBrace;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.name, 1);
+				case 3: return this.GetRed(ref this.structField, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.name;
+				case 3: return this.structField;
+				default: return null;
+	        }
+	    }
+	
+	    public StructDeclarationSyntax WithKStruct(SyntaxToken kStruct)
+		{
+			return this.Update(KStruct, this.Name, this.TOpenBrace, this.StructField, this.TCloseBrace);
+		}
+	
+	    public StructDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.KStruct, Name, this.TOpenBrace, this.StructField, this.TCloseBrace);
+		}
+	
+	    public StructDeclarationSyntax WithTOpenBrace(SyntaxToken tOpenBrace)
+		{
+			return this.Update(this.KStruct, this.Name, TOpenBrace, this.StructField, this.TCloseBrace);
+		}
+	
+	    public StructDeclarationSyntax WithStructField(Microsoft.CodeAnalysis.SyntaxList<StructFieldSyntax> structField)
+		{
+			return this.Update(this.KStruct, this.Name, this.TOpenBrace, StructField, this.TCloseBrace);
+		}
+	
+	    public StructDeclarationSyntax AddStructField(params StructFieldSyntax[] structField)
+		{
+			return this.WithStructField(this.StructField.AddRange(structField));
+		}
+	
+	    public StructDeclarationSyntax WithTCloseBrace(SyntaxToken tCloseBrace)
+		{
+			return this.Update(this.KStruct, this.Name, this.TOpenBrace, this.StructField, TCloseBrace);
+		}
+	
+	    public StructDeclarationSyntax Update(SyntaxToken kStruct, NameSyntax name, SyntaxToken tOpenBrace, Microsoft.CodeAnalysis.SyntaxList<StructFieldSyntax> structField, SyntaxToken tCloseBrace)
+	    {
+	        if (this.KStruct != kStruct ||
+				this.Name != name ||
+				this.TOpenBrace != tOpenBrace ||
+				this.StructField != structField ||
+				this.TCloseBrace != tCloseBrace)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.StructDeclaration(kStruct, name, tOpenBrace, structField, tCloseBrace);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (StructDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitStructDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitStructDeclaration(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitStructDeclaration(this);
+	    }
+	}
+	
+	public sealed class StructFieldSyntax : CoreSyntaxNode
+	{
+	    private TypeReferenceSyntax typeReference;
+	    private NameSyntax name;
+	    private ExpressionSyntax expression;
+	
+	    public StructFieldSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public StructFieldSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public TypeReferenceSyntax TypeReference 
+		{ 
+			get { return this.GetRed(ref this.typeReference, 0); } 
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	    public SyntaxToken TAssign 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.StructFieldGreen)this.Green;
+				var greenToken = green.TAssign;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 3); } 
+		}
+	    public SyntaxToken TSemicolon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.StructFieldGreen)this.Green;
+				var greenToken = green.TSemicolon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.typeReference, 0);
+				case 1: return this.GetRed(ref this.name, 1);
+				case 3: return this.GetRed(ref this.expression, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.typeReference;
+				case 1: return this.name;
+				case 3: return this.expression;
+				default: return null;
+	        }
+	    }
+	
+	    public StructFieldSyntax WithTypeReference(TypeReferenceSyntax typeReference)
+		{
+			return this.Update(TypeReference, this.Name, this.TAssign, this.Expression, this.TSemicolon);
+		}
+	
+	    public StructFieldSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.TypeReference, Name, this.TAssign, this.Expression, this.TSemicolon);
+		}
+	
+	    public StructFieldSyntax WithTAssign(SyntaxToken tAssign)
+		{
+			return this.Update(this.TypeReference, this.Name, TAssign, this.Expression, this.TSemicolon);
+		}
+	
+	    public StructFieldSyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(this.TypeReference, this.Name, this.TAssign, Expression, this.TSemicolon);
+		}
+	
+	    public StructFieldSyntax WithTSemicolon(SyntaxToken tSemicolon)
+		{
+			return this.Update(this.TypeReference, this.Name, this.TAssign, this.Expression, TSemicolon);
+		}
+	
+	    public StructFieldSyntax Update(TypeReferenceSyntax typeReference, NameSyntax name, SyntaxToken tAssign, ExpressionSyntax expression, SyntaxToken tSemicolon)
+	    {
+	        if (this.TypeReference != typeReference ||
+				this.Name != name ||
+				this.TAssign != tAssign ||
+				this.Expression != expression ||
+				this.TSemicolon != tSemicolon)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.StructField(typeReference, name, tAssign, expression, tSemicolon);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (StructFieldSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitStructField(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitStructField(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitStructField(this);
+	    }
+	}
+	
+	public sealed class FunctionDeclarationSyntax : CoreSyntaxNode
+	{
+	    private FunctionResultSyntax functionResult;
+	    private NameSyntax name;
+	    private FunctionParameterListSyntax functionParameterList;
+	    private BlockStatementSyntax blockStatement;
+	
+	    public FunctionDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public FunctionDeclarationSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public FunctionResultSyntax FunctionResult 
+		{ 
+			get { return this.GetRed(ref this.functionResult, 0); } 
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	    public SyntaxToken TOpenParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.FunctionDeclarationGreen)this.Green;
+				var greenToken = green.TOpenParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public FunctionParameterListSyntax FunctionParameterList 
+		{ 
+			get { return this.GetRed(ref this.functionParameterList, 3); } 
+		}
+	    public SyntaxToken TCloseParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.FunctionDeclarationGreen)this.Green;
+				var greenToken = green.TCloseParen;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	    public BlockStatementSyntax BlockStatement 
+		{ 
+			get { return this.GetRed(ref this.blockStatement, 5); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.functionResult, 0);
+				case 1: return this.GetRed(ref this.name, 1);
+				case 3: return this.GetRed(ref this.functionParameterList, 3);
+				case 5: return this.GetRed(ref this.blockStatement, 5);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.functionResult;
+				case 1: return this.name;
+				case 3: return this.functionParameterList;
+				case 5: return this.blockStatement;
+				default: return null;
+	        }
+	    }
+	
+	    public FunctionDeclarationSyntax WithFunctionResult(FunctionResultSyntax functionResult)
+		{
+			return this.Update(FunctionResult, this.Name, this.TOpenParen, this.FunctionParameterList, this.TCloseParen, this.BlockStatement);
+		}
+	
+	    public FunctionDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.FunctionResult, Name, this.TOpenParen, this.FunctionParameterList, this.TCloseParen, this.BlockStatement);
+		}
+	
+	    public FunctionDeclarationSyntax WithTOpenParen(SyntaxToken tOpenParen)
+		{
+			return this.Update(this.FunctionResult, this.Name, TOpenParen, this.FunctionParameterList, this.TCloseParen, this.BlockStatement);
+		}
+	
+	    public FunctionDeclarationSyntax WithFunctionParameterList(FunctionParameterListSyntax functionParameterList)
+		{
+			return this.Update(this.FunctionResult, this.Name, this.TOpenParen, FunctionParameterList, this.TCloseParen, this.BlockStatement);
+		}
+	
+	    public FunctionDeclarationSyntax WithTCloseParen(SyntaxToken tCloseParen)
+		{
+			return this.Update(this.FunctionResult, this.Name, this.TOpenParen, this.FunctionParameterList, TCloseParen, this.BlockStatement);
+		}
+	
+	    public FunctionDeclarationSyntax WithBlockStatement(BlockStatementSyntax blockStatement)
+		{
+			return this.Update(this.FunctionResult, this.Name, this.TOpenParen, this.FunctionParameterList, this.TCloseParen, BlockStatement);
+		}
+	
+	    public FunctionDeclarationSyntax Update(FunctionResultSyntax functionResult, NameSyntax name, SyntaxToken tOpenParen, FunctionParameterListSyntax functionParameterList, SyntaxToken tCloseParen, BlockStatementSyntax blockStatement)
+	    {
+	        if (this.FunctionResult != functionResult ||
+				this.Name != name ||
+				this.TOpenParen != tOpenParen ||
+				this.FunctionParameterList != functionParameterList ||
+				this.TCloseParen != tCloseParen ||
+				this.BlockStatement != blockStatement)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.FunctionDeclaration(functionResult, name, tOpenParen, functionParameterList, tCloseParen, blockStatement);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (FunctionDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitFunctionDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitFunctionDeclaration(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitFunctionDeclaration(this);
+	    }
+	}
+	
+	public sealed class FunctionParameterListSyntax : CoreSyntaxNode
+	{
+	    private SyntaxNode functionParameter;
+	
+	    public FunctionParameterListSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public FunctionParameterListSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public Microsoft.CodeAnalysis.SeparatedSyntaxList<FunctionParameterSyntax> FunctionParameter 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.functionParameter, 0);
+				if (red != null)
+				{
+					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<FunctionParameterSyntax>(red, this.GetChildIndex(0));
+				}
+				return default;
+			} 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.functionParameter, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.functionParameter;
+				default: return null;
+	        }
+	    }
+	
+	    public FunctionParameterListSyntax WithFunctionParameter(Microsoft.CodeAnalysis.SeparatedSyntaxList<FunctionParameterSyntax> functionParameter)
+		{
+			return this.Update(FunctionParameter);
+		}
+	
+	    public FunctionParameterListSyntax AddFunctionParameter(params FunctionParameterSyntax[] functionParameter)
+		{
+			return this.WithFunctionParameter(this.FunctionParameter.AddRange(functionParameter));
+		}
+	
+	    public FunctionParameterListSyntax Update(Microsoft.CodeAnalysis.SeparatedSyntaxList<FunctionParameterSyntax> functionParameter)
+	    {
+	        if (this.FunctionParameter != functionParameter)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.FunctionParameterList(functionParameter);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (FunctionParameterListSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitFunctionParameterList(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitFunctionParameterList(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitFunctionParameterList(this);
+	    }
+	}
+	
+	public sealed class FunctionParameterSyntax : CoreSyntaxNode
+	{
+	    private TypeReferenceSyntax typeReference;
+	    private NameSyntax name;
+	    private ExpressionSyntax expression;
+	
+	    public FunctionParameterSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public FunctionParameterSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public TypeReferenceSyntax TypeReference 
+		{ 
+			get { return this.GetRed(ref this.typeReference, 0); } 
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	    public SyntaxToken TAssign 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.FunctionParameterGreen)this.Green;
+				var greenToken = green.TAssign;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 3); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.typeReference, 0);
+				case 1: return this.GetRed(ref this.name, 1);
+				case 3: return this.GetRed(ref this.expression, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.typeReference;
+				case 1: return this.name;
+				case 3: return this.expression;
+				default: return null;
+	        }
+	    }
+	
+	    public FunctionParameterSyntax WithTypeReference(TypeReferenceSyntax typeReference)
+		{
+			return this.Update(TypeReference, this.Name, this.TAssign, this.Expression);
+		}
+	
+	    public FunctionParameterSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.TypeReference, Name, this.TAssign, this.Expression);
+		}
+	
+	    public FunctionParameterSyntax WithTAssign(SyntaxToken tAssign)
+		{
+			return this.Update(this.TypeReference, this.Name, TAssign, this.Expression);
+		}
+	
+	    public FunctionParameterSyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(this.TypeReference, this.Name, this.TAssign, Expression);
+		}
+	
+	    public FunctionParameterSyntax Update(TypeReferenceSyntax typeReference, NameSyntax name, SyntaxToken tAssign, ExpressionSyntax expression)
+	    {
+	        if (this.TypeReference != typeReference ||
+				this.Name != name ||
+				this.TAssign != tAssign ||
+				this.Expression != expression)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.FunctionParameter(typeReference, name, tAssign, expression);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (FunctionParameterSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitFunctionParameter(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitFunctionParameter(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitFunctionParameter(this);
+	    }
+	}
+	
+	public sealed class FunctionResultSyntax : CoreSyntaxNode
+	{
+	    private ReturnTypeSyntax returnType;
+	
+	    public FunctionResultSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public FunctionResultSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ReturnTypeSyntax ReturnType 
+		{ 
+			get { return this.GetRed(ref this.returnType, 0); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.returnType, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.returnType;
+				default: return null;
+	        }
+	    }
+	
+	    public FunctionResultSyntax WithReturnType(ReturnTypeSyntax returnType)
+		{
+			return this.Update(ReturnType);
+		}
+	
+	    public FunctionResultSyntax Update(ReturnTypeSyntax returnType)
+	    {
+	        if (this.ReturnType != returnType)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.FunctionResult(returnType);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (FunctionResultSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitFunctionResult(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitFunctionResult(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitFunctionResult(this);
 	    }
 	}
 	
@@ -4165,7 +5405,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	
 	public sealed class IdentifierExprSyntax : ExpressionSyntax
 	{
-	    private IdentifierSyntax identifier;
+	    private NameSyntax name;
 	    private GenericTypeArgumentsSyntax genericTypeArguments;
 	
 	    public IdentifierExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
@@ -4178,9 +5418,9 @@ namespace MetaDslx.Languages.Core.Syntax
 	    {
 	    }
 	
-	    public IdentifierSyntax Identifier 
+	    public NameSyntax Name 
 		{ 
-			get { return this.GetRed(ref this.identifier, 0); } 
+			get { return this.GetRed(ref this.name, 0); } 
 		}
 	    public GenericTypeArgumentsSyntax GenericTypeArguments 
 		{ 
@@ -4191,7 +5431,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.identifier, 0);
+				case 0: return this.GetRed(ref this.name, 0);
 				case 1: return this.GetRed(ref this.genericTypeArguments, 1);
 				default: return null;
 	        }
@@ -4201,28 +5441,28 @@ namespace MetaDslx.Languages.Core.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.identifier;
+				case 0: return this.name;
 				case 1: return this.genericTypeArguments;
 				default: return null;
 	        }
 	    }
 	
-	    public IdentifierExprSyntax WithIdentifier(IdentifierSyntax identifier)
+	    public IdentifierExprSyntax WithName(NameSyntax name)
 		{
-			return this.Update(Identifier, this.GenericTypeArguments);
+			return this.Update(Name, this.GenericTypeArguments);
 		}
 	
 	    public IdentifierExprSyntax WithGenericTypeArguments(GenericTypeArgumentsSyntax genericTypeArguments)
 		{
-			return this.Update(this.Identifier, GenericTypeArguments);
+			return this.Update(this.Name, GenericTypeArguments);
 		}
 	
-	    public IdentifierExprSyntax Update(IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
+	    public IdentifierExprSyntax Update(NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
 	    {
-	        if (this.Identifier != identifier ||
+	        if (this.Name != name ||
 				this.GenericTypeArguments != genericTypeArguments)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.IdentifierExpr(identifier, genericTypeArguments);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.IdentifierExpr(name, genericTypeArguments);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -4251,7 +5491,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	{
 	    private ExpressionSyntax expression;
 	    private DotOperatorSyntax dotOperator;
-	    private IdentifierSyntax identifier;
+	    private NameSyntax name;
 	    private GenericTypeArgumentsSyntax genericTypeArguments;
 	
 	    public QualifierExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
@@ -4272,9 +5512,9 @@ namespace MetaDslx.Languages.Core.Syntax
 		{ 
 			get { return this.GetRed(ref this.dotOperator, 1); } 
 		}
-	    public IdentifierSyntax Identifier 
+	    public NameSyntax Name 
 		{ 
-			get { return this.GetRed(ref this.identifier, 2); } 
+			get { return this.GetRed(ref this.name, 2); } 
 		}
 	    public GenericTypeArgumentsSyntax GenericTypeArguments 
 		{ 
@@ -4287,7 +5527,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	        {
 				case 0: return this.GetRed(ref this.expression, 0);
 				case 1: return this.GetRed(ref this.dotOperator, 1);
-				case 2: return this.GetRed(ref this.identifier, 2);
+				case 2: return this.GetRed(ref this.name, 2);
 				case 3: return this.GetRed(ref this.genericTypeArguments, 3);
 				default: return null;
 	        }
@@ -4299,7 +5539,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	        {
 				case 0: return this.expression;
 				case 1: return this.dotOperator;
-				case 2: return this.identifier;
+				case 2: return this.name;
 				case 3: return this.genericTypeArguments;
 				default: return null;
 	        }
@@ -4307,32 +5547,32 @@ namespace MetaDslx.Languages.Core.Syntax
 	
 	    public QualifierExprSyntax WithExpression(ExpressionSyntax expression)
 		{
-			return this.Update(Expression, this.DotOperator, this.Identifier, this.GenericTypeArguments);
+			return this.Update(Expression, this.DotOperator, this.Name, this.GenericTypeArguments);
 		}
 	
 	    public QualifierExprSyntax WithDotOperator(DotOperatorSyntax dotOperator)
 		{
-			return this.Update(this.Expression, DotOperator, this.Identifier, this.GenericTypeArguments);
+			return this.Update(this.Expression, DotOperator, this.Name, this.GenericTypeArguments);
 		}
 	
-	    public QualifierExprSyntax WithIdentifier(IdentifierSyntax identifier)
+	    public QualifierExprSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Expression, this.DotOperator, Identifier, this.GenericTypeArguments);
+			return this.Update(this.Expression, this.DotOperator, Name, this.GenericTypeArguments);
 		}
 	
 	    public QualifierExprSyntax WithGenericTypeArguments(GenericTypeArgumentsSyntax genericTypeArguments)
 		{
-			return this.Update(this.Expression, this.DotOperator, this.Identifier, GenericTypeArguments);
+			return this.Update(this.Expression, this.DotOperator, this.Name, GenericTypeArguments);
 		}
 	
-	    public QualifierExprSyntax Update(ExpressionSyntax expression, DotOperatorSyntax dotOperator, IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
+	    public QualifierExprSyntax Update(ExpressionSyntax expression, DotOperatorSyntax dotOperator, NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
 	    {
 	        if (this.Expression != expression ||
 				this.DotOperator != dotOperator ||
-				this.Identifier != identifier ||
+				this.Name != name ||
 				this.GenericTypeArguments != genericTypeArguments)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.QualifierExpr(expression, dotOperator, identifier, genericTypeArguments);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.QualifierExpr(expression, dotOperator, name, genericTypeArguments);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -5305,90 +6545,6 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
-	public sealed class PostfixUnaryExprSyntax : ExpressionSyntax
-	{
-	    private ExpressionSyntax expression;
-	    private PostfixOperatorSyntax postfixOperator;
-	
-	    public PostfixUnaryExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
-	        : base(green, syntaxTree, position)
-	    {
-	    }
-	
-	    public PostfixUnaryExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
-	        : base(green, parent, position)
-	    {
-	    }
-	
-	    public ExpressionSyntax Expression 
-		{ 
-			get { return this.GetRed(ref this.expression, 0); } 
-		}
-	    public PostfixOperatorSyntax PostfixOperator 
-		{ 
-			get { return this.GetRed(ref this.postfixOperator, 1); } 
-		}
-	
-	    public override SyntaxNode GetNodeSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 0: return this.GetRed(ref this.expression, 0);
-				case 1: return this.GetRed(ref this.postfixOperator, 1);
-				default: return null;
-	        }
-	    }
-	
-	    public override SyntaxNode GetCachedSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 0: return this.expression;
-				case 1: return this.postfixOperator;
-				default: return null;
-	        }
-	    }
-	
-	    public PostfixUnaryExprSyntax WithExpression(ExpressionSyntax expression)
-		{
-			return this.Update(Expression, this.PostfixOperator);
-		}
-	
-	    public PostfixUnaryExprSyntax WithPostfixOperator(PostfixOperatorSyntax postfixOperator)
-		{
-			return this.Update(this.Expression, PostfixOperator);
-		}
-	
-	    public PostfixUnaryExprSyntax Update(ExpressionSyntax expression, PostfixOperatorSyntax postfixOperator)
-	    {
-	        if (this.Expression != expression ||
-				this.PostfixOperator != postfixOperator)
-	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.PostfixUnaryExpr(expression, postfixOperator);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (PostfixUnaryExprSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
-	    {
-	        return visitor.VisitPostfixUnaryExpr(this, argument);
-	    }
-	
-	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
-	    {
-	        return visitor.VisitPostfixUnaryExpr(this);
-	    }
-	
-	    public override void Accept(ICoreSyntaxVisitor visitor)
-	    {
-	        visitor.VisitPostfixUnaryExpr(this);
-	    }
-	}
-	
 	public sealed class NullForgivingExprSyntax : ExpressionSyntax
 	{
 	    private ExpressionSyntax expression;
@@ -5472,6 +6628,174 @@ namespace MetaDslx.Languages.Core.Syntax
 	    public override void Accept(ICoreSyntaxVisitor visitor)
 	    {
 	        visitor.VisitNullForgivingExpr(this);
+	    }
+	}
+	
+	public sealed class PostfixIncOrDecExprSyntax : ExpressionSyntax
+	{
+	    private ExpressionSyntax expression;
+	    private PostfixIncOrDecOperatorSyntax postfixIncOrDecOperator;
+	
+	    public PostfixIncOrDecExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public PostfixIncOrDecExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 0); } 
+		}
+	    public PostfixIncOrDecOperatorSyntax PostfixIncOrDecOperator 
+		{ 
+			get { return this.GetRed(ref this.postfixIncOrDecOperator, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.expression, 0);
+				case 1: return this.GetRed(ref this.postfixIncOrDecOperator, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.expression;
+				case 1: return this.postfixIncOrDecOperator;
+				default: return null;
+	        }
+	    }
+	
+	    public PostfixIncOrDecExprSyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(Expression, this.PostfixIncOrDecOperator);
+		}
+	
+	    public PostfixIncOrDecExprSyntax WithPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax postfixIncOrDecOperator)
+		{
+			return this.Update(this.Expression, PostfixIncOrDecOperator);
+		}
+	
+	    public PostfixIncOrDecExprSyntax Update(ExpressionSyntax expression, PostfixIncOrDecOperatorSyntax postfixIncOrDecOperator)
+	    {
+	        if (this.Expression != expression ||
+				this.PostfixIncOrDecOperator != postfixIncOrDecOperator)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.PostfixIncOrDecExpr(expression, postfixIncOrDecOperator);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (PostfixIncOrDecExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitPostfixIncOrDecExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitPostfixIncOrDecExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitPostfixIncOrDecExpr(this);
+	    }
+	}
+	
+	public sealed class PrefixIncOrDecExprSyntax : ExpressionSyntax
+	{
+	    private PrefixIncOrDecOperatorSyntax prefixIncOrDecOperator;
+	    private ExpressionSyntax expression;
+	
+	    public PrefixIncOrDecExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public PrefixIncOrDecExprSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public PrefixIncOrDecOperatorSyntax PrefixIncOrDecOperator 
+		{ 
+			get { return this.GetRed(ref this.prefixIncOrDecOperator, 0); } 
+		}
+	    public ExpressionSyntax Expression 
+		{ 
+			get { return this.GetRed(ref this.expression, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.prefixIncOrDecOperator, 0);
+				case 1: return this.GetRed(ref this.expression, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.prefixIncOrDecOperator;
+				case 1: return this.expression;
+				default: return null;
+	        }
+	    }
+	
+	    public PrefixIncOrDecExprSyntax WithPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax prefixIncOrDecOperator)
+		{
+			return this.Update(PrefixIncOrDecOperator, this.Expression);
+		}
+	
+	    public PrefixIncOrDecExprSyntax WithExpression(ExpressionSyntax expression)
+		{
+			return this.Update(this.PrefixIncOrDecOperator, Expression);
+		}
+	
+	    public PrefixIncOrDecExprSyntax Update(PrefixIncOrDecOperatorSyntax prefixIncOrDecOperator, ExpressionSyntax expression)
+	    {
+	        if (this.PrefixIncOrDecOperator != prefixIncOrDecOperator ||
+				this.Expression != expression)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.PrefixIncOrDecExpr(prefixIncOrDecOperator, expression);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (PrefixIncOrDecExprSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitPrefixIncOrDecExpr(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitPrefixIncOrDecExpr(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitPrefixIncOrDecExpr(this);
 	    }
 	}
 	
@@ -9724,25 +11048,25 @@ namespace MetaDslx.Languages.Core.Syntax
 	    }
 	}
 	
-	public sealed class PostfixOperatorSyntax : CoreSyntaxNode
+	public sealed class PostfixIncOrDecOperatorSyntax : CoreSyntaxNode
 	{
 	
-	    public PostfixOperatorSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	    public PostfixIncOrDecOperatorSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public PostfixOperatorSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	    public PostfixIncOrDecOperatorSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken PostfixOperator 
+	    public SyntaxToken PostfixIncOrDecOperator 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.PostfixOperatorGreen)this.Green;
-				var greenToken = green.PostfixOperator;
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.PostfixIncOrDecOperatorGreen)this.Green;
+				var greenToken = green.PostfixIncOrDecOperator;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -9763,37 +11087,110 @@ namespace MetaDslx.Languages.Core.Syntax
 	        }
 	    }
 	
-	    public PostfixOperatorSyntax WithPostfixOperator(SyntaxToken postfixOperator)
+	    public PostfixIncOrDecOperatorSyntax WithPostfixIncOrDecOperator(SyntaxToken postfixIncOrDecOperator)
 		{
-			return this.Update(PostfixOperator);
+			return this.Update(PostfixIncOrDecOperator);
 		}
 	
-	    public PostfixOperatorSyntax Update(SyntaxToken postfixOperator)
+	    public PostfixIncOrDecOperatorSyntax Update(SyntaxToken postfixIncOrDecOperator)
 	    {
-	        if (this.PostfixOperator != postfixOperator)
+	        if (this.PostfixIncOrDecOperator != postfixIncOrDecOperator)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.PostfixOperator(postfixOperator);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.PostfixIncOrDecOperator(postfixIncOrDecOperator);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (PostfixOperatorSyntax)newNode;
+				return (PostfixIncOrDecOperatorSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitPostfixOperator(this, argument);
+	        return visitor.VisitPostfixIncOrDecOperator(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitPostfixOperator(this);
+	        return visitor.VisitPostfixIncOrDecOperator(this);
 	    }
 	
 	    public override void Accept(ICoreSyntaxVisitor visitor)
 	    {
-	        visitor.VisitPostfixOperator(this);
+	        visitor.VisitPostfixIncOrDecOperator(this);
+	    }
+	}
+	
+	public sealed class PrefixIncOrDecOperatorSyntax : CoreSyntaxNode
+	{
+	
+	    public PrefixIncOrDecOperatorSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public PrefixIncOrDecOperatorSyntax(InternalSyntaxNode green, CoreSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken PrefixIncOrDecOperator 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Core.Syntax.InternalSyntax.PrefixIncOrDecOperatorGreen)this.Green;
+				var greenToken = green.PrefixIncOrDecOperator;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public PrefixIncOrDecOperatorSyntax WithPrefixIncOrDecOperator(SyntaxToken prefixIncOrDecOperator)
+		{
+			return this.Update(PrefixIncOrDecOperator);
+		}
+	
+	    public PrefixIncOrDecOperatorSyntax Update(SyntaxToken prefixIncOrDecOperator)
+	    {
+	        if (this.PrefixIncOrDecOperator != prefixIncOrDecOperator)
+	        {
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.PrefixIncOrDecOperator(prefixIncOrDecOperator);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (PrefixIncOrDecOperatorSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICoreSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitPrefixIncOrDecOperator(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICoreSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitPrefixIncOrDecOperator(this);
+	    }
+	
+	    public override void Accept(ICoreSyntaxVisitor visitor)
+	    {
+	        visitor.VisitPrefixIncOrDecOperator(this);
 	    }
 	}
 	
@@ -12551,6 +13948,28 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitUsingNamespace(UsingNamespaceSyntax node);
 		
+		void VisitDeclaration(DeclarationSyntax node);
+		
+		void VisitAliasDeclaration(AliasDeclarationSyntax node);
+		
+		void VisitEnumDeclaration(EnumDeclarationSyntax node);
+		
+		void VisitEnumLiteralList(EnumLiteralListSyntax node);
+		
+		void VisitEnumLiteral(EnumLiteralSyntax node);
+		
+		void VisitStructDeclaration(StructDeclarationSyntax node);
+		
+		void VisitStructField(StructFieldSyntax node);
+		
+		void VisitFunctionDeclaration(FunctionDeclarationSyntax node);
+		
+		void VisitFunctionParameterList(FunctionParameterListSyntax node);
+		
+		void VisitFunctionParameter(FunctionParameterSyntax node);
+		
+		void VisitFunctionResult(FunctionResultSyntax node);
+		
 		void VisitEmptyStmt(EmptyStmtSyntax node);
 		
 		void VisitBlockStmt(BlockStmtSyntax node);
@@ -12641,9 +14060,11 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitNewExpr(NewExprSyntax node);
 		
-		void VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node);
-		
 		void VisitNullForgivingExpr(NullForgivingExprSyntax node);
+		
+		void VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node);
+		
+		void VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node);
 		
 		void VisitUnaryExpr(UnaryExprSyntax node);
 		
@@ -12733,7 +14154,9 @@ namespace MetaDslx.Languages.Core
 		
 		void VisitIndexerOperator(IndexerOperatorSyntax node);
 		
-		void VisitPostfixOperator(PostfixOperatorSyntax node);
+		void VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node);
+		
+		void VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node);
 		
 		void VisitUnaryOperator(UnaryOperatorSyntax node);
 		
@@ -12820,6 +14243,61 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual void VisitUsingNamespace(UsingNamespaceSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitDeclaration(DeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitAliasDeclaration(AliasDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitEnumDeclaration(EnumDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitEnumLiteralList(EnumLiteralListSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitEnumLiteral(EnumLiteralSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitStructDeclaration(StructDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitStructField(StructFieldSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitFunctionDeclaration(FunctionDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitFunctionParameterList(FunctionParameterListSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitFunctionParameter(FunctionParameterSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitFunctionResult(FunctionResultSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -13049,12 +14527,17 @@ namespace MetaDslx.Languages.Core
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node)
+		public virtual void VisitNullForgivingExpr(NullForgivingExprSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitNullForgivingExpr(NullForgivingExprSyntax node)
+		public virtual void VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -13279,7 +14762,12 @@ namespace MetaDslx.Languages.Core
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitPostfixOperator(PostfixOperatorSyntax node)
+		public virtual void VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -13462,6 +14950,28 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitUsingNamespace(UsingNamespaceSyntax node, TArg argument);
 		
+		TResult VisitDeclaration(DeclarationSyntax node, TArg argument);
+		
+		TResult VisitAliasDeclaration(AliasDeclarationSyntax node, TArg argument);
+		
+		TResult VisitEnumDeclaration(EnumDeclarationSyntax node, TArg argument);
+		
+		TResult VisitEnumLiteralList(EnumLiteralListSyntax node, TArg argument);
+		
+		TResult VisitEnumLiteral(EnumLiteralSyntax node, TArg argument);
+		
+		TResult VisitStructDeclaration(StructDeclarationSyntax node, TArg argument);
+		
+		TResult VisitStructField(StructFieldSyntax node, TArg argument);
+		
+		TResult VisitFunctionDeclaration(FunctionDeclarationSyntax node, TArg argument);
+		
+		TResult VisitFunctionParameterList(FunctionParameterListSyntax node, TArg argument);
+		
+		TResult VisitFunctionParameter(FunctionParameterSyntax node, TArg argument);
+		
+		TResult VisitFunctionResult(FunctionResultSyntax node, TArg argument);
+		
 		TResult VisitEmptyStmt(EmptyStmtSyntax node, TArg argument);
 		
 		TResult VisitBlockStmt(BlockStmtSyntax node, TArg argument);
@@ -13552,9 +15062,11 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitNewExpr(NewExprSyntax node, TArg argument);
 		
-		TResult VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node, TArg argument);
-		
 		TResult VisitNullForgivingExpr(NullForgivingExprSyntax node, TArg argument);
+		
+		TResult VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node, TArg argument);
+		
+		TResult VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node, TArg argument);
 		
 		TResult VisitUnaryExpr(UnaryExprSyntax node, TArg argument);
 		
@@ -13644,7 +15156,9 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitIndexerOperator(IndexerOperatorSyntax node, TArg argument);
 		
-		TResult VisitPostfixOperator(PostfixOperatorSyntax node, TArg argument);
+		TResult VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node, TArg argument);
+		
+		TResult VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node, TArg argument);
 		
 		TResult VisitUnaryOperator(UnaryOperatorSyntax node, TArg argument);
 		
@@ -13731,6 +15245,61 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitUsingNamespace(UsingNamespaceSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitDeclaration(DeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitAliasDeclaration(AliasDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumDeclaration(EnumDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumLiteralList(EnumLiteralListSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumLiteral(EnumLiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitStructDeclaration(StructDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitStructField(StructFieldSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitFunctionDeclaration(FunctionDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitFunctionParameterList(FunctionParameterListSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitFunctionParameter(FunctionParameterSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitFunctionResult(FunctionResultSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -13960,12 +15529,17 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node, TArg argument)
+		public virtual TResult VisitNullForgivingExpr(NullForgivingExprSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitNullForgivingExpr(NullForgivingExprSyntax node, TArg argument)
+		public virtual TResult VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -14190,7 +15764,12 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitPostfixOperator(PostfixOperatorSyntax node, TArg argument)
+		public virtual TResult VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -14371,6 +15950,28 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitUsingNamespace(UsingNamespaceSyntax node);
 		
+		TResult VisitDeclaration(DeclarationSyntax node);
+		
+		TResult VisitAliasDeclaration(AliasDeclarationSyntax node);
+		
+		TResult VisitEnumDeclaration(EnumDeclarationSyntax node);
+		
+		TResult VisitEnumLiteralList(EnumLiteralListSyntax node);
+		
+		TResult VisitEnumLiteral(EnumLiteralSyntax node);
+		
+		TResult VisitStructDeclaration(StructDeclarationSyntax node);
+		
+		TResult VisitStructField(StructFieldSyntax node);
+		
+		TResult VisitFunctionDeclaration(FunctionDeclarationSyntax node);
+		
+		TResult VisitFunctionParameterList(FunctionParameterListSyntax node);
+		
+		TResult VisitFunctionParameter(FunctionParameterSyntax node);
+		
+		TResult VisitFunctionResult(FunctionResultSyntax node);
+		
 		TResult VisitEmptyStmt(EmptyStmtSyntax node);
 		
 		TResult VisitBlockStmt(BlockStmtSyntax node);
@@ -14461,9 +16062,11 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitNewExpr(NewExprSyntax node);
 		
-		TResult VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node);
-		
 		TResult VisitNullForgivingExpr(NullForgivingExprSyntax node);
+		
+		TResult VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node);
+		
+		TResult VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node);
 		
 		TResult VisitUnaryExpr(UnaryExprSyntax node);
 		
@@ -14553,7 +16156,9 @@ namespace MetaDslx.Languages.Core
 		
 		TResult VisitIndexerOperator(IndexerOperatorSyntax node);
 		
-		TResult VisitPostfixOperator(PostfixOperatorSyntax node);
+		TResult VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node);
+		
+		TResult VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node);
 		
 		TResult VisitUnaryOperator(UnaryOperatorSyntax node);
 		
@@ -14640,6 +16245,61 @@ namespace MetaDslx.Languages.Core
 		}
 		
 		public virtual TResult VisitUsingNamespace(UsingNamespaceSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitDeclaration(DeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitAliasDeclaration(AliasDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitEnumDeclaration(EnumDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitEnumLiteralList(EnumLiteralListSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitEnumLiteral(EnumLiteralSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitStructDeclaration(StructDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitStructField(StructFieldSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitFunctionDeclaration(FunctionDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitFunctionParameterList(FunctionParameterListSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitFunctionParameter(FunctionParameterSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitFunctionResult(FunctionResultSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -14869,12 +16529,17 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node)
+		public virtual TResult VisitNullForgivingExpr(NullForgivingExprSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitNullForgivingExpr(NullForgivingExprSyntax node)
+		public virtual TResult VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -15099,7 +16764,12 @@ namespace MetaDslx.Languages.Core
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitPostfixOperator(PostfixOperatorSyntax node)
+		public virtual TResult VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -15286,9 +16956,10 @@ namespace MetaDslx.Languages.Core
 		public virtual SyntaxNode VisitMain(MainSyntax node)
 		{
 		    var usingNamespace = this.VisitList(node.UsingNamespace);
+		    var declaration = this.VisitList(node.Declaration);
 		    var mainBlock = (MainBlockSyntax)this.Visit(node.MainBlock);
 		    var eOF = this.VisitToken(node.EndOfFileToken);
-			return node.Update(usingNamespace, mainBlock, eOF);
+			return node.Update(usingNamespace, declaration, mainBlock, eOF);
 		}
 		
 		public virtual SyntaxNode VisitMainBlock(MainBlockSyntax node)
@@ -15305,6 +16976,118 @@ namespace MetaDslx.Languages.Core
 		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
 			return node.Update(kUsing, name, tAssign, qualifier, tSemicolon);
+		}
+		
+		public virtual SyntaxNode VisitDeclaration(DeclarationSyntax node)
+		{
+			var oldAliasDeclaration = node.AliasDeclaration;
+			if (oldAliasDeclaration != null)
+			{
+			    var newAliasDeclaration = (AliasDeclarationSyntax)this.Visit(oldAliasDeclaration);
+				return node.Update(newAliasDeclaration);
+			}
+			var oldEnumDeclaration = node.EnumDeclaration;
+			if (oldEnumDeclaration != null)
+			{
+			    var newEnumDeclaration = (EnumDeclarationSyntax)this.Visit(oldEnumDeclaration);
+				return node.Update(newEnumDeclaration);
+			}
+			var oldStructDeclaration = node.StructDeclaration;
+			if (oldStructDeclaration != null)
+			{
+			    var newStructDeclaration = (StructDeclarationSyntax)this.Visit(oldStructDeclaration);
+				return node.Update(newStructDeclaration);
+			}
+			var oldFunctionDeclaration = node.FunctionDeclaration;
+			if (oldFunctionDeclaration != null)
+			{
+			    var newFunctionDeclaration = (FunctionDeclarationSyntax)this.Visit(oldFunctionDeclaration);
+				return node.Update(newFunctionDeclaration);
+			}
+			return node;   
+		}
+		
+		public virtual SyntaxNode VisitAliasDeclaration(AliasDeclarationSyntax node)
+		{
+		    var kUsing = this.VisitToken(node.KUsing);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tAssign = this.VisitToken(node.TAssign);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+			return node.Update(kUsing, name, tAssign, qualifier);
+		}
+		
+		public virtual SyntaxNode VisitEnumDeclaration(EnumDeclarationSyntax node)
+		{
+		    var kEnum = this.VisitToken(node.KEnum);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tOpenBrace = this.VisitToken(node.TOpenBrace);
+		    var enumLiteralList = (EnumLiteralListSyntax)this.Visit(node.EnumLiteralList);
+		    var tCloseBrace = this.VisitToken(node.TCloseBrace);
+			return node.Update(kEnum, name, tOpenBrace, enumLiteralList, tCloseBrace);
+		}
+		
+		public virtual SyntaxNode VisitEnumLiteralList(EnumLiteralListSyntax node)
+		{
+		    var enumLiteral = this.VisitList(node.EnumLiteral);
+			return node.Update(enumLiteral);
+		}
+		
+		public virtual SyntaxNode VisitEnumLiteral(EnumLiteralSyntax node)
+		{
+		    var name = (NameSyntax)this.Visit(node.Name);
+			return node.Update(name);
+		}
+		
+		public virtual SyntaxNode VisitStructDeclaration(StructDeclarationSyntax node)
+		{
+		    var kStruct = this.VisitToken(node.KStruct);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tOpenBrace = this.VisitToken(node.TOpenBrace);
+		    var structField = this.VisitList(node.StructField);
+		    var tCloseBrace = this.VisitToken(node.TCloseBrace);
+			return node.Update(kStruct, name, tOpenBrace, structField, tCloseBrace);
+		}
+		
+		public virtual SyntaxNode VisitStructField(StructFieldSyntax node)
+		{
+		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tAssign = this.VisitToken(node.TAssign);
+		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
+		    var tSemicolon = this.VisitToken(node.TSemicolon);
+			return node.Update(typeReference, name, tAssign, expression, tSemicolon);
+		}
+		
+		public virtual SyntaxNode VisitFunctionDeclaration(FunctionDeclarationSyntax node)
+		{
+		    var functionResult = (FunctionResultSyntax)this.Visit(node.FunctionResult);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tOpenParen = this.VisitToken(node.TOpenParen);
+		    var functionParameterList = (FunctionParameterListSyntax)this.Visit(node.FunctionParameterList);
+		    var tCloseParen = this.VisitToken(node.TCloseParen);
+		    var blockStatement = (BlockStatementSyntax)this.Visit(node.BlockStatement);
+			return node.Update(functionResult, name, tOpenParen, functionParameterList, tCloseParen, blockStatement);
+		}
+		
+		public virtual SyntaxNode VisitFunctionParameterList(FunctionParameterListSyntax node)
+		{
+		    var functionParameter = this.VisitList(node.FunctionParameter);
+			return node.Update(functionParameter);
+		}
+		
+		public virtual SyntaxNode VisitFunctionParameter(FunctionParameterSyntax node)
+		{
+		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tAssign = this.VisitToken(node.TAssign);
+		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
+			return node.Update(typeReference, name, tAssign, expression);
+		}
+		
+		public virtual SyntaxNode VisitFunctionResult(FunctionResultSyntax node)
+		{
+		    var returnType = (ReturnTypeSyntax)this.Visit(node.ReturnType);
+			return node.Update(returnType);
 		}
 		
 		public virtual SyntaxNode VisitEmptyStmt(EmptyStmtSyntax node)
@@ -15603,18 +17386,18 @@ namespace MetaDslx.Languages.Core
 		
 		public virtual SyntaxNode VisitIdentifierExpr(IdentifierExprSyntax node)
 		{
-		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
+		    var name = (NameSyntax)this.Visit(node.Name);
 		    var genericTypeArguments = (GenericTypeArgumentsSyntax)this.Visit(node.GenericTypeArguments);
-			return node.Update(identifier, genericTypeArguments);
+			return node.Update(name, genericTypeArguments);
 		}
 		
 		public virtual SyntaxNode VisitQualifierExpr(QualifierExprSyntax node)
 		{
 		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
 		    var dotOperator = (DotOperatorSyntax)this.Visit(node.DotOperator);
-		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
+		    var name = (NameSyntax)this.Visit(node.Name);
 		    var genericTypeArguments = (GenericTypeArgumentsSyntax)this.Visit(node.GenericTypeArguments);
-			return node.Update(expression, dotOperator, identifier, genericTypeArguments);
+			return node.Update(expression, dotOperator, name, genericTypeArguments);
 		}
 		
 		public virtual SyntaxNode VisitIndexerExpr(IndexerExprSyntax node)
@@ -15691,18 +17474,25 @@ namespace MetaDslx.Languages.Core
 			return node.Update(kNew, typeReference, tOpenParen, argumentList, tCloseParen, initializerExpression);
 		}
 		
-		public virtual SyntaxNode VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node)
-		{
-		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
-		    var postfixOperator = (PostfixOperatorSyntax)this.Visit(node.PostfixOperator);
-			return node.Update(expression, postfixOperator);
-		}
-		
 		public virtual SyntaxNode VisitNullForgivingExpr(NullForgivingExprSyntax node)
 		{
 		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
 		    var tExclamation = this.VisitToken(node.TExclamation);
 			return node.Update(expression, tExclamation);
+		}
+		
+		public virtual SyntaxNode VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node)
+		{
+		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
+		    var postfixIncOrDecOperator = (PostfixIncOrDecOperatorSyntax)this.Visit(node.PostfixIncOrDecOperator);
+			return node.Update(expression, postfixIncOrDecOperator);
+		}
+		
+		public virtual SyntaxNode VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node)
+		{
+		    var prefixIncOrDecOperator = (PrefixIncOrDecOperatorSyntax)this.Visit(node.PrefixIncOrDecOperator);
+		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
+			return node.Update(prefixIncOrDecOperator, expression);
 		}
 		
 		public virtual SyntaxNode VisitUnaryExpr(UnaryExprSyntax node)
@@ -16084,10 +17874,16 @@ namespace MetaDslx.Languages.Core
 			return node.Update(indexerOperator);
 		}
 		
-		public virtual SyntaxNode VisitPostfixOperator(PostfixOperatorSyntax node)
+		public virtual SyntaxNode VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node)
 		{
-		    var postfixOperator = this.VisitToken(node.PostfixOperator);
-			return node.Update(postfixOperator);
+		    var postfixIncOrDecOperator = this.VisitToken(node.PostfixIncOrDecOperator);
+			return node.Update(postfixIncOrDecOperator);
+		}
+		
+		public virtual SyntaxNode VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node)
+		{
+		    var prefixIncOrDecOperator = this.VisitToken(node.PrefixIncOrDecOperator);
+			return node.Update(prefixIncOrDecOperator);
 		}
 		
 		public virtual SyntaxNode VisitUnaryOperator(UnaryOperatorSyntax node)
@@ -16599,17 +18395,17 @@ namespace MetaDslx.Languages.Core
 	        return new SyntaxToken(CoreLanguage.Instance.InternalSyntaxFactory.LComment(text, value));
 	    }
 		
-		public MainSyntax Main(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, MainBlockSyntax mainBlock, SyntaxToken eOF)
+		public MainSyntax Main(Microsoft.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, Microsoft.CodeAnalysis.SyntaxList<DeclarationSyntax> declaration, MainBlockSyntax mainBlock, SyntaxToken eOF)
 		{
 		    if (mainBlock == null) throw new ArgumentNullException(nameof(mainBlock));
 		    if (eOF == null) throw new ArgumentNullException(nameof(eOF));
 		    if (eOF.GetKind() != CoreSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
-		    return (MainSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.MainBlockGreen)mainBlock.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
+		    return (MainSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<DeclarationGreen>(declaration.Node), (Syntax.InternalSyntax.MainBlockGreen)mainBlock.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
 		}
 		
 		public MainSyntax Main(MainBlockSyntax mainBlock, SyntaxToken eOF)
 		{
-			return this.Main(default, mainBlock, eOF);
+			return this.Main(default, default, mainBlock, eOF);
 		}
 		
 		public MainBlockSyntax MainBlock(Microsoft.CodeAnalysis.SyntaxList<StatementSyntax> statement)
@@ -16636,6 +18432,149 @@ namespace MetaDslx.Languages.Core
 		public UsingNamespaceSyntax UsingNamespace(QualifierSyntax qualifier)
 		{
 			return this.UsingNamespace(this.Token(CoreSyntaxKind.KUsing), default, default, qualifier, this.Token(CoreSyntaxKind.TSemicolon));
+		}
+		
+		public DeclarationSyntax Declaration(AliasDeclarationSyntax aliasDeclaration)
+		{
+		    if (aliasDeclaration == null) throw new ArgumentNullException(nameof(aliasDeclaration));
+		    return (DeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.AliasDeclarationGreen)aliasDeclaration.Green).CreateRed();
+		}
+		
+		public DeclarationSyntax Declaration(EnumDeclarationSyntax enumDeclaration)
+		{
+		    if (enumDeclaration == null) throw new ArgumentNullException(nameof(enumDeclaration));
+		    return (DeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.EnumDeclarationGreen)enumDeclaration.Green).CreateRed();
+		}
+		
+		public DeclarationSyntax Declaration(StructDeclarationSyntax structDeclaration)
+		{
+		    if (structDeclaration == null) throw new ArgumentNullException(nameof(structDeclaration));
+		    return (DeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.StructDeclarationGreen)structDeclaration.Green).CreateRed();
+		}
+		
+		public DeclarationSyntax Declaration(FunctionDeclarationSyntax functionDeclaration)
+		{
+		    if (functionDeclaration == null) throw new ArgumentNullException(nameof(functionDeclaration));
+		    return (DeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.FunctionDeclarationGreen)functionDeclaration.Green).CreateRed();
+		}
+		
+		public AliasDeclarationSyntax AliasDeclaration(SyntaxToken kUsing, NameSyntax name, SyntaxToken tAssign, QualifierSyntax qualifier)
+		{
+		    if (kUsing == null) throw new ArgumentNullException(nameof(kUsing));
+		    if (kUsing.GetKind() != CoreSyntaxKind.KUsing) throw new ArgumentException(nameof(kUsing));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
+		    if (tAssign.GetKind() != CoreSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    return (AliasDeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.AliasDeclaration((InternalSyntaxToken)kUsing.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green).CreateRed();
+		}
+		
+		public AliasDeclarationSyntax AliasDeclaration(NameSyntax name, QualifierSyntax qualifier)
+		{
+			return this.AliasDeclaration(this.Token(CoreSyntaxKind.KUsing), name, this.Token(CoreSyntaxKind.TAssign), qualifier);
+		}
+		
+		public EnumDeclarationSyntax EnumDeclaration(SyntaxToken kEnum, NameSyntax name, SyntaxToken tOpenBrace, EnumLiteralListSyntax enumLiteralList, SyntaxToken tCloseBrace)
+		{
+		    if (kEnum == null) throw new ArgumentNullException(nameof(kEnum));
+		    if (kEnum.GetKind() != CoreSyntaxKind.KEnum) throw new ArgumentException(nameof(kEnum));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
+		    if (tOpenBrace.GetKind() != CoreSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
+		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
+		    if (tCloseBrace.GetKind() != CoreSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
+		    return (EnumDeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.EnumDeclaration((InternalSyntaxToken)kEnum.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenBrace.Node, enumLiteralList == null ? null : (Syntax.InternalSyntax.EnumLiteralListGreen)enumLiteralList.Green, (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		}
+		
+		public EnumDeclarationSyntax EnumDeclaration(NameSyntax name)
+		{
+			return this.EnumDeclaration(this.Token(CoreSyntaxKind.KEnum), name, this.Token(CoreSyntaxKind.TOpenBrace), default, this.Token(CoreSyntaxKind.TCloseBrace));
+		}
+		
+		public EnumLiteralListSyntax EnumLiteralList(Microsoft.CodeAnalysis.SeparatedSyntaxList<EnumLiteralSyntax> enumLiteral)
+		{
+		    if (enumLiteral == null) throw new ArgumentNullException(nameof(enumLiteral));
+		    return (EnumLiteralListSyntax)CoreLanguage.Instance.InternalSyntaxFactory.EnumLiteralList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<EnumLiteralGreen>(enumLiteral.Node)).CreateRed();
+		}
+		
+		public EnumLiteralSyntax EnumLiteral(NameSyntax name)
+		{
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    return (EnumLiteralSyntax)CoreLanguage.Instance.InternalSyntaxFactory.EnumLiteral((Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		}
+		
+		public StructDeclarationSyntax StructDeclaration(SyntaxToken kStruct, NameSyntax name, SyntaxToken tOpenBrace, Microsoft.CodeAnalysis.SyntaxList<StructFieldSyntax> structField, SyntaxToken tCloseBrace)
+		{
+		    if (kStruct == null) throw new ArgumentNullException(nameof(kStruct));
+		    if (kStruct.GetKind() != CoreSyntaxKind.KStruct) throw new ArgumentException(nameof(kStruct));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
+		    if (tOpenBrace.GetKind() != CoreSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
+		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
+		    if (tCloseBrace.GetKind() != CoreSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
+		    return (StructDeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.StructDeclaration((InternalSyntaxToken)kStruct.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenBrace.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<StructFieldGreen>(structField.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		}
+		
+		public StructDeclarationSyntax StructDeclaration(NameSyntax name)
+		{
+			return this.StructDeclaration(this.Token(CoreSyntaxKind.KStruct), name, this.Token(CoreSyntaxKind.TOpenBrace), default, this.Token(CoreSyntaxKind.TCloseBrace));
+		}
+		
+		public StructFieldSyntax StructField(TypeReferenceSyntax typeReference, NameSyntax name, SyntaxToken tAssign, ExpressionSyntax expression, SyntaxToken tSemicolon)
+		{
+		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tAssign != null && tAssign.GetKind() != CoreSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
+		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
+		    if (tSemicolon.GetKind() != CoreSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
+		    return (StructFieldSyntax)CoreLanguage.Instance.InternalSyntaxFactory.StructField((Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tAssign.Node, expression == null ? null : (Syntax.InternalSyntax.ExpressionGreen)expression.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		}
+		
+		public StructFieldSyntax StructField(TypeReferenceSyntax typeReference, NameSyntax name)
+		{
+			return this.StructField(typeReference, name, default, default, this.Token(CoreSyntaxKind.TSemicolon));
+		}
+		
+		public FunctionDeclarationSyntax FunctionDeclaration(FunctionResultSyntax functionResult, NameSyntax name, SyntaxToken tOpenParen, FunctionParameterListSyntax functionParameterList, SyntaxToken tCloseParen, BlockStatementSyntax blockStatement)
+		{
+		    if (functionResult == null) throw new ArgumentNullException(nameof(functionResult));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
+		    if (tOpenParen.GetKind() != CoreSyntaxKind.TOpenParen) throw new ArgumentException(nameof(tOpenParen));
+		    if (tCloseParen == null) throw new ArgumentNullException(nameof(tCloseParen));
+		    if (tCloseParen.GetKind() != CoreSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
+		    if (blockStatement == null) throw new ArgumentNullException(nameof(blockStatement));
+		    return (FunctionDeclarationSyntax)CoreLanguage.Instance.InternalSyntaxFactory.FunctionDeclaration((Syntax.InternalSyntax.FunctionResultGreen)functionResult.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, functionParameterList == null ? null : (Syntax.InternalSyntax.FunctionParameterListGreen)functionParameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (Syntax.InternalSyntax.BlockStatementGreen)blockStatement.Green).CreateRed();
+		}
+		
+		public FunctionDeclarationSyntax FunctionDeclaration(FunctionResultSyntax functionResult, NameSyntax name, BlockStatementSyntax blockStatement)
+		{
+			return this.FunctionDeclaration(functionResult, name, this.Token(CoreSyntaxKind.TOpenParen), default, this.Token(CoreSyntaxKind.TCloseParen), blockStatement);
+		}
+		
+		public FunctionParameterListSyntax FunctionParameterList(Microsoft.CodeAnalysis.SeparatedSyntaxList<FunctionParameterSyntax> functionParameter)
+		{
+		    if (functionParameter == null) throw new ArgumentNullException(nameof(functionParameter));
+		    return (FunctionParameterListSyntax)CoreLanguage.Instance.InternalSyntaxFactory.FunctionParameterList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<FunctionParameterGreen>(functionParameter.Node)).CreateRed();
+		}
+		
+		public FunctionParameterSyntax FunctionParameter(TypeReferenceSyntax typeReference, NameSyntax name, SyntaxToken tAssign, ExpressionSyntax expression)
+		{
+		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tAssign != null && tAssign.GetKind() != CoreSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
+		    return (FunctionParameterSyntax)CoreLanguage.Instance.InternalSyntaxFactory.FunctionParameter((Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tAssign.Node, expression == null ? null : (Syntax.InternalSyntax.ExpressionGreen)expression.Green).CreateRed();
+		}
+		
+		public FunctionParameterSyntax FunctionParameter(TypeReferenceSyntax typeReference, NameSyntax name)
+		{
+			return this.FunctionParameter(typeReference, name, default, default);
+		}
+		
+		public FunctionResultSyntax FunctionResult(ReturnTypeSyntax returnType)
+		{
+		    if (returnType == null) throw new ArgumentNullException(nameof(returnType));
+		    return (FunctionResultSyntax)CoreLanguage.Instance.InternalSyntaxFactory.FunctionResult((Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green).CreateRed();
 		}
 		
 		public EmptyStmtSyntax EmptyStmt(SyntaxToken tSemicolon)
@@ -17120,28 +19059,28 @@ namespace MetaDslx.Languages.Core
 		    return (LiteralExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.LiteralExpr((Syntax.InternalSyntax.LiteralGreen)literal.Green).CreateRed();
 		}
 		
-		public IdentifierExprSyntax IdentifierExpr(IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
+		public IdentifierExprSyntax IdentifierExpr(NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
 		{
-		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
-		    return (IdentifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.IdentifierExpr((Syntax.InternalSyntax.IdentifierGreen)identifier.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    return (IdentifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.IdentifierExpr((Syntax.InternalSyntax.NameGreen)name.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
 		}
 		
-		public IdentifierExprSyntax IdentifierExpr(IdentifierSyntax identifier)
+		public IdentifierExprSyntax IdentifierExpr(NameSyntax name)
 		{
-			return this.IdentifierExpr(identifier, default);
+			return this.IdentifierExpr(name, default);
 		}
 		
-		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
+		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
 		{
 		    if (expression == null) throw new ArgumentNullException(nameof(expression));
 		    if (dotOperator == null) throw new ArgumentNullException(nameof(dotOperator));
-		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
-		    return (QualifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.QualifierExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (Syntax.InternalSyntax.DotOperatorGreen)dotOperator.Green, (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    return (QualifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.QualifierExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (Syntax.InternalSyntax.DotOperatorGreen)dotOperator.Green, (Syntax.InternalSyntax.NameGreen)name.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
 		}
 		
-		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, IdentifierSyntax identifier)
+		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, NameSyntax name)
 		{
-			return this.QualifierExpr(expression, dotOperator, identifier, default);
+			return this.QualifierExpr(expression, dotOperator, name, default);
 		}
 		
 		public IndexerExprSyntax IndexerExpr(ExpressionSyntax expression, IndexerOperatorSyntax indexerOperator, ArgumentListSyntax argumentList, SyntaxToken tCloseBracket)
@@ -17276,13 +19215,6 @@ namespace MetaDslx.Languages.Core
 			return this.NewExpr(this.Token(CoreSyntaxKind.KNew), typeReference, this.Token(CoreSyntaxKind.TOpenParen), default, this.Token(CoreSyntaxKind.TCloseParen), default);
 		}
 		
-		public PostfixUnaryExprSyntax PostfixUnaryExpr(ExpressionSyntax expression, PostfixOperatorSyntax postfixOperator)
-		{
-		    if (expression == null) throw new ArgumentNullException(nameof(expression));
-		    if (postfixOperator == null) throw new ArgumentNullException(nameof(postfixOperator));
-		    return (PostfixUnaryExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.PostfixUnaryExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (Syntax.InternalSyntax.PostfixOperatorGreen)postfixOperator.Green).CreateRed();
-		}
-		
 		public NullForgivingExprSyntax NullForgivingExpr(ExpressionSyntax expression, SyntaxToken tExclamation)
 		{
 		    if (expression == null) throw new ArgumentNullException(nameof(expression));
@@ -17294,6 +19226,20 @@ namespace MetaDslx.Languages.Core
 		public NullForgivingExprSyntax NullForgivingExpr(ExpressionSyntax expression)
 		{
 			return this.NullForgivingExpr(expression, this.Token(CoreSyntaxKind.TExclamation));
+		}
+		
+		public PostfixIncOrDecExprSyntax PostfixIncOrDecExpr(ExpressionSyntax expression, PostfixIncOrDecOperatorSyntax postfixIncOrDecOperator)
+		{
+		    if (expression == null) throw new ArgumentNullException(nameof(expression));
+		    if (postfixIncOrDecOperator == null) throw new ArgumentNullException(nameof(postfixIncOrDecOperator));
+		    return (PostfixIncOrDecExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.PostfixIncOrDecExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (Syntax.InternalSyntax.PostfixIncOrDecOperatorGreen)postfixIncOrDecOperator.Green).CreateRed();
+		}
+		
+		public PrefixIncOrDecExprSyntax PrefixIncOrDecExpr(PrefixIncOrDecOperatorSyntax prefixIncOrDecOperator, ExpressionSyntax expression)
+		{
+		    if (prefixIncOrDecOperator == null) throw new ArgumentNullException(nameof(prefixIncOrDecOperator));
+		    if (expression == null) throw new ArgumentNullException(nameof(expression));
+		    return (PrefixIncOrDecExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.PrefixIncOrDecExpr((Syntax.InternalSyntax.PrefixIncOrDecOperatorGreen)prefixIncOrDecOperator.Green, (Syntax.InternalSyntax.ExpressionGreen)expression.Green).CreateRed();
 		}
 		
 		public UnaryExprSyntax UnaryExpr(UnaryOperatorSyntax unaryOperator, ExpressionSyntax expression)
@@ -17793,10 +19739,16 @@ namespace MetaDslx.Languages.Core
 		    return (IndexerOperatorSyntax)CoreLanguage.Instance.InternalSyntaxFactory.IndexerOperator((InternalSyntaxToken)indexerOperator.Node).CreateRed();
 		}
 		
-		public PostfixOperatorSyntax PostfixOperator(SyntaxToken postfixOperator)
+		public PostfixIncOrDecOperatorSyntax PostfixIncOrDecOperator(SyntaxToken postfixIncOrDecOperator)
 		{
-		    if (postfixOperator == null) throw new ArgumentNullException(nameof(postfixOperator));
-		    return (PostfixOperatorSyntax)CoreLanguage.Instance.InternalSyntaxFactory.PostfixOperator((InternalSyntaxToken)postfixOperator.Node).CreateRed();
+		    if (postfixIncOrDecOperator == null) throw new ArgumentNullException(nameof(postfixIncOrDecOperator));
+		    return (PostfixIncOrDecOperatorSyntax)CoreLanguage.Instance.InternalSyntaxFactory.PostfixIncOrDecOperator((InternalSyntaxToken)postfixIncOrDecOperator.Node).CreateRed();
+		}
+		
+		public PrefixIncOrDecOperatorSyntax PrefixIncOrDecOperator(SyntaxToken prefixIncOrDecOperator)
+		{
+		    if (prefixIncOrDecOperator == null) throw new ArgumentNullException(nameof(prefixIncOrDecOperator));
+		    return (PrefixIncOrDecOperatorSyntax)CoreLanguage.Instance.InternalSyntaxFactory.PrefixIncOrDecOperator((InternalSyntaxToken)prefixIncOrDecOperator.Node).CreateRed();
 		}
 		
 		public UnaryOperatorSyntax UnaryOperator(SyntaxToken unaryOperator)
@@ -18105,6 +20057,17 @@ namespace MetaDslx.Languages.Core
 				typeof(MainSyntax),
 				typeof(MainBlockSyntax),
 				typeof(UsingNamespaceSyntax),
+				typeof(DeclarationSyntax),
+				typeof(AliasDeclarationSyntax),
+				typeof(EnumDeclarationSyntax),
+				typeof(EnumLiteralListSyntax),
+				typeof(EnumLiteralSyntax),
+				typeof(StructDeclarationSyntax),
+				typeof(StructFieldSyntax),
+				typeof(FunctionDeclarationSyntax),
+				typeof(FunctionParameterListSyntax),
+				typeof(FunctionParameterSyntax),
+				typeof(FunctionResultSyntax),
 				typeof(EmptyStmtSyntax),
 				typeof(BlockStmtSyntax),
 				typeof(ExprStmtSyntax),
@@ -18150,8 +20113,9 @@ namespace MetaDslx.Languages.Core
 				typeof(CheckedExprSyntax),
 				typeof(UncheckedExprSyntax),
 				typeof(NewExprSyntax),
-				typeof(PostfixUnaryExprSyntax),
 				typeof(NullForgivingExprSyntax),
+				typeof(PostfixIncOrDecExprSyntax),
+				typeof(PrefixIncOrDecExprSyntax),
 				typeof(UnaryExprSyntax),
 				typeof(TypeCastExprSyntax),
 				typeof(AwaitExprSyntax),
@@ -18196,7 +20160,8 @@ namespace MetaDslx.Languages.Core
 				typeof(VariableDefSyntax),
 				typeof(DotOperatorSyntax),
 				typeof(IndexerOperatorSyntax),
-				typeof(PostfixOperatorSyntax),
+				typeof(PostfixIncOrDecOperatorSyntax),
+				typeof(PrefixIncOrDecOperatorSyntax),
 				typeof(UnaryOperatorSyntax),
 				typeof(MultiplicativeOperatorSyntax),
 				typeof(AdditiveOperatorSyntax),

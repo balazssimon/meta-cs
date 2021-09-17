@@ -30,9 +30,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             public static readonly CompletionPart FinishComputingProperty_WhenTrue = new CompletionPart(nameof(FinishComputingProperty_WhenTrue));
             public static readonly CompletionPart StartComputingProperty_WhenFalse = new CompletionPart(nameof(StartComputingProperty_WhenFalse));
             public static readonly CompletionPart FinishComputingProperty_WhenFalse = new CompletionPart(nameof(FinishComputingProperty_WhenFalse));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_WhenTrue, FinishComputingProperty_WhenTrue, StartComputingProperty_WhenFalse, FinishComputingProperty_WhenFalse, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_WhenTrue, FinishComputingProperty_WhenTrue, StartComputingProperty_WhenFalse, FinishComputingProperty_WhenFalse, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_WhenTrue, FinishComputingProperty_WhenTrue, StartComputingProperty_WhenFalse, FinishComputingProperty_WhenFalse, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly CompletionPart StartComputeTypeAndConversions = new CompletionPart(nameof(StartComputeTypeAndConversions));
+            public static readonly CompletionPart FinishComputeTypeAndConversions = new CompletionPart(nameof(FinishComputeTypeAndConversions));
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_WhenTrue, FinishComputingProperty_WhenTrue, StartComputingProperty_WhenFalse, FinishComputingProperty_WhenFalse, StartComputeTypeAndConversions, FinishComputeTypeAndConversions, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_WhenTrue, FinishComputingProperty_WhenTrue, StartComputingProperty_WhenFalse, FinishComputingProperty_WhenFalse, StartComputeTypeAndConversions, FinishComputeTypeAndConversions, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Condition, FinishComputingProperty_Condition, StartComputingProperty_WhenTrue, FinishComputingProperty_WhenTrue, StartComputingProperty_WhenFalse, FinishComputingProperty_WhenFalse, StartComputeTypeAndConversions, FinishComputeTypeAndConversions, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
         }
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
@@ -235,6 +237,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_WhenFalse);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartComputeTypeAndConversions || incompletePart == CompletionParts.FinishComputeTypeAndConversions)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputeTypeAndConversions))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+ComputeTypeAndConversions(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputeTypeAndConversions);
                     }
                 }
                 else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)

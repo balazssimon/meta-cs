@@ -22,7 +22,11 @@ namespace MetaDslx.Languages.Core.Binding
 {
     public class CoreBinderFactoryVisitor : BinderFactoryVisitor, ICoreSyntaxVisitor<Binder>
     {
+		public static object UseQualifier = new object();
+		public static object UseTypeReference = new object();
 		public static object UseExpression = new object();
+		public static object UseBlockStatement = new object();
+		public static object UseReturnType = new object();
 		public static object UseVariable = new object();
 		public static object UseCollection = new object();
 		public static object UseStatement = new object();
@@ -46,8 +50,8 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseFilter = new object();
 		public static object UseResource = new object();
 		public static object UseLiteral = new object();
-		public static object UseTypeReference = new object();
-		public static object UsePostfixOperator = new object();
+		public static object UsePostfixIncOrDecOperator = new object();
+		public static object UsePrefixIncOrDecOperator = new object();
 		public static object UseUnaryOperator = new object();
 		public static object UseLeft = new object();
 		public static object UseTDotDot = new object();
@@ -115,10 +119,18 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseKDouble = new object();
 		public static object UseKString = new object();
 		public static object UseUsingNamespace = new object();
+		public static object UseDeclaration = new object();
 		public static object UseMainBlock = new object();
 		public static object Use = new object();
-		public static object UseQualifier = new object();
-		public static object UseBlockStatement = new object();
+		public static object UseAliasDeclaration = new object();
+		public static object UseEnumDeclaration = new object();
+		public static object UseStructDeclaration = new object();
+		public static object UseFunctionDeclaration = new object();
+		public static object UseEnumLiteral = new object();
+		public static object UseStructField = new object();
+		public static object UseFunctionResult = new object();
+		public static object UseFunctionParameterList = new object();
+		public static object UseFunctionParameter = new object();
 		public static object UseSwitchCase = new object();
 		public static object UseCatchClause = new object();
 		public static object UseCaseClause = new object();
@@ -148,6 +160,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
 		public static object UseStringLiteral = new object();
+		public static object UseEnumLiteralList = new object();
 		public static object UseUsingHeader = new object();
 		public static object UseCatchFilter = new object();
 		public static object UseVariableDefList = new object();
@@ -186,6 +199,8 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 			    resultBinder = this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Namespace));
+				resultBinder = this.BinderFactory.CreateScopeBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -223,6 +238,254 @@ namespace MetaDslx.Languages.Core.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateImportBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitDeclaration(DeclarationSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Members");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitAliasDeclaration(AliasDeclarationSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Alias));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseQualifier)
+				{
+					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Qualifier, types: ImmutableArray.Create(typeof(Declaration)));
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitEnumDeclaration(EnumDeclarationSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(EnumType));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitEnumLiteralList(EnumLiteralListSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitEnumLiteral(EnumLiteralSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Members");
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(EnumLiteral));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitStructDeclaration(StructDeclarationSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(StructType));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitStructField(StructFieldSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.TypeReference)) use = UseTypeReference;
+				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Members");
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Field));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseTypeReference)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.TypeReference, name: "Type");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseExpression)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "DeclaredInitializer");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitFunctionDeclaration(FunctionDeclarationSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.BlockStatement)) use = UseBlockStatement;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Function));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseBlockStatement)
+				{
+					resultBinder = this.BinderFactory.CreateLocalScopeBinder(resultBinder, parent.BlockStatement);
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.BlockStatement, name: "Body");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitFunctionParameterList(FunctionParameterListSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Parameters");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitFunctionParameter(FunctionParameterSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.TypeReference)) use = UseTypeReference;
+				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Parameters");
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Parameter));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseTypeReference)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.TypeReference, name: "DeclaredType");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseExpression)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "DeclaredInitializer");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitFunctionResult(FunctionResultSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.ReturnType)) use = UseReturnType;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Result");
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Parameter));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseReturnType)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.ReturnType, name: "DeclaredType");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -1113,22 +1376,12 @@ namespace MetaDslx.Languages.Core.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.Identifier)) use = UseIdentifier;
-			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(ReferenceExpression));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseIdentifier)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Identifier, name: "ReferencedSymbol");
-					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Identifier, types: ImmutableArray.Create(typeof(Declaration)));
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -1143,7 +1396,6 @@ namespace MetaDslx.Languages.Core.Binding
 			if (this.ForChild)
 			{
 				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
-				if (LookupPosition.IsInNode(this.Position, parent.Identifier)) use = UseIdentifier;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
@@ -1154,12 +1406,6 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseExpression)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Qualifier");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-				if (use == UseIdentifier)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Identifier, name: "ReferencedSymbol");
-					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Identifier, types: ImmutableArray.Create(typeof(Declaration)));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -1345,38 +1591,6 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitPostfixUnaryExpr(PostfixUnaryExprSyntax parent)
-		{
-		    if (!parent.FullSpan.Contains(this.Position))
-		    {
-		        return VisitParent(parent);
-		    }
-			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
-				if (LookupPosition.IsInNode(this.Position, parent.PostfixOperator)) use = UsePostfixOperator;
-			}
-			Binder resultBinder = null;
-			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
-			{
-				resultBinder = VisitParent(parent);
-				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(UnaryExpression));
-				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseExpression)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Operand");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-				if (use == UsePostfixOperator)
-				{
-					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.PostfixOperator, name: "OperatorKind");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-			}
-			return resultBinder;
-		}
-		
 		public Binder VisitNullForgivingExpr(NullForgivingExprSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -1394,6 +1608,70 @@ namespace MetaDslx.Languages.Core.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(NullForgivingExpression));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseExpression)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Operand");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
+				if (LookupPosition.IsInNode(this.Position, parent.PostfixIncOrDecOperator)) use = UsePostfixIncOrDecOperator;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(UnaryExpression));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseExpression)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Operand");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UsePostfixIncOrDecOperator)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.PostfixIncOrDecOperator, name: "OperatorKind");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.PrefixIncOrDecOperator)) use = UsePrefixIncOrDecOperator;
+				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(UnaryExpression));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UsePrefixIncOrDecOperator)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.PrefixIncOrDecOperator, name: "OperatorKind");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 				if (use == UseExpression)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Operand");
@@ -2648,7 +2926,7 @@ namespace MetaDslx.Languages.Core.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitPostfixOperator(PostfixOperatorSyntax parent)
+		public Binder VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2657,22 +2935,57 @@ namespace MetaDslx.Languages.Core.Binding
 			object use = null;
 			if (this.ForChild)
 			{
-				if (LookupPosition.IsInNode(this.Position, parent.PostfixOperator)) use = UsePostfixOperator;
+				if (LookupPosition.IsInNode(this.Position, parent.PostfixIncOrDecOperator)) use = UsePostfixIncOrDecOperator;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UsePostfixOperator)
+				if (use == UsePostfixIncOrDecOperator)
 				{
-					switch (parent.PostfixOperator.GetKind().Switch())
+					switch (parent.PostfixIncOrDecOperator.GetKind().Switch())
 					{
 						case CoreSyntaxKind.TPlusPlus:
-							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.PostfixOperator, value: UnaryOperatorKind.PostfixIncrement);
+							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.PostfixIncOrDecOperator, value: UnaryOperatorKind.PostfixIncrement);
 							break;
 						case CoreSyntaxKind.TMinusMinus:
-							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.PostfixOperator, value: UnaryOperatorKind.PostfixDecrement);
+							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.PostfixIncOrDecOperator, value: UnaryOperatorKind.PostfixDecrement);
+							break;
+						default:
+							break;
+					}
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.PrefixIncOrDecOperator)) use = UsePrefixIncOrDecOperator;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UsePrefixIncOrDecOperator)
+				{
+					switch (parent.PrefixIncOrDecOperator.GetKind().Switch())
+					{
+						case CoreSyntaxKind.TPlusPlus:
+							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.PrefixIncOrDecOperator, value: UnaryOperatorKind.PrefixIncrement);
+							break;
+						case CoreSyntaxKind.TMinusMinus:
+							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.PrefixIncOrDecOperator, value: UnaryOperatorKind.PrefixDecrement);
 							break;
 						default:
 							break;
@@ -2714,12 +3027,6 @@ namespace MetaDslx.Languages.Core.Binding
 							break;
 						case CoreSyntaxKind.TTilde:
 							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.UnaryOperator, value: UnaryOperatorKind.BitwiseComplement);
-							break;
-						case CoreSyntaxKind.TPlusPlus:
-							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.UnaryOperator, value: UnaryOperatorKind.PrefixIncrement);
-							break;
-						case CoreSyntaxKind.TMinusMinus:
-							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.UnaryOperator, value: UnaryOperatorKind.PrefixDecrement);
 							break;
 						case CoreSyntaxKind.THat:
 							resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.UnaryOperator, value: UnaryOperatorKind.IndexFromEnd);

@@ -91,8 +91,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             this.AddLookupCandidateSymbols(result, constraints);
         }
 
-        protected virtual bool ContinueLookup => true;
-
         /// <summary>
         /// Look for names in scope
         /// </summary>
@@ -102,7 +100,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             for (var scope = this; scope != null; scope = scope.Next)
             {
                 scope.AddLookupCandidateSymbolsInSingleBinder(result, constraints);
-                if (!scope.ContinueLookup) break;
             }
         }
 

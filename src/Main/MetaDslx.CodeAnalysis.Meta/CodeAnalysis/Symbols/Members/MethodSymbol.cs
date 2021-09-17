@@ -9,7 +9,7 @@ using System.Reflection.Metadata;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     /// <summary>
-    /// Represents a method or function.
+    /// Represents a method of a named type symbol.
     /// </summary>
     [Symbol]
     public abstract partial class MethodSymbol : MethodLikeSymbol

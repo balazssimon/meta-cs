@@ -25,8 +25,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public bool IsExtern => _isExtern;
         public bool IsStatic => _isStatic;
 
-        protected override bool ContinueLookup => false;
-
         public override bool IsValidCompletionBinder
         {
             get

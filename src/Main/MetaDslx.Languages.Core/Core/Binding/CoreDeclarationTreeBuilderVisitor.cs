@@ -48,16 +48,39 @@ namespace MetaDslx.Languages.Core.Binding
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			if (node.UsingNamespace != null)
+			this.BeginDefine(node, type: typeof(Namespace));
+			try
 			{
-				foreach (var child in node.UsingNamespace)
+				this.BeginScope(node);
+				try
 				{
-			        this.Visit(child);
+					if (node.UsingNamespace != null)
+					{
+						foreach (var child in node.UsingNamespace)
+						{
+					        this.Visit(child);
+						}
+					}
+					if (node.Declaration != null)
+					{
+						foreach (var child in node.Declaration)
+						{
+					        this.Visit(child);
+						}
+					}
+					if (node.MainBlock != null)
+					{
+					    this.Visit(node.MainBlock);
+					}
+				}
+				finally
+				{
+					this.EndScope(node);
 				}
 			}
-			if (node.MainBlock != null)
+			finally
 			{
-			    this.Visit(node.MainBlock);
+				this.EndDefine(node, type: typeof(Namespace));
 			}
 		}
 		
@@ -113,6 +136,331 @@ namespace MetaDslx.Languages.Core.Binding
 			finally
 			{
 				this.EndImport(node);
+			}
+		}
+		
+		public virtual void VisitDeclaration(DeclarationSyntax node)
+		{
+			this.BeginProperty(node, name: "Members");
+			try
+			{
+				if (node.AliasDeclaration != null)
+				{
+				    this.Visit(node.AliasDeclaration);
+				}
+				if (node.EnumDeclaration != null)
+				{
+				    this.Visit(node.EnumDeclaration);
+				}
+				if (node.StructDeclaration != null)
+				{
+				    this.Visit(node.StructDeclaration);
+				}
+				if (node.FunctionDeclaration != null)
+				{
+				    this.Visit(node.FunctionDeclaration);
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Members");
+			}
+		}
+		
+		public virtual void VisitAliasDeclaration(AliasDeclarationSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(Alias));
+			try
+			{
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
+				if (node.Qualifier != null)
+				{
+				    this.BeginUse(node.Qualifier, types: ImmutableArray.Create(typeof(Declaration)));
+				    try
+				    {
+				    	this.Visit(node.Qualifier);
+				    }
+				    finally
+				    {
+				    	this.EndUse(node.Qualifier, types: ImmutableArray.Create(typeof(Declaration)));
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(Alias));
+			}
+		}
+		
+		public virtual void VisitEnumDeclaration(EnumDeclarationSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(EnumType));
+			try
+			{
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
+				if (node.EnumLiteralList != null)
+				{
+				    this.Visit(node.EnumLiteralList);
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(EnumType));
+			}
+		}
+		
+		public virtual void VisitEnumLiteralList(EnumLiteralListSyntax node)
+		{
+			if (node.EnumLiteral != null)
+			{
+				foreach (var child in node.EnumLiteral)
+				{
+			        this.Visit(child);
+				}
+			}
+		}
+		
+		public virtual void VisitEnumLiteral(EnumLiteralSyntax node)
+		{
+			this.BeginProperty(node, name: "Members");
+			try
+			{
+				this.BeginDefine(node, type: typeof(EnumLiteral));
+				try
+				{
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(EnumLiteral));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Members");
+			}
+		}
+		
+		public virtual void VisitStructDeclaration(StructDeclarationSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(StructType));
+			try
+			{
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
+				if (node.StructField != null)
+				{
+					foreach (var child in node.StructField)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(StructType));
+			}
+		}
+		
+		public virtual void VisitStructField(StructFieldSyntax node)
+		{
+			this.BeginProperty(node, name: "Members");
+			try
+			{
+				this.BeginDefine(node, type: typeof(Field));
+				try
+				{
+					if (node.TypeReference != null)
+					{
+					    this.BeginProperty(node.TypeReference, name: "Type");
+					    try
+					    {
+					    	this.Visit(node.TypeReference);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.TypeReference, name: "Type");
+					    }
+					}
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+					if (node.Expression != null)
+					{
+					    this.BeginProperty(node.Expression, name: "DeclaredInitializer");
+					    try
+					    {
+					    	this.Visit(node.Expression);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.Expression, name: "DeclaredInitializer");
+					    }
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(Field));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Members");
+			}
+		}
+		
+		public virtual void VisitFunctionDeclaration(FunctionDeclarationSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(Function));
+			try
+			{
+				if (node.FunctionResult != null)
+				{
+				    this.Visit(node.FunctionResult);
+				}
+				if (node.Name != null)
+				{
+				    this.Visit(node.Name);
+				}
+				if (node.FunctionParameterList != null)
+				{
+				    this.Visit(node.FunctionParameterList);
+				}
+				if (node.BlockStatement != null)
+				{
+				    this.BeginLocalScope(node.BlockStatement);
+				    try
+				    {
+				    	this.BeginProperty(node.BlockStatement, name: "Body");
+				    	try
+				    	{
+				    		this.Visit(node.BlockStatement);
+				    	}
+				    	finally
+				    	{
+				    		this.EndProperty(node.BlockStatement, name: "Body");
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndLocalScope(node.BlockStatement);
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(Function));
+			}
+		}
+		
+		public virtual void VisitFunctionParameterList(FunctionParameterListSyntax node)
+		{
+			this.BeginProperty(node, name: "Parameters");
+			try
+			{
+				if (node.FunctionParameter != null)
+				{
+					foreach (var child in node.FunctionParameter)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Parameters");
+			}
+		}
+		
+		public virtual void VisitFunctionParameter(FunctionParameterSyntax node)
+		{
+			this.BeginProperty(node, name: "Parameters");
+			try
+			{
+				this.BeginDefine(node, type: typeof(Parameter));
+				try
+				{
+					if (node.TypeReference != null)
+					{
+					    this.BeginProperty(node.TypeReference, name: "DeclaredType");
+					    try
+					    {
+					    	this.Visit(node.TypeReference);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.TypeReference, name: "DeclaredType");
+					    }
+					}
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+					if (node.Expression != null)
+					{
+					    this.BeginProperty(node.Expression, name: "DeclaredInitializer");
+					    try
+					    {
+					    	this.Visit(node.Expression);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.Expression, name: "DeclaredInitializer");
+					    }
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(Parameter));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Parameters");
+			}
+		}
+		
+		public virtual void VisitFunctionResult(FunctionResultSyntax node)
+		{
+			this.BeginProperty(node, name: "Result");
+			try
+			{
+				this.BeginDefine(node, type: typeof(Parameter));
+				try
+				{
+					if (node.ReturnType != null)
+					{
+					    this.BeginProperty(node.ReturnType, name: "DeclaredType");
+					    try
+					    {
+					    	this.Visit(node.ReturnType);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.ReturnType, name: "DeclaredType");
+					    }
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(Parameter));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Result");
 			}
 		}
 		
@@ -1062,25 +1410,9 @@ namespace MetaDslx.Languages.Core.Binding
 			this.BeginDefine(node, type: typeof(ReferenceExpression));
 			try
 			{
-				if (node.Identifier != null)
+				if (node.Name != null)
 				{
-				    this.BeginProperty(node.Identifier, name: "ReferencedSymbol");
-				    try
-				    {
-				    	this.BeginUse(node.Identifier, types: ImmutableArray.Create(typeof(Declaration)));
-				    	try
-				    	{
-				    		this.Visit(node.Identifier);
-				    	}
-				    	finally
-				    	{
-				    		this.EndUse(node.Identifier, types: ImmutableArray.Create(typeof(Declaration)));
-				    	}
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.Identifier, name: "ReferencedSymbol");
-				    }
+				    this.Visit(node.Name);
 				}
 				if (node.GenericTypeArguments != null)
 				{
@@ -1114,25 +1446,9 @@ namespace MetaDslx.Languages.Core.Binding
 				{
 				    this.Visit(node.DotOperator);
 				}
-				if (node.Identifier != null)
+				if (node.Name != null)
 				{
-				    this.BeginProperty(node.Identifier, name: "ReferencedSymbol");
-				    try
-				    {
-				    	this.BeginUse(node.Identifier, types: ImmutableArray.Create(typeof(Declaration)));
-				    	try
-				    	{
-				    		this.Visit(node.Identifier);
-				    	}
-				    	finally
-				    	{
-				    		this.EndUse(node.Identifier, types: ImmutableArray.Create(typeof(Declaration)));
-				    	}
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.Identifier, name: "ReferencedSymbol");
-				    }
+				    this.Visit(node.Name);
 				}
 				if (node.GenericTypeArguments != null)
 				{
@@ -1317,42 +1633,6 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
-		public virtual void VisitPostfixUnaryExpr(PostfixUnaryExprSyntax node)
-		{
-			this.BeginDefine(node, type: typeof(UnaryExpression));
-			try
-			{
-				if (node.Expression != null)
-				{
-				    this.BeginProperty(node.Expression, name: "Operand");
-				    try
-				    {
-				    	this.Visit(node.Expression);
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.Expression, name: "Operand");
-				    }
-				}
-				if (node.PostfixOperator != null)
-				{
-				    this.BeginProperty(node.PostfixOperator, name: "OperatorKind");
-				    try
-				    {
-				    	this.Visit(node.PostfixOperator);
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.PostfixOperator, name: "OperatorKind");
-				    }
-				}
-			}
-			finally
-			{
-				this.EndDefine(node, type: typeof(UnaryExpression));
-			}
-		}
-		
 		public virtual void VisitNullForgivingExpr(NullForgivingExprSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(NullForgivingExpression));
@@ -1374,6 +1654,78 @@ namespace MetaDslx.Languages.Core.Binding
 			finally
 			{
 				this.EndDefine(node, type: typeof(NullForgivingExpression));
+			}
+		}
+		
+		public virtual void VisitPostfixIncOrDecExpr(PostfixIncOrDecExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(UnaryExpression));
+			try
+			{
+				if (node.Expression != null)
+				{
+				    this.BeginProperty(node.Expression, name: "Operand");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Operand");
+				    }
+				}
+				if (node.PostfixIncOrDecOperator != null)
+				{
+				    this.BeginProperty(node.PostfixIncOrDecOperator, name: "OperatorKind");
+				    try
+				    {
+				    	this.Visit(node.PostfixIncOrDecOperator);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.PostfixIncOrDecOperator, name: "OperatorKind");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(UnaryExpression));
+			}
+		}
+		
+		public virtual void VisitPrefixIncOrDecExpr(PrefixIncOrDecExprSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(UnaryExpression));
+			try
+			{
+				if (node.PrefixIncOrDecOperator != null)
+				{
+				    this.BeginProperty(node.PrefixIncOrDecOperator, name: "OperatorKind");
+				    try
+				    {
+				    	this.Visit(node.PrefixIncOrDecOperator);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.PrefixIncOrDecOperator, name: "OperatorKind");
+				    }
+				}
+				if (node.Expression != null)
+				{
+				    this.BeginProperty(node.Expression, name: "Operand");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Operand");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(UnaryExpression));
 			}
 		}
 		
@@ -2850,32 +3202,66 @@ namespace MetaDslx.Languages.Core.Binding
 			}
 		}
 		
-		public virtual void VisitPostfixOperator(PostfixOperatorSyntax node)
+		public virtual void VisitPostfixIncOrDecOperator(PostfixIncOrDecOperatorSyntax node)
 		{
-			if (node.PostfixOperator != null)
+			if (node.PostfixIncOrDecOperator != null)
 			{
-			    switch (node.PostfixOperator.GetKind().Switch())
+			    switch (node.PostfixIncOrDecOperator.GetKind().Switch())
 			    {
 			    	case CoreSyntaxKind.TPlusPlus:
-			    		this.BeginValue(node.PostfixOperator, value: UnaryOperatorKind.PostfixIncrement);
+			    		this.BeginValue(node.PostfixIncOrDecOperator, value: UnaryOperatorKind.PostfixIncrement);
 			    		try
 			    		{
-			    			this.Visit(node.PostfixOperator);
+			    			this.Visit(node.PostfixIncOrDecOperator);
 			    		}
 			    		finally
 			    		{
-			    			this.EndValue(node.PostfixOperator, value: UnaryOperatorKind.PostfixIncrement);
+			    			this.EndValue(node.PostfixIncOrDecOperator, value: UnaryOperatorKind.PostfixIncrement);
 			    		}
 			    		break;
 			    	case CoreSyntaxKind.TMinusMinus:
-			    		this.BeginValue(node.PostfixOperator, value: UnaryOperatorKind.PostfixDecrement);
+			    		this.BeginValue(node.PostfixIncOrDecOperator, value: UnaryOperatorKind.PostfixDecrement);
 			    		try
 			    		{
-			    			this.Visit(node.PostfixOperator);
+			    			this.Visit(node.PostfixIncOrDecOperator);
 			    		}
 			    		finally
 			    		{
-			    			this.EndValue(node.PostfixOperator, value: UnaryOperatorKind.PostfixDecrement);
+			    			this.EndValue(node.PostfixIncOrDecOperator, value: UnaryOperatorKind.PostfixDecrement);
+			    		}
+			    		break;
+			    	default:
+			    		break;
+			    }
+			}
+		}
+		
+		public virtual void VisitPrefixIncOrDecOperator(PrefixIncOrDecOperatorSyntax node)
+		{
+			if (node.PrefixIncOrDecOperator != null)
+			{
+			    switch (node.PrefixIncOrDecOperator.GetKind().Switch())
+			    {
+			    	case CoreSyntaxKind.TPlusPlus:
+			    		this.BeginValue(node.PrefixIncOrDecOperator, value: UnaryOperatorKind.PrefixIncrement);
+			    		try
+			    		{
+			    			this.Visit(node.PrefixIncOrDecOperator);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrefixIncOrDecOperator, value: UnaryOperatorKind.PrefixIncrement);
+			    		}
+			    		break;
+			    	case CoreSyntaxKind.TMinusMinus:
+			    		this.BeginValue(node.PrefixIncOrDecOperator, value: UnaryOperatorKind.PrefixDecrement);
+			    		try
+			    		{
+			    			this.Visit(node.PrefixIncOrDecOperator);
+			    		}
+			    		finally
+			    		{
+			    			this.EndValue(node.PrefixIncOrDecOperator, value: UnaryOperatorKind.PrefixDecrement);
 			    		}
 			    		break;
 			    	default:
@@ -2932,28 +3318,6 @@ namespace MetaDslx.Languages.Core.Binding
 			    		finally
 			    		{
 			    			this.EndValue(node.UnaryOperator, value: UnaryOperatorKind.BitwiseComplement);
-			    		}
-			    		break;
-			    	case CoreSyntaxKind.TPlusPlus:
-			    		this.BeginValue(node.UnaryOperator, value: UnaryOperatorKind.PrefixIncrement);
-			    		try
-			    		{
-			    			this.Visit(node.UnaryOperator);
-			    		}
-			    		finally
-			    		{
-			    			this.EndValue(node.UnaryOperator, value: UnaryOperatorKind.PrefixIncrement);
-			    		}
-			    		break;
-			    	case CoreSyntaxKind.TMinusMinus:
-			    		this.BeginValue(node.UnaryOperator, value: UnaryOperatorKind.PrefixDecrement);
-			    		try
-			    		{
-			    			this.Visit(node.UnaryOperator);
-			    		}
-			    		finally
-			    		{
-			    			this.EndValue(node.UnaryOperator, value: UnaryOperatorKind.PrefixDecrement);
 			    		}
 			    		break;
 			    	case CoreSyntaxKind.THat:

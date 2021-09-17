@@ -11,6 +11,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class VariableSymbol : LocalSymbol
     {
         private TypeSymbol? _type;
+        private TypeWithAnnotations? _typeWithAnnotations;
 
         [SymbolProperty]
         public virtual bool? IsDeclaredConst => false;
@@ -21,8 +22,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public bool HasConstantValue { get; }
         public object? ConstantValue { get; }
-
-        public TypeWithAnnotations TypeWithAnnotations => null;
 
         public virtual TypeSymbol? Type
         {
@@ -53,6 +52,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     Interlocked.CompareExchange(ref _type, type, null);
                 }
                 return _type;
+            }
+        }
+
+
+        public TypeWithAnnotations TypeWithAnnotations
+        {
+            get
+            {
+                if (_typeWithAnnotations is null)
+                {
+                    var typeWithAnnot = TypeWithAnnotations.Create(this.Type);
+                    Interlocked.CompareExchange(ref _typeWithAnnotations, typeWithAnnot, null);
+                }
+                return _typeWithAnnotations;
             }
         }
 

@@ -98,5 +98,6 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_UnexpectedReturnValue = new ModelErrorCode(56, "Unexpected return value", "Unexpected return value.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotInferVarType = new ModelErrorCode(57, "Cannot infer variable type", "The type of the variable '{0}' cannot be inferred.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotUseLocalBeforeDeclaration = new ModelErrorCode(58, "Cannot use local", "Cannot use local variable '{0}' before it is declared.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_NameDoesNotExist = new ModelErrorCode(59, "Invalid name", "The name '{0}' does not exist in the current context.", DiagnosticSeverity.Error);
     }
 }

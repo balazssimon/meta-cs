@@ -215,6 +215,23 @@
 	}
 
 	//=============================
+	// Functions
+	//=============================
+
+	[symbol: Function]
+	class Function : Declaration
+	{
+		[property: IsAsync]
+		bool IsAsync;
+		[property: Result]
+		Parameter Result;
+		[property: Parameters]
+		containment list<Parameter> Parameters;
+		[property: Body]
+		containment Statement Body;
+	}
+
+	//=============================
 	// Members
 	//=============================
 
@@ -643,17 +660,6 @@
 	[expression: Dynamic]
 	class DynamicExpression : Expression
 	{
-	}
-	
-	[expression: IncrementOrDecrement]
-	class IncrementOrDecrementExpression : Expression
-	{
-		[property: Target]
-		containment Expression Target;
-		[property: IsPostfix]
-		bool IsPostfix;
-		[property: IsChecked]
-		bool IsChecked;
 	}
 	
 	[expression: IndexerAccess]

@@ -302,24 +302,28 @@ namespace MetaDslx.CodeAnalysis.Binding
             ExpressionSymbol receiverOpt) 
             where TMember : MemberSymbol
         {
-            // When the feature 'ImprovedOverloadCandidates' is enabled, we do not include instance members when the receiver
-            // is a type, or static members when the receiver is an instance. This does not apply to extension method invocations,
-            // because extension methods are only considered when the receiver is an instance. It also does not apply when the
-            // receiver is a TypeOrValueExpression, which is used to handle the receiver of a Color-Color ambiguity, where either
-            // an instance or a static member would be acceptable.
-            if (arguments.IsExtensionMethodInvocation || receiverOpt.IsInstanceReceiver)
+            bool isImplicitReceiver = true;
+            if (receiverOpt is not null)
             {
-                return;
-            }
+                // When the feature 'ImprovedOverloadCandidates' is enabled, we do not include instance members when the receiver
+                // is a type, or static members when the receiver is an instance. This does not apply to extension method invocations,
+                // because extension methods are only considered when the receiver is an instance. It also does not apply when the
+                // receiver is a TypeOrValueExpression, which is used to handle the receiver of a Color-Color ambiguity, where either
+                // an instance or a static member would be acceptable.
+                if (arguments.IsExtensionMethodInvocation || receiverOpt.IsInstanceReceiver)
+                {
+                    return;
+                }
 
-            bool isImplicitReceiver = receiverOpt.IsImplicitReceiver;
+                isImplicitReceiver = receiverOpt.IsImplicitReceiver;
+            }
             if (isImplicitReceiver && !isStaticContext)
             {
                 return;
             }
 
             // We are in a context where only instance (or only static) methods are permitted. We reject the others.
-            bool keepStatic = isImplicitReceiver && isStaticContext || receiverOpt.IsStaticReceiver;
+            bool keepStatic = isImplicitReceiver && isStaticContext || receiverOpt is null || receiverOpt.IsStaticReceiver;
             RemoveStaticInstanceMismatches(results, keepStatic);
         }
 
@@ -1037,6 +1041,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static bool IsLessDerivedThanAny<TMember>(TypeSymbol type, ArrayBuilder<MemberResolutionResult<TMember>> results, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
             where TMember : MemberSymbol
         {
+            if (type is null) return true;
+
             for (int f = 0; f < results.Count; ++f)
             {
                 var result = results[f];
@@ -1047,6 +1053,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
 
                 var currentType = result.LeastOverriddenMember.ContainingType;
+
+                if (currentType is null) continue;
 
                 // For purposes of removing less-derived methods, object is considered to be a base
                 // type of any type other than itself.

@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 source = srcNts.InnerType;
                 srcNullable = true;
             }
-            var srcSpecialSymbol = source.GetSpecialSymbol(CSharpLanguage.Instance);
+            var srcSpecialSymbol = source.GetSpecialSymbol(this.Compilation.Language);
             var srcIndex = -1;
             if (srcSpecialSymbol is SpecialSymbol srcSpecialType)
             {
@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 target = trgNts.InnerType;
                 trgNullable = true;
             }
-            var trgSpecialSymbol = target.GetSpecialSymbol(CSharpLanguage.Instance);
+            var trgSpecialSymbol = target.GetSpecialSymbol(this.Compilation.Language);
             var trgIndex = -1;
             if (trgSpecialSymbol is SpecialSymbol trgSpecialType)
             {

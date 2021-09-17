@@ -29,7 +29,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(DefaultValueExpressionSymbol symbol);
         void Visit(DiscardExpressionSymbol symbol);
         void Visit(DynamicExpressionSymbol symbol);
-        void Visit(IncrementOrDecrementExpressionSymbol symbol);
         void Visit(IndexerAccessExpressionSymbol symbol);
         void Visit(InstanceReferenceExpressionSymbol symbol);
         void Visit(InvocationExpressionSymbol symbol);
@@ -54,6 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(ConversionOperatorSymbol symbol);
         void Visit(DestructorSymbol symbol);
         void Visit(FieldSymbol symbol);
+        void Visit(FunctionSymbol symbol);
         void Visit(PropertySymbol symbol);
         void Visit(IndexerSymbol symbol);
         void Visit(LambdaSymbol symbol);
@@ -120,7 +120,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(DefaultValueExpressionSymbol symbol);
         TResult Visit(DiscardExpressionSymbol symbol);
         TResult Visit(DynamicExpressionSymbol symbol);
-        TResult Visit(IncrementOrDecrementExpressionSymbol symbol);
         TResult Visit(IndexerAccessExpressionSymbol symbol);
         TResult Visit(InstanceReferenceExpressionSymbol symbol);
         TResult Visit(InvocationExpressionSymbol symbol);
@@ -145,6 +144,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(ConversionOperatorSymbol symbol);
         TResult Visit(DestructorSymbol symbol);
         TResult Visit(FieldSymbol symbol);
+        TResult Visit(FunctionSymbol symbol);
         TResult Visit(PropertySymbol symbol);
         TResult Visit(IndexerSymbol symbol);
         TResult Visit(LambdaSymbol symbol);
@@ -211,7 +211,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(DefaultValueExpressionSymbol symbol, TArgument argument);
         TResult Visit(DiscardExpressionSymbol symbol, TArgument argument);
         TResult Visit(DynamicExpressionSymbol symbol, TArgument argument);
-        TResult Visit(IncrementOrDecrementExpressionSymbol symbol, TArgument argument);
         TResult Visit(IndexerAccessExpressionSymbol symbol, TArgument argument);
         TResult Visit(InstanceReferenceExpressionSymbol symbol, TArgument argument);
         TResult Visit(InvocationExpressionSymbol symbol, TArgument argument);
@@ -236,6 +235,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(ConversionOperatorSymbol symbol, TArgument argument);
         TResult Visit(DestructorSymbol symbol, TArgument argument);
         TResult Visit(FieldSymbol symbol, TArgument argument);
+        TResult Visit(FunctionSymbol symbol, TArgument argument);
         TResult Visit(PropertySymbol symbol, TArgument argument);
         TResult Visit(IndexerSymbol symbol, TArgument argument);
         TResult Visit(LambdaSymbol symbol, TArgument argument);

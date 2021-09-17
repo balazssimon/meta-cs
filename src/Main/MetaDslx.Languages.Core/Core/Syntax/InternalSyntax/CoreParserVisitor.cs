@@ -55,6 +55,72 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitUsingNamespace([NotNull] CoreParser.UsingNamespaceContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.declaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDeclaration([NotNull] CoreParser.DeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.aliasDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAliasDeclaration([NotNull] CoreParser.AliasDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.enumDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumDeclaration([NotNull] CoreParser.EnumDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.enumLiteralList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumLiteralList([NotNull] CoreParser.EnumLiteralListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.enumLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumLiteral([NotNull] CoreParser.EnumLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.structDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructDeclaration([NotNull] CoreParser.StructDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.structField"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructField([NotNull] CoreParser.StructFieldContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.functionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionDeclaration([NotNull] CoreParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.functionParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionParameterList([NotNull] CoreParser.FunctionParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.functionParameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionParameter([NotNull] CoreParser.FunctionParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.functionResult"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionResult([NotNull] CoreParser.FunctionResultContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>emptyStmt</c>
 	/// labeled alternative in <see cref="CoreParser.statement"/>.
 	/// </summary>
@@ -268,12 +334,26 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCompAssignExpr([NotNull] CoreParser.CompAssignExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>postfixIncOrDecExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPostfixIncOrDecExpr([NotNull] CoreParser.PostfixIncOrDecExprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>typeofExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTypeofExpr([NotNull] CoreParser.TypeofExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>prefixIncOrDecExpr</c>
+	/// labeled alternative in <see cref="CoreParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrefixIncOrDecExpr([NotNull] CoreParser.PrefixIncOrDecExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>condExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
@@ -309,13 +389,6 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIndexerExpr([NotNull] CoreParser.IndexerExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>postfixUnaryExpr</c>
-	/// labeled alternative in <see cref="CoreParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPostfixUnaryExpr([NotNull] CoreParser.PostfixUnaryExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>invocationExpr</c>
 	/// labeled alternative in <see cref="CoreParser.expression"/>.
@@ -660,11 +733,17 @@ public interface ICoreParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitIndexerOperator([NotNull] CoreParser.IndexerOperatorContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoreParser.postfixOperator"/>.
+	/// Visit a parse tree produced by <see cref="CoreParser.postfixIncOrDecOperator"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitPostfixOperator([NotNull] CoreParser.PostfixOperatorContext context);
+	Result VisitPostfixIncOrDecOperator([NotNull] CoreParser.PostfixIncOrDecOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoreParser.prefixIncOrDecOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrefixIncOrDecOperator([NotNull] CoreParser.PrefixIncOrDecOperatorContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoreParser.unaryOperator"/>.
 	/// </summary>

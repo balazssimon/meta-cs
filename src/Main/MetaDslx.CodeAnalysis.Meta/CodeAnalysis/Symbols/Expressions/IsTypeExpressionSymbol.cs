@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.PooledObjects;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -45,5 +46,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         bool? IVariableTypeInferrer.IsConstVariable => null;
 
         ExpressionSymbol? IVariableTypeInferrer.VariableInitializer => null;
+
+        protected override void AddDeclaredLocals(ArrayBuilder<LocalSymbol> result)
+        {
+            base.AddDeclaredLocals(result);
+            if (this.DeclaredVariable is not null) result.Add(this.DeclaredVariable);
+        }
     }
 }

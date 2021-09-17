@@ -12,7 +12,9 @@ options
 	                      
 }
 
-main: usingNamespace* mainBlock EOF;
+                  
+      
+main: usingNamespace* declaration* mainBlock EOF;
 
                        
            
@@ -21,6 +23,40 @@ mainBlock: statement*;
 
        
 usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
+
+// Declarations
+
+                  
+declaration: aliasDeclaration | enumDeclaration | structDeclaration | functionDeclaration;
+
+              
+aliasDeclaration: KUsing name TAssign                   qualifier;
+
+                 
+enumDeclaration: KEnum name TOpenBrace enumLiteralList? TCloseBrace;
+enumLiteralList: enumLiteral (TComma enumLiteral)*;
+                  
+                    
+enumLiteral: name;
+
+                   
+structDeclaration: KStruct name TOpenBrace structField* TCloseBrace;
+                  
+              
+structField:                 typeReference name (TAssign                                expression)? TSemicolon;
+
+                 
+functionDeclaration: functionResult name TOpenParen functionParameterList? TCloseParen                             blockStatement;
+
+                     
+functionParameterList : functionParameter (TComma functionParameter)*;
+                     
+                  
+functionParameter :                         typeReference name (TAssign                                expression)?;
+
+                  
+                  
+functionResult :                         returnType;
 
 // Statements
 
@@ -81,8 +117,8 @@ expression
 	| KThis #thisExpr                                     
 	| KBase #baseExpr                                     
 	|                  literal #literalExpr                           
-	|                                               identifier genericTypeArguments? #identifierExpr                             
-	|                      expression dotOperator                                               identifier genericTypeArguments? #qualifierExpr                             
+	| name genericTypeArguments? #identifierExpr                             
+	|                      expression dotOperator name genericTypeArguments? #qualifierExpr                             
 	|                     expression indexerOperator argumentList TCloseBracket #indexerExpr                                 
 	| expression TOpenParen argumentList? TCloseParen #invocationExpr                              
 	| KTypeof TOpenParen                        typeReference TCloseParen #typeofExpr                          
@@ -91,8 +127,9 @@ expression
 	| KChecked TOpenParen expression TCloseParen #checkedExpr
 	| KUnchecked TOpenParen expression TCloseParen #uncheckedExpr
 	| KNew                       typeReference TOpenParen argumentList? TCloseParen initializerExpression? #newExpr                                  
-	|                    expression                         postfixOperator #postfixUnaryExpr                         
 	|                    expression TExclamation #nullForgivingExpr                                 
+	|                    expression                         postfixIncOrDecOperator #postfixIncOrDecExpr                         
+	|                         prefixIncOrDecOperator                    expression #prefixIncOrDecExpr                         
 	|                         unaryOperator                    expression #unaryExpr                         
 	| TOpenParen                       typeReference TCloseParen                    expression #typeCastExpr                              
 	| KAwait                      expression #awaitExpr                         
@@ -171,9 +208,14 @@ indexerOperator
 	|                                              TQuestionOpenBracket
 	;
 
-postfixOperator
+postfixIncOrDecOperator
 	:                                            TPlusPlus
 	|                                            TMinusMinus
+	;
+
+prefixIncOrDecOperator
+	:                                           TPlusPlus
+	|                                           TMinusMinus
 	;
 
 unaryOperator
@@ -181,8 +223,6 @@ unaryOperator
 	|                                      TMinus
 	|                                           TExclamation
 	|                                             TTilde
-	|                                           TPlusPlus
-	|                                           TMinusMinus
 	|                                        THat
 	;
 

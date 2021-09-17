@@ -107,7 +107,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 get
                 {
                     ForceComplete(CompletionParts.FinishComputingProperty_OperatorMethod, default, default);
-                    return _analysisResult.LeftConversion;
+                    return _analysisResult.RightConversion;
                 }
             }
 

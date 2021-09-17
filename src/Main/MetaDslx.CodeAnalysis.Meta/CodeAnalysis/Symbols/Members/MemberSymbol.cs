@@ -80,6 +80,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <param name="accessingTypeOpt">The search must respect accessibility from this type.</param>
         public override DeclaredSymbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
         {
+            if (this.ContainingType is null) return this;
+
             var accessingType = ((object)accessingTypeOpt == null ? this.ContainingType : accessingTypeOpt).OriginalDefinition;
 
             MemberSymbol m = this;

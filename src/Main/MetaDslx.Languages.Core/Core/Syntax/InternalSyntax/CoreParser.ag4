@@ -12,7 +12,9 @@ options
 	generateCompiler=true;
 }
 
-main: usingNamespace* mainBlock EOF;
+$Define(Namespace)
+$Scope
+main: usingNamespace* declaration* mainBlock EOF;
 
 $Define(BlockStatement)
 $LocalScope
@@ -21,6 +23,40 @@ mainBlock: statement*;
 
 $Import
 usingNamespace: KUsing (name TAssign)? qualifier TSemicolon;
+
+// Declarations
+
+$Property(Members)
+declaration: aliasDeclaration | enumDeclaration | structDeclaration | functionDeclaration;
+
+$Define(Alias)
+aliasDeclaration: KUsing name TAssign $Use(Declaration) qualifier;
+
+$Define(EnumType)
+enumDeclaration: KEnum name TOpenBrace enumLiteralList? TCloseBrace;
+enumLiteralList: enumLiteral (TComma enumLiteral)*;
+$Property(Members)
+$Define(EnumLiteral)
+enumLiteral: name;
+
+$Define(StructType)
+structDeclaration: KStruct name TOpenBrace structField* TCloseBrace;
+$Property(Members)
+$Define(Field)
+structField: $Property(Type) typeReference name (TAssign $Property(DeclaredInitializer) expression)? TSemicolon;
+
+$Define(Function)
+functionDeclaration: functionResult name TOpenParen functionParameterList? TCloseParen $LocalScope $Property(Body) blockStatement;
+
+$Property(Parameters)
+functionParameterList : functionParameter (TComma functionParameter)*;
+$Property(Parameters)
+$Define(Parameter)
+functionParameter : $Property(DeclaredType) typeReference name (TAssign $Property(DeclaredInitializer) expression)?;
+
+$Property(Result) 
+$Define(Parameter)
+functionResult : $Property(DeclaredType) returnType;
 
 // Statements
 
@@ -81,8 +117,8 @@ expression
 	| KThis #thisExpr $Define(InstanceReferenceExpression)
 	| KBase #baseExpr $Define(InstanceReferenceExpression)
 	| $Property(Value) literal #literalExpr $Define(LiteralExpression)
-	| $Property(ReferencedSymbol) $Use(Declaration) identifier genericTypeArguments? #identifierExpr $Define(ReferenceExpression)
-	| $Property(Qualifier) expression dotOperator $Property(ReferencedSymbol) $Use(Declaration) identifier genericTypeArguments? #qualifierExpr $Define(ReferenceExpression)
+	| name genericTypeArguments? #identifierExpr $Define(ReferenceExpression)
+	| $Property(Qualifier) expression dotOperator name genericTypeArguments? #qualifierExpr $Define(ReferenceExpression)
 	| $Property(Receiver) expression indexerOperator argumentList TCloseBracket #indexerExpr $Define(IndexerAccessExpression)
 	| expression TOpenParen argumentList? TCloseParen #invocationExpr $Define(InvocationExpression)
 	| KTypeof TOpenParen $Property(TypeOperand) typeReference TCloseParen #typeofExpr $Define(TypeOfExpression)
@@ -91,8 +127,9 @@ expression
 	| KChecked TOpenParen expression TCloseParen #checkedExpr
 	| KUnchecked TOpenParen expression TCloseParen #uncheckedExpr
 	| KNew $Property(ObjectType) typeReference TOpenParen argumentList? TCloseParen initializerExpression? #newExpr $Define(ObjectCreationExpression)
-	| $Property(Operand) expression $Property(OperatorKind) postfixOperator #postfixUnaryExpr $Define(UnaryExpression)
 	| $Property(Operand) expression TExclamation #nullForgivingExpr $Define(NullForgivingExpression)
+	| $Property(Operand) expression $Property(OperatorKind) postfixIncOrDecOperator #postfixIncOrDecExpr $Define(UnaryExpression)
+	| $Property(OperatorKind) prefixIncOrDecOperator $Property(Operand) expression #prefixIncOrDecExpr $Define(UnaryExpression)
 	| $Property(OperatorKind) unaryOperator $Property(Operand) expression #unaryExpr $Define(UnaryExpression)
 	| TOpenParen $Property(TargetType) typeReference TCloseParen $Property(Operand) expression #typeCastExpr $Define(ConversionExpression)
 	| KAwait $Property(Operation) expression #awaitExpr $Define(AwaitExpression)
@@ -171,9 +208,14 @@ indexerOperator
 	| $Property(name=IsNullConditional,value=true) TQuestionOpenBracket
 	;
 
-postfixOperator
+postfixIncOrDecOperator
 	: $Value(UnaryOperatorKind.PostfixIncrement) TPlusPlus
 	| $Value(UnaryOperatorKind.PostfixDecrement) TMinusMinus
+	;
+
+prefixIncOrDecOperator
+	: $Value(UnaryOperatorKind.PrefixIncrement) TPlusPlus
+	| $Value(UnaryOperatorKind.PrefixDecrement) TMinusMinus
 	;
 
 unaryOperator
@@ -181,8 +223,6 @@ unaryOperator
 	| $Value(UnaryOperatorKind.UnaryMinus) TMinus
 	| $Value(UnaryOperatorKind.LogicalNegation) TExclamation
 	| $Value(UnaryOperatorKind.BitwiseComplement) TTilde
-	| $Value(UnaryOperatorKind.PrefixIncrement) TPlusPlus
-	| $Value(UnaryOperatorKind.PrefixDecrement) TMinusMinus
 	| $Value(UnaryOperatorKind.IndexFromEnd) THat
 	;
 

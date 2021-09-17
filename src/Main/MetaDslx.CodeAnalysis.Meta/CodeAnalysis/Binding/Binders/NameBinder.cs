@@ -27,6 +27,5 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        protected override bool ContinueLookup => false;
     }
 }
