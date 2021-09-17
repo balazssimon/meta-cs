@@ -96,7 +96,7 @@ expression
 	|                        left=expression                         additiveOperator                         right=expression #addExpr                          
 	|                        left=expression                         shiftOperator                         right=expression #shiftExpr                          
 	|                        left=expression                         relationalOperator                         right=expression #relExpr                          
-	|                         expression KIs                                      KNot?                        typeReference #typeIsExpr                          
+	|                         expression KIs                                      KNot?                        typeReference (                                      name)? #typeIsExpr                          
 	|                    expression KAs                       typeReference #typeAsExpr                                                                   
 	|                        left=expression                         equalityOperator                         right=expression #eqExpr                          
 	|                        left=expression                                                               TAmpersand                         right=expression #andExpr                          

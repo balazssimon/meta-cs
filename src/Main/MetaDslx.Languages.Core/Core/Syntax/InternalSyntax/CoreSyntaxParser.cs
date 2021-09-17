@@ -4333,7 +4333,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				TypeReferenceGreen typeReference = null;
 				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
 				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
-				return _factory.TypeIsExpr(expression, kIs, kNot, typeReference);
+				CoreParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				return _factory.TypeIsExpr(expression, kIs, kNot, typeReference, name);
 			}
 			
 			public override GreenNode VisitTypeAsExpr(CoreParser.TypeAsExprContext context)

@@ -96,7 +96,7 @@ expression
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) additiveOperator $Property(RightOperand) right=expression #addExpr $Define(BinaryExpression)
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) shiftOperator $Property(RightOperand) right=expression #shiftExpr $Define(BinaryExpression)
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) relationalOperator $Property(RightOperand) right=expression #relExpr $Define(BinaryExpression)
-	| $Property(ValueOperand) expression KIs $Property(name=IsNegated,value=true) KNot? $Property(TypeOperand) typeReference #typeIsExpr $Define(IsTypeExpression)
+	| $Property(ValueOperand) expression KIs $Property(name=IsNegated,value=true) KNot? $Property(TypeOperand) typeReference ($Property(DeclaredVariable) $Define(Variable) name)? #typeIsExpr $Define(IsTypeExpression)
 	| $Property(Operand) expression KAs $Property(TargetType) typeReference #typeAsExpr $Define(ConversionExpression) $Property(name=IsTryCast,value=true)
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) equalityOperator $Property(RightOperand) right=expression #eqExpr $Define(BinaryExpression)
 	| $Property(LeftOperand) left=expression $Property(OperatorKind) $Value(BinaryOperatorKind.BitwiseAnd) TAmpersand $Property(RightOperand) right=expression #andExpr $Define(BinaryExpression)
@@ -110,7 +110,7 @@ expression
 	| $Property(Target) target=expression TAssign $Property(Value) value=expression #assignExpr $Define(AssignmentExpression)
 	| $Property(Target) target=expression $Property(OperatorKind) compoundAssignmentOperator $Property(Value) value=expression #compAssignExpr $Define(CompoundAssignmentExpression)
 	| lambdaSignature TArrow lambdaBody #lambdaExpr $Define(LambdaExpression)
-	| $Property(name=IsConst,value=true) KConst? $Property(Type) variableType $Property(Variables) variableDefList #varDefExpr $Define(VariableDeclarationExpression)
+	| $Property(name=IsConst,value=true) KConst? $Property(DeclaredType) variableType variableDefList #varDefExpr $Define(VariableDeclarationExpression)
 	;
 
 $Property(Arguments)
@@ -152,8 +152,9 @@ $Property(Body)
 lambdaBody: $Define(ExpressionStatement) $Property(Expression) expression | blockStatement;
 
 variableDefList: variableDef (TComma variableDef)*;
+$Property(Variables)
 $Define(Variable)
-variableDef: name (TAssign $Property(Initializer) initializer=expression);
+variableDef: name (TAssign $Property(DeclaredInitializer) initializer=expression)?;
 
 dotOperator
 	: TDot
@@ -269,6 +270,7 @@ primitiveType
 $Value(CoreInstance.Void) 
 voidType : KVoid;
 
+$Value(CoreInstance.VarType) 
 varType : KVar;
 
 // Additional rules for lexer:

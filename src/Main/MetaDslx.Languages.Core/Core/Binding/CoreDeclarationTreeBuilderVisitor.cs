@@ -1722,6 +1722,26 @@ namespace MetaDslx.Languages.Core.Binding
 				    	this.EndProperty(node.TypeReference, name: "TypeOperand");
 				    }
 				}
+				if (node.Name != null)
+				{
+				    this.BeginProperty(node.Name, name: "Variable");
+				    try
+				    {
+				    	this.BeginDefine(node.Name, type: typeof(Variable));
+				    	try
+				    	{
+				    		this.Visit(node.Name);
+				    	}
+				    	finally
+				    	{
+				    		this.EndDefine(node.Name, type: typeof(Variable));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Name, name: "Variable");
+				    }
+				}
 			}
 			finally
 			{

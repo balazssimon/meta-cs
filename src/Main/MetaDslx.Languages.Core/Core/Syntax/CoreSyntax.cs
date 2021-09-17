@@ -6179,6 +6179,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	{
 	    private ExpressionSyntax expression;
 	    private TypeReferenceSyntax typeReference;
+	    private NameSyntax name;
 	
 	    public TypeIsExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -6216,6 +6217,10 @@ namespace MetaDslx.Languages.Core.Syntax
 		{ 
 			get { return this.GetRed(ref this.typeReference, 3); } 
 		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 4); } 
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -6223,6 +6228,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	        {
 				case 0: return this.GetRed(ref this.expression, 0);
 				case 3: return this.GetRed(ref this.typeReference, 3);
+				case 4: return this.GetRed(ref this.name, 4);
 				default: return null;
 	        }
 	    }
@@ -6233,38 +6239,45 @@ namespace MetaDslx.Languages.Core.Syntax
 	        {
 				case 0: return this.expression;
 				case 3: return this.typeReference;
+				case 4: return this.name;
 				default: return null;
 	        }
 	    }
 	
 	    public TypeIsExprSyntax WithExpression(ExpressionSyntax expression)
 		{
-			return this.Update(Expression, this.KIs, this.KNot, this.TypeReference);
+			return this.Update(Expression, this.KIs, this.KNot, this.TypeReference, this.Name);
 		}
 	
 	    public TypeIsExprSyntax WithKIs(SyntaxToken kIs)
 		{
-			return this.Update(this.Expression, KIs, this.KNot, this.TypeReference);
+			return this.Update(this.Expression, KIs, this.KNot, this.TypeReference, this.Name);
 		}
 	
 	    public TypeIsExprSyntax WithKNot(SyntaxToken kNot)
 		{
-			return this.Update(this.Expression, this.KIs, KNot, this.TypeReference);
+			return this.Update(this.Expression, this.KIs, KNot, this.TypeReference, this.Name);
 		}
 	
 	    public TypeIsExprSyntax WithTypeReference(TypeReferenceSyntax typeReference)
 		{
-			return this.Update(this.Expression, this.KIs, this.KNot, TypeReference);
+			return this.Update(this.Expression, this.KIs, this.KNot, TypeReference, this.Name);
 		}
 	
-	    public TypeIsExprSyntax Update(ExpressionSyntax expression, SyntaxToken kIs, SyntaxToken kNot, TypeReferenceSyntax typeReference)
+	    public TypeIsExprSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.Expression, this.KIs, this.KNot, this.TypeReference, Name);
+		}
+	
+	    public TypeIsExprSyntax Update(ExpressionSyntax expression, SyntaxToken kIs, SyntaxToken kNot, TypeReferenceSyntax typeReference, NameSyntax name)
 	    {
 	        if (this.Expression != expression ||
 				this.KIs != kIs ||
 				this.KNot != kNot ||
-				this.TypeReference != typeReference)
+				this.TypeReference != typeReference ||
+				this.Name != name)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.TypeIsExpr(expression, kIs, kNot, typeReference);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.TypeIsExpr(expression, kIs, kNot, typeReference, name);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -15663,7 +15676,8 @@ namespace MetaDslx.Languages.Core
 		    var kIs = this.VisitToken(node.KIs);
 		    var kNot = this.VisitToken(node.KNot);
 		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
-			return node.Update(expression, kIs, kNot, typeReference);
+		    var name = (NameSyntax)this.Visit(node.Name);
+			return node.Update(expression, kIs, kNot, typeReference, name);
 		}
 		
 		public virtual SyntaxNode VisitTypeAsExpr(TypeAsExprSyntax node)
@@ -17255,19 +17269,19 @@ namespace MetaDslx.Languages.Core
 		    return (RelExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.RelExpr((Syntax.InternalSyntax.ExpressionGreen)left.Green, (Syntax.InternalSyntax.RelationalOperatorGreen)relationalOperator.Green, (Syntax.InternalSyntax.ExpressionGreen)right.Green).CreateRed();
 		}
 		
-		public TypeIsExprSyntax TypeIsExpr(ExpressionSyntax expression, SyntaxToken kIs, SyntaxToken kNot, TypeReferenceSyntax typeReference)
+		public TypeIsExprSyntax TypeIsExpr(ExpressionSyntax expression, SyntaxToken kIs, SyntaxToken kNot, TypeReferenceSyntax typeReference, NameSyntax name)
 		{
 		    if (expression == null) throw new ArgumentNullException(nameof(expression));
 		    if (kIs == null) throw new ArgumentNullException(nameof(kIs));
 		    if (kIs.GetKind() != CoreSyntaxKind.KIs) throw new ArgumentException(nameof(kIs));
 		    if (kNot != null && kNot.GetKind() != CoreSyntaxKind.KNot) throw new ArgumentException(nameof(kNot));
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
-		    return (TypeIsExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.TypeIsExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (InternalSyntaxToken)kIs.Node, (InternalSyntaxToken)kNot.Node, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green).CreateRed();
+		    return (TypeIsExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.TypeIsExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (InternalSyntaxToken)kIs.Node, (InternalSyntaxToken)kNot.Node, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, name == null ? null : (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
 		}
 		
 		public TypeIsExprSyntax TypeIsExpr(ExpressionSyntax expression, TypeReferenceSyntax typeReference)
 		{
-			return this.TypeIsExpr(expression, this.Token(CoreSyntaxKind.KIs), default, typeReference);
+			return this.TypeIsExpr(expression, this.Token(CoreSyntaxKind.KIs), default, typeReference, default);
 		}
 		
 		public TypeAsExprSyntax TypeAsExpr(ExpressionSyntax expression, SyntaxToken kAs, TypeReferenceSyntax typeReference)

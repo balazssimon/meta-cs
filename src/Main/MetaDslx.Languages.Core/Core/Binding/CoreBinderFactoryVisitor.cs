@@ -1675,6 +1675,7 @@ namespace MetaDslx.Languages.Core.Binding
 				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
 				if (LookupPosition.IsInNode(this.Position, parent.KNot)) use = UseKNot;
 				if (LookupPosition.IsInNode(this.Position, parent.TypeReference)) use = UseTypeReference;
+				if (LookupPosition.IsInNode(this.Position, parent.Name)) use = UseName;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
@@ -1695,6 +1696,12 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseTypeReference)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.TypeReference, name: "TypeOperand");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseName)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Name, name: "Variable");
+					resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent.Name, type: typeof(Variable));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}

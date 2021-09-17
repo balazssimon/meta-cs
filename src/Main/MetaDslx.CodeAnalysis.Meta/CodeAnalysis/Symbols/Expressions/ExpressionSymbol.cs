@@ -3,6 +3,7 @@ using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
 
@@ -20,6 +21,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public virtual TypeSymbol? Type => null;
+
+        public virtual ImmutableArray<LocalSymbol> DeclaredLocals => ImmutableArray<LocalSymbol>.Empty;
 
         public virtual bool IsConstant
         {

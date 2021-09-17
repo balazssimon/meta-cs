@@ -409,7 +409,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (symbolPropertyName != "Members" && svar.DeclaringCompilation.Options.TopLevelBinderFlags.Includes(BinderFlags.AllowMetaConstants))
                     {
                         isMetaConstantReference = true;
-                        svar.ForceComplete(SourceVariableSymbol.CompletionParts.FinishComputingProperty_Type, null, cancellationToken);
+                        svar.ForceComplete(SourceVariableSymbol.CompletionParts.FinishComputingProperty_DeclaredType, null, cancellationToken);
                     }
                 }
                 symbol.Language.SymbolFacts.SetOrAddPropertyValue(msymbol.ModelObject, modelObjectProperty, value, location, diagnostics, cancellationToken);

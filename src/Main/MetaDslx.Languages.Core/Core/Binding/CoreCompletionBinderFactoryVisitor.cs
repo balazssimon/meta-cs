@@ -122,6 +122,7 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_TypeIsExpr_Expression = new object();
 		public static object Use_TypeIsExpr_KNot = new object();
 		public static object Use_TypeIsExpr_TypeReference = new object();
+		public static object Use_TypeIsExpr_Name = new object();
 		public static object Use_TypeAsExpr_Expression = new object();
 		public static object Use_TypeAsExpr_TypeReference = new object();
 		public static object Use_EqExpr_Left = new object();
@@ -3206,6 +3207,24 @@ namespace MetaDslx.Languages.Core.Binding
 		        }
 		    }
 		    position += parent.TypeReference.FullSpan.Length;
+		    if (parent.Name == null || parent.Name.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Name == null || !parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForTypeIsExpr(Use_TypeIsExpr_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForTypeIsExpr(Use_TypeIsExpr_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
+		    }
+		    if (parent.Name != null) position += parent.Name.FullSpan.Length;
 		}
 		
 		public void VisitTypeAsExpr(TypeAsExprSyntax parent) // -1
@@ -6805,7 +6824,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_RelExpr_Left || use == Use_RelExpr_RelationalOperator || use == Use_RelExpr_Right) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForRelExpr(altUse, operation, parentBinder);
-            if (use == Use_TypeIsExpr_Expression || use == Use_TypeIsExpr_KNot || use == Use_TypeIsExpr_TypeReference) altUse = use;
+            if (use == Use_TypeIsExpr_Expression || use == Use_TypeIsExpr_KNot || use == Use_TypeIsExpr_TypeReference || use == Use_TypeIsExpr_Name) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForTypeIsExpr(altUse, operation, parentBinder);
             if (use == Use_TypeAsExpr_Expression || use == Use_TypeAsExpr_TypeReference) altUse = use;
@@ -7624,6 +7643,13 @@ namespace MetaDslx.Languages.Core.Binding
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "TypeOperand", forCompletion: true);
                 AddResultsForTypeReference(UnassignedUse, operation, binder);
                 use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_TypeIsExpr_Name)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Variable", forCompletion: true);
+            	binder = this.BinderFactory.CreateDefineBinder(binder, null, type: typeof(Variable), forCompletion: true);
+                AddResultsForName(UnassignedUse, operation, binder);
             }
             _visited[-1] = false;
         }

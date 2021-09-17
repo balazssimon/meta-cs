@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual bool IsConst => false;
         [SymbolProperty]
-        public virtual TypeSymbol? Type => null;
+        public virtual TypeSymbol? DeclaredType => null;
 
         /// <summary>
         /// Variable symbols declared by this variable declaration.

@@ -7876,11 +7876,12 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    private InternalSyntaxToken kIs;
 	    private InternalSyntaxToken kNot;
 	    private TypeReferenceGreen typeReference;
+	    private NameGreen name;
 	
-	    public TypeIsExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference)
+	    public TypeIsExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference, NameGreen name)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 4;
+			this.SlotCount = 5;
 			if (expression != null)
 			{
 				this.AdjustFlagsAndWidth(expression);
@@ -7900,13 +7901,18 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			{
 				this.AdjustFlagsAndWidth(typeReference);
 				this.typeReference = typeReference;
+			}
+			if (name != null)
+			{
+				this.AdjustFlagsAndWidth(name);
+				this.name = name;
 			}
 	    }
 	
-	    public TypeIsExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TypeIsExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference, NameGreen name, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 4;
+			this.SlotCount = 5;
 			if (expression != null)
 			{
 				this.AdjustFlagsAndWidth(expression);
@@ -7926,6 +7932,11 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			{
 				this.AdjustFlagsAndWidth(typeReference);
 				this.typeReference = typeReference;
+			}
+			if (name != null)
+			{
+				this.AdjustFlagsAndWidth(name);
+				this.name = name;
 			}
 	    }
 	
@@ -7939,6 +7950,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    public InternalSyntaxToken KIs { get { return this.kIs; } }
 	    public InternalSyntaxToken KNot { get { return this.kNot; } }
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
+	    public NameGreen Name { get { return this.name; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -7953,6 +7965,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	            case 1: return this.kIs;
 	            case 2: return this.kNot;
 	            case 3: return this.typeReference;
+	            case 4: return this.name;
 	            default: return null;
 	        }
 	    }
@@ -7963,28 +7976,29 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TypeIsExprGreen(this.Kind, this.expression, this.kIs, this.kNot, this.typeReference, diagnostics, this.GetAnnotations());
+	        return new TypeIsExprGreen(this.Kind, this.expression, this.kIs, this.kNot, this.typeReference, this.name, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TypeIsExprGreen(this.Kind, this.expression, this.kIs, this.kNot, this.typeReference, this.GetDiagnostics(), annotations);
+	        return new TypeIsExprGreen(this.Kind, this.expression, this.kIs, this.kNot, this.typeReference, this.name, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new TypeIsExprGreen(this.Kind, this.expression, this.kIs, this.kNot, this.typeReference, this.GetDiagnostics(), this.GetAnnotations());
+			return new TypeIsExprGreen(this.Kind, this.expression, this.kIs, this.kNot, this.typeReference, this.name, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
-	    public TypeIsExprGreen Update(ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference)
+	    public TypeIsExprGreen Update(ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference, NameGreen name)
 	    {
 	        if (this.Expression != expression ||
 				this.KIs != kIs ||
 				this.KNot != kNot ||
-				this.TypeReference != typeReference)
+				this.TypeReference != typeReference ||
+				this.Name != name)
 	        {
-	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.TypeIsExpr(expression, kIs, kNot, typeReference);
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.TypeIsExpr(expression, kIs, kNot, typeReference, name);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16592,7 +16606,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public TypeIsExprGreen TypeIsExpr(ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference)
+		public TypeIsExprGreen TypeIsExpr(ExpressionGreen expression, InternalSyntaxToken kIs, InternalSyntaxToken kNot, TypeReferenceGreen typeReference, NameGreen name)
 	    {
 	#if DEBUG
 			if (expression == null) throw new ArgumentNullException(nameof(expression));
@@ -16601,7 +16615,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			if (kNot != null && kNot.Kind != CoreSyntaxKind.KNot) throw new ArgumentException(nameof(kNot));
 			if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 	#endif
-	        return new TypeIsExprGreen(CoreSyntaxKind.TypeIsExpr, expression, kIs, kNot, typeReference);
+	        return new TypeIsExprGreen(CoreSyntaxKind.TypeIsExpr, expression, kIs, kNot, typeReference, name);
 	    }
 	
 		public TypeAsExprGreen TypeAsExpr(ExpressionGreen expression, InternalSyntaxToken kAs, TypeReferenceGreen typeReference)

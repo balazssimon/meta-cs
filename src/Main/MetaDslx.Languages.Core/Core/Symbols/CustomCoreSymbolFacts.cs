@@ -42,6 +42,7 @@ namespace MetaDslx.Languages.Meta.Symbols
                     objects.Add(SpecialSymbol.System_Type);
                     objects.Add(SpecialSymbol.System_Index);
                     objects.Add(SpecialSymbol.System_Range);
+                    objects.Add(SpecialSymbol.Var);
                     ImmutableInterlocked.InterlockedInitialize(ref _specialModelObjects, objects.ToImmutableAndFree());
                 }
                 return _specialModelObjects;
@@ -63,6 +64,8 @@ namespace MetaDslx.Languages.Meta.Symbols
                 {
                     case SpecialSymbol.None:
                         break;
+                    case SpecialSymbol.Var:
+                        return CoreInstance.VarType;
                     case SpecialSymbol.System_Object:
                         return CoreInstance.Object;
                     case SpecialSymbol.System_Enum:

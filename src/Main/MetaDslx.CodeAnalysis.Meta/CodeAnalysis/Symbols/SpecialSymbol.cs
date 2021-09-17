@@ -15,6 +15,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         None,
 
         /// <summary>
+        /// Indicates an inferred type.
+        /// </summary>
+        Var,
+
+        /// <summary>
         /// Indicates that the type is <see cref="object"/>.
         /// </summary>
         System_Object,

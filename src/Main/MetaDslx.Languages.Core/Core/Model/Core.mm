@@ -24,6 +24,7 @@
 	const PrimitiveType SystemEnum;
 	const PrimitiveType SystemRange;
 	const PrimitiveType SystemIndex;
+	const PrimitiveType VarType;
 
 	//=============================
 	// Base classes
@@ -343,10 +344,10 @@
 	{
 		[property: IsConst]
 		bool IsConst;
-		[property: Type]
-		DataType Type;
-		[property: Initializer]
-		containment Expression Initializer;
+		[property: DeclaredType]
+		DataType DeclaredType;
+		[property: DeclaredInitializer]
+		containment Expression DeclaredInitializer;
 	}
 
 	[symbol: Label]
@@ -693,6 +694,8 @@
 		DataType TypeOperand;
 		[property: IsNegated]
 		bool IsNegated;
+		[property: DeclaredVariable]
+		Variable DeclaredVariable;
 	}
 	
 	[expression: Lambda]

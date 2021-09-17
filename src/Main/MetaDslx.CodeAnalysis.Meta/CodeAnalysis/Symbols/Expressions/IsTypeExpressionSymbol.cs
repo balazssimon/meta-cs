@@ -30,6 +30,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public abstract bool IsNegated { get; }
 
+        /// <summary>
+        /// Optional variable symbol declared by this expression.
+        /// </summary>
+        [SymbolProperty]
+        public abstract VariableSymbol? DeclaredVariable { get; }
+
         public override bool IsConstant => ValueOperand?.IsConstant ?? false;
 
         public override TypeSymbol? Type => (TypeSymbol?)this.DeclaringCompilation?.GetSpecialSymbol(SpecialSymbol.System_Boolean);
