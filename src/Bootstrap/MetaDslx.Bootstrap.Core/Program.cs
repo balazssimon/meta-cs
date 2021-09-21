@@ -46,7 +46,15 @@ struct Flag
 
 int Max(int a, int b) { return a > b ? a : b; }
 
-void Print(int a) {}
+void Print(int a) 
+{
+    switch(a)
+    {
+        case 4: return;
+        case 3: 
+        default: break;
+    }
+}
 
 int x = 5;
 int y = x+3;

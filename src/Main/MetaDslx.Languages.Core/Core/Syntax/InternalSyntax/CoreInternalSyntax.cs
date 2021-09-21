@@ -17731,7 +17731,6 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	#if DEBUG
 			if (kReturn == null) throw new ArgumentNullException(nameof(kReturn));
 			if (kReturn.Kind != CoreSyntaxKind.KReturn) throw new ArgumentException(nameof(kReturn));
-			if (returnedValue == null) throw new ArgumentNullException(nameof(returnedValue));
 			if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 			if (tSemicolon.Kind != CoreSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 	#endif

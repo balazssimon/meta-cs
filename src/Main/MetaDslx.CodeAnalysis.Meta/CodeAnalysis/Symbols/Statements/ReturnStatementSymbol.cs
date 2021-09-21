@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         protected override void CompleteValidatingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             base.CompleteValidatingSymbol(diagnostics, cancellationToken);
-            if (this.ReturnType is null)
+            if (this.ReturnType is null || this.ReturnType.IsSpecialSymbol(SpecialSymbol.System_Void))
             {
                 if (this.ReturnedValue is not null)
                 {

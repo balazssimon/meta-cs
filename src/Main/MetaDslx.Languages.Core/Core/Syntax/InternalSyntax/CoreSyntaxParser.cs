@@ -4570,7 +4570,6 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				CoreParser.ExpressionContext returnedValueContext = context.returnedValue;
 				ExpressionGreen returnedValue = null;
 				if (returnedValueContext != null) returnedValue = (ExpressionGreen)this.Visit(returnedValueContext);
-				if (returnedValue == null) returnedValue = ExpressionGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CoreSyntaxKind.TSemicolon);
 				return _factory.ReturnStmt(kReturn, returnedValue, tSemicolon);
 			}

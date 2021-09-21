@@ -1694,9 +1694,9 @@ namespace MetaDslx.Languages.Core.Binding
 		        }
 		    }
 		    position += parent.KReturn.FullSpan.Length;
-		    if (parent.ReturnedValue.FullSpan.IntersectsWith(FullSpan))
+		    if (parent.ReturnedValue == null || parent.ReturnedValue.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (!parent.ReturnedValue.Span.Contains(Span))
+		        if (parent.ReturnedValue == null || !parent.ReturnedValue.Span.Contains(Span))
 		        {
 		            operation = GetOperation(position, parent.ReturnedValue);
 		            if (operation != CompletionSearchFlags.None)
@@ -1711,7 +1711,7 @@ namespace MetaDslx.Languages.Core.Binding
 		            else VisitCore(parent.ReturnedValue);
 		        }
 		    }
-		    position += parent.ReturnedValue.FullSpan.Length;
+		    if (parent.ReturnedValue != null) position += parent.ReturnedValue.FullSpan.Length;
 		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
 		    {
 		        operation = this.GetOperation(position, parent.TSemicolon);
@@ -7403,7 +7403,6 @@ namespace MetaDslx.Languages.Core.Binding
                 var binder = ruleBinder;
             	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ReturnedValue", forCompletion: true);
                 AddResultsForExpression(UnassignedUse, operation, binder);
-                use = FinishedUse;
             }
             if (use == UnassignedUse)
             {

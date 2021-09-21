@@ -73,7 +73,7 @@ statement
 	|                                              KGoto                               identifier TSemicolon #gotoStmt                       
 	|                                 name TColon                      statement #labeledStmt                          
 	| KLock TOpenParen                        lockedValue=expression TCloseParen                 body=statement #lockStmt                       
-	| KReturn                          returnedValue=expression TSemicolon #returnStmt                         
+	| KReturn                          returnedValue=expression? TSemicolon #returnStmt                         
 	| KSwitch TOpenParen                  value=expression TCloseParen TOpenBrace switchCase* TCloseBrace #switchStmt                         
 	| KTry                 body=blockStatement catchClause*                    finallyClause? #tryStmt
 	| usingHeader+                 body=statement #usingStmt                        

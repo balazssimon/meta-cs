@@ -143,7 +143,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             public static Cursor FromRoot(SyntaxNodeOrToken node)
             {
-                return new Cursor(node, indexInParent: 0);
+                return new Cursor(node, indexInParent: IndexOfNodeInParent(node));
             }
 
             public bool HasParent => CurrentNodeOrToken.Parent != null;
@@ -177,14 +177,14 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return new Cursor(parent, index);
             }
 
-            private static int IndexOfNodeInParent(SyntaxNode node)
+            private static int IndexOfNodeInParent(SyntaxNodeOrToken node)
             {
                 if (node.Parent == null)
                 {
                     return 0;
                 }
                 var children = node.Parent.ChildNodesAndTokens();
-                var index = SyntaxNodeOrToken.GetFirstChildIndexSpanningPosition(children, ((LanguageSyntaxNode)node).Position);
+                var index = SyntaxNodeOrToken.GetFirstChildIndexSpanningPosition(children, node.Position);
                 for (int i = index, n = children.Count; i < n; i++)
                 {
                     var child = children[i];

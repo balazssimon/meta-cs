@@ -236,5 +236,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             }
             return result;
         }
+
     }
 }

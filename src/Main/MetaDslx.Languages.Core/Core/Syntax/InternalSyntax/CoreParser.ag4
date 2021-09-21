@@ -73,7 +73,7 @@ statement
 	| $Property(name=JumpKind,value=JumpKind.GoTo) KGoto $Property(Target) $Use(Label) identifier TSemicolon #gotoStmt $Define(JumpStatement)
 	| $Property(Label) $Define(Label) name TColon $Property(Statement) statement #labeledStmt $Define(LabeledStatement)
 	| KLock TOpenParen $Property(LockedValue) lockedValue=expression TCloseParen $Property(Body) body=statement #lockStmt $Define(LockStatement)
-	| KReturn $Property(ReturnedValue) returnedValue=expression TSemicolon #returnStmt $Define(ReturnStatement)
+	| KReturn $Property(ReturnedValue) returnedValue=expression? TSemicolon #returnStmt $Define(ReturnStatement)
 	| KSwitch TOpenParen $Property(Value) value=expression TCloseParen TOpenBrace switchCase* TCloseBrace #switchStmt $Define(SwitchStatement)
 	| KTry $Property(Body) body=blockStatement catchClause* $Property(Finally) finallyClause? #tryStmt
 	| usingHeader+ $Property(Body) body=statement #usingStmt $Define(UsingStatement)

@@ -18751,15 +18751,14 @@ namespace MetaDslx.Languages.Core
 		{
 		    if (kReturn == null) throw new ArgumentNullException(nameof(kReturn));
 		    if (kReturn.GetKind() != CoreSyntaxKind.KReturn) throw new ArgumentException(nameof(kReturn));
-		    if (returnedValue == null) throw new ArgumentNullException(nameof(returnedValue));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != CoreSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (ReturnStmtSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ReturnStmt((InternalSyntaxToken)kReturn.Node, (Syntax.InternalSyntax.ExpressionGreen)returnedValue.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (ReturnStmtSyntax)CoreLanguage.Instance.InternalSyntaxFactory.ReturnStmt((InternalSyntaxToken)kReturn.Node, returnedValue == null ? null : (Syntax.InternalSyntax.ExpressionGreen)returnedValue.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
-		public ReturnStmtSyntax ReturnStmt(ExpressionSyntax returnedValue)
+		public ReturnStmtSyntax ReturnStmt()
 		{
-			return this.ReturnStmt(this.Token(CoreSyntaxKind.KReturn), returnedValue, this.Token(CoreSyntaxKind.TSemicolon));
+			return this.ReturnStmt(this.Token(CoreSyntaxKind.KReturn), default, this.Token(CoreSyntaxKind.TSemicolon));
 		}
 		
 		public SwitchStmtSyntax SwitchStmt(SyntaxToken kSwitch, SyntaxToken tOpenParen, ExpressionSyntax value, SyntaxToken tCloseParen, SyntaxToken tOpenBrace, Microsoft.CodeAnalysis.SyntaxList<SwitchCaseSyntax> switchCase, SyntaxToken tCloseBrace)
