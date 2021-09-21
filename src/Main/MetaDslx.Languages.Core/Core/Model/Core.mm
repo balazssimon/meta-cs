@@ -147,8 +147,8 @@
 	[type: Delegate]
 	class DelegateType : NamedType
 	{
-		[property: ReturnType]
-		DataType ReturnType;
+		[property: Result]
+		Parameter Result;
 		[property: Parameters]
 		containment list<Parameter> Parameters;
 	}
@@ -707,8 +707,8 @@
 	[expression: Lambda]
 	class LambdaExpression : Expression
 	{
-		[property: ReturnType]
-		DataType ReturnType;
+		[property: Result]
+		Parameter Result;
 		[property: Parameters]
 		containment list<Parameter> Parameters;
 		[property: Body]

@@ -1,6 +1,8 @@
 ﻿using Antlr4.Runtime;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Languages.Meta;
+using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
@@ -74,8 +76,12 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
 
         public static void RandomEdit(string fileName)
         {
+            var compilation = 
+                MetaCompilation.Create("test")
+                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+                .AddReferences(ModelReference.CreateFromModel(MetaInstance.MModel));
             var rnd = new Random(13);
-            var count = 1000;
+            var count = 10000;
             var options = MetaLanguage.Instance.DefaultParseOptions.WithIncremental(true);
             var code = File.ReadAllText(@"..\..\..\" + fileName);
             var source1 = SourceText.From(code);
@@ -94,6 +100,8 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
                 PrintResults(source2, syntaxTree2, antlr4Diags2, true);
                 source1 = source2;
                 syntaxTree1 = syntaxTree2;
+                compilation.RemoveAllSyntaxTrees().AddSyntaxTrees(syntaxTree1);
+                compilation.ForceComplete();
                 Console.WriteLine($"INSERT: i={i}, Start={start}, Length={length}");
                 source2 = source1.WithChanges(new TextChange(new TextSpan(start, 0), code.Substring(start, length)));
                 syntaxTree2 = (MetaSyntaxTree)syntaxTree1.WithChangedText(source2);
@@ -101,6 +109,8 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
                 PrintResults(source2, syntaxTree2, antlr4Diags2, true);
                 source1 = source2;
                 syntaxTree1 = syntaxTree2;
+                compilation.RemoveAllSyntaxTrees().AddSyntaxTrees(syntaxTree1);
+                compilation.ForceComplete();
             }
         }
 

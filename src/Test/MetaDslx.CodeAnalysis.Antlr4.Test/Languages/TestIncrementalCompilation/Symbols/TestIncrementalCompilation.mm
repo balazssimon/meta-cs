@@ -7,17 +7,17 @@
 	*/
 	metamodel TestIncrementalCompilation(Uri="http://metadslx.core/1.0"); 
 
-	const MetaPrimitiveType Object = "System.Object";
-	const MetaPrimitiveType String = "System.String";
-	const MetaPrimitiveType Int = "System.Int32";
-	const MetaPrimitiveType Long = "System.Int64";
-	const MetaPrimitiveType Float = "System.Single";
-	const MetaPrimitiveType Double = "System.Double";
-	const MetaPrimitiveType Byte = "System.Byte";
-	const MetaPrimitiveType Bool = "System.Boolean";
-	const MetaPrimitiveType Void = "System.Void";
-	const MetaPrimitiveType SystemType = "System.Type";
-	const MetaPrimitiveType ModelObject = "MetaDslx.Modeling.IModelObject";
+	const MetaPrimitiveType Object;
+	const MetaPrimitiveType String;
+	const MetaPrimitiveType Int;
+	const MetaPrimitiveType Long;
+	const MetaPrimitiveType Float;
+	const MetaPrimitiveType Double;
+	const MetaPrimitiveType Byte;
+	const MetaPrimitiveType Bool;
+	const MetaPrimitiveType Void;
+	const MetaPrimitiveType SystemType;
+	const MetaPrimitiveType ModelObject;
 	
 	/**
 	Represents an element.

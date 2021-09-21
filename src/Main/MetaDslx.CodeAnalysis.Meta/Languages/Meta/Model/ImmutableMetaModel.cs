@@ -1,3 +1,6 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8790,9 +8793,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp19.IsReadonly = false;
 			__tmp19.Parameters.AddLazy(() => __tmp21);
 			__tmp19.SetResultLazy(() => __tmp20);
-			__tmp21.SetTypeLazy(() => MetaType);
 			__tmp21.Documentation = null;
 			__tmp21.Name = "@type";
+			__tmp21.SetTypeLazy(() => MetaType);
 			__tmp21.SetOperationLazy(() => __tmp19);
 			MetaNamedType.Documentation = null;
 			MetaNamedType.Name = "MetaNamedType";
@@ -8975,9 +8978,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp28.IsReadonly = false;
 			__tmp28.Parameters.AddLazy(() => __tmp30);
 			__tmp28.SetResultLazy(() => __tmp29);
-			__tmp30.SetTypeLazy(() => MetaType);
 			__tmp30.Documentation = null;
 			__tmp30.Name = "@type";
+			__tmp30.SetTypeLazy(() => MetaType);
 			__tmp30.SetOperationLazy(() => __tmp28);
 			MetaNullableType.Documentation = null;
 			MetaNullableType.Name = "MetaNullableType";
@@ -9003,9 +9006,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp31.IsReadonly = false;
 			__tmp31.Parameters.AddLazy(() => __tmp33);
 			__tmp31.SetResultLazy(() => __tmp32);
-			__tmp33.SetTypeLazy(() => MetaType);
 			__tmp33.Documentation = null;
 			__tmp33.Name = "@type";
+			__tmp33.SetTypeLazy(() => MetaType);
 			__tmp33.SetOperationLazy(() => __tmp31);
 			MetaPrimitiveType.Documentation = null;
 			MetaPrimitiveType.Name = "MetaPrimitiveType";
@@ -9031,9 +9034,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp34.IsReadonly = false;
 			__tmp34.Parameters.AddLazy(() => __tmp36);
 			__tmp34.SetResultLazy(() => __tmp35);
-			__tmp36.SetTypeLazy(() => MetaType);
 			__tmp36.Documentation = null;
 			__tmp36.Name = "@type";
+			__tmp36.SetTypeLazy(() => MetaType);
 			__tmp36.SetOperationLazy(() => __tmp34);
 			MetaEnum.Documentation = null;
 			MetaEnum.Name = "MetaEnum";
@@ -9174,9 +9177,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp39.IsReadonly = false;
 			__tmp39.Parameters.AddLazy(() => __tmp51);
 			__tmp39.SetResultLazy(() => __tmp50);
-			__tmp51.SetTypeLazy(() => MetaType);
 			__tmp51.Documentation = null;
 			__tmp51.Name = "@type";
+			__tmp51.SetTypeLazy(() => MetaType);
 			__tmp51.SetOperationLazy(() => __tmp39);
 			__tmp40.Documentation = null;
 			__tmp40.Name = "GetAllSuperClasses";
@@ -9186,9 +9189,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp40.IsReadonly = false;
 			__tmp40.Parameters.AddLazy(() => __tmp53);
 			__tmp40.SetResultLazy(() => __tmp52);
-			__tmp53.SetTypeLazy(() => Bool);
 			__tmp53.Documentation = null;
 			__tmp53.Name = "includeSelf";
+			__tmp53.SetTypeLazy(() => Bool);
 			__tmp53.SetOperationLazy(() => __tmp40);
 			__tmp41.Documentation = null;
 			__tmp41.Name = "GetAllSuperProperties";
@@ -9198,9 +9201,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp41.IsReadonly = false;
 			__tmp41.Parameters.AddLazy(() => __tmp56);
 			__tmp41.SetResultLazy(() => __tmp55);
-			__tmp56.SetTypeLazy(() => Bool);
 			__tmp56.Documentation = null;
 			__tmp56.Name = "includeSelf";
+			__tmp56.SetTypeLazy(() => Bool);
 			__tmp56.SetOperationLazy(() => __tmp41);
 			__tmp42.Documentation = null;
 			__tmp42.Name = "GetAllSuperOperations";
@@ -9210,9 +9213,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp42.IsReadonly = false;
 			__tmp42.Parameters.AddLazy(() => __tmp59);
 			__tmp42.SetResultLazy(() => __tmp58);
-			__tmp59.SetTypeLazy(() => Bool);
 			__tmp59.Documentation = null;
 			__tmp59.Name = "includeSelf";
+			__tmp59.SetTypeLazy(() => Bool);
 			__tmp59.SetOperationLazy(() => __tmp42);
 			__tmp43.Documentation = null;
 			__tmp43.Name = "GetAllProperties";
@@ -9314,9 +9317,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp69.IsReadonly = false;
 			__tmp69.Parameters.AddLazy(() => __tmp72);
 			__tmp69.SetResultLazy(() => __tmp71);
-			__tmp72.SetTypeLazy(() => MetaOperation);
 			__tmp72.Documentation = null;
 			__tmp72.Name = "operation";
+			__tmp72.SetTypeLazy(() => MetaOperation);
 			__tmp72.SetOperationLazy(() => __tmp69);
 			MetaParameter.Documentation = null;
 			MetaParameter.Name = "MetaParameter";
@@ -9480,29 +9483,29 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp78.IsReadonly = false;
 			__tmp78.Parameters.AddLazy(() => __tmp85);
 			__tmp78.SetResultLazy(() => __tmp84);
-			__tmp85.SetTypeLazy(() => MetaProperty);
 			__tmp85.Documentation = null;
 			__tmp85.Name = "@property";
+			__tmp85.SetTypeLazy(() => MetaProperty);
 			__tmp85.SetOperationLazy(() => __tmp78);
 			__tmp18.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp18.SetInnerTypeLazy(() => MetaAttribute);
-			__tmp20.SetTypeLazy(() => Bool);
 			__tmp20.Documentation = null;
 			__tmp20.Name = "";
+			__tmp20.SetTypeLazy(() => Bool);
 			// __tmp20.Operation = null;
 			__tmp22.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp22.SetInnerTypeLazy(() => MetaDeclaration);
-			__tmp29.SetTypeLazy(() => Bool);
 			__tmp29.Documentation = null;
 			__tmp29.Name = "";
+			__tmp29.SetTypeLazy(() => Bool);
 			// __tmp29.Operation = null;
-			__tmp32.SetTypeLazy(() => Bool);
 			__tmp32.Documentation = null;
 			__tmp32.Name = "";
+			__tmp32.SetTypeLazy(() => Bool);
 			// __tmp32.Operation = null;
-			__tmp35.SetTypeLazy(() => Bool);
 			__tmp35.Documentation = null;
 			__tmp35.Name = "";
+			__tmp35.SetTypeLazy(() => Bool);
 			// __tmp35.Operation = null;
 			__tmp37.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp37.SetInnerTypeLazy(() => MetaEnumLiteral);
@@ -9514,57 +9517,57 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp48.SetInnerTypeLazy(() => MetaProperty);
 			__tmp49.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp49.SetInnerTypeLazy(() => MetaOperation);
-			__tmp50.SetTypeLazy(() => Bool);
 			__tmp50.Documentation = null;
 			__tmp50.Name = "";
+			__tmp50.SetTypeLazy(() => Bool);
 			// __tmp50.Operation = null;
-			__tmp52.SetTypeLazy(() => __tmp54);
 			__tmp52.Documentation = null;
 			__tmp52.Name = "";
+			__tmp52.SetTypeLazy(() => __tmp54);
 			// __tmp52.Operation = null;
 			__tmp54.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp54.SetInnerTypeLazy(() => MetaClass);
-			__tmp55.SetTypeLazy(() => __tmp57);
 			__tmp55.Documentation = null;
 			__tmp55.Name = "";
+			__tmp55.SetTypeLazy(() => __tmp57);
 			// __tmp55.Operation = null;
 			__tmp57.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp57.SetInnerTypeLazy(() => MetaProperty);
-			__tmp58.SetTypeLazy(() => __tmp60);
 			__tmp58.Documentation = null;
 			__tmp58.Name = "";
+			__tmp58.SetTypeLazy(() => __tmp60);
 			// __tmp58.Operation = null;
 			__tmp60.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp60.SetInnerTypeLazy(() => MetaOperation);
-			__tmp61.SetTypeLazy(() => __tmp62);
 			__tmp61.Documentation = null;
 			__tmp61.Name = "";
+			__tmp61.SetTypeLazy(() => __tmp62);
 			// __tmp61.Operation = null;
 			__tmp62.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp62.SetInnerTypeLazy(() => MetaProperty);
-			__tmp63.SetTypeLazy(() => __tmp64);
 			__tmp63.Documentation = null;
 			__tmp63.Name = "";
+			__tmp63.SetTypeLazy(() => __tmp64);
 			// __tmp63.Operation = null;
 			__tmp64.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp64.SetInnerTypeLazy(() => MetaOperation);
-			__tmp65.SetTypeLazy(() => __tmp66);
 			__tmp65.Documentation = null;
 			__tmp65.Name = "";
+			__tmp65.SetTypeLazy(() => __tmp66);
 			// __tmp65.Operation = null;
 			__tmp66.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp66.SetInnerTypeLazy(() => MetaProperty);
-			__tmp67.SetTypeLazy(() => __tmp68);
 			__tmp67.Documentation = null;
 			__tmp67.Name = "";
+			__tmp67.SetTypeLazy(() => __tmp68);
 			// __tmp67.Operation = null;
 			__tmp68.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp68.SetInnerTypeLazy(() => MetaOperation);
 			__tmp70.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp70.SetInnerTypeLazy(() => MetaParameter);
-			__tmp71.SetTypeLazy(() => Bool);
 			__tmp71.Documentation = null;
 			__tmp71.Name = "";
+			__tmp71.SetTypeLazy(() => Bool);
 			// __tmp71.Operation = null;
 			__tmp79.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp79.SetInnerTypeLazy(() => MetaProperty);
@@ -9576,9 +9579,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp82.SetInnerTypeLazy(() => MetaProperty);
 			__tmp83.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp83.SetInnerTypeLazy(() => MetaProperty);
-			__tmp84.SetTypeLazy(() => Bool);
 			__tmp84.Documentation = null;
 			__tmp84.Name = "";
+			__tmp84.SetTypeLazy(() => Bool);
 			// __tmp84.Operation = null;
 		}
 	}
@@ -10447,3 +10450,4 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	}
 }
+

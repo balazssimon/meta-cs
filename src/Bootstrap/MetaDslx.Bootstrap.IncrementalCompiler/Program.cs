@@ -1,18 +1,3 @@
-using Antlr4.Runtime;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
-using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation;
-using MetaDslx.CodeAnalysis.InternalUtilities;
-using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-using MetaDslx.Languages.Meta;
-using MetaDslx.Languages.Meta.Syntax;
-using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
-using MetaDslx.Languages.MetaGenerator.Compilation;
-using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
-using MetaDslx.Tests;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Immutable;
 using System.IO;
@@ -24,10 +9,12 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
     {
         static void Main(string[] args)
         {
+            MetaCompiler.RandomEdit("meta01.txt");
+
             //TestMetaCompiler.NoEdit("meta09.txt");
             //TestMetaCompiler.Type("meta01.txt");
             //TestMetaCompiler.SerialEdit("meta01.txt");
-            TestMetaCompiler.RandomEdit("meta01.txt");
+            //TestIncrementalCompiler.RandomEdit("meta01.txt");
 
             //TestMGenCompiler.Type("mgen03.txt");
             //TestMGenCompiler.SerialEdit("mgen03.txt");

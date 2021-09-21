@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Return type of the anonymous function.
         /// </summary>
         [SymbolProperty]
-        public abstract TypeSymbol ReturnType { get; }
+        public abstract ParameterSymbol Result { get; }
 
         /// <summary>
         /// Parameters of the anonymous function.

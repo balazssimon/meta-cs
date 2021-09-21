@@ -81,7 +81,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass EnumLiteral;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty EnumLiteral_Type;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass DelegateType;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty DelegateType_ReturnType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty DelegateType_Result;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty DelegateType_Parameters;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ArrayType;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ArrayType_LowerBound;
@@ -258,7 +258,7 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IsTypeExpression_IsNegated;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty IsTypeExpression_DeclaredVariable;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass LambdaExpression;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LambdaExpression_ReturnType;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LambdaExpression_Result;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LambdaExpression_Parameters;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LambdaExpression_Body;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass LiteralExpression;
@@ -364,7 +364,7 @@ namespace MetaDslx.Languages.Core.Model
 			EnumLiteral = CoreBuilderInstance.instance.EnumLiteral.ToImmutable(MModel);
 			EnumLiteral_Type = CoreBuilderInstance.instance.EnumLiteral_Type.ToImmutable(MModel);
 			DelegateType = CoreBuilderInstance.instance.DelegateType.ToImmutable(MModel);
-			DelegateType_ReturnType = CoreBuilderInstance.instance.DelegateType_ReturnType.ToImmutable(MModel);
+			DelegateType_Result = CoreBuilderInstance.instance.DelegateType_Result.ToImmutable(MModel);
 			DelegateType_Parameters = CoreBuilderInstance.instance.DelegateType_Parameters.ToImmutable(MModel);
 			ArrayType = CoreBuilderInstance.instance.ArrayType.ToImmutable(MModel);
 			ArrayType_LowerBound = CoreBuilderInstance.instance.ArrayType_LowerBound.ToImmutable(MModel);
@@ -541,7 +541,7 @@ namespace MetaDslx.Languages.Core.Model
 			IsTypeExpression_IsNegated = CoreBuilderInstance.instance.IsTypeExpression_IsNegated.ToImmutable(MModel);
 			IsTypeExpression_DeclaredVariable = CoreBuilderInstance.instance.IsTypeExpression_DeclaredVariable.ToImmutable(MModel);
 			LambdaExpression = CoreBuilderInstance.instance.LambdaExpression.ToImmutable(MModel);
-			LambdaExpression_ReturnType = CoreBuilderInstance.instance.LambdaExpression_ReturnType.ToImmutable(MModel);
+			LambdaExpression_Result = CoreBuilderInstance.instance.LambdaExpression_Result.ToImmutable(MModel);
 			LambdaExpression_Parameters = CoreBuilderInstance.instance.LambdaExpression_Parameters.ToImmutable(MModel);
 			LambdaExpression_Body = CoreBuilderInstance.instance.LambdaExpression_Body.ToImmutable(MModel);
 			LiteralExpression = CoreBuilderInstance.instance.LiteralExpression.ToImmutable(MModel);
@@ -1976,7 +1976,7 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface DelegateType : NamedType
 	{
-		DataType ReturnType { get; }
+		Parameter Result { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<Parameter> Parameters { get; }
 	
 	
@@ -1994,10 +1994,10 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface DelegateTypeBuilder : NamedTypeBuilder
 	{
-		DataTypeBuilder ReturnType { get; set; }
-		void SetReturnTypeLazy(global::System.Func<DataTypeBuilder> lazy);
-		void SetReturnTypeLazy(global::System.Func<DelegateTypeBuilder, DataTypeBuilder> lazy);
-		void SetReturnTypeLazy(global::System.Func<DelegateType, DataType> immutableLazy, global::System.Func<DelegateTypeBuilder, DataTypeBuilder> mutableLazy);
+		ParameterBuilder Result { get; set; }
+		void SetResultLazy(global::System.Func<ParameterBuilder> lazy);
+		void SetResultLazy(global::System.Func<DelegateTypeBuilder, ParameterBuilder> lazy);
+		void SetResultLazy(global::System.Func<DelegateType, Parameter> immutableLazy, global::System.Func<DelegateTypeBuilder, ParameterBuilder> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<ParameterBuilder> Parameters { get; }
 	
 	
@@ -4574,7 +4574,7 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface LambdaExpression : Expression
 	{
-		DataType ReturnType { get; }
+		Parameter Result { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<Parameter> Parameters { get; }
 		Statement Body { get; }
 	
@@ -4593,10 +4593,10 @@ namespace MetaDslx.Languages.Core.Model
 	
 	public interface LambdaExpressionBuilder : ExpressionBuilder
 	{
-		DataTypeBuilder ReturnType { get; set; }
-		void SetReturnTypeLazy(global::System.Func<DataTypeBuilder> lazy);
-		void SetReturnTypeLazy(global::System.Func<LambdaExpressionBuilder, DataTypeBuilder> lazy);
-		void SetReturnTypeLazy(global::System.Func<LambdaExpression, DataType> immutableLazy, global::System.Func<LambdaExpressionBuilder, DataTypeBuilder> mutableLazy);
+		ParameterBuilder Result { get; set; }
+		void SetResultLazy(global::System.Func<ParameterBuilder> lazy);
+		void SetResultLazy(global::System.Func<LambdaExpressionBuilder, ParameterBuilder> lazy);
+		void SetResultLazy(global::System.Func<LambdaExpression, Parameter> immutableLazy, global::System.Func<LambdaExpressionBuilder, ParameterBuilder> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<ParameterBuilder> Parameters { get; }
 		StatementBuilder Body { get; set; }
 		void SetBodyLazy(global::System.Func<StatementBuilder> lazy);
@@ -5242,7 +5242,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.NamedType.BaseTypesProperty);
 			properties.Add(CoreDescriptor.EnumType.LiteralsProperty);
 			properties.Add(CoreDescriptor.EnumLiteral.TypeProperty);
-			properties.Add(CoreDescriptor.DelegateType.ReturnTypeProperty);
+			properties.Add(CoreDescriptor.DelegateType.ResultProperty);
 			properties.Add(CoreDescriptor.DelegateType.ParametersProperty);
 			properties.Add(CoreDescriptor.ArrayType.LowerBoundProperty);
 			properties.Add(CoreDescriptor.ArrayType.SizeProperty);
@@ -5354,7 +5354,7 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.IsTypeExpression.TypeOperandProperty);
 			properties.Add(CoreDescriptor.IsTypeExpression.IsNegatedProperty);
 			properties.Add(CoreDescriptor.IsTypeExpression.DeclaredVariableProperty);
-			properties.Add(CoreDescriptor.LambdaExpression.ReturnTypeProperty);
+			properties.Add(CoreDescriptor.LambdaExpression.ResultProperty);
 			properties.Add(CoreDescriptor.LambdaExpression.ParametersProperty);
 			properties.Add(CoreDescriptor.LambdaExpression.BodyProperty);
 			properties.Add(CoreDescriptor.LiteralExpression.ValueProperty);
@@ -5995,12 +5995,12 @@ namespace MetaDslx.Languages.Core.Model
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.DelegateType; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReturnType")]
-			public static readonly global::MetaDslx.Modeling.ModelProperty ReturnTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(DelegateType), name: "ReturnType",
-			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
-			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.DelegateType_ReturnType,
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Result")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ResultProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(DelegateType), name: "Result",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Parameter),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ParameterBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.DelegateType_Result,
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Parameters")]
@@ -8673,12 +8673,12 @@ namespace MetaDslx.Languages.Core.Model
 				get { return global::MetaDslx.Languages.Core.Model.CoreInstance.LambdaExpression; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReturnType")]
-			public static readonly global::MetaDslx.Modeling.ModelProperty ReturnTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(LambdaExpression), name: "ReturnType",
-			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.DataType),
-			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.DataTypeBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.LambdaExpression_ReturnType,
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Result")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ResultProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(LambdaExpression), name: "Result",
+			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Parameter),
+			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ParameterBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.LambdaExpression_Result,
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Parameters")]
@@ -14109,7 +14109,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<NamedType> baseTypes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private DataType returnType0;
+		private Parameter result0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Parameter> parameters0;
 	
@@ -14243,9 +14243,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataType ReturnType
+		public Parameter Result
 		{
-		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DelegateType.ReturnTypeProperty, ref returnType0); }
+		    get { return this.GetReference<Parameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DelegateType.ResultProperty, ref result0); }
 		}
 	
 		
@@ -14478,25 +14478,25 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataTypeBuilder ReturnType
+		public ParameterBuilder Result
 		{
-			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DelegateType.ReturnTypeProperty); }
-			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DelegateType.ReturnTypeProperty, value); }
+			get { return this.GetReference<ParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DelegateType.ResultProperty); }
+			set { this.SetReference<ParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.DelegateType.ResultProperty, value); }
 		}
 		
-		void DelegateTypeBuilder.SetReturnTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		void DelegateTypeBuilder.SetResultLazy(global::System.Func<ParameterBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.DelegateType.ReturnTypeProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.DelegateType.ResultProperty, lazy);
 		}
 		
-		void DelegateTypeBuilder.SetReturnTypeLazy(global::System.Func<DelegateTypeBuilder, DataTypeBuilder> lazy)
+		void DelegateTypeBuilder.SetResultLazy(global::System.Func<DelegateTypeBuilder, ParameterBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.DelegateType.ReturnTypeProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.DelegateType.ResultProperty, lazy);
 		}
 		
-		void DelegateTypeBuilder.SetReturnTypeLazy(global::System.Func<DelegateType, DataType> immutableLazy, global::System.Func<DelegateTypeBuilder, DataTypeBuilder> mutableLazy)
+		void DelegateTypeBuilder.SetResultLazy(global::System.Func<DelegateType, Parameter> immutableLazy, global::System.Func<DelegateTypeBuilder, ParameterBuilder> mutableLazy)
 		{
-			this.SetLazyReference(CoreDescriptor.DelegateType.ReturnTypeProperty, immutableLazy, mutableLazy);
+			this.SetLazyReference(CoreDescriptor.DelegateType.ResultProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -32038,7 +32038,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private DataType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private DataType returnType0;
+		private Parameter result0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Parameter> parameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -32096,9 +32096,9 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataType ReturnType
+		public Parameter Result
 		{
-		    get { return this.GetReference<DataType>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LambdaExpression.ReturnTypeProperty, ref returnType0); }
+		    get { return this.GetReference<Parameter>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LambdaExpression.ResultProperty, ref result0); }
 		}
 	
 		
@@ -32192,25 +32192,25 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		}
 	
 		
-		public DataTypeBuilder ReturnType
+		public ParameterBuilder Result
 		{
-			get { return this.GetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LambdaExpression.ReturnTypeProperty); }
-			set { this.SetReference<DataTypeBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LambdaExpression.ReturnTypeProperty, value); }
+			get { return this.GetReference<ParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LambdaExpression.ResultProperty); }
+			set { this.SetReference<ParameterBuilder>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.LambdaExpression.ResultProperty, value); }
 		}
 		
-		void LambdaExpressionBuilder.SetReturnTypeLazy(global::System.Func<DataTypeBuilder> lazy)
+		void LambdaExpressionBuilder.SetResultLazy(global::System.Func<ParameterBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.LambdaExpression.ReturnTypeProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.LambdaExpression.ResultProperty, lazy);
 		}
 		
-		void LambdaExpressionBuilder.SetReturnTypeLazy(global::System.Func<LambdaExpressionBuilder, DataTypeBuilder> lazy)
+		void LambdaExpressionBuilder.SetResultLazy(global::System.Func<LambdaExpressionBuilder, ParameterBuilder> lazy)
 		{
-			this.SetLazyReference(CoreDescriptor.LambdaExpression.ReturnTypeProperty, lazy);
+			this.SetLazyReference(CoreDescriptor.LambdaExpression.ResultProperty, lazy);
 		}
 		
-		void LambdaExpressionBuilder.SetReturnTypeLazy(global::System.Func<LambdaExpression, DataType> immutableLazy, global::System.Func<LambdaExpressionBuilder, DataTypeBuilder> mutableLazy)
+		void LambdaExpressionBuilder.SetResultLazy(global::System.Func<LambdaExpression, Parameter> immutableLazy, global::System.Func<LambdaExpressionBuilder, ParameterBuilder> mutableLazy)
 		{
-			this.SetLazyReference(CoreDescriptor.LambdaExpression.ReturnTypeProperty, immutableLazy, mutableLazy);
+			this.SetLazyReference(CoreDescriptor.LambdaExpression.ResultProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -34912,7 +34912,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder EnumLiteral;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder EnumLiteral_Type;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder DelegateType;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder DelegateType_ReturnType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder DelegateType_Result;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder DelegateType_Parameters;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ArrayType;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ArrayType_LowerBound;
@@ -35089,7 +35089,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IsTypeExpression_IsNegated;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder IsTypeExpression_DeclaredVariable;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder LambdaExpression;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LambdaExpression_ReturnType;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LambdaExpression_Result;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LambdaExpression_Parameters;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LambdaExpression_Body;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder LiteralExpression;
@@ -35299,7 +35299,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			EnumLiteral = factory.MetaClass();
 			EnumLiteral_Type = factory.MetaProperty();
 			DelegateType = factory.MetaClass();
-			DelegateType_ReturnType = factory.MetaProperty();
+			DelegateType_Result = factory.MetaProperty();
 			DelegateType_Parameters = factory.MetaProperty();
 			ArrayType = factory.MetaClass();
 			ArrayType_LowerBound = factory.MetaProperty();
@@ -35476,7 +35476,7 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			IsTypeExpression_IsNegated = factory.MetaProperty();
 			IsTypeExpression_DeclaredVariable = factory.MetaProperty();
 			LambdaExpression = factory.MetaClass();
-			LambdaExpression_ReturnType = factory.MetaProperty();
+			LambdaExpression_Result = factory.MetaProperty();
 			LambdaExpression_Parameters = factory.MetaProperty();
 			LambdaExpression_Body = factory.MetaProperty();
 			LiteralExpression = factory.MetaClass();
@@ -36044,16 +36044,16 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			DelegateType.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.DelegateTypeSymbol);
 			DelegateType.IsAbstract = false;
 			DelegateType.SuperClasses.AddLazy(() => NamedType);
-			DelegateType.Properties.AddLazy(() => DelegateType_ReturnType);
+			DelegateType.Properties.AddLazy(() => DelegateType_Result);
 			DelegateType.Properties.AddLazy(() => DelegateType_Parameters);
-			DelegateType_ReturnType.SetTypeLazy(() => DataType);
-			DelegateType_ReturnType.Documentation = null;
-			DelegateType_ReturnType.Name = "ReturnType";
-			DelegateType_ReturnType.SymbolProperty = "ReturnType";
-			DelegateType_ReturnType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			DelegateType_ReturnType.SetClassLazy(() => DelegateType);
-			DelegateType_ReturnType.DefaultValue = null;
-			DelegateType_ReturnType.IsContainment = false;
+			DelegateType_Result.SetTypeLazy(() => Parameter);
+			DelegateType_Result.Documentation = null;
+			DelegateType_Result.Name = "Result";
+			DelegateType_Result.SymbolProperty = "Result";
+			DelegateType_Result.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			DelegateType_Result.SetClassLazy(() => DelegateType);
+			DelegateType_Result.DefaultValue = null;
+			DelegateType_Result.IsContainment = false;
 			DelegateType_Parameters.SetTypeLazy(() => __tmp33);
 			DelegateType_Parameters.Documentation = null;
 			DelegateType_Parameters.Name = "Parameters";
@@ -37445,17 +37445,17 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			LambdaExpression.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.LambdaExpressionSymbol);
 			LambdaExpression.IsAbstract = false;
 			LambdaExpression.SuperClasses.AddLazy(() => Expression);
-			LambdaExpression.Properties.AddLazy(() => LambdaExpression_ReturnType);
+			LambdaExpression.Properties.AddLazy(() => LambdaExpression_Result);
 			LambdaExpression.Properties.AddLazy(() => LambdaExpression_Parameters);
 			LambdaExpression.Properties.AddLazy(() => LambdaExpression_Body);
-			LambdaExpression_ReturnType.SetTypeLazy(() => DataType);
-			LambdaExpression_ReturnType.Documentation = null;
-			LambdaExpression_ReturnType.Name = "ReturnType";
-			LambdaExpression_ReturnType.SymbolProperty = "ReturnType";
-			LambdaExpression_ReturnType.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			LambdaExpression_ReturnType.SetClassLazy(() => LambdaExpression);
-			LambdaExpression_ReturnType.DefaultValue = null;
-			LambdaExpression_ReturnType.IsContainment = false;
+			LambdaExpression_Result.SetTypeLazy(() => Parameter);
+			LambdaExpression_Result.Documentation = null;
+			LambdaExpression_Result.Name = "Result";
+			LambdaExpression_Result.SymbolProperty = "Result";
+			LambdaExpression_Result.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			LambdaExpression_Result.SetClassLazy(() => LambdaExpression);
+			LambdaExpression_Result.DefaultValue = null;
+			LambdaExpression_Result.IsContainment = false;
 			LambdaExpression_Parameters.SetTypeLazy(() => __tmp47);
 			LambdaExpression_Parameters.Documentation = null;
 			LambdaExpression_Parameters.Name = "Parameters";
