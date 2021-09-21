@@ -2804,8 +2804,8 @@ public partial class CoreParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		[System.Diagnostics.DebuggerNonUserCode] public DotOperatorContext dotOperator() {
 			return GetRuleContext<DotOperatorContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
-			return GetRuleContext<NameContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public GenericTypeArgumentsContext genericTypeArguments() {
 			return GetRuleContext<GenericTypeArgumentsContext>(0);
@@ -3121,8 +3121,8 @@ public partial class CoreParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		}
 	}
 	public partial class IdentifierExprContext : ExpressionContext {
-		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
-			return GetRuleContext<NameContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public GenericTypeArgumentsContext genericTypeArguments() {
 			return GetRuleContext<GenericTypeArgumentsContext>(0);
@@ -3256,7 +3256,7 @@ public partial class CoreParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 				Context = _localctx;
 				_prevctx = _localctx;
 				State = 441;
-				name();
+				identifier();
 				State = 443;
 				ErrorHandler.Sync(this);
 				switch ( Interpreter.AdaptivePredict(TokenStream,26,Context) ) {
@@ -3694,7 +3694,7 @@ public partial class CoreParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 						State = 562;
 						dotOperator();
 						State = 563;
-						name();
+						identifier();
 						State = 565;
 						ErrorHandler.Sync(this);
 						switch ( Interpreter.AdaptivePredict(TokenStream,31,Context) ) {
@@ -7367,7 +7367,7 @@ public partial class CoreParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x2', '\x2', '\x1B6', '\x1FC', '\a', '/', '\x2', '\x2', '\x1B7', '\x1FC', 
 		'\a', '#', '\x2', '\x2', '\x1B8', '\x1FC', '\a', ')', '\x2', '\x2', '\x1B9', 
 		'\x1FC', '\a', '*', '\x2', '\x2', '\x1BA', '\x1FC', '\x5', '\x92', 'J', 
-		'\x2', '\x1BB', '\x1BD', '\x5', '\x8A', '\x46', '\x2', '\x1BC', '\x1BE', 
+		'\x2', '\x1BB', '\x1BD', '\x5', '\x90', 'I', '\x2', '\x1BC', '\x1BE', 
 		'\x5', '\x80', '\x41', '\x2', '\x1BD', '\x1BC', '\x3', '\x2', '\x2', '\x2', 
 		'\x1BD', '\x1BE', '\x3', '\x2', '\x2', '\x2', '\x1BE', '\x1FC', '\x3', 
 		'\x2', '\x2', '\x2', '\x1BF', '\x1C0', '\a', ' ', '\x2', '\x2', '\x1C0', 
@@ -7456,7 +7456,7 @@ public partial class CoreParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		'\x5', '\x2', '\x2', '\x230', '\x231', '\x5', 'v', '<', '\x2', '\x231', 
 		'\x232', '\x5', '\x36', '\x1C', '\x6', '\x232', '\x255', '\x3', '\x2', 
 		'\x2', '\x2', '\x233', '\x234', '\f', '%', '\x2', '\x2', '\x234', '\x235', 
-		'\x5', '^', '\x30', '\x2', '\x235', '\x237', '\x5', '\x8A', '\x46', '\x2', 
+		'\x5', '^', '\x30', '\x2', '\x235', '\x237', '\x5', '\x90', 'I', '\x2', 
 		'\x236', '\x238', '\x5', '\x80', '\x41', '\x2', '\x237', '\x236', '\x3', 
 		'\x2', '\x2', '\x2', '\x237', '\x238', '\x3', '\x2', '\x2', '\x2', '\x238', 
 		'\x255', '\x3', '\x2', '\x2', '\x2', '\x239', '\x23A', '\f', '$', '\x2', 

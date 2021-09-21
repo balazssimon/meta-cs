@@ -12,6 +12,7 @@ options
 	generateCompiler=true;
 }
 
+$Property(Members) 
 $Define(Namespace)
 $Scope
 main: usingNamespace* declaration* mainBlock EOF;
@@ -117,10 +118,10 @@ expression
 	| KThis #thisExpr $Define(InstanceReferenceExpression)
 	| KBase #baseExpr $Define(InstanceReferenceExpression)
 	| $Property(Value) literal #literalExpr $Define(LiteralExpression)
-	| name genericTypeArguments? #identifierExpr $Define(ReferenceExpression)
-	| $Property(Qualifier) expression dotOperator name genericTypeArguments? #qualifierExpr $Define(ReferenceExpression)
+	| $Property(ReferencedName) $Value identifier genericTypeArguments? #identifierExpr $Define(ReferenceExpression)
+	| $Property(Qualifier) expression dotOperator $Property(ReferencedName) $Value identifier genericTypeArguments? #qualifierExpr $Define(ReferenceExpression)
 	| $Property(Receiver) expression indexerOperator argumentList TCloseBracket #indexerExpr $Define(IndexerAccessExpression)
-	| expression TOpenParen argumentList? TCloseParen #invocationExpr $Define(InvocationExpression)
+	| $Property(Receiver) expression TOpenParen argumentList? TCloseParen #invocationExpr $Define(InvocationExpression)
 	| KTypeof TOpenParen $Property(TypeOperand) typeReference TCloseParen #typeofExpr $Define(TypeOfExpression)
 	| KNameof TOpenParen $Property(Argument) expression TCloseParen #nameofExpr $Define(NameOfExpression)
 	| KSizeof TOpenParen $Property(TypeOperand) typeReference TCloseParen #sizeofExpr $Define(SizeOfExpression)

@@ -26,6 +26,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
             public static readonly CompletionPart FinishComputingProperty_Attributes = MetaDslx.CodeAnalysis.Symbols.Symbol.CompletionParts.FinishComputingProperty_Attributes;
             public static readonly CompletionPart StartComputingProperty_Qualifier = new CompletionPart(nameof(StartComputingProperty_Qualifier));
             public static readonly CompletionPart FinishComputingProperty_Qualifier = new CompletionPart(nameof(FinishComputingProperty_Qualifier));
+            public static readonly CompletionPart StartComputingProperty_ReferencedName = new CompletionPart(nameof(StartComputingProperty_ReferencedName));
+            public static readonly CompletionPart FinishComputingProperty_ReferencedName = new CompletionPart(nameof(FinishComputingProperty_ReferencedName));
+            public static readonly CompletionPart StartComputingProperty_ReferencedMetadataName = new CompletionPart(nameof(StartComputingProperty_ReferencedMetadataName));
+            public static readonly CompletionPart FinishComputingProperty_ReferencedMetadataName = new CompletionPart(nameof(FinishComputingProperty_ReferencedMetadataName));
             public static readonly CompletionPart StartComputingProperty_IsNullConditional = new CompletionPart(nameof(StartComputingProperty_IsNullConditional));
             public static readonly CompletionPart FinishComputingProperty_IsNullConditional = new CompletionPart(nameof(FinishComputingProperty_IsNullConditional));
             public static readonly CompletionPart StartComputingProperty_TypeArguments = new CompletionPart(nameof(StartComputingProperty_TypeArguments));
@@ -36,9 +40,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             public static readonly CompletionPart FinishComputingProperty_ReferenceThroughType = new CompletionPart(nameof(FinishComputingProperty_ReferenceThroughType));
             public static readonly CompletionPart StartComputingProperty_ReferencedSymbol = new CompletionPart(nameof(StartComputingProperty_ReferencedSymbol));
             public static readonly CompletionPart FinishComputingProperty_ReferencedSymbol = new CompletionPart(nameof(FinishComputingProperty_ReferencedSymbol));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Qualifier, FinishComputingProperty_Qualifier, StartComputingProperty_IsNullConditional, FinishComputingProperty_IsNullConditional, StartComputingProperty_TypeArguments, FinishComputingProperty_TypeArguments, StartComputingProperty_IsDeclaration, FinishComputingProperty_IsDeclaration, StartComputingProperty_ReferenceThroughType, FinishComputingProperty_ReferenceThroughType, StartComputingProperty_ReferencedSymbol, FinishComputingProperty_ReferencedSymbol, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Qualifier, FinishComputingProperty_Qualifier, StartComputingProperty_IsNullConditional, FinishComputingProperty_IsNullConditional, StartComputingProperty_TypeArguments, FinishComputingProperty_TypeArguments, StartComputingProperty_IsDeclaration, FinishComputingProperty_IsDeclaration, StartComputingProperty_ReferenceThroughType, FinishComputingProperty_ReferenceThroughType, StartComputingProperty_ReferencedSymbol, FinishComputingProperty_ReferencedSymbol, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Qualifier, FinishComputingProperty_Qualifier, StartComputingProperty_IsNullConditional, FinishComputingProperty_IsNullConditional, StartComputingProperty_TypeArguments, FinishComputingProperty_TypeArguments, StartComputingProperty_IsDeclaration, FinishComputingProperty_IsDeclaration, StartComputingProperty_ReferenceThroughType, FinishComputingProperty_ReferenceThroughType, StartComputingProperty_ReferencedSymbol, FinishComputingProperty_ReferencedSymbol, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Qualifier, FinishComputingProperty_Qualifier, StartComputingProperty_ReferencedName, FinishComputingProperty_ReferencedName, StartComputingProperty_ReferencedMetadataName, FinishComputingProperty_ReferencedMetadataName, StartComputingProperty_IsNullConditional, FinishComputingProperty_IsNullConditional, StartComputingProperty_TypeArguments, FinishComputingProperty_TypeArguments, StartComputingProperty_IsDeclaration, FinishComputingProperty_IsDeclaration, StartComputingProperty_ReferenceThroughType, FinishComputingProperty_ReferenceThroughType, StartComputingProperty_ReferencedSymbol, FinishComputingProperty_ReferencedSymbol, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Qualifier, FinishComputingProperty_Qualifier, StartComputingProperty_ReferencedName, FinishComputingProperty_ReferencedName, StartComputingProperty_ReferencedMetadataName, FinishComputingProperty_ReferencedMetadataName, StartComputingProperty_IsNullConditional, FinishComputingProperty_IsNullConditional, StartComputingProperty_TypeArguments, FinishComputingProperty_TypeArguments, StartComputingProperty_IsDeclaration, FinishComputingProperty_IsDeclaration, StartComputingProperty_ReferenceThroughType, FinishComputingProperty_ReferenceThroughType, StartComputingProperty_ReferencedSymbol, FinishComputingProperty_ReferencedSymbol, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Qualifier, FinishComputingProperty_Qualifier, StartComputingProperty_ReferencedName, FinishComputingProperty_ReferencedName, StartComputingProperty_ReferencedMetadataName, FinishComputingProperty_ReferencedMetadataName, StartComputingProperty_IsNullConditional, FinishComputingProperty_IsNullConditional, StartComputingProperty_TypeArguments, FinishComputingProperty_TypeArguments, StartComputingProperty_IsDeclaration, FinishComputingProperty_IsDeclaration, StartComputingProperty_ReferenceThroughType, FinishComputingProperty_ReferenceThroughType, StartComputingProperty_ReferencedSymbol, FinishComputingProperty_ReferencedSymbol, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted, CompletionGraph.StartValidatingSymbol, CompletionGraph.FinishValidatingSymbol);
         }
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
@@ -72,6 +76,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private string _metadataName;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.AttributeSymbol> _attributes;
         private global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol _qualifier;
+        private string _referencedName;
+        private string _referencedMetadataName;
         private bool _isNullConditional;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> _typeArguments;
         private bool _isDeclaration;
@@ -140,6 +146,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             {
                 this.ForceComplete(CompletionParts.FinishComputingProperty_Qualifier, null, default);
                 return _qualifier;
+            }
+        }
+
+        public override string ReferencedName
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_ReferencedName, null, default);
+                return _referencedName;
+            }
+        }
+
+        public override string ReferencedMetadataName
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_ReferencedMetadataName, null, default);
+                return _referencedMetadataName;
             }
         }
 
@@ -249,6 +273,28 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Qualifier);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartComputingProperty_ReferencedName || incompletePart == CompletionParts.FinishComputingProperty_ReferencedName)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ReferencedName))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _referencedName = CompleteSymbolProperty_ReferencedName(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ReferencedName);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartComputingProperty_ReferencedMetadataName || incompletePart == CompletionParts.FinishComputingProperty_ReferencedMetadataName)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_ReferencedMetadataName))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _referencedMetadataName = CompleteSymbolProperty_ReferencedMetadataName(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_ReferencedMetadataName);
                     }
                 }
                 else if (incompletePart == CompletionParts.StartComputingProperty_IsNullConditional || incompletePart == CompletionParts.FinishComputingProperty_IsNullConditional)
@@ -412,6 +458,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         protected virtual global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Qualifier(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Qualifier), diagnostics, cancellationToken, out var result);
+            return result;
+        }
+
+        protected virtual string CompleteSymbolProperty_ReferencedName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(ReferencedName), diagnostics, cancellationToken, out var result);
+            return result;
+        }
+
+        protected virtual string CompleteSymbolProperty_ReferencedMetadataName(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            SymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(ReferencedMetadataName), diagnostics, cancellationToken, out var result);
             return result;
         }
 

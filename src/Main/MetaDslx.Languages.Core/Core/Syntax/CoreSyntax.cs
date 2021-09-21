@@ -5405,7 +5405,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	
 	public sealed class IdentifierExprSyntax : ExpressionSyntax
 	{
-	    private NameSyntax name;
+	    private IdentifierSyntax identifier;
 	    private GenericTypeArgumentsSyntax genericTypeArguments;
 	
 	    public IdentifierExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
@@ -5418,9 +5418,9 @@ namespace MetaDslx.Languages.Core.Syntax
 	    {
 	    }
 	
-	    public NameSyntax Name 
+	    public IdentifierSyntax Identifier 
 		{ 
-			get { return this.GetRed(ref this.name, 0); } 
+			get { return this.GetRed(ref this.identifier, 0); } 
 		}
 	    public GenericTypeArgumentsSyntax GenericTypeArguments 
 		{ 
@@ -5431,7 +5431,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.name, 0);
+				case 0: return this.GetRed(ref this.identifier, 0);
 				case 1: return this.GetRed(ref this.genericTypeArguments, 1);
 				default: return null;
 	        }
@@ -5441,28 +5441,28 @@ namespace MetaDslx.Languages.Core.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.name;
+				case 0: return this.identifier;
 				case 1: return this.genericTypeArguments;
 				default: return null;
 	        }
 	    }
 	
-	    public IdentifierExprSyntax WithName(NameSyntax name)
+	    public IdentifierExprSyntax WithIdentifier(IdentifierSyntax identifier)
 		{
-			return this.Update(Name, this.GenericTypeArguments);
+			return this.Update(Identifier, this.GenericTypeArguments);
 		}
 	
 	    public IdentifierExprSyntax WithGenericTypeArguments(GenericTypeArgumentsSyntax genericTypeArguments)
 		{
-			return this.Update(this.Name, GenericTypeArguments);
+			return this.Update(this.Identifier, GenericTypeArguments);
 		}
 	
-	    public IdentifierExprSyntax Update(NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
+	    public IdentifierExprSyntax Update(IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
 	    {
-	        if (this.Name != name ||
+	        if (this.Identifier != identifier ||
 				this.GenericTypeArguments != genericTypeArguments)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.IdentifierExpr(name, genericTypeArguments);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.IdentifierExpr(identifier, genericTypeArguments);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -5491,7 +5491,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	{
 	    private ExpressionSyntax expression;
 	    private DotOperatorSyntax dotOperator;
-	    private NameSyntax name;
+	    private IdentifierSyntax identifier;
 	    private GenericTypeArgumentsSyntax genericTypeArguments;
 	
 	    public QualifierExprSyntax(InternalSyntaxNode green, CoreSyntaxTree syntaxTree, int position)
@@ -5512,9 +5512,9 @@ namespace MetaDslx.Languages.Core.Syntax
 		{ 
 			get { return this.GetRed(ref this.dotOperator, 1); } 
 		}
-	    public NameSyntax Name 
+	    public IdentifierSyntax Identifier 
 		{ 
-			get { return this.GetRed(ref this.name, 2); } 
+			get { return this.GetRed(ref this.identifier, 2); } 
 		}
 	    public GenericTypeArgumentsSyntax GenericTypeArguments 
 		{ 
@@ -5527,7 +5527,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	        {
 				case 0: return this.GetRed(ref this.expression, 0);
 				case 1: return this.GetRed(ref this.dotOperator, 1);
-				case 2: return this.GetRed(ref this.name, 2);
+				case 2: return this.GetRed(ref this.identifier, 2);
 				case 3: return this.GetRed(ref this.genericTypeArguments, 3);
 				default: return null;
 	        }
@@ -5539,7 +5539,7 @@ namespace MetaDslx.Languages.Core.Syntax
 	        {
 				case 0: return this.expression;
 				case 1: return this.dotOperator;
-				case 2: return this.name;
+				case 2: return this.identifier;
 				case 3: return this.genericTypeArguments;
 				default: return null;
 	        }
@@ -5547,32 +5547,32 @@ namespace MetaDslx.Languages.Core.Syntax
 	
 	    public QualifierExprSyntax WithExpression(ExpressionSyntax expression)
 		{
-			return this.Update(Expression, this.DotOperator, this.Name, this.GenericTypeArguments);
+			return this.Update(Expression, this.DotOperator, this.Identifier, this.GenericTypeArguments);
 		}
 	
 	    public QualifierExprSyntax WithDotOperator(DotOperatorSyntax dotOperator)
 		{
-			return this.Update(this.Expression, DotOperator, this.Name, this.GenericTypeArguments);
+			return this.Update(this.Expression, DotOperator, this.Identifier, this.GenericTypeArguments);
 		}
 	
-	    public QualifierExprSyntax WithName(NameSyntax name)
+	    public QualifierExprSyntax WithIdentifier(IdentifierSyntax identifier)
 		{
-			return this.Update(this.Expression, this.DotOperator, Name, this.GenericTypeArguments);
+			return this.Update(this.Expression, this.DotOperator, Identifier, this.GenericTypeArguments);
 		}
 	
 	    public QualifierExprSyntax WithGenericTypeArguments(GenericTypeArgumentsSyntax genericTypeArguments)
 		{
-			return this.Update(this.Expression, this.DotOperator, this.Name, GenericTypeArguments);
+			return this.Update(this.Expression, this.DotOperator, this.Identifier, GenericTypeArguments);
 		}
 	
-	    public QualifierExprSyntax Update(ExpressionSyntax expression, DotOperatorSyntax dotOperator, NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
+	    public QualifierExprSyntax Update(ExpressionSyntax expression, DotOperatorSyntax dotOperator, IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
 	    {
 	        if (this.Expression != expression ||
 				this.DotOperator != dotOperator ||
-				this.Name != name ||
+				this.Identifier != identifier ||
 				this.GenericTypeArguments != genericTypeArguments)
 	        {
-	            var newNode = CoreLanguage.Instance.SyntaxFactory.QualifierExpr(expression, dotOperator, name, genericTypeArguments);
+	            var newNode = CoreLanguage.Instance.SyntaxFactory.QualifierExpr(expression, dotOperator, identifier, genericTypeArguments);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -17386,18 +17386,18 @@ namespace MetaDslx.Languages.Core
 		
 		public virtual SyntaxNode VisitIdentifierExpr(IdentifierExprSyntax node)
 		{
-		    var name = (NameSyntax)this.Visit(node.Name);
+		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
 		    var genericTypeArguments = (GenericTypeArgumentsSyntax)this.Visit(node.GenericTypeArguments);
-			return node.Update(name, genericTypeArguments);
+			return node.Update(identifier, genericTypeArguments);
 		}
 		
 		public virtual SyntaxNode VisitQualifierExpr(QualifierExprSyntax node)
 		{
 		    var expression = (ExpressionSyntax)this.Visit(node.Expression);
 		    var dotOperator = (DotOperatorSyntax)this.Visit(node.DotOperator);
-		    var name = (NameSyntax)this.Visit(node.Name);
+		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
 		    var genericTypeArguments = (GenericTypeArgumentsSyntax)this.Visit(node.GenericTypeArguments);
-			return node.Update(expression, dotOperator, name, genericTypeArguments);
+			return node.Update(expression, dotOperator, identifier, genericTypeArguments);
 		}
 		
 		public virtual SyntaxNode VisitIndexerExpr(IndexerExprSyntax node)
@@ -19059,28 +19059,28 @@ namespace MetaDslx.Languages.Core
 		    return (LiteralExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.LiteralExpr((Syntax.InternalSyntax.LiteralGreen)literal.Green).CreateRed();
 		}
 		
-		public IdentifierExprSyntax IdentifierExpr(NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
+		public IdentifierExprSyntax IdentifierExpr(IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
 		{
-		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (IdentifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.IdentifierExpr((Syntax.InternalSyntax.NameGreen)name.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
+		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
+		    return (IdentifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.IdentifierExpr((Syntax.InternalSyntax.IdentifierGreen)identifier.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
 		}
 		
-		public IdentifierExprSyntax IdentifierExpr(NameSyntax name)
+		public IdentifierExprSyntax IdentifierExpr(IdentifierSyntax identifier)
 		{
-			return this.IdentifierExpr(name, default);
+			return this.IdentifierExpr(identifier, default);
 		}
 		
-		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, NameSyntax name, GenericTypeArgumentsSyntax genericTypeArguments)
+		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, IdentifierSyntax identifier, GenericTypeArgumentsSyntax genericTypeArguments)
 		{
 		    if (expression == null) throw new ArgumentNullException(nameof(expression));
 		    if (dotOperator == null) throw new ArgumentNullException(nameof(dotOperator));
-		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (QualifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.QualifierExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (Syntax.InternalSyntax.DotOperatorGreen)dotOperator.Green, (Syntax.InternalSyntax.NameGreen)name.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
+		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
+		    return (QualifierExprSyntax)CoreLanguage.Instance.InternalSyntaxFactory.QualifierExpr((Syntax.InternalSyntax.ExpressionGreen)expression.Green, (Syntax.InternalSyntax.DotOperatorGreen)dotOperator.Green, (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, genericTypeArguments == null ? null : (Syntax.InternalSyntax.GenericTypeArgumentsGreen)genericTypeArguments.Green).CreateRed();
 		}
 		
-		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, NameSyntax name)
+		public QualifierExprSyntax QualifierExpr(ExpressionSyntax expression, DotOperatorSyntax dotOperator, IdentifierSyntax identifier)
 		{
-			return this.QualifierExpr(expression, dotOperator, name, default);
+			return this.QualifierExpr(expression, dotOperator, identifier, default);
 		}
 		
 		public IndexerExprSyntax IndexerExpr(ExpressionSyntax expression, IndexerOperatorSyntax indexerOperator, ArgumentListSyntax argumentList, SyntaxToken tCloseBracket)

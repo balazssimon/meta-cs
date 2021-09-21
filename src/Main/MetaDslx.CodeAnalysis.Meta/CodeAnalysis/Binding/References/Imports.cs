@@ -738,7 +738,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             foreach (var usingDirective in usings)
             {
                 var importBinder = _compilation.GetBinder(usingDirective.UsingDirective.Syntax);
-                importBinder.AddLookupCandidateSymbols(result, constraints);
+                importBinder.AddLookupCandidateSymbolsInSingleBinder(result, constraints);
             }
         }
 

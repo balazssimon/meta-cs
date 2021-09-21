@@ -12,6 +12,7 @@ options
 	                      
 }
 
+                   
                   
       
 main: usingNamespace* declaration* mainBlock EOF;
@@ -117,10 +118,10 @@ expression
 	| KThis #thisExpr                                     
 	| KBase #baseExpr                                     
 	|                  literal #literalExpr                           
-	| name genericTypeArguments? #identifierExpr                             
-	|                      expression dotOperator name genericTypeArguments? #qualifierExpr                             
+	|                                  identifier genericTypeArguments? #identifierExpr                             
+	|                      expression dotOperator                                  identifier genericTypeArguments? #qualifierExpr                             
 	|                     expression indexerOperator argumentList TCloseBracket #indexerExpr                                 
-	| expression TOpenParen argumentList? TCloseParen #invocationExpr                              
+	|                     expression TOpenParen argumentList? TCloseParen #invocationExpr                              
 	| KTypeof TOpenParen                        typeReference TCloseParen #typeofExpr                          
 	| KNameof TOpenParen                     expression TCloseParen #nameofExpr                          
 	| KSizeof TOpenParen                        typeReference TCloseParen #sizeofExpr                          

@@ -1,6 +1,3 @@
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -95,6 +92,7 @@ namespace MetaDslx.Languages.Meta.Model
 		public static readonly MetaProperty MetaOperation_Parameters;
 		public static readonly MetaProperty MetaOperation_Result;
 		public static readonly MetaClass MetaParameter;
+		public static readonly MetaProperty MetaParameter_Type;
 		public static readonly MetaProperty MetaParameter_Operation;
 		public static readonly MetaClass MetaProperty;
 		public static readonly MetaProperty MetaProperty_SymbolProperty;
@@ -181,6 +179,7 @@ namespace MetaDslx.Languages.Meta.Model
 			MetaOperation_Parameters = MetaBuilderInstance.instance.MetaOperation_Parameters.ToImmutable(MModel);
 			MetaOperation_Result = MetaBuilderInstance.instance.MetaOperation_Result.ToImmutable(MModel);
 			MetaParameter = MetaBuilderInstance.instance.MetaParameter.ToImmutable(MModel);
+			MetaParameter_Type = MetaBuilderInstance.instance.MetaParameter_Type.ToImmutable(MModel);
 			MetaParameter_Operation = MetaBuilderInstance.instance.MetaParameter_Operation.ToImmutable(MModel);
 			MetaProperty = MetaBuilderInstance.instance.MetaProperty.ToImmutable(MModel);
 			MetaProperty_SymbolProperty = MetaBuilderInstance.instance.MetaProperty_SymbolProperty.ToImmutable(MModel);
@@ -1144,6 +1143,7 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaParameter : MetaNamedElement, MetaTypedElement
 	{
+		new MetaType Type { get; }
 		MetaOperation Operation { get; }
 	
 	
@@ -1161,6 +1161,10 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaParameterBuilder : MetaNamedElementBuilder, MetaTypedElementBuilder
 	{
+		new MetaTypeBuilder Type { get; set; }
+		new void SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy);
+		new void SetTypeLazy(global::System.Func<MetaParameterBuilder, MetaTypeBuilder> lazy);
+		new void SetTypeLazy(global::System.Func<MetaParameter, MetaType> immutableLazy, global::System.Func<MetaParameterBuilder, MetaTypeBuilder> mutableLazy);
 		MetaOperationBuilder Operation { get; set; }
 		void SetOperationLazy(global::System.Func<MetaOperationBuilder> lazy);
 		void SetOperationLazy(global::System.Func<MetaParameterBuilder, MetaOperationBuilder> lazy);
@@ -1309,6 +1313,7 @@ namespace MetaDslx.Languages.Meta.Model
 			properties.Add(MetaDescriptor.MetaOperation.IsReadonlyProperty);
 			properties.Add(MetaDescriptor.MetaOperation.ParametersProperty);
 			properties.Add(MetaDescriptor.MetaOperation.ResultProperty);
+			properties.Add(MetaDescriptor.MetaParameter.TypeProperty);
 			properties.Add(MetaDescriptor.MetaParameter.OperationProperty);
 			properties.Add(MetaDescriptor.MetaProperty.SymbolPropertyProperty);
 			properties.Add(MetaDescriptor.MetaProperty.KindProperty);
@@ -2113,6 +2118,15 @@ namespace MetaDslx.Languages.Meta.Model
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaParameter; }
 			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("DeclaredType")]
+			[global::MetaDslx.Modeling.RedefinesAttribute(typeof(MetaDescriptor.MetaTypedElement), "Type")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaParameter), name: "Type",
+			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
+			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaParameter_Type,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Parameters")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationProperty =
@@ -7414,6 +7428,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaType type1;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaOperation operation0;
 	
 		internal MetaParameterImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -7488,7 +7504,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public MetaType Type
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		MetaType MetaTypedElement.Type
 		{
 		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
 		}
@@ -7497,6 +7514,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public MetaType Type
+		{
+		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.TypeProperty, ref type1); }
 		}
 	
 		
@@ -7603,7 +7626,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public MetaTypeBuilder Type
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		MetaTypeBuilder MetaTypedElementBuilder.Type
 		{
 			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
 			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
@@ -7644,6 +7668,28 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public MetaTypeBuilder Type
+		{
+			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.TypeProperty); }
+			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaParameter.TypeProperty, value); }
+		}
+		
+		void MetaParameterBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaParameter.TypeProperty, lazy);
+		}
+		
+		void MetaParameterBuilder.SetTypeLazy(global::System.Func<MetaParameterBuilder, MetaTypeBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaParameter.TypeProperty, lazy);
+		}
+		
+		void MetaParameterBuilder.SetTypeLazy(global::System.Func<MetaParameter, MetaType> immutableLazy, global::System.Func<MetaParameterBuilder, MetaTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaParameter.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -8277,6 +8323,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private MetaOperationBuilder __tmp69;
 		private MetaParameterBuilder __tmp72;
 		internal MetaClassBuilder MetaParameter;
+		internal MetaPropertyBuilder MetaParameter_Type;
 		internal MetaPropertyBuilder MetaParameter_Operation;
 		internal MetaEnumBuilder MetaPropertyKind;
 		private MetaEnumLiteralBuilder __tmp73;
@@ -8490,6 +8537,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp69 = factory.MetaOperation();
 			__tmp72 = factory.MetaParameter();
 			MetaParameter = factory.MetaClass();
+			MetaParameter_Type = factory.MetaProperty();
 			MetaParameter_Operation = factory.MetaProperty();
 			MetaPropertyKind = factory.MetaEnum();
 			__tmp73 = factory.MetaEnumLiteral();
@@ -8726,6 +8774,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaTypedElement_Type.IsContainment = false;
 			MetaTypedElement_Type.RedefiningProperties.AddLazy(() => MetaEnumLiteral_Enum);
 			MetaTypedElement_Type.RedefiningProperties.AddLazy(() => MetaConstant_Type);
+			MetaTypedElement_Type.RedefiningProperties.AddLazy(() => MetaParameter_Type);
 			MetaType.Documentation = null;
 			MetaType.Name = "MetaType";
 			MetaType.SetNamespaceLazy(() => __tmp4);
@@ -9276,7 +9325,17 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaParameter.IsAbstract = false;
 			MetaParameter.SuperClasses.AddLazy(() => MetaNamedElement);
 			MetaParameter.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaParameter.Properties.AddLazy(() => MetaParameter_Type);
 			MetaParameter.Properties.AddLazy(() => MetaParameter_Operation);
+			MetaParameter_Type.SetTypeLazy(() => MetaType);
+			MetaParameter_Type.Documentation = null;
+			MetaParameter_Type.Name = "Type";
+			MetaParameter_Type.SymbolProperty = "DeclaredType";
+			MetaParameter_Type.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			MetaParameter_Type.SetClassLazy(() => MetaParameter);
+			MetaParameter_Type.DefaultValue = null;
+			MetaParameter_Type.IsContainment = false;
+			MetaParameter_Type.RedefinedProperties.AddLazy(() => MetaTypedElement_Type);
 			MetaParameter_Operation.SetTypeLazy(() => MetaOperation);
 			MetaParameter_Operation.Documentation = null;
 			MetaParameter_Operation.Name = "Operation";
@@ -10388,4 +10447,3 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	}
 }
-

@@ -4896,14 +4896,14 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			public override GreenNode VisitIdentifierExpr(CoreParser.IdentifierExprContext context)
 			{
 				if (context == null) return IdentifierExprGreen.__Missing;
-				CoreParser.NameContext nameContext = context.name();
-				NameGreen name = null;
-				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
-				if (name == null) name = NameGreen.__Missing;
+				CoreParser.IdentifierContext identifierContext = context.identifier();
+				IdentifierGreen identifier = null;
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				CoreParser.GenericTypeArgumentsContext genericTypeArgumentsContext = context.genericTypeArguments();
 				GenericTypeArgumentsGreen genericTypeArguments = null;
 				if (genericTypeArgumentsContext != null) genericTypeArguments = (GenericTypeArgumentsGreen)this.Visit(genericTypeArgumentsContext);
-				return _factory.IdentifierExpr(name, genericTypeArguments);
+				return _factory.IdentifierExpr(identifier, genericTypeArguments);
 			}
 			
 			public override GreenNode VisitQualifierExpr(CoreParser.QualifierExprContext context)
@@ -4917,14 +4917,14 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				DotOperatorGreen dotOperator = null;
 				if (dotOperatorContext != null) dotOperator = (DotOperatorGreen)this.Visit(dotOperatorContext);
 				if (dotOperator == null) dotOperator = DotOperatorGreen.__Missing;
-				CoreParser.NameContext nameContext = context.name();
-				NameGreen name = null;
-				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
-				if (name == null) name = NameGreen.__Missing;
+				CoreParser.IdentifierContext identifierContext = context.identifier();
+				IdentifierGreen identifier = null;
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				CoreParser.GenericTypeArgumentsContext genericTypeArgumentsContext = context.genericTypeArguments();
 				GenericTypeArgumentsGreen genericTypeArguments = null;
 				if (genericTypeArgumentsContext != null) genericTypeArguments = (GenericTypeArgumentsGreen)this.Visit(genericTypeArgumentsContext);
-				return _factory.QualifierExpr(expression, dotOperator, name, genericTypeArguments);
+				return _factory.QualifierExpr(expression, dotOperator, identifier, genericTypeArguments);
 			}
 			
 			public override GreenNode VisitIndexerExpr(CoreParser.IndexerExprContext context)

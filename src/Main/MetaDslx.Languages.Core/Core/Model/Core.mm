@@ -761,6 +761,10 @@
 	{
 		[property: Qualifier]
 		containment Expression Qualifier;
+		[property: ReferencedName]
+		string ReferencedName;
+		[property: ReferencedMetadataName]
+		string ReferencedMetadataName;
 		[property: IsNullConditional]
 		bool IsNullConditional;
 		[property: TypeArguments]

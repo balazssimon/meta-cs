@@ -103,7 +103,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
+        public virtual void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
         {
             this.AddCandidateSymbolsInternal(result, constraints);
         }

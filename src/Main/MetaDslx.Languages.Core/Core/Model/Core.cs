@@ -276,6 +276,8 @@ namespace MetaDslx.Languages.Core.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ParenthesizedExpression_Operand;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ReferenceExpression;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ReferenceExpression_Qualifier;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ReferenceExpression_ReferencedName;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ReferenceExpression_ReferencedMetadataName;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ReferenceExpression_IsNullConditional;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ReferenceExpression_TypeArguments;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ReferenceExpression_IsDeclaration;
@@ -557,6 +559,8 @@ namespace MetaDslx.Languages.Core.Model
 			ParenthesizedExpression_Operand = CoreBuilderInstance.instance.ParenthesizedExpression_Operand.ToImmutable(MModel);
 			ReferenceExpression = CoreBuilderInstance.instance.ReferenceExpression.ToImmutable(MModel);
 			ReferenceExpression_Qualifier = CoreBuilderInstance.instance.ReferenceExpression_Qualifier.ToImmutable(MModel);
+			ReferenceExpression_ReferencedName = CoreBuilderInstance.instance.ReferenceExpression_ReferencedName.ToImmutable(MModel);
+			ReferenceExpression_ReferencedMetadataName = CoreBuilderInstance.instance.ReferenceExpression_ReferencedMetadataName.ToImmutable(MModel);
 			ReferenceExpression_IsNullConditional = CoreBuilderInstance.instance.ReferenceExpression_IsNullConditional.ToImmutable(MModel);
 			ReferenceExpression_TypeArguments = CoreBuilderInstance.instance.ReferenceExpression_TypeArguments.ToImmutable(MModel);
 			ReferenceExpression_IsDeclaration = CoreBuilderInstance.instance.ReferenceExpression_IsDeclaration.ToImmutable(MModel);
@@ -4809,6 +4813,8 @@ namespace MetaDslx.Languages.Core.Model
 	public interface ReferenceExpression : Expression
 	{
 		Expression Qualifier { get; }
+		string ReferencedName { get; }
+		string ReferencedMetadataName { get; }
 		bool IsNullConditional { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<DataType> TypeArguments { get; }
 		bool IsDeclaration { get; }
@@ -4834,6 +4840,14 @@ namespace MetaDslx.Languages.Core.Model
 		void SetQualifierLazy(global::System.Func<ExpressionBuilder> lazy);
 		void SetQualifierLazy(global::System.Func<ReferenceExpressionBuilder, ExpressionBuilder> lazy);
 		void SetQualifierLazy(global::System.Func<ReferenceExpression, Expression> immutableLazy, global::System.Func<ReferenceExpressionBuilder, ExpressionBuilder> mutableLazy);
+		string ReferencedName { get; set; }
+		void SetReferencedNameLazy(global::System.Func<string> lazy);
+		void SetReferencedNameLazy(global::System.Func<ReferenceExpressionBuilder, string> lazy);
+		void SetReferencedNameLazy(global::System.Func<ReferenceExpression, string> immutableLazy, global::System.Func<ReferenceExpressionBuilder, string> mutableLazy);
+		string ReferencedMetadataName { get; set; }
+		void SetReferencedMetadataNameLazy(global::System.Func<string> lazy);
+		void SetReferencedMetadataNameLazy(global::System.Func<ReferenceExpressionBuilder, string> lazy);
+		void SetReferencedMetadataNameLazy(global::System.Func<ReferenceExpression, string> immutableLazy, global::System.Func<ReferenceExpressionBuilder, string> mutableLazy);
 		bool IsNullConditional { get; set; }
 		void SetIsNullConditionalLazy(global::System.Func<bool> lazy);
 		void SetIsNullConditionalLazy(global::System.Func<ReferenceExpressionBuilder, bool> lazy);
@@ -5352,6 +5366,8 @@ namespace MetaDslx.Languages.Core.Model
 			properties.Add(CoreDescriptor.ObjectCreationExpression.InitializersProperty);
 			properties.Add(CoreDescriptor.ParenthesizedExpression.OperandProperty);
 			properties.Add(CoreDescriptor.ReferenceExpression.QualifierProperty);
+			properties.Add(CoreDescriptor.ReferenceExpression.ReferencedNameProperty);
+			properties.Add(CoreDescriptor.ReferenceExpression.ReferencedMetadataNameProperty);
 			properties.Add(CoreDescriptor.ReferenceExpression.IsNullConditionalProperty);
 			properties.Add(CoreDescriptor.ReferenceExpression.TypeArgumentsProperty);
 			properties.Add(CoreDescriptor.ReferenceExpression.IsDeclarationProperty);
@@ -8921,6 +8937,22 @@ namespace MetaDslx.Languages.Core.Model
 			        immutableType: typeof(global::MetaDslx.Languages.Core.Model.Expression),
 			        mutableType: typeof(global::MetaDslx.Languages.Core.Model.ExpressionBuilder),
 					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.ReferenceExpression_Qualifier,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReferencedName")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ReferencedNameProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ReferenceExpression), name: "ReferencedName",
+			        immutableType: typeof(string),
+			        mutableType: typeof(string),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.ReferenceExpression_ReferencedName,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("ReferencedMetadataName")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ReferencedMetadataNameProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ReferenceExpression), name: "ReferencedMetadataName",
+			        immutableType: typeof(string),
+			        mutableType: typeof(string),
+					metaProperty: () => global::MetaDslx.Languages.Core.Model.CoreInstance.ReferenceExpression_ReferencedMetadataName,
 					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("IsNullConditional")]
@@ -33201,6 +33233,10 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Expression qualifier0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string referencedName0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string referencedMetadataName0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isNullConditional0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<DataType> typeArguments0;
@@ -33266,6 +33302,18 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		public Expression Qualifier
 		{
 		    get { return this.GetReference<Expression>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ReferenceExpression.QualifierProperty, ref qualifier0); }
+		}
+	
+		
+		public string ReferencedName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ReferenceExpression.ReferencedNameProperty, ref referencedName0); }
+		}
+	
+		
+		public string ReferencedMetadataName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ReferenceExpression.ReferencedMetadataNameProperty, ref referencedMetadataName0); }
 		}
 	
 		
@@ -33396,6 +33444,50 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		void ReferenceExpressionBuilder.SetQualifierLazy(global::System.Func<ReferenceExpression, Expression> immutableLazy, global::System.Func<ReferenceExpressionBuilder, ExpressionBuilder> mutableLazy)
 		{
 			this.SetLazyReference(CoreDescriptor.ReferenceExpression.QualifierProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public string ReferencedName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ReferenceExpression.ReferencedNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ReferenceExpression.ReferencedNameProperty, value); }
+		}
+		
+		void ReferenceExpressionBuilder.SetReferencedNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.ReferenceExpression.ReferencedNameProperty, lazy);
+		}
+		
+		void ReferenceExpressionBuilder.SetReferencedNameLazy(global::System.Func<ReferenceExpressionBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.ReferenceExpression.ReferencedNameProperty, lazy);
+		}
+		
+		void ReferenceExpressionBuilder.SetReferencedNameLazy(global::System.Func<ReferenceExpression, string> immutableLazy, global::System.Func<ReferenceExpressionBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.ReferenceExpression.ReferencedNameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public string ReferencedMetadataName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ReferenceExpression.ReferencedMetadataNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Core.Model.CoreDescriptor.ReferenceExpression.ReferencedMetadataNameProperty, value); }
+		}
+		
+		void ReferenceExpressionBuilder.SetReferencedMetadataNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.ReferenceExpression.ReferencedMetadataNameProperty, lazy);
+		}
+		
+		void ReferenceExpressionBuilder.SetReferencedMetadataNameLazy(global::System.Func<ReferenceExpressionBuilder, string> lazy)
+		{
+			this.SetLazyReference(CoreDescriptor.ReferenceExpression.ReferencedMetadataNameProperty, lazy);
+		}
+		
+		void ReferenceExpressionBuilder.SetReferencedMetadataNameLazy(global::System.Func<ReferenceExpression, string> immutableLazy, global::System.Func<ReferenceExpressionBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CoreDescriptor.ReferenceExpression.ReferencedMetadataNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -35015,6 +35107,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ParenthesizedExpression_Operand;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ReferenceExpression;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ReferenceExpression_Qualifier;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ReferenceExpression_ReferencedName;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ReferenceExpression_ReferencedMetadataName;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ReferenceExpression_IsNullConditional;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ReferenceExpression_TypeArguments;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ReferenceExpression_IsDeclaration;
@@ -35400,6 +35494,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ParenthesizedExpression_Operand = factory.MetaProperty();
 			ReferenceExpression = factory.MetaClass();
 			ReferenceExpression_Qualifier = factory.MetaProperty();
+			ReferenceExpression_ReferencedName = factory.MetaProperty();
+			ReferenceExpression_ReferencedMetadataName = factory.MetaProperty();
 			ReferenceExpression_IsNullConditional = factory.MetaProperty();
 			ReferenceExpression_TypeArguments = factory.MetaProperty();
 			ReferenceExpression_IsDeclaration = factory.MetaProperty();
@@ -37485,6 +37581,8 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ReferenceExpression.IsAbstract = false;
 			ReferenceExpression.SuperClasses.AddLazy(() => Expression);
 			ReferenceExpression.Properties.AddLazy(() => ReferenceExpression_Qualifier);
+			ReferenceExpression.Properties.AddLazy(() => ReferenceExpression_ReferencedName);
+			ReferenceExpression.Properties.AddLazy(() => ReferenceExpression_ReferencedMetadataName);
 			ReferenceExpression.Properties.AddLazy(() => ReferenceExpression_IsNullConditional);
 			ReferenceExpression.Properties.AddLazy(() => ReferenceExpression_TypeArguments);
 			ReferenceExpression.Properties.AddLazy(() => ReferenceExpression_IsDeclaration);
@@ -37498,6 +37596,22 @@ namespace MetaDslx.Languages.Core.Model.Internal
 			ReferenceExpression_Qualifier.SetClassLazy(() => ReferenceExpression);
 			ReferenceExpression_Qualifier.DefaultValue = null;
 			ReferenceExpression_Qualifier.IsContainment = true;
+			ReferenceExpression_ReferencedName.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.String.ToMutable());
+			ReferenceExpression_ReferencedName.Documentation = null;
+			ReferenceExpression_ReferencedName.Name = "ReferencedName";
+			ReferenceExpression_ReferencedName.SymbolProperty = "ReferencedName";
+			ReferenceExpression_ReferencedName.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			ReferenceExpression_ReferencedName.SetClassLazy(() => ReferenceExpression);
+			ReferenceExpression_ReferencedName.DefaultValue = null;
+			ReferenceExpression_ReferencedName.IsContainment = false;
+			ReferenceExpression_ReferencedMetadataName.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.String.ToMutable());
+			ReferenceExpression_ReferencedMetadataName.Documentation = null;
+			ReferenceExpression_ReferencedMetadataName.Name = "ReferencedMetadataName";
+			ReferenceExpression_ReferencedMetadataName.SymbolProperty = "ReferencedMetadataName";
+			ReferenceExpression_ReferencedMetadataName.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			ReferenceExpression_ReferencedMetadataName.SetClassLazy(() => ReferenceExpression);
+			ReferenceExpression_ReferencedMetadataName.DefaultValue = null;
+			ReferenceExpression_ReferencedMetadataName.IsContainment = false;
 			ReferenceExpression_IsNullConditional.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
 			ReferenceExpression_IsNullConditional.Documentation = null;
 			ReferenceExpression_IsNullConditional.Name = "IsNullConditional";

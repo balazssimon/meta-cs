@@ -164,8 +164,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 memberNames.UnionWith(namespaceSymbol.MemberNames);
             }
 
+            var childSymbolsAdded = new HashSet<Symbol>();
             var childSymbols = ArrayBuilder<Symbol>.GetInstance();
-
             foreach (var name in memberNames)
             {
                 ArrayBuilder<NamespaceSymbol> namespaceSymbols = null;
@@ -174,15 +174,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     foreach (var childSymbol in namespaceSymbol.ChildSymbols)
                     {
-                        if (childSymbol is not DeclaredSymbol declaredSymbol || declaredSymbol.Name != name) continue;
-                        if (declaredSymbol is NamespaceSymbol ns)
+                        if (childSymbol is NamespaceSymbol ns && ns.Name == name)
                         {
                             namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
                             namespaceSymbols.Add(ns);
-                        }
-                        else
-                        {
-                            childSymbols.Add(declaredSymbol);
+                            childSymbolsAdded.Add(ns);
                         }
                     }
                 }
@@ -196,7 +192,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 foreach (Symbol childSymbol in namespaceSymbol.ChildSymbols)
                 {
-                    if (childSymbol is not DeclaredSymbol)
+                    if (!childSymbolsAdded.Contains(childSymbol))
                     {
                         childSymbols.Add(childSymbol);
                     }

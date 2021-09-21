@@ -51,7 +51,7 @@ void Print(int a) {}
 int x = 5;
 int y = x+3;
 var z = 3;
-z = Maxi(x,y);
+z = Max(x,y);
 Print(z);
 ";
             var syntaxTree = CoreSyntaxTree.ParseText(text);

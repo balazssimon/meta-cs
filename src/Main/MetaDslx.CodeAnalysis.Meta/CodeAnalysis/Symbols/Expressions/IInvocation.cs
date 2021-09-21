@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public interface IInvocationExpressionSymbol
+    public interface IInvocation
     {
         ImmutableArray<ArgumentSymbol> Arguments { get; }
         bool IsMethodInvocation { get; }

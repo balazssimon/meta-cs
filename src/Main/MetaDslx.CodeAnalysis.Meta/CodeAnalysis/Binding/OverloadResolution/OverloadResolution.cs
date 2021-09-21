@@ -1041,7 +1041,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static bool IsLessDerivedThanAny<TMember>(TypeSymbol type, ArrayBuilder<MemberResolutionResult<TMember>> results, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
             where TMember : MemberSymbol
         {
-            if (type is null) return true;
+            if (type is null) return false;
 
             for (int f = 0; f < results.Count; ++f)
             {
@@ -2226,11 +2226,10 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             // - E is an anonymous function, T is either a delegate type D or an expression tree 
             //   type Expression<D>, D has a return type Y, and one of the following holds:
-            TypeSymbol y;
+            var d = t as DelegateTypeSymbol;
+            TypeSymbol? y = d?.Result?.Type;
 
-            if (expression is LambdaExpressionSymbol lambda &&
-                t is DelegateTypeSymbol d &&
-                !(y = d.ReturnType).IsSpecialSymbol(SpecialSymbol.System_Void))
+            if (expression is LambdaExpressionSymbol lambda && y is not null && !y.IsSpecialSymbol(SpecialSymbol.System_Void))
             {
                 lambda = lambda.BindForReturnTypeInference(d);
 

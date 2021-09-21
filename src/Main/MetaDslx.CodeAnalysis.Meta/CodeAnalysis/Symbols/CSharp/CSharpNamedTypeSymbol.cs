@@ -37,6 +37,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override bool MangleName => _csharpSymbol.MangleName;
 
+        public override ImmutableArray<Symbol> ChildSymbols => Members.Cast<DeclaredSymbol, Symbol>();
+
         public override ImmutableArray<DeclaredSymbol> Members => CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers());
 
         public INamedTypeSymbol CSharpSymbol => (INamedTypeSymbol)_csharpSymbol.ISymbol;

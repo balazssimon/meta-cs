@@ -6949,17 +6949,17 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	internal class IdentifierExprGreen : ExpressionGreen
 	{
 	    internal static new readonly IdentifierExprGreen __Missing = new IdentifierExprGreen();
-	    private NameGreen name;
+	    private IdentifierGreen identifier;
 	    private GenericTypeArgumentsGreen genericTypeArguments;
 	
-	    public IdentifierExprGreen(CoreSyntaxKind kind, NameGreen name, GenericTypeArgumentsGreen genericTypeArguments)
+	    public IdentifierExprGreen(CoreSyntaxKind kind, IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 2;
-			if (name != null)
+			if (identifier != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(identifier);
+				this.identifier = identifier;
 			}
 			if (genericTypeArguments != null)
 			{
@@ -6968,14 +6968,14 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public IdentifierExprGreen(CoreSyntaxKind kind, NameGreen name, GenericTypeArgumentsGreen genericTypeArguments, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public IdentifierExprGreen(CoreSyntaxKind kind, IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 2;
-			if (name != null)
+			if (identifier != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(identifier);
+				this.identifier = identifier;
 			}
 			if (genericTypeArguments != null)
 			{
@@ -6990,7 +6990,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public NameGreen Name { get { return this.name; } }
+	    public IdentifierGreen Identifier { get { return this.identifier; } }
 	    public GenericTypeArgumentsGreen GenericTypeArguments { get { return this.genericTypeArguments; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -7002,7 +7002,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.name;
+	            case 0: return this.identifier;
 	            case 1: return this.genericTypeArguments;
 	            default: return null;
 	        }
@@ -7014,26 +7014,26 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new IdentifierExprGreen(this.Kind, this.name, this.genericTypeArguments, diagnostics, this.GetAnnotations());
+	        return new IdentifierExprGreen(this.Kind, this.identifier, this.genericTypeArguments, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new IdentifierExprGreen(this.Kind, this.name, this.genericTypeArguments, this.GetDiagnostics(), annotations);
+	        return new IdentifierExprGreen(this.Kind, this.identifier, this.genericTypeArguments, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new IdentifierExprGreen(this.Kind, this.name, this.genericTypeArguments, this.GetDiagnostics(), this.GetAnnotations());
+			return new IdentifierExprGreen(this.Kind, this.identifier, this.genericTypeArguments, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
-	    public IdentifierExprGreen Update(NameGreen name, GenericTypeArgumentsGreen genericTypeArguments)
+	    public IdentifierExprGreen Update(IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments)
 	    {
-	        if (this.Name != name ||
+	        if (this.Identifier != identifier ||
 				this.GenericTypeArguments != genericTypeArguments)
 	        {
-	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.IdentifierExpr(name, genericTypeArguments);
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.IdentifierExpr(identifier, genericTypeArguments);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -7051,10 +7051,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	    internal static new readonly QualifierExprGreen __Missing = new QualifierExprGreen();
 	    private ExpressionGreen expression;
 	    private DotOperatorGreen dotOperator;
-	    private NameGreen name;
+	    private IdentifierGreen identifier;
 	    private GenericTypeArgumentsGreen genericTypeArguments;
 	
-	    public QualifierExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, DotOperatorGreen dotOperator, NameGreen name, GenericTypeArgumentsGreen genericTypeArguments)
+	    public QualifierExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, DotOperatorGreen dotOperator, IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 4;
@@ -7068,10 +7068,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(dotOperator);
 				this.dotOperator = dotOperator;
 			}
-			if (name != null)
+			if (identifier != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(identifier);
+				this.identifier = identifier;
 			}
 			if (genericTypeArguments != null)
 			{
@@ -7080,7 +7080,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public QualifierExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, DotOperatorGreen dotOperator, NameGreen name, GenericTypeArgumentsGreen genericTypeArguments, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public QualifierExprGreen(CoreSyntaxKind kind, ExpressionGreen expression, DotOperatorGreen dotOperator, IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 4;
@@ -7094,10 +7094,10 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(dotOperator);
 				this.dotOperator = dotOperator;
 			}
-			if (name != null)
+			if (identifier != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(identifier);
+				this.identifier = identifier;
 			}
 			if (genericTypeArguments != null)
 			{
@@ -7114,7 +7114,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	
 	    public ExpressionGreen Expression { get { return this.expression; } }
 	    public DotOperatorGreen DotOperator { get { return this.dotOperator; } }
-	    public NameGreen Name { get { return this.name; } }
+	    public IdentifierGreen Identifier { get { return this.identifier; } }
 	    public GenericTypeArgumentsGreen GenericTypeArguments { get { return this.genericTypeArguments; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -7128,7 +7128,7 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	        {
 	            case 0: return this.expression;
 	            case 1: return this.dotOperator;
-	            case 2: return this.name;
+	            case 2: return this.identifier;
 	            case 3: return this.genericTypeArguments;
 	            default: return null;
 	        }
@@ -7140,28 +7140,28 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new QualifierExprGreen(this.Kind, this.expression, this.dotOperator, this.name, this.genericTypeArguments, diagnostics, this.GetAnnotations());
+	        return new QualifierExprGreen(this.Kind, this.expression, this.dotOperator, this.identifier, this.genericTypeArguments, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new QualifierExprGreen(this.Kind, this.expression, this.dotOperator, this.name, this.genericTypeArguments, this.GetDiagnostics(), annotations);
+	        return new QualifierExprGreen(this.Kind, this.expression, this.dotOperator, this.identifier, this.genericTypeArguments, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public override GreenNode Clone()
 	    {
-			return new QualifierExprGreen(this.Kind, this.expression, this.dotOperator, this.name, this.genericTypeArguments, this.GetDiagnostics(), this.GetAnnotations());
+			return new QualifierExprGreen(this.Kind, this.expression, this.dotOperator, this.identifier, this.genericTypeArguments, this.GetDiagnostics(), this.GetAnnotations());
 		}
 	
 	
-	    public QualifierExprGreen Update(ExpressionGreen expression, DotOperatorGreen dotOperator, NameGreen name, GenericTypeArgumentsGreen genericTypeArguments)
+	    public QualifierExprGreen Update(ExpressionGreen expression, DotOperatorGreen dotOperator, IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments)
 	    {
 	        if (this.Expression != expression ||
 				this.DotOperator != dotOperator ||
-				this.Name != name ||
+				this.Identifier != identifier ||
 				this.GenericTypeArguments != genericTypeArguments)
 	        {
-	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.QualifierExpr(expression, dotOperator, name, genericTypeArguments);
+	            InternalSyntaxNode newNode = CoreLanguage.Instance.InternalSyntaxFactory.QualifierExpr(expression, dotOperator, identifier, genericTypeArguments);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -18146,15 +18146,15 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public IdentifierExprGreen IdentifierExpr(NameGreen name, GenericTypeArgumentsGreen genericTypeArguments)
+		public IdentifierExprGreen IdentifierExpr(IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments)
 	    {
 	#if DEBUG
-			if (name == null) throw new ArgumentNullException(nameof(name));
+			if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.IdentifierExpr, name, genericTypeArguments, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(CoreSyntaxKind)CoreSyntaxKind.IdentifierExpr, identifier, genericTypeArguments, out hash);
 			if (cached != null) return (IdentifierExprGreen)cached;
-			var result = new IdentifierExprGreen(CoreSyntaxKind.IdentifierExpr, name, genericTypeArguments);
+			var result = new IdentifierExprGreen(CoreSyntaxKind.IdentifierExpr, identifier, genericTypeArguments);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -18162,14 +18162,14 @@ namespace MetaDslx.Languages.Core.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public QualifierExprGreen QualifierExpr(ExpressionGreen expression, DotOperatorGreen dotOperator, NameGreen name, GenericTypeArgumentsGreen genericTypeArguments)
+		public QualifierExprGreen QualifierExpr(ExpressionGreen expression, DotOperatorGreen dotOperator, IdentifierGreen identifier, GenericTypeArgumentsGreen genericTypeArguments)
 	    {
 	#if DEBUG
 			if (expression == null) throw new ArgumentNullException(nameof(expression));
 			if (dotOperator == null) throw new ArgumentNullException(nameof(dotOperator));
-			if (name == null) throw new ArgumentNullException(nameof(name));
+			if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 	#endif
-	        return new QualifierExprGreen(CoreSyntaxKind.QualifierExpr, expression, dotOperator, name, genericTypeArguments);
+	        return new QualifierExprGreen(CoreSyntaxKind.QualifierExpr, expression, dotOperator, identifier, genericTypeArguments);
 	    }
 	
 		public IndexerExprGreen IndexerExpr(ExpressionGreen expression, IndexerOperatorGreen indexerOperator, ArgumentListGreen argumentList, InternalSyntaxToken tCloseBracket)

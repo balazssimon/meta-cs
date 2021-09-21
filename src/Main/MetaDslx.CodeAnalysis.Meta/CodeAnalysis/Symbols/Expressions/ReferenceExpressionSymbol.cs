@@ -15,13 +15,25 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a qualified or unqualified reference to a type, a member or a varialble symbol.
     /// </summary>
     [Symbol]
-    public abstract partial class ReferenceExpressionSymbol : ExpressionSymbol
+    public abstract partial class ReferenceExpressionSymbol : ExpressionSymbol, IInvocationReceiver
     {
         /// <summary>
         /// If the reference is a qualified access, this is the qualifier.
         /// </summary>
         [SymbolProperty]
         public abstract ExpressionSymbol? Qualifier { get; }
+
+        /// <summary>
+        /// The name of the referenced symbol.
+        /// </summary>
+        [SymbolProperty]
+        public virtual string? ReferencedName { get; }
+
+        /// <summary>
+        /// The metadata name of the referenced symbol.
+        /// </summary>
+        [SymbolProperty]
+        public virtual string? ReferencedMetadataName { get; }
 
         /// <summary>
         /// Indicates whether member access is null conditional (?. operator)
@@ -60,7 +72,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 if (this.ReferencedSymbol is TypeSymbol) return true;
                 if (this.ReferencedSymbol is VariableSymbol variable) return variable.IsConst ?? false;
-                if (this.ReferencedSymbol is FieldLikeSymbol field) return false;
+                if (this.ReferencedSymbol is FieldLikeSymbol) return false;
+                if (this.ReferencedSymbol is MethodLikeSymbol) return false;
                 return false;
             }
         }
@@ -72,6 +85,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if (this.ReferencedSymbol is TypeSymbol type) return type;
                 if (this.ReferencedSymbol is VariableSymbol variable) return variable.Type;
                 if (this.ReferencedSymbol is FieldLikeSymbol field) return field.Type;
+                if (this.ReferencedSymbol is MethodLikeSymbol method) return method?.Result?.Type;
                 return null;
             }
         }
@@ -82,8 +96,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     {
         public partial class CompletionReferenceExpressionSymbol
         {
-            private UnaryOperatorAnalysisResult _analysisResult;
-
             protected virtual DeclaredSymbol? CompleteSymbolProperty_ReferencedSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
             {
                 if (SymbolImplementation.AssignSymbolPropertyValue<DeclaredSymbol>(this, nameof(ReferencedSymbol), diagnostics, cancellationToken, out var result))
@@ -104,7 +116,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 var isMethod = false;
                 var isProperty = false;
                 var arguments = ImmutableArray<ArgumentSymbol>.Empty;
-                if (this.ContainingSymbol is IInvocationExpressionSymbol invocation)
+                if (this.ContainingSymbol is IInvocation invocation)
                 {
                     arguments = invocation.Arguments;
                     isMethod = invocation.IsMethodInvocation;
@@ -121,11 +133,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         if (sourceLocation is null) continue;
                         var binder = compilation.GetBinder(sourceLocation.GetSyntax());
                         if (binder is null) continue;
-                        binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(binder, sourceLocation, this.Name, this.MetadataName, qualifierOpt));
+                        binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(binder, sourceLocation, this.ReferencedName, this.ReferencedMetadataName, qualifierOpt));
                     }
                     if (candidates.IsClear)
                     {
-                        diagnostics.Add(ModelErrorCode.ERR_NameDoesNotExist.ToDiagnostic(this.GetLocation(), this.Name));
+                        diagnostics.Add(ModelErrorCode.ERR_NameDoesNotExist.ToDiagnostic(this.GetLocation(), this.ReferencedName ?? string.Empty));
                         candidates.Free();
                         return result;
                     }
@@ -140,6 +152,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         compilation.OverloadResolution.MethodInvocationOverloadResolution(methods, typeArguments, Qualifier, analyzedArguments, ContainingType, false, methodResult, ref useSiteDiagnostics);
                         methods.Free();
                         AddSymbolDiagnostics(useSiteDiagnostics);
+                        if (useSiteDiagnostics is null || useSiteDiagnostics.Count == 0)
+                        {
+                            if (!methodResult.Succeeded)
+                            {
+                                diagnostics.Add(ModelErrorCode.ERR_NameDoesNotExist.ToDiagnostic(this.GetLocation(), this.ReferencedName ?? string.Empty));
+                            }
+                        }
                         if (methodResult.Succeeded) result = methodResult.BestResult.Member;
                         methodResult.Free();
                     }
@@ -151,6 +170,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         compilation.OverloadResolution.IndexerOverloadResolution(indexers, Qualifier, analyzedArguments, ContainingType, false, indexerResult, false, ref useSiteDiagnostics);
                         indexers.Free();
                         AddSymbolDiagnostics(useSiteDiagnostics);
+                        if (useSiteDiagnostics is null || useSiteDiagnostics.Count == 0)
+                        {
+                            if (!indexerResult.Succeeded)
+                            {
+                                diagnostics.Add(ModelErrorCode.ERR_NameDoesNotExist.ToDiagnostic(this.GetLocation(), this.ReferencedName ?? string.Empty));
+                            }
+                        }
                         if (indexerResult.Succeeded) result = indexerResult.BestResult.Member;
                         indexerResult.Free();
                     }
@@ -169,8 +195,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         var binder = compilation.GetBinder(sourceLocation.GetSyntax());
                         if (binder is null) continue;
                         lastBinder = binder;
-                        binder.LookupSymbols(results, new LookupConstraints(binder, sourceLocation, this.Name, this.MetadataName, qualifierOpt), ref useSiteDiagnostics);
+                        binder.LookupSymbols(results, new LookupConstraints(binder, sourceLocation, this.ReferencedName, this.ReferencedMetadataName, qualifierOpt), ref useSiteDiagnostics);
                         AddSymbolDiagnostics(useSiteDiagnostics);
+                        if (useSiteDiagnostics is null || useSiteDiagnostics.Count == 0)
+                        {
+                            if (results.Error is not null)
+                            {
+                                diagnostics.Add(results.Error.ToDiagnostic(this.GetLocation()));
+                            }
+                        }
                     }
                     if (results.IsSingleViable)
                     {

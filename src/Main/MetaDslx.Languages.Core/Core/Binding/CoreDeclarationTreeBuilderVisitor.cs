@@ -48,39 +48,47 @@ namespace MetaDslx.Languages.Core.Binding
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(Namespace));
+			this.BeginProperty(node, name: "Members");
 			try
 			{
-				this.BeginScope(node);
+				this.BeginDefine(node, type: typeof(Namespace));
 				try
 				{
-					if (node.UsingNamespace != null)
+					this.BeginScope(node);
+					try
 					{
-						foreach (var child in node.UsingNamespace)
+						if (node.UsingNamespace != null)
 						{
-					        this.Visit(child);
+							foreach (var child in node.UsingNamespace)
+							{
+						        this.Visit(child);
+							}
+						}
+						if (node.Declaration != null)
+						{
+							foreach (var child in node.Declaration)
+							{
+						        this.Visit(child);
+							}
+						}
+						if (node.MainBlock != null)
+						{
+						    this.Visit(node.MainBlock);
 						}
 					}
-					if (node.Declaration != null)
+					finally
 					{
-						foreach (var child in node.Declaration)
-						{
-					        this.Visit(child);
-						}
-					}
-					if (node.MainBlock != null)
-					{
-					    this.Visit(node.MainBlock);
+						this.EndScope(node);
 					}
 				}
 				finally
 				{
-					this.EndScope(node);
+					this.EndDefine(node, type: typeof(Namespace));
 				}
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(Namespace));
+				this.EndProperty(node, name: "Members");
 			}
 		}
 		
@@ -1410,9 +1418,25 @@ namespace MetaDslx.Languages.Core.Binding
 			this.BeginDefine(node, type: typeof(ReferenceExpression));
 			try
 			{
-				if (node.Name != null)
+				if (node.Identifier != null)
 				{
-				    this.Visit(node.Name);
+				    this.BeginProperty(node.Identifier, name: "ReferencedName");
+				    try
+				    {
+				    	this.BeginValue(node.Identifier);
+				    	try
+				    	{
+				    		this.Visit(node.Identifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndValue(node.Identifier);
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Identifier, name: "ReferencedName");
+				    }
 				}
 				if (node.GenericTypeArguments != null)
 				{
@@ -1446,9 +1470,25 @@ namespace MetaDslx.Languages.Core.Binding
 				{
 				    this.Visit(node.DotOperator);
 				}
-				if (node.Name != null)
+				if (node.Identifier != null)
 				{
-				    this.Visit(node.Name);
+				    this.BeginProperty(node.Identifier, name: "ReferencedName");
+				    try
+				    {
+				    	this.BeginValue(node.Identifier);
+				    	try
+				    	{
+				    		this.Visit(node.Identifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndValue(node.Identifier);
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Identifier, name: "ReferencedName");
+				    }
 				}
 				if (node.GenericTypeArguments != null)
 				{
@@ -1500,7 +1540,15 @@ namespace MetaDslx.Languages.Core.Binding
 			{
 				if (node.Expression != null)
 				{
-				    this.Visit(node.Expression);
+				    this.BeginProperty(node.Expression, name: "Receiver");
+				    try
+				    {
+				    	this.Visit(node.Expression);
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Expression, name: "Receiver");
+				    }
 				}
 				if (node.ArgumentList != null)
 				{

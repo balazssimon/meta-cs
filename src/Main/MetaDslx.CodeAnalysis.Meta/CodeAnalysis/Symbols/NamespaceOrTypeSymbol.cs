@@ -12,8 +12,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract partial class NamespaceOrTypeSymbol : DeclaredSymbol
     {
-        public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
-
         /// <summary>
         /// Lookup an immediately nested type referenced from metadata, names should be
         /// compared case-sensitively.

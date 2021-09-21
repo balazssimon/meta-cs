@@ -191,6 +191,8 @@
 	[symbol: Parameter]
 	class MetaParameter : MetaNamedElement, MetaTypedElement
 	{
+		[property: DeclaredType]
+		MetaType Type redefines MetaTypedElement.Type;
 		MetaOperation Operation;
 	}
 

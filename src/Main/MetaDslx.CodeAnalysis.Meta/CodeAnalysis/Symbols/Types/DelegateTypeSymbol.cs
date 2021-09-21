@@ -9,7 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class DelegateTypeSymbol : NamedTypeSymbol
     {
         [SymbolProperty]
-        public abstract TypeSymbol ReturnType { get; }
+        public abstract ParameterSymbol Result { get; }
 
         [SymbolProperty]
         public abstract ImmutableArray<ParameterSymbol> Parameters { get; }

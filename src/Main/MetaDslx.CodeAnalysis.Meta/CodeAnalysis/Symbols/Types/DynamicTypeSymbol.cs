@@ -28,6 +28,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override ImmutableArray<NamedTypeSymbol> BaseTypes => ImmutableArray<NamedTypeSymbol>.Empty;
 
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+
         public override bool IsStatic => false;
 
         public override bool IsValueType => false;

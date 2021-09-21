@@ -42,6 +42,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpSymbol.DeclaringSyntaxReferences;
 
+        public override ImmutableArray<Symbol> ChildSymbols => Members.Cast<DeclaredSymbol, Symbol>();
+
         public override ImmutableArray<DeclaredSymbol> Members
         {
             get

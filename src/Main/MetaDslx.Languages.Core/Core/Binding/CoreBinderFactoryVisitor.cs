@@ -199,6 +199,7 @@ namespace MetaDslx.Languages.Core.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 			    resultBinder = this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Members");
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Namespace));
 				resultBinder = this.BinderFactory.CreateScopeBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
@@ -1376,12 +1377,22 @@ namespace MetaDslx.Languages.Core.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Identifier)) use = UseIdentifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(ReferenceExpression));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseIdentifier)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Identifier, name: "ReferencedName");
+					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.Identifier);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -1396,6 +1407,7 @@ namespace MetaDslx.Languages.Core.Binding
 			if (this.ForChild)
 			{
 				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
+				if (LookupPosition.IsInNode(this.Position, parent.Identifier)) use = UseIdentifier;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
@@ -1406,6 +1418,12 @@ namespace MetaDslx.Languages.Core.Binding
 				if (use == UseExpression)
 				{
 					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Qualifier");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseIdentifier)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Identifier, name: "ReferencedName");
+					resultBinder = this.BinderFactory.CreateValueBinder(resultBinder, parent.Identifier);
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -1445,12 +1463,21 @@ namespace MetaDslx.Languages.Core.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Expression)) use = UseExpression;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(InvocationExpression));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseExpression)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Expression, name: "Receiver");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

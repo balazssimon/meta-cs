@@ -9,7 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents an invocation of a method.
     /// </summary>
     [Symbol]
-    public abstract partial class InvocationExpressionSymbol : ExpressionSymbol, IInvocationExpressionSymbol
+    public abstract partial class InvocationExpressionSymbol : ExpressionSymbol, IInvocation
     {
         /// <summary>
         /// The method or operation to be invoked.
@@ -30,5 +30,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public bool IsMethodInvocation => true;
 
         public bool IsPropertyInvocation => false;
+
+
+        public override bool IsConstant => false;
+
+        public override TypeSymbol? Type
+        {
+            get
+            {
+                if (this.Receiver is IInvocationReceiver invocationReceiver)
+                {
+                    if (invocationReceiver.ReferencedSymbol is MethodLikeSymbol method)
+                    {
+                        return method.Result?.Type;
+                    }
+                }
+                else if (this.Receiver?.Type is DelegateTypeSymbol delegateType)
+                {
+                    return delegateType.Result?.Type;
+                }
+                return null;
+            }
+        }
     }
 }

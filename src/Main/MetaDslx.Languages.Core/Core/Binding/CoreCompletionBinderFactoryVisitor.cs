@@ -103,11 +103,11 @@ namespace MetaDslx.Languages.Core.Binding
 		public static object Use_ParenthesizedExpr_Expression = new object();
 		public static object Use_TupleExpr_TupleArguments = new object();
 		public static object Use_LiteralExpr_Literal = new object();
-		public static object Use_IdentifierExpr_Name = new object();
+		public static object Use_IdentifierExpr_Identifier = new object();
 		public static object Use_IdentifierExpr_GenericTypeArguments = new object();
 		public static object Use_QualifierExpr_Expression = new object();
 		public static object Use_QualifierExpr_DotOperator = new object();
-		public static object Use_QualifierExpr_Name = new object();
+		public static object Use_QualifierExpr_Identifier = new object();
 		public static object Use_QualifierExpr_GenericTypeArguments = new object();
 		public static object Use_IndexerExpr_Expression = new object();
 		public static object Use_IndexerExpr_IndexerOperator = new object();
@@ -2732,24 +2732,24 @@ namespace MetaDslx.Languages.Core.Binding
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
-		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
+		    if (parent.Identifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (!parent.Name.Span.Contains(Span))
+		        if (!parent.Identifier.Span.Contains(Span))
 		        {
-		            operation = GetOperation(position, parent.Name);
+		            operation = GetOperation(position, parent.Identifier);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForIdentifierExpr(Use_IdentifierExpr_Name, operation, Compilation.GetBinder(parent));
+		                AddResultsForIdentifierExpr(Use_IdentifierExpr_Identifier, operation, Compilation.GetBinder(parent));
 		            }
 		        }
-		        operation = this.GetOperation(position, parent.Name);
+		        operation = this.GetOperation(position, parent.Identifier);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForIdentifierExpr(Use_IdentifierExpr_Name, operation, Compilation.GetBinder(parent));
-		            else VisitCore(parent.Name);
+		            if (parent.Identifier == null || parent.Identifier.IsMissing) AddResultsForIdentifierExpr(Use_IdentifierExpr_Identifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Identifier);
 		        }
 		    }
-		    position += parent.Name.FullSpan.Length;
+		    position += parent.Identifier.FullSpan.Length;
 		    if (parent.GenericTypeArguments == null || parent.GenericTypeArguments.FullSpan.IntersectsWith(FullSpan))
 		    {
 		        if (parent.GenericTypeArguments == null || !parent.GenericTypeArguments.Span.Contains(Span))
@@ -2811,24 +2811,24 @@ namespace MetaDslx.Languages.Core.Binding
 		        }
 		    }
 		    position += parent.DotOperator.FullSpan.Length;
-		    if (parent.Name.FullSpan.IntersectsWith(FullSpan))
+		    if (parent.Identifier.FullSpan.IntersectsWith(FullSpan))
 		    {
-		        if (!parent.Name.Span.Contains(Span))
+		        if (!parent.Identifier.Span.Contains(Span))
 		        {
-		            operation = GetOperation(position, parent.Name);
+		            operation = GetOperation(position, parent.Identifier);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForQualifierExpr(Use_QualifierExpr_Name, operation, Compilation.GetBinder(parent));
+		                AddResultsForQualifierExpr(Use_QualifierExpr_Identifier, operation, Compilation.GetBinder(parent));
 		            }
 		        }
-		        operation = this.GetOperation(position, parent.Name);
+		        operation = this.GetOperation(position, parent.Identifier);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForQualifierExpr(Use_QualifierExpr_Name, operation, Compilation.GetBinder(parent));
-		            else VisitCore(parent.Name);
+		            if (parent.Identifier == null || parent.Identifier.IsMissing) AddResultsForQualifierExpr(Use_QualifierExpr_Identifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Identifier);
 		        }
 		    }
-		    position += parent.Name.FullSpan.Length;
+		    position += parent.Identifier.FullSpan.Length;
 		    if (parent.GenericTypeArguments == null || parent.GenericTypeArguments.FullSpan.IntersectsWith(FullSpan))
 		    {
 		        if (parent.GenericTypeArguments == null || !parent.GenericTypeArguments.Span.Contains(Span))
@@ -6557,6 +6557,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (_visited[0]) return;
             _visited[0] = true;
             var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Members", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(Namespace), forCompletion: true);
             ruleBinder = this.BinderFactory.CreateScopeBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_Main_UsingNamespace)
@@ -7902,10 +7903,10 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == Use_LiteralExpr_Literal) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForLiteralExpr(altUse, operation, parentBinder);
-            if (use == Use_IdentifierExpr_Name || use == Use_IdentifierExpr_GenericTypeArguments) altUse = use;
+            if (use == Use_IdentifierExpr_Identifier || use == Use_IdentifierExpr_GenericTypeArguments) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForIdentifierExpr(altUse, operation, parentBinder);
-            if (use == Use_QualifierExpr_Expression || use == Use_QualifierExpr_DotOperator || use == Use_QualifierExpr_Name || use == Use_QualifierExpr_GenericTypeArguments) altUse = use;
+            if (use == Use_QualifierExpr_Expression || use == Use_QualifierExpr_DotOperator || use == Use_QualifierExpr_Identifier || use == Use_QualifierExpr_GenericTypeArguments) altUse = use;
             else altUse = UnassignedUse;
             AddResultsForQualifierExpr(altUse, operation, parentBinder);
             if (use == Use_IndexerExpr_Expression || use == Use_IndexerExpr_IndexerOperator || use == Use_IndexerExpr_ArgumentList) altUse = use;
@@ -8150,10 +8151,12 @@ namespace MetaDslx.Languages.Core.Binding
             _visited[-1] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(ReferenceExpression), forCompletion: true);
-            if (use == UnassignedUse || use == Use_IdentifierExpr_Name)
+            if (use == UnassignedUse || use == Use_IdentifierExpr_Identifier)
             {
                 var binder = ruleBinder;
-                AddResultsForName(UnassignedUse, operation, binder);
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ReferencedName", forCompletion: true);
+            	binder = this.BinderFactory.CreateValueBinder(binder, null, forCompletion: true);
+                AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_IdentifierExpr_GenericTypeArguments)
@@ -8183,10 +8186,12 @@ namespace MetaDslx.Languages.Core.Binding
                 AddResultsForDotOperator(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            if (use == UnassignedUse || use == Use_QualifierExpr_Name)
+            if (use == UnassignedUse || use == Use_QualifierExpr_Identifier)
             {
                 var binder = ruleBinder;
-                AddResultsForName(UnassignedUse, operation, binder);
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "ReferencedName", forCompletion: true);
+            	binder = this.BinderFactory.CreateValueBinder(binder, null, forCompletion: true);
+                AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
             if (use == UnassignedUse || use == Use_QualifierExpr_GenericTypeArguments)
@@ -8240,6 +8245,7 @@ namespace MetaDslx.Languages.Core.Binding
             if (use == UnassignedUse || use == Use_InvocationExpr_Expression)
             {
                 var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "Receiver", forCompletion: true);
                 AddResultsForExpression(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }

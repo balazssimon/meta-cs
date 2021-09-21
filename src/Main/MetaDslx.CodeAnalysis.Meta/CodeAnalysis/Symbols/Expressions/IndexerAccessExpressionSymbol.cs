@@ -9,7 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents an indexer access.
     /// </summary>
     [Symbol]
-    public abstract partial class IndexerAccessExpressionSymbol : ExpressionSymbol, IInvocationExpressionSymbol
+    public abstract partial class IndexerAccessExpressionSymbol : ExpressionSymbol, IInvocation
     {
         /// <summary>
         /// The indexed operation.
@@ -43,5 +43,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public bool IsMethodInvocation => false;
 
         public bool IsPropertyInvocation => true;
+
+        public override bool IsConstant => Receiver?.IsConstant ?? false;
+
+        public override TypeSymbol? Type
+        {
+            get
+            {
+                if (Target is not null) return Target.GetMethod?.Result?.Type;
+                if (Receiver?.Type is ArrayTypeSymbol arrayType) return arrayType.ElementType;
+                return null;
+            }
+        }
+
     }
 }
