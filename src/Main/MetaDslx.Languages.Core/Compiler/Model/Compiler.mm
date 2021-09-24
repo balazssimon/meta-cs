@@ -1,64 +1,93 @@
 ﻿namespace MetaDslx.Languages.Compiler.Model
 {
+	using MetaDslx.CodeAnalysis.Symbols;
+
 	metamodel Compiler(Uri="http://MetaDslx.Languages.Compiler/1.0",MajorVersion=1,MinorVersion=0);
 
+	[symbol: Member]
 	abstract class NamedElement
 	{
+		[property: Name]
 		string Name;
 	}
 
+	[symbol: NamedType]
 	class Grammar : NamedElement
 	{
-		list<Rule> Rules;
+		containment GrammarOptions Options;
+		[property: Members]
+		containment list<Rule> Rules;
 	}
 
+	class GrammarOptions
+	{
+		bool IsCaseInsensitive;
+		bool IsWhitespaceIndented;
+	}
+
+	[symbol: NamedType]
 	abstract class Rule : NamedElement
 	{
+		[property: Members]
+		containment list<RuleAlternative> Alternatives;
 	}
 
-	abstract class RuleElement : NamedElement
+	class RuleAlternative : NamedElement
 	{
+		containment list<RuleElement> Elements;
+	}
+
+	[symbol: NamedType]
+	class RuleElement : NamedElement
+	{
+		bool IsNegated;
+		[property: Members]
+		Element Element;
+		AssignmentOperator AssignmentOperator;
 		Multiplicity Multiplicity;
 	}
 
-	class ParserRule : Rule
-	{
-		list<ParserRuleAlternative> Alternatives;
-	}
-
-	class ParserRuleAlternative
-	{
-		list<ParserRuleElement> Elements;
-	}
-
-	abstract class ParserRuleElement : RuleElement
+	[symbol: Member]
+	abstract class Element
 	{
 	}
 
-	class ParserRuleReference : RuleElement
+	class RuleReference : Element
 	{
 		Rule Rule;
 	}
 
-	class ParserRuleBlock : RuleElement
+	class RuleBlock : Rule, Element
 	{
-		list<ParserRuleAlternative> Alternatives;
+	}
+
+	class EofElement : Element
+	{
+	}
+
+	class FixedElement : Element
+	{
+		string Value;
+	}
+	
+	class WildcardElement : Element
+	{
+	}
+
+	class RangeElement : Element
+	{
+		containment FixedElement Start;
+		containment FixedElement End;
+	}
+
+	class ParserRule : Rule
+	{
 	}
 
 	class LexerRule : Rule
 	{
 		bool IsFragment;
 		bool IsHidden;
-		list<LexerRuleAlternative> Alternatives;
-	}
-
-	class LexerRuleAlternative
-	{
-		list<LexerRuleElement> Elements;
-	}
-
-	class LexerRuleElement : RuleElement
-	{
 	}
 
 	enum Multiplicity
@@ -66,7 +95,17 @@
 		ExactlyOne,
 		ZeroOrOne,
 		ZeroOrMore,
-		OneOrMore
+		OneOrMore,
+		NonGreedyZeroOrOne,
+		NonGreedyZeroOrMore,
+		NonGreedyOneOrMore
 	}
 
+	enum AssignmentOperator
+	{
+		Assign,
+		QuestionAssign,
+		NegatedAssign,
+		PlusAssign
+	}
 }

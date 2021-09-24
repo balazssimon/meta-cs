@@ -22,6 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Antlr4Roslyn Update="Compiler\Syntax\InternalSyntax\CompilerLexer.ag4">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Compiler\Syntax\InternalSyntax\CompilerParser.ag4">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </Antlr4Roslyn>
     <Antlr4Roslyn Update="Core\Syntax\InternalSyntax\CoreLexer.ag4">
       <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </Antlr4Roslyn>

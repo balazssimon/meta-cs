@@ -30,26 +30,35 @@ namespace MetaDslx.Languages.Compiler.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass NamedElement;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NamedElement_Name;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Grammar;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Grammar_Options;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Grammar_Rules;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass GrammarOptions;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GrammarOptions_IsCaseInsensitive;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GrammarOptions_IsWhitespaceIndented;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Rule;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Rule_Alternatives;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass RuleAlternative;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RuleAlternative_Elements;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass RuleElement;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RuleElement_IsNegated;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RuleElement_Element;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RuleElement_AssignmentOperator;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RuleElement_Multiplicity;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Element;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass RuleReference;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RuleReference_Rule;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass RuleBlock;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass EofElement;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass FixedElement;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty FixedElement_Value;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass WildcardElement;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass RangeElement;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RangeElement_Start;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RangeElement_End;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ParserRule;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ParserRule_Alternatives;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ParserRuleAlternative;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ParserRuleAlternative_Elements;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ParserRuleElement;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ParserRuleReference;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ParserRuleReference_Rule;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass ParserRuleBlock;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty ParserRuleBlock_Alternatives;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass LexerRule;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LexerRule_IsFragment;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LexerRule_IsHidden;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LexerRule_Alternatives;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass LexerRuleAlternative;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty LexerRuleAlternative_Elements;
-		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass LexerRuleElement;
 	
 		static CompilerInstance()
 		{
@@ -62,26 +71,35 @@ namespace MetaDslx.Languages.Compiler.Model
 			NamedElement = CompilerBuilderInstance.instance.NamedElement.ToImmutable(MModel);
 			NamedElement_Name = CompilerBuilderInstance.instance.NamedElement_Name.ToImmutable(MModel);
 			Grammar = CompilerBuilderInstance.instance.Grammar.ToImmutable(MModel);
+			Grammar_Options = CompilerBuilderInstance.instance.Grammar_Options.ToImmutable(MModel);
 			Grammar_Rules = CompilerBuilderInstance.instance.Grammar_Rules.ToImmutable(MModel);
+			GrammarOptions = CompilerBuilderInstance.instance.GrammarOptions.ToImmutable(MModel);
+			GrammarOptions_IsCaseInsensitive = CompilerBuilderInstance.instance.GrammarOptions_IsCaseInsensitive.ToImmutable(MModel);
+			GrammarOptions_IsWhitespaceIndented = CompilerBuilderInstance.instance.GrammarOptions_IsWhitespaceIndented.ToImmutable(MModel);
 			Rule = CompilerBuilderInstance.instance.Rule.ToImmutable(MModel);
+			Rule_Alternatives = CompilerBuilderInstance.instance.Rule_Alternatives.ToImmutable(MModel);
+			RuleAlternative = CompilerBuilderInstance.instance.RuleAlternative.ToImmutable(MModel);
+			RuleAlternative_Elements = CompilerBuilderInstance.instance.RuleAlternative_Elements.ToImmutable(MModel);
 			RuleElement = CompilerBuilderInstance.instance.RuleElement.ToImmutable(MModel);
+			RuleElement_IsNegated = CompilerBuilderInstance.instance.RuleElement_IsNegated.ToImmutable(MModel);
+			RuleElement_Element = CompilerBuilderInstance.instance.RuleElement_Element.ToImmutable(MModel);
+			RuleElement_AssignmentOperator = CompilerBuilderInstance.instance.RuleElement_AssignmentOperator.ToImmutable(MModel);
 			RuleElement_Multiplicity = CompilerBuilderInstance.instance.RuleElement_Multiplicity.ToImmutable(MModel);
+			Element = CompilerBuilderInstance.instance.Element.ToImmutable(MModel);
+			RuleReference = CompilerBuilderInstance.instance.RuleReference.ToImmutable(MModel);
+			RuleReference_Rule = CompilerBuilderInstance.instance.RuleReference_Rule.ToImmutable(MModel);
+			RuleBlock = CompilerBuilderInstance.instance.RuleBlock.ToImmutable(MModel);
+			EofElement = CompilerBuilderInstance.instance.EofElement.ToImmutable(MModel);
+			FixedElement = CompilerBuilderInstance.instance.FixedElement.ToImmutable(MModel);
+			FixedElement_Value = CompilerBuilderInstance.instance.FixedElement_Value.ToImmutable(MModel);
+			WildcardElement = CompilerBuilderInstance.instance.WildcardElement.ToImmutable(MModel);
+			RangeElement = CompilerBuilderInstance.instance.RangeElement.ToImmutable(MModel);
+			RangeElement_Start = CompilerBuilderInstance.instance.RangeElement_Start.ToImmutable(MModel);
+			RangeElement_End = CompilerBuilderInstance.instance.RangeElement_End.ToImmutable(MModel);
 			ParserRule = CompilerBuilderInstance.instance.ParserRule.ToImmutable(MModel);
-			ParserRule_Alternatives = CompilerBuilderInstance.instance.ParserRule_Alternatives.ToImmutable(MModel);
-			ParserRuleAlternative = CompilerBuilderInstance.instance.ParserRuleAlternative.ToImmutable(MModel);
-			ParserRuleAlternative_Elements = CompilerBuilderInstance.instance.ParserRuleAlternative_Elements.ToImmutable(MModel);
-			ParserRuleElement = CompilerBuilderInstance.instance.ParserRuleElement.ToImmutable(MModel);
-			ParserRuleReference = CompilerBuilderInstance.instance.ParserRuleReference.ToImmutable(MModel);
-			ParserRuleReference_Rule = CompilerBuilderInstance.instance.ParserRuleReference_Rule.ToImmutable(MModel);
-			ParserRuleBlock = CompilerBuilderInstance.instance.ParserRuleBlock.ToImmutable(MModel);
-			ParserRuleBlock_Alternatives = CompilerBuilderInstance.instance.ParserRuleBlock_Alternatives.ToImmutable(MModel);
 			LexerRule = CompilerBuilderInstance.instance.LexerRule.ToImmutable(MModel);
 			LexerRule_IsFragment = CompilerBuilderInstance.instance.LexerRule_IsFragment.ToImmutable(MModel);
 			LexerRule_IsHidden = CompilerBuilderInstance.instance.LexerRule_IsHidden.ToImmutable(MModel);
-			LexerRule_Alternatives = CompilerBuilderInstance.instance.LexerRule_Alternatives.ToImmutable(MModel);
-			LexerRuleAlternative = CompilerBuilderInstance.instance.LexerRuleAlternative.ToImmutable(MModel);
-			LexerRuleAlternative_Elements = CompilerBuilderInstance.instance.LexerRuleAlternative_Elements.ToImmutable(MModel);
-			LexerRuleElement = CompilerBuilderInstance.instance.LexerRuleElement.ToImmutable(MModel);
 	
 			CompilerInstance.initialized = true;
 		}
@@ -105,13 +123,17 @@ namespace MetaDslx.Languages.Compiler.Model
 			switch (type)
 			{
 				case "Grammar": return this.Grammar();
+				case "GrammarOptions": return this.GrammarOptions();
+				case "RuleAlternative": return this.RuleAlternative();
+				case "RuleElement": return this.RuleElement();
+				case "RuleReference": return this.RuleReference();
+				case "RuleBlock": return this.RuleBlock();
+				case "EofElement": return this.EofElement();
+				case "FixedElement": return this.FixedElement();
+				case "WildcardElement": return this.WildcardElement();
+				case "RangeElement": return this.RangeElement();
 				case "ParserRule": return this.ParserRule();
-				case "ParserRuleAlternative": return this.ParserRuleAlternative();
-				case "ParserRuleReference": return this.ParserRuleReference();
-				case "ParserRuleBlock": return this.ParserRuleBlock();
 				case "LexerRule": return this.LexerRule();
-				case "LexerRuleAlternative": return this.LexerRuleAlternative();
-				case "LexerRuleElement": return this.LexerRuleElement();
 				default:
 					throw new global::MetaDslx.Modeling.ModelException(global::MetaDslx.Modeling.ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(type));
 			}
@@ -127,39 +149,93 @@ namespace MetaDslx.Languages.Compiler.Model
 		}
 	
 		/// <summary>
+		/// Creates a new instance of GrammarOptions.
+		/// </summary>
+		public GrammarOptionsBuilder GrammarOptions()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new GrammarOptionsId());
+			return (GrammarOptionsBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of RuleAlternative.
+		/// </summary>
+		public RuleAlternativeBuilder RuleAlternative()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new RuleAlternativeId());
+			return (RuleAlternativeBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of RuleElement.
+		/// </summary>
+		public RuleElementBuilder RuleElement()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new RuleElementId());
+			return (RuleElementBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of RuleReference.
+		/// </summary>
+		public RuleReferenceBuilder RuleReference()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new RuleReferenceId());
+			return (RuleReferenceBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of RuleBlock.
+		/// </summary>
+		public RuleBlockBuilder RuleBlock()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new RuleBlockId());
+			return (RuleBlockBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of EofElement.
+		/// </summary>
+		public EofElementBuilder EofElement()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new EofElementId());
+			return (EofElementBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of FixedElement.
+		/// </summary>
+		public FixedElementBuilder FixedElement()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new FixedElementId());
+			return (FixedElementBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of WildcardElement.
+		/// </summary>
+		public WildcardElementBuilder WildcardElement()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new WildcardElementId());
+			return (WildcardElementBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of RangeElement.
+		/// </summary>
+		public RangeElementBuilder RangeElement()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new RangeElementId());
+			return (RangeElementBuilder)obj;
+		}
+	
+		/// <summary>
 		/// Creates a new instance of ParserRule.
 		/// </summary>
 		public ParserRuleBuilder ParserRule()
 		{
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new ParserRuleId());
 			return (ParserRuleBuilder)obj;
-		}
-	
-		/// <summary>
-		/// Creates a new instance of ParserRuleAlternative.
-		/// </summary>
-		public ParserRuleAlternativeBuilder ParserRuleAlternative()
-		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new ParserRuleAlternativeId());
-			return (ParserRuleAlternativeBuilder)obj;
-		}
-	
-		/// <summary>
-		/// Creates a new instance of ParserRuleReference.
-		/// </summary>
-		public ParserRuleReferenceBuilder ParserRuleReference()
-		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new ParserRuleReferenceId());
-			return (ParserRuleReferenceBuilder)obj;
-		}
-	
-		/// <summary>
-		/// Creates a new instance of ParserRuleBlock.
-		/// </summary>
-		public ParserRuleBlockBuilder ParserRuleBlock()
-		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new ParserRuleBlockId());
-			return (ParserRuleBlockBuilder)obj;
 		}
 	
 		/// <summary>
@@ -170,24 +246,6 @@ namespace MetaDslx.Languages.Compiler.Model
 			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new LexerRuleId());
 			return (LexerRuleBuilder)obj;
 		}
-	
-		/// <summary>
-		/// Creates a new instance of LexerRuleAlternative.
-		/// </summary>
-		public LexerRuleAlternativeBuilder LexerRuleAlternative()
-		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new LexerRuleAlternativeId());
-			return (LexerRuleAlternativeBuilder)obj;
-		}
-	
-		/// <summary>
-		/// Creates a new instance of LexerRuleElement.
-		/// </summary>
-		public LexerRuleElementBuilder LexerRuleElement()
-		{
-			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new LexerRuleElementId());
-			return (LexerRuleElementBuilder)obj;
-		}
 	}
 
 	
@@ -196,10 +254,25 @@ namespace MetaDslx.Languages.Compiler.Model
 		ExactlyOne,
 		ZeroOrOne,
 		ZeroOrMore,
-		OneOrMore
+		OneOrMore,
+		NonGreedyZeroOrOne,
+		NonGreedyZeroOrMore,
+		NonGreedyOneOrMore
 	}
 	
 	public static class MultiplicityExtensions
+	{
+	}
+	
+	public enum AssignmentOperator
+	{
+		Assign,
+		QuestionAssign,
+		NegatedAssign,
+		PlusAssign
+	}
+	
+	public static class AssignmentOperatorExtensions
 	{
 	}
 	
@@ -242,6 +315,7 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 	public interface Grammar : NamedElement
 	{
+		GrammarOptions Options { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<Rule> Rules { get; }
 	
 	
@@ -259,6 +333,10 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 	public interface GrammarBuilder : NamedElementBuilder
 	{
+		GrammarOptionsBuilder Options { get; set; }
+		void SetOptionsLazy(global::System.Func<GrammarOptionsBuilder> lazy);
+		void SetOptionsLazy(global::System.Func<GrammarBuilder, GrammarOptionsBuilder> lazy);
+		void SetOptionsLazy(global::System.Func<Grammar, GrammarOptions> immutableLazy, global::System.Func<GrammarBuilder, GrammarOptionsBuilder> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<RuleBuilder> Rules { get; }
 	
 	
@@ -274,8 +352,51 @@ namespace MetaDslx.Languages.Compiler.Model
 		new Grammar ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
+	public interface GrammarOptions : global::MetaDslx.Modeling.ImmutableObject
+	{
+		bool IsCaseInsensitive { get; }
+		bool IsWhitespaceIndented { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="GrammarOptions"/> object to a builder <see cref="GrammarOptionsBuilder"/> object.
+		/// </summary>
+		new GrammarOptionsBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="GrammarOptions"/> object to a builder <see cref="GrammarOptionsBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new GrammarOptionsBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface GrammarOptionsBuilder : global::MetaDslx.Modeling.MutableObject
+	{
+		bool IsCaseInsensitive { get; set; }
+		void SetIsCaseInsensitiveLazy(global::System.Func<bool> lazy);
+		void SetIsCaseInsensitiveLazy(global::System.Func<GrammarOptionsBuilder, bool> lazy);
+		void SetIsCaseInsensitiveLazy(global::System.Func<GrammarOptions, bool> immutableLazy, global::System.Func<GrammarOptionsBuilder, bool> mutableLazy);
+		bool IsWhitespaceIndented { get; set; }
+		void SetIsWhitespaceIndentedLazy(global::System.Func<bool> lazy);
+		void SetIsWhitespaceIndentedLazy(global::System.Func<GrammarOptionsBuilder, bool> lazy);
+		void SetIsWhitespaceIndentedLazy(global::System.Func<GrammarOptions, bool> immutableLazy, global::System.Func<GrammarOptionsBuilder, bool> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="GrammarOptionsBuilder"/> object to an immutable <see cref="GrammarOptions"/> object.
+		/// </summary>
+		new GrammarOptions ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="GrammarOptionsBuilder"/> object to an immutable <see cref="GrammarOptions"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new GrammarOptions ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
 	public interface Rule : NamedElement
 	{
+		global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> Alternatives { get; }
 	
 	
 		/// <summary>
@@ -292,6 +413,7 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 	public interface RuleBuilder : NamedElementBuilder
 	{
+		global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives { get; }
 	
 	
 		/// <summary>
@@ -306,8 +428,45 @@ namespace MetaDslx.Languages.Compiler.Model
 		new Rule ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
+	public interface RuleAlternative : NamedElement
+	{
+		global::MetaDslx.Modeling.ImmutableModelList<RuleElement> Elements { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RuleAlternative"/> object to a builder <see cref="RuleAlternativeBuilder"/> object.
+		/// </summary>
+		new RuleAlternativeBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="RuleAlternative"/> object to a builder <see cref="RuleAlternativeBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new RuleAlternativeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface RuleAlternativeBuilder : NamedElementBuilder
+	{
+		global::MetaDslx.Modeling.MutableModelList<RuleElementBuilder> Elements { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RuleAlternativeBuilder"/> object to an immutable <see cref="RuleAlternative"/> object.
+		/// </summary>
+		new RuleAlternative ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="RuleAlternativeBuilder"/> object to an immutable <see cref="RuleAlternative"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new RuleAlternative ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
 	public interface RuleElement : NamedElement
 	{
+		bool IsNegated { get; }
+		Element Element { get; }
+		AssignmentOperator AssignmentOperator { get; }
 		Multiplicity Multiplicity { get; }
 	
 	
@@ -325,6 +484,18 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 	public interface RuleElementBuilder : NamedElementBuilder
 	{
+		bool IsNegated { get; set; }
+		void SetIsNegatedLazy(global::System.Func<bool> lazy);
+		void SetIsNegatedLazy(global::System.Func<RuleElementBuilder, bool> lazy);
+		void SetIsNegatedLazy(global::System.Func<RuleElement, bool> immutableLazy, global::System.Func<RuleElementBuilder, bool> mutableLazy);
+		ElementBuilder Element { get; set; }
+		void SetElementLazy(global::System.Func<ElementBuilder> lazy);
+		void SetElementLazy(global::System.Func<RuleElementBuilder, ElementBuilder> lazy);
+		void SetElementLazy(global::System.Func<RuleElement, Element> immutableLazy, global::System.Func<RuleElementBuilder, ElementBuilder> mutableLazy);
+		AssignmentOperator AssignmentOperator { get; set; }
+		void SetAssignmentOperatorLazy(global::System.Func<AssignmentOperator> lazy);
+		void SetAssignmentOperatorLazy(global::System.Func<RuleElementBuilder, AssignmentOperator> lazy);
+		void SetAssignmentOperatorLazy(global::System.Func<RuleElement, AssignmentOperator> immutableLazy, global::System.Func<RuleElementBuilder, AssignmentOperator> mutableLazy);
 		Multiplicity Multiplicity { get; set; }
 		void SetMultiplicityLazy(global::System.Func<Multiplicity> lazy);
 		void SetMultiplicityLazy(global::System.Func<RuleElementBuilder, Multiplicity> lazy);
@@ -343,9 +514,252 @@ namespace MetaDslx.Languages.Compiler.Model
 		new RuleElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
+	public interface Element : global::MetaDslx.Modeling.ImmutableObject
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="Element"/> object to a builder <see cref="ElementBuilder"/> object.
+		/// </summary>
+		new ElementBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="Element"/> object to a builder <see cref="ElementBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new ElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface ElementBuilder : global::MetaDslx.Modeling.MutableObject
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="ElementBuilder"/> object to an immutable <see cref="Element"/> object.
+		/// </summary>
+		new Element ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="ElementBuilder"/> object to an immutable <see cref="Element"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new Element ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface RuleReference : Element
+	{
+		Rule Rule { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RuleReference"/> object to a builder <see cref="RuleReferenceBuilder"/> object.
+		/// </summary>
+		new RuleReferenceBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="RuleReference"/> object to a builder <see cref="RuleReferenceBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new RuleReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface RuleReferenceBuilder : ElementBuilder
+	{
+		RuleBuilder Rule { get; set; }
+		void SetRuleLazy(global::System.Func<RuleBuilder> lazy);
+		void SetRuleLazy(global::System.Func<RuleReferenceBuilder, RuleBuilder> lazy);
+		void SetRuleLazy(global::System.Func<RuleReference, Rule> immutableLazy, global::System.Func<RuleReferenceBuilder, RuleBuilder> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RuleReferenceBuilder"/> object to an immutable <see cref="RuleReference"/> object.
+		/// </summary>
+		new RuleReference ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="RuleReferenceBuilder"/> object to an immutable <see cref="RuleReference"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new RuleReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface RuleBlock : Rule, Element
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RuleBlock"/> object to a builder <see cref="RuleBlockBuilder"/> object.
+		/// </summary>
+		new RuleBlockBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="RuleBlock"/> object to a builder <see cref="RuleBlockBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new RuleBlockBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface RuleBlockBuilder : RuleBuilder, ElementBuilder
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RuleBlockBuilder"/> object to an immutable <see cref="RuleBlock"/> object.
+		/// </summary>
+		new RuleBlock ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="RuleBlockBuilder"/> object to an immutable <see cref="RuleBlock"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new RuleBlock ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface EofElement : Element
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="EofElement"/> object to a builder <see cref="EofElementBuilder"/> object.
+		/// </summary>
+		new EofElementBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="EofElement"/> object to a builder <see cref="EofElementBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new EofElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface EofElementBuilder : ElementBuilder
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="EofElementBuilder"/> object to an immutable <see cref="EofElement"/> object.
+		/// </summary>
+		new EofElement ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="EofElementBuilder"/> object to an immutable <see cref="EofElement"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new EofElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface FixedElement : Element
+	{
+		string Value { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="FixedElement"/> object to a builder <see cref="FixedElementBuilder"/> object.
+		/// </summary>
+		new FixedElementBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="FixedElement"/> object to a builder <see cref="FixedElementBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new FixedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface FixedElementBuilder : ElementBuilder
+	{
+		string Value { get; set; }
+		void SetValueLazy(global::System.Func<string> lazy);
+		void SetValueLazy(global::System.Func<FixedElementBuilder, string> lazy);
+		void SetValueLazy(global::System.Func<FixedElement, string> immutableLazy, global::System.Func<FixedElementBuilder, string> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="FixedElementBuilder"/> object to an immutable <see cref="FixedElement"/> object.
+		/// </summary>
+		new FixedElement ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="FixedElementBuilder"/> object to an immutable <see cref="FixedElement"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new FixedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface WildcardElement : Element
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="WildcardElement"/> object to a builder <see cref="WildcardElementBuilder"/> object.
+		/// </summary>
+		new WildcardElementBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="WildcardElement"/> object to a builder <see cref="WildcardElementBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new WildcardElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface WildcardElementBuilder : ElementBuilder
+	{
+	
+	
+		/// <summary>
+		/// Convert the <see cref="WildcardElementBuilder"/> object to an immutable <see cref="WildcardElement"/> object.
+		/// </summary>
+		new WildcardElement ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="WildcardElementBuilder"/> object to an immutable <see cref="WildcardElement"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new WildcardElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
+	public interface RangeElement : Element
+	{
+		FixedElement Start { get; }
+		FixedElement End { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RangeElement"/> object to a builder <see cref="RangeElementBuilder"/> object.
+		/// </summary>
+		new RangeElementBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="RangeElement"/> object to a builder <see cref="RangeElementBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new RangeElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface RangeElementBuilder : ElementBuilder
+	{
+		FixedElementBuilder Start { get; set; }
+		void SetStartLazy(global::System.Func<FixedElementBuilder> lazy);
+		void SetStartLazy(global::System.Func<RangeElementBuilder, FixedElementBuilder> lazy);
+		void SetStartLazy(global::System.Func<RangeElement, FixedElement> immutableLazy, global::System.Func<RangeElementBuilder, FixedElementBuilder> mutableLazy);
+		FixedElementBuilder End { get; set; }
+		void SetEndLazy(global::System.Func<FixedElementBuilder> lazy);
+		void SetEndLazy(global::System.Func<RangeElementBuilder, FixedElementBuilder> lazy);
+		void SetEndLazy(global::System.Func<RangeElement, FixedElement> immutableLazy, global::System.Func<RangeElementBuilder, FixedElementBuilder> mutableLazy);
+	
+	
+		/// <summary>
+		/// Convert the <see cref="RangeElementBuilder"/> object to an immutable <see cref="RangeElement"/> object.
+		/// </summary>
+		new RangeElement ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="RangeElementBuilder"/> object to an immutable <see cref="RangeElement"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new RangeElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
 	public interface ParserRule : Rule
 	{
-		global::MetaDslx.Modeling.ImmutableModelList<ParserRuleAlternative> Alternatives { get; }
 	
 	
 		/// <summary>
@@ -362,7 +776,6 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 	public interface ParserRuleBuilder : RuleBuilder
 	{
-		global::MetaDslx.Modeling.MutableModelList<ParserRuleAlternativeBuilder> Alternatives { get; }
 	
 	
 		/// <summary>
@@ -377,148 +790,10 @@ namespace MetaDslx.Languages.Compiler.Model
 		new ParserRule ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface ParserRuleAlternative : global::MetaDslx.Modeling.ImmutableObject
-	{
-		global::MetaDslx.Modeling.ImmutableModelList<ParserRuleElement> Elements { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleAlternative"/> object to a builder <see cref="ParserRuleAlternativeBuilder"/> object.
-		/// </summary>
-		new ParserRuleAlternativeBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleAlternative"/> object to a builder <see cref="ParserRuleAlternativeBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new ParserRuleAlternativeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface ParserRuleAlternativeBuilder : global::MetaDslx.Modeling.MutableObject
-	{
-		global::MetaDslx.Modeling.MutableModelList<ParserRuleElementBuilder> Elements { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleAlternativeBuilder"/> object to an immutable <see cref="ParserRuleAlternative"/> object.
-		/// </summary>
-		new ParserRuleAlternative ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleAlternativeBuilder"/> object to an immutable <see cref="ParserRuleAlternative"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new ParserRuleAlternative ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
-	
-	public interface ParserRuleElement : RuleElement
-	{
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleElement"/> object to a builder <see cref="ParserRuleElementBuilder"/> object.
-		/// </summary>
-		new ParserRuleElementBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleElement"/> object to a builder <see cref="ParserRuleElementBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new ParserRuleElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface ParserRuleElementBuilder : RuleElementBuilder
-	{
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleElementBuilder"/> object to an immutable <see cref="ParserRuleElement"/> object.
-		/// </summary>
-		new ParserRuleElement ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleElementBuilder"/> object to an immutable <see cref="ParserRuleElement"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new ParserRuleElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
-	
-	public interface ParserRuleReference : RuleElement
-	{
-		Rule Rule { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleReference"/> object to a builder <see cref="ParserRuleReferenceBuilder"/> object.
-		/// </summary>
-		new ParserRuleReferenceBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleReference"/> object to a builder <see cref="ParserRuleReferenceBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new ParserRuleReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface ParserRuleReferenceBuilder : RuleElementBuilder
-	{
-		RuleBuilder Rule { get; set; }
-		void SetRuleLazy(global::System.Func<RuleBuilder> lazy);
-		void SetRuleLazy(global::System.Func<ParserRuleReferenceBuilder, RuleBuilder> lazy);
-		void SetRuleLazy(global::System.Func<ParserRuleReference, Rule> immutableLazy, global::System.Func<ParserRuleReferenceBuilder, RuleBuilder> mutableLazy);
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleReferenceBuilder"/> object to an immutable <see cref="ParserRuleReference"/> object.
-		/// </summary>
-		new ParserRuleReference ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleReferenceBuilder"/> object to an immutable <see cref="ParserRuleReference"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new ParserRuleReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
-	
-	public interface ParserRuleBlock : RuleElement
-	{
-		global::MetaDslx.Modeling.ImmutableModelList<ParserRuleAlternative> Alternatives { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleBlock"/> object to a builder <see cref="ParserRuleBlockBuilder"/> object.
-		/// </summary>
-		new ParserRuleBlockBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleBlock"/> object to a builder <see cref="ParserRuleBlockBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new ParserRuleBlockBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface ParserRuleBlockBuilder : RuleElementBuilder
-	{
-		global::MetaDslx.Modeling.MutableModelList<ParserRuleAlternativeBuilder> Alternatives { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="ParserRuleBlockBuilder"/> object to an immutable <see cref="ParserRuleBlock"/> object.
-		/// </summary>
-		new ParserRuleBlock ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="ParserRuleBlockBuilder"/> object to an immutable <see cref="ParserRuleBlock"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new ParserRuleBlock ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
-	
 	public interface LexerRule : Rule
 	{
 		bool IsFragment { get; }
 		bool IsHidden { get; }
-		global::MetaDslx.Modeling.ImmutableModelList<LexerRuleAlternative> Alternatives { get; }
 	
 	
 		/// <summary>
@@ -543,7 +818,6 @@ namespace MetaDslx.Languages.Compiler.Model
 		void SetIsHiddenLazy(global::System.Func<bool> lazy);
 		void SetIsHiddenLazy(global::System.Func<LexerRuleBuilder, bool> lazy);
 		void SetIsHiddenLazy(global::System.Func<LexerRule, bool> immutableLazy, global::System.Func<LexerRuleBuilder, bool> mutableLazy);
-		global::MetaDslx.Modeling.MutableModelList<LexerRuleAlternativeBuilder> Alternatives { get; }
 	
 	
 		/// <summary>
@@ -557,72 +831,6 @@ namespace MetaDslx.Languages.Compiler.Model
 		/// <param name="model">The immutable model from which the return value is taken from.</param>
 		new LexerRule ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
-	
-	public interface LexerRuleAlternative : global::MetaDslx.Modeling.ImmutableObject
-	{
-		global::MetaDslx.Modeling.ImmutableModelList<LexerRuleElement> Elements { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="LexerRuleAlternative"/> object to a builder <see cref="LexerRuleAlternativeBuilder"/> object.
-		/// </summary>
-		new LexerRuleAlternativeBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="LexerRuleAlternative"/> object to a builder <see cref="LexerRuleAlternativeBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new LexerRuleAlternativeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface LexerRuleAlternativeBuilder : global::MetaDslx.Modeling.MutableObject
-	{
-		global::MetaDslx.Modeling.MutableModelList<LexerRuleElementBuilder> Elements { get; }
-	
-	
-		/// <summary>
-		/// Convert the <see cref="LexerRuleAlternativeBuilder"/> object to an immutable <see cref="LexerRuleAlternative"/> object.
-		/// </summary>
-		new LexerRuleAlternative ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="LexerRuleAlternativeBuilder"/> object to an immutable <see cref="LexerRuleAlternative"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new LexerRuleAlternative ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
-	
-	public interface LexerRuleElement : RuleElement
-	{
-	
-	
-		/// <summary>
-		/// Convert the <see cref="LexerRuleElement"/> object to a builder <see cref="LexerRuleElementBuilder"/> object.
-		/// </summary>
-		new LexerRuleElementBuilder ToMutable();
-		/// <summary>
-		/// Convert the <see cref="LexerRuleElement"/> object to a builder <see cref="LexerRuleElementBuilder"/> object
-		/// by taking the builder version from the given model.
-		/// </summary>
-		/// <param name="model">The mutable model from which the return value is taken from.</param>
-		new LexerRuleElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
-	}
-	
-	public interface LexerRuleElementBuilder : RuleElementBuilder
-	{
-	
-	
-		/// <summary>
-		/// Convert the <see cref="LexerRuleElementBuilder"/> object to an immutable <see cref="LexerRuleElement"/> object.
-		/// </summary>
-		new LexerRuleElement ToImmutable();
-		/// <summary>
-		/// Convert the <see cref="LexerRuleElementBuilder"/> object to an immutable <see cref="LexerRuleElement"/> object
-		/// by taking the immutable version from the given model.
-		/// </summary>
-		/// <param name="model">The immutable model from which the return value is taken from.</param>
-		new LexerRuleElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
-	}
 
 	public static class CompilerDescriptor
 	{
@@ -633,27 +841,36 @@ namespace MetaDslx.Languages.Compiler.Model
 			properties = new global::System.Collections.Generic.List<global::MetaDslx.Modeling.ModelProperty>();
 			NamedElement.Initialize();
 			Grammar.Initialize();
+			GrammarOptions.Initialize();
 			Rule.Initialize();
+			RuleAlternative.Initialize();
 			RuleElement.Initialize();
+			Element.Initialize();
+			RuleReference.Initialize();
+			RuleBlock.Initialize();
+			EofElement.Initialize();
+			FixedElement.Initialize();
+			WildcardElement.Initialize();
+			RangeElement.Initialize();
 			ParserRule.Initialize();
-			ParserRuleAlternative.Initialize();
-			ParserRuleElement.Initialize();
-			ParserRuleReference.Initialize();
-			ParserRuleBlock.Initialize();
 			LexerRule.Initialize();
-			LexerRuleAlternative.Initialize();
-			LexerRuleElement.Initialize();
 			properties.Add(CompilerDescriptor.NamedElement.NameProperty);
+			properties.Add(CompilerDescriptor.Grammar.OptionsProperty);
 			properties.Add(CompilerDescriptor.Grammar.RulesProperty);
+			properties.Add(CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty);
+			properties.Add(CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty);
+			properties.Add(CompilerDescriptor.Rule.AlternativesProperty);
+			properties.Add(CompilerDescriptor.RuleAlternative.ElementsProperty);
+			properties.Add(CompilerDescriptor.RuleElement.IsNegatedProperty);
+			properties.Add(CompilerDescriptor.RuleElement.ElementProperty);
+			properties.Add(CompilerDescriptor.RuleElement.AssignmentOperatorProperty);
 			properties.Add(CompilerDescriptor.RuleElement.MultiplicityProperty);
-			properties.Add(CompilerDescriptor.ParserRule.AlternativesProperty);
-			properties.Add(CompilerDescriptor.ParserRuleAlternative.ElementsProperty);
-			properties.Add(CompilerDescriptor.ParserRuleReference.RuleProperty);
-			properties.Add(CompilerDescriptor.ParserRuleBlock.AlternativesProperty);
+			properties.Add(CompilerDescriptor.RuleReference.RuleProperty);
+			properties.Add(CompilerDescriptor.FixedElement.ValueProperty);
+			properties.Add(CompilerDescriptor.RangeElement.StartProperty);
+			properties.Add(CompilerDescriptor.RangeElement.EndProperty);
 			properties.Add(CompilerDescriptor.LexerRule.IsFragmentProperty);
 			properties.Add(CompilerDescriptor.LexerRule.IsHiddenProperty);
-			properties.Add(CompilerDescriptor.LexerRule.AlternativesProperty);
-			properties.Add(CompilerDescriptor.LexerRuleAlternative.ElementsProperty);
 		}
 	
 		public static void Initialize()
@@ -663,6 +880,7 @@ namespace MetaDslx.Languages.Compiler.Model
 		public const string MUri = "http://MetaDslx.Languages.Compiler/1.0";
 		public const string MPrefix = "";
 	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.NamedElementId), typeof(global::MetaDslx.Languages.Compiler.Model.NamedElement), typeof(global::MetaDslx.Languages.Compiler.Model.NamedElementBuilder))]
 		public static class NamedElement
 		{
@@ -687,6 +905,7 @@ namespace MetaDslx.Languages.Compiler.Model
 				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.NamedElement; }
 			}
 			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Name")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(NamedElement), name: "Name",
 			        immutableType: typeof(string),
@@ -695,6 +914,7 @@ namespace MetaDslx.Languages.Compiler.Model
 					defaultValue: null);
 		}
 	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.GrammarId), typeof(global::MetaDslx.Languages.Compiler.Model.Grammar), typeof(global::MetaDslx.Languages.Compiler.Model.GrammarBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.NamedElement) })]
 		public static class Grammar
 		{
@@ -719,8 +939,18 @@ namespace MetaDslx.Languages.Compiler.Model
 				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Grammar; }
 			}
 			
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty OptionsProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Grammar), name: "Options",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.GrammarOptions),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.GrammarOptionsBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Grammar_Options,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
+			[global::MetaDslx.Modeling.ContainmentAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty RulesProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Grammar), name: "Rules",
 			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.Rule),
@@ -729,6 +959,46 @@ namespace MetaDslx.Languages.Compiler.Model
 					defaultValue: null);
 		}
 	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.GrammarOptionsId), typeof(global::MetaDslx.Languages.Compiler.Model.GrammarOptions), typeof(global::MetaDslx.Languages.Compiler.Model.GrammarOptionsBuilder))]
+		public static class GrammarOptions
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static GrammarOptions()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(GrammarOptions));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.GrammarOptions; }
+			}
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsCaseInsensitiveProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(GrammarOptions), name: "IsCaseInsensitive",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.GrammarOptions_IsCaseInsensitive,
+					defaultValue: null);
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsWhitespaceIndentedProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(GrammarOptions), name: "IsWhitespaceIndented",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.GrammarOptions_IsWhitespaceIndented,
+					defaultValue: null);
+		}
+	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.RuleId), typeof(global::MetaDslx.Languages.Compiler.Model.Rule), typeof(global::MetaDslx.Languages.Compiler.Model.RuleBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.NamedElement) })]
 		public static class Rule
 		{
@@ -752,8 +1022,55 @@ namespace MetaDslx.Languages.Compiler.Model
 			{
 				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Rule; }
 			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
+			[global::MetaDslx.Modeling.CollectionAttribute]
+			[global::MetaDslx.Modeling.OrderedAttribute]
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty AlternativesProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Rule), name: "Alternatives",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.RuleAlternative),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.RuleAlternativeBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Rule_Alternatives,
+					defaultValue: null);
 		}
 	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.RuleAlternativeId), typeof(global::MetaDslx.Languages.Compiler.Model.RuleAlternative), typeof(global::MetaDslx.Languages.Compiler.Model.RuleAlternativeBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.NamedElement) })]
+		public static class RuleAlternative
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static RuleAlternative()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(RuleAlternative));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleAlternative; }
+			}
+			
+			[global::MetaDslx.Modeling.CollectionAttribute]
+			[global::MetaDslx.Modeling.OrderedAttribute]
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ElementsProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RuleAlternative), name: "Elements",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.RuleElement),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.RuleElementBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleAlternative_Elements,
+					defaultValue: null);
+		}
+	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.RuleElementId), typeof(global::MetaDslx.Languages.Compiler.Model.RuleElement), typeof(global::MetaDslx.Languages.Compiler.Model.RuleElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.NamedElement) })]
 		public static class RuleElement
 		{
@@ -778,11 +1095,239 @@ namespace MetaDslx.Languages.Compiler.Model
 				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleElement; }
 			}
 			
+			public static readonly global::MetaDslx.Modeling.ModelProperty IsNegatedProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RuleElement), name: "IsNegated",
+			        immutableType: typeof(bool),
+			        mutableType: typeof(bool),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleElement_IsNegated,
+					defaultValue: null);
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ElementProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RuleElement), name: "Element",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.Element),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.ElementBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleElement_Element,
+					defaultValue: null);
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty AssignmentOperatorProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RuleElement), name: "AssignmentOperator",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.AssignmentOperator),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.AssignmentOperator),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleElement_AssignmentOperator,
+					defaultValue: null);
+			
 			public static readonly global::MetaDslx.Modeling.ModelProperty MultiplicityProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RuleElement), name: "Multiplicity",
 			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.Multiplicity),
 			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.Multiplicity),
 					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleElement_Multiplicity,
+					defaultValue: null);
+		}
+	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol))]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.ElementId), typeof(global::MetaDslx.Languages.Compiler.Model.Element), typeof(global::MetaDslx.Languages.Compiler.Model.ElementBuilder))]
+		public static class Element
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static Element()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(Element));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Element; }
+			}
+		}
+	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.RuleReferenceId), typeof(global::MetaDslx.Languages.Compiler.Model.RuleReference), typeof(global::MetaDslx.Languages.Compiler.Model.RuleReferenceBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.Element) })]
+		public static class RuleReference
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static RuleReference()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(RuleReference));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleReference; }
+			}
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty RuleProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RuleReference), name: "Rule",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.Rule),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.RuleBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleReference_Rule,
+					defaultValue: null);
+		}
+	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.RuleBlockId), typeof(global::MetaDslx.Languages.Compiler.Model.RuleBlock), typeof(global::MetaDslx.Languages.Compiler.Model.RuleBlockBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.Rule), typeof(CompilerDescriptor.Element) })]
+		public static class RuleBlock
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static RuleBlock()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(RuleBlock));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RuleBlock; }
+			}
+		}
+	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.EofElementId), typeof(global::MetaDslx.Languages.Compiler.Model.EofElement), typeof(global::MetaDslx.Languages.Compiler.Model.EofElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.Element) })]
+		public static class EofElement
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static EofElement()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(EofElement));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.EofElement; }
+			}
+		}
+	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.FixedElementId), typeof(global::MetaDslx.Languages.Compiler.Model.FixedElement), typeof(global::MetaDslx.Languages.Compiler.Model.FixedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.Element) })]
+		public static class FixedElement
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static FixedElement()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(FixedElement));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.FixedElement; }
+			}
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty ValueProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(FixedElement), name: "Value",
+			        immutableType: typeof(string),
+			        mutableType: typeof(string),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.FixedElement_Value,
+					defaultValue: null);
+		}
+	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.WildcardElementId), typeof(global::MetaDslx.Languages.Compiler.Model.WildcardElement), typeof(global::MetaDslx.Languages.Compiler.Model.WildcardElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.Element) })]
+		public static class WildcardElement
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static WildcardElement()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(WildcardElement));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.WildcardElement; }
+			}
+		}
+	
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.RangeElementId), typeof(global::MetaDslx.Languages.Compiler.Model.RangeElement), typeof(global::MetaDslx.Languages.Compiler.Model.RangeElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.Element) })]
+		public static class RangeElement
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static RangeElement()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(RangeElement));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RangeElement; }
+			}
+			
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty StartProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RangeElement), name: "Start",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.FixedElement),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.FixedElementBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RangeElement_Start,
+					defaultValue: null);
+			
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty EndProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(RangeElement), name: "End",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.FixedElement),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.FixedElementBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.RangeElement_End,
 					defaultValue: null);
 		}
 	
@@ -809,140 +1354,6 @@ namespace MetaDslx.Languages.Compiler.Model
 			{
 				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRule; }
 			}
-			
-			[global::MetaDslx.Modeling.CollectionAttribute]
-			[global::MetaDslx.Modeling.OrderedAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty AlternativesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ParserRule), name: "Alternatives",
-			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleAlternative),
-			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleAlternativeBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRule_Alternatives,
-					defaultValue: null);
-		}
-	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.ParserRuleAlternativeId), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleAlternative), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleAlternativeBuilder))]
-		public static class ParserRuleAlternative
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static ParserRuleAlternative()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ParserRuleAlternative));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRuleAlternative; }
-			}
-			
-			[global::MetaDslx.Modeling.CollectionAttribute]
-			[global::MetaDslx.Modeling.OrderedAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty ElementsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ParserRuleAlternative), name: "Elements",
-			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleElement),
-			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleElementBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRuleAlternative_Elements,
-					defaultValue: null);
-		}
-	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.ParserRuleElementId), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleElement), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.RuleElement) })]
-		public static class ParserRuleElement
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static ParserRuleElement()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ParserRuleElement));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRuleElement; }
-			}
-		}
-	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.ParserRuleReferenceId), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleReference), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleReferenceBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.RuleElement) })]
-		public static class ParserRuleReference
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static ParserRuleReference()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ParserRuleReference));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRuleReference; }
-			}
-			
-			public static readonly global::MetaDslx.Modeling.ModelProperty RuleProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ParserRuleReference), name: "Rule",
-			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.Rule),
-			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.RuleBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRuleReference_Rule,
-					defaultValue: null);
-		}
-	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.ParserRuleBlockId), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleBlock), typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleBlockBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.RuleElement) })]
-		public static class ParserRuleBlock
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static ParserRuleBlock()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(ParserRuleBlock));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRuleBlock; }
-			}
-			
-			[global::MetaDslx.Modeling.CollectionAttribute]
-			[global::MetaDslx.Modeling.OrderedAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty AlternativesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(ParserRuleBlock), name: "Alternatives",
-			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleAlternative),
-			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.ParserRuleAlternativeBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.ParserRuleBlock_Alternatives,
-					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.LexerRuleId), typeof(global::MetaDslx.Languages.Compiler.Model.LexerRule), typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.Rule) })]
@@ -982,74 +1393,6 @@ namespace MetaDslx.Languages.Compiler.Model
 			        mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.LexerRule_IsHidden,
 					defaultValue: null);
-			
-			[global::MetaDslx.Modeling.CollectionAttribute]
-			[global::MetaDslx.Modeling.OrderedAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty AlternativesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(LexerRule), name: "Alternatives",
-			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleAlternative),
-			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleAlternativeBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.LexerRule_Alternatives,
-					defaultValue: null);
-		}
-	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.LexerRuleAlternativeId), typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleAlternative), typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleAlternativeBuilder))]
-		public static class LexerRuleAlternative
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static LexerRuleAlternative()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(LexerRuleAlternative));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.LexerRuleAlternative; }
-			}
-			
-			[global::MetaDslx.Modeling.CollectionAttribute]
-			[global::MetaDslx.Modeling.OrderedAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty ElementsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(LexerRuleAlternative), name: "Elements",
-			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleElement),
-			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleElementBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.LexerRuleAlternative_Elements,
-					defaultValue: null);
-		}
-	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.LexerRuleElementId), typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleElement), typeof(global::MetaDslx.Languages.Compiler.Model.LexerRuleElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.RuleElement) })]
-		public static class LexerRuleElement
-		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
-		
-			static LexerRuleElement()
-			{
-				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(LexerRuleElement));
-			}
-		
-			internal static void Initialize()
-			{
-			}
-		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
-			{
-				get { return descriptor; }
-			}
-		
-			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
-			{
-				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.LexerRuleElement; }
-			}
 		}
 	}
 }
@@ -1173,6 +1516,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private GrammarOptions options0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Rule> rules0;
 	
 		internal GrammarImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -1208,6 +1553,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public GrammarOptions Options
+		{
+		    get { return this.GetReference<GrammarOptions>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Grammar.OptionsProperty, ref options0); }
 		}
 	
 		
@@ -1278,9 +1629,157 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
+		public GrammarOptionsBuilder Options
+		{
+			get { return this.GetReference<GrammarOptionsBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Grammar.OptionsProperty); }
+			set { this.SetReference<GrammarOptionsBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Grammar.OptionsProperty, value); }
+		}
+		
+		void GrammarBuilder.SetOptionsLazy(global::System.Func<GrammarOptionsBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Grammar.OptionsProperty, lazy);
+		}
+		
+		void GrammarBuilder.SetOptionsLazy(global::System.Func<GrammarBuilder, GrammarOptionsBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Grammar.OptionsProperty, lazy);
+		}
+		
+		void GrammarBuilder.SetOptionsLazy(global::System.Func<Grammar, GrammarOptions> immutableLazy, global::System.Func<GrammarBuilder, GrammarOptionsBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Grammar.OptionsProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<RuleBuilder> Rules
 		{
 			get { return this.GetList<RuleBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Grammar.RulesProperty, ref rules0); }
+		}
+	}
+	
+	internal class GrammarOptionsId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.GrammarOptions.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new GrammarOptionsImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new GrammarOptionsBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class GrammarOptionsImpl : global::MetaDslx.Modeling.ImmutableObjectBase, GrammarOptions
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isCaseInsensitive0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isWhitespaceIndented0;
+	
+		internal GrammarOptionsImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.GrammarOptions;
+	
+		public new GrammarOptionsBuilder ToMutable()
+		{
+			return (GrammarOptionsBuilder)base.ToMutable();
+		}
+	
+		public new GrammarOptionsBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (GrammarOptionsBuilder)base.ToMutable(model);
+		}
+	
+		
+		public bool IsCaseInsensitive
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty, ref isCaseInsensitive0); }
+		}
+	
+		
+		public bool IsWhitespaceIndented
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty, ref isWhitespaceIndented0); }
+		}
+	}
+	
+	internal class GrammarOptionsBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, GrammarOptionsBuilder
+	{
+	
+		internal GrammarOptionsBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.GrammarOptions(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.GrammarOptions;
+	
+		public new GrammarOptions ToImmutable()
+		{
+			return (GrammarOptions)base.ToImmutable();
+		}
+	
+		public new GrammarOptions ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (GrammarOptions)base.ToImmutable(model);
+		}
+	
+		
+		public bool IsCaseInsensitive
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty, value); }
+		}
+		
+		void GrammarOptionsBuilder.SetIsCaseInsensitiveLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty, lazy);
+		}
+		
+		void GrammarOptionsBuilder.SetIsCaseInsensitiveLazy(global::System.Func<GrammarOptionsBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty, lazy);
+		}
+		
+		void GrammarOptionsBuilder.SetIsCaseInsensitiveLazy(global::System.Func<GrammarOptions, bool> immutableLazy, global::System.Func<GrammarOptionsBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public bool IsWhitespaceIndented
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty, value); }
+		}
+		
+		void GrammarOptionsBuilder.SetIsWhitespaceIndentedLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty, lazy);
+		}
+		
+		void GrammarOptionsBuilder.SetIsWhitespaceIndentedLazy(global::System.Func<GrammarOptionsBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty, lazy);
+		}
+		
+		void GrammarOptionsBuilder.SetIsWhitespaceIndentedLazy(global::System.Func<GrammarOptions, bool> immutableLazy, global::System.Func<GrammarOptionsBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -1303,6 +1802,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
 	
 		internal RuleImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -1338,10 +1839,17 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
 		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> Alternatives
+		{
+		    get { return this.GetList<RuleAlternative>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
+		}
 	}
 	
 	internal class RuleBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, RuleBuilder
 	{
+		private global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> alternatives0;
 	
 		internal RuleBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -1398,6 +1906,143 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		{
 			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
 		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives
+		{
+			get { return this.GetList<RuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
+		}
+	}
+	
+	internal class RuleAlternativeId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleAlternative.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new RuleAlternativeImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new RuleAlternativeBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class RuleAlternativeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, RuleAlternative
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<RuleElement> elements0;
+	
+		internal RuleAlternativeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RuleAlternative;
+	
+		public new RuleAlternativeBuilder ToMutable()
+		{
+			return (RuleAlternativeBuilder)base.ToMutable();
+		}
+	
+		public new RuleAlternativeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (RuleAlternativeBuilder)base.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<RuleElement> Elements
+		{
+		    get { return this.GetList<RuleElement>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleAlternative.ElementsProperty, ref elements0); }
+		}
+	}
+	
+	internal class RuleAlternativeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, RuleAlternativeBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<RuleElementBuilder> elements0;
+	
+		internal RuleAlternativeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.RuleAlternative(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RuleAlternative;
+	
+		public new RuleAlternative ToImmutable()
+		{
+			return (RuleAlternative)base.ToImmutable();
+		}
+	
+		public new RuleAlternative ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (RuleAlternative)base.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<RuleElementBuilder> Elements
+		{
+			get { return this.GetList<RuleElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleAlternative.ElementsProperty, ref elements0); }
+		}
 	}
 	
 	internal class RuleElementId : global::MetaDslx.Modeling.ObjectId
@@ -1419,6 +2064,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isNegated0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Element element0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private AssignmentOperator assignmentOperator0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Multiplicity multiplicity0;
 	
@@ -1455,6 +2106,24 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public bool IsNegated
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.IsNegatedProperty, ref isNegated0); }
+		}
+	
+		
+		public Element Element
+		{
+		    get { return this.GetReference<Element>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.ElementProperty, ref element0); }
+		}
+	
+		
+		public AssignmentOperator AssignmentOperator
+		{
+		    get { return this.GetValue<AssignmentOperator>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.AssignmentOperatorProperty, ref assignmentOperator0); }
 		}
 	
 		
@@ -1524,6 +2193,72 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
+		public bool IsNegated
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.IsNegatedProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.IsNegatedProperty, value); }
+		}
+		
+		void RuleElementBuilder.SetIsNegatedLazy(global::System.Func<bool> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.RuleElement.IsNegatedProperty, lazy);
+		}
+		
+		void RuleElementBuilder.SetIsNegatedLazy(global::System.Func<RuleElementBuilder, bool> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.RuleElement.IsNegatedProperty, lazy);
+		}
+		
+		void RuleElementBuilder.SetIsNegatedLazy(global::System.Func<RuleElement, bool> immutableLazy, global::System.Func<RuleElementBuilder, bool> mutableLazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.RuleElement.IsNegatedProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public ElementBuilder Element
+		{
+			get { return this.GetReference<ElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.ElementProperty); }
+			set { this.SetReference<ElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.ElementProperty, value); }
+		}
+		
+		void RuleElementBuilder.SetElementLazy(global::System.Func<ElementBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RuleElement.ElementProperty, lazy);
+		}
+		
+		void RuleElementBuilder.SetElementLazy(global::System.Func<RuleElementBuilder, ElementBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RuleElement.ElementProperty, lazy);
+		}
+		
+		void RuleElementBuilder.SetElementLazy(global::System.Func<RuleElement, Element> immutableLazy, global::System.Func<RuleElementBuilder, ElementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RuleElement.ElementProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public AssignmentOperator AssignmentOperator
+		{
+			get { return this.GetValue<AssignmentOperator>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.AssignmentOperatorProperty); }
+			set { this.SetValue<AssignmentOperator>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.AssignmentOperatorProperty, value); }
+		}
+		
+		void RuleElementBuilder.SetAssignmentOperatorLazy(global::System.Func<AssignmentOperator> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.RuleElement.AssignmentOperatorProperty, lazy);
+		}
+		
+		void RuleElementBuilder.SetAssignmentOperatorLazy(global::System.Func<RuleElementBuilder, AssignmentOperator> lazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.RuleElement.AssignmentOperatorProperty, lazy);
+		}
+		
+		void RuleElementBuilder.SetAssignmentOperatorLazy(global::System.Func<RuleElement, AssignmentOperator> immutableLazy, global::System.Func<RuleElementBuilder, AssignmentOperator> mutableLazy)
+		{
+			this.SetLazyValue(CompilerDescriptor.RuleElement.AssignmentOperatorProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public Multiplicity Multiplicity
 		{
 			get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty); }
@@ -1543,6 +2278,793 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElement, Multiplicity> immutableLazy, global::System.Func<RuleElementBuilder, Multiplicity> mutableLazy)
 		{
 			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, immutableLazy, mutableLazy);
+		}
+	}
+	
+	internal class ElementId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Element.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new ElementImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new ElementBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class ElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, Element
+	{
+	
+		internal ElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.Element;
+	
+		public new ElementBuilder ToMutable()
+		{
+			return (ElementBuilder)base.ToMutable();
+		}
+	
+		public new ElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (ElementBuilder)base.ToMutable(model);
+		}
+	}
+	
+	internal class ElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ElementBuilder
+	{
+	
+		internal ElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.Element(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.Element;
+	
+		public new Element ToImmutable()
+		{
+			return (Element)base.ToImmutable();
+		}
+	
+		public new Element ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (Element)base.ToImmutable(model);
+		}
+	}
+	
+	internal class RuleReferenceId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleReference.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new RuleReferenceImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new RuleReferenceBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class RuleReferenceImpl : global::MetaDslx.Modeling.ImmutableObjectBase, RuleReference
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Rule rule0;
+	
+		internal RuleReferenceImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RuleReference;
+	
+		public new RuleReferenceBuilder ToMutable()
+		{
+			return (RuleReferenceBuilder)base.ToMutable();
+		}
+	
+		public new RuleReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (RuleReferenceBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public Rule Rule
+		{
+		    get { return this.GetReference<Rule>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleReference.RuleProperty, ref rule0); }
+		}
+	}
+	
+	internal class RuleReferenceBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, RuleReferenceBuilder
+	{
+	
+		internal RuleReferenceBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.RuleReference(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RuleReference;
+	
+		public new RuleReference ToImmutable()
+		{
+			return (RuleReference)base.ToImmutable();
+		}
+	
+		public new RuleReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (RuleReference)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public RuleBuilder Rule
+		{
+			get { return this.GetReference<RuleBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleReference.RuleProperty); }
+			set { this.SetReference<RuleBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleReference.RuleProperty, value); }
+		}
+		
+		void RuleReferenceBuilder.SetRuleLazy(global::System.Func<RuleBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RuleReference.RuleProperty, lazy);
+		}
+		
+		void RuleReferenceBuilder.SetRuleLazy(global::System.Func<RuleReferenceBuilder, RuleBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RuleReference.RuleProperty, lazy);
+		}
+		
+		void RuleReferenceBuilder.SetRuleLazy(global::System.Func<RuleReference, Rule> immutableLazy, global::System.Func<RuleReferenceBuilder, RuleBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RuleReference.RuleProperty, immutableLazy, mutableLazy);
+		}
+	}
+	
+	internal class RuleBlockId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleBlock.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new RuleBlockImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new RuleBlockBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class RuleBlockImpl : global::MetaDslx.Modeling.ImmutableObjectBase, RuleBlock
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
+	
+		internal RuleBlockImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RuleBlock;
+	
+		public new RuleBlockBuilder ToMutable()
+		{
+			return (RuleBlockBuilder)base.ToMutable();
+		}
+	
+		public new RuleBlockBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (RuleBlockBuilder)base.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		RuleBuilder Rule.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		RuleBuilder Rule.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> Alternatives
+		{
+		    get { return this.GetList<RuleAlternative>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
+		}
+	}
+	
+	internal class RuleBlockBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, RuleBlockBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> alternatives0;
+	
+		internal RuleBlockBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.RuleBlock(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RuleBlock;
+	
+		public new RuleBlock ToImmutable()
+		{
+			return (RuleBlock)base.ToImmutable();
+		}
+	
+		public new RuleBlock ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (RuleBlock)base.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		Rule RuleBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Rule RuleBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives
+		{
+			get { return this.GetList<RuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
+		}
+	}
+	
+	internal class EofElementId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.EofElement.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new EofElementImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new EofElementBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class EofElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, EofElement
+	{
+	
+		internal EofElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.EofElement;
+	
+		public new EofElementBuilder ToMutable()
+		{
+			return (EofElementBuilder)base.ToMutable();
+		}
+	
+		public new EofElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (EofElementBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	}
+	
+	internal class EofElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, EofElementBuilder
+	{
+	
+		internal EofElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.EofElement(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.EofElement;
+	
+		public new EofElement ToImmutable()
+		{
+			return (EofElement)base.ToImmutable();
+		}
+	
+		public new EofElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (EofElement)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	}
+	
+	internal class FixedElementId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.FixedElement.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new FixedElementImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new FixedElementBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class FixedElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, FixedElement
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string value0;
+	
+		internal FixedElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.FixedElement;
+	
+		public new FixedElementBuilder ToMutable()
+		{
+			return (FixedElementBuilder)base.ToMutable();
+		}
+	
+		public new FixedElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (FixedElementBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public string Value
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.FixedElement.ValueProperty, ref value0); }
+		}
+	}
+	
+	internal class FixedElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, FixedElementBuilder
+	{
+	
+		internal FixedElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.FixedElement(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.FixedElement;
+	
+		public new FixedElement ToImmutable()
+		{
+			return (FixedElement)base.ToImmutable();
+		}
+	
+		public new FixedElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (FixedElement)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public string Value
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.FixedElement.ValueProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.FixedElement.ValueProperty, value); }
+		}
+		
+		void FixedElementBuilder.SetValueLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.FixedElement.ValueProperty, lazy);
+		}
+		
+		void FixedElementBuilder.SetValueLazy(global::System.Func<FixedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.FixedElement.ValueProperty, lazy);
+		}
+		
+		void FixedElementBuilder.SetValueLazy(global::System.Func<FixedElement, string> immutableLazy, global::System.Func<FixedElementBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.FixedElement.ValueProperty, immutableLazy, mutableLazy);
+		}
+	}
+	
+	internal class WildcardElementId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.WildcardElement.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new WildcardElementImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new WildcardElementBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class WildcardElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, WildcardElement
+	{
+	
+		internal WildcardElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.WildcardElement;
+	
+		public new WildcardElementBuilder ToMutable()
+		{
+			return (WildcardElementBuilder)base.ToMutable();
+		}
+	
+		public new WildcardElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (WildcardElementBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	}
+	
+	internal class WildcardElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, WildcardElementBuilder
+	{
+	
+		internal WildcardElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.WildcardElement(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.WildcardElement;
+	
+		public new WildcardElement ToImmutable()
+		{
+			return (WildcardElement)base.ToImmutable();
+		}
+	
+		public new WildcardElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (WildcardElement)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	}
+	
+	internal class RangeElementId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RangeElement.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new RangeElementImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new RangeElementBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class RangeElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, RangeElement
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private FixedElement start0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private FixedElement end0;
+	
+		internal RangeElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RangeElement;
+	
+		public new RangeElementBuilder ToMutable()
+		{
+			return (RangeElementBuilder)base.ToMutable();
+		}
+	
+		public new RangeElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (RangeElementBuilder)base.ToMutable(model);
+		}
+	
+		ElementBuilder Element.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		ElementBuilder Element.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public FixedElement Start
+		{
+		    get { return this.GetReference<FixedElement>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RangeElement.StartProperty, ref start0); }
+		}
+	
+		
+		public FixedElement End
+		{
+		    get { return this.GetReference<FixedElement>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RangeElement.EndProperty, ref end0); }
+		}
+	}
+	
+	internal class RangeElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, RangeElementBuilder
+	{
+	
+		internal RangeElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.RangeElement(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.RangeElement;
+	
+		public new RangeElement ToImmutable()
+		{
+			return (RangeElement)base.ToImmutable();
+		}
+	
+		public new RangeElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (RangeElement)base.ToImmutable(model);
+		}
+	
+		Element ElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Element ElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public FixedElementBuilder Start
+		{
+			get { return this.GetReference<FixedElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RangeElement.StartProperty); }
+			set { this.SetReference<FixedElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RangeElement.StartProperty, value); }
+		}
+		
+		void RangeElementBuilder.SetStartLazy(global::System.Func<FixedElementBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RangeElement.StartProperty, lazy);
+		}
+		
+		void RangeElementBuilder.SetStartLazy(global::System.Func<RangeElementBuilder, FixedElementBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RangeElement.StartProperty, lazy);
+		}
+		
+		void RangeElementBuilder.SetStartLazy(global::System.Func<RangeElement, FixedElement> immutableLazy, global::System.Func<RangeElementBuilder, FixedElementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RangeElement.StartProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public FixedElementBuilder End
+		{
+			get { return this.GetReference<FixedElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RangeElement.EndProperty); }
+			set { this.SetReference<FixedElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RangeElement.EndProperty, value); }
+		}
+		
+		void RangeElementBuilder.SetEndLazy(global::System.Func<FixedElementBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RangeElement.EndProperty, lazy);
+		}
+		
+		void RangeElementBuilder.SetEndLazy(global::System.Func<RangeElementBuilder, FixedElementBuilder> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RangeElement.EndProperty, lazy);
+		}
+		
+		void RangeElementBuilder.SetEndLazy(global::System.Func<RangeElement, FixedElement> immutableLazy, global::System.Func<RangeElementBuilder, FixedElementBuilder> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.RangeElement.EndProperty, immutableLazy, mutableLazy);
 		}
 	}
 	
@@ -1566,7 +3088,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<ParserRuleAlternative> alternatives0;
+		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
 	
 		internal ParserRuleImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -1614,15 +3136,15 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<ParserRuleAlternative> Alternatives
+		public global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> Alternatives
 		{
-		    get { return this.GetList<ParserRuleAlternative>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRule.AlternativesProperty, ref alternatives0); }
+		    get { return this.GetList<RuleAlternative>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
 		}
 	}
 	
 	internal class ParserRuleBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ParserRuleBuilder
 	{
-		private global::MetaDslx.Modeling.MutableModelList<ParserRuleAlternativeBuilder> alternatives0;
+		private global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> alternatives0;
 	
 		internal ParserRuleBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -1691,633 +3213,9 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.MutableModelList<ParserRuleAlternativeBuilder> Alternatives
+		public global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives
 		{
-			get { return this.GetList<ParserRuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRule.AlternativesProperty, ref alternatives0); }
-		}
-	}
-	
-	internal class ParserRuleAlternativeId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleAlternative.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new ParserRuleAlternativeImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new ParserRuleAlternativeBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class ParserRuleAlternativeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ParserRuleAlternative
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<ParserRuleElement> elements0;
-	
-		internal ParserRuleAlternativeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleAlternative;
-	
-		public new ParserRuleAlternativeBuilder ToMutable()
-		{
-			return (ParserRuleAlternativeBuilder)base.ToMutable();
-		}
-	
-		public new ParserRuleAlternativeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (ParserRuleAlternativeBuilder)base.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.ImmutableModelList<ParserRuleElement> Elements
-		{
-		    get { return this.GetList<ParserRuleElement>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleAlternative.ElementsProperty, ref elements0); }
-		}
-	}
-	
-	internal class ParserRuleAlternativeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ParserRuleAlternativeBuilder
-	{
-		private global::MetaDslx.Modeling.MutableModelList<ParserRuleElementBuilder> elements0;
-	
-		internal ParserRuleAlternativeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CompilerImplementationProvider.Implementation.ParserRuleAlternative(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleAlternative;
-	
-		public new ParserRuleAlternative ToImmutable()
-		{
-			return (ParserRuleAlternative)base.ToImmutable();
-		}
-	
-		public new ParserRuleAlternative ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (ParserRuleAlternative)base.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<ParserRuleElementBuilder> Elements
-		{
-			get { return this.GetList<ParserRuleElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleAlternative.ElementsProperty, ref elements0); }
-		}
-	}
-	
-	internal class ParserRuleElementId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleElement.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new ParserRuleElementImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new ParserRuleElementBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class ParserRuleElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ParserRuleElement
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Multiplicity multiplicity0;
-	
-		internal ParserRuleElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleElement;
-	
-		public new ParserRuleElementBuilder ToMutable()
-		{
-			return (ParserRuleElementBuilder)base.ToMutable();
-		}
-	
-		public new ParserRuleElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (ParserRuleElementBuilder)base.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-		    get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, ref multiplicity0); }
-		}
-	}
-	
-	internal class ParserRuleElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ParserRuleElementBuilder
-	{
-	
-		internal ParserRuleElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CompilerImplementationProvider.Implementation.ParserRuleElement(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleElement;
-	
-		public new ParserRuleElement ToImmutable()
-		{
-			return (ParserRuleElement)base.ToImmutable();
-		}
-	
-		public new ParserRuleElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (ParserRuleElement)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-			get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty); }
-			set { this.SetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, value); }
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElementBuilder, Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElement, Multiplicity> immutableLazy, global::System.Func<RuleElementBuilder, Multiplicity> mutableLazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, immutableLazy, mutableLazy);
-		}
-	}
-	
-	internal class ParserRuleReferenceId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleReference.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new ParserRuleReferenceImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new ParserRuleReferenceBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class ParserRuleReferenceImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ParserRuleReference
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Multiplicity multiplicity0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Rule rule0;
-	
-		internal ParserRuleReferenceImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleReference;
-	
-		public new ParserRuleReferenceBuilder ToMutable()
-		{
-			return (ParserRuleReferenceBuilder)base.ToMutable();
-		}
-	
-		public new ParserRuleReferenceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (ParserRuleReferenceBuilder)base.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-		    get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, ref multiplicity0); }
-		}
-	
-		
-		public Rule Rule
-		{
-		    get { return this.GetReference<Rule>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleReference.RuleProperty, ref rule0); }
-		}
-	}
-	
-	internal class ParserRuleReferenceBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ParserRuleReferenceBuilder
-	{
-	
-		internal ParserRuleReferenceBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CompilerImplementationProvider.Implementation.ParserRuleReference(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleReference;
-	
-		public new ParserRuleReference ToImmutable()
-		{
-			return (ParserRuleReference)base.ToImmutable();
-		}
-	
-		public new ParserRuleReference ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (ParserRuleReference)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-			get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty); }
-			set { this.SetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, value); }
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElementBuilder, Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElement, Multiplicity> immutableLazy, global::System.Func<RuleElementBuilder, Multiplicity> mutableLazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public RuleBuilder Rule
-		{
-			get { return this.GetReference<RuleBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleReference.RuleProperty); }
-			set { this.SetReference<RuleBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleReference.RuleProperty, value); }
-		}
-		
-		void ParserRuleReferenceBuilder.SetRuleLazy(global::System.Func<RuleBuilder> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.ParserRuleReference.RuleProperty, lazy);
-		}
-		
-		void ParserRuleReferenceBuilder.SetRuleLazy(global::System.Func<ParserRuleReferenceBuilder, RuleBuilder> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.ParserRuleReference.RuleProperty, lazy);
-		}
-		
-		void ParserRuleReferenceBuilder.SetRuleLazy(global::System.Func<ParserRuleReference, Rule> immutableLazy, global::System.Func<ParserRuleReferenceBuilder, RuleBuilder> mutableLazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.ParserRuleReference.RuleProperty, immutableLazy, mutableLazy);
-		}
-	}
-	
-	internal class ParserRuleBlockId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleBlock.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new ParserRuleBlockImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new ParserRuleBlockBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class ParserRuleBlockImpl : global::MetaDslx.Modeling.ImmutableObjectBase, ParserRuleBlock
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Multiplicity multiplicity0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<ParserRuleAlternative> alternatives0;
-	
-		internal ParserRuleBlockImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleBlock;
-	
-		public new ParserRuleBlockBuilder ToMutable()
-		{
-			return (ParserRuleBlockBuilder)base.ToMutable();
-		}
-	
-		public new ParserRuleBlockBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (ParserRuleBlockBuilder)base.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-		    get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, ref multiplicity0); }
-		}
-	
-		
-		public global::MetaDslx.Modeling.ImmutableModelList<ParserRuleAlternative> Alternatives
-		{
-		    get { return this.GetList<ParserRuleAlternative>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleBlock.AlternativesProperty, ref alternatives0); }
-		}
-	}
-	
-	internal class ParserRuleBlockBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, ParserRuleBlockBuilder
-	{
-		private global::MetaDslx.Modeling.MutableModelList<ParserRuleAlternativeBuilder> alternatives0;
-	
-		internal ParserRuleBlockBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CompilerImplementationProvider.Implementation.ParserRuleBlock(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.ParserRuleBlock;
-	
-		public new ParserRuleBlock ToImmutable()
-		{
-			return (ParserRuleBlock)base.ToImmutable();
-		}
-	
-		public new ParserRuleBlock ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (ParserRuleBlock)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-			get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty); }
-			set { this.SetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, value); }
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElementBuilder, Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElement, Multiplicity> immutableLazy, global::System.Func<RuleElementBuilder, Multiplicity> mutableLazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<ParserRuleAlternativeBuilder> Alternatives
-		{
-			get { return this.GetList<ParserRuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.ParserRuleBlock.AlternativesProperty, ref alternatives0); }
+			get { return this.GetList<RuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
 		}
 	}
 	
@@ -2341,11 +3239,11 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isFragment0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isHidden0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<LexerRuleAlternative> alternatives0;
 	
 		internal LexerRuleImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -2393,6 +3291,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
+		public global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> Alternatives
+		{
+		    get { return this.GetList<RuleAlternative>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
+		}
+	
+		
 		public bool IsFragment
 		{
 		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRule.IsFragmentProperty, ref isFragment0); }
@@ -2403,17 +3307,11 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		{
 		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRule.IsHiddenProperty, ref isHidden0); }
 		}
-	
-		
-		public global::MetaDslx.Modeling.ImmutableModelList<LexerRuleAlternative> Alternatives
-		{
-		    get { return this.GetList<LexerRuleAlternative>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRule.AlternativesProperty, ref alternatives0); }
-		}
 	}
 	
 	internal class LexerRuleBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, LexerRuleBuilder
 	{
-		private global::MetaDslx.Modeling.MutableModelList<LexerRuleAlternativeBuilder> alternatives0;
+		private global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> alternatives0;
 	
 		internal LexerRuleBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -2482,6 +3380,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
+		public global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives
+		{
+			get { return this.GetList<RuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
+		}
+	
+		
 		public bool IsFragment
 		{
 			get { return this.GetValue<bool>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRule.IsFragmentProperty); }
@@ -2524,259 +3428,6 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		{
 			this.SetLazyValue(CompilerDescriptor.LexerRule.IsHiddenProperty, immutableLazy, mutableLazy);
 		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<LexerRuleAlternativeBuilder> Alternatives
-		{
-			get { return this.GetList<LexerRuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRule.AlternativesProperty, ref alternatives0); }
-		}
-	}
-	
-	internal class LexerRuleAlternativeId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRuleAlternative.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new LexerRuleAlternativeImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new LexerRuleAlternativeBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class LexerRuleAlternativeImpl : global::MetaDslx.Modeling.ImmutableObjectBase, LexerRuleAlternative
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<LexerRuleElement> elements0;
-	
-		internal LexerRuleAlternativeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.LexerRuleAlternative;
-	
-		public new LexerRuleAlternativeBuilder ToMutable()
-		{
-			return (LexerRuleAlternativeBuilder)base.ToMutable();
-		}
-	
-		public new LexerRuleAlternativeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (LexerRuleAlternativeBuilder)base.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.ImmutableModelList<LexerRuleElement> Elements
-		{
-		    get { return this.GetList<LexerRuleElement>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRuleAlternative.ElementsProperty, ref elements0); }
-		}
-	}
-	
-	internal class LexerRuleAlternativeBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, LexerRuleAlternativeBuilder
-	{
-		private global::MetaDslx.Modeling.MutableModelList<LexerRuleElementBuilder> elements0;
-	
-		internal LexerRuleAlternativeBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CompilerImplementationProvider.Implementation.LexerRuleAlternative(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.LexerRuleAlternative;
-	
-		public new LexerRuleAlternative ToImmutable()
-		{
-			return (LexerRuleAlternative)base.ToImmutable();
-		}
-	
-		public new LexerRuleAlternative ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (LexerRuleAlternative)base.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Modeling.MutableModelList<LexerRuleElementBuilder> Elements
-		{
-			get { return this.GetList<LexerRuleElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRuleAlternative.ElementsProperty, ref elements0); }
-		}
-	}
-	
-	internal class LexerRuleElementId : global::MetaDslx.Modeling.ObjectId
-	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.LexerRuleElement.MDescriptor; } }
-	
-		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return new LexerRuleElementImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
-		{
-			return new LexerRuleElementBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class LexerRuleElementImpl : global::MetaDslx.Modeling.ImmutableObjectBase, LexerRuleElement
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Multiplicity multiplicity0;
-	
-		internal LexerRuleElementImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.LexerRuleElement;
-	
-		public new LexerRuleElementBuilder ToMutable()
-		{
-			return (LexerRuleElementBuilder)base.ToMutable();
-		}
-	
-		public new LexerRuleElementBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return (LexerRuleElementBuilder)base.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		RuleElementBuilder RuleElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-		    get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, ref multiplicity0); }
-		}
-	}
-	
-	internal class LexerRuleElementBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, LexerRuleElementBuilder
-	{
-	
-		internal LexerRuleElementBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			CompilerImplementationProvider.Implementation.LexerRuleElement(this);
-		}
-	
-		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
-	
-		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.LexerRuleElement;
-	
-		public new LexerRuleElement ToImmutable()
-		{
-			return (LexerRuleElement)base.ToImmutable();
-		}
-	
-		public new LexerRuleElement ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return (LexerRuleElement)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		RuleElement RuleElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
-		}
-		
-		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
-		{
-			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
-		}
-	
-		
-		public Multiplicity Multiplicity
-		{
-			get { return this.GetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty); }
-			set { this.SetValue<Multiplicity>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.RuleElement.MultiplicityProperty, value); }
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElementBuilder, Multiplicity> lazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, lazy);
-		}
-		
-		void RuleElementBuilder.SetMultiplicityLazy(global::System.Func<RuleElement, Multiplicity> immutableLazy, global::System.Func<RuleElementBuilder, Multiplicity> mutableLazy)
-		{
-			this.SetLazyValue(CompilerDescriptor.RuleElement.MultiplicityProperty, immutableLazy, mutableLazy);
-		}
 	}
 
 	internal class CompilerBuilderInstance
@@ -2798,37 +3449,51 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder NamedElement;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NamedElement_Name;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Grammar;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Grammar_Options;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Grammar_Rules;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder GrammarOptions;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GrammarOptions_IsCaseInsensitive;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GrammarOptions_IsWhitespaceIndented;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Rule;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Rule_Alternatives;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder RuleAlternative;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RuleAlternative_Elements;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder RuleElement;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RuleElement_IsNegated;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RuleElement_Element;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RuleElement_AssignmentOperator;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RuleElement_Multiplicity;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Element;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder RuleReference;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RuleReference_Rule;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder RuleBlock;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder EofElement;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder FixedElement;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder FixedElement_Value;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder WildcardElement;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder RangeElement;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RangeElement_Start;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RangeElement_End;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ParserRule;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ParserRule_Alternatives;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ParserRuleAlternative;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ParserRuleAlternative_Elements;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ParserRuleElement;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ParserRuleReference;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ParserRuleReference_Rule;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder ParserRuleBlock;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder ParserRuleBlock_Alternatives;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder LexerRule;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LexerRule_IsFragment;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LexerRule_IsHidden;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LexerRule_Alternatives;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder LexerRuleAlternative;
-		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LexerRuleAlternative_Elements;
-		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder LexerRuleElement;
 		internal global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder Multiplicity;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp9;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp10;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp11;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp12;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp13;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp14;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp15;
+		internal global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder AssignmentOperator;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp16;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp17;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp18;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp19;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp6;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp7;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp8;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp9;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp10;
-		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp11;
 	
 		internal CompilerBuilderInstance()
 		{
@@ -2877,37 +3542,51 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			NamedElement = factory.MetaClass();
 			NamedElement_Name = factory.MetaProperty();
 			Grammar = factory.MetaClass();
+			Grammar_Options = factory.MetaProperty();
 			Grammar_Rules = factory.MetaProperty();
+			GrammarOptions = factory.MetaClass();
+			GrammarOptions_IsCaseInsensitive = factory.MetaProperty();
+			GrammarOptions_IsWhitespaceIndented = factory.MetaProperty();
 			Rule = factory.MetaClass();
+			Rule_Alternatives = factory.MetaProperty();
+			RuleAlternative = factory.MetaClass();
+			RuleAlternative_Elements = factory.MetaProperty();
 			RuleElement = factory.MetaClass();
+			RuleElement_IsNegated = factory.MetaProperty();
+			RuleElement_Element = factory.MetaProperty();
+			RuleElement_AssignmentOperator = factory.MetaProperty();
 			RuleElement_Multiplicity = factory.MetaProperty();
+			Element = factory.MetaClass();
+			RuleReference = factory.MetaClass();
+			RuleReference_Rule = factory.MetaProperty();
+			RuleBlock = factory.MetaClass();
+			EofElement = factory.MetaClass();
+			FixedElement = factory.MetaClass();
+			FixedElement_Value = factory.MetaProperty();
+			WildcardElement = factory.MetaClass();
+			RangeElement = factory.MetaClass();
+			RangeElement_Start = factory.MetaProperty();
+			RangeElement_End = factory.MetaProperty();
 			ParserRule = factory.MetaClass();
-			ParserRule_Alternatives = factory.MetaProperty();
-			ParserRuleAlternative = factory.MetaClass();
-			ParserRuleAlternative_Elements = factory.MetaProperty();
-			ParserRuleElement = factory.MetaClass();
-			ParserRuleReference = factory.MetaClass();
-			ParserRuleReference_Rule = factory.MetaProperty();
-			ParserRuleBlock = factory.MetaClass();
-			ParserRuleBlock_Alternatives = factory.MetaProperty();
 			LexerRule = factory.MetaClass();
 			LexerRule_IsFragment = factory.MetaProperty();
 			LexerRule_IsHidden = factory.MetaProperty();
-			LexerRule_Alternatives = factory.MetaProperty();
-			LexerRuleAlternative = factory.MetaClass();
-			LexerRuleAlternative_Elements = factory.MetaProperty();
-			LexerRuleElement = factory.MetaClass();
 			Multiplicity = factory.MetaEnum();
+			__tmp9 = factory.MetaEnumLiteral();
+			__tmp10 = factory.MetaEnumLiteral();
+			__tmp11 = factory.MetaEnumLiteral();
 			__tmp12 = factory.MetaEnumLiteral();
 			__tmp13 = factory.MetaEnumLiteral();
 			__tmp14 = factory.MetaEnumLiteral();
 			__tmp15 = factory.MetaEnumLiteral();
+			AssignmentOperator = factory.MetaEnum();
+			__tmp16 = factory.MetaEnumLiteral();
+			__tmp17 = factory.MetaEnumLiteral();
+			__tmp18 = factory.MetaEnumLiteral();
+			__tmp19 = factory.MetaEnumLiteral();
 			__tmp6 = factory.MetaCollectionType();
 			__tmp7 = factory.MetaCollectionType();
 			__tmp8 = factory.MetaCollectionType();
-			__tmp9 = factory.MetaCollectionType();
-			__tmp10 = factory.MetaCollectionType();
-			__tmp11 = factory.MetaCollectionType();
 	
 			__tmp1.Documentation = null;
 			__tmp1.Name = "MetaDslx";
@@ -2930,17 +3609,21 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			__tmp4.SetDefinedMetaModelLazy(() => __tmp5);
 			__tmp4.Declarations.AddLazy(() => NamedElement);
 			__tmp4.Declarations.AddLazy(() => Grammar);
+			__tmp4.Declarations.AddLazy(() => GrammarOptions);
 			__tmp4.Declarations.AddLazy(() => Rule);
+			__tmp4.Declarations.AddLazy(() => RuleAlternative);
 			__tmp4.Declarations.AddLazy(() => RuleElement);
+			__tmp4.Declarations.AddLazy(() => Element);
+			__tmp4.Declarations.AddLazy(() => RuleReference);
+			__tmp4.Declarations.AddLazy(() => RuleBlock);
+			__tmp4.Declarations.AddLazy(() => EofElement);
+			__tmp4.Declarations.AddLazy(() => FixedElement);
+			__tmp4.Declarations.AddLazy(() => WildcardElement);
+			__tmp4.Declarations.AddLazy(() => RangeElement);
 			__tmp4.Declarations.AddLazy(() => ParserRule);
-			__tmp4.Declarations.AddLazy(() => ParserRuleAlternative);
-			__tmp4.Declarations.AddLazy(() => ParserRuleElement);
-			__tmp4.Declarations.AddLazy(() => ParserRuleReference);
-			__tmp4.Declarations.AddLazy(() => ParserRuleBlock);
 			__tmp4.Declarations.AddLazy(() => LexerRule);
-			__tmp4.Declarations.AddLazy(() => LexerRuleAlternative);
-			__tmp4.Declarations.AddLazy(() => LexerRuleElement);
 			__tmp4.Declarations.AddLazy(() => Multiplicity);
+			__tmp4.Declarations.AddLazy(() => AssignmentOperator);
 			__tmp5.Documentation = null;
 			__tmp5.Name = "Compiler";
 			__tmp5.MajorVersion = 1;
@@ -2951,13 +3634,13 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			NamedElement.Documentation = null;
 			NamedElement.Name = "NamedElement";
 			NamedElement.SetNamespaceLazy(() => __tmp4);
-			NamedElement.SymbolType = null;
+			NamedElement.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol);
 			NamedElement.IsAbstract = true;
 			NamedElement.Properties.AddLazy(() => NamedElement_Name);
 			NamedElement_Name.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.String.ToMutable());
 			NamedElement_Name.Documentation = null;
 			NamedElement_Name.Name = "Name";
-			NamedElement_Name.SymbolProperty = null;
+			NamedElement_Name.SymbolProperty = "Name";
 			NamedElement_Name.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			NamedElement_Name.SetClassLazy(() => NamedElement);
 			NamedElement_Name.DefaultValue = null;
@@ -2965,31 +3648,114 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			Grammar.Documentation = null;
 			Grammar.Name = "Grammar";
 			Grammar.SetNamespaceLazy(() => __tmp4);
-			Grammar.SymbolType = null;
+			Grammar.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol);
 			Grammar.IsAbstract = false;
 			Grammar.SuperClasses.AddLazy(() => NamedElement);
+			Grammar.Properties.AddLazy(() => Grammar_Options);
 			Grammar.Properties.AddLazy(() => Grammar_Rules);
+			Grammar_Options.SetTypeLazy(() => GrammarOptions);
+			Grammar_Options.Documentation = null;
+			Grammar_Options.Name = "Options";
+			Grammar_Options.SymbolProperty = null;
+			Grammar_Options.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Grammar_Options.SetClassLazy(() => Grammar);
+			Grammar_Options.DefaultValue = null;
+			Grammar_Options.IsContainment = true;
 			Grammar_Rules.SetTypeLazy(() => __tmp6);
 			Grammar_Rules.Documentation = null;
 			Grammar_Rules.Name = "Rules";
-			Grammar_Rules.SymbolProperty = null;
+			Grammar_Rules.SymbolProperty = "Members";
 			Grammar_Rules.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			Grammar_Rules.SetClassLazy(() => Grammar);
 			Grammar_Rules.DefaultValue = null;
-			Grammar_Rules.IsContainment = false;
+			Grammar_Rules.IsContainment = true;
+			GrammarOptions.Documentation = null;
+			GrammarOptions.Name = "GrammarOptions";
+			GrammarOptions.SetNamespaceLazy(() => __tmp4);
+			GrammarOptions.SymbolType = null;
+			GrammarOptions.IsAbstract = false;
+			GrammarOptions.Properties.AddLazy(() => GrammarOptions_IsCaseInsensitive);
+			GrammarOptions.Properties.AddLazy(() => GrammarOptions_IsWhitespaceIndented);
+			GrammarOptions_IsCaseInsensitive.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			GrammarOptions_IsCaseInsensitive.Documentation = null;
+			GrammarOptions_IsCaseInsensitive.Name = "IsCaseInsensitive";
+			GrammarOptions_IsCaseInsensitive.SymbolProperty = null;
+			GrammarOptions_IsCaseInsensitive.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			GrammarOptions_IsCaseInsensitive.SetClassLazy(() => GrammarOptions);
+			GrammarOptions_IsCaseInsensitive.DefaultValue = null;
+			GrammarOptions_IsCaseInsensitive.IsContainment = false;
+			GrammarOptions_IsWhitespaceIndented.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			GrammarOptions_IsWhitespaceIndented.Documentation = null;
+			GrammarOptions_IsWhitespaceIndented.Name = "IsWhitespaceIndented";
+			GrammarOptions_IsWhitespaceIndented.SymbolProperty = null;
+			GrammarOptions_IsWhitespaceIndented.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			GrammarOptions_IsWhitespaceIndented.SetClassLazy(() => GrammarOptions);
+			GrammarOptions_IsWhitespaceIndented.DefaultValue = null;
+			GrammarOptions_IsWhitespaceIndented.IsContainment = false;
 			Rule.Documentation = null;
 			Rule.Name = "Rule";
 			Rule.SetNamespaceLazy(() => __tmp4);
-			Rule.SymbolType = null;
+			Rule.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol);
 			Rule.IsAbstract = true;
 			Rule.SuperClasses.AddLazy(() => NamedElement);
+			Rule.Properties.AddLazy(() => Rule_Alternatives);
+			Rule_Alternatives.SetTypeLazy(() => __tmp7);
+			Rule_Alternatives.Documentation = null;
+			Rule_Alternatives.Name = "Alternatives";
+			Rule_Alternatives.SymbolProperty = "Members";
+			Rule_Alternatives.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Rule_Alternatives.SetClassLazy(() => Rule);
+			Rule_Alternatives.DefaultValue = null;
+			Rule_Alternatives.IsContainment = true;
+			RuleAlternative.Documentation = null;
+			RuleAlternative.Name = "RuleAlternative";
+			RuleAlternative.SetNamespaceLazy(() => __tmp4);
+			RuleAlternative.SymbolType = null;
+			RuleAlternative.IsAbstract = false;
+			RuleAlternative.SuperClasses.AddLazy(() => NamedElement);
+			RuleAlternative.Properties.AddLazy(() => RuleAlternative_Elements);
+			RuleAlternative_Elements.SetTypeLazy(() => __tmp8);
+			RuleAlternative_Elements.Documentation = null;
+			RuleAlternative_Elements.Name = "Elements";
+			RuleAlternative_Elements.SymbolProperty = null;
+			RuleAlternative_Elements.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			RuleAlternative_Elements.SetClassLazy(() => RuleAlternative);
+			RuleAlternative_Elements.DefaultValue = null;
+			RuleAlternative_Elements.IsContainment = true;
 			RuleElement.Documentation = null;
 			RuleElement.Name = "RuleElement";
 			RuleElement.SetNamespaceLazy(() => __tmp4);
-			RuleElement.SymbolType = null;
-			RuleElement.IsAbstract = true;
+			RuleElement.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol);
+			RuleElement.IsAbstract = false;
 			RuleElement.SuperClasses.AddLazy(() => NamedElement);
+			RuleElement.Properties.AddLazy(() => RuleElement_IsNegated);
+			RuleElement.Properties.AddLazy(() => RuleElement_Element);
+			RuleElement.Properties.AddLazy(() => RuleElement_AssignmentOperator);
 			RuleElement.Properties.AddLazy(() => RuleElement_Multiplicity);
+			RuleElement_IsNegated.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
+			RuleElement_IsNegated.Documentation = null;
+			RuleElement_IsNegated.Name = "IsNegated";
+			RuleElement_IsNegated.SymbolProperty = null;
+			RuleElement_IsNegated.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			RuleElement_IsNegated.SetClassLazy(() => RuleElement);
+			RuleElement_IsNegated.DefaultValue = null;
+			RuleElement_IsNegated.IsContainment = false;
+			RuleElement_Element.SetTypeLazy(() => Element);
+			RuleElement_Element.Documentation = null;
+			RuleElement_Element.Name = "Element";
+			RuleElement_Element.SymbolProperty = "Members";
+			RuleElement_Element.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			RuleElement_Element.SetClassLazy(() => RuleElement);
+			RuleElement_Element.DefaultValue = null;
+			RuleElement_Element.IsContainment = false;
+			RuleElement_AssignmentOperator.SetTypeLazy(() => AssignmentOperator);
+			RuleElement_AssignmentOperator.Documentation = null;
+			RuleElement_AssignmentOperator.Name = "AssignmentOperator";
+			RuleElement_AssignmentOperator.SymbolProperty = null;
+			RuleElement_AssignmentOperator.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			RuleElement_AssignmentOperator.SetClassLazy(() => RuleElement);
+			RuleElement_AssignmentOperator.DefaultValue = null;
+			RuleElement_AssignmentOperator.IsContainment = false;
 			RuleElement_Multiplicity.SetTypeLazy(() => Multiplicity);
 			RuleElement_Multiplicity.Documentation = null;
 			RuleElement_Multiplicity.Name = "Multiplicity";
@@ -2998,71 +3764,90 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			RuleElement_Multiplicity.SetClassLazy(() => RuleElement);
 			RuleElement_Multiplicity.DefaultValue = null;
 			RuleElement_Multiplicity.IsContainment = false;
+			Element.Documentation = null;
+			Element.Name = "Element";
+			Element.SetNamespaceLazy(() => __tmp4);
+			Element.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol);
+			Element.IsAbstract = true;
+			RuleReference.Documentation = null;
+			RuleReference.Name = "RuleReference";
+			RuleReference.SetNamespaceLazy(() => __tmp4);
+			RuleReference.SymbolType = null;
+			RuleReference.IsAbstract = false;
+			RuleReference.SuperClasses.AddLazy(() => Element);
+			RuleReference.Properties.AddLazy(() => RuleReference_Rule);
+			RuleReference_Rule.SetTypeLazy(() => Rule);
+			RuleReference_Rule.Documentation = null;
+			RuleReference_Rule.Name = "Rule";
+			RuleReference_Rule.SymbolProperty = null;
+			RuleReference_Rule.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			RuleReference_Rule.SetClassLazy(() => RuleReference);
+			RuleReference_Rule.DefaultValue = null;
+			RuleReference_Rule.IsContainment = false;
+			RuleBlock.Documentation = null;
+			RuleBlock.Name = "RuleBlock";
+			RuleBlock.SetNamespaceLazy(() => __tmp4);
+			RuleBlock.SymbolType = null;
+			RuleBlock.IsAbstract = false;
+			RuleBlock.SuperClasses.AddLazy(() => Rule);
+			RuleBlock.SuperClasses.AddLazy(() => Element);
+			EofElement.Documentation = null;
+			EofElement.Name = "EofElement";
+			EofElement.SetNamespaceLazy(() => __tmp4);
+			EofElement.SymbolType = null;
+			EofElement.IsAbstract = false;
+			EofElement.SuperClasses.AddLazy(() => Element);
+			FixedElement.Documentation = null;
+			FixedElement.Name = "FixedElement";
+			FixedElement.SetNamespaceLazy(() => __tmp4);
+			FixedElement.SymbolType = null;
+			FixedElement.IsAbstract = false;
+			FixedElement.SuperClasses.AddLazy(() => Element);
+			FixedElement.Properties.AddLazy(() => FixedElement_Value);
+			FixedElement_Value.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.String.ToMutable());
+			FixedElement_Value.Documentation = null;
+			FixedElement_Value.Name = "Value";
+			FixedElement_Value.SymbolProperty = null;
+			FixedElement_Value.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			FixedElement_Value.SetClassLazy(() => FixedElement);
+			FixedElement_Value.DefaultValue = null;
+			FixedElement_Value.IsContainment = false;
+			WildcardElement.Documentation = null;
+			WildcardElement.Name = "WildcardElement";
+			WildcardElement.SetNamespaceLazy(() => __tmp4);
+			WildcardElement.SymbolType = null;
+			WildcardElement.IsAbstract = false;
+			WildcardElement.SuperClasses.AddLazy(() => Element);
+			RangeElement.Documentation = null;
+			RangeElement.Name = "RangeElement";
+			RangeElement.SetNamespaceLazy(() => __tmp4);
+			RangeElement.SymbolType = null;
+			RangeElement.IsAbstract = false;
+			RangeElement.SuperClasses.AddLazy(() => Element);
+			RangeElement.Properties.AddLazy(() => RangeElement_Start);
+			RangeElement.Properties.AddLazy(() => RangeElement_End);
+			RangeElement_Start.SetTypeLazy(() => FixedElement);
+			RangeElement_Start.Documentation = null;
+			RangeElement_Start.Name = "Start";
+			RangeElement_Start.SymbolProperty = null;
+			RangeElement_Start.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			RangeElement_Start.SetClassLazy(() => RangeElement);
+			RangeElement_Start.DefaultValue = null;
+			RangeElement_Start.IsContainment = true;
+			RangeElement_End.SetTypeLazy(() => FixedElement);
+			RangeElement_End.Documentation = null;
+			RangeElement_End.Name = "End";
+			RangeElement_End.SymbolProperty = null;
+			RangeElement_End.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			RangeElement_End.SetClassLazy(() => RangeElement);
+			RangeElement_End.DefaultValue = null;
+			RangeElement_End.IsContainment = true;
 			ParserRule.Documentation = null;
 			ParserRule.Name = "ParserRule";
 			ParserRule.SetNamespaceLazy(() => __tmp4);
 			ParserRule.SymbolType = null;
 			ParserRule.IsAbstract = false;
 			ParserRule.SuperClasses.AddLazy(() => Rule);
-			ParserRule.Properties.AddLazy(() => ParserRule_Alternatives);
-			ParserRule_Alternatives.SetTypeLazy(() => __tmp7);
-			ParserRule_Alternatives.Documentation = null;
-			ParserRule_Alternatives.Name = "Alternatives";
-			ParserRule_Alternatives.SymbolProperty = null;
-			ParserRule_Alternatives.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			ParserRule_Alternatives.SetClassLazy(() => ParserRule);
-			ParserRule_Alternatives.DefaultValue = null;
-			ParserRule_Alternatives.IsContainment = false;
-			ParserRuleAlternative.Documentation = null;
-			ParserRuleAlternative.Name = "ParserRuleAlternative";
-			ParserRuleAlternative.SetNamespaceLazy(() => __tmp4);
-			ParserRuleAlternative.SymbolType = null;
-			ParserRuleAlternative.IsAbstract = false;
-			ParserRuleAlternative.Properties.AddLazy(() => ParserRuleAlternative_Elements);
-			ParserRuleAlternative_Elements.SetTypeLazy(() => __tmp8);
-			ParserRuleAlternative_Elements.Documentation = null;
-			ParserRuleAlternative_Elements.Name = "Elements";
-			ParserRuleAlternative_Elements.SymbolProperty = null;
-			ParserRuleAlternative_Elements.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			ParserRuleAlternative_Elements.SetClassLazy(() => ParserRuleAlternative);
-			ParserRuleAlternative_Elements.DefaultValue = null;
-			ParserRuleAlternative_Elements.IsContainment = false;
-			ParserRuleElement.Documentation = null;
-			ParserRuleElement.Name = "ParserRuleElement";
-			ParserRuleElement.SetNamespaceLazy(() => __tmp4);
-			ParserRuleElement.SymbolType = null;
-			ParserRuleElement.IsAbstract = true;
-			ParserRuleElement.SuperClasses.AddLazy(() => RuleElement);
-			ParserRuleReference.Documentation = null;
-			ParserRuleReference.Name = "ParserRuleReference";
-			ParserRuleReference.SetNamespaceLazy(() => __tmp4);
-			ParserRuleReference.SymbolType = null;
-			ParserRuleReference.IsAbstract = false;
-			ParserRuleReference.SuperClasses.AddLazy(() => RuleElement);
-			ParserRuleReference.Properties.AddLazy(() => ParserRuleReference_Rule);
-			ParserRuleReference_Rule.SetTypeLazy(() => Rule);
-			ParserRuleReference_Rule.Documentation = null;
-			ParserRuleReference_Rule.Name = "Rule";
-			ParserRuleReference_Rule.SymbolProperty = null;
-			ParserRuleReference_Rule.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			ParserRuleReference_Rule.SetClassLazy(() => ParserRuleReference);
-			ParserRuleReference_Rule.DefaultValue = null;
-			ParserRuleReference_Rule.IsContainment = false;
-			ParserRuleBlock.Documentation = null;
-			ParserRuleBlock.Name = "ParserRuleBlock";
-			ParserRuleBlock.SetNamespaceLazy(() => __tmp4);
-			ParserRuleBlock.SymbolType = null;
-			ParserRuleBlock.IsAbstract = false;
-			ParserRuleBlock.SuperClasses.AddLazy(() => RuleElement);
-			ParserRuleBlock.Properties.AddLazy(() => ParserRuleBlock_Alternatives);
-			ParserRuleBlock_Alternatives.SetTypeLazy(() => __tmp9);
-			ParserRuleBlock_Alternatives.Documentation = null;
-			ParserRuleBlock_Alternatives.Name = "Alternatives";
-			ParserRuleBlock_Alternatives.SymbolProperty = null;
-			ParserRuleBlock_Alternatives.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			ParserRuleBlock_Alternatives.SetClassLazy(() => ParserRuleBlock);
-			ParserRuleBlock_Alternatives.DefaultValue = null;
-			ParserRuleBlock_Alternatives.IsContainment = false;
 			LexerRule.Documentation = null;
 			LexerRule.Name = "LexerRule";
 			LexerRule.SetNamespaceLazy(() => __tmp4);
@@ -3071,7 +3856,6 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			LexerRule.SuperClasses.AddLazy(() => Rule);
 			LexerRule.Properties.AddLazy(() => LexerRule_IsFragment);
 			LexerRule.Properties.AddLazy(() => LexerRule_IsHidden);
-			LexerRule.Properties.AddLazy(() => LexerRule_Alternatives);
 			LexerRule_IsFragment.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.Bool.ToMutable());
 			LexerRule_IsFragment.Documentation = null;
 			LexerRule_IsFragment.Name = "IsFragment";
@@ -3088,65 +3872,62 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			LexerRule_IsHidden.SetClassLazy(() => LexerRule);
 			LexerRule_IsHidden.DefaultValue = null;
 			LexerRule_IsHidden.IsContainment = false;
-			LexerRule_Alternatives.SetTypeLazy(() => __tmp10);
-			LexerRule_Alternatives.Documentation = null;
-			LexerRule_Alternatives.Name = "Alternatives";
-			LexerRule_Alternatives.SymbolProperty = null;
-			LexerRule_Alternatives.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			LexerRule_Alternatives.SetClassLazy(() => LexerRule);
-			LexerRule_Alternatives.DefaultValue = null;
-			LexerRule_Alternatives.IsContainment = false;
-			LexerRuleAlternative.Documentation = null;
-			LexerRuleAlternative.Name = "LexerRuleAlternative";
-			LexerRuleAlternative.SetNamespaceLazy(() => __tmp4);
-			LexerRuleAlternative.SymbolType = null;
-			LexerRuleAlternative.IsAbstract = false;
-			LexerRuleAlternative.Properties.AddLazy(() => LexerRuleAlternative_Elements);
-			LexerRuleAlternative_Elements.SetTypeLazy(() => __tmp11);
-			LexerRuleAlternative_Elements.Documentation = null;
-			LexerRuleAlternative_Elements.Name = "Elements";
-			LexerRuleAlternative_Elements.SymbolProperty = null;
-			LexerRuleAlternative_Elements.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
-			LexerRuleAlternative_Elements.SetClassLazy(() => LexerRuleAlternative);
-			LexerRuleAlternative_Elements.DefaultValue = null;
-			LexerRuleAlternative_Elements.IsContainment = false;
-			LexerRuleElement.Documentation = null;
-			LexerRuleElement.Name = "LexerRuleElement";
-			LexerRuleElement.SetNamespaceLazy(() => __tmp4);
-			LexerRuleElement.SymbolType = null;
-			LexerRuleElement.IsAbstract = false;
-			LexerRuleElement.SuperClasses.AddLazy(() => RuleElement);
 			Multiplicity.Documentation = null;
 			Multiplicity.Name = "Multiplicity";
 			Multiplicity.SetNamespaceLazy(() => __tmp4);
+			Multiplicity.EnumLiterals.AddLazy(() => __tmp9);
+			Multiplicity.EnumLiterals.AddLazy(() => __tmp10);
+			Multiplicity.EnumLiterals.AddLazy(() => __tmp11);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp12);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp13);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp14);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp15);
+			__tmp9.Documentation = null;
+			__tmp9.Name = "ExactlyOne";
+			__tmp9.SetEnumLazy(() => Multiplicity);
+			__tmp10.Documentation = null;
+			__tmp10.Name = "ZeroOrOne";
+			__tmp10.SetEnumLazy(() => Multiplicity);
+			__tmp11.Documentation = null;
+			__tmp11.Name = "ZeroOrMore";
+			__tmp11.SetEnumLazy(() => Multiplicity);
 			__tmp12.Documentation = null;
-			__tmp12.Name = "ExactlyOne";
+			__tmp12.Name = "OneOrMore";
 			__tmp12.SetEnumLazy(() => Multiplicity);
 			__tmp13.Documentation = null;
-			__tmp13.Name = "ZeroOrOne";
+			__tmp13.Name = "NonGreedyZeroOrOne";
 			__tmp13.SetEnumLazy(() => Multiplicity);
 			__tmp14.Documentation = null;
-			__tmp14.Name = "ZeroOrMore";
+			__tmp14.Name = "NonGreedyZeroOrMore";
 			__tmp14.SetEnumLazy(() => Multiplicity);
 			__tmp15.Documentation = null;
-			__tmp15.Name = "OneOrMore";
+			__tmp15.Name = "NonGreedyOneOrMore";
 			__tmp15.SetEnumLazy(() => Multiplicity);
+			AssignmentOperator.Documentation = null;
+			AssignmentOperator.Name = "AssignmentOperator";
+			AssignmentOperator.SetNamespaceLazy(() => __tmp4);
+			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp16);
+			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp17);
+			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp18);
+			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp19);
+			__tmp16.Documentation = null;
+			__tmp16.Name = "Assign";
+			__tmp16.SetEnumLazy(() => AssignmentOperator);
+			__tmp17.Documentation = null;
+			__tmp17.Name = "QuestionAssign";
+			__tmp17.SetEnumLazy(() => AssignmentOperator);
+			__tmp18.Documentation = null;
+			__tmp18.Name = "NegatedAssign";
+			__tmp18.SetEnumLazy(() => AssignmentOperator);
+			__tmp19.Documentation = null;
+			__tmp19.Name = "PlusAssign";
+			__tmp19.SetEnumLazy(() => AssignmentOperator);
 			__tmp6.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp6.SetInnerTypeLazy(() => Rule);
 			__tmp7.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp7.SetInnerTypeLazy(() => ParserRuleAlternative);
+			__tmp7.SetInnerTypeLazy(() => RuleAlternative);
 			__tmp8.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp8.SetInnerTypeLazy(() => ParserRuleElement);
-			__tmp9.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp9.SetInnerTypeLazy(() => ParserRuleAlternative);
-			__tmp10.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp10.SetInnerTypeLazy(() => LexerRuleAlternative);
-			__tmp11.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp11.SetInnerTypeLazy(() => LexerRuleElement);
+			__tmp8.SetInnerTypeLazy(() => RuleElement);
 		}
 	}
 
@@ -3210,6 +3991,24 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 	
 	
 		/// <summary>
+		/// Implements the constructor: GrammarOptions()
+		/// </summary>
+		public virtual void GrammarOptions(GrammarOptionsBuilder _this)
+		{
+			this.CallGrammarOptionsSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of GrammarOptions
+		/// </summary>
+		protected virtual void CallGrammarOptionsSuperConstructors(GrammarOptionsBuilder _this)
+		{
+		}
+	
+	
+	
+	
+		/// <summary>
 		/// Implements the constructor: Rule()
 		/// </summary>
 		/// Direct superclasses: 
@@ -3229,6 +4028,33 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		/// Calls the super constructors of Rule
 		/// </summary>
 		protected virtual void CallRuleSuperConstructors(RuleBuilder _this)
+		{
+			this.NamedElement(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: RuleAlternative()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		public virtual void RuleAlternative(RuleAlternativeBuilder _this)
+		{
+			this.CallRuleAlternativeSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of RuleAlternative
+		/// </summary>
+		protected virtual void CallRuleAlternativeSuperConstructors(RuleAlternativeBuilder _this)
 		{
 			this.NamedElement(_this);
 		}
@@ -3264,6 +4090,191 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 	
 	
 		/// <summary>
+		/// Implements the constructor: Element()
+		/// </summary>
+		public virtual void Element(ElementBuilder _this)
+		{
+			this.CallElementSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of Element
+		/// </summary>
+		protected virtual void CallElementSuperConstructors(ElementBuilder _this)
+		{
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: RuleReference()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		public virtual void RuleReference(RuleReferenceBuilder _this)
+		{
+			this.CallRuleReferenceSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of RuleReference
+		/// </summary>
+		protected virtual void CallRuleReferenceSuperConstructors(RuleReferenceBuilder _this)
+		{
+			this.Element(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: RuleBlock()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Rule</li>
+		///     <li>Element</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>NamedElement</li>
+		///     <li>Element</li>
+		///     <li>Rule</li>
+		/// </ul>
+		public virtual void RuleBlock(RuleBlockBuilder _this)
+		{
+			this.CallRuleBlockSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of RuleBlock
+		/// </summary>
+		protected virtual void CallRuleBlockSuperConstructors(RuleBlockBuilder _this)
+		{
+			this.NamedElement(_this);
+			this.Element(_this);
+			this.Rule(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: EofElement()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		public virtual void EofElement(EofElementBuilder _this)
+		{
+			this.CallEofElementSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of EofElement
+		/// </summary>
+		protected virtual void CallEofElementSuperConstructors(EofElementBuilder _this)
+		{
+			this.Element(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: FixedElement()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		public virtual void FixedElement(FixedElementBuilder _this)
+		{
+			this.CallFixedElementSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of FixedElement
+		/// </summary>
+		protected virtual void CallFixedElementSuperConstructors(FixedElementBuilder _this)
+		{
+			this.Element(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: WildcardElement()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		public virtual void WildcardElement(WildcardElementBuilder _this)
+		{
+			this.CallWildcardElementSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of WildcardElement
+		/// </summary>
+		protected virtual void CallWildcardElementSuperConstructors(WildcardElementBuilder _this)
+		{
+			this.Element(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
+		/// Implements the constructor: RangeElement()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>Element</li>
+		/// </ul>
+		public virtual void RangeElement(RangeElementBuilder _this)
+		{
+			this.CallRangeElementSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of RangeElement
+		/// </summary>
+		protected virtual void CallRangeElementSuperConstructors(RangeElementBuilder _this)
+		{
+			this.Element(_this);
+		}
+	
+	
+	
+	
+		/// <summary>
 		/// Implements the constructor: ParserRule()
 		/// </summary>
 		/// Direct superclasses: 
@@ -3287,111 +4298,6 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		{
 			this.NamedElement(_this);
 			this.Rule(_this);
-		}
-	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: ParserRuleAlternative()
-		/// </summary>
-		public virtual void ParserRuleAlternative(ParserRuleAlternativeBuilder _this)
-		{
-			this.CallParserRuleAlternativeSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of ParserRuleAlternative
-		/// </summary>
-		protected virtual void CallParserRuleAlternativeSuperConstructors(ParserRuleAlternativeBuilder _this)
-		{
-		}
-	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: ParserRuleElement()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>RuleElement</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>RuleElement</li>
-		/// </ul>
-		public virtual void ParserRuleElement(ParserRuleElementBuilder _this)
-		{
-			this.CallParserRuleElementSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of ParserRuleElement
-		/// </summary>
-		protected virtual void CallParserRuleElementSuperConstructors(ParserRuleElementBuilder _this)
-		{
-			this.NamedElement(_this);
-			this.RuleElement(_this);
-		}
-	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: ParserRuleReference()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>RuleElement</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>RuleElement</li>
-		/// </ul>
-		public virtual void ParserRuleReference(ParserRuleReferenceBuilder _this)
-		{
-			this.CallParserRuleReferenceSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of ParserRuleReference
-		/// </summary>
-		protected virtual void CallParserRuleReferenceSuperConstructors(ParserRuleReferenceBuilder _this)
-		{
-			this.NamedElement(_this);
-			this.RuleElement(_this);
-		}
-	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: ParserRuleBlock()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>RuleElement</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>RuleElement</li>
-		/// </ul>
-		public virtual void ParserRuleBlock(ParserRuleBlockBuilder _this)
-		{
-			this.CallParserRuleBlockSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of ParserRuleBlock
-		/// </summary>
-		protected virtual void CallParserRuleBlockSuperConstructors(ParserRuleBlockBuilder _this)
-		{
-			this.NamedElement(_this);
-			this.RuleElement(_this);
 		}
 	
 	
@@ -3423,52 +4329,6 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			this.Rule(_this);
 		}
 	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: LexerRuleAlternative()
-		/// </summary>
-		public virtual void LexerRuleAlternative(LexerRuleAlternativeBuilder _this)
-		{
-			this.CallLexerRuleAlternativeSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of LexerRuleAlternative
-		/// </summary>
-		protected virtual void CallLexerRuleAlternativeSuperConstructors(LexerRuleAlternativeBuilder _this)
-		{
-		}
-	
-	
-	
-	
-		/// <summary>
-		/// Implements the constructor: LexerRuleElement()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>RuleElement</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>RuleElement</li>
-		/// </ul>
-		public virtual void LexerRuleElement(LexerRuleElementBuilder _this)
-		{
-			this.CallLexerRuleElementSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of LexerRuleElement
-		/// </summary>
-		protected virtual void CallLexerRuleElementSuperConstructors(LexerRuleElementBuilder _this)
-		{
-			this.NamedElement(_this);
-			this.RuleElement(_this);
-		}
 	
 	
 	

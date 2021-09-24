@@ -1,0 +1,160 @@
+﻿parser grammar CompilerParser;
+
+@header 
+{
+//using MetaDslx.Languages.Core.Model;
+using MetaDslx.Languages.Compiler.Model;
+}
+
+options
+{
+    tokenVocab = CompilerLexer; 
+	generateCompiler=true;
+}
+
+main: grammarDeclaration EOF;
+
+//$Define(type=Namespace,nestingProperty=Members,merge=true)
+//namespaceDeclaration: KNamespace qualifiedName TSemicolon /*$Scope*/ grammarDeclaration;
+
+//$Property(Members) 
+$Define(Grammar)
+grammarDeclaration: KGrammar name TSemicolon $Scope ruleDeclarations;
+
+ruleDeclarations: ruleDeclaration*;
+
+$Property(Rules) 
+ruleDeclaration: parserRuleDeclaration | lexerRuleDeclaration;
+
+$Define(ParserRule)
+parserRuleDeclaration: parserRuleName TColon parserRuleAlternative (TBar parserRuleAlternative)* TSemicolon;
+
+$Property(Alternatives)
+$Define(RuleAlternative)
+parserRuleAlternative: parserRuleAlternativeElement+ eofElement?;
+
+$Property(Elements)
+$Define(RuleElement)
+$Property(Element)
+$Define(EofElement)
+eofElement: KEof;
+
+$Property(Elements)
+$Define(RuleElement)
+parserRuleAlternativeElement: parserMultiElement | parserNegatedElement;
+
+parserMultiElement: (elementName assign)? parserRuleElement multiplicity?;
+
+$Property(AssignmentOperator)
+assign
+	: $Value(AssignmentOperator.Assign) TAssign 
+	| $Value(AssignmentOperator.QuestionAssign) TQuestionAssign 
+	| $Value(AssignmentOperator.NegatedAssign) TNegatedAssign 
+	| $Value(AssignmentOperator.PlusAssign) TPlusAssign
+	;
+$Property(Multiplicity)
+multiplicity
+	: $Value(Multiplicity.NonGreedyZeroOrOne) TNonGreedyZeroOrOne 
+	| $Value(Multiplicity.NonGreedyZeroOrMore) TNonGreedyZeroOrMore 
+	| $Value(Multiplicity.NonGreedyOneOrMore) TNonGreedyOneOrMore 
+	| $Value(Multiplicity.ZeroOrOne) TZeroOrOne 
+	| $Value(Multiplicity.ZeroOrMore) TZeroOrMore 
+	| $Value(Multiplicity.OneOrMore) TOneOrMore
+	;
+
+$Property(name=IsNegated,value=true)
+parserNegatedElement: TNegate parserRuleElement;
+
+$Property(Element)
+parserRuleElement: fixedElement | parserRuleReference | parserRuleBlock;
+
+$Define(FixedElement)
+fixedElement: $Property(Value) stringLiteral;
+
+$Define(RuleReference)
+parserRuleReference: $Property(Rule) $Use(Rule) identifier;
+
+$Define(RuleBlock)
+parserRuleBlock: TOpenParen parserRuleAlternative (TBar parserRuleAlternative)* TCloseParen;
+
+$Define(LexerRule)
+lexerRuleDeclaration: lexerRuleName TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
+
+$Property(Alternatives)
+$Define(RuleAlternative)
+lexerRuleAlternative: lexerRuleAlternativeElement+;
+
+$Property(Elements)
+$Define(RuleElement)
+lexerRuleAlternativeElement: lexerMultiElement | lexerNegatedElement | lexerRangeElement;
+
+lexerMultiElement: lexerRuleElement multiplicity?;
+
+$Property(name=IsNegated,value=true)
+lexerNegatedElement: TNegate lexerRuleElement;
+
+$Define(RangeElement)
+lexerRangeElement: $Property(Start) start=fixedElement TArrow $Property(End) end=fixedElement;
+
+lexerRuleElement: fixedElement | wildcardElement | lexerRuleReference | lexerRuleBlock;
+
+$Define(WildcardElement)
+wildcardElement: TDot;
+
+$Define(RuleReference)
+lexerRuleReference: $Property(Rule) $Use(LexerRule) identifier;
+
+$Define(RuleBlock)
+lexerRuleBlock: TOpenParen lexerRuleAlternative (TBar lexerRuleAlternative)* TCloseParen;
+
+// Identifiers
+$Name
+name : identifier;
+
+$Identifier
+identifier : LexerIdentifier | ParserIdentifier;
+
+$Name
+$Identifier
+lexerRuleName : LexerIdentifier;
+
+$Name
+$Identifier
+parserRuleName : ParserIdentifier;
+
+$Name
+$Identifier
+elementName : LexerIdentifier;
+
+// Literals
+literal 
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
+	;
+
+// Null literal
+$Value
+nullLiteral : KNull;
+
+// Boolean literals
+$Value
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+$Value
+integerLiteral : LInteger;
+
+$Value
+decimalLiteral : LDecimal;
+
+$Value
+scientificLiteral : LScientific;
+
+// String literals
+$Value
+stringLiteral : LString;
+

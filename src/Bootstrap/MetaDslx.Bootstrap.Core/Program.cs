@@ -1,5 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Compiler;
+using MetaDslx.Languages.Compiler.Model;
 using MetaDslx.Languages.Core;
 using MetaDslx.Languages.Core.Model;
 using MetaDslx.Modeling;
@@ -14,9 +16,11 @@ namespace MetaDslx.Bootstrap.Core
         static void Main(string[] args)
         {
             CoreDescriptor.Initialize();
+            CompilerDescriptor.Initialize();
             var coreAssembly = typeof(object).Assembly.Location;
             var assemblyPath = Path.GetDirectoryName(coreAssembly);
             var coreRef = MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll"));
+            var formatter = new DiagnosticFormatter();
 
             //string text = "x => (int)5*true;";
             //string text = "x => 5*true;";
@@ -62,15 +66,28 @@ var z = 3;
 z = Max(x,y);
 Print(z);
 ";
-            var syntaxTree = CoreSyntaxTree.ParseText(text);
+            /*var syntaxTree = CoreSyntaxTree.ParseText(text);
             var compilation = CoreCompilation.Create("CoreTest")
                 .AddReferences(coreRef)
                 .AddReferences(ModelReference.CreateFromModel(CoreInstance.MModel))
                 .AddSyntaxTrees(syntaxTree);
+            compilation.ForceComplete();
             var model = (MutableModel)compilation.Model;
             Console.WriteLine(model);
-            var formatter = new DiagnosticFormatter();
             foreach (var diag in compilation.GetDiagnostics())
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }*/
+
+            var grammarCode = File.ReadAllText(@"..\..\..\Sample.mtext");
+            var csyntaxTree = CompilerSyntaxTree.ParseText(grammarCode);
+            var ccompilation = CoreCompilation.Create("CompilerTest")
+                .AddReferences(ModelReference.CreateFromModel(CoreInstance.MModel))
+                .AddSyntaxTrees(csyntaxTree);
+            ccompilation.ForceComplete();
+            var cmodel = (MutableModel)ccompilation.Model;
+            Console.WriteLine(cmodel);
+            foreach (var diag in ccompilation.GetDiagnostics())
             {
                 Console.WriteLine(formatter.Format(diag));
             }

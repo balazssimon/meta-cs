@@ -49,6 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public override Binder DefaultVisit(SyntaxNode parent)
         {
+            if (parent.Parent == null) return BuckStopsHereBinder;
             return VisitCore(parent.Parent);
         }
 
