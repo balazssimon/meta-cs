@@ -97,7 +97,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 var mtype = ms.ModelObjectType;
                 if (mtype != null)
                 {
-                    if (_types.Any(t => t.IsAssignableFrom(mtype))) return true;
+                    if (_types.Any(t => t.IsAssignableFrom(mtype))/* || _types.Contains(typeof(Type))*/) return true;
                     if (this.Flags.Includes(BinderFlags.AllowMetaConstants)) return typeof(MetaConstant).IsAssignableFrom(mtype) || typeof(MetaConstantBuilder).IsAssignableFrom(mtype);
                 }
             }

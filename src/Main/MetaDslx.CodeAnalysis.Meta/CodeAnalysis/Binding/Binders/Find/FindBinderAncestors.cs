@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public BinderPosition<T> FindOne(bool includeSelf = false)
         {
             var results = FindAll(includeSelf);
-            //Debug.Assert(results.Length == 1);
+            Debug.Assert(results.Length == 1);
             return results.Length > 0 ? results[0] : default;
         }
 

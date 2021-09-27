@@ -13,7 +13,6 @@ using MetaDslx.Languages.Compiler.Syntax;
 using MetaDslx.Languages.Compiler.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler

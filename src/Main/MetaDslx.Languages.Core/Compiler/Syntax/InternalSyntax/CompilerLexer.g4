@@ -14,10 +14,12 @@ channels
 // Keywords
                                                        
 KNamespace : 'namespace';
+KUsing : 'using';
 KGrammar : 'grammar';
 KOptions : 'options';
 KFragment : 'fragment';
 KHidden : 'hidden';
+KDefines : 'defines';
 KTrue : 'true';
 KFalse : 'false';
 KNull : 'null';
@@ -56,8 +58,8 @@ TGreaterThan : '>';
 LexerIdentifier : '@'? LexerIdentifierBegin IdentifierCharacter*;
                        
 ParserIdentifier : '@'? ParserIdentifierBegin IdentifierCharacter*;
-fragment LexerIdentifierBegin : [a-z];
-fragment ParserIdentifierBegin : [A-Z];
+fragment LexerIdentifierBegin : [A-Z];
+fragment ParserIdentifierBegin : [a-z];
 fragment IdentifierCharacter : [a-zA-Z0-9_];
 
                    

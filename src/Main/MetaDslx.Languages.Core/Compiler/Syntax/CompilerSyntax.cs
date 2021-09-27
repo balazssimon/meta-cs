@@ -162,7 +162,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	
 	public sealed class MainSyntax : CompilerSyntaxNode, ICompilationUnitSyntax
 	{
-	    private GrammarDeclarationSyntax grammarDeclaration;
+	    private NamespaceDeclarationSyntax namespaceDeclaration;
 	
 	    public MainSyntax(InternalSyntaxNode green, CompilerSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -174,9 +174,9 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    {
 	    }
 	
-	    public GrammarDeclarationSyntax GrammarDeclaration 
+	    public NamespaceDeclarationSyntax NamespaceDeclaration 
 		{ 
-			get { return this.GetRed(ref this.grammarDeclaration, 0); } 
+			get { return this.GetRed(ref this.namespaceDeclaration, 0); } 
 		}
 	    public SyntaxToken EndOfFileToken 
 		{ 
@@ -192,7 +192,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.grammarDeclaration, 0);
+				case 0: return this.GetRed(ref this.namespaceDeclaration, 0);
 				default: return null;
 	        }
 	    }
@@ -201,27 +201,27 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.grammarDeclaration;
+				case 0: return this.namespaceDeclaration;
 				default: return null;
 	        }
 	    }
 	
-	    public MainSyntax WithGrammarDeclaration(GrammarDeclarationSyntax grammarDeclaration)
+	    public MainSyntax WithNamespaceDeclaration(NamespaceDeclarationSyntax namespaceDeclaration)
 		{
-			return this.Update(GrammarDeclaration, this.EndOfFileToken);
+			return this.Update(NamespaceDeclaration, this.EndOfFileToken);
 		}
 	
 	    public MainSyntax WithEndOfFileToken(SyntaxToken eOF)
 		{
-			return this.Update(this.GrammarDeclaration, EndOfFileToken);
+			return this.Update(this.NamespaceDeclaration, EndOfFileToken);
 		}
 	
-	    public MainSyntax Update(GrammarDeclarationSyntax grammarDeclaration, SyntaxToken eOF)
+	    public MainSyntax Update(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 	    {
-	        if (this.GrammarDeclaration != grammarDeclaration ||
+	        if (this.NamespaceDeclaration != namespaceDeclaration ||
 				this.EndOfFileToken != eOF)
 	        {
-	            var newNode = CompilerLanguage.Instance.SyntaxFactory.Main(grammarDeclaration, eOF);
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.Main(namespaceDeclaration, eOF);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -243,6 +243,214 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    public override void Accept(ICompilerSyntaxVisitor visitor)
 	    {
 	        visitor.VisitMain(this);
+	    }
+	}
+	
+	public sealed class NamespaceDeclarationSyntax : CompilerSyntaxNode
+	{
+	    private QualifiedNameSyntax qualifiedName;
+	    private NamespaceBodySyntax namespaceBody;
+	
+	    public NamespaceDeclarationSyntax(InternalSyntaxNode green, CompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public NamespaceDeclarationSyntax(InternalSyntaxNode green, CompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KNamespace 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.NamespaceDeclarationGreen)this.Green;
+				var greenToken = green.KNamespace;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public QualifiedNameSyntax QualifiedName 
+		{ 
+			get { return this.GetRed(ref this.qualifiedName, 1); } 
+		}
+	    public SyntaxToken TSemicolon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.NamespaceDeclarationGreen)this.Green;
+				var greenToken = green.TSemicolon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public NamespaceBodySyntax NamespaceBody 
+		{ 
+			get { return this.GetRed(ref this.namespaceBody, 3); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.qualifiedName, 1);
+				case 3: return this.GetRed(ref this.namespaceBody, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.qualifiedName;
+				case 3: return this.namespaceBody;
+				default: return null;
+	        }
+	    }
+	
+	    public NamespaceDeclarationSyntax WithKNamespace(SyntaxToken kNamespace)
+		{
+			return this.Update(KNamespace, this.QualifiedName, this.TSemicolon, this.NamespaceBody);
+		}
+	
+	    public NamespaceDeclarationSyntax WithQualifiedName(QualifiedNameSyntax qualifiedName)
+		{
+			return this.Update(this.KNamespace, QualifiedName, this.TSemicolon, this.NamespaceBody);
+		}
+	
+	    public NamespaceDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
+		{
+			return this.Update(this.KNamespace, this.QualifiedName, TSemicolon, this.NamespaceBody);
+		}
+	
+	    public NamespaceDeclarationSyntax WithNamespaceBody(NamespaceBodySyntax namespaceBody)
+		{
+			return this.Update(this.KNamespace, this.QualifiedName, this.TSemicolon, NamespaceBody);
+		}
+	
+	    public NamespaceDeclarationSyntax Update(SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, SyntaxToken tSemicolon, NamespaceBodySyntax namespaceBody)
+	    {
+	        if (this.KNamespace != kNamespace ||
+				this.QualifiedName != qualifiedName ||
+				this.TSemicolon != tSemicolon ||
+				this.NamespaceBody != namespaceBody)
+	        {
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.NamespaceDeclaration(kNamespace, qualifiedName, tSemicolon, namespaceBody);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (NamespaceDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNamespaceDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitNamespaceDeclaration(this);
+	    }
+	
+	    public override void Accept(ICompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitNamespaceDeclaration(this);
+	    }
+	}
+	
+	public sealed class NamespaceBodySyntax : CompilerSyntaxNode
+	{
+	    private SyntaxNode usingDeclaration;
+	    private GrammarDeclarationSyntax grammarDeclaration;
+	
+	    public NamespaceBodySyntax(InternalSyntaxNode green, CompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public NamespaceBodySyntax(InternalSyntaxNode green, CompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public Microsoft.CodeAnalysis.SyntaxList<UsingDeclarationSyntax> UsingDeclaration 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.usingDeclaration, 0);
+				if (red != null) return new Microsoft.CodeAnalysis.SyntaxList<UsingDeclarationSyntax>(red);
+				return default;
+			} 
+		}
+	    public GrammarDeclarationSyntax GrammarDeclaration 
+		{ 
+			get { return this.GetRed(ref this.grammarDeclaration, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.usingDeclaration, 0);
+				case 1: return this.GetRed(ref this.grammarDeclaration, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.usingDeclaration;
+				case 1: return this.grammarDeclaration;
+				default: return null;
+	        }
+	    }
+	
+	    public NamespaceBodySyntax WithUsingDeclaration(Microsoft.CodeAnalysis.SyntaxList<UsingDeclarationSyntax> usingDeclaration)
+		{
+			return this.Update(UsingDeclaration, this.GrammarDeclaration);
+		}
+	
+	    public NamespaceBodySyntax AddUsingDeclaration(params UsingDeclarationSyntax[] usingDeclaration)
+		{
+			return this.WithUsingDeclaration(this.UsingDeclaration.AddRange(usingDeclaration));
+		}
+	
+	    public NamespaceBodySyntax WithGrammarDeclaration(GrammarDeclarationSyntax grammarDeclaration)
+		{
+			return this.Update(this.UsingDeclaration, GrammarDeclaration);
+		}
+	
+	    public NamespaceBodySyntax Update(Microsoft.CodeAnalysis.SyntaxList<UsingDeclarationSyntax> usingDeclaration, GrammarDeclarationSyntax grammarDeclaration)
+	    {
+	        if (this.UsingDeclaration != usingDeclaration ||
+				this.GrammarDeclaration != grammarDeclaration)
+	        {
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.NamespaceBody(usingDeclaration, grammarDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (NamespaceBodySyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNamespaceBody(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitNamespaceBody(this);
+	    }
+	
+	    public override void Accept(ICompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitNamespaceBody(this);
 	    }
 	}
 	
@@ -357,6 +565,135 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    public override void Accept(ICompilerSyntaxVisitor visitor)
 	    {
 	        visitor.VisitGrammarDeclaration(this);
+	    }
+	}
+	
+	public sealed class UsingDeclarationSyntax : CompilerSyntaxNode
+	{
+	    private NameSyntax name;
+	    private QualifierSyntax qualifier;
+	
+	    public UsingDeclarationSyntax(InternalSyntaxNode green, CompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public UsingDeclarationSyntax(InternalSyntaxNode green, CompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KUsing 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.UsingDeclarationGreen)this.Green;
+				var greenToken = green.KUsing;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 1); } 
+		}
+	    public SyntaxToken TAssign 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.UsingDeclarationGreen)this.Green;
+				var greenToken = green.TAssign;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 3); } 
+		}
+	    public SyntaxToken TSemicolon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.UsingDeclarationGreen)this.Green;
+				var greenToken = green.TSemicolon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.name, 1);
+				case 3: return this.GetRed(ref this.qualifier, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.name;
+				case 3: return this.qualifier;
+				default: return null;
+	        }
+	    }
+	
+	    public UsingDeclarationSyntax WithKUsing(SyntaxToken kUsing)
+		{
+			return this.Update(KUsing, this.Name, this.TAssign, this.Qualifier, this.TSemicolon);
+		}
+	
+	    public UsingDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.KUsing, Name, this.TAssign, this.Qualifier, this.TSemicolon);
+		}
+	
+	    public UsingDeclarationSyntax WithTAssign(SyntaxToken tAssign)
+		{
+			return this.Update(this.KUsing, this.Name, TAssign, this.Qualifier, this.TSemicolon);
+		}
+	
+	    public UsingDeclarationSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.KUsing, this.Name, this.TAssign, Qualifier, this.TSemicolon);
+		}
+	
+	    public UsingDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
+		{
+			return this.Update(this.KUsing, this.Name, this.TAssign, this.Qualifier, TSemicolon);
+		}
+	
+	    public UsingDeclarationSyntax Update(SyntaxToken kUsing, NameSyntax name, SyntaxToken tAssign, QualifierSyntax qualifier, SyntaxToken tSemicolon)
+	    {
+	        if (this.KUsing != kUsing ||
+				this.Name != name ||
+				this.TAssign != tAssign ||
+				this.Qualifier != qualifier ||
+				this.TSemicolon != tSemicolon)
+	        {
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.UsingDeclaration(kUsing, name, tAssign, qualifier, tSemicolon);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (UsingDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitUsingDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitUsingDeclaration(this);
+	    }
+	
+	    public override void Accept(ICompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitUsingDeclaration(this);
 	    }
 	}
 	
@@ -540,6 +877,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	public sealed class ParserRuleDeclarationSyntax : CompilerSyntaxNode
 	{
 	    private ParserRuleNameSyntax parserRuleName;
+	    private QualifierSyntax qualifier;
 	    private SyntaxNode parserRuleAlternative;
 	
 	    public ParserRuleDeclarationSyntax(InternalSyntaxNode green, CompilerSyntaxTree syntaxTree, int position)
@@ -556,23 +894,36 @@ namespace MetaDslx.Languages.Compiler.Syntax
 		{ 
 			get { return this.GetRed(ref this.parserRuleName, 0); } 
 		}
+	    public SyntaxToken KDefines 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.ParserRuleDeclarationGreen)this.Green;
+				var greenToken = green.KDefines;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 2); } 
+		}
 	    public SyntaxToken TColon 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.ParserRuleDeclarationGreen)this.Green;
 				var greenToken = green.TColon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
 		}
 	    public Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax> ParserRuleAlternative 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.parserRuleAlternative, 2);
+				var red = this.GetRed(ref this.parserRuleAlternative, 4);
 				if (red != null)
 				{
-					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax>(red, this.GetChildIndex(2));
+					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax>(red, this.GetChildIndex(4));
 				}
 				return default;
 			} 
@@ -583,7 +934,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.ParserRuleDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(5), this.GetChildIndex(5));
 			}
 		}
 	
@@ -592,7 +943,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	        switch (index)
 	        {
 				case 0: return this.GetRed(ref this.parserRuleName, 0);
-				case 2: return this.GetRed(ref this.parserRuleAlternative, 2);
+				case 2: return this.GetRed(ref this.qualifier, 2);
+				case 4: return this.GetRed(ref this.parserRuleAlternative, 4);
 				default: return null;
 	        }
 	    }
@@ -602,24 +954,35 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	        switch (index)
 	        {
 				case 0: return this.parserRuleName;
-				case 2: return this.parserRuleAlternative;
+				case 2: return this.qualifier;
+				case 4: return this.parserRuleAlternative;
 				default: return null;
 	        }
 	    }
 	
 	    public ParserRuleDeclarationSyntax WithParserRuleName(ParserRuleNameSyntax parserRuleName)
 		{
-			return this.Update(ParserRuleName, this.TColon, this.ParserRuleAlternative, this.TSemicolon);
+			return this.Update(ParserRuleName, this.KDefines, this.Qualifier, this.TColon, this.ParserRuleAlternative, this.TSemicolon);
+		}
+	
+	    public ParserRuleDeclarationSyntax WithKDefines(SyntaxToken kDefines)
+		{
+			return this.Update(this.ParserRuleName, KDefines, this.Qualifier, this.TColon, this.ParserRuleAlternative, this.TSemicolon);
+		}
+	
+	    public ParserRuleDeclarationSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.ParserRuleName, this.KDefines, Qualifier, this.TColon, this.ParserRuleAlternative, this.TSemicolon);
 		}
 	
 	    public ParserRuleDeclarationSyntax WithTColon(SyntaxToken tColon)
 		{
-			return this.Update(this.ParserRuleName, TColon, this.ParserRuleAlternative, this.TSemicolon);
+			return this.Update(this.ParserRuleName, this.KDefines, this.Qualifier, TColon, this.ParserRuleAlternative, this.TSemicolon);
 		}
 	
 	    public ParserRuleDeclarationSyntax WithParserRuleAlternative(Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax> parserRuleAlternative)
 		{
-			return this.Update(this.ParserRuleName, this.TColon, ParserRuleAlternative, this.TSemicolon);
+			return this.Update(this.ParserRuleName, this.KDefines, this.Qualifier, this.TColon, ParserRuleAlternative, this.TSemicolon);
 		}
 	
 	    public ParserRuleDeclarationSyntax AddParserRuleAlternative(params ParserRuleAlternativeSyntax[] parserRuleAlternative)
@@ -629,17 +992,19 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	
 	    public ParserRuleDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.ParserRuleName, this.TColon, this.ParserRuleAlternative, TSemicolon);
+			return this.Update(this.ParserRuleName, this.KDefines, this.Qualifier, this.TColon, this.ParserRuleAlternative, TSemicolon);
 		}
 	
-	    public ParserRuleDeclarationSyntax Update(ParserRuleNameSyntax parserRuleName, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax> parserRuleAlternative, SyntaxToken tSemicolon)
+	    public ParserRuleDeclarationSyntax Update(ParserRuleNameSyntax parserRuleName, SyntaxToken kDefines, QualifierSyntax qualifier, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax> parserRuleAlternative, SyntaxToken tSemicolon)
 	    {
 	        if (this.ParserRuleName != parserRuleName ||
+				this.KDefines != kDefines ||
+				this.Qualifier != qualifier ||
 				this.TColon != tColon ||
 				this.ParserRuleAlternative != parserRuleAlternative ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = CompilerLanguage.Instance.SyntaxFactory.ParserRuleDeclaration(parserRuleName, tColon, parserRuleAlternative, tSemicolon);
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.ParserRuleDeclaration(parserRuleName, kDefines, qualifier, tColon, parserRuleAlternative, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1661,9 +2026,18 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    {
 	    }
 	
+	    public SyntaxToken Modifier 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.LexerRuleDeclarationGreen)this.Green;
+				var greenToken = green.Modifier;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
 	    public LexerRuleNameSyntax LexerRuleName 
 		{ 
-			get { return this.GetRed(ref this.lexerRuleName, 0); } 
+			get { return this.GetRed(ref this.lexerRuleName, 1); } 
 		}
 	    public SyntaxToken TColon 
 		{ 
@@ -1671,17 +2045,17 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.LexerRuleDeclarationGreen)this.Green;
 				var greenToken = green.TColon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
 		}
 	    public Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax> LexerRuleAlternative 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.lexerRuleAlternative, 2);
+				var red = this.GetRed(ref this.lexerRuleAlternative, 3);
 				if (red != null)
 				{
-					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax>(red, this.GetChildIndex(2));
+					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax>(red, this.GetChildIndex(3));
 				}
 				return default;
 			} 
@@ -1692,7 +2066,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Compiler.Syntax.InternalSyntax.LexerRuleDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
 		}
 	
@@ -1700,8 +2074,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.lexerRuleName, 0);
-				case 2: return this.GetRed(ref this.lexerRuleAlternative, 2);
+				case 1: return this.GetRed(ref this.lexerRuleName, 1);
+				case 3: return this.GetRed(ref this.lexerRuleAlternative, 3);
 				default: return null;
 	        }
 	    }
@@ -1710,25 +2084,30 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.lexerRuleName;
-				case 2: return this.lexerRuleAlternative;
+				case 1: return this.lexerRuleName;
+				case 3: return this.lexerRuleAlternative;
 				default: return null;
 	        }
 	    }
 	
+	    public LexerRuleDeclarationSyntax WithModifier(SyntaxToken modifier)
+		{
+			return this.Update(Modifier, this.LexerRuleName, this.TColon, this.LexerRuleAlternative, this.TSemicolon);
+		}
+	
 	    public LexerRuleDeclarationSyntax WithLexerRuleName(LexerRuleNameSyntax lexerRuleName)
 		{
-			return this.Update(LexerRuleName, this.TColon, this.LexerRuleAlternative, this.TSemicolon);
+			return this.Update(this.Modifier, LexerRuleName, this.TColon, this.LexerRuleAlternative, this.TSemicolon);
 		}
 	
 	    public LexerRuleDeclarationSyntax WithTColon(SyntaxToken tColon)
 		{
-			return this.Update(this.LexerRuleName, TColon, this.LexerRuleAlternative, this.TSemicolon);
+			return this.Update(this.Modifier, this.LexerRuleName, TColon, this.LexerRuleAlternative, this.TSemicolon);
 		}
 	
 	    public LexerRuleDeclarationSyntax WithLexerRuleAlternative(Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax> lexerRuleAlternative)
 		{
-			return this.Update(this.LexerRuleName, this.TColon, LexerRuleAlternative, this.TSemicolon);
+			return this.Update(this.Modifier, this.LexerRuleName, this.TColon, LexerRuleAlternative, this.TSemicolon);
 		}
 	
 	    public LexerRuleDeclarationSyntax AddLexerRuleAlternative(params LexerRuleAlternativeSyntax[] lexerRuleAlternative)
@@ -1738,17 +2117,18 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	
 	    public LexerRuleDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.LexerRuleName, this.TColon, this.LexerRuleAlternative, TSemicolon);
+			return this.Update(this.Modifier, this.LexerRuleName, this.TColon, this.LexerRuleAlternative, TSemicolon);
 		}
 	
-	    public LexerRuleDeclarationSyntax Update(LexerRuleNameSyntax lexerRuleName, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax> lexerRuleAlternative, SyntaxToken tSemicolon)
+	    public LexerRuleDeclarationSyntax Update(SyntaxToken modifier, LexerRuleNameSyntax lexerRuleName, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax> lexerRuleAlternative, SyntaxToken tSemicolon)
 	    {
-	        if (this.LexerRuleName != lexerRuleName ||
+	        if (this.Modifier != modifier ||
+				this.LexerRuleName != lexerRuleName ||
 				this.TColon != tColon ||
 				this.LexerRuleAlternative != lexerRuleAlternative ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = CompilerLanguage.Instance.SyntaxFactory.LexerRuleDeclaration(lexerRuleName, tColon, lexerRuleAlternative, tSemicolon);
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.LexerRuleDeclaration(modifier, lexerRuleName, tColon, lexerRuleAlternative, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -2719,6 +3099,161 @@ namespace MetaDslx.Languages.Compiler.Syntax
 	    }
 	}
 	
+	public sealed class QualifiedNameSyntax : CompilerSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	
+	    public QualifiedNameSyntax(InternalSyntaxNode green, CompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public QualifiedNameSyntax(InternalSyntaxNode green, CompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 0); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.qualifier, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.qualifier;
+				default: return null;
+	        }
+	    }
+	
+	    public QualifiedNameSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(Qualifier);
+		}
+	
+	    public QualifiedNameSyntax Update(QualifierSyntax qualifier)
+	    {
+	        if (this.Qualifier != qualifier)
+	        {
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.QualifiedName(qualifier);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (QualifiedNameSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitQualifiedName(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitQualifiedName(this);
+	    }
+	
+	    public override void Accept(ICompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitQualifiedName(this);
+	    }
+	}
+	
+	public sealed class QualifierSyntax : CompilerSyntaxNode
+	{
+	    private SyntaxNode identifier;
+	
+	    public QualifierSyntax(InternalSyntaxNode green, CompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public QualifierSyntax(InternalSyntaxNode green, CompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public Microsoft.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> Identifier 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.identifier, 0);
+				if (red != null)
+				{
+					return new Microsoft.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax>(red, this.GetChildIndex(0));
+				}
+				return default;
+			} 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.identifier, 0);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.identifier;
+				default: return null;
+	        }
+	    }
+	
+	    public QualifierSyntax WithIdentifier(Microsoft.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> identifier)
+		{
+			return this.Update(Identifier);
+		}
+	
+	    public QualifierSyntax AddIdentifier(params IdentifierSyntax[] identifier)
+		{
+			return this.WithIdentifier(this.Identifier.AddRange(identifier));
+		}
+	
+	    public QualifierSyntax Update(Microsoft.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> identifier)
+	    {
+	        if (this.Identifier != identifier)
+	        {
+	            var newNode = CompilerLanguage.Instance.SyntaxFactory.Qualifier(identifier);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (QualifierSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(ICompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitQualifier(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(ICompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitQualifier(this);
+	    }
+	
+	    public override void Accept(ICompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitQualifier(this);
+	    }
+	}
+	
 	public sealed class IdentifierSyntax : CompilerSyntaxNode
 	{
 	
@@ -3659,7 +4194,13 @@ namespace MetaDslx.Languages.Compiler
 		
 		void VisitMain(MainSyntax node);
 		
+		void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node);
+		
+		void VisitNamespaceBody(NamespaceBodySyntax node);
+		
 		void VisitGrammarDeclaration(GrammarDeclarationSyntax node);
+		
+		void VisitUsingDeclaration(UsingDeclarationSyntax node);
 		
 		void VisitRuleDeclarations(RuleDeclarationsSyntax node);
 		
@@ -3711,6 +4252,10 @@ namespace MetaDslx.Languages.Compiler
 		
 		void VisitName(NameSyntax node);
 		
+		void VisitQualifiedName(QualifiedNameSyntax node);
+		
+		void VisitQualifier(QualifierSyntax node);
+		
 		void VisitIdentifier(IdentifierSyntax node);
 		
 		void VisitLexerRuleName(LexerRuleNameSyntax node);
@@ -3746,7 +4291,22 @@ namespace MetaDslx.Languages.Compiler
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitNamespaceBody(NamespaceBodySyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitGrammarDeclaration(GrammarDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitUsingDeclaration(UsingDeclarationSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -3876,6 +4436,16 @@ namespace MetaDslx.Languages.Compiler
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitQualifiedName(QualifiedNameSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitQualifier(QualifierSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitIdentifier(IdentifierSyntax node)
 		{
 		    this.DefaultVisit(node);
@@ -3940,7 +4510,13 @@ namespace MetaDslx.Languages.Compiler
 		
 		TResult VisitMain(MainSyntax node, TArg argument);
 		
+		TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node, TArg argument);
+		
+		TResult VisitNamespaceBody(NamespaceBodySyntax node, TArg argument);
+		
 		TResult VisitGrammarDeclaration(GrammarDeclarationSyntax node, TArg argument);
+		
+		TResult VisitUsingDeclaration(UsingDeclarationSyntax node, TArg argument);
 		
 		TResult VisitRuleDeclarations(RuleDeclarationsSyntax node, TArg argument);
 		
@@ -3992,6 +4568,10 @@ namespace MetaDslx.Languages.Compiler
 		
 		TResult VisitName(NameSyntax node, TArg argument);
 		
+		TResult VisitQualifiedName(QualifiedNameSyntax node, TArg argument);
+		
+		TResult VisitQualifier(QualifierSyntax node, TArg argument);
+		
 		TResult VisitIdentifier(IdentifierSyntax node, TArg argument);
 		
 		TResult VisitLexerRuleName(LexerRuleNameSyntax node, TArg argument);
@@ -4027,7 +4607,22 @@ namespace MetaDslx.Languages.Compiler
 		    return this.DefaultVisit(node, argument);
 		}
 		
+		public virtual TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitNamespaceBody(NamespaceBodySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
 		public virtual TResult VisitGrammarDeclaration(GrammarDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitUsingDeclaration(UsingDeclarationSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -4157,6 +4752,16 @@ namespace MetaDslx.Languages.Compiler
 		    return this.DefaultVisit(node, argument);
 		}
 		
+		public virtual TResult VisitQualifiedName(QualifiedNameSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitQualifier(QualifierSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
 		public virtual TResult VisitIdentifier(IdentifierSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
@@ -4219,7 +4824,13 @@ namespace MetaDslx.Languages.Compiler
 		
 		TResult VisitMain(MainSyntax node);
 		
+		TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node);
+		
+		TResult VisitNamespaceBody(NamespaceBodySyntax node);
+		
 		TResult VisitGrammarDeclaration(GrammarDeclarationSyntax node);
+		
+		TResult VisitUsingDeclaration(UsingDeclarationSyntax node);
 		
 		TResult VisitRuleDeclarations(RuleDeclarationsSyntax node);
 		
@@ -4271,6 +4882,10 @@ namespace MetaDslx.Languages.Compiler
 		
 		TResult VisitName(NameSyntax node);
 		
+		TResult VisitQualifiedName(QualifiedNameSyntax node);
+		
+		TResult VisitQualifier(QualifierSyntax node);
+		
 		TResult VisitIdentifier(IdentifierSyntax node);
 		
 		TResult VisitLexerRuleName(LexerRuleNameSyntax node);
@@ -4306,7 +4921,22 @@ namespace MetaDslx.Languages.Compiler
 		    return this.DefaultVisit(node);
 		}
 		
+		public virtual TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitNamespaceBody(NamespaceBodySyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
 		public virtual TResult VisitGrammarDeclaration(GrammarDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitUsingDeclaration(UsingDeclarationSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -4436,6 +5066,16 @@ namespace MetaDslx.Languages.Compiler
 		    return this.DefaultVisit(node);
 		}
 		
+		public virtual TResult VisitQualifiedName(QualifiedNameSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitQualifier(QualifierSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
 		public virtual TResult VisitIdentifier(IdentifierSyntax node)
 		{
 		    return this.DefaultVisit(node);
@@ -4507,9 +5147,25 @@ namespace MetaDslx.Languages.Compiler
 		
 		public virtual SyntaxNode VisitMain(MainSyntax node)
 		{
-		    var grammarDeclaration = (GrammarDeclarationSyntax)this.Visit(node.GrammarDeclaration);
+		    var namespaceDeclaration = (NamespaceDeclarationSyntax)this.Visit(node.NamespaceDeclaration);
 		    var eOF = this.VisitToken(node.EndOfFileToken);
-			return node.Update(grammarDeclaration, eOF);
+			return node.Update(namespaceDeclaration, eOF);
+		}
+		
+		public virtual SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+		{
+		    var kNamespace = this.VisitToken(node.KNamespace);
+		    var qualifiedName = (QualifiedNameSyntax)this.Visit(node.QualifiedName);
+		    var tSemicolon = this.VisitToken(node.TSemicolon);
+		    var namespaceBody = (NamespaceBodySyntax)this.Visit(node.NamespaceBody);
+			return node.Update(kNamespace, qualifiedName, tSemicolon, namespaceBody);
+		}
+		
+		public virtual SyntaxNode VisitNamespaceBody(NamespaceBodySyntax node)
+		{
+		    var usingDeclaration = this.VisitList(node.UsingDeclaration);
+		    var grammarDeclaration = (GrammarDeclarationSyntax)this.Visit(node.GrammarDeclaration);
+			return node.Update(usingDeclaration, grammarDeclaration);
 		}
 		
 		public virtual SyntaxNode VisitGrammarDeclaration(GrammarDeclarationSyntax node)
@@ -4519,6 +5175,16 @@ namespace MetaDslx.Languages.Compiler
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
 		    var ruleDeclarations = (RuleDeclarationsSyntax)this.Visit(node.RuleDeclarations);
 			return node.Update(kGrammar, name, tSemicolon, ruleDeclarations);
+		}
+		
+		public virtual SyntaxNode VisitUsingDeclaration(UsingDeclarationSyntax node)
+		{
+		    var kUsing = this.VisitToken(node.KUsing);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tAssign = this.VisitToken(node.TAssign);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+		    var tSemicolon = this.VisitToken(node.TSemicolon);
+			return node.Update(kUsing, name, tAssign, qualifier, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitRuleDeclarations(RuleDeclarationsSyntax node)
@@ -4547,10 +5213,12 @@ namespace MetaDslx.Languages.Compiler
 		public virtual SyntaxNode VisitParserRuleDeclaration(ParserRuleDeclarationSyntax node)
 		{
 		    var parserRuleName = (ParserRuleNameSyntax)this.Visit(node.ParserRuleName);
+		    var kDefines = this.VisitToken(node.KDefines);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
 		    var tColon = this.VisitToken(node.TColon);
 		    var parserRuleAlternative = this.VisitList(node.ParserRuleAlternative);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(parserRuleName, tColon, parserRuleAlternative, tSemicolon);
+			return node.Update(parserRuleName, kDefines, qualifier, tColon, parserRuleAlternative, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitParserRuleAlternative(ParserRuleAlternativeSyntax node)
@@ -4656,11 +5324,12 @@ namespace MetaDslx.Languages.Compiler
 		
 		public virtual SyntaxNode VisitLexerRuleDeclaration(LexerRuleDeclarationSyntax node)
 		{
+		    var modifier = this.VisitToken(node.Modifier);
 		    var lexerRuleName = (LexerRuleNameSyntax)this.Visit(node.LexerRuleName);
 		    var tColon = this.VisitToken(node.TColon);
 		    var lexerRuleAlternative = this.VisitList(node.LexerRuleAlternative);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(lexerRuleName, tColon, lexerRuleAlternative, tSemicolon);
+			return node.Update(modifier, lexerRuleName, tColon, lexerRuleAlternative, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitLexerRuleAlternative(LexerRuleAlternativeSyntax node)
@@ -4766,6 +5435,18 @@ namespace MetaDslx.Languages.Compiler
 		public virtual SyntaxNode VisitName(NameSyntax node)
 		{
 		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
+			return node.Update(identifier);
+		}
+		
+		public virtual SyntaxNode VisitQualifiedName(QualifiedNameSyntax node)
+		{
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+			return node.Update(qualifier);
+		}
+		
+		public virtual SyntaxNode VisitQualifier(QualifierSyntax node)
+		{
+		    var identifier = this.VisitList(node.Identifier);
 			return node.Update(identifier);
 		}
 		
@@ -5045,12 +5726,39 @@ namespace MetaDslx.Languages.Compiler
 	        return new SyntaxToken(CompilerLanguage.Instance.InternalSyntaxFactory.LMultilineComment(text, value));
 	    }
 		
-		public MainSyntax Main(GrammarDeclarationSyntax grammarDeclaration, SyntaxToken eOF)
+		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 		{
-		    if (grammarDeclaration == null) throw new ArgumentNullException(nameof(grammarDeclaration));
+		    if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
 		    if (eOF == null) throw new ArgumentNullException(nameof(eOF));
 		    if (eOF.GetKind() != CompilerSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
-		    return (MainSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.Main((Syntax.InternalSyntax.GrammarDeclarationGreen)grammarDeclaration.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
+		    return (MainSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.Main((Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
+		}
+		
+		public NamespaceDeclarationSyntax NamespaceDeclaration(SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, SyntaxToken tSemicolon, NamespaceBodySyntax namespaceBody)
+		{
+		    if (kNamespace == null) throw new ArgumentNullException(nameof(kNamespace));
+		    if (kNamespace.GetKind() != CompilerSyntaxKind.KNamespace) throw new ArgumentException(nameof(kNamespace));
+		    if (qualifiedName == null) throw new ArgumentNullException(nameof(qualifiedName));
+		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
+		    if (tSemicolon.GetKind() != CompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
+		    if (namespaceBody == null) throw new ArgumentNullException(nameof(namespaceBody));
+		    return (NamespaceDeclarationSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration((InternalSyntaxToken)kNamespace.Node, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, (InternalSyntaxToken)tSemicolon.Node, (Syntax.InternalSyntax.NamespaceBodyGreen)namespaceBody.Green).CreateRed();
+		}
+		
+		public NamespaceDeclarationSyntax NamespaceDeclaration(QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
+		{
+			return this.NamespaceDeclaration(this.Token(CompilerSyntaxKind.KNamespace), qualifiedName, this.Token(CompilerSyntaxKind.TSemicolon), namespaceBody);
+		}
+		
+		public NamespaceBodySyntax NamespaceBody(Microsoft.CodeAnalysis.SyntaxList<UsingDeclarationSyntax> usingDeclaration, GrammarDeclarationSyntax grammarDeclaration)
+		{
+		    if (grammarDeclaration == null) throw new ArgumentNullException(nameof(grammarDeclaration));
+		    return (NamespaceBodySyntax)CompilerLanguage.Instance.InternalSyntaxFactory.NamespaceBody(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingDeclarationGreen>(usingDeclaration.Node), (Syntax.InternalSyntax.GrammarDeclarationGreen)grammarDeclaration.Green).CreateRed();
+		}
+		
+		public NamespaceBodySyntax NamespaceBody(GrammarDeclarationSyntax grammarDeclaration)
+		{
+			return this.NamespaceBody(default, grammarDeclaration);
 		}
 		
 		public GrammarDeclarationSyntax GrammarDeclaration(SyntaxToken kGrammar, NameSyntax name, SyntaxToken tSemicolon, RuleDeclarationsSyntax ruleDeclarations)
@@ -5067,6 +5775,22 @@ namespace MetaDslx.Languages.Compiler
 		public GrammarDeclarationSyntax GrammarDeclaration(NameSyntax name, RuleDeclarationsSyntax ruleDeclarations)
 		{
 			return this.GrammarDeclaration(this.Token(CompilerSyntaxKind.KGrammar), name, this.Token(CompilerSyntaxKind.TSemicolon), ruleDeclarations);
+		}
+		
+		public UsingDeclarationSyntax UsingDeclaration(SyntaxToken kUsing, NameSyntax name, SyntaxToken tAssign, QualifierSyntax qualifier, SyntaxToken tSemicolon)
+		{
+		    if (kUsing == null) throw new ArgumentNullException(nameof(kUsing));
+		    if (kUsing.GetKind() != CompilerSyntaxKind.KUsing) throw new ArgumentException(nameof(kUsing));
+		    if (tAssign != null && tAssign.GetKind() != CompilerSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
+		    if (tSemicolon.GetKind() != CompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
+		    return (UsingDeclarationSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.UsingDeclaration((InternalSyntaxToken)kUsing.Node, name == null ? null : (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		}
+		
+		public UsingDeclarationSyntax UsingDeclaration(QualifierSyntax qualifier)
+		{
+			return this.UsingDeclaration(this.Token(CompilerSyntaxKind.KUsing), default, default, qualifier, this.Token(CompilerSyntaxKind.TSemicolon));
 		}
 		
 		public RuleDeclarationsSyntax RuleDeclarations(Microsoft.CodeAnalysis.SyntaxList<RuleDeclarationSyntax> ruleDeclaration)
@@ -5091,20 +5815,21 @@ namespace MetaDslx.Languages.Compiler
 		    return (RuleDeclarationSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.RuleDeclaration((Syntax.InternalSyntax.LexerRuleDeclarationGreen)lexerRuleDeclaration.Green).CreateRed();
 		}
 		
-		public ParserRuleDeclarationSyntax ParserRuleDeclaration(ParserRuleNameSyntax parserRuleName, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax> parserRuleAlternative, SyntaxToken tSemicolon)
+		public ParserRuleDeclarationSyntax ParserRuleDeclaration(ParserRuleNameSyntax parserRuleName, SyntaxToken kDefines, QualifierSyntax qualifier, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax> parserRuleAlternative, SyntaxToken tSemicolon)
 		{
 		    if (parserRuleName == null) throw new ArgumentNullException(nameof(parserRuleName));
+		    if (kDefines != null && kDefines.GetKind() != CompilerSyntaxKind.KDefines) throw new ArgumentException(nameof(kDefines));
 		    if (tColon == null) throw new ArgumentNullException(nameof(tColon));
 		    if (tColon.GetKind() != CompilerSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (parserRuleAlternative == null) throw new ArgumentNullException(nameof(parserRuleAlternative));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != CompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (ParserRuleDeclarationSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.ParserRuleDeclaration((Syntax.InternalSyntax.ParserRuleNameGreen)parserRuleName.Green, (InternalSyntaxToken)tColon.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ParserRuleAlternativeGreen>(parserRuleAlternative.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (ParserRuleDeclarationSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.ParserRuleDeclaration((Syntax.InternalSyntax.ParserRuleNameGreen)parserRuleName.Green, (InternalSyntaxToken)kDefines.Node, qualifier == null ? null : (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tColon.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ParserRuleAlternativeGreen>(parserRuleAlternative.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public ParserRuleDeclarationSyntax ParserRuleDeclaration(ParserRuleNameSyntax parserRuleName, Microsoft.CodeAnalysis.SeparatedSyntaxList<ParserRuleAlternativeSyntax> parserRuleAlternative)
 		{
-			return this.ParserRuleDeclaration(parserRuleName, this.Token(CompilerSyntaxKind.TColon), parserRuleAlternative, this.Token(CompilerSyntaxKind.TSemicolon));
+			return this.ParserRuleDeclaration(parserRuleName, default, default, this.Token(CompilerSyntaxKind.TColon), parserRuleAlternative, this.Token(CompilerSyntaxKind.TSemicolon));
 		}
 		
 		public ParserRuleAlternativeSyntax ParserRuleAlternative(Microsoft.CodeAnalysis.SyntaxList<ParserRuleAlternativeElementSyntax> parserRuleAlternativeElement, EofElementSyntax eofElement)
@@ -5223,7 +5948,7 @@ namespace MetaDslx.Languages.Compiler
 			return this.ParserRuleBlock(this.Token(CompilerSyntaxKind.TOpenParen), parserRuleAlternative, this.Token(CompilerSyntaxKind.TCloseParen));
 		}
 		
-		public LexerRuleDeclarationSyntax LexerRuleDeclaration(LexerRuleNameSyntax lexerRuleName, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax> lexerRuleAlternative, SyntaxToken tSemicolon)
+		public LexerRuleDeclarationSyntax LexerRuleDeclaration(SyntaxToken modifier, LexerRuleNameSyntax lexerRuleName, SyntaxToken tColon, Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax> lexerRuleAlternative, SyntaxToken tSemicolon)
 		{
 		    if (lexerRuleName == null) throw new ArgumentNullException(nameof(lexerRuleName));
 		    if (tColon == null) throw new ArgumentNullException(nameof(tColon));
@@ -5231,12 +5956,12 @@ namespace MetaDslx.Languages.Compiler
 		    if (lexerRuleAlternative == null) throw new ArgumentNullException(nameof(lexerRuleAlternative));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != CompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (LexerRuleDeclarationSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.LexerRuleDeclaration((Syntax.InternalSyntax.LexerRuleNameGreen)lexerRuleName.Green, (InternalSyntaxToken)tColon.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<LexerRuleAlternativeGreen>(lexerRuleAlternative.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (LexerRuleDeclarationSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.LexerRuleDeclaration(modifier == null ? null : (InternalSyntaxToken)modifier.Node, (Syntax.InternalSyntax.LexerRuleNameGreen)lexerRuleName.Green, (InternalSyntaxToken)tColon.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<LexerRuleAlternativeGreen>(lexerRuleAlternative.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public LexerRuleDeclarationSyntax LexerRuleDeclaration(LexerRuleNameSyntax lexerRuleName, Microsoft.CodeAnalysis.SeparatedSyntaxList<LexerRuleAlternativeSyntax> lexerRuleAlternative)
 		{
-			return this.LexerRuleDeclaration(lexerRuleName, this.Token(CompilerSyntaxKind.TColon), lexerRuleAlternative, this.Token(CompilerSyntaxKind.TSemicolon));
+			return this.LexerRuleDeclaration(default, lexerRuleName, this.Token(CompilerSyntaxKind.TColon), lexerRuleAlternative, this.Token(CompilerSyntaxKind.TSemicolon));
 		}
 		
 		public LexerRuleAlternativeSyntax LexerRuleAlternative(Microsoft.CodeAnalysis.SyntaxList<LexerRuleAlternativeElementSyntax> lexerRuleAlternativeElement)
@@ -5364,6 +6089,18 @@ namespace MetaDslx.Languages.Compiler
 		    return (NameSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.Name((Syntax.InternalSyntax.IdentifierGreen)identifier.Green).CreateRed();
 		}
 		
+		public QualifiedNameSyntax QualifiedName(QualifierSyntax qualifier)
+		{
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    return (QualifiedNameSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.QualifiedName((Syntax.InternalSyntax.QualifierGreen)qualifier.Green).CreateRed();
+		}
+		
+		public QualifierSyntax Qualifier(Microsoft.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> identifier)
+		{
+		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
+		    return (QualifierSyntax)CompilerLanguage.Instance.InternalSyntaxFactory.Qualifier(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<IdentifierGreen>(identifier.Node)).CreateRed();
+		}
+		
 		public IdentifierSyntax Identifier(SyntaxToken identifier)
 		{
 		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
@@ -5477,7 +6214,10 @@ namespace MetaDslx.Languages.Compiler
 	    {
 	        return new Type[] {
 				typeof(MainSyntax),
+				typeof(NamespaceDeclarationSyntax),
+				typeof(NamespaceBodySyntax),
 				typeof(GrammarDeclarationSyntax),
+				typeof(UsingDeclarationSyntax),
 				typeof(RuleDeclarationsSyntax),
 				typeof(RuleDeclarationSyntax),
 				typeof(ParserRuleDeclarationSyntax),
@@ -5503,6 +6243,8 @@ namespace MetaDslx.Languages.Compiler
 				typeof(LexerRuleReferenceSyntax),
 				typeof(LexerRuleBlockSyntax),
 				typeof(NameSyntax),
+				typeof(QualifiedNameSyntax),
+				typeof(QualifierSyntax),
 				typeof(IdentifierSyntax),
 				typeof(LexerRuleNameSyntax),
 				typeof(ParserRuleNameSyntax),

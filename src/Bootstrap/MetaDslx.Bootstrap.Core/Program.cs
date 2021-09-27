@@ -81,8 +81,9 @@ Print(z);
 
             var grammarCode = File.ReadAllText(@"..\..\..\Sample.mtext");
             var csyntaxTree = CompilerSyntaxTree.ParseText(grammarCode);
-            var ccompilation = CoreCompilation.Create("CompilerTest")
-                .AddReferences(ModelReference.CreateFromModel(CoreInstance.MModel))
+            var ccompilation = CompilerCompilation.Create("CompilerTest")
+                .AddReferences(ModelReference.CreateFromModel(CompilerInstance.MModel))
+                .AddReferences(MetadataReference.CreateFromFile(typeof(CompilerInstance).Assembly.Location))
                 .AddSyntaxTrees(csyntaxTree);
             ccompilation.ForceComplete();
             var cmodel = (MutableModel)ccompilation.Model;

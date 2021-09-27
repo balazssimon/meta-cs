@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler.Syntax

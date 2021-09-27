@@ -2,7 +2,6 @@
 
 @header 
 {
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 }
 
@@ -12,14 +11,20 @@ options
 	generateCompiler=true;
 }
 
-main: grammarDeclaration EOF;
+main: namespaceDeclaration EOF;
 
-//$Define(type=Namespace,nestingProperty=Members,merge=true)
-//namespaceDeclaration: KNamespace qualifiedName TSemicolon /*$Scope*/ grammarDeclaration;
+$Define(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration: KNamespace qualifiedName TSemicolon namespaceBody;
 
-//$Property(Members) 
+$Scope
+namespaceBody: usingDeclaration* grammarDeclaration;
+
+$Property(Members) 
 $Define(Grammar)
 grammarDeclaration: KGrammar name TSemicolon $Scope ruleDeclarations;
+
+$Import
+usingDeclaration: KUsing (name TAssign)? qualifier TSemicolon;
 
 ruleDeclarations: ruleDeclaration*;
 
@@ -27,7 +32,7 @@ $Property(Rules)
 ruleDeclaration: parserRuleDeclaration | lexerRuleDeclaration;
 
 $Define(ParserRule)
-parserRuleDeclaration: parserRuleName TColon parserRuleAlternative (TBar parserRuleAlternative)* TSemicolon;
+parserRuleDeclaration: parserRuleName (KDefines $Property(DefinedModelObject) $Use(System.Type) qualifier)? TColon parserRuleAlternative (TBar parserRuleAlternative)* TSemicolon;
 
 $Property(Alternatives)
 $Define(RuleAlternative)
@@ -78,7 +83,7 @@ $Define(RuleBlock)
 parserRuleBlock: TOpenParen parserRuleAlternative (TBar parserRuleAlternative)* TCloseParen;
 
 $Define(LexerRule)
-lexerRuleDeclaration: lexerRuleName TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
+lexerRuleDeclaration: modifier=($Property(name=IsHidden,value=true) KHidden | $Property(name=IsFragment,value=true) KFragment)? lexerRuleName TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
 
 $Property(Alternatives)
 $Define(RuleAlternative)
@@ -110,6 +115,12 @@ lexerRuleBlock: TOpenParen lexerRuleAlternative (TBar lexerRuleAlternative)* TCl
 // Identifiers
 $Name
 name : identifier;
+
+$Name
+qualifiedName : qualifier;
+
+$Qualifier
+qualifier : identifier (TDot identifier)*;
 
 $Identifier
 identifier : LexerIdentifier | ParserIdentifier;

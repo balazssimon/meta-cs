@@ -26,7 +26,10 @@ namespace MetaDslx.Languages.Compiler.Syntax
 
 		// Rules:
 		public const string Main = nameof(Main);
+		public const string NamespaceDeclaration = nameof(NamespaceDeclaration);
+		public const string NamespaceBody = nameof(NamespaceBody);
 		public const string GrammarDeclaration = nameof(GrammarDeclaration);
+		public const string UsingDeclaration = nameof(UsingDeclaration);
 		public const string RuleDeclarations = nameof(RuleDeclarations);
 		public const string RuleDeclaration = nameof(RuleDeclaration);
 		public const string ParserRuleDeclaration = nameof(ParserRuleDeclaration);
@@ -52,6 +55,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 		public const string LexerRuleReference = nameof(LexerRuleReference);
 		public const string LexerRuleBlock = nameof(LexerRuleBlock);
 		public const string Name = nameof(Name);
+		public const string QualifiedName = nameof(QualifiedName);
+		public const string Qualifier = nameof(Qualifier);
 		public const string Identifier = nameof(Identifier);
 		public const string LexerRuleName = nameof(LexerRuleName);
 		public const string ParserRuleName = nameof(ParserRuleName);

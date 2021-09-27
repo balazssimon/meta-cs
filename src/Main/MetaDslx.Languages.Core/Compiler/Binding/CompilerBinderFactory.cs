@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler.Binding

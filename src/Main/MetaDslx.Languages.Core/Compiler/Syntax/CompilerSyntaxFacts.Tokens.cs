@@ -60,10 +60,12 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			{
 				case CompilerTokensSyntaxKind.Eof:
 				case CompilerTokensSyntaxKind.KNamespace:
+				case CompilerTokensSyntaxKind.KUsing:
 				case CompilerTokensSyntaxKind.KGrammar:
 				case CompilerTokensSyntaxKind.KOptions:
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
+				case CompilerTokensSyntaxKind.KDefines:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
@@ -117,10 +119,12 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			switch (kind.Switch())
 			{
 				case CompilerTokensSyntaxKind.KNamespace:
+				case CompilerTokensSyntaxKind.KUsing:
 				case CompilerTokensSyntaxKind.KGrammar:
 				case CompilerTokensSyntaxKind.KOptions:
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
+				case CompilerTokensSyntaxKind.KDefines:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
@@ -163,6 +167,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			{
 				case "namespace":
 					return CompilerTokensSyntaxKind.KNamespace;
+				case "using":
+					return CompilerTokensSyntaxKind.KUsing;
 				case "grammar":
 					return CompilerTokensSyntaxKind.KGrammar;
 				case "options":
@@ -171,6 +177,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return CompilerTokensSyntaxKind.KFragment;
 				case "hidden":
 					return CompilerTokensSyntaxKind.KHidden;
+				case "defines":
+					return CompilerTokensSyntaxKind.KDefines;
 				case "true":
 					return CompilerTokensSyntaxKind.KTrue;
 				case "false":
@@ -242,6 +250,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			{
 				case CompilerTokensSyntaxKind.KNamespace:
 					return "namespace";
+				case CompilerTokensSyntaxKind.KUsing:
+					return "using";
 				case CompilerTokensSyntaxKind.KGrammar:
 					return "grammar";
 				case CompilerTokensSyntaxKind.KOptions:
@@ -250,6 +260,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return "fragment";
 				case CompilerTokensSyntaxKind.KHidden:
 					return "hidden";
+				case CompilerTokensSyntaxKind.KDefines:
+					return "defines";
 				case CompilerTokensSyntaxKind.KTrue:
 					return "true";
 				case CompilerTokensSyntaxKind.KFalse:
@@ -325,10 +337,12 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			switch(kind.Switch())
 			{
 				case CompilerTokensSyntaxKind.KNamespace:
+				case CompilerTokensSyntaxKind.KUsing:
 				case CompilerTokensSyntaxKind.KGrammar:
 				case CompilerTokensSyntaxKind.KOptions:
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
+				case CompilerTokensSyntaxKind.KDefines:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
@@ -403,10 +417,12 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			switch(kind.Switch())
 			{
 				case CompilerTokensSyntaxKind.KNamespace:
+				case CompilerTokensSyntaxKind.KUsing:
 				case CompilerTokensSyntaxKind.KGrammar:
 				case CompilerTokensSyntaxKind.KOptions:
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
+				case CompilerTokensSyntaxKind.KDefines:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
@@ -420,10 +436,12 @@ namespace MetaDslx.Languages.Compiler.Syntax
         public override IEnumerable<SyntaxKind> GetReservedKeywordKinds()
         {
 				yield return CompilerTokensSyntaxKind.KNamespace;
+				yield return CompilerTokensSyntaxKind.KUsing;
 				yield return CompilerTokensSyntaxKind.KGrammar;
 				yield return CompilerTokensSyntaxKind.KOptions;
 				yield return CompilerTokensSyntaxKind.KFragment;
 				yield return CompilerTokensSyntaxKind.KHidden;
+				yield return CompilerTokensSyntaxKind.KDefines;
 				yield return CompilerTokensSyntaxKind.KTrue;
 				yield return CompilerTokensSyntaxKind.KFalse;
 				yield return CompilerTokensSyntaxKind.KNull;
@@ -436,6 +454,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			{
 				case "namespace":
 					return CompilerTokensSyntaxKind.KNamespace;
+				case "using":
+					return CompilerTokensSyntaxKind.KUsing;
 				case "grammar":
 					return CompilerTokensSyntaxKind.KGrammar;
 				case "options":
@@ -444,6 +464,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return CompilerTokensSyntaxKind.KFragment;
 				case "hidden":
 					return CompilerTokensSyntaxKind.KHidden;
+				case "defines":
+					return CompilerTokensSyntaxKind.KDefines;
 				case "true":
 					return CompilerTokensSyntaxKind.KTrue;
 				case "false":

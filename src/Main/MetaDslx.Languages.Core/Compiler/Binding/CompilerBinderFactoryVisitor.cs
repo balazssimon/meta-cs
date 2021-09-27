@@ -15,7 +15,6 @@ using MetaDslx.Languages.Compiler;
 using MetaDslx.Languages.Compiler.Syntax;
 using MetaDslx.Languages.Compiler.Symbols;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler.Binding
@@ -23,6 +22,7 @@ namespace MetaDslx.Languages.Compiler.Binding
     public class CompilerBinderFactoryVisitor : BinderFactoryVisitor, ICompilerSyntaxVisitor<Binder>
     {
 		public static object UseRuleDeclarations = new object();
+		public static object UseQualifier = new object();
 		public static object UseTAssign = new object();
 		public static object UseTQuestionAssign = new object();
 		public static object UseTNegatedAssign = new object();
@@ -35,10 +35,17 @@ namespace MetaDslx.Languages.Compiler.Binding
 		public static object UseTOneOrMore = new object();
 		public static object UseStringLiteral = new object();
 		public static object UseIdentifier = new object();
+		public static object UseKHidden = new object();
+		public static object UseKFragment = new object();
 		public static object UseStart = new object();
 		public static object UseEnd = new object();
+		public static object UseNamespaceDeclaration = new object();
+		public static object UseQualifiedName = new object();
+		public static object UseNamespaceBody = new object();
+		public static object UseUsingDeclaration = new object();
 		public static object UseGrammarDeclaration = new object();
 		public static object UseName = new object();
+		public static object Use = new object();
 		public static object UseRuleDeclaration = new object();
 		public static object UseParserRuleDeclaration = new object();
 		public static object UseLexerRuleDeclaration = new object();
@@ -47,7 +54,6 @@ namespace MetaDslx.Languages.Compiler.Binding
 		public static object UseParserRuleAlternativeElement = new object();
 		public static object UseEofElement = new object();
 		public static object UseParserNegatedElement = new object();
-		public static object Use = new object();
 		public static object UseElementName = new object();
 		public static object UseAssign = new object();
 		public static object UseParserRuleElement = new object();
@@ -55,6 +61,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		public static object UseFixedElement = new object();
 		public static object UseParserRuleReference = new object();
 		public static object UseParserRuleBlock = new object();
+		public static object UseModifier = new object();
 		public static object UseLexerRuleName = new object();
 		public static object UseLexerRuleAlternative = new object();
 		public static object UseLexerRuleAlternativeElement = new object();
@@ -102,6 +109,40 @@ namespace MetaDslx.Languages.Compiler.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitNamespaceDeclaration(NamespaceDeclarationSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Namespace), nestingProperty: "Members", merge: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitNamespaceBody(NamespaceBodySyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateScopeBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitGrammarDeclaration(GrammarDeclarationSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -117,6 +158,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent, name: "Members");
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(Grammar));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseRuleDeclarations)
@@ -124,6 +166,23 @@ namespace MetaDslx.Languages.Compiler.Binding
 					resultBinder = this.BinderFactory.CreateScopeBinder(resultBinder, parent.RuleDeclarations);
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitUsingDeclaration(UsingDeclarationSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateImportBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -168,12 +227,22 @@ namespace MetaDslx.Languages.Compiler.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(ParserRule));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseQualifier)
+				{
+					resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Qualifier, name: "DefinedModelObject");
+					resultBinder = this.BinderFactory.CreateUseBinder(resultBinder, parent.Qualifier, types: ImmutableArray.Create(typeof(System.Type)));
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -451,12 +520,31 @@ namespace MetaDslx.Languages.Compiler.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Modifier)) use = UseModifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateDefineBinder(resultBinder, parent, type: typeof(LexerRule));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseModifier)
+				{
+					switch (parent.Modifier.GetKind().Switch())
+					{
+						case CompilerSyntaxKind.KHidden:
+							resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Modifier, name: "IsHidden", value: true);
+							break;
+						case CompilerSyntaxKind.KFragment:
+							resultBinder = this.BinderFactory.CreatePropertyBinder(resultBinder, parent.Modifier, name: "IsFragment", value: true);
+							break;
+						default:
+							break;
+					}
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -651,6 +739,40 @@ namespace MetaDslx.Languages.Compiler.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.BinderFactory.CreateNameBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitQualifiedName(QualifiedNameSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateNameBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitQualifier(QualifierSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.BinderFactory.CreateQualifierBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

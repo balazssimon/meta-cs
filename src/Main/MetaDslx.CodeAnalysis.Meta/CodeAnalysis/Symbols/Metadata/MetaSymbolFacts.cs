@@ -216,7 +216,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             }
             if (!expectedType.IsAssignableFrom(symbol.GetType()))
             {
-                if (expectedType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) return Type.GetType(GetFullMetadataName(cnts));
+                if (expectedType == typeof(Type) && symbol is CSharpNamedTypeSymbol nts) return Type.GetType(nts.AssemblyQualifiedName);
                 else if (expectedType == typeof(string)) return symbol.Name;
                 else if (symbol is IModelSymbol ms) return ms.ModelObject;
                 //Debug.Assert(false);
@@ -225,7 +225,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return symbol;
         }
 
-        private string GetFullMetadataName(CSharpNamedTypeSymbol symbol)
+        private string GetFullMetadataName(NamedTypeSymbol symbol)
         {
             var result = symbol.MetadataName;
             var ns = symbol.ContainingDeclaration;

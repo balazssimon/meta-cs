@@ -1,0 +1,11 @@
+﻿namespace MetaDslx.Languages.Sample;
+using MetaDslx.Languages.Compiler.Model;
+
+grammar TestGrammar;
+
+main defines Namespace: semicolon TSemicolon EOF;
+
+semicolon: TSemicolon;
+
+TSemicolon: 'a'..'b'?? ";" ;
+

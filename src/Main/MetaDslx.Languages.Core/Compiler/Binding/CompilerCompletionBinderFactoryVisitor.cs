@@ -15,7 +15,6 @@ using MetaDslx.Languages.Compiler;
 using MetaDslx.Languages.Compiler.Syntax;
 using MetaDslx.Languages.Compiler.Symbols;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler.Binding
@@ -24,13 +23,20 @@ namespace MetaDslx.Languages.Compiler.Binding
     {
 		public static object UnassignedUse = new object();
 		public static object FinishedUse = new object();
-		public static object Use_Main_GrammarDeclaration = new object();
+		public static object Use_Main_NamespaceDeclaration = new object();
+		public static object Use_NamespaceDeclaration_QualifiedName = new object();
+		public static object Use_NamespaceDeclaration_NamespaceBody = new object();
+		public static object Use_NamespaceBody_UsingDeclaration = new object();
+		public static object Use_NamespaceBody_GrammarDeclaration = new object();
 		public static object Use_GrammarDeclaration_Name = new object();
 		public static object Use_GrammarDeclaration_RuleDeclarations = new object();
+		public static object Use_UsingDeclaration_Name = new object();
+		public static object Use_UsingDeclaration_Qualifier = new object();
 		public static object Use_RuleDeclarations_RuleDeclaration = new object();
 		public static object Use_RuleDeclaration_ParserRuleDeclaration = new object();
 		public static object Use_RuleDeclaration_LexerRuleDeclaration = new object();
 		public static object Use_ParserRuleDeclaration_ParserRuleName = new object();
+		public static object Use_ParserRuleDeclaration_Qualifier = new object();
 		public static object Use_ParserRuleDeclaration_ParserRuleAlternative = new object();
 		public static object Use_ParserRuleAlternative_ParserRuleAlternativeElement = new object();
 		public static object Use_ParserRuleAlternative_EofElement = new object();
@@ -49,6 +55,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		public static object Use_FixedElement_StringLiteral = new object();
 		public static object Use_ParserRuleReference_Identifier = new object();
 		public static object Use_ParserRuleBlock_ParserRuleAlternative = new object();
+		public static object Use_LexerRuleDeclaration_Modifier = new object();
 		public static object Use_LexerRuleDeclaration_LexerRuleName = new object();
 		public static object Use_LexerRuleDeclaration_LexerRuleAlternative = new object();
 		public static object Use_LexerRuleAlternative_LexerRuleAlternativeElement = new object();
@@ -67,6 +74,8 @@ namespace MetaDslx.Languages.Compiler.Binding
 		public static object Use_LexerRuleReference_Identifier = new object();
 		public static object Use_LexerRuleBlock_LexerRuleAlternative = new object();
 		public static object Use_Name_Identifier = new object();
+		public static object Use_QualifiedName_Qualifier = new object();
+		public static object Use_Qualifier_Identifier = new object();
 		public static object Use_Literal_NullLiteral = new object();
 		public static object Use_Literal_BooleanLiteral = new object();
 		public static object Use_Literal_IntegerLiteral = new object();
@@ -74,7 +83,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		public static object Use_Literal_ScientificLiteral = new object();
 		public static object Use_Literal_StringLiteral = new object();
 
-        private bool[] _visited = new bool[38];
+        private bool[] _visited = new bool[43];
 
         public CompilerCompletionBinderFactoryVisitor(BinderFactory binderFactory)
 			: base(binderFactory)
@@ -90,6 +99,113 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
+		    if (parent.NamespaceDeclaration.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.NamespaceDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NamespaceDeclaration);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForMain(Use_Main_NamespaceDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NamespaceDeclaration);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NamespaceDeclaration == null || parent.NamespaceDeclaration.IsMissing) AddResultsForMain(Use_Main_NamespaceDeclaration, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NamespaceDeclaration);
+		        }
+		    }
+		    position += parent.NamespaceDeclaration.FullSpan.Length;
+		    position += parent.EndOfFileToken.FullSpan.Length;
+		}
+		
+		public void VisitNamespaceDeclaration(NamespaceDeclarationSyntax parent) // 1
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KNamespace.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KNamespace);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KNamespace, operation);
+		        }
+		    }
+		    position += parent.KNamespace.FullSpan.Length;
+		    if (parent.QualifiedName.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.QualifiedName.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.QualifiedName);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_QualifiedName, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.QualifiedName);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.QualifiedName == null || parent.QualifiedName.IsMissing) AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_QualifiedName, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.QualifiedName);
+		        }
+		    }
+		    position += parent.QualifiedName.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		    if (parent.NamespaceBody.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.NamespaceBody.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.NamespaceBody);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_NamespaceBody, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.NamespaceBody);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.NamespaceBody == null || parent.NamespaceBody.IsMissing) AddResultsForNamespaceDeclaration(Use_NamespaceDeclaration_NamespaceBody, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.NamespaceBody);
+		        }
+		    }
+		    position += parent.NamespaceBody.FullSpan.Length;
+		}
+		
+		public void VisitNamespaceBody(NamespaceBodySyntax parent) // 2
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.UsingDeclaration.Node == null || parent.UsingDeclaration.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.UsingDeclaration.Node == null || !parent.UsingDeclaration.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.UsingDeclaration.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForNamespaceBody(Use_NamespaceBody_UsingDeclaration, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.UsingDeclaration)
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                VisitCore(item);
+		            }
+		        }
+		    }
+		    position += parent.UsingDeclaration.FullSpan.Length;
 		    if (parent.GrammarDeclaration.FullSpan.IntersectsWith(FullSpan))
 		    {
 		        if (!parent.GrammarDeclaration.Span.Contains(Span))
@@ -97,21 +213,20 @@ namespace MetaDslx.Languages.Compiler.Binding
 		            operation = GetOperation(position, parent.GrammarDeclaration);
 		            if (operation != CompletionSearchFlags.None)
 		            {
-		                AddResultsForMain(Use_Main_GrammarDeclaration, operation, Compilation.GetBinder(parent));
+		                AddResultsForNamespaceBody(Use_NamespaceBody_GrammarDeclaration, operation, Compilation.GetBinder(parent));
 		            }
 		        }
 		        operation = this.GetOperation(position, parent.GrammarDeclaration);
 		        if (operation != CompletionSearchFlags.None)
 		        {
-		            if (parent.GrammarDeclaration == null || parent.GrammarDeclaration.IsMissing) AddResultsForMain(Use_Main_GrammarDeclaration, operation, Compilation.GetBinder(parent));
+		            if (parent.GrammarDeclaration == null || parent.GrammarDeclaration.IsMissing) AddResultsForNamespaceBody(Use_NamespaceBody_GrammarDeclaration, operation, Compilation.GetBinder(parent));
 		            else VisitCore(parent.GrammarDeclaration);
 		        }
 		    }
 		    position += parent.GrammarDeclaration.FullSpan.Length;
-		    position += parent.EndOfFileToken.FullSpan.Length;
 		}
 		
-		public void VisitGrammarDeclaration(GrammarDeclarationSyntax parent) // 1
+		public void VisitGrammarDeclaration(GrammarDeclarationSyntax parent) // 3
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -172,7 +287,77 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.RuleDeclarations.FullSpan.Length;
 		}
 		
-		public void VisitRuleDeclarations(RuleDeclarationsSyntax parent) // 2
+		public void VisitUsingDeclaration(UsingDeclarationSyntax parent) // 4
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.KUsing.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KUsing);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KUsing, operation);
+		        }
+		    }
+		    position += parent.KUsing.FullSpan.Length;
+		    if (parent.Name == null || parent.Name.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Name == null || !parent.Name.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Name);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForUsingDeclaration(Use_UsingDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Name);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Name == null || parent.Name.IsMissing) AddResultsForUsingDeclaration(Use_UsingDeclaration_Name, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Name);
+		        }
+		    }
+		    if (parent.Name != null) position += parent.Name.FullSpan.Length;
+		    if (parent.TAssign.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TAssign);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TAssign, operation);
+		        }
+		    }
+		    position += parent.TAssign.FullSpan.Length;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForUsingDeclaration(Use_UsingDeclaration_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForUsingDeclaration(Use_UsingDeclaration_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
+		    }
+		    position += parent.Qualifier.FullSpan.Length;
+		    if (parent.TSemicolon.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.TSemicolon);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.TSemicolon, operation);
+		        }
+		    }
+		    position += parent.TSemicolon.FullSpan.Length;
+		}
+		
+		public void VisitRuleDeclarations(RuleDeclarationsSyntax parent) // 5
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -199,7 +384,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.RuleDeclaration.FullSpan.Length;
 		}
 		
-		public void VisitRuleDeclaration(RuleDeclarationSyntax parent) // 3
+		public void VisitRuleDeclaration(RuleDeclarationSyntax parent) // 6
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -242,7 +427,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.LexerRuleDeclaration != null) position += parent.LexerRuleDeclaration.FullSpan.Length;
 		}
 		
-		public void VisitParserRuleDeclaration(ParserRuleDeclarationSyntax parent) // 4
+		public void VisitParserRuleDeclaration(ParserRuleDeclarationSyntax parent) // 7
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -265,6 +450,33 @@ namespace MetaDslx.Languages.Compiler.Binding
 		        }
 		    }
 		    position += parent.ParserRuleName.FullSpan.Length;
+		    if (parent.KDefines.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        operation = this.GetOperation(position, parent.KDefines);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddBinder(parent.KDefines, operation);
+		        }
+		    }
+		    position += parent.KDefines.FullSpan.Length;
+		    if (parent.Qualifier == null || parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Qualifier == null || !parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForParserRuleDeclaration(Use_ParserRuleDeclaration_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForParserRuleDeclaration(Use_ParserRuleDeclaration_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
+		    }
+		    if (parent.Qualifier != null) position += parent.Qualifier.FullSpan.Length;
 		    if (parent.TColon.FullSpan.IntersectsWith(FullSpan))
 		    {
 		        operation = this.GetOperation(position, parent.TColon);
@@ -306,7 +518,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
-		public void VisitParserRuleAlternative(ParserRuleAlternativeSyntax parent) // 5
+		public void VisitParserRuleAlternative(ParserRuleAlternativeSyntax parent) // 8
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -351,7 +563,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.EofElement != null) position += parent.EofElement.FullSpan.Length;
 		}
 		
-		public void VisitEofElement(EofElementSyntax parent) // 6
+		public void VisitEofElement(EofElementSyntax parent) // 9
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -367,7 +579,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.KEof.FullSpan.Length;
 		}
 		
-		public void VisitParserRuleAlternativeElement(ParserRuleAlternativeElementSyntax parent) // 7
+		public void VisitParserRuleAlternativeElement(ParserRuleAlternativeElementSyntax parent) // 10
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -410,7 +622,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.ParserNegatedElement != null) position += parent.ParserNegatedElement.FullSpan.Length;
 		}
 		
-		public void VisitParserMultiElement(ParserMultiElementSyntax parent) // 8
+		public void VisitParserMultiElement(ParserMultiElementSyntax parent) // 11
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -489,7 +701,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.Multiplicity != null) position += parent.Multiplicity.FullSpan.Length;
 		}
 		
-		public void VisitAssign(AssignSyntax parent) // 9
+		public void VisitAssign(AssignSyntax parent) // 12
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -513,7 +725,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.Assign.FullSpan.Length;
 		}
 		
-		public void VisitMultiplicity(MultiplicitySyntax parent) // 10
+		public void VisitMultiplicity(MultiplicitySyntax parent) // 13
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -537,7 +749,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.Multiplicity.FullSpan.Length;
 		}
 		
-		public void VisitParserNegatedElement(ParserNegatedElementSyntax parent) // 11
+		public void VisitParserNegatedElement(ParserNegatedElementSyntax parent) // 14
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -571,7 +783,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.ParserRuleElement.FullSpan.Length;
 		}
 		
-		public void VisitParserRuleElement(ParserRuleElementSyntax parent) // 12
+		public void VisitParserRuleElement(ParserRuleElementSyntax parent) // 15
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -632,7 +844,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.ParserRuleBlock != null) position += parent.ParserRuleBlock.FullSpan.Length;
 		}
 		
-		public void VisitFixedElement(FixedElementSyntax parent) // 13
+		public void VisitFixedElement(FixedElementSyntax parent) // 16
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -657,7 +869,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.StringLiteral.FullSpan.Length;
 		}
 		
-		public void VisitParserRuleReference(ParserRuleReferenceSyntax parent) // 14
+		public void VisitParserRuleReference(ParserRuleReferenceSyntax parent) // 17
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -682,7 +894,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitParserRuleBlock(ParserRuleBlockSyntax parent) // 15
+		public void VisitParserRuleBlock(ParserRuleBlockSyntax parent) // 18
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -728,11 +940,28 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.TCloseParen.FullSpan.Length;
 		}
 		
-		public void VisitLexerRuleDeclaration(LexerRuleDeclarationSyntax parent) // 16
+		public void VisitLexerRuleDeclaration(LexerRuleDeclarationSyntax parent) // 19
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
 		    var operation = CompletionSearchFlags.None;
+		    if (parent.Modifier.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Modifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Modifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForLexerRuleDeclaration(Use_LexerRuleDeclaration_Modifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Modifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            AddResultsForLexerRuleDeclaration(Use_LexerRuleDeclaration_Modifier, operation, Compilation.GetBinder(parent));
+		        }
+		    }
+		    position += parent.Modifier.FullSpan.Length;
 		    if (parent.LexerRuleName.FullSpan.IntersectsWith(FullSpan))
 		    {
 		        if (!parent.LexerRuleName.Span.Contains(Span))
@@ -792,7 +1021,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.TSemicolon.FullSpan.Length;
 		}
 		
-		public void VisitLexerRuleAlternative(LexerRuleAlternativeSyntax parent) // 17
+		public void VisitLexerRuleAlternative(LexerRuleAlternativeSyntax parent) // 20
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -819,7 +1048,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.LexerRuleAlternativeElement.FullSpan.Length;
 		}
 		
-		public void VisitLexerRuleAlternativeElement(LexerRuleAlternativeElementSyntax parent) // 18
+		public void VisitLexerRuleAlternativeElement(LexerRuleAlternativeElementSyntax parent) // 21
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -880,7 +1109,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.LexerRangeElement != null) position += parent.LexerRangeElement.FullSpan.Length;
 		}
 		
-		public void VisitLexerMultiElement(LexerMultiElementSyntax parent) // 19
+		public void VisitLexerMultiElement(LexerMultiElementSyntax parent) // 22
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -923,7 +1152,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.Multiplicity != null) position += parent.Multiplicity.FullSpan.Length;
 		}
 		
-		public void VisitLexerNegatedElement(LexerNegatedElementSyntax parent) // 20
+		public void VisitLexerNegatedElement(LexerNegatedElementSyntax parent) // 23
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -957,7 +1186,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.LexerRuleElement.FullSpan.Length;
 		}
 		
-		public void VisitLexerRangeElement(LexerRangeElementSyntax parent) // 21
+		public void VisitLexerRangeElement(LexerRangeElementSyntax parent) // 24
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1009,7 +1238,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.End.FullSpan.Length;
 		}
 		
-		public void VisitLexerRuleElement(LexerRuleElementSyntax parent) // 22
+		public void VisitLexerRuleElement(LexerRuleElementSyntax parent) // 25
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1088,7 +1317,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.LexerRuleBlock != null) position += parent.LexerRuleBlock.FullSpan.Length;
 		}
 		
-		public void VisitWildcardElement(WildcardElementSyntax parent) // 23
+		public void VisitWildcardElement(WildcardElementSyntax parent) // 26
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1104,7 +1333,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.TDot.FullSpan.Length;
 		}
 		
-		public void VisitLexerRuleReference(LexerRuleReferenceSyntax parent) // 24
+		public void VisitLexerRuleReference(LexerRuleReferenceSyntax parent) // 27
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1129,7 +1358,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitLexerRuleBlock(LexerRuleBlockSyntax parent) // 25
+		public void VisitLexerRuleBlock(LexerRuleBlockSyntax parent) // 28
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1175,7 +1404,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.TCloseParen.FullSpan.Length;
 		}
 		
-		public void VisitName(NameSyntax parent) // 26
+		public void VisitName(NameSyntax parent) // 29
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1200,7 +1429,60 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitIdentifier(IdentifierSyntax parent) // 27
+		public void VisitQualifiedName(QualifiedNameSyntax parent) // 30
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.Qualifier.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (!parent.Qualifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Qualifier);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForQualifiedName(Use_QualifiedName_Qualifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        operation = this.GetOperation(position, parent.Qualifier);
+		        if (operation != CompletionSearchFlags.None)
+		        {
+		            if (parent.Qualifier == null || parent.Qualifier.IsMissing) AddResultsForQualifiedName(Use_QualifiedName_Qualifier, operation, Compilation.GetBinder(parent));
+		            else VisitCore(parent.Qualifier);
+		        }
+		    }
+		    position += parent.Qualifier.FullSpan.Length;
+		}
+		
+		public void VisitQualifier(QualifierSyntax parent) // 31
+		{
+		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
+		    var position = parent.FullSpan.Start;
+		    var operation = CompletionSearchFlags.None;
+		    if (parent.Identifier.Node == null || parent.Identifier.FullSpan.IntersectsWith(FullSpan))
+		    {
+		        if (parent.Identifier.Node == null || !parent.Identifier.Span.Contains(Span))
+		        {
+		            operation = GetOperation(position, parent.Identifier.Node);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                AddResultsForQualifier(Use_Qualifier_Identifier, operation, Compilation.GetBinder(parent));
+		            }
+		        }
+		        foreach (var item in parent.Identifier.GetWithSeparators())
+		        {
+		            operation = GetOperation(position, item);
+		            if (operation != CompletionSearchFlags.None)
+		            {
+		                if (item.IsToken) AddBinder(item, operation);
+		                else VisitCore(item.AsNode());
+		            }
+		        }
+		    }
+		    position += parent.Identifier.FullSpan.Length;
+		}
+		
+		public void VisitIdentifier(IdentifierSyntax parent) // 32
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1208,7 +1490,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.Identifier.FullSpan.Length;
 		}
 		
-		public void VisitLexerRuleName(LexerRuleNameSyntax parent) // 28
+		public void VisitLexerRuleName(LexerRuleNameSyntax parent) // 33
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1216,7 +1498,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.LexerIdentifier.FullSpan.Length;
 		}
 		
-		public void VisitParserRuleName(ParserRuleNameSyntax parent) // 29
+		public void VisitParserRuleName(ParserRuleNameSyntax parent) // 34
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1224,7 +1506,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.ParserIdentifier.FullSpan.Length;
 		}
 		
-		public void VisitElementName(ElementNameSyntax parent) // 30
+		public void VisitElementName(ElementNameSyntax parent) // 35
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1232,7 +1514,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.LexerIdentifier.FullSpan.Length;
 		}
 		
-		public void VisitLiteral(LiteralSyntax parent) // 31
+		public void VisitLiteral(LiteralSyntax parent) // 36
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1347,7 +1629,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    if (parent.StringLiteral != null) position += parent.StringLiteral.FullSpan.Length;
 		}
 		
-		public void VisitNullLiteral(NullLiteralSyntax parent) // 32
+		public void VisitNullLiteral(NullLiteralSyntax parent) // 37
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1363,7 +1645,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.KNull.FullSpan.Length;
 		}
 		
-		public void VisitBooleanLiteral(BooleanLiteralSyntax parent) // 33
+		public void VisitBooleanLiteral(BooleanLiteralSyntax parent) // 38
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1371,7 +1653,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.BooleanLiteral.FullSpan.Length;
 		}
 		
-		public void VisitIntegerLiteral(IntegerLiteralSyntax parent) // 34
+		public void VisitIntegerLiteral(IntegerLiteralSyntax parent) // 39
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1379,7 +1661,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.LInteger.FullSpan.Length;
 		}
 		
-		public void VisitDecimalLiteral(DecimalLiteralSyntax parent) // 35
+		public void VisitDecimalLiteral(DecimalLiteralSyntax parent) // 40
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1387,7 +1669,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.LDecimal.FullSpan.Length;
 		}
 		
-		public void VisitScientificLiteral(ScientificLiteralSyntax parent) // 36
+		public void VisitScientificLiteral(ScientificLiteralSyntax parent) // 41
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1395,7 +1677,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 		    position += parent.LScientific.FullSpan.Length;
 		}
 		
-		public void VisitStringLiteral(StringLiteralSyntax parent) // 37
+		public void VisitStringLiteral(StringLiteralSyntax parent) // 42
 		{
 		    if (!parent.FullSpan.IntersectsWith(FullSpan)) return;
 		    var position = parent.FullSpan.Start;
@@ -1413,10 +1695,10 @@ namespace MetaDslx.Languages.Compiler.Binding
             if (_visited[0]) return;
             _visited[0] = true;
             var ruleBinder = parentBinder;
-            if (use == UnassignedUse || use == Use_Main_GrammarDeclaration)
+            if (use == UnassignedUse || use == Use_Main_NamespaceDeclaration)
             {
                 var binder = ruleBinder;
-                AddResultsForGrammarDeclaration(UnassignedUse, operation, binder);
+                AddResultsForNamespaceDeclaration(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
             if (use == UnassignedUse)
@@ -1428,11 +1710,65 @@ namespace MetaDslx.Languages.Compiler.Binding
             _visited[0] = false;
         }
         
-        public void AddResultsForGrammarDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 1
+        public void AddResultsForNamespaceDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 1
         {
             if (_visited[1]) return;
             _visited[1] = true;
             var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(Namespace), nestingProperty: "Members", merge: true, forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.KNamespace, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_NamespaceDeclaration_QualifiedName)
+            {
+                var binder = ruleBinder;
+                AddResultsForQualifiedName(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_NamespaceDeclaration_NamespaceBody)
+            {
+                var binder = ruleBinder;
+                AddResultsForNamespaceBody(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[1] = false;
+        }
+        
+        public void AddResultsForNamespaceBody(object use, CompletionSearchFlags operation, Binder parentBinder) // 2
+        {
+            if (_visited[2]) return;
+            _visited[2] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateScopeBinder(ruleBinder, null, forCompletion: true);
+            if (use == UnassignedUse || use == Use_NamespaceBody_UsingDeclaration)
+            {
+                var binder = ruleBinder;
+                AddResultsForUsingDeclaration(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse || use == Use_NamespaceBody_GrammarDeclaration)
+            {
+                var binder = ruleBinder;
+                AddResultsForGrammarDeclaration(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[2] = false;
+        }
+        
+        public void AddResultsForGrammarDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 3
+        {
+            if (_visited[3]) return;
+            _visited[3] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Members", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(Grammar), forCompletion: true);
             if (use == UnassignedUse)
             {
@@ -1459,26 +1795,63 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForRuleDeclarations(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[1] = false;
+            _visited[3] = false;
         }
         
-        public void AddResultsForRuleDeclarations(object use, CompletionSearchFlags operation, Binder parentBinder) // 2
+        public void AddResultsForUsingDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 4
         {
-            if (_visited[2]) return;
-            _visited[2] = true;
+            if (_visited[4]) return;
+            _visited[4] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateImportBinder(ruleBinder, null, forCompletion: true);
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.KUsing, operation);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse || use == Use_UsingDeclaration_Name)
+            {
+                var binder = ruleBinder;
+                AddResultsForName(UnassignedUse, operation, binder);
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TAssign, operation);
+            }
+            if (use == UnassignedUse || use == Use_UsingDeclaration_Qualifier)
+            {
+                var binder = ruleBinder;
+                AddResultsForQualifier(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TSemicolon, operation);
+                use = FinishedUse;
+            }
+            _visited[4] = false;
+        }
+        
+        public void AddResultsForRuleDeclarations(object use, CompletionSearchFlags operation, Binder parentBinder) // 5
+        {
+            if (_visited[5]) return;
+            _visited[5] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_RuleDeclarations_RuleDeclaration)
             {
                 var binder = ruleBinder;
                 AddResultsForRuleDeclaration(UnassignedUse, operation, binder);
             }
-            _visited[2] = false;
+            _visited[5] = false;
         }
         
-        public void AddResultsForRuleDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 3
+        public void AddResultsForRuleDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 6
         {
-            if (_visited[3]) return;
-            _visited[3] = true;
+            if (_visited[6]) return;
+            _visited[6] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Rules", forCompletion: true);
             if (use == UnassignedUse || use == Use_RuleDeclaration_ParserRuleDeclaration)
@@ -1491,13 +1864,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForLexerRuleDeclaration(UnassignedUse, operation, binder);
             }
-            _visited[3] = false;
+            _visited[6] = false;
         }
         
-        public void AddResultsForParserRuleDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 4
+        public void AddResultsForParserRuleDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 7
         {
-            if (_visited[4]) return;
-            _visited[4] = true;
+            if (_visited[7]) return;
+            _visited[7] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(ParserRule), forCompletion: true);
             if (use == UnassignedUse || use == Use_ParserRuleDeclaration_ParserRuleName)
@@ -1505,6 +1878,18 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForParserRuleName(UnassignedUse, operation, binder);
                 use = FinishedUse;
+            }
+            if (use == UnassignedUse)
+            {
+                var binder = ruleBinder;
+            	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.KDefines, operation);
+            }
+            if (use == UnassignedUse || use == Use_ParserRuleDeclaration_Qualifier)
+            {
+                var binder = ruleBinder;
+            	binder = this.BinderFactory.CreatePropertyBinder(binder, null, name: "DefinedModelObject", forCompletion: true);
+            	binder = this.BinderFactory.CreateUseBinder(binder, null, types: ImmutableArray.Create(typeof(System.Type)), forCompletion: true);
+                AddResultsForQualifier(UnassignedUse, operation, binder);
             }
             if (use == UnassignedUse)
             {
@@ -1524,13 +1909,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TSemicolon, operation);
                 use = FinishedUse;
             }
-            _visited[4] = false;
+            _visited[7] = false;
         }
         
-        public void AddResultsForParserRuleAlternative(object use, CompletionSearchFlags operation, Binder parentBinder) // 5
+        public void AddResultsForParserRuleAlternative(object use, CompletionSearchFlags operation, Binder parentBinder) // 8
         {
-            if (_visited[5]) return;
-            _visited[5] = true;
+            if (_visited[8]) return;
+            _visited[8] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Alternatives", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleAlternative), forCompletion: true);
@@ -1545,13 +1930,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForEofElement(UnassignedUse, operation, binder);
             }
-            _visited[5] = false;
+            _visited[8] = false;
         }
         
-        public void AddResultsForEofElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 6
+        public void AddResultsForEofElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 9
         {
-            if (_visited[6]) return;
-            _visited[6] = true;
+            if (_visited[9]) return;
+            _visited[9] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Elements", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleElement), forCompletion: true);
@@ -1563,13 +1948,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.KEof, operation);
                 use = FinishedUse;
             }
-            _visited[6] = false;
+            _visited[9] = false;
         }
         
-        public void AddResultsForParserRuleAlternativeElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 7
+        public void AddResultsForParserRuleAlternativeElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 10
         {
-            if (_visited[7]) return;
-            _visited[7] = true;
+            if (_visited[10]) return;
+            _visited[10] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Elements", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleElement), forCompletion: true);
@@ -1583,13 +1968,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForParserNegatedElement(UnassignedUse, operation, binder);
             }
-            _visited[7] = false;
+            _visited[10] = false;
         }
         
-        public void AddResultsForParserMultiElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 8
+        public void AddResultsForParserMultiElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 11
         {
-            if (_visited[8]) return;
-            _visited[8] = true;
+            if (_visited[11]) return;
+            _visited[11] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_ParserMultiElement_ElementName)
             {
@@ -1612,13 +1997,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForMultiplicity(UnassignedUse, operation, binder);
             }
-            _visited[8] = false;
+            _visited[11] = false;
         }
         
-        public void AddResultsForAssign(object use, CompletionSearchFlags operation, Binder parentBinder) // 9
+        public void AddResultsForAssign(object use, CompletionSearchFlags operation, Binder parentBinder) // 12
         {
-            if (_visited[9]) return;
-            _visited[9] = true;
+            if (_visited[12]) return;
+            _visited[12] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "AssignmentOperator", forCompletion: true);
             if (use == UnassignedUse || use == Use_Assign_Assign)
@@ -1638,13 +2023,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(TPlusAssignBinder, (CompilerSyntaxKind)CompilerSyntaxKind.TPlusAssign, operation);
                 use = FinishedUse;
             }
-            _visited[9] = false;
+            _visited[12] = false;
         }
         
-        public void AddResultsForMultiplicity(object use, CompletionSearchFlags operation, Binder parentBinder) // 10
+        public void AddResultsForMultiplicity(object use, CompletionSearchFlags operation, Binder parentBinder) // 13
         {
-            if (_visited[10]) return;
-            _visited[10] = true;
+            if (_visited[13]) return;
+            _visited[13] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Multiplicity", forCompletion: true);
             if (use == UnassignedUse || use == Use_Multiplicity_Multiplicity)
@@ -1670,13 +2055,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(TOneOrMoreBinder, (CompilerSyntaxKind)CompilerSyntaxKind.TOneOrMore, operation);
                 use = FinishedUse;
             }
-            _visited[10] = false;
+            _visited[13] = false;
         }
         
-        public void AddResultsForParserNegatedElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 11
+        public void AddResultsForParserNegatedElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 14
         {
-            if (_visited[11]) return;
-            _visited[11] = true;
+            if (_visited[14]) return;
+            _visited[14] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "IsNegated", value: true, forCompletion: true);
             if (use == UnassignedUse)
@@ -1691,13 +2076,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForParserRuleElement(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[11] = false;
+            _visited[14] = false;
         }
         
-        public void AddResultsForParserRuleElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 12
+        public void AddResultsForParserRuleElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 15
         {
-            if (_visited[12]) return;
-            _visited[12] = true;
+            if (_visited[15]) return;
+            _visited[15] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Element", forCompletion: true);
             if (use == UnassignedUse || use == Use_ParserRuleElement_FixedElement)
@@ -1715,13 +2100,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForParserRuleBlock(UnassignedUse, operation, binder);
             }
-            _visited[12] = false;
+            _visited[15] = false;
         }
         
-        public void AddResultsForFixedElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 13
+        public void AddResultsForFixedElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 16
         {
-            if (_visited[13]) return;
-            _visited[13] = true;
+            if (_visited[16]) return;
+            _visited[16] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(FixedElement), forCompletion: true);
             if (use == UnassignedUse || use == Use_FixedElement_StringLiteral)
@@ -1731,13 +2116,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForStringLiteral(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[13] = false;
+            _visited[16] = false;
         }
         
-        public void AddResultsForParserRuleReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 14
+        public void AddResultsForParserRuleReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 17
         {
-            if (_visited[14]) return;
-            _visited[14] = true;
+            if (_visited[17]) return;
+            _visited[17] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleReference), forCompletion: true);
             if (use == UnassignedUse || use == Use_ParserRuleReference_Identifier)
@@ -1748,13 +2133,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[14] = false;
+            _visited[17] = false;
         }
         
-        public void AddResultsForParserRuleBlock(object use, CompletionSearchFlags operation, Binder parentBinder) // 15
+        public void AddResultsForParserRuleBlock(object use, CompletionSearchFlags operation, Binder parentBinder) // 18
         {
-            if (_visited[15]) return;
-            _visited[15] = true;
+            if (_visited[18]) return;
+            _visited[18] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleBlock), forCompletion: true);
             if (use == UnassignedUse)
@@ -1775,15 +2160,25 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TCloseParen, operation);
                 use = FinishedUse;
             }
-            _visited[15] = false;
+            _visited[18] = false;
         }
         
-        public void AddResultsForLexerRuleDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 16
+        public void AddResultsForLexerRuleDeclaration(object use, CompletionSearchFlags operation, Binder parentBinder) // 19
         {
-            if (_visited[16]) return;
-            _visited[16] = true;
+            if (_visited[19]) return;
+            _visited[19] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(LexerRule), forCompletion: true);
+            if (use == UnassignedUse || use == Use_LexerRuleDeclaration_Modifier)
+            {
+                var binder = ruleBinder;
+            	var KHiddenBinder = binder;
+            	KHiddenBinder = this.BinderFactory.CreatePropertyBinder(KHiddenBinder, this.SyntaxFactory.MissingToken((CompilerSyntaxKind)CompilerSyntaxKind.KHidden), name: "IsHidden", value: true, forCompletion: true);
+            	AddBinder(KHiddenBinder, (CompilerSyntaxKind)CompilerSyntaxKind.KHidden, operation);
+            	var KFragmentBinder = binder;
+            	KFragmentBinder = this.BinderFactory.CreatePropertyBinder(KFragmentBinder, this.SyntaxFactory.MissingToken((CompilerSyntaxKind)CompilerSyntaxKind.KFragment), name: "IsFragment", value: true, forCompletion: true);
+            	AddBinder(KFragmentBinder, (CompilerSyntaxKind)CompilerSyntaxKind.KFragment, operation);
+            }
             if (use == UnassignedUse || use == Use_LexerRuleDeclaration_LexerRuleName)
             {
                 var binder = ruleBinder;
@@ -1808,13 +2203,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TSemicolon, operation);
                 use = FinishedUse;
             }
-            _visited[16] = false;
+            _visited[19] = false;
         }
         
-        public void AddResultsForLexerRuleAlternative(object use, CompletionSearchFlags operation, Binder parentBinder) // 17
+        public void AddResultsForLexerRuleAlternative(object use, CompletionSearchFlags operation, Binder parentBinder) // 20
         {
-            if (_visited[17]) return;
-            _visited[17] = true;
+            if (_visited[20]) return;
+            _visited[20] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Alternatives", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleAlternative), forCompletion: true);
@@ -1824,13 +2219,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForLexerRuleAlternativeElement(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[17] = false;
+            _visited[20] = false;
         }
         
-        public void AddResultsForLexerRuleAlternativeElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 18
+        public void AddResultsForLexerRuleAlternativeElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 21
         {
-            if (_visited[18]) return;
-            _visited[18] = true;
+            if (_visited[21]) return;
+            _visited[21] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "Elements", forCompletion: true);
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleElement), forCompletion: true);
@@ -1849,13 +2244,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForLexerRangeElement(UnassignedUse, operation, binder);
             }
-            _visited[18] = false;
+            _visited[21] = false;
         }
         
-        public void AddResultsForLexerMultiElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 19
+        public void AddResultsForLexerMultiElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 22
         {
-            if (_visited[19]) return;
-            _visited[19] = true;
+            if (_visited[22]) return;
+            _visited[22] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_LexerMultiElement_LexerRuleElement)
             {
@@ -1868,13 +2263,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForMultiplicity(UnassignedUse, operation, binder);
             }
-            _visited[19] = false;
+            _visited[22] = false;
         }
         
-        public void AddResultsForLexerNegatedElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 20
+        public void AddResultsForLexerNegatedElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 23
         {
-            if (_visited[20]) return;
-            _visited[20] = true;
+            if (_visited[23]) return;
+            _visited[23] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreatePropertyBinder(ruleBinder, null, name: "IsNegated", value: true, forCompletion: true);
             if (use == UnassignedUse)
@@ -1889,13 +2284,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForLexerRuleElement(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[20] = false;
+            _visited[23] = false;
         }
         
-        public void AddResultsForLexerRangeElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 21
+        public void AddResultsForLexerRangeElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 24
         {
-            if (_visited[21]) return;
-            _visited[21] = true;
+            if (_visited[24]) return;
+            _visited[24] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RangeElement), forCompletion: true);
             if (use == UnassignedUse || use == Use_LexerRangeElement_Start)
@@ -1918,13 +2313,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForFixedElement(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[21] = false;
+            _visited[24] = false;
         }
         
-        public void AddResultsForLexerRuleElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 22
+        public void AddResultsForLexerRuleElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 25
         {
-            if (_visited[22]) return;
-            _visited[22] = true;
+            if (_visited[25]) return;
+            _visited[25] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_LexerRuleElement_FixedElement)
             {
@@ -1946,13 +2341,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForLexerRuleBlock(UnassignedUse, operation, binder);
             }
-            _visited[22] = false;
+            _visited[25] = false;
         }
         
-        public void AddResultsForWildcardElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 23
+        public void AddResultsForWildcardElement(object use, CompletionSearchFlags operation, Binder parentBinder) // 26
         {
-            if (_visited[23]) return;
-            _visited[23] = true;
+            if (_visited[26]) return;
+            _visited[26] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(WildcardElement), forCompletion: true);
             if (use == UnassignedUse)
@@ -1961,13 +2356,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TDot, operation);
                 use = FinishedUse;
             }
-            _visited[23] = false;
+            _visited[26] = false;
         }
         
-        public void AddResultsForLexerRuleReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 24
+        public void AddResultsForLexerRuleReference(object use, CompletionSearchFlags operation, Binder parentBinder) // 27
         {
-            if (_visited[24]) return;
-            _visited[24] = true;
+            if (_visited[27]) return;
+            _visited[27] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleReference), forCompletion: true);
             if (use == UnassignedUse || use == Use_LexerRuleReference_Identifier)
@@ -1978,13 +2373,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[24] = false;
+            _visited[27] = false;
         }
         
-        public void AddResultsForLexerRuleBlock(object use, CompletionSearchFlags operation, Binder parentBinder) // 25
+        public void AddResultsForLexerRuleBlock(object use, CompletionSearchFlags operation, Binder parentBinder) // 28
         {
-            if (_visited[25]) return;
-            _visited[25] = true;
+            if (_visited[28]) return;
+            _visited[28] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateDefineBinder(ruleBinder, null, type: typeof(RuleBlock), forCompletion: true);
             if (use == UnassignedUse)
@@ -2005,13 +2400,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.TCloseParen, operation);
                 use = FinishedUse;
             }
-            _visited[25] = false;
+            _visited[28] = false;
         }
         
-        public void AddResultsForName(object use, CompletionSearchFlags operation, Binder parentBinder) // 26
+        public void AddResultsForName(object use, CompletionSearchFlags operation, Binder parentBinder) // 29
         {
-            if (_visited[26]) return;
-            _visited[26] = true;
+            if (_visited[29]) return;
+            _visited[29] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse || use == Use_Name_Identifier)
@@ -2020,13 +2415,43 @@ namespace MetaDslx.Languages.Compiler.Binding
                 AddResultsForIdentifier(UnassignedUse, operation, binder);
                 use = FinishedUse;
             }
-            _visited[26] = false;
+            _visited[29] = false;
         }
         
-        public void AddResultsForIdentifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 27
+        public void AddResultsForQualifiedName(object use, CompletionSearchFlags operation, Binder parentBinder) // 30
         {
-            if (_visited[27]) return;
-            _visited[27] = true;
+            if (_visited[30]) return;
+            _visited[30] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
+            if (use == UnassignedUse || use == Use_QualifiedName_Qualifier)
+            {
+                var binder = ruleBinder;
+                AddResultsForQualifier(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[30] = false;
+        }
+        
+        public void AddResultsForQualifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 31
+        {
+            if (_visited[31]) return;
+            _visited[31] = true;
+            var ruleBinder = parentBinder;
+            ruleBinder = this.BinderFactory.CreateQualifierBinder(ruleBinder, null, forCompletion: true);
+            if (use == UnassignedUse || use == Use_Qualifier_Identifier)
+            {
+                var binder = ruleBinder;
+                AddResultsForIdentifier(UnassignedUse, operation, binder);
+                use = FinishedUse;
+            }
+            _visited[31] = false;
+        }
+        
+        public void AddResultsForIdentifier(object use, CompletionSearchFlags operation, Binder parentBinder) // 32
+        {
+            if (_visited[32]) return;
+            _visited[32] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateIdentifierBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -2038,13 +2463,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(ParserIdentifierBinder, (CompilerSyntaxKind)CompilerSyntaxKind.ParserIdentifier, operation);
                 use = FinishedUse;
             }
-            _visited[27] = false;
+            _visited[32] = false;
         }
         
-        public void AddResultsForLexerRuleName(object use, CompletionSearchFlags operation, Binder parentBinder) // 28
+        public void AddResultsForLexerRuleName(object use, CompletionSearchFlags operation, Binder parentBinder) // 33
         {
-            if (_visited[28]) return;
-            _visited[28] = true;
+            if (_visited[33]) return;
+            _visited[33] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateIdentifierBinder(ruleBinder, null, forCompletion: true);
@@ -2054,13 +2479,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.LexerIdentifier, operation);
                 use = FinishedUse;
             }
-            _visited[28] = false;
+            _visited[33] = false;
         }
         
-        public void AddResultsForParserRuleName(object use, CompletionSearchFlags operation, Binder parentBinder) // 29
+        public void AddResultsForParserRuleName(object use, CompletionSearchFlags operation, Binder parentBinder) // 34
         {
-            if (_visited[29]) return;
-            _visited[29] = true;
+            if (_visited[34]) return;
+            _visited[34] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateIdentifierBinder(ruleBinder, null, forCompletion: true);
@@ -2070,13 +2495,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.ParserIdentifier, operation);
                 use = FinishedUse;
             }
-            _visited[29] = false;
+            _visited[34] = false;
         }
         
-        public void AddResultsForElementName(object use, CompletionSearchFlags operation, Binder parentBinder) // 30
+        public void AddResultsForElementName(object use, CompletionSearchFlags operation, Binder parentBinder) // 35
         {
-            if (_visited[30]) return;
-            _visited[30] = true;
+            if (_visited[35]) return;
+            _visited[35] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateNameBinder(ruleBinder, null, forCompletion: true);
             ruleBinder = this.BinderFactory.CreateIdentifierBinder(ruleBinder, null, forCompletion: true);
@@ -2086,13 +2511,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.LexerIdentifier, operation);
                 use = FinishedUse;
             }
-            _visited[30] = false;
+            _visited[35] = false;
         }
         
-        public void AddResultsForLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 31
+        public void AddResultsForLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 36
         {
-            if (_visited[31]) return;
-            _visited[31] = true;
+            if (_visited[36]) return;
+            _visited[36] = true;
             var ruleBinder = parentBinder;
             if (use == UnassignedUse || use == Use_Literal_NullLiteral)
             {
@@ -2124,13 +2549,13 @@ namespace MetaDslx.Languages.Compiler.Binding
                 var binder = ruleBinder;
                 AddResultsForStringLiteral(UnassignedUse, operation, binder);
             }
-            _visited[31] = false;
+            _visited[36] = false;
         }
         
-        public void AddResultsForNullLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 32
+        public void AddResultsForNullLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 37
         {
-            if (_visited[32]) return;
-            _visited[32] = true;
+            if (_visited[37]) return;
+            _visited[37] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -2139,13 +2564,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.KNull, operation);
                 use = FinishedUse;
             }
-            _visited[32] = false;
+            _visited[37] = false;
         }
         
-        public void AddResultsForBooleanLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 33
+        public void AddResultsForBooleanLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 38
         {
-            if (_visited[33]) return;
-            _visited[33] = true;
+            if (_visited[38]) return;
+            _visited[38] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -2157,13 +2582,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(KFalseBinder, (CompilerSyntaxKind)CompilerSyntaxKind.KFalse, operation);
                 use = FinishedUse;
             }
-            _visited[33] = false;
+            _visited[38] = false;
         }
         
-        public void AddResultsForIntegerLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 34
+        public void AddResultsForIntegerLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 39
         {
-            if (_visited[34]) return;
-            _visited[34] = true;
+            if (_visited[39]) return;
+            _visited[39] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -2172,13 +2597,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.LInteger, operation);
                 use = FinishedUse;
             }
-            _visited[34] = false;
+            _visited[39] = false;
         }
         
-        public void AddResultsForDecimalLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 35
+        public void AddResultsForDecimalLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 40
         {
-            if (_visited[35]) return;
-            _visited[35] = true;
+            if (_visited[40]) return;
+            _visited[40] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -2187,13 +2612,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.LDecimal, operation);
                 use = FinishedUse;
             }
-            _visited[35] = false;
+            _visited[40] = false;
         }
         
-        public void AddResultsForScientificLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 36
+        public void AddResultsForScientificLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 41
         {
-            if (_visited[36]) return;
-            _visited[36] = true;
+            if (_visited[41]) return;
+            _visited[41] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -2202,13 +2627,13 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.LScientific, operation);
                 use = FinishedUse;
             }
-            _visited[36] = false;
+            _visited[41] = false;
         }
         
-        public void AddResultsForStringLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 37
+        public void AddResultsForStringLiteral(object use, CompletionSearchFlags operation, Binder parentBinder) // 42
         {
-            if (_visited[37]) return;
-            _visited[37] = true;
+            if (_visited[42]) return;
+            _visited[42] = true;
             var ruleBinder = parentBinder;
             ruleBinder = this.BinderFactory.CreateValueBinder(ruleBinder, null, forCompletion: true);
             if (use == UnassignedUse)
@@ -2217,7 +2642,7 @@ namespace MetaDslx.Languages.Compiler.Binding
             	AddBinder(binder, (CompilerSyntaxKind)CompilerSyntaxKind.LString, operation);
                 use = FinishedUse;
             }
-            _visited[37] = false;
+            _visited[42] = false;
         }
     }
 }

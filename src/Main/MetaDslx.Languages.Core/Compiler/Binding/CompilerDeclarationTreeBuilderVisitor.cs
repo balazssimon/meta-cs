@@ -11,7 +11,6 @@ using MetaDslx.Languages.Compiler;
 using MetaDslx.Languages.Compiler.Syntax;
 using MetaDslx.Languages.Compiler.Symbols;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler.Binding
@@ -40,37 +39,108 @@ namespace MetaDslx.Languages.Compiler.Binding
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			if (node.GrammarDeclaration != null)
+			if (node.NamespaceDeclaration != null)
 			{
-			    this.Visit(node.GrammarDeclaration);
+			    this.Visit(node.NamespaceDeclaration);
+			}
+		}
+		
+		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(Namespace), nestingProperty: "Members", merge: true);
+			try
+			{
+				if (node.QualifiedName != null)
+				{
+				    this.Visit(node.QualifiedName);
+				}
+				if (node.NamespaceBody != null)
+				{
+				    this.Visit(node.NamespaceBody);
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(Namespace), nestingProperty: "Members", merge: true);
+			}
+		}
+		
+		public virtual void VisitNamespaceBody(NamespaceBodySyntax node)
+		{
+			this.BeginScope(node);
+			try
+			{
+				if (node.UsingDeclaration != null)
+				{
+					foreach (var child in node.UsingDeclaration)
+					{
+				        this.Visit(child);
+					}
+				}
+				if (node.GrammarDeclaration != null)
+				{
+				    this.Visit(node.GrammarDeclaration);
+				}
+			}
+			finally
+			{
+				this.EndScope(node);
 			}
 		}
 		
 		public virtual void VisitGrammarDeclaration(GrammarDeclarationSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(Grammar));
+			this.BeginProperty(node, name: "Members");
+			try
+			{
+				this.BeginDefine(node, type: typeof(Grammar));
+				try
+				{
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+					if (node.RuleDeclarations != null)
+					{
+					    this.BeginScope(node.RuleDeclarations);
+					    try
+					    {
+					    	this.Visit(node.RuleDeclarations);
+					    }
+					    finally
+					    {
+					    	this.EndScope(node.RuleDeclarations);
+					    }
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(Grammar));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Members");
+			}
+		}
+		
+		public virtual void VisitUsingDeclaration(UsingDeclarationSyntax node)
+		{
+			this.BeginImport(node);
 			try
 			{
 				if (node.Name != null)
 				{
 				    this.Visit(node.Name);
 				}
-				if (node.RuleDeclarations != null)
+				if (node.Qualifier != null)
 				{
-				    this.BeginScope(node.RuleDeclarations);
-				    try
-				    {
-				    	this.Visit(node.RuleDeclarations);
-				    }
-				    finally
-				    {
-				    	this.EndScope(node.RuleDeclarations);
-				    }
+				    this.Visit(node.Qualifier);
 				}
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(Grammar));
+				this.EndImport(node);
 			}
 		}
 		
@@ -113,6 +183,26 @@ namespace MetaDslx.Languages.Compiler.Binding
 				if (node.ParserRuleName != null)
 				{
 				    this.Visit(node.ParserRuleName);
+				}
+				if (node.Qualifier != null)
+				{
+				    this.BeginProperty(node.Qualifier, name: "DefinedModelObject");
+				    try
+				    {
+				    	this.BeginUse(node.Qualifier, types: ImmutableArray.Create(typeof(System.Type)));
+				    	try
+				    	{
+				    		this.Visit(node.Qualifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.Qualifier, types: ImmutableArray.Create(typeof(System.Type)));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Qualifier, name: "DefinedModelObject");
+				    }
 				}
 				if (node.ParserRuleAlternative != null)
 				{
@@ -513,6 +603,36 @@ namespace MetaDslx.Languages.Compiler.Binding
 			this.BeginDefine(node, type: typeof(LexerRule));
 			try
 			{
+				if (node.Modifier != null)
+				{
+				    switch (node.Modifier.GetKind().Switch())
+				    {
+				    	case CompilerSyntaxKind.KHidden:
+				    		this.BeginProperty(node.Modifier, name: "IsHidden", value: true);
+				    		try
+				    		{
+				    			this.Visit(node.Modifier);
+				    		}
+				    		finally
+				    		{
+				    			this.EndProperty(node.Modifier, name: "IsHidden", value: true);
+				    		}
+				    		break;
+				    	case CompilerSyntaxKind.KFragment:
+				    		this.BeginProperty(node.Modifier, name: "IsFragment", value: true);
+				    		try
+				    		{
+				    			this.Visit(node.Modifier);
+				    		}
+				    		finally
+				    		{
+				    			this.EndProperty(node.Modifier, name: "IsFragment", value: true);
+				    		}
+				    		break;
+				    	default:
+				    		break;
+				    }
+				}
 				if (node.LexerRuleName != null)
 				{
 				    this.Visit(node.LexerRuleName);
@@ -750,6 +870,41 @@ namespace MetaDslx.Languages.Compiler.Binding
 			finally
 			{
 				this.EndName(node);
+			}
+		}
+		
+		public virtual void VisitQualifiedName(QualifiedNameSyntax node)
+		{
+			this.BeginName(node);
+			try
+			{
+				if (node.Qualifier != null)
+				{
+				    this.Visit(node.Qualifier);
+				}
+			}
+			finally
+			{
+				this.EndName(node);
+			}
+		}
+		
+		public virtual void VisitQualifier(QualifierSyntax node)
+		{
+			this.BeginQualifier(node);
+			try
+			{
+				if (node.Identifier != null)
+				{
+					foreach (var child in node.Identifier)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndQualifier(node);
 			}
 		}
 		

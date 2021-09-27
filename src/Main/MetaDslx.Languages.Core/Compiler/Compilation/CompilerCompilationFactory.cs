@@ -11,7 +11,6 @@ using MetaDslx.Languages.Compiler.Syntax;
 using MetaDslx.Languages.Compiler.Binding;
 using MetaDslx.Languages.Compiler.Symbols;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler

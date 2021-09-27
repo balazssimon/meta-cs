@@ -775,7 +775,7 @@ namespace Microsoft.CodeAnalysis
                 for (int i = 0, n = node.SlotCount; i < n; i++)
                 {
                     var child = node.GetSlot(i);
-                    if (child != null)
+                    if (child != null && !child.IsMissing)
                     {
                         firstChild = child;
                         break;
@@ -797,7 +797,7 @@ namespace Microsoft.CodeAnalysis
                 for (int i = node.SlotCount - 1; i >= 0; i--)
                 {
                     var child = node.GetSlot(i);
-                    if (child != null)
+                    if (child != null && !child.IsMissing)
                     {
                         lastChild = child;
                         break;

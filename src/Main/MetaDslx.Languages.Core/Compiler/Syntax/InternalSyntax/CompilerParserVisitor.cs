@@ -21,7 +21,6 @@
 
 namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax {
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 using Antlr4.Runtime.Misc;
@@ -43,11 +42,29 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMain([NotNull] CompilerParser.MainContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.namespaceDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNamespaceDeclaration([NotNull] CompilerParser.NamespaceDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.namespaceBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNamespaceBody([NotNull] CompilerParser.NamespaceBodyContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.grammarDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitGrammarDeclaration([NotNull] CompilerParser.GrammarDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.usingDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUsingDeclaration([NotNull] CompilerParser.UsingDeclarationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.ruleDeclarations"/>.
 	/// </summary>
@@ -198,6 +215,18 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitName([NotNull] CompilerParser.NameContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.qualifiedName"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitQualifiedName([NotNull] CompilerParser.QualifiedNameContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.qualifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitQualifier([NotNull] CompilerParser.QualifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.identifier"/>.
 	/// </summary>

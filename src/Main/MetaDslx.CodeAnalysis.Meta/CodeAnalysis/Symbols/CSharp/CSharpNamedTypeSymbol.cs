@@ -31,6 +31,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override string MetadataName => _csharpSymbol.MetadataName;
 
+        public string AssemblyQualifiedName => _csharpSymbol.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) + "," + _csharpSymbol.ContainingAssembly.Name;
+
         public override bool CanBeReferencedByName => _csharpSymbol.CanBeReferencedByName;
 
         public override int Arity => _csharpSymbol.Arity;

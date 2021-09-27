@@ -1,11 +1,19 @@
 ﻿namespace MetaDslx.Languages.Compiler.Model
 {
+	using MetaDslx.Languages.Meta.Model;
 	using MetaDslx.CodeAnalysis.Symbols;
 
 	metamodel Compiler(Uri="http://MetaDslx.Languages.Compiler/1.0",MajorVersion=1,MinorVersion=0);
 
+	[symbol: Namespace]
+	class Namespace : NamedElement
+	{
+		[property: Members]
+		containment list<NamedElement> Members;
+	}
+
 	[symbol: Member]
-	abstract class NamedElement
+	class NamedElement
 	{
 		[property: Name]
 		string Name;
@@ -28,6 +36,7 @@
 	[symbol: NamedType]
 	abstract class Rule : NamedElement
 	{
+		SystemType DefinedModelObject;
 		[property: Members]
 		containment list<RuleAlternative> Alternatives;
 	}

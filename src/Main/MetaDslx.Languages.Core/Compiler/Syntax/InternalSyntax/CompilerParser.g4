@@ -2,7 +2,6 @@ parser grammar CompilerParser;
 
 @header 
 {
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 }
 
@@ -12,14 +11,20 @@ options
 	                      
 }
 
-main: grammarDeclaration EOF;
+main: namespaceDeclaration EOF;
 
-//$Define(type=Namespace,nestingProperty=Members,merge=true)
-//namespaceDeclaration: KNamespace qualifiedName TSemicolon /*$Scope*/ grammarDeclaration;
+                                                          
+namespaceDeclaration: KNamespace qualifiedName TSemicolon namespaceBody;
 
-//$Property(Members) 
+      
+namespaceBody: usingDeclaration* grammarDeclaration;
+
+                   
                 
 grammarDeclaration: KGrammar name TSemicolon        ruleDeclarations;
+
+       
+usingDeclaration: KUsing (name TAssign)? qualifier TSemicolon;
 
 ruleDeclarations: ruleDeclaration*;
 
@@ -27,7 +32,7 @@ ruleDeclarations: ruleDeclaration*;
 ruleDeclaration: parserRuleDeclaration | lexerRuleDeclaration;
 
                    
-parserRuleDeclaration: parserRuleName TColon parserRuleAlternative (TBar parserRuleAlternative)* TSemicolon;
+parserRuleDeclaration: parserRuleName (KDefines                                                 qualifier)? TColon parserRuleAlternative (TBar parserRuleAlternative)* TSemicolon;
 
                        
                         
@@ -78,7 +83,7 @@ parserRuleReference:                            identifier;
 parserRuleBlock: TOpenParen parserRuleAlternative (TBar parserRuleAlternative)* TCloseParen;
 
                   
-lexerRuleDeclaration: lexerRuleName TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
+lexerRuleDeclaration: modifier=(                                    KHidden |                                       KFragment)? lexerRuleName TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
 
                        
                         
@@ -110,6 +115,12 @@ lexerRuleBlock: TOpenParen lexerRuleAlternative (TBar lexerRuleAlternative)* TCl
 // Identifiers
      
 name : identifier;
+
+     
+qualifiedName : qualifier;
+
+          
+qualifier : identifier (TDot identifier)*;
 
            
 identifier : LexerIdentifier | ParserIdentifier;

@@ -27,6 +27,8 @@ namespace MetaDslx.Languages.Compiler.Model
 		public static readonly global::MetaDslx.Modeling.ImmutableModel MModel;
 	
 	
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Namespace;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Namespace_Members;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass NamedElement;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty NamedElement_Name;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Grammar;
@@ -36,6 +38,7 @@ namespace MetaDslx.Languages.Compiler.Model
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GrammarOptions_IsCaseInsensitive;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty GrammarOptions_IsWhitespaceIndented;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass Rule;
+		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Rule_DefinedModelObject;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty Rule_Alternatives;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaClass RuleAlternative;
 		public static readonly global::MetaDslx.Languages.Meta.Model.MetaProperty RuleAlternative_Elements;
@@ -68,6 +71,8 @@ namespace MetaDslx.Languages.Compiler.Model
 			MMetadata = MModel.Metadata;
 	
 	
+			Namespace = CompilerBuilderInstance.instance.Namespace.ToImmutable(MModel);
+			Namespace_Members = CompilerBuilderInstance.instance.Namespace_Members.ToImmutable(MModel);
 			NamedElement = CompilerBuilderInstance.instance.NamedElement.ToImmutable(MModel);
 			NamedElement_Name = CompilerBuilderInstance.instance.NamedElement_Name.ToImmutable(MModel);
 			Grammar = CompilerBuilderInstance.instance.Grammar.ToImmutable(MModel);
@@ -77,6 +82,7 @@ namespace MetaDslx.Languages.Compiler.Model
 			GrammarOptions_IsCaseInsensitive = CompilerBuilderInstance.instance.GrammarOptions_IsCaseInsensitive.ToImmutable(MModel);
 			GrammarOptions_IsWhitespaceIndented = CompilerBuilderInstance.instance.GrammarOptions_IsWhitespaceIndented.ToImmutable(MModel);
 			Rule = CompilerBuilderInstance.instance.Rule.ToImmutable(MModel);
+			Rule_DefinedModelObject = CompilerBuilderInstance.instance.Rule_DefinedModelObject.ToImmutable(MModel);
 			Rule_Alternatives = CompilerBuilderInstance.instance.Rule_Alternatives.ToImmutable(MModel);
 			RuleAlternative = CompilerBuilderInstance.instance.RuleAlternative.ToImmutable(MModel);
 			RuleAlternative_Elements = CompilerBuilderInstance.instance.RuleAlternative_Elements.ToImmutable(MModel);
@@ -122,6 +128,8 @@ namespace MetaDslx.Languages.Compiler.Model
 		{
 			switch (type)
 			{
+				case "Namespace": return this.Namespace();
+				case "NamedElement": return this.NamedElement();
 				case "Grammar": return this.Grammar();
 				case "GrammarOptions": return this.GrammarOptions();
 				case "RuleAlternative": return this.RuleAlternative();
@@ -137,6 +145,24 @@ namespace MetaDslx.Languages.Compiler.Model
 				default:
 					throw new global::MetaDslx.Modeling.ModelException(global::MetaDslx.Modeling.ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(type));
 			}
+		}
+	
+		/// <summary>
+		/// Creates a new instance of Namespace.
+		/// </summary>
+		public NamespaceBuilder Namespace()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new NamespaceId());
+			return (NamespaceBuilder)obj;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of NamedElement.
+		/// </summary>
+		public NamedElementBuilder NamedElement()
+		{
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new NamedElementId());
+			return (NamedElementBuilder)obj;
 		}
 	
 		/// <summary>
@@ -276,6 +302,40 @@ namespace MetaDslx.Languages.Compiler.Model
 	{
 	}
 	
+	public interface Namespace : NamedElement
+	{
+		global::MetaDslx.Modeling.ImmutableModelList<NamedElement> Members { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="Namespace"/> object to a builder <see cref="NamespaceBuilder"/> object.
+		/// </summary>
+		new NamespaceBuilder ToMutable();
+		/// <summary>
+		/// Convert the <see cref="Namespace"/> object to a builder <see cref="NamespaceBuilder"/> object
+		/// by taking the builder version from the given model.
+		/// </summary>
+		/// <param name="model">The mutable model from which the return value is taken from.</param>
+		new NamespaceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
+	}
+	
+	public interface NamespaceBuilder : NamedElementBuilder
+	{
+		global::MetaDslx.Modeling.MutableModelList<NamedElementBuilder> Members { get; }
+	
+	
+		/// <summary>
+		/// Convert the <see cref="NamespaceBuilder"/> object to an immutable <see cref="Namespace"/> object.
+		/// </summary>
+		new Namespace ToImmutable();
+		/// <summary>
+		/// Convert the <see cref="NamespaceBuilder"/> object to an immutable <see cref="Namespace"/> object
+		/// by taking the immutable version from the given model.
+		/// </summary>
+		/// <param name="model">The immutable model from which the return value is taken from.</param>
+		new Namespace ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
+	}
+	
 	public interface NamedElement : global::MetaDslx.Modeling.ImmutableObject
 	{
 		string Name { get; }
@@ -396,6 +456,7 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 	public interface Rule : NamedElement
 	{
+		System.Type DefinedModelObject { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> Alternatives { get; }
 	
 	
@@ -413,6 +474,10 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 	public interface RuleBuilder : NamedElementBuilder
 	{
+		System.Type DefinedModelObject { get; set; }
+		void SetDefinedModelObjectLazy(global::System.Func<System.Type> lazy);
+		void SetDefinedModelObjectLazy(global::System.Func<RuleBuilder, System.Type> lazy);
+		void SetDefinedModelObjectLazy(global::System.Func<Rule, System.Type> immutableLazy, global::System.Func<RuleBuilder, System.Type> mutableLazy);
 		global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives { get; }
 	
 	
@@ -839,6 +904,7 @@ namespace MetaDslx.Languages.Compiler.Model
 		static CompilerDescriptor()
 		{
 			properties = new global::System.Collections.Generic.List<global::MetaDslx.Modeling.ModelProperty>();
+			Namespace.Initialize();
 			NamedElement.Initialize();
 			Grammar.Initialize();
 			GrammarOptions.Initialize();
@@ -854,11 +920,13 @@ namespace MetaDslx.Languages.Compiler.Model
 			RangeElement.Initialize();
 			ParserRule.Initialize();
 			LexerRule.Initialize();
+			properties.Add(CompilerDescriptor.Namespace.MembersProperty);
 			properties.Add(CompilerDescriptor.NamedElement.NameProperty);
 			properties.Add(CompilerDescriptor.Grammar.OptionsProperty);
 			properties.Add(CompilerDescriptor.Grammar.RulesProperty);
 			properties.Add(CompilerDescriptor.GrammarOptions.IsCaseInsensitiveProperty);
 			properties.Add(CompilerDescriptor.GrammarOptions.IsWhitespaceIndentedProperty);
+			properties.Add(CompilerDescriptor.Rule.DefinedModelObjectProperty);
 			properties.Add(CompilerDescriptor.Rule.AlternativesProperty);
 			properties.Add(CompilerDescriptor.RuleAlternative.ElementsProperty);
 			properties.Add(CompilerDescriptor.RuleElement.IsNegatedProperty);
@@ -879,6 +947,43 @@ namespace MetaDslx.Languages.Compiler.Model
 	
 		public const string MUri = "http://MetaDslx.Languages.Compiler/1.0";
 		public const string MPrefix = "";
+	
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamespaceSymbol))]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.NamespaceId), typeof(global::MetaDslx.Languages.Compiler.Model.Namespace), typeof(global::MetaDslx.Languages.Compiler.Model.NamespaceBuilder), BaseDescriptors = new global::System.Type[] { typeof(CompilerDescriptor.NamedElement) })]
+		public static class Namespace
+		{
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
+		
+			static Namespace()
+			{
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(Namespace));
+			}
+		
+			internal static void Initialize()
+			{
+			}
+		
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
+			{
+				get { return descriptor; }
+			}
+		
+			public static global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass
+			{
+				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Namespace; }
+			}
+			
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
+			[global::MetaDslx.Modeling.CollectionAttribute]
+			[global::MetaDslx.Modeling.OrderedAttribute]
+			[global::MetaDslx.Modeling.ContainmentAttribute]
+			public static readonly global::MetaDslx.Modeling.ModelProperty MembersProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Namespace), name: "Members",
+			        immutableType: typeof(global::MetaDslx.Languages.Compiler.Model.NamedElement),
+			        mutableType: typeof(global::MetaDslx.Languages.Compiler.Model.NamedElementBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Namespace_Members,
+					defaultValue: null);
+		}
 	
 		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Compiler.Model.Internal.NamedElementId), typeof(global::MetaDslx.Languages.Compiler.Model.NamedElement), typeof(global::MetaDslx.Languages.Compiler.Model.NamedElementBuilder))]
@@ -1022,6 +1127,13 @@ namespace MetaDslx.Languages.Compiler.Model
 			{
 				get { return global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Rule; }
 			}
+			
+			public static readonly global::MetaDslx.Modeling.ModelProperty DefinedModelObjectProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(Rule), name: "DefinedModelObject",
+			        immutableType: typeof(System.Type),
+			        mutableType: typeof(System.Type),
+					metaProperty: () => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.Rule_DefinedModelObject,
+					defaultValue: null);
 			
 			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
@@ -1399,6 +1511,137 @@ namespace MetaDslx.Languages.Compiler.Model
 
 namespace MetaDslx.Languages.Compiler.Model.Internal
 {
+	
+	internal class NamespaceId : global::MetaDslx.Modeling.ObjectId
+	{
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Namespace.MDescriptor; } }
+	
+		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return new NamespaceImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Modeling.MutableObjectBase CreateMutable(global::MetaDslx.Modeling.MutableModel model, bool creating)
+		{
+			return new NamespaceBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class NamespaceImpl : global::MetaDslx.Modeling.ImmutableObjectBase, Namespace
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Modeling.ImmutableModelList<NamedElement> members0;
+	
+		internal NamespaceImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.Namespace;
+	
+		public new NamespaceBuilder ToMutable()
+		{
+			return (NamespaceBuilder)base.ToMutable();
+		}
+	
+		public new NamespaceBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return (NamespaceBuilder)base.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Modeling.ImmutableModelList<NamedElement> Members
+		{
+		    get { return this.GetList<NamedElement>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Namespace.MembersProperty, ref members0); }
+		}
+	}
+	
+	internal class NamespaceBuilderImpl : global::MetaDslx.Modeling.MutableObjectBase, NamespaceBuilder
+	{
+		private global::MetaDslx.Modeling.MutableModelList<NamedElementBuilder> members0;
+	
+		internal NamespaceBuilderImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			CompilerImplementationProvider.Implementation.Namespace(this);
+		}
+	
+		public override global::MetaDslx.Modeling.ModelMetadata MMetadata => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.MMetadata;
+	
+		public override global::MetaDslx.Languages.Meta.Model.MetaClass MMetaClass => CompilerInstance.Namespace;
+	
+		public new Namespace ToImmutable()
+		{
+			return (Namespace)base.ToImmutable();
+		}
+	
+		public new Namespace ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return (Namespace)base.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElementBuilder, string> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, lazy);
+		}
+		
+		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public global::MetaDslx.Modeling.MutableModelList<NamedElementBuilder> Members
+		{
+			get { return this.GetList<NamedElementBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Namespace.MembersProperty, ref members0); }
+		}
+	}
 	
 	internal class NamedElementId : global::MetaDslx.Modeling.ObjectId
 	{
@@ -1803,6 +2046,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private System.Type definedModelObject0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
 	
 		internal RuleImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -1838,6 +2083,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public System.Type DefinedModelObject
+		{
+		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, ref definedModelObject0); }
 		}
 	
 		
@@ -1905,6 +2156,28 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public System.Type DefinedModelObject
+		{
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty); }
+			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, value); }
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<RuleBuilder, System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<Rule, System.Type> immutableLazy, global::System.Func<RuleBuilder, System.Type> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -2483,6 +2756,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private System.Type definedModelObject0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
 	
 		internal RuleBlockImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -2538,6 +2813,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public System.Type DefinedModelObject
+		{
+		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, ref definedModelObject0); }
 		}
 	
 		
@@ -2625,6 +2906,28 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		void NamedElementBuilder.SetNameLazy(global::System.Func<NamedElement, string> immutableLazy, global::System.Func<NamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(CompilerDescriptor.NamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public System.Type DefinedModelObject
+		{
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty); }
+			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, value); }
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<RuleBuilder, System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<Rule, System.Type> immutableLazy, global::System.Func<RuleBuilder, System.Type> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -3088,6 +3391,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private System.Type definedModelObject0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
 	
 		internal ParserRuleImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
@@ -3133,6 +3438,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public System.Type DefinedModelObject
+		{
+		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, ref definedModelObject0); }
 		}
 	
 		
@@ -3213,6 +3524,28 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
+		public System.Type DefinedModelObject
+		{
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty); }
+			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, value); }
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<RuleBuilder, System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<Rule, System.Type> immutableLazy, global::System.Func<RuleBuilder, System.Type> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives
 		{
 			get { return this.GetList<RuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
@@ -3238,6 +3571,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private System.Type definedModelObject0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<RuleAlternative> alternatives0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3288,6 +3623,12 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public System.Type DefinedModelObject
+		{
+		    get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, ref definedModelObject0); }
 		}
 	
 		
@@ -3380,6 +3721,28 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		}
 	
 		
+		public System.Type DefinedModelObject
+		{
+			get { return this.GetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty); }
+			set { this.SetReference<System.Type>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.DefinedModelObjectProperty, value); }
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<RuleBuilder, System.Type> lazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, lazy);
+		}
+		
+		void RuleBuilder.SetDefinedModelObjectLazy(global::System.Func<Rule, System.Type> immutableLazy, global::System.Func<RuleBuilder, System.Type> mutableLazy)
+		{
+			this.SetLazyReference(CompilerDescriptor.Rule.DefinedModelObjectProperty, immutableLazy, mutableLazy);
+		}
+	
+		
 		public global::MetaDslx.Modeling.MutableModelList<RuleAlternativeBuilder> Alternatives
 		{
 			get { return this.GetList<RuleAlternativeBuilder>(global::MetaDslx.Languages.Compiler.Model.CompilerDescriptor.Rule.AlternativesProperty, ref alternatives0); }
@@ -3446,6 +3809,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp3;
 		private global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder __tmp4;
 		private global::MetaDslx.Languages.Meta.Model.MetaModelBuilder __tmp5;
+		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Namespace;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Namespace_Members;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder NamedElement;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder NamedElement_Name;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Grammar;
@@ -3455,6 +3820,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GrammarOptions_IsCaseInsensitive;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder GrammarOptions_IsWhitespaceIndented;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder Rule;
+		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Rule_DefinedModelObject;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder Rule_Alternatives;
 		internal global::MetaDslx.Languages.Meta.Model.MetaClassBuilder RuleAlternative;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder RuleAlternative_Elements;
@@ -3479,21 +3845,22 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LexerRule_IsFragment;
 		internal global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder LexerRule_IsHidden;
 		internal global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder Multiplicity;
-		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp9;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp10;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp11;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp12;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp13;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp14;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp15;
-		internal global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder AssignmentOperator;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp16;
+		internal global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder AssignmentOperator;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp17;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp18;
 		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp19;
+		private global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder __tmp20;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp6;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp7;
 		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp8;
+		private global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder __tmp9;
 	
 		internal CompilerBuilderInstance()
 		{
@@ -3539,6 +3906,8 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			__tmp3 = factory.MetaNamespace();
 			__tmp4 = factory.MetaNamespace();
 			__tmp5 = factory.MetaModel();
+			Namespace = factory.MetaClass();
+			Namespace_Members = factory.MetaProperty();
 			NamedElement = factory.MetaClass();
 			NamedElement_Name = factory.MetaProperty();
 			Grammar = factory.MetaClass();
@@ -3548,6 +3917,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			GrammarOptions_IsCaseInsensitive = factory.MetaProperty();
 			GrammarOptions_IsWhitespaceIndented = factory.MetaProperty();
 			Rule = factory.MetaClass();
+			Rule_DefinedModelObject = factory.MetaProperty();
 			Rule_Alternatives = factory.MetaProperty();
 			RuleAlternative = factory.MetaClass();
 			RuleAlternative_Elements = factory.MetaProperty();
@@ -3572,21 +3942,22 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			LexerRule_IsFragment = factory.MetaProperty();
 			LexerRule_IsHidden = factory.MetaProperty();
 			Multiplicity = factory.MetaEnum();
-			__tmp9 = factory.MetaEnumLiteral();
 			__tmp10 = factory.MetaEnumLiteral();
 			__tmp11 = factory.MetaEnumLiteral();
 			__tmp12 = factory.MetaEnumLiteral();
 			__tmp13 = factory.MetaEnumLiteral();
 			__tmp14 = factory.MetaEnumLiteral();
 			__tmp15 = factory.MetaEnumLiteral();
-			AssignmentOperator = factory.MetaEnum();
 			__tmp16 = factory.MetaEnumLiteral();
+			AssignmentOperator = factory.MetaEnum();
 			__tmp17 = factory.MetaEnumLiteral();
 			__tmp18 = factory.MetaEnumLiteral();
 			__tmp19 = factory.MetaEnumLiteral();
+			__tmp20 = factory.MetaEnumLiteral();
 			__tmp6 = factory.MetaCollectionType();
 			__tmp7 = factory.MetaCollectionType();
 			__tmp8 = factory.MetaCollectionType();
+			__tmp9 = factory.MetaCollectionType();
 	
 			__tmp1.Documentation = null;
 			__tmp1.Name = "MetaDslx";
@@ -3607,6 +3978,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			__tmp4.Name = "Model";
 			__tmp4.SetNamespaceLazy(() => __tmp3);
 			__tmp4.SetDefinedMetaModelLazy(() => __tmp5);
+			__tmp4.Declarations.AddLazy(() => Namespace);
 			__tmp4.Declarations.AddLazy(() => NamedElement);
 			__tmp4.Declarations.AddLazy(() => Grammar);
 			__tmp4.Declarations.AddLazy(() => GrammarOptions);
@@ -3631,11 +4003,26 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			__tmp5.Uri = "http://MetaDslx.Languages.Compiler/1.0";
 			__tmp5.Prefix = null;
 			__tmp5.SetNamespaceLazy(() => __tmp4);
+			Namespace.Documentation = null;
+			Namespace.Name = "Namespace";
+			Namespace.SetNamespaceLazy(() => __tmp4);
+			Namespace.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.NamespaceSymbol);
+			Namespace.IsAbstract = false;
+			Namespace.SuperClasses.AddLazy(() => NamedElement);
+			Namespace.Properties.AddLazy(() => Namespace_Members);
+			Namespace_Members.SetTypeLazy(() => __tmp6);
+			Namespace_Members.Documentation = null;
+			Namespace_Members.Name = "Members";
+			Namespace_Members.SymbolProperty = "Members";
+			Namespace_Members.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Namespace_Members.SetClassLazy(() => Namespace);
+			Namespace_Members.DefaultValue = null;
+			Namespace_Members.IsContainment = true;
 			NamedElement.Documentation = null;
 			NamedElement.Name = "NamedElement";
 			NamedElement.SetNamespaceLazy(() => __tmp4);
 			NamedElement.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol);
-			NamedElement.IsAbstract = true;
+			NamedElement.IsAbstract = false;
 			NamedElement.Properties.AddLazy(() => NamedElement_Name);
 			NamedElement_Name.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.String.ToMutable());
 			NamedElement_Name.Documentation = null;
@@ -3661,7 +4048,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			Grammar_Options.SetClassLazy(() => Grammar);
 			Grammar_Options.DefaultValue = null;
 			Grammar_Options.IsContainment = true;
-			Grammar_Rules.SetTypeLazy(() => __tmp6);
+			Grammar_Rules.SetTypeLazy(() => __tmp7);
 			Grammar_Rules.Documentation = null;
 			Grammar_Rules.Name = "Rules";
 			Grammar_Rules.SymbolProperty = "Members";
@@ -3698,8 +4085,17 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			Rule.SymbolType = typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol);
 			Rule.IsAbstract = true;
 			Rule.SuperClasses.AddLazy(() => NamedElement);
+			Rule.Properties.AddLazy(() => Rule_DefinedModelObject);
 			Rule.Properties.AddLazy(() => Rule_Alternatives);
-			Rule_Alternatives.SetTypeLazy(() => __tmp7);
+			Rule_DefinedModelObject.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.SystemType.ToMutable());
+			Rule_DefinedModelObject.Documentation = null;
+			Rule_DefinedModelObject.Name = "DefinedModelObject";
+			Rule_DefinedModelObject.SymbolProperty = null;
+			Rule_DefinedModelObject.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
+			Rule_DefinedModelObject.SetClassLazy(() => Rule);
+			Rule_DefinedModelObject.DefaultValue = null;
+			Rule_DefinedModelObject.IsContainment = false;
+			Rule_Alternatives.SetTypeLazy(() => __tmp8);
 			Rule_Alternatives.Documentation = null;
 			Rule_Alternatives.Name = "Alternatives";
 			Rule_Alternatives.SymbolProperty = "Members";
@@ -3714,7 +4110,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			RuleAlternative.IsAbstract = false;
 			RuleAlternative.SuperClasses.AddLazy(() => NamedElement);
 			RuleAlternative.Properties.AddLazy(() => RuleAlternative_Elements);
-			RuleAlternative_Elements.SetTypeLazy(() => __tmp8);
+			RuleAlternative_Elements.SetTypeLazy(() => __tmp9);
 			RuleAlternative_Elements.Documentation = null;
 			RuleAlternative_Elements.Name = "Elements";
 			RuleAlternative_Elements.SymbolProperty = null;
@@ -3875,59 +4271,61 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			Multiplicity.Documentation = null;
 			Multiplicity.Name = "Multiplicity";
 			Multiplicity.SetNamespaceLazy(() => __tmp4);
-			Multiplicity.EnumLiterals.AddLazy(() => __tmp9);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp10);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp11);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp12);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp13);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp14);
 			Multiplicity.EnumLiterals.AddLazy(() => __tmp15);
-			__tmp9.Documentation = null;
-			__tmp9.Name = "ExactlyOne";
-			__tmp9.SetEnumLazy(() => Multiplicity);
+			Multiplicity.EnumLiterals.AddLazy(() => __tmp16);
 			__tmp10.Documentation = null;
-			__tmp10.Name = "ZeroOrOne";
+			__tmp10.Name = "ExactlyOne";
 			__tmp10.SetEnumLazy(() => Multiplicity);
 			__tmp11.Documentation = null;
-			__tmp11.Name = "ZeroOrMore";
+			__tmp11.Name = "ZeroOrOne";
 			__tmp11.SetEnumLazy(() => Multiplicity);
 			__tmp12.Documentation = null;
-			__tmp12.Name = "OneOrMore";
+			__tmp12.Name = "ZeroOrMore";
 			__tmp12.SetEnumLazy(() => Multiplicity);
 			__tmp13.Documentation = null;
-			__tmp13.Name = "NonGreedyZeroOrOne";
+			__tmp13.Name = "OneOrMore";
 			__tmp13.SetEnumLazy(() => Multiplicity);
 			__tmp14.Documentation = null;
-			__tmp14.Name = "NonGreedyZeroOrMore";
+			__tmp14.Name = "NonGreedyZeroOrOne";
 			__tmp14.SetEnumLazy(() => Multiplicity);
 			__tmp15.Documentation = null;
-			__tmp15.Name = "NonGreedyOneOrMore";
+			__tmp15.Name = "NonGreedyZeroOrMore";
 			__tmp15.SetEnumLazy(() => Multiplicity);
+			__tmp16.Documentation = null;
+			__tmp16.Name = "NonGreedyOneOrMore";
+			__tmp16.SetEnumLazy(() => Multiplicity);
 			AssignmentOperator.Documentation = null;
 			AssignmentOperator.Name = "AssignmentOperator";
 			AssignmentOperator.SetNamespaceLazy(() => __tmp4);
-			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp16);
 			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp17);
 			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp18);
 			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp19);
-			__tmp16.Documentation = null;
-			__tmp16.Name = "Assign";
-			__tmp16.SetEnumLazy(() => AssignmentOperator);
+			AssignmentOperator.EnumLiterals.AddLazy(() => __tmp20);
 			__tmp17.Documentation = null;
-			__tmp17.Name = "QuestionAssign";
+			__tmp17.Name = "Assign";
 			__tmp17.SetEnumLazy(() => AssignmentOperator);
 			__tmp18.Documentation = null;
-			__tmp18.Name = "NegatedAssign";
+			__tmp18.Name = "QuestionAssign";
 			__tmp18.SetEnumLazy(() => AssignmentOperator);
 			__tmp19.Documentation = null;
-			__tmp19.Name = "PlusAssign";
+			__tmp19.Name = "NegatedAssign";
 			__tmp19.SetEnumLazy(() => AssignmentOperator);
+			__tmp20.Documentation = null;
+			__tmp20.Name = "PlusAssign";
+			__tmp20.SetEnumLazy(() => AssignmentOperator);
 			__tmp6.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp6.SetInnerTypeLazy(() => Rule);
+			__tmp6.SetInnerTypeLazy(() => NamedElement);
 			__tmp7.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp7.SetInnerTypeLazy(() => RuleAlternative);
+			__tmp7.SetInnerTypeLazy(() => Rule);
 			__tmp8.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp8.SetInnerTypeLazy(() => RuleElement);
+			__tmp8.SetInnerTypeLazy(() => RuleAlternative);
+			__tmp9.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp9.SetInnerTypeLazy(() => RuleElement);
 		}
 	}
 
@@ -3944,6 +4342,33 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 		internal virtual void CompilerBuilderInstance(CompilerBuilderInstance _this)
 		{
 		}
+	
+		/// <summary>
+		/// Implements the constructor: Namespace()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		public virtual void Namespace(NamespaceBuilder _this)
+		{
+			this.CallNamespaceSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of Namespace
+		/// </summary>
+		protected virtual void CallNamespaceSuperConstructors(NamespaceBuilder _this)
+		{
+			this.NamedElement(_this);
+		}
+	
+	
+	
 	
 		/// <summary>
 		/// Implements the constructor: NamedElement()

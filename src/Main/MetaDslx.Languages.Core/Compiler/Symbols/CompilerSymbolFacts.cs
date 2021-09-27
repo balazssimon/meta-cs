@@ -9,7 +9,6 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Compiler;
 using MetaDslx.Languages.Compiler.Syntax.InternalSyntax;
 
-//using MetaDslx.Languages.Core.Model;
 using MetaDslx.Languages.Compiler.Model;
 
 namespace MetaDslx.Languages.Compiler.Symbols
