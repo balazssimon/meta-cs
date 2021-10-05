@@ -13,6 +13,10 @@ options
 
 main: namespaceDeclaration EOF;
 
+                       
+                   
+annotation: TOpenBracket name TCloseBracket;
+
                                                           
 namespaceDeclaration: KNamespace qualifiedName TSemicolon namespaceBody;
 
@@ -21,7 +25,7 @@ namespaceBody: usingDeclaration* grammarDeclaration;
 
                    
                 
-grammarDeclaration: KGrammar name TSemicolon        ruleDeclarations;
+grammarDeclaration: annotation* KGrammar name TSemicolon        ruleDeclarations;
 
        
 usingDeclaration: KUsing (name TAssign)? qualifier TSemicolon;
@@ -31,24 +35,26 @@ ruleDeclarations: ruleDeclaration*;
                  
 ruleDeclaration: parserRuleDeclaration | lexerRuleDeclaration;
 
-                   
-parserRuleDeclaration: parserRuleName (KDefines                                                 qualifier)? TColon parserRuleAlternative (TBar parserRuleAlternative)* TSemicolon;
+parserRuleDeclaration: parserRuleAlt | parserRuleSimple;
+
+                      
+parserRuleAlt: annotation* parserRuleName (KDefines                                                 qualifier)? TColon parserRuleAltRef (TBar parserRuleAltRef)* TSemicolon;
 
                        
-                        
-parserRuleAlternative: parserRuleAlternativeElement+ eofElement?;
+parserRuleAltRef:                  parserRuleIdentifier;
+
+                         
+parserRuleSimple: annotation* parserRuleName (KDefines                                                 qualifier)? TColon parserRuleNamedElement+ eofElement? TSemicolon;
 
                    
-                    
+                               
                   
-                   
+                             
 eofElement: KEof;
 
                    
-                    
-parserRuleAlternativeElement: parserMultiElement | parserNegatedElement;
-
-parserMultiElement: (elementName assign)? parserRuleElement multiplicity?;
+                               
+parserRuleNamedElement: annotation* (elementName assign)? parserNegatedElement multiplicity?;
 
                              
 assign
@@ -67,50 +73,54 @@ multiplicity
 	|                                TOneOrMore
 	;
 
-                                    
-parserNegatedElement: TNegate parserRuleElement;
+parserNegatedElement:                                      TNegate? parserRuleElement;
 
                   
-parserRuleElement: fixedElement | parserRuleReference | parserRuleBlock;
+parserRuleElement: parserRuleFixedElement | parserRuleReference | parserRuleWildcardElement | parserRuleBlockElement;
 
-                     
-fixedElement:                  stringLiteral;
+                               
+parserRuleFixedElement: annotation*                  stringLiteral;
 
-                      
-parserRuleReference:                            identifier;
+                                  
+parserRuleWildcardElement: annotation* TDot;
+
+                                   
+parserRuleReference: annotation*                            identifier;
+
+                               
+parserRuleBlockElement: annotation* TOpenParen parserRuleNamedElement+ TCloseParen;
 
                   
-parserRuleBlock: TOpenParen parserRuleAlternative (TBar parserRuleAlternative)* TCloseParen;
-
-                  
-lexerRuleDeclaration: modifier=(                                    KHidden |                                       KFragment)? lexerRuleName TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
+lexerRuleDeclaration: annotation* modifier=(                                    KHidden |                                       KFragment)? lexerRuleName (KReturns                                        qualifier)? TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
 
                        
-                        
+                             
 lexerRuleAlternative: lexerRuleAlternativeElement+;
 
                    
-                    
-lexerRuleAlternativeElement: lexerMultiElement | lexerNegatedElement | lexerRangeElement;
-
-lexerMultiElement: lexerRuleElement multiplicity?;
-
                                     
-lexerNegatedElement: TNegate lexerRuleElement;
-
-                     
-lexerRangeElement:                  start=fixedElement TArrow                end=fixedElement;
-
-lexerRuleElement: fixedElement | wildcardElement | lexerRuleReference | lexerRuleBlock;
-
-                        
-wildcardElement: TDot;
-
-                      
-lexerRuleReference:                                 identifier;
+lexerRuleAlternativeElement:                                      TNegate? lexerRuleElement multiplicity?;
 
                   
-lexerRuleBlock: TOpenParen lexerRuleAlternative (TBar lexerRuleAlternative)* TCloseParen;
+lexerRuleElement: lexerRuleReferenceElement | lexerRuleFixedStringElement | lexerRuleFixedCharElement | lexerRuleWildcardElement | lexerRuleBlockElement | lexerRuleRangeElement;
+
+                                  
+lexerRuleReferenceElement:                                 lexerRuleIdentifier;
+
+                                 
+lexerRuleWildcardElement: TDot;
+
+                                    
+lexerRuleFixedStringElement:                         LString;
+
+                                  
+lexerRuleFixedCharElement:                         LCharacter;
+
+                              
+lexerRuleBlockElement: TOpenParen lexerRuleAlternative (TBar lexerRuleAlternative)* TCloseParen;
+
+                              
+lexerRuleRangeElement:                  start=lexerRuleFixedCharElement TDotDot                end=lexerRuleFixedCharElement;
 
 // Identifiers
      
@@ -125,6 +135,12 @@ qualifier : identifier (TDot identifier)*;
            
 identifier : LexerIdentifier | ParserIdentifier;
 
+           
+lexerRuleIdentifier : LexerIdentifier;
+
+           
+parserRuleIdentifier : ParserIdentifier;
+
      
            
 lexerRuleName : LexerIdentifier;
@@ -135,7 +151,7 @@ parserRuleName : ParserIdentifier;
 
      
            
-elementName : LexerIdentifier;
+elementName : ParserIdentifier | IgnoredIdentifier;
 
 // Literals
 literal 
@@ -168,5 +184,8 @@ scientificLiteral : LScientific;
 // String literals
       
 stringLiteral : LString;
+
+      
+charLiteral : LCharacter;
 
 

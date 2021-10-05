@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Compiler;
+using MetaDslx.Languages.Compiler.Generator;
 using MetaDslx.Languages.Compiler.Model;
 using MetaDslx.Languages.Core;
 using MetaDslx.Languages.Core.Model;
@@ -92,6 +93,10 @@ Print(z);
             {
                 Console.WriteLine(formatter.Format(diag));
             }
+            var imodel = cmodel.ToImmutable();
+            var a4gen = new Antlr4Generator();
+            var a4info = new GrammarGenerationInfo(imodel);
+            Console.WriteLine(a4gen.GenerateLexer(a4info));
         }
     }
 }

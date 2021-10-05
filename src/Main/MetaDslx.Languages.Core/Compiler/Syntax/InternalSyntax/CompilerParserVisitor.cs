@@ -42,6 +42,12 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMain([NotNull] CompilerParser.MainContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.annotation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotation([NotNull] CompilerParser.AnnotationContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.namespaceDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -84,11 +90,23 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParserRuleDeclaration([NotNull] CompilerParser.ParserRuleDeclarationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleAlternative"/>.
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleAlt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitParserRuleAlternative([NotNull] CompilerParser.ParserRuleAlternativeContext context);
+	Result VisitParserRuleAlt([NotNull] CompilerParser.ParserRuleAltContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleAltRef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParserRuleAltRef([NotNull] CompilerParser.ParserRuleAltRefContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleSimple"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParserRuleSimple([NotNull] CompilerParser.ParserRuleSimpleContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.eofElement"/>.
 	/// </summary>
@@ -96,17 +114,11 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEofElement([NotNull] CompilerParser.EofElementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleAlternativeElement"/>.
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleNamedElement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitParserRuleAlternativeElement([NotNull] CompilerParser.ParserRuleAlternativeElementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.parserMultiElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitParserMultiElement([NotNull] CompilerParser.ParserMultiElementContext context);
+	Result VisitParserRuleNamedElement([NotNull] CompilerParser.ParserRuleNamedElementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.assign"/>.
 	/// </summary>
@@ -132,11 +144,17 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParserRuleElement([NotNull] CompilerParser.ParserRuleElementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.fixedElement"/>.
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleFixedElement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFixedElement([NotNull] CompilerParser.FixedElementContext context);
+	Result VisitParserRuleFixedElement([NotNull] CompilerParser.ParserRuleFixedElementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleWildcardElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParserRuleWildcardElement([NotNull] CompilerParser.ParserRuleWildcardElementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleReference"/>.
 	/// </summary>
@@ -144,11 +162,11 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParserRuleReference([NotNull] CompilerParser.ParserRuleReferenceContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleBlock"/>.
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleBlockElement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitParserRuleBlock([NotNull] CompilerParser.ParserRuleBlockContext context);
+	Result VisitParserRuleBlockElement([NotNull] CompilerParser.ParserRuleBlockElementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleDeclaration"/>.
 	/// </summary>
@@ -168,47 +186,47 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLexerRuleAlternativeElement([NotNull] CompilerParser.LexerRuleAlternativeElementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.lexerMultiElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLexerMultiElement([NotNull] CompilerParser.LexerMultiElementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.lexerNegatedElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLexerNegatedElement([NotNull] CompilerParser.LexerNegatedElementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRangeElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLexerRangeElement([NotNull] CompilerParser.LexerRangeElementContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleElement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitLexerRuleElement([NotNull] CompilerParser.LexerRuleElementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.wildcardElement"/>.
+	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleReferenceElement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitWildcardElement([NotNull] CompilerParser.WildcardElementContext context);
+	Result VisitLexerRuleReferenceElement([NotNull] CompilerParser.LexerRuleReferenceElementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleReference"/>.
+	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleWildcardElement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLexerRuleReference([NotNull] CompilerParser.LexerRuleReferenceContext context);
+	Result VisitLexerRuleWildcardElement([NotNull] CompilerParser.LexerRuleWildcardElementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleBlock"/>.
+	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleFixedStringElement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLexerRuleBlock([NotNull] CompilerParser.LexerRuleBlockContext context);
+	Result VisitLexerRuleFixedStringElement([NotNull] CompilerParser.LexerRuleFixedStringElementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleFixedCharElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLexerRuleFixedCharElement([NotNull] CompilerParser.LexerRuleFixedCharElementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleBlockElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLexerRuleBlockElement([NotNull] CompilerParser.LexerRuleBlockElementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleRangeElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLexerRuleRangeElement([NotNull] CompilerParser.LexerRuleRangeElementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.name"/>.
 	/// </summary>
@@ -233,6 +251,18 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIdentifier([NotNull] CompilerParser.IdentifierContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleIdentifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLexerRuleIdentifier([NotNull] CompilerParser.LexerRuleIdentifierContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.parserRuleIdentifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParserRuleIdentifier([NotNull] CompilerParser.ParserRuleIdentifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CompilerParser.lexerRuleName"/>.
 	/// </summary>
@@ -293,5 +323,11 @@ public interface ICompilerParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStringLiteral([NotNull] CompilerParser.StringLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CompilerParser.charLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCharLiteral([NotNull] CompilerParser.CharLiteralContext context);
 }
 } // namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax

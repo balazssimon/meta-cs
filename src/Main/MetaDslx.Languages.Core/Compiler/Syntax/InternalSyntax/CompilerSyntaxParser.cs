@@ -94,6 +94,57 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseAnnotation(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.annotation();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseAnnotation(AnnotationSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.AnnotationContext _Antlr4ParseAnnotation()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.AnnotationContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseAnnotation(CurrentNode as AnnotationSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseAnnotation();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.AnnotationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
 		public GreenNode ParseNamespaceDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -451,12 +502,12 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseParserRuleAlternative(ref ParserState state)
+		public GreenNode ParseParserRuleAlt(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.parserRuleAlternative();
+				var context = this.Antlr4Parser.parserRuleAlt();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -466,27 +517,27 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseParserRuleAlternative(ParserRuleAlternativeSyntax node)
+		protected virtual bool CanReuseParserRuleAlt(ParserRuleAltSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal CompilerParser.ParserRuleAlternativeContext _Antlr4ParseParserRuleAlternative()
+		internal CompilerParser.ParserRuleAltContext _Antlr4ParseParserRuleAlt()
 		{
 			BeginNode();
 		    bool cached = false;
-		    CompilerParser.ParserRuleAlternativeContext context = null;
+		    CompilerParser.ParserRuleAltContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseParserRuleAlternative(CurrentNode as ParserRuleAlternativeSyntax);
+		        cached = IsIncremental && CanReuseParserRuleAlt(CurrentNode as ParserRuleAltSyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseParserRuleAlternative();
+					context = this.Antlr4Parser._DoParseParserRuleAlt();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -495,7 +546,109 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new CompilerParser.ParserRuleAlternativeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new CompilerParser.ParserRuleAltContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseParserRuleAltRef(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.parserRuleAltRef();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseParserRuleAltRef(ParserRuleAltRefSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.ParserRuleAltRefContext _Antlr4ParseParserRuleAltRef()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.ParserRuleAltRefContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseParserRuleAltRef(CurrentNode as ParserRuleAltRefSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseParserRuleAltRef();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.ParserRuleAltRefContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseParserRuleSimple(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.parserRuleSimple();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseParserRuleSimple(ParserRuleSimpleSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.ParserRuleSimpleContext _Antlr4ParseParserRuleSimple()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.ParserRuleSimpleContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseParserRuleSimple(CurrentNode as ParserRuleSimpleSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseParserRuleSimple();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.ParserRuleSimpleContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -553,12 +706,12 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseParserRuleAlternativeElement(ref ParserState state)
+		public GreenNode ParseParserRuleNamedElement(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.parserRuleAlternativeElement();
+				var context = this.Antlr4Parser.parserRuleNamedElement();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -568,27 +721,27 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseParserRuleAlternativeElement(ParserRuleAlternativeElementSyntax node)
+		protected virtual bool CanReuseParserRuleNamedElement(ParserRuleNamedElementSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal CompilerParser.ParserRuleAlternativeElementContext _Antlr4ParseParserRuleAlternativeElement()
+		internal CompilerParser.ParserRuleNamedElementContext _Antlr4ParseParserRuleNamedElement()
 		{
 			BeginNode();
 		    bool cached = false;
-		    CompilerParser.ParserRuleAlternativeElementContext context = null;
+		    CompilerParser.ParserRuleNamedElementContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseParserRuleAlternativeElement(CurrentNode as ParserRuleAlternativeElementSyntax);
+		        cached = IsIncremental && CanReuseParserRuleNamedElement(CurrentNode as ParserRuleNamedElementSyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseParserRuleAlternativeElement();
+					context = this.Antlr4Parser._DoParseParserRuleNamedElement();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -597,58 +750,7 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new CompilerParser.ParserRuleAlternativeElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
-		        }
-		        CacheGreenNode(context, green);
-		    }
-		    return context;
-		}
-		public GreenNode ParseParserMultiElement(ref ParserState state)
-		{
-		    RestoreParserState(state);
-			try
-			{
-				var context = this.Antlr4Parser.parserMultiElement();
-		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return _visitor.Visit(context);
-			}
-			finally
-			{
-				state = this.State;
-			}
-		}
-		
-		protected virtual bool CanReuseParserMultiElement(ParserMultiElementSyntax node)
-		{
-			return node != null;
-		}
-		
-		internal CompilerParser.ParserMultiElementContext _Antlr4ParseParserMultiElement()
-		{
-			BeginNode();
-		    bool cached = false;
-		    CompilerParser.ParserMultiElementContext context = null;
-		    GreenNode green = null;
-		    try
-		    {
-		        cached = IsIncremental && CanReuseParserMultiElement(CurrentNode as ParserMultiElementSyntax);
-				if (cached)
-				{
-					green = EatNode();
-				}
-				else
-				{
-					context = this.Antlr4Parser._DoParseParserMultiElement();
-					green = _visitor.Visit(context);
-				}
-		    }
-		    finally
-		    {
-		        EndNode(ref green);
-		        if (cached)
-		        {
-					context = new CompilerParser.ParserMultiElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new CompilerParser.ParserRuleNamedElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -859,12 +961,12 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseFixedElement(ref ParserState state)
+		public GreenNode ParseParserRuleFixedElement(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.fixedElement();
+				var context = this.Antlr4Parser.parserRuleFixedElement();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -874,27 +976,27 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseFixedElement(FixedElementSyntax node)
+		protected virtual bool CanReuseParserRuleFixedElement(ParserRuleFixedElementSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal CompilerParser.FixedElementContext _Antlr4ParseFixedElement()
+		internal CompilerParser.ParserRuleFixedElementContext _Antlr4ParseParserRuleFixedElement()
 		{
 			BeginNode();
 		    bool cached = false;
-		    CompilerParser.FixedElementContext context = null;
+		    CompilerParser.ParserRuleFixedElementContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseFixedElement(CurrentNode as FixedElementSyntax);
+		        cached = IsIncremental && CanReuseParserRuleFixedElement(CurrentNode as ParserRuleFixedElementSyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseFixedElement();
+					context = this.Antlr4Parser._DoParseParserRuleFixedElement();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -903,7 +1005,58 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new CompilerParser.FixedElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new CompilerParser.ParserRuleFixedElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseParserRuleWildcardElement(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.parserRuleWildcardElement();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseParserRuleWildcardElement(ParserRuleWildcardElementSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.ParserRuleWildcardElementContext _Antlr4ParseParserRuleWildcardElement()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.ParserRuleWildcardElementContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseParserRuleWildcardElement(CurrentNode as ParserRuleWildcardElementSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseParserRuleWildcardElement();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.ParserRuleWildcardElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -961,12 +1114,12 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseParserRuleBlock(ref ParserState state)
+		public GreenNode ParseParserRuleBlockElement(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.parserRuleBlock();
+				var context = this.Antlr4Parser.parserRuleBlockElement();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -976,27 +1129,27 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseParserRuleBlock(ParserRuleBlockSyntax node)
+		protected virtual bool CanReuseParserRuleBlockElement(ParserRuleBlockElementSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal CompilerParser.ParserRuleBlockContext _Antlr4ParseParserRuleBlock()
+		internal CompilerParser.ParserRuleBlockElementContext _Antlr4ParseParserRuleBlockElement()
 		{
 			BeginNode();
 		    bool cached = false;
-		    CompilerParser.ParserRuleBlockContext context = null;
+		    CompilerParser.ParserRuleBlockElementContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseParserRuleBlock(CurrentNode as ParserRuleBlockSyntax);
+		        cached = IsIncremental && CanReuseParserRuleBlockElement(CurrentNode as ParserRuleBlockElementSyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseParserRuleBlock();
+					context = this.Antlr4Parser._DoParseParserRuleBlockElement();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -1005,7 +1158,7 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new CompilerParser.ParserRuleBlockContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new CompilerParser.ParserRuleBlockElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -1165,159 +1318,6 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseLexerMultiElement(ref ParserState state)
-		{
-		    RestoreParserState(state);
-			try
-			{
-				var context = this.Antlr4Parser.lexerMultiElement();
-		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return _visitor.Visit(context);
-			}
-			finally
-			{
-				state = this.State;
-			}
-		}
-		
-		protected virtual bool CanReuseLexerMultiElement(LexerMultiElementSyntax node)
-		{
-			return node != null;
-		}
-		
-		internal CompilerParser.LexerMultiElementContext _Antlr4ParseLexerMultiElement()
-		{
-			BeginNode();
-		    bool cached = false;
-		    CompilerParser.LexerMultiElementContext context = null;
-		    GreenNode green = null;
-		    try
-		    {
-		        cached = IsIncremental && CanReuseLexerMultiElement(CurrentNode as LexerMultiElementSyntax);
-				if (cached)
-				{
-					green = EatNode();
-				}
-				else
-				{
-					context = this.Antlr4Parser._DoParseLexerMultiElement();
-					green = _visitor.Visit(context);
-				}
-		    }
-		    finally
-		    {
-		        EndNode(ref green);
-		        if (cached)
-		        {
-					context = new CompilerParser.LexerMultiElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
-		        }
-		        CacheGreenNode(context, green);
-		    }
-		    return context;
-		}
-		public GreenNode ParseLexerNegatedElement(ref ParserState state)
-		{
-		    RestoreParserState(state);
-			try
-			{
-				var context = this.Antlr4Parser.lexerNegatedElement();
-		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return _visitor.Visit(context);
-			}
-			finally
-			{
-				state = this.State;
-			}
-		}
-		
-		protected virtual bool CanReuseLexerNegatedElement(LexerNegatedElementSyntax node)
-		{
-			return node != null;
-		}
-		
-		internal CompilerParser.LexerNegatedElementContext _Antlr4ParseLexerNegatedElement()
-		{
-			BeginNode();
-		    bool cached = false;
-		    CompilerParser.LexerNegatedElementContext context = null;
-		    GreenNode green = null;
-		    try
-		    {
-		        cached = IsIncremental && CanReuseLexerNegatedElement(CurrentNode as LexerNegatedElementSyntax);
-				if (cached)
-				{
-					green = EatNode();
-				}
-				else
-				{
-					context = this.Antlr4Parser._DoParseLexerNegatedElement();
-					green = _visitor.Visit(context);
-				}
-		    }
-		    finally
-		    {
-		        EndNode(ref green);
-		        if (cached)
-		        {
-					context = new CompilerParser.LexerNegatedElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
-		        }
-		        CacheGreenNode(context, green);
-		    }
-		    return context;
-		}
-		public GreenNode ParseLexerRangeElement(ref ParserState state)
-		{
-		    RestoreParserState(state);
-			try
-			{
-				var context = this.Antlr4Parser.lexerRangeElement();
-		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return _visitor.Visit(context);
-			}
-			finally
-			{
-				state = this.State;
-			}
-		}
-		
-		protected virtual bool CanReuseLexerRangeElement(LexerRangeElementSyntax node)
-		{
-			return node != null;
-		}
-		
-		internal CompilerParser.LexerRangeElementContext _Antlr4ParseLexerRangeElement()
-		{
-			BeginNode();
-		    bool cached = false;
-		    CompilerParser.LexerRangeElementContext context = null;
-		    GreenNode green = null;
-		    try
-		    {
-		        cached = IsIncremental && CanReuseLexerRangeElement(CurrentNode as LexerRangeElementSyntax);
-				if (cached)
-				{
-					green = EatNode();
-				}
-				else
-				{
-					context = this.Antlr4Parser._DoParseLexerRangeElement();
-					green = _visitor.Visit(context);
-				}
-		    }
-		    finally
-		    {
-		        EndNode(ref green);
-		        if (cached)
-		        {
-					context = new CompilerParser.LexerRangeElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
-		        }
-		        CacheGreenNode(context, green);
-		    }
-		    return context;
-		}
 		public GreenNode ParseLexerRuleElement(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -1369,12 +1369,12 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
-		public GreenNode ParseWildcardElement(ref ParserState state)
+		public GreenNode ParseLexerRuleReferenceElement(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.wildcardElement();
+				var context = this.Antlr4Parser.lexerRuleReferenceElement();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -1384,27 +1384,27 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseWildcardElement(WildcardElementSyntax node)
+		protected virtual bool CanReuseLexerRuleReferenceElement(LexerRuleReferenceElementSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal CompilerParser.WildcardElementContext _Antlr4ParseWildcardElement()
+		internal CompilerParser.LexerRuleReferenceElementContext _Antlr4ParseLexerRuleReferenceElement()
 		{
 			BeginNode();
 		    bool cached = false;
-		    CompilerParser.WildcardElementContext context = null;
+		    CompilerParser.LexerRuleReferenceElementContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseWildcardElement(CurrentNode as WildcardElementSyntax);
+		        cached = IsIncremental && CanReuseLexerRuleReferenceElement(CurrentNode as LexerRuleReferenceElementSyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseWildcardElement();
+					context = this.Antlr4Parser._DoParseLexerRuleReferenceElement();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -1413,19 +1413,19 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new CompilerParser.WildcardElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new CompilerParser.LexerRuleReferenceElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
 		}
-		public GreenNode ParseLexerRuleReference(ref ParserState state)
+		public GreenNode ParseLexerRuleWildcardElement(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.lexerRuleReference();
+				var context = this.Antlr4Parser.lexerRuleWildcardElement();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -1435,27 +1435,27 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseLexerRuleReference(LexerRuleReferenceSyntax node)
+		protected virtual bool CanReuseLexerRuleWildcardElement(LexerRuleWildcardElementSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal CompilerParser.LexerRuleReferenceContext _Antlr4ParseLexerRuleReference()
+		internal CompilerParser.LexerRuleWildcardElementContext _Antlr4ParseLexerRuleWildcardElement()
 		{
 			BeginNode();
 		    bool cached = false;
-		    CompilerParser.LexerRuleReferenceContext context = null;
+		    CompilerParser.LexerRuleWildcardElementContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseLexerRuleReference(CurrentNode as LexerRuleReferenceSyntax);
+		        cached = IsIncremental && CanReuseLexerRuleWildcardElement(CurrentNode as LexerRuleWildcardElementSyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseLexerRuleReference();
+					context = this.Antlr4Parser._DoParseLexerRuleWildcardElement();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -1464,19 +1464,19 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new CompilerParser.LexerRuleReferenceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new CompilerParser.LexerRuleWildcardElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
 		    }
 		    return context;
 		}
-		public GreenNode ParseLexerRuleBlock(ref ParserState state)
+		public GreenNode ParseLexerRuleFixedStringElement(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.lexerRuleBlock();
+				var context = this.Antlr4Parser.lexerRuleFixedStringElement();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -1486,27 +1486,27 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseLexerRuleBlock(LexerRuleBlockSyntax node)
+		protected virtual bool CanReuseLexerRuleFixedStringElement(LexerRuleFixedStringElementSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal CompilerParser.LexerRuleBlockContext _Antlr4ParseLexerRuleBlock()
+		internal CompilerParser.LexerRuleFixedStringElementContext _Antlr4ParseLexerRuleFixedStringElement()
 		{
 			BeginNode();
 		    bool cached = false;
-		    CompilerParser.LexerRuleBlockContext context = null;
+		    CompilerParser.LexerRuleFixedStringElementContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-		        cached = IsIncremental && CanReuseLexerRuleBlock(CurrentNode as LexerRuleBlockSyntax);
+		        cached = IsIncremental && CanReuseLexerRuleFixedStringElement(CurrentNode as LexerRuleFixedStringElementSyntax);
 				if (cached)
 				{
 					green = EatNode();
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseLexerRuleBlock();
+					context = this.Antlr4Parser._DoParseLexerRuleFixedStringElement();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -1515,7 +1515,160 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        EndNode(ref green);
 		        if (cached)
 		        {
-					context = new CompilerParser.LexerRuleBlockContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new CompilerParser.LexerRuleFixedStringElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseLexerRuleFixedCharElement(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.lexerRuleFixedCharElement();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseLexerRuleFixedCharElement(LexerRuleFixedCharElementSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.LexerRuleFixedCharElementContext _Antlr4ParseLexerRuleFixedCharElement()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.LexerRuleFixedCharElementContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseLexerRuleFixedCharElement(CurrentNode as LexerRuleFixedCharElementSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseLexerRuleFixedCharElement();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.LexerRuleFixedCharElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseLexerRuleBlockElement(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.lexerRuleBlockElement();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseLexerRuleBlockElement(LexerRuleBlockElementSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.LexerRuleBlockElementContext _Antlr4ParseLexerRuleBlockElement()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.LexerRuleBlockElementContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseLexerRuleBlockElement(CurrentNode as LexerRuleBlockElementSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseLexerRuleBlockElement();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.LexerRuleBlockElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseLexerRuleRangeElement(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.lexerRuleRangeElement();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseLexerRuleRangeElement(LexerRuleRangeElementSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.LexerRuleRangeElementContext _Antlr4ParseLexerRuleRangeElement()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.LexerRuleRangeElementContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseLexerRuleRangeElement(CurrentNode as LexerRuleRangeElementSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseLexerRuleRangeElement();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.LexerRuleRangeElementContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -1720,6 +1873,108 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		        if (cached)
 		        {
 					context = new CompilerParser.IdentifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseLexerRuleIdentifier(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.lexerRuleIdentifier();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseLexerRuleIdentifier(LexerRuleIdentifierSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.LexerRuleIdentifierContext _Antlr4ParseLexerRuleIdentifier()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.LexerRuleIdentifierContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseLexerRuleIdentifier(CurrentNode as LexerRuleIdentifierSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseLexerRuleIdentifier();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.LexerRuleIdentifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		public GreenNode ParseParserRuleIdentifier(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.parserRuleIdentifier();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseParserRuleIdentifier(ParserRuleIdentifierSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.ParserRuleIdentifierContext _Antlr4ParseParserRuleIdentifier()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.ParserRuleIdentifierContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseParserRuleIdentifier(CurrentNode as ParserRuleIdentifierSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseParserRuleIdentifier();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.ParserRuleIdentifierContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 		        }
 		        CacheGreenNode(context, green);
@@ -2236,6 +2491,57 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    }
 		    return context;
 		}
+		public GreenNode ParseCharLiteral(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.charLiteral();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseCharLiteral(CharLiteralSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal CompilerParser.CharLiteralContext _Antlr4ParseCharLiteral()
+		{
+			BeginNode();
+		    bool cached = false;
+		    CompilerParser.CharLiteralContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+		        cached = IsIncremental && CanReuseCharLiteral(CurrentNode as CharLiteralSyntax);
+				if (cached)
+				{
+					green = EatNode();
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseCharLiteral();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        if (cached)
+		        {
+					context = new CompilerParser.CharLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+		        }
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
         private class Antlr4ToRoslynVisitor : CompilerParserBaseVisitor<GreenNode>
         {
 			// list pools - allocators for lists that are used to build sequences of nodes. The lists
@@ -2327,6 +2633,18 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				return _factory.Main(namespaceDeclaration, eOF);
 			}
 			
+			public override GreenNode VisitAnnotation(CompilerParser.AnnotationContext context)
+			{
+				if (context == null) return AnnotationGreen.__Missing;
+				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), CompilerSyntaxKind.TOpenBracket);
+				CompilerParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
+				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), CompilerSyntaxKind.TCloseBracket);
+				return _factory.Annotation(tOpenBracket, name, tCloseBracket);
+			}
+			
 			public override GreenNode VisitNamespaceDeclaration(CompilerParser.NamespaceDeclarationContext context)
 			{
 				if (context == null) return NamespaceDeclarationGreen.__Missing;
@@ -2364,6 +2682,14 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			public override GreenNode VisitGrammarDeclaration(CompilerParser.GrammarDeclarationContext context)
 			{
 				if (context == null) return GrammarDeclarationGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
+			    {
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			    }
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
 				InternalSyntaxToken kGrammar = (InternalSyntaxToken)this.VisitTerminal(context.KGrammar(), CompilerSyntaxKind.KGrammar);
 				CompilerParser.NameContext nameContext = context.name();
 				NameGreen name = null;
@@ -2374,7 +2700,7 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				RuleDeclarationsGreen ruleDeclarations = null;
 				if (ruleDeclarationsContext != null) ruleDeclarations = (RuleDeclarationsGreen)this.Visit(ruleDeclarationsContext);
 				if (ruleDeclarations == null) ruleDeclarations = RuleDeclarationsGreen.__Missing;
-				return _factory.GrammarDeclaration(kGrammar, name, tSemicolon, ruleDeclarations);
+				return _factory.GrammarDeclaration(annotation, kGrammar, name, tSemicolon, ruleDeclarations);
 			}
 			
 			public override GreenNode VisitUsingDeclaration(CompilerParser.UsingDeclarationContext context)
@@ -2426,6 +2752,30 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			public override GreenNode VisitParserRuleDeclaration(CompilerParser.ParserRuleDeclarationContext context)
 			{
 				if (context == null) return ParserRuleDeclarationGreen.__Missing;
+				CompilerParser.ParserRuleAltContext parserRuleAltContext = context.parserRuleAlt();
+				if (parserRuleAltContext != null) 
+				{
+					return _factory.ParserRuleDeclaration((ParserRuleAltGreen)this.Visit(parserRuleAltContext));
+				}
+				CompilerParser.ParserRuleSimpleContext parserRuleSimpleContext = context.parserRuleSimple();
+				if (parserRuleSimpleContext != null) 
+				{
+					return _factory.ParserRuleDeclaration((ParserRuleSimpleGreen)this.Visit(parserRuleSimpleContext));
+				}
+				return ParserRuleDeclarationGreen.__Missing;
+			}
+			
+			public override GreenNode VisitParserRuleAlt(CompilerParser.ParserRuleAltContext context)
+			{
+				if (context == null) return ParserRuleAltGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
+			    {
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			    }
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
 				CompilerParser.ParserRuleNameContext parserRuleNameContext = context.parserRuleName();
 				ParserRuleNameGreen parserRuleName = null;
 				if (parserRuleNameContext != null) parserRuleName = (ParserRuleNameGreen)this.Visit(parserRuleNameContext);
@@ -2435,38 +2785,66 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				QualifierGreen qualifier = null;
 				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), CompilerSyntaxKind.TColon);
-			    CompilerParser.ParserRuleAlternativeContext[] parserRuleAlternativeContext = context.parserRuleAlternative();
+			    CompilerParser.ParserRuleAltRefContext[] parserRuleAltRefContext = context.parserRuleAltRef();
 			    ITerminalNode[] tBarContext = context.TBar();
-			    var parserRuleAlternativeBuilder = _pool.AllocateSeparated<ParserRuleAlternativeGreen>();
-			    for (int i = 0; i < parserRuleAlternativeContext.Length; i++)
+			    var parserRuleAltRefBuilder = _pool.AllocateSeparated<ParserRuleAltRefGreen>();
+			    for (int i = 0; i < parserRuleAltRefContext.Length; i++)
 			    {
-			        parserRuleAlternativeBuilder.Add((ParserRuleAlternativeGreen)this.Visit(parserRuleAlternativeContext[i]));
+			        parserRuleAltRefBuilder.Add((ParserRuleAltRefGreen)this.Visit(parserRuleAltRefContext[i]));
 			        if (i < tBarContext.Length)
 			        {
-			            parserRuleAlternativeBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tBarContext[i], CompilerSyntaxKind.TBar));
+			            parserRuleAltRefBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tBarContext[i], CompilerSyntaxKind.TBar));
 			        }
 			    }
-				var parserRuleAlternative = parserRuleAlternativeBuilder.ToList();
-				_pool.Free(parserRuleAlternativeBuilder);
+				var parserRuleAltRef = parserRuleAltRefBuilder.ToList();
+				_pool.Free(parserRuleAltRefBuilder);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CompilerSyntaxKind.TSemicolon);
-				return _factory.ParserRuleDeclaration(parserRuleName, kDefines, qualifier, tColon, parserRuleAlternative, tSemicolon);
+				return _factory.ParserRuleAlt(annotation, parserRuleName, kDefines, qualifier, tColon, parserRuleAltRef, tSemicolon);
 			}
 			
-			public override GreenNode VisitParserRuleAlternative(CompilerParser.ParserRuleAlternativeContext context)
+			public override GreenNode VisitParserRuleAltRef(CompilerParser.ParserRuleAltRefContext context)
 			{
-				if (context == null) return ParserRuleAlternativeGreen.__Missing;
-			    CompilerParser.ParserRuleAlternativeElementContext[] parserRuleAlternativeElementContext = context.parserRuleAlternativeElement();
-			    var parserRuleAlternativeElementBuilder = _pool.Allocate<ParserRuleAlternativeElementGreen>();
-			    for (int i = 0; i < parserRuleAlternativeElementContext.Length; i++)
+				if (context == null) return ParserRuleAltRefGreen.__Missing;
+				CompilerParser.ParserRuleIdentifierContext parserRuleIdentifierContext = context.parserRuleIdentifier();
+				ParserRuleIdentifierGreen parserRuleIdentifier = null;
+				if (parserRuleIdentifierContext != null) parserRuleIdentifier = (ParserRuleIdentifierGreen)this.Visit(parserRuleIdentifierContext);
+				if (parserRuleIdentifier == null) parserRuleIdentifier = ParserRuleIdentifierGreen.__Missing;
+				return _factory.ParserRuleAltRef(parserRuleIdentifier);
+			}
+			
+			public override GreenNode VisitParserRuleSimple(CompilerParser.ParserRuleSimpleContext context)
+			{
+				if (context == null) return ParserRuleSimpleGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
 			    {
-			        parserRuleAlternativeElementBuilder.Add((ParserRuleAlternativeElementGreen)this.Visit(parserRuleAlternativeElementContext[i]));
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
 			    }
-				var parserRuleAlternativeElement = parserRuleAlternativeElementBuilder.ToList();
-				_pool.Free(parserRuleAlternativeElementBuilder);
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
+				CompilerParser.ParserRuleNameContext parserRuleNameContext = context.parserRuleName();
+				ParserRuleNameGreen parserRuleName = null;
+				if (parserRuleNameContext != null) parserRuleName = (ParserRuleNameGreen)this.Visit(parserRuleNameContext);
+				if (parserRuleName == null) parserRuleName = ParserRuleNameGreen.__Missing;
+				InternalSyntaxToken kDefines = (InternalSyntaxToken)this.VisitTerminal(context.KDefines());
+				CompilerParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), CompilerSyntaxKind.TColon);
+			    CompilerParser.ParserRuleNamedElementContext[] parserRuleNamedElementContext = context.parserRuleNamedElement();
+			    var parserRuleNamedElementBuilder = _pool.Allocate<ParserRuleNamedElementGreen>();
+			    for (int i = 0; i < parserRuleNamedElementContext.Length; i++)
+			    {
+			        parserRuleNamedElementBuilder.Add((ParserRuleNamedElementGreen)this.Visit(parserRuleNamedElementContext[i]));
+			    }
+				var parserRuleNamedElement = parserRuleNamedElementBuilder.ToList();
+				_pool.Free(parserRuleNamedElementBuilder);
 				CompilerParser.EofElementContext eofElementContext = context.eofElement();
 				EofElementGreen eofElement = null;
 				if (eofElementContext != null) eofElement = (EofElementGreen)this.Visit(eofElementContext);
-				return _factory.ParserRuleAlternative(parserRuleAlternativeElement, eofElement);
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CompilerSyntaxKind.TSemicolon);
+				return _factory.ParserRuleSimple(annotation, parserRuleName, kDefines, qualifier, tColon, parserRuleNamedElement, eofElement, tSemicolon);
 			}
 			
 			public override GreenNode VisitEofElement(CompilerParser.EofElementContext context)
@@ -2476,39 +2854,31 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				return _factory.EofElement(kEof);
 			}
 			
-			public override GreenNode VisitParserRuleAlternativeElement(CompilerParser.ParserRuleAlternativeElementContext context)
+			public override GreenNode VisitParserRuleNamedElement(CompilerParser.ParserRuleNamedElementContext context)
 			{
-				if (context == null) return ParserRuleAlternativeElementGreen.__Missing;
-				CompilerParser.ParserMultiElementContext parserMultiElementContext = context.parserMultiElement();
-				if (parserMultiElementContext != null) 
-				{
-					return _factory.ParserRuleAlternativeElement((ParserMultiElementGreen)this.Visit(parserMultiElementContext));
-				}
-				CompilerParser.ParserNegatedElementContext parserNegatedElementContext = context.parserNegatedElement();
-				if (parserNegatedElementContext != null) 
-				{
-					return _factory.ParserRuleAlternativeElement((ParserNegatedElementGreen)this.Visit(parserNegatedElementContext));
-				}
-				return ParserRuleAlternativeElementGreen.__Missing;
-			}
-			
-			public override GreenNode VisitParserMultiElement(CompilerParser.ParserMultiElementContext context)
-			{
-				if (context == null) return ParserMultiElementGreen.__Missing;
+				if (context == null) return ParserRuleNamedElementGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
+			    {
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			    }
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
 				CompilerParser.ElementNameContext elementNameContext = context.elementName();
 				ElementNameGreen elementName = null;
 				if (elementNameContext != null) elementName = (ElementNameGreen)this.Visit(elementNameContext);
 				CompilerParser.AssignContext assignContext = context.assign();
 				AssignGreen assign = null;
 				if (assignContext != null) assign = (AssignGreen)this.Visit(assignContext);
-				CompilerParser.ParserRuleElementContext parserRuleElementContext = context.parserRuleElement();
-				ParserRuleElementGreen parserRuleElement = null;
-				if (parserRuleElementContext != null) parserRuleElement = (ParserRuleElementGreen)this.Visit(parserRuleElementContext);
-				if (parserRuleElement == null) parserRuleElement = ParserRuleElementGreen.__Missing;
+				CompilerParser.ParserNegatedElementContext parserNegatedElementContext = context.parserNegatedElement();
+				ParserNegatedElementGreen parserNegatedElement = null;
+				if (parserNegatedElementContext != null) parserNegatedElement = (ParserNegatedElementGreen)this.Visit(parserNegatedElementContext);
+				if (parserNegatedElement == null) parserNegatedElement = ParserNegatedElementGreen.__Missing;
 				CompilerParser.MultiplicityContext multiplicityContext = context.multiplicity();
 				MultiplicityGreen multiplicity = null;
 				if (multiplicityContext != null) multiplicity = (MultiplicityGreen)this.Visit(multiplicityContext);
-				return _factory.ParserMultiElement(elementName, assign, parserRuleElement, multiplicity);
+				return _factory.ParserRuleNamedElement(annotation, elementName, assign, parserNegatedElement, multiplicity);
 			}
 			
 			public override GreenNode VisitAssign(CompilerParser.AssignContext context)
@@ -2576,7 +2946,7 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			public override GreenNode VisitParserNegatedElement(CompilerParser.ParserNegatedElementContext context)
 			{
 				if (context == null) return ParserNegatedElementGreen.__Missing;
-				InternalSyntaxToken tNegate = (InternalSyntaxToken)this.VisitTerminal(context.TNegate(), CompilerSyntaxKind.TNegate);
+				InternalSyntaxToken tNegate = (InternalSyntaxToken)this.VisitTerminal(context.TNegate());
 				CompilerParser.ParserRuleElementContext parserRuleElementContext = context.parserRuleElement();
 				ParserRuleElementGreen parserRuleElement = null;
 				if (parserRuleElementContext != null) parserRuleElement = (ParserRuleElementGreen)this.Visit(parserRuleElementContext);
@@ -2587,68 +2957,115 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			public override GreenNode VisitParserRuleElement(CompilerParser.ParserRuleElementContext context)
 			{
 				if (context == null) return ParserRuleElementGreen.__Missing;
-				CompilerParser.FixedElementContext fixedElementContext = context.fixedElement();
-				if (fixedElementContext != null) 
+				CompilerParser.ParserRuleFixedElementContext parserRuleFixedElementContext = context.parserRuleFixedElement();
+				if (parserRuleFixedElementContext != null) 
 				{
-					return _factory.ParserRuleElement((FixedElementGreen)this.Visit(fixedElementContext));
+					return _factory.ParserRuleElement((ParserRuleFixedElementGreen)this.Visit(parserRuleFixedElementContext));
 				}
 				CompilerParser.ParserRuleReferenceContext parserRuleReferenceContext = context.parserRuleReference();
 				if (parserRuleReferenceContext != null) 
 				{
 					return _factory.ParserRuleElement((ParserRuleReferenceGreen)this.Visit(parserRuleReferenceContext));
 				}
-				CompilerParser.ParserRuleBlockContext parserRuleBlockContext = context.parserRuleBlock();
-				if (parserRuleBlockContext != null) 
+				CompilerParser.ParserRuleWildcardElementContext parserRuleWildcardElementContext = context.parserRuleWildcardElement();
+				if (parserRuleWildcardElementContext != null) 
 				{
-					return _factory.ParserRuleElement((ParserRuleBlockGreen)this.Visit(parserRuleBlockContext));
+					return _factory.ParserRuleElement((ParserRuleWildcardElementGreen)this.Visit(parserRuleWildcardElementContext));
+				}
+				CompilerParser.ParserRuleBlockElementContext parserRuleBlockElementContext = context.parserRuleBlockElement();
+				if (parserRuleBlockElementContext != null) 
+				{
+					return _factory.ParserRuleElement((ParserRuleBlockElementGreen)this.Visit(parserRuleBlockElementContext));
 				}
 				return ParserRuleElementGreen.__Missing;
 			}
 			
-			public override GreenNode VisitFixedElement(CompilerParser.FixedElementContext context)
+			public override GreenNode VisitParserRuleFixedElement(CompilerParser.ParserRuleFixedElementContext context)
 			{
-				if (context == null) return FixedElementGreen.__Missing;
+				if (context == null) return ParserRuleFixedElementGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
+			    {
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			    }
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
 				CompilerParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
 				StringLiteralGreen stringLiteral = null;
 				if (stringLiteralContext != null) stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
 				if (stringLiteral == null) stringLiteral = StringLiteralGreen.__Missing;
-				return _factory.FixedElement(stringLiteral);
+				return _factory.ParserRuleFixedElement(annotation, stringLiteral);
+			}
+			
+			public override GreenNode VisitParserRuleWildcardElement(CompilerParser.ParserRuleWildcardElementContext context)
+			{
+				if (context == null) return ParserRuleWildcardElementGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
+			    {
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			    }
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
+				InternalSyntaxToken tDot = (InternalSyntaxToken)this.VisitTerminal(context.TDot(), CompilerSyntaxKind.TDot);
+				return _factory.ParserRuleWildcardElement(annotation, tDot);
 			}
 			
 			public override GreenNode VisitParserRuleReference(CompilerParser.ParserRuleReferenceContext context)
 			{
 				if (context == null) return ParserRuleReferenceGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
+			    {
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			    }
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
 				CompilerParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
 				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
 				if (identifier == null) identifier = IdentifierGreen.__Missing;
-				return _factory.ParserRuleReference(identifier);
+				return _factory.ParserRuleReference(annotation, identifier);
 			}
 			
-			public override GreenNode VisitParserRuleBlock(CompilerParser.ParserRuleBlockContext context)
+			public override GreenNode VisitParserRuleBlockElement(CompilerParser.ParserRuleBlockElementContext context)
 			{
-				if (context == null) return ParserRuleBlockGreen.__Missing;
-				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CompilerSyntaxKind.TOpenParen);
-			    CompilerParser.ParserRuleAlternativeContext[] parserRuleAlternativeContext = context.parserRuleAlternative();
-			    ITerminalNode[] tBarContext = context.TBar();
-			    var parserRuleAlternativeBuilder = _pool.AllocateSeparated<ParserRuleAlternativeGreen>();
-			    for (int i = 0; i < parserRuleAlternativeContext.Length; i++)
+				if (context == null) return ParserRuleBlockElementGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
 			    {
-			        parserRuleAlternativeBuilder.Add((ParserRuleAlternativeGreen)this.Visit(parserRuleAlternativeContext[i]));
-			        if (i < tBarContext.Length)
-			        {
-			            parserRuleAlternativeBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tBarContext[i], CompilerSyntaxKind.TBar));
-			        }
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
 			    }
-				var parserRuleAlternative = parserRuleAlternativeBuilder.ToList();
-				_pool.Free(parserRuleAlternativeBuilder);
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
+				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CompilerSyntaxKind.TOpenParen);
+			    CompilerParser.ParserRuleNamedElementContext[] parserRuleNamedElementContext = context.parserRuleNamedElement();
+			    var parserRuleNamedElementBuilder = _pool.Allocate<ParserRuleNamedElementGreen>();
+			    for (int i = 0; i < parserRuleNamedElementContext.Length; i++)
+			    {
+			        parserRuleNamedElementBuilder.Add((ParserRuleNamedElementGreen)this.Visit(parserRuleNamedElementContext[i]));
+			    }
+				var parserRuleNamedElement = parserRuleNamedElementBuilder.ToList();
+				_pool.Free(parserRuleNamedElementBuilder);
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CompilerSyntaxKind.TCloseParen);
-				return _factory.ParserRuleBlock(tOpenParen, parserRuleAlternative, tCloseParen);
+				return _factory.ParserRuleBlockElement(annotation, tOpenParen, parserRuleNamedElement, tCloseParen);
 			}
 			
 			public override GreenNode VisitLexerRuleDeclaration(CompilerParser.LexerRuleDeclarationContext context)
 			{
 				if (context == null) return LexerRuleDeclarationGreen.__Missing;
+			    CompilerParser.AnnotationContext[] annotationContext = context.annotation();
+			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
+			    for (int i = 0; i < annotationContext.Length; i++)
+			    {
+			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			    }
+				var annotation = annotationBuilder.ToList();
+				_pool.Free(annotationBuilder);
 				InternalSyntaxToken modifier = null;
 				if (context.KHidden() != null)
 				{
@@ -2662,6 +3079,10 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				LexerRuleNameGreen lexerRuleName = null;
 				if (lexerRuleNameContext != null) lexerRuleName = (LexerRuleNameGreen)this.Visit(lexerRuleNameContext);
 				if (lexerRuleName == null) lexerRuleName = LexerRuleNameGreen.__Missing;
+				InternalSyntaxToken kReturns = (InternalSyntaxToken)this.VisitTerminal(context.KReturns());
+				CompilerParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), CompilerSyntaxKind.TColon);
 			    CompilerParser.LexerRuleAlternativeContext[] lexerRuleAlternativeContext = context.lexerRuleAlternative();
 			    ITerminalNode[] tBarContext = context.TBar();
@@ -2677,7 +3098,7 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				var lexerRuleAlternative = lexerRuleAlternativeBuilder.ToList();
 				_pool.Free(lexerRuleAlternativeBuilder);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), CompilerSyntaxKind.TSemicolon);
-				return _factory.LexerRuleDeclaration(modifier, lexerRuleName, tColon, lexerRuleAlternative, tSemicolon);
+				return _factory.LexerRuleDeclaration(annotation, modifier, lexerRuleName, kReturns, qualifier, tColon, lexerRuleAlternative, tSemicolon);
 			}
 			
 			public override GreenNode VisitLexerRuleAlternative(CompilerParser.LexerRuleAlternativeContext context)
@@ -2697,27 +3118,7 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			public override GreenNode VisitLexerRuleAlternativeElement(CompilerParser.LexerRuleAlternativeElementContext context)
 			{
 				if (context == null) return LexerRuleAlternativeElementGreen.__Missing;
-				CompilerParser.LexerMultiElementContext lexerMultiElementContext = context.lexerMultiElement();
-				if (lexerMultiElementContext != null) 
-				{
-					return _factory.LexerRuleAlternativeElement((LexerMultiElementGreen)this.Visit(lexerMultiElementContext));
-				}
-				CompilerParser.LexerNegatedElementContext lexerNegatedElementContext = context.lexerNegatedElement();
-				if (lexerNegatedElementContext != null) 
-				{
-					return _factory.LexerRuleAlternativeElement((LexerNegatedElementGreen)this.Visit(lexerNegatedElementContext));
-				}
-				CompilerParser.LexerRangeElementContext lexerRangeElementContext = context.lexerRangeElement();
-				if (lexerRangeElementContext != null) 
-				{
-					return _factory.LexerRuleAlternativeElement((LexerRangeElementGreen)this.Visit(lexerRangeElementContext));
-				}
-				return LexerRuleAlternativeElementGreen.__Missing;
-			}
-			
-			public override GreenNode VisitLexerMultiElement(CompilerParser.LexerMultiElementContext context)
-			{
-				if (context == null) return LexerMultiElementGreen.__Missing;
+				InternalSyntaxToken tNegate = (InternalSyntaxToken)this.VisitTerminal(context.TNegate());
 				CompilerParser.LexerRuleElementContext lexerRuleElementContext = context.lexerRuleElement();
 				LexerRuleElementGreen lexerRuleElement = null;
 				if (lexerRuleElementContext != null) lexerRuleElement = (LexerRuleElementGreen)this.Visit(lexerRuleElementContext);
@@ -2725,81 +3126,79 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				CompilerParser.MultiplicityContext multiplicityContext = context.multiplicity();
 				MultiplicityGreen multiplicity = null;
 				if (multiplicityContext != null) multiplicity = (MultiplicityGreen)this.Visit(multiplicityContext);
-				return _factory.LexerMultiElement(lexerRuleElement, multiplicity);
-			}
-			
-			public override GreenNode VisitLexerNegatedElement(CompilerParser.LexerNegatedElementContext context)
-			{
-				if (context == null) return LexerNegatedElementGreen.__Missing;
-				InternalSyntaxToken tNegate = (InternalSyntaxToken)this.VisitTerminal(context.TNegate(), CompilerSyntaxKind.TNegate);
-				CompilerParser.LexerRuleElementContext lexerRuleElementContext = context.lexerRuleElement();
-				LexerRuleElementGreen lexerRuleElement = null;
-				if (lexerRuleElementContext != null) lexerRuleElement = (LexerRuleElementGreen)this.Visit(lexerRuleElementContext);
-				if (lexerRuleElement == null) lexerRuleElement = LexerRuleElementGreen.__Missing;
-				return _factory.LexerNegatedElement(tNegate, lexerRuleElement);
-			}
-			
-			public override GreenNode VisitLexerRangeElement(CompilerParser.LexerRangeElementContext context)
-			{
-				if (context == null) return LexerRangeElementGreen.__Missing;
-				CompilerParser.FixedElementContext startContext = context.start;
-				FixedElementGreen start = null;
-				if (startContext != null) start = (FixedElementGreen)this.Visit(startContext);
-				if (start == null) start = FixedElementGreen.__Missing;
-				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), CompilerSyntaxKind.TArrow);
-				CompilerParser.FixedElementContext endContext = context.end;
-				FixedElementGreen end = null;
-				if (endContext != null) end = (FixedElementGreen)this.Visit(endContext);
-				if (end == null) end = FixedElementGreen.__Missing;
-				return _factory.LexerRangeElement(start, tArrow, end);
+				return _factory.LexerRuleAlternativeElement(tNegate, lexerRuleElement, multiplicity);
 			}
 			
 			public override GreenNode VisitLexerRuleElement(CompilerParser.LexerRuleElementContext context)
 			{
 				if (context == null) return LexerRuleElementGreen.__Missing;
-				CompilerParser.FixedElementContext fixedElementContext = context.fixedElement();
-				if (fixedElementContext != null) 
+				CompilerParser.LexerRuleReferenceElementContext lexerRuleReferenceElementContext = context.lexerRuleReferenceElement();
+				if (lexerRuleReferenceElementContext != null) 
 				{
-					return _factory.LexerRuleElement((FixedElementGreen)this.Visit(fixedElementContext));
+					return _factory.LexerRuleElement((LexerRuleReferenceElementGreen)this.Visit(lexerRuleReferenceElementContext));
 				}
-				CompilerParser.WildcardElementContext wildcardElementContext = context.wildcardElement();
-				if (wildcardElementContext != null) 
+				CompilerParser.LexerRuleFixedStringElementContext lexerRuleFixedStringElementContext = context.lexerRuleFixedStringElement();
+				if (lexerRuleFixedStringElementContext != null) 
 				{
-					return _factory.LexerRuleElement((WildcardElementGreen)this.Visit(wildcardElementContext));
+					return _factory.LexerRuleElement((LexerRuleFixedStringElementGreen)this.Visit(lexerRuleFixedStringElementContext));
 				}
-				CompilerParser.LexerRuleReferenceContext lexerRuleReferenceContext = context.lexerRuleReference();
-				if (lexerRuleReferenceContext != null) 
+				CompilerParser.LexerRuleFixedCharElementContext lexerRuleFixedCharElementContext = context.lexerRuleFixedCharElement();
+				if (lexerRuleFixedCharElementContext != null) 
 				{
-					return _factory.LexerRuleElement((LexerRuleReferenceGreen)this.Visit(lexerRuleReferenceContext));
+					return _factory.LexerRuleElement((LexerRuleFixedCharElementGreen)this.Visit(lexerRuleFixedCharElementContext));
 				}
-				CompilerParser.LexerRuleBlockContext lexerRuleBlockContext = context.lexerRuleBlock();
-				if (lexerRuleBlockContext != null) 
+				CompilerParser.LexerRuleWildcardElementContext lexerRuleWildcardElementContext = context.lexerRuleWildcardElement();
+				if (lexerRuleWildcardElementContext != null) 
 				{
-					return _factory.LexerRuleElement((LexerRuleBlockGreen)this.Visit(lexerRuleBlockContext));
+					return _factory.LexerRuleElement((LexerRuleWildcardElementGreen)this.Visit(lexerRuleWildcardElementContext));
+				}
+				CompilerParser.LexerRuleBlockElementContext lexerRuleBlockElementContext = context.lexerRuleBlockElement();
+				if (lexerRuleBlockElementContext != null) 
+				{
+					return _factory.LexerRuleElement((LexerRuleBlockElementGreen)this.Visit(lexerRuleBlockElementContext));
+				}
+				CompilerParser.LexerRuleRangeElementContext lexerRuleRangeElementContext = context.lexerRuleRangeElement();
+				if (lexerRuleRangeElementContext != null) 
+				{
+					return _factory.LexerRuleElement((LexerRuleRangeElementGreen)this.Visit(lexerRuleRangeElementContext));
 				}
 				return LexerRuleElementGreen.__Missing;
 			}
 			
-			public override GreenNode VisitWildcardElement(CompilerParser.WildcardElementContext context)
+			public override GreenNode VisitLexerRuleReferenceElement(CompilerParser.LexerRuleReferenceElementContext context)
 			{
-				if (context == null) return WildcardElementGreen.__Missing;
+				if (context == null) return LexerRuleReferenceElementGreen.__Missing;
+				CompilerParser.LexerRuleIdentifierContext lexerRuleIdentifierContext = context.lexerRuleIdentifier();
+				LexerRuleIdentifierGreen lexerRuleIdentifier = null;
+				if (lexerRuleIdentifierContext != null) lexerRuleIdentifier = (LexerRuleIdentifierGreen)this.Visit(lexerRuleIdentifierContext);
+				if (lexerRuleIdentifier == null) lexerRuleIdentifier = LexerRuleIdentifierGreen.__Missing;
+				return _factory.LexerRuleReferenceElement(lexerRuleIdentifier);
+			}
+			
+			public override GreenNode VisitLexerRuleWildcardElement(CompilerParser.LexerRuleWildcardElementContext context)
+			{
+				if (context == null) return LexerRuleWildcardElementGreen.__Missing;
 				InternalSyntaxToken tDot = (InternalSyntaxToken)this.VisitTerminal(context.TDot(), CompilerSyntaxKind.TDot);
-				return _factory.WildcardElement(tDot);
+				return _factory.LexerRuleWildcardElement(tDot);
 			}
 			
-			public override GreenNode VisitLexerRuleReference(CompilerParser.LexerRuleReferenceContext context)
+			public override GreenNode VisitLexerRuleFixedStringElement(CompilerParser.LexerRuleFixedStringElementContext context)
 			{
-				if (context == null) return LexerRuleReferenceGreen.__Missing;
-				CompilerParser.IdentifierContext identifierContext = context.identifier();
-				IdentifierGreen identifier = null;
-				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
-				if (identifier == null) identifier = IdentifierGreen.__Missing;
-				return _factory.LexerRuleReference(identifier);
+				if (context == null) return LexerRuleFixedStringElementGreen.__Missing;
+				InternalSyntaxToken lString = (InternalSyntaxToken)this.VisitTerminal(context.LString(), CompilerSyntaxKind.LString);
+				return _factory.LexerRuleFixedStringElement(lString);
 			}
 			
-			public override GreenNode VisitLexerRuleBlock(CompilerParser.LexerRuleBlockContext context)
+			public override GreenNode VisitLexerRuleFixedCharElement(CompilerParser.LexerRuleFixedCharElementContext context)
 			{
-				if (context == null) return LexerRuleBlockGreen.__Missing;
+				if (context == null) return LexerRuleFixedCharElementGreen.__Missing;
+				InternalSyntaxToken lCharacter = (InternalSyntaxToken)this.VisitTerminal(context.LCharacter(), CompilerSyntaxKind.LCharacter);
+				return _factory.LexerRuleFixedCharElement(lCharacter);
+			}
+			
+			public override GreenNode VisitLexerRuleBlockElement(CompilerParser.LexerRuleBlockElementContext context)
+			{
+				if (context == null) return LexerRuleBlockElementGreen.__Missing;
 				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen(), CompilerSyntaxKind.TOpenParen);
 			    CompilerParser.LexerRuleAlternativeContext[] lexerRuleAlternativeContext = context.lexerRuleAlternative();
 			    ITerminalNode[] tBarContext = context.TBar();
@@ -2815,7 +3214,22 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				var lexerRuleAlternative = lexerRuleAlternativeBuilder.ToList();
 				_pool.Free(lexerRuleAlternativeBuilder);
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), CompilerSyntaxKind.TCloseParen);
-				return _factory.LexerRuleBlock(tOpenParen, lexerRuleAlternative, tCloseParen);
+				return _factory.LexerRuleBlockElement(tOpenParen, lexerRuleAlternative, tCloseParen);
+			}
+			
+			public override GreenNode VisitLexerRuleRangeElement(CompilerParser.LexerRuleRangeElementContext context)
+			{
+				if (context == null) return LexerRuleRangeElementGreen.__Missing;
+				CompilerParser.LexerRuleFixedCharElementContext startContext = context.start;
+				LexerRuleFixedCharElementGreen start = null;
+				if (startContext != null) start = (LexerRuleFixedCharElementGreen)this.Visit(startContext);
+				if (start == null) start = LexerRuleFixedCharElementGreen.__Missing;
+				InternalSyntaxToken tDotDot = (InternalSyntaxToken)this.VisitTerminal(context.TDotDot(), CompilerSyntaxKind.TDotDot);
+				CompilerParser.LexerRuleFixedCharElementContext endContext = context.end;
+				LexerRuleFixedCharElementGreen end = null;
+				if (endContext != null) end = (LexerRuleFixedCharElementGreen)this.Visit(endContext);
+				if (end == null) end = LexerRuleFixedCharElementGreen.__Missing;
+				return _factory.LexerRuleRangeElement(start, tDotDot, end);
 			}
 			
 			public override GreenNode VisitName(CompilerParser.NameContext context)
@@ -2876,6 +3290,20 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				return _factory.Identifier(identifier);
 			}
 			
+			public override GreenNode VisitLexerRuleIdentifier(CompilerParser.LexerRuleIdentifierContext context)
+			{
+				if (context == null) return LexerRuleIdentifierGreen.__Missing;
+				InternalSyntaxToken lexerIdentifier = (InternalSyntaxToken)this.VisitTerminal(context.LexerIdentifier(), CompilerSyntaxKind.LexerIdentifier);
+				return _factory.LexerRuleIdentifier(lexerIdentifier);
+			}
+			
+			public override GreenNode VisitParserRuleIdentifier(CompilerParser.ParserRuleIdentifierContext context)
+			{
+				if (context == null) return ParserRuleIdentifierGreen.__Missing;
+				InternalSyntaxToken parserIdentifier = (InternalSyntaxToken)this.VisitTerminal(context.ParserIdentifier(), CompilerSyntaxKind.ParserIdentifier);
+				return _factory.ParserRuleIdentifier(parserIdentifier);
+			}
+			
 			public override GreenNode VisitLexerRuleName(CompilerParser.LexerRuleNameContext context)
 			{
 				if (context == null) return LexerRuleNameGreen.__Missing;
@@ -2893,8 +3321,20 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 			public override GreenNode VisitElementName(CompilerParser.ElementNameContext context)
 			{
 				if (context == null) return ElementNameGreen.__Missing;
-				InternalSyntaxToken lexerIdentifier = (InternalSyntaxToken)this.VisitTerminal(context.LexerIdentifier(), CompilerSyntaxKind.LexerIdentifier);
-				return _factory.ElementName(lexerIdentifier);
+				InternalSyntaxToken elementName = null;
+				if (context.ParserIdentifier() != null)
+				{
+					elementName = (InternalSyntaxToken)this.VisitTerminal(context.ParserIdentifier());
+				}
+				else 	if (context.IgnoredIdentifier() != null)
+				{
+					elementName = (InternalSyntaxToken)this.VisitTerminal(context.IgnoredIdentifier());
+				}
+				else
+				{
+					elementName = _factory.MissingToken(SyntaxKind.MissingToken);
+				}
+				return _factory.ElementName(elementName);
 			}
 			
 			public override GreenNode VisitLiteral(CompilerParser.LiteralContext context)
@@ -2986,6 +3426,13 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 				InternalSyntaxToken lString = (InternalSyntaxToken)this.VisitTerminal(context.LString(), CompilerSyntaxKind.LString);
 				return _factory.StringLiteral(lString);
 			}
+			
+			public override GreenNode VisitCharLiteral(CompilerParser.CharLiteralContext context)
+			{
+				if (context == null) return CharLiteralGreen.__Missing;
+				InternalSyntaxToken lCharacter = (InternalSyntaxToken)this.VisitTerminal(context.LCharacter(), CompilerSyntaxKind.LCharacter);
+				return _factory.CharLiteral(lCharacter);
+			}
         }
     }
     public partial class CompilerParser
@@ -2995,6 +3442,17 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public MainContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class AnnotationContext_Cached : AnnotationContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public AnnotationContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3079,10 +3537,32 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class ParserRuleAlternativeContext_Cached : ParserRuleAlternativeContext, ICachedRuleContext
+		internal class ParserRuleAltContext_Cached : ParserRuleAltContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public ParserRuleAlternativeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public ParserRuleAltContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ParserRuleAltRefContext_Cached : ParserRuleAltRefContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ParserRuleAltRefContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ParserRuleSimpleContext_Cached : ParserRuleSimpleContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ParserRuleSimpleContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3101,21 +3581,10 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class ParserRuleAlternativeElementContext_Cached : ParserRuleAlternativeElementContext, ICachedRuleContext
+		internal class ParserRuleNamedElementContext_Cached : ParserRuleNamedElementContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public ParserRuleAlternativeElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
-				: base(parent, invokingState)
-		    {
-		        _cachedNode = cachedNode;
-		    }
-		    public GreenNode CachedNode => _cachedNode;
-		}
-		
-		internal class ParserMultiElementContext_Cached : ParserMultiElementContext, ICachedRuleContext
-		{
-		    private GreenNode _cachedNode;
-		    public ParserMultiElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public ParserRuleNamedElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3167,10 +3636,21 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class FixedElementContext_Cached : FixedElementContext, ICachedRuleContext
+		internal class ParserRuleFixedElementContext_Cached : ParserRuleFixedElementContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public FixedElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public ParserRuleFixedElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ParserRuleWildcardElementContext_Cached : ParserRuleWildcardElementContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ParserRuleWildcardElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3189,10 +3669,10 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class ParserRuleBlockContext_Cached : ParserRuleBlockContext, ICachedRuleContext
+		internal class ParserRuleBlockElementContext_Cached : ParserRuleBlockElementContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public ParserRuleBlockContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public ParserRuleBlockElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3233,39 +3713,6 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class LexerMultiElementContext_Cached : LexerMultiElementContext, ICachedRuleContext
-		{
-		    private GreenNode _cachedNode;
-		    public LexerMultiElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
-				: base(parent, invokingState)
-		    {
-		        _cachedNode = cachedNode;
-		    }
-		    public GreenNode CachedNode => _cachedNode;
-		}
-		
-		internal class LexerNegatedElementContext_Cached : LexerNegatedElementContext, ICachedRuleContext
-		{
-		    private GreenNode _cachedNode;
-		    public LexerNegatedElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
-				: base(parent, invokingState)
-		    {
-		        _cachedNode = cachedNode;
-		    }
-		    public GreenNode CachedNode => _cachedNode;
-		}
-		
-		internal class LexerRangeElementContext_Cached : LexerRangeElementContext, ICachedRuleContext
-		{
-		    private GreenNode _cachedNode;
-		    public LexerRangeElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
-				: base(parent, invokingState)
-		    {
-		        _cachedNode = cachedNode;
-		    }
-		    public GreenNode CachedNode => _cachedNode;
-		}
-		
 		internal class LexerRuleElementContext_Cached : LexerRuleElementContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
@@ -3277,10 +3724,10 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class WildcardElementContext_Cached : WildcardElementContext, ICachedRuleContext
+		internal class LexerRuleReferenceElementContext_Cached : LexerRuleReferenceElementContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public WildcardElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public LexerRuleReferenceElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3288,10 +3735,10 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class LexerRuleReferenceContext_Cached : LexerRuleReferenceContext, ICachedRuleContext
+		internal class LexerRuleWildcardElementContext_Cached : LexerRuleWildcardElementContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public LexerRuleReferenceContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public LexerRuleWildcardElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3299,10 +3746,43 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class LexerRuleBlockContext_Cached : LexerRuleBlockContext, ICachedRuleContext
+		internal class LexerRuleFixedStringElementContext_Cached : LexerRuleFixedStringElementContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public LexerRuleBlockContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public LexerRuleFixedStringElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class LexerRuleFixedCharElementContext_Cached : LexerRuleFixedCharElementContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public LexerRuleFixedCharElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class LexerRuleBlockElementContext_Cached : LexerRuleBlockElementContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public LexerRuleBlockElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class LexerRuleRangeElementContext_Cached : LexerRuleRangeElementContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public LexerRuleRangeElementContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3347,6 +3827,28 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public IdentifierContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class LexerRuleIdentifierContext_Cached : LexerRuleIdentifierContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public LexerRuleIdentifierContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class ParserRuleIdentifierContext_Cached : ParserRuleIdentifierContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ParserRuleIdentifierContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -3457,6 +3959,17 @@ namespace MetaDslx.Languages.Compiler.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public StringLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class CharLiteralContext_Cached : CharLiteralContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public CharLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

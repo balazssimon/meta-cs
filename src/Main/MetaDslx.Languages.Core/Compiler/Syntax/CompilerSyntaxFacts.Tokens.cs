@@ -66,12 +66,13 @@ namespace MetaDslx.Languages.Compiler.Syntax
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
 				case CompilerTokensSyntaxKind.KDefines:
+				case CompilerTokensSyntaxKind.KReturns:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
 				case CompilerTokensSyntaxKind.KEof:
 				case CompilerTokensSyntaxKind.TSemicolon:
-				case CompilerTokensSyntaxKind.TArrow:
+				case CompilerTokensSyntaxKind.TDotDot:
 				case CompilerTokensSyntaxKind.TDot:
 				case CompilerTokensSyntaxKind.TNonGreedyZeroOrOne:
 				case CompilerTokensSyntaxKind.TNonGreedyZeroOrMore:
@@ -98,10 +99,12 @@ namespace MetaDslx.Languages.Compiler.Syntax
 				case CompilerTokensSyntaxKind.TGreaterThan:
 				case CompilerTokensSyntaxKind.LexerIdentifier:
 				case CompilerTokensSyntaxKind.ParserIdentifier:
+				case CompilerTokensSyntaxKind.IgnoredIdentifier:
 				case CompilerTokensSyntaxKind.LInteger:
 				case CompilerTokensSyntaxKind.LDecimal:
 				case CompilerTokensSyntaxKind.LScientific:
 				case CompilerTokensSyntaxKind.LString:
+				case CompilerTokensSyntaxKind.LCharacter:
 				case CompilerTokensSyntaxKind.LUtf8Bom:
 				case CompilerTokensSyntaxKind.LWhiteSpace:
 				case CompilerTokensSyntaxKind.LCrLf:
@@ -125,12 +128,13 @@ namespace MetaDslx.Languages.Compiler.Syntax
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
 				case CompilerTokensSyntaxKind.KDefines:
+				case CompilerTokensSyntaxKind.KReturns:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
 				case CompilerTokensSyntaxKind.KEof:
 				case CompilerTokensSyntaxKind.TSemicolon:
-				case CompilerTokensSyntaxKind.TArrow:
+				case CompilerTokensSyntaxKind.TDotDot:
 				case CompilerTokensSyntaxKind.TDot:
 				case CompilerTokensSyntaxKind.TNonGreedyZeroOrOne:
 				case CompilerTokensSyntaxKind.TNonGreedyZeroOrMore:
@@ -179,6 +183,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return CompilerTokensSyntaxKind.KHidden;
 				case "defines":
 					return CompilerTokensSyntaxKind.KDefines;
+				case "returns":
+					return CompilerTokensSyntaxKind.KReturns;
 				case "true":
 					return CompilerTokensSyntaxKind.KTrue;
 				case "false":
@@ -189,8 +195,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return CompilerTokensSyntaxKind.KEof;
 				case ";":
 					return CompilerTokensSyntaxKind.TSemicolon;
-				case "->":
-					return CompilerTokensSyntaxKind.TArrow;
+				case "..":
+					return CompilerTokensSyntaxKind.TDotDot;
 				case ".":
 					return CompilerTokensSyntaxKind.TDot;
 				case "??":
@@ -262,6 +268,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return "hidden";
 				case CompilerTokensSyntaxKind.KDefines:
 					return "defines";
+				case CompilerTokensSyntaxKind.KReturns:
+					return "returns";
 				case CompilerTokensSyntaxKind.KTrue:
 					return "true";
 				case CompilerTokensSyntaxKind.KFalse:
@@ -272,8 +280,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return "EOF";
 				case CompilerTokensSyntaxKind.TSemicolon:
 					return ";";
-				case CompilerTokensSyntaxKind.TArrow:
-					return "->";
+				case CompilerTokensSyntaxKind.TDotDot:
+					return "..";
 				case CompilerTokensSyntaxKind.TDot:
 					return ".";
 				case CompilerTokensSyntaxKind.TNonGreedyZeroOrOne:
@@ -343,6 +351,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
 				case CompilerTokensSyntaxKind.KDefines:
+				case CompilerTokensSyntaxKind.KReturns:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
@@ -352,6 +361,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return CompilerTokenKind.Identifier;
 				case CompilerTokensSyntaxKind.ParserIdentifier:
 					return CompilerTokenKind.Identifier;
+				case CompilerTokensSyntaxKind.IgnoredIdentifier:
+					return CompilerTokenKind.Identifier;
 				case CompilerTokensSyntaxKind.LInteger:
 					return CompilerTokenKind.Number;
 				case CompilerTokensSyntaxKind.LDecimal:
@@ -359,6 +370,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 				case CompilerTokensSyntaxKind.LScientific:
 					return CompilerTokenKind.Number;
 				case CompilerTokensSyntaxKind.LString:
+					return CompilerTokenKind.String;
+				case CompilerTokensSyntaxKind.LCharacter:
 					return CompilerTokenKind.String;
 				case CompilerTokensSyntaxKind.LUtf8Bom:
 					return CompilerTokenKind.Whitespace;
@@ -423,6 +436,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 				case CompilerTokensSyntaxKind.KFragment:
 				case CompilerTokensSyntaxKind.KHidden:
 				case CompilerTokensSyntaxKind.KDefines:
+				case CompilerTokensSyntaxKind.KReturns:
 				case CompilerTokensSyntaxKind.KTrue:
 				case CompilerTokensSyntaxKind.KFalse:
 				case CompilerTokensSyntaxKind.KNull:
@@ -442,6 +456,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 				yield return CompilerTokensSyntaxKind.KFragment;
 				yield return CompilerTokensSyntaxKind.KHidden;
 				yield return CompilerTokensSyntaxKind.KDefines;
+				yield return CompilerTokensSyntaxKind.KReturns;
 				yield return CompilerTokensSyntaxKind.KTrue;
 				yield return CompilerTokensSyntaxKind.KFalse;
 				yield return CompilerTokensSyntaxKind.KNull;
@@ -466,6 +481,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return CompilerTokensSyntaxKind.KHidden;
 				case "defines":
 					return CompilerTokensSyntaxKind.KDefines;
+				case "returns":
+					return CompilerTokensSyntaxKind.KReturns;
 				case "true":
 					return CompilerTokensSyntaxKind.KTrue;
 				case "false":
@@ -532,6 +549,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 					return true;
 				case CompilerTokensSyntaxKind.ParserIdentifier:
 					return true;
+				case CompilerTokensSyntaxKind.IgnoredIdentifier:
+					return true;
 				default:
 					return false;
 			}
@@ -579,6 +598,8 @@ namespace MetaDslx.Languages.Compiler.Syntax
 			switch(kind.Switch())
 			{
 				case CompilerTokensSyntaxKind.LString:
+					return true;
+				case CompilerTokensSyntaxKind.LCharacter:
 					return true;
 				default:
 					return false;

@@ -1,0 +1,16 @@
+﻿namespace MetaDslx.Languages.Compiler.Generator;
+generator Antlr4Generator;
+
+using MetaDslx.Languages.Compiler.Model;
+
+
+template GenerateLexer(GrammarGenerationInfo info)
+[loop(ft:info.FixedTokens)]
+[ft.Name]=[ft.Value]
+[end loop]
+end template
+
+
+template GenerateParser(GrammarGenerationInfo info)
+end template
+

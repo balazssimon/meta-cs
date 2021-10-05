@@ -45,6 +45,30 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 		}
 		
+		public virtual void VisitAnnotation(AnnotationSyntax node)
+		{
+			this.BeginProperty(node, name: "Annotations");
+			try
+			{
+				this.BeginDefine(node, type: typeof(Annotation));
+				try
+				{
+					if (node.Name != null)
+					{
+					    this.Visit(node.Name);
+					}
+				}
+				finally
+				{
+					this.EndDefine(node, type: typeof(Annotation));
+				}
+			}
+			finally
+			{
+				this.EndProperty(node, name: "Annotations");
+			}
+		}
+		
 		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
 		{
 			this.BeginDefine(node, type: typeof(Namespace), nestingProperty: "Members", merge: true);
@@ -96,6 +120,13 @@ namespace MetaDslx.Languages.Compiler.Binding
 				this.BeginDefine(node, type: typeof(Grammar));
 				try
 				{
+					if (node.Annotation != null)
+					{
+						foreach (var child in node.Annotation)
+						{
+					        this.Visit(child);
+						}
+					}
 					if (node.Name != null)
 					{
 					    this.Visit(node.Name);
@@ -177,9 +208,28 @@ namespace MetaDslx.Languages.Compiler.Binding
 		
 		public virtual void VisitParserRuleDeclaration(ParserRuleDeclarationSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(ParserRule));
+			if (node.ParserRuleAlt != null)
+			{
+			    this.Visit(node.ParserRuleAlt);
+			}
+			if (node.ParserRuleSimple != null)
+			{
+			    this.Visit(node.ParserRuleSimple);
+			}
+		}
+		
+		public virtual void VisitParserRuleAlt(ParserRuleAltSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(ParserRuleAlt));
 			try
 			{
+				if (node.Annotation != null)
+				{
+					foreach (var child in node.Annotation)
+					{
+				        this.Visit(child);
+					}
+				}
 				if (node.ParserRuleName != null)
 				{
 				    this.Visit(node.ParserRuleName);
@@ -204,9 +254,9 @@ namespace MetaDslx.Languages.Compiler.Binding
 				    	this.EndProperty(node.Qualifier, name: "DefinedModelObject");
 				    }
 				}
-				if (node.ParserRuleAlternative != null)
+				if (node.ParserRuleAltRef != null)
 				{
-					foreach (var child in node.ParserRuleAlternative)
+					foreach (var child in node.ParserRuleAltRef)
 					{
 				        this.Visit(child);
 					}
@@ -214,33 +264,26 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(ParserRule));
+				this.EndDefine(node, type: typeof(ParserRuleAlt));
 			}
 		}
 		
-		public virtual void VisitParserRuleAlternative(ParserRuleAlternativeSyntax node)
+		public virtual void VisitParserRuleAltRef(ParserRuleAltRefSyntax node)
 		{
 			this.BeginProperty(node, name: "Alternatives");
 			try
 			{
-				this.BeginDefine(node, type: typeof(RuleAlternative));
-				try
+				if (node.ParserRuleIdentifier != null)
 				{
-					if (node.ParserRuleAlternativeElement != null)
-					{
-						foreach (var child in node.ParserRuleAlternativeElement)
-						{
-					        this.Visit(child);
-						}
-					}
-					if (node.EofElement != null)
-					{
-					    this.Visit(node.EofElement);
-					}
-				}
-				finally
-				{
-					this.EndDefine(node, type: typeof(RuleAlternative));
+				    this.BeginUse(node.ParserRuleIdentifier, types: ImmutableArray.Create(typeof(ParserRule)));
+				    try
+				    {
+				    	this.Visit(node.ParserRuleIdentifier);
+				    }
+				    finally
+				    {
+				    	this.EndUse(node.ParserRuleIdentifier, types: ImmutableArray.Create(typeof(ParserRule)));
+				    }
 				}
 			}
 			finally
@@ -249,24 +292,78 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 		}
 		
+		public virtual void VisitParserRuleSimple(ParserRuleSimpleSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(ParserRuleSimple));
+			try
+			{
+				if (node.Annotation != null)
+				{
+					foreach (var child in node.Annotation)
+					{
+				        this.Visit(child);
+					}
+				}
+				if (node.ParserRuleName != null)
+				{
+				    this.Visit(node.ParserRuleName);
+				}
+				if (node.Qualifier != null)
+				{
+				    this.BeginProperty(node.Qualifier, name: "DefinedModelObject");
+				    try
+				    {
+				    	this.BeginUse(node.Qualifier, types: ImmutableArray.Create(typeof(System.Type)));
+				    	try
+				    	{
+				    		this.Visit(node.Qualifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.Qualifier, types: ImmutableArray.Create(typeof(System.Type)));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Qualifier, name: "DefinedModelObject");
+				    }
+				}
+				if (node.ParserRuleNamedElement != null)
+				{
+					foreach (var child in node.ParserRuleNamedElement)
+					{
+				        this.Visit(child);
+					}
+				}
+				if (node.EofElement != null)
+				{
+				    this.Visit(node.EofElement);
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(ParserRuleSimple));
+			}
+		}
+		
 		public virtual void VisitEofElement(EofElementSyntax node)
 		{
 			this.BeginProperty(node, name: "Elements");
 			try
 			{
-				this.BeginDefine(node, type: typeof(RuleElement));
+				this.BeginDefine(node, type: typeof(ParserRuleNamedElement));
 				try
 				{
 					this.BeginProperty(node, name: "Element");
 					try
 					{
-						this.BeginDefine(node, type: typeof(EofElement));
+						this.BeginDefine(node, type: typeof(ParserRuleEofElement));
 						try
 						{
 						}
 						finally
 						{
-							this.EndDefine(node, type: typeof(EofElement));
+							this.EndDefine(node, type: typeof(ParserRuleEofElement));
 						}
 					}
 					finally
@@ -276,7 +373,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 				}
 				finally
 				{
-					this.EndDefine(node, type: typeof(RuleElement));
+					this.EndDefine(node, type: typeof(ParserRuleNamedElement));
 				}
 			}
 			finally
@@ -285,51 +382,46 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 		}
 		
-		public virtual void VisitParserRuleAlternativeElement(ParserRuleAlternativeElementSyntax node)
+		public virtual void VisitParserRuleNamedElement(ParserRuleNamedElementSyntax node)
 		{
 			this.BeginProperty(node, name: "Elements");
 			try
 			{
-				this.BeginDefine(node, type: typeof(RuleElement));
+				this.BeginDefine(node, type: typeof(ParserRuleNamedElement));
 				try
 				{
-					if (node.ParserMultiElement != null)
+					if (node.Annotation != null)
 					{
-					    this.Visit(node.ParserMultiElement);
+						foreach (var child in node.Annotation)
+						{
+					        this.Visit(child);
+						}
+					}
+					if (node.ElementName != null)
+					{
+					    this.Visit(node.ElementName);
+					}
+					if (node.Assign != null)
+					{
+					    this.Visit(node.Assign);
 					}
 					if (node.ParserNegatedElement != null)
 					{
 					    this.Visit(node.ParserNegatedElement);
 					}
+					if (node.Multiplicity != null)
+					{
+					    this.Visit(node.Multiplicity);
+					}
 				}
 				finally
 				{
-					this.EndDefine(node, type: typeof(RuleElement));
+					this.EndDefine(node, type: typeof(ParserRuleNamedElement));
 				}
 			}
 			finally
 			{
 				this.EndProperty(node, name: "Elements");
-			}
-		}
-		
-		public virtual void VisitParserMultiElement(ParserMultiElementSyntax node)
-		{
-			if (node.ElementName != null)
-			{
-			    this.Visit(node.ElementName);
-			}
-			if (node.Assign != null)
-			{
-			    this.Visit(node.Assign);
-			}
-			if (node.ParserRuleElement != null)
-			{
-			    this.Visit(node.ParserRuleElement);
-			}
-			if (node.Multiplicity != null)
-			{
-			    this.Visit(node.Multiplicity);
 			}
 		}
 		
@@ -485,17 +577,21 @@ namespace MetaDslx.Languages.Compiler.Binding
 		
 		public virtual void VisitParserNegatedElement(ParserNegatedElementSyntax node)
 		{
-			this.BeginProperty(node, name: "IsNegated", value: true);
-			try
+			if (node.TNegate.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
 			{
-				if (node.ParserRuleElement != null)
-				{
-				    this.Visit(node.ParserRuleElement);
-				}
+			    this.BeginProperty(node.TNegate, name: "IsNegated", value: true);
+			    try
+			    {
+			    	this.Visit(node.TNegate);
+			    }
+			    finally
+			    {
+			    	this.EndProperty(node.TNegate, name: "IsNegated", value: true);
+			    }
 			}
-			finally
+			if (node.ParserRuleElement != null)
 			{
-				this.EndProperty(node, name: "IsNegated", value: true);
+			    this.Visit(node.ParserRuleElement);
 			}
 		}
 		
@@ -504,17 +600,21 @@ namespace MetaDslx.Languages.Compiler.Binding
 			this.BeginProperty(node, name: "Element");
 			try
 			{
-				if (node.FixedElement != null)
+				if (node.ParserRuleFixedElement != null)
 				{
-				    this.Visit(node.FixedElement);
+				    this.Visit(node.ParserRuleFixedElement);
 				}
 				if (node.ParserRuleReference != null)
 				{
 				    this.Visit(node.ParserRuleReference);
 				}
-				if (node.ParserRuleBlock != null)
+				if (node.ParserRuleWildcardElement != null)
 				{
-				    this.Visit(node.ParserRuleBlock);
+				    this.Visit(node.ParserRuleWildcardElement);
+				}
+				if (node.ParserRuleBlockElement != null)
+				{
+				    this.Visit(node.ParserRuleBlockElement);
 				}
 			}
 			finally
@@ -523,11 +623,18 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 		}
 		
-		public virtual void VisitFixedElement(FixedElementSyntax node)
+		public virtual void VisitParserRuleFixedElement(ParserRuleFixedElementSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(FixedElement));
+			this.BeginDefine(node, type: typeof(ParserRuleFixedElement));
 			try
 			{
+				if (node.Annotation != null)
+				{
+					foreach (var child in node.Annotation)
+					{
+				        this.Visit(child);
+					}
+				}
 				if (node.StringLiteral != null)
 				{
 				    this.BeginProperty(node.StringLiteral, name: "Value");
@@ -543,15 +650,41 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(FixedElement));
+				this.EndDefine(node, type: typeof(ParserRuleFixedElement));
+			}
+		}
+		
+		public virtual void VisitParserRuleWildcardElement(ParserRuleWildcardElementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(ParserRuleWildcardElement));
+			try
+			{
+				if (node.Annotation != null)
+				{
+					foreach (var child in node.Annotation)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(ParserRuleWildcardElement));
 			}
 		}
 		
 		public virtual void VisitParserRuleReference(ParserRuleReferenceSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(RuleReference));
+			this.BeginDefine(node, type: typeof(ParserRuleReferenceElement));
 			try
 			{
+				if (node.Annotation != null)
+				{
+					foreach (var child in node.Annotation)
+					{
+				        this.Visit(child);
+					}
+				}
 				if (node.Identifier != null)
 				{
 				    this.BeginProperty(node.Identifier, name: "Rule");
@@ -575,18 +708,25 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(RuleReference));
+				this.EndDefine(node, type: typeof(ParserRuleReferenceElement));
 			}
 		}
 		
-		public virtual void VisitParserRuleBlock(ParserRuleBlockSyntax node)
+		public virtual void VisitParserRuleBlockElement(ParserRuleBlockElementSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(RuleBlock));
+			this.BeginDefine(node, type: typeof(ParserRuleBlockElement));
 			try
 			{
-				if (node.ParserRuleAlternative != null)
+				if (node.Annotation != null)
 				{
-					foreach (var child in node.ParserRuleAlternative)
+					foreach (var child in node.Annotation)
+					{
+				        this.Visit(child);
+					}
+				}
+				if (node.ParserRuleNamedElement != null)
+				{
+					foreach (var child in node.ParserRuleNamedElement)
 					{
 				        this.Visit(child);
 					}
@@ -594,7 +734,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(RuleBlock));
+				this.EndDefine(node, type: typeof(ParserRuleBlockElement));
 			}
 		}
 		
@@ -603,6 +743,13 @@ namespace MetaDslx.Languages.Compiler.Binding
 			this.BeginDefine(node, type: typeof(LexerRule));
 			try
 			{
+				if (node.Annotation != null)
+				{
+					foreach (var child in node.Annotation)
+					{
+				        this.Visit(child);
+					}
+				}
 				if (node.Modifier != null)
 				{
 				    switch (node.Modifier.GetKind().Switch())
@@ -637,6 +784,26 @@ namespace MetaDslx.Languages.Compiler.Binding
 				{
 				    this.Visit(node.LexerRuleName);
 				}
+				if (node.Qualifier != null)
+				{
+				    this.BeginProperty(node.Qualifier, name: "ValueType");
+				    try
+				    {
+				    	this.BeginUse(node.Qualifier, types: ImmutableArray.Create(typeof(System.Type)));
+				    	try
+				    	{
+				    		this.Visit(node.Qualifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.Qualifier, types: ImmutableArray.Create(typeof(System.Type)));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.Qualifier, name: "ValueType");
+				    }
+				}
 				if (node.LexerRuleAlternative != null)
 				{
 					foreach (var child in node.LexerRuleAlternative)
@@ -656,7 +823,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 			this.BeginProperty(node, name: "Alternatives");
 			try
 			{
-				this.BeginDefine(node, type: typeof(RuleAlternative));
+				this.BeginDefine(node, type: typeof(LexerRuleAlternative));
 				try
 				{
 					if (node.LexerRuleAlternativeElement != null)
@@ -669,7 +836,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 				}
 				finally
 				{
-					this.EndDefine(node, type: typeof(RuleAlternative));
+					this.EndDefine(node, type: typeof(LexerRuleAlternative));
 				}
 			}
 			finally
@@ -683,25 +850,33 @@ namespace MetaDslx.Languages.Compiler.Binding
 			this.BeginProperty(node, name: "Elements");
 			try
 			{
-				this.BeginDefine(node, type: typeof(RuleElement));
+				this.BeginDefine(node, type: typeof(LexerRuleAlternativeElement));
 				try
 				{
-					if (node.LexerMultiElement != null)
+					if (node.TNegate.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
 					{
-					    this.Visit(node.LexerMultiElement);
+					    this.BeginProperty(node.TNegate, name: "IsNegated", value: true);
+					    try
+					    {
+					    	this.Visit(node.TNegate);
+					    }
+					    finally
+					    {
+					    	this.EndProperty(node.TNegate, name: "IsNegated", value: true);
+					    }
 					}
-					if (node.LexerNegatedElement != null)
+					if (node.LexerRuleElement != null)
 					{
-					    this.Visit(node.LexerNegatedElement);
+					    this.Visit(node.LexerRuleElement);
 					}
-					if (node.LexerRangeElement != null)
+					if (node.Multiplicity != null)
 					{
-					    this.Visit(node.LexerRangeElement);
+					    this.Visit(node.Multiplicity);
 					}
 				}
 				finally
 				{
-					this.EndDefine(node, type: typeof(RuleElement));
+					this.EndDefine(node, type: typeof(LexerRuleAlternativeElement));
 				}
 			}
 			finally
@@ -710,37 +885,172 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 		}
 		
-		public virtual void VisitLexerMultiElement(LexerMultiElementSyntax node)
+		public virtual void VisitLexerRuleElement(LexerRuleElementSyntax node)
 		{
-			if (node.LexerRuleElement != null)
-			{
-			    this.Visit(node.LexerRuleElement);
-			}
-			if (node.Multiplicity != null)
-			{
-			    this.Visit(node.Multiplicity);
-			}
-		}
-		
-		public virtual void VisitLexerNegatedElement(LexerNegatedElementSyntax node)
-		{
-			this.BeginProperty(node, name: "IsNegated", value: true);
+			this.BeginProperty(node, name: "Element");
 			try
 			{
-				if (node.LexerRuleElement != null)
+				if (node.LexerRuleReferenceElement != null)
 				{
-				    this.Visit(node.LexerRuleElement);
+				    this.Visit(node.LexerRuleReferenceElement);
+				}
+				if (node.LexerRuleFixedStringElement != null)
+				{
+				    this.Visit(node.LexerRuleFixedStringElement);
+				}
+				if (node.LexerRuleFixedCharElement != null)
+				{
+				    this.Visit(node.LexerRuleFixedCharElement);
+				}
+				if (node.LexerRuleWildcardElement != null)
+				{
+				    this.Visit(node.LexerRuleWildcardElement);
+				}
+				if (node.LexerRuleBlockElement != null)
+				{
+				    this.Visit(node.LexerRuleBlockElement);
+				}
+				if (node.LexerRuleRangeElement != null)
+				{
+				    this.Visit(node.LexerRuleRangeElement);
 				}
 			}
 			finally
 			{
-				this.EndProperty(node, name: "IsNegated", value: true);
+				this.EndProperty(node, name: "Element");
 			}
 		}
 		
-		public virtual void VisitLexerRangeElement(LexerRangeElementSyntax node)
+		public virtual void VisitLexerRuleReferenceElement(LexerRuleReferenceElementSyntax node)
 		{
-			this.BeginDefine(node, type: typeof(RangeElement));
+			this.BeginDefine(node, type: typeof(LexerRuleReferenceElement));
+			try
+			{
+				if (node.LexerRuleIdentifier != null)
+				{
+				    this.BeginProperty(node.LexerRuleIdentifier, name: "Rule");
+				    try
+				    {
+				    	this.BeginUse(node.LexerRuleIdentifier, types: ImmutableArray.Create(typeof(LexerRule)));
+				    	try
+				    	{
+				    		this.Visit(node.LexerRuleIdentifier);
+				    	}
+				    	finally
+				    	{
+				    		this.EndUse(node.LexerRuleIdentifier, types: ImmutableArray.Create(typeof(LexerRule)));
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.LexerRuleIdentifier, name: "Rule");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LexerRuleReferenceElement));
+			}
+		}
+		
+		public virtual void VisitLexerRuleWildcardElement(LexerRuleWildcardElementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LexerRuleWildcardElement));
+			try
+			{
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LexerRuleWildcardElement));
+			}
+		}
+		
+		public virtual void VisitLexerRuleFixedStringElement(LexerRuleFixedStringElementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LexerRuleFixedStringElement));
+			try
+			{
+				if (node.LString.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+				{
+				    this.BeginProperty(node.LString, name: "Value");
+				    try
+				    {
+				    	this.BeginValue(node.LString);
+				    	try
+				    	{
+				    		this.Visit(node.LString);
+				    	}
+				    	finally
+				    	{
+				    		this.EndValue(node.LString);
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.LString, name: "Value");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LexerRuleFixedStringElement));
+			}
+		}
+		
+		public virtual void VisitLexerRuleFixedCharElement(LexerRuleFixedCharElementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LexerRuleFixedCharElement));
+			try
+			{
+				if (node.LCharacter.GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+				{
+				    this.BeginProperty(node.LCharacter, name: "Value");
+				    try
+				    {
+				    	this.BeginValue(node.LCharacter);
+				    	try
+				    	{
+				    		this.Visit(node.LCharacter);
+				    	}
+				    	finally
+				    	{
+				    		this.EndValue(node.LCharacter);
+				    	}
+				    }
+				    finally
+				    {
+				    	this.EndProperty(node.LCharacter, name: "Value");
+				    }
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LexerRuleFixedCharElement));
+			}
+		}
+		
+		public virtual void VisitLexerRuleBlockElement(LexerRuleBlockElementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LexerRuleBlockElement));
+			try
+			{
+				if (node.LexerRuleAlternative != null)
+				{
+					foreach (var child in node.LexerRuleAlternative)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndDefine(node, type: typeof(LexerRuleBlockElement));
+			}
+		}
+		
+		public virtual void VisitLexerRuleRangeElement(LexerRuleRangeElementSyntax node)
+		{
+			this.BeginDefine(node, type: typeof(LexerRuleRangeElement));
 			try
 			{
 				if (node.Start != null)
@@ -770,90 +1080,7 @@ namespace MetaDslx.Languages.Compiler.Binding
 			}
 			finally
 			{
-				this.EndDefine(node, type: typeof(RangeElement));
-			}
-		}
-		
-		public virtual void VisitLexerRuleElement(LexerRuleElementSyntax node)
-		{
-			if (node.FixedElement != null)
-			{
-			    this.Visit(node.FixedElement);
-			}
-			if (node.WildcardElement != null)
-			{
-			    this.Visit(node.WildcardElement);
-			}
-			if (node.LexerRuleReference != null)
-			{
-			    this.Visit(node.LexerRuleReference);
-			}
-			if (node.LexerRuleBlock != null)
-			{
-			    this.Visit(node.LexerRuleBlock);
-			}
-		}
-		
-		public virtual void VisitWildcardElement(WildcardElementSyntax node)
-		{
-			this.BeginDefine(node, type: typeof(WildcardElement));
-			try
-			{
-			}
-			finally
-			{
-				this.EndDefine(node, type: typeof(WildcardElement));
-			}
-		}
-		
-		public virtual void VisitLexerRuleReference(LexerRuleReferenceSyntax node)
-		{
-			this.BeginDefine(node, type: typeof(RuleReference));
-			try
-			{
-				if (node.Identifier != null)
-				{
-				    this.BeginProperty(node.Identifier, name: "Rule");
-				    try
-				    {
-				    	this.BeginUse(node.Identifier, types: ImmutableArray.Create(typeof(LexerRule)));
-				    	try
-				    	{
-				    		this.Visit(node.Identifier);
-				    	}
-				    	finally
-				    	{
-				    		this.EndUse(node.Identifier, types: ImmutableArray.Create(typeof(LexerRule)));
-				    	}
-				    }
-				    finally
-				    {
-				    	this.EndProperty(node.Identifier, name: "Rule");
-				    }
-				}
-			}
-			finally
-			{
-				this.EndDefine(node, type: typeof(RuleReference));
-			}
-		}
-		
-		public virtual void VisitLexerRuleBlock(LexerRuleBlockSyntax node)
-		{
-			this.BeginDefine(node, type: typeof(RuleBlock));
-			try
-			{
-				if (node.LexerRuleAlternative != null)
-				{
-					foreach (var child in node.LexerRuleAlternative)
-					{
-				        this.Visit(child);
-					}
-				}
-			}
-			finally
-			{
-				this.EndDefine(node, type: typeof(RuleBlock));
+				this.EndDefine(node, type: typeof(LexerRuleRangeElement));
 			}
 		}
 		
@@ -909,6 +1136,30 @@ namespace MetaDslx.Languages.Compiler.Binding
 		}
 		
 		public virtual void VisitIdentifier(IdentifierSyntax node)
+		{
+			this.BeginIdentifier(node);
+			try
+			{
+			}
+			finally
+			{
+				this.EndIdentifier(node);
+			}
+		}
+		
+		public virtual void VisitLexerRuleIdentifier(LexerRuleIdentifierSyntax node)
+		{
+			this.BeginIdentifier(node);
+			try
+			{
+			}
+			finally
+			{
+				this.EndIdentifier(node);
+			}
+		}
+		
+		public virtual void VisitParserRuleIdentifier(ParserRuleIdentifierSyntax node)
 		{
 			this.BeginIdentifier(node);
 			try
@@ -1069,6 +1320,18 @@ namespace MetaDslx.Languages.Compiler.Binding
 		}
 		
 		public virtual void VisitStringLiteral(StringLiteralSyntax node)
+		{
+			this.BeginValue(node);
+			try
+			{
+			}
+			finally
+			{
+				this.EndValue(node);
+			}
+		}
+		
+		public virtual void VisitCharLiteral(CharLiteralSyntax node)
 		{
 			this.BeginValue(node);
 			try

@@ -26,6 +26,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 
 		// Rules:
 		public const string Main = nameof(Main);
+		public const string Annotation = nameof(Annotation);
 		public const string NamespaceDeclaration = nameof(NamespaceDeclaration);
 		public const string NamespaceBody = nameof(NamespaceBody);
 		public const string GrammarDeclaration = nameof(GrammarDeclaration);
@@ -33,31 +34,35 @@ namespace MetaDslx.Languages.Compiler.Syntax
 		public const string RuleDeclarations = nameof(RuleDeclarations);
 		public const string RuleDeclaration = nameof(RuleDeclaration);
 		public const string ParserRuleDeclaration = nameof(ParserRuleDeclaration);
-		public const string ParserRuleAlternative = nameof(ParserRuleAlternative);
+		public const string ParserRuleAlt = nameof(ParserRuleAlt);
+		public const string ParserRuleAltRef = nameof(ParserRuleAltRef);
+		public const string ParserRuleSimple = nameof(ParserRuleSimple);
 		public const string EofElement = nameof(EofElement);
-		public const string ParserRuleAlternativeElement = nameof(ParserRuleAlternativeElement);
-		public const string ParserMultiElement = nameof(ParserMultiElement);
+		public const string ParserRuleNamedElement = nameof(ParserRuleNamedElement);
 		public const string Assign = nameof(Assign);
 		public const string Multiplicity = nameof(Multiplicity);
 		public const string ParserNegatedElement = nameof(ParserNegatedElement);
 		public const string ParserRuleElement = nameof(ParserRuleElement);
-		public const string FixedElement = nameof(FixedElement);
+		public const string ParserRuleFixedElement = nameof(ParserRuleFixedElement);
+		public const string ParserRuleWildcardElement = nameof(ParserRuleWildcardElement);
 		public const string ParserRuleReference = nameof(ParserRuleReference);
-		public const string ParserRuleBlock = nameof(ParserRuleBlock);
+		public const string ParserRuleBlockElement = nameof(ParserRuleBlockElement);
 		public const string LexerRuleDeclaration = nameof(LexerRuleDeclaration);
 		public const string LexerRuleAlternative = nameof(LexerRuleAlternative);
 		public const string LexerRuleAlternativeElement = nameof(LexerRuleAlternativeElement);
-		public const string LexerMultiElement = nameof(LexerMultiElement);
-		public const string LexerNegatedElement = nameof(LexerNegatedElement);
-		public const string LexerRangeElement = nameof(LexerRangeElement);
 		public const string LexerRuleElement = nameof(LexerRuleElement);
-		public const string WildcardElement = nameof(WildcardElement);
-		public const string LexerRuleReference = nameof(LexerRuleReference);
-		public const string LexerRuleBlock = nameof(LexerRuleBlock);
+		public const string LexerRuleReferenceElement = nameof(LexerRuleReferenceElement);
+		public const string LexerRuleWildcardElement = nameof(LexerRuleWildcardElement);
+		public const string LexerRuleFixedStringElement = nameof(LexerRuleFixedStringElement);
+		public const string LexerRuleFixedCharElement = nameof(LexerRuleFixedCharElement);
+		public const string LexerRuleBlockElement = nameof(LexerRuleBlockElement);
+		public const string LexerRuleRangeElement = nameof(LexerRuleRangeElement);
 		public const string Name = nameof(Name);
 		public const string QualifiedName = nameof(QualifiedName);
 		public const string Qualifier = nameof(Qualifier);
 		public const string Identifier = nameof(Identifier);
+		public const string LexerRuleIdentifier = nameof(LexerRuleIdentifier);
+		public const string ParserRuleIdentifier = nameof(ParserRuleIdentifier);
 		public const string LexerRuleName = nameof(LexerRuleName);
 		public const string ParserRuleName = nameof(ParserRuleName);
 		public const string ElementName = nameof(ElementName);
@@ -68,6 +73,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
 		public const string DecimalLiteral = nameof(DecimalLiteral);
 		public const string ScientificLiteral = nameof(ScientificLiteral);
 		public const string StringLiteral = nameof(StringLiteral);
+		public const string CharLiteral = nameof(CharLiteral);
 
 		protected CompilerSyntaxKind(string name)
             : base(name)
@@ -88,7 +94,7 @@ namespace MetaDslx.Languages.Compiler.Syntax
             __LastFixedToken = TGreaterThan;
             __FirstRule = Main;
 			__FirstRuleValue = (int)__FirstRule;
-            __LastRule = StringLiteral;
+            __LastRule = CharLiteral;
 			__LastRuleValue = (int)__LastRule;
         }
 

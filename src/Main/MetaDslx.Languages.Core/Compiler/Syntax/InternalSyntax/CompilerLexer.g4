@@ -20,6 +20,7 @@ KOptions : 'options';
 KFragment : 'fragment';
 KHidden : 'hidden';
 KDefines : 'defines';
+KReturns : 'returns';
 KTrue : 'true';
 KFalse : 'false';
 KNull : 'null';
@@ -27,7 +28,7 @@ KEof : 'EOF';
 
 // Tokens
 TSemicolon : ';';
-TArrow : '->';
+TDotDot : '..';
 TDot : '.';
 TNonGreedyZeroOrOne : '??';
 TNonGreedyZeroOrMore : '*?';
@@ -58,6 +59,8 @@ TGreaterThan : '>';
 LexerIdentifier : '@'? LexerIdentifierBegin IdentifierCharacter*;
                        
 ParserIdentifier : '@'? ParserIdentifierBegin IdentifierCharacter*;
+                       
+IgnoredIdentifier : '_' IdentifierCharacter*;
 fragment LexerIdentifierBegin : [A-Z];
 fragment ParserIdentifierBegin : [a-z];
 fragment IdentifierCharacter : [a-zA-Z0-9_];
@@ -77,14 +80,21 @@ fragment HexDigit : [0-9a-fA-F];
                    
 LString
     : DoubleQuoteString
-    | SingleQuoteString
     | DoubleQuoteVerbatimString
-    | SingleQuoteVerbatimString;
+    ;
+
+                   
+LCharacter
+    : SingleQuoteChar
+    | SingleQuoteVerbatimChar
+    ;
 
 fragment DoubleQuoteString : '"' DoubleQuoteTextCharacter* '"';
-fragment SingleQuoteString : '\'' SingleQuoteTextCharacter* '\'';
 fragment DoubleQuoteVerbatimString : '@"' DoubleQuoteTextVerbatimCharacter* '"';
-fragment SingleQuoteVerbatimString : '@\'' SingleQuoteTextVerbatimCharacter* '\'';
+
+fragment SingleQuoteChar : '\'' SingleQuoteTextCharacter '\'';
+fragment SingleQuoteVerbatimChar : '@\'' SingleQuoteTextVerbatimCharacter '\'';
+
 fragment SingleQuoteTextCharacter 
     : SingleQuoteTextSimple | CharacterEscapeSimple | CharacterEscapeUnicode;
 fragment SingleQuoteTextSimple 

@@ -3,9 +3,13 @@ using MetaDslx.Languages.Compiler.Model;
 
 grammar TestGrammar;
 
-main defines Namespace: semicolon TSemicolon EOF;
+main defines Namespace: semicolon TSemicolon "?" ">>" "\"" "=" EOF;
 
 semicolon: TSemicolon;
 
-TSemicolon: 'a'..'b'?? ";" ;
+hello: X "hello" y "x" "y" "?";
+X: "x";
+y: "y";
+
+TSemicolon: ";" ;
 

@@ -13,6 +13,10 @@ options
 
 main: namespaceDeclaration EOF;
 
+$Property(Annotations) 
+$Define(Annotation)
+annotation: TOpenBracket name TCloseBracket;
+
 $Define(type=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration: KNamespace qualifiedName TSemicolon namespaceBody;
 
@@ -21,7 +25,7 @@ namespaceBody: usingDeclaration* grammarDeclaration;
 
 $Property(Members) 
 $Define(Grammar)
-grammarDeclaration: KGrammar name TSemicolon $Scope ruleDeclarations;
+grammarDeclaration: annotation* KGrammar name TSemicolon $Scope ruleDeclarations;
 
 $Import
 usingDeclaration: KUsing (name TAssign)? qualifier TSemicolon;
@@ -31,24 +35,26 @@ ruleDeclarations: ruleDeclaration*;
 $Property(Rules) 
 ruleDeclaration: parserRuleDeclaration | lexerRuleDeclaration;
 
-$Define(ParserRule)
-parserRuleDeclaration: parserRuleName (KDefines $Property(DefinedModelObject) $Use(System.Type) qualifier)? TColon parserRuleAlternative (TBar parserRuleAlternative)* TSemicolon;
+parserRuleDeclaration: parserRuleAlt | parserRuleSimple;
+
+$Define(ParserRuleAlt)
+parserRuleAlt: annotation* parserRuleName (KDefines $Property(DefinedModelObject) $Use(System.Type) qualifier)? TColon parserRuleAltRef (TBar parserRuleAltRef)* TSemicolon;
 
 $Property(Alternatives)
-$Define(RuleAlternative)
-parserRuleAlternative: parserRuleAlternativeElement+ eofElement?;
+parserRuleAltRef: $Use(ParserRule) parserRuleIdentifier;
+
+$Define(ParserRuleSimple)
+parserRuleSimple: annotation* parserRuleName (KDefines $Property(DefinedModelObject) $Use(System.Type) qualifier)? TColon parserRuleNamedElement+ eofElement? TSemicolon;
 
 $Property(Elements)
-$Define(RuleElement)
+$Define(ParserRuleNamedElement)
 $Property(Element)
-$Define(EofElement)
+$Define(ParserRuleEofElement)
 eofElement: KEof;
 
 $Property(Elements)
-$Define(RuleElement)
-parserRuleAlternativeElement: parserMultiElement | parserNegatedElement;
-
-parserMultiElement: (elementName assign)? parserRuleElement multiplicity?;
+$Define(ParserRuleNamedElement)
+parserRuleNamedElement: annotation* (elementName assign)? parserNegatedElement multiplicity?;
 
 $Property(AssignmentOperator)
 assign
@@ -67,50 +73,54 @@ multiplicity
 	| $Value(Multiplicity.OneOrMore) TOneOrMore
 	;
 
-$Property(name=IsNegated,value=true)
-parserNegatedElement: TNegate parserRuleElement;
+parserNegatedElement: $Property(name=IsNegated,value=true) TNegate? parserRuleElement;
 
 $Property(Element)
-parserRuleElement: fixedElement | parserRuleReference | parserRuleBlock;
+parserRuleElement: parserRuleFixedElement | parserRuleReference | parserRuleWildcardElement | parserRuleBlockElement;
 
-$Define(FixedElement)
-fixedElement: $Property(Value) stringLiteral;
+$Define(ParserRuleFixedElement)
+parserRuleFixedElement: annotation* $Property(Value) stringLiteral;
 
-$Define(RuleReference)
-parserRuleReference: $Property(Rule) $Use(Rule) identifier;
+$Define(ParserRuleWildcardElement)
+parserRuleWildcardElement: annotation* TDot;
 
-$Define(RuleBlock)
-parserRuleBlock: TOpenParen parserRuleAlternative (TBar parserRuleAlternative)* TCloseParen;
+$Define(ParserRuleReferenceElement)
+parserRuleReference: annotation* $Property(Rule) $Use(Rule) identifier;
+
+$Define(ParserRuleBlockElement)
+parserRuleBlockElement: annotation* TOpenParen parserRuleNamedElement+ TCloseParen;
 
 $Define(LexerRule)
-lexerRuleDeclaration: modifier=($Property(name=IsHidden,value=true) KHidden | $Property(name=IsFragment,value=true) KFragment)? lexerRuleName TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
+lexerRuleDeclaration: annotation* modifier=($Property(name=IsHidden,value=true) KHidden | $Property(name=IsFragment,value=true) KFragment)? lexerRuleName (KReturns $Property(ValueType) $Use(System.Type) qualifier)? TColon lexerRuleAlternative (TBar lexerRuleAlternative)* TSemicolon;
 
 $Property(Alternatives)
-$Define(RuleAlternative)
+$Define(LexerRuleAlternative)
 lexerRuleAlternative: lexerRuleAlternativeElement+;
 
 $Property(Elements)
-$Define(RuleElement)
-lexerRuleAlternativeElement: lexerMultiElement | lexerNegatedElement | lexerRangeElement;
+$Define(LexerRuleAlternativeElement)
+lexerRuleAlternativeElement: $Property(name=IsNegated,value=true) TNegate? lexerRuleElement multiplicity?;
 
-lexerMultiElement: lexerRuleElement multiplicity?;
+$Property(Element)
+lexerRuleElement: lexerRuleReferenceElement | lexerRuleFixedStringElement | lexerRuleFixedCharElement | lexerRuleWildcardElement | lexerRuleBlockElement | lexerRuleRangeElement;
 
-$Property(name=IsNegated,value=true)
-lexerNegatedElement: TNegate lexerRuleElement;
+$Define(LexerRuleReferenceElement)
+lexerRuleReferenceElement: $Property(Rule) $Use(LexerRule) lexerRuleIdentifier;
 
-$Define(RangeElement)
-lexerRangeElement: $Property(Start) start=fixedElement TArrow $Property(End) end=fixedElement;
+$Define(LexerRuleWildcardElement)
+lexerRuleWildcardElement: TDot;
 
-lexerRuleElement: fixedElement | wildcardElement | lexerRuleReference | lexerRuleBlock;
+$Define(LexerRuleFixedStringElement)
+lexerRuleFixedStringElement: $Property(Value) $Value LString;
 
-$Define(WildcardElement)
-wildcardElement: TDot;
+$Define(LexerRuleFixedCharElement)
+lexerRuleFixedCharElement: $Property(Value) $Value LCharacter;
 
-$Define(RuleReference)
-lexerRuleReference: $Property(Rule) $Use(LexerRule) identifier;
+$Define(LexerRuleBlockElement)
+lexerRuleBlockElement: TOpenParen lexerRuleAlternative (TBar lexerRuleAlternative)* TCloseParen;
 
-$Define(RuleBlock)
-lexerRuleBlock: TOpenParen lexerRuleAlternative (TBar lexerRuleAlternative)* TCloseParen;
+$Define(LexerRuleRangeElement)
+lexerRuleRangeElement: $Property(Start) start=lexerRuleFixedCharElement TDotDot $Property(End) end=lexerRuleFixedCharElement;
 
 // Identifiers
 $Name
@@ -125,6 +135,12 @@ qualifier : identifier (TDot identifier)*;
 $Identifier
 identifier : LexerIdentifier | ParserIdentifier;
 
+$Identifier
+lexerRuleIdentifier : LexerIdentifier;
+
+$Identifier
+parserRuleIdentifier : ParserIdentifier;
+
 $Name
 $Identifier
 lexerRuleName : LexerIdentifier;
@@ -135,7 +151,7 @@ parserRuleName : ParserIdentifier;
 
 $Name
 $Identifier
-elementName : LexerIdentifier;
+elementName : ParserIdentifier | IgnoredIdentifier;
 
 // Literals
 literal 
@@ -168,4 +184,7 @@ scientificLiteral : LScientific;
 // String literals
 $Value
 stringLiteral : LString;
+
+$Value
+charLiteral : LCharacter;
 

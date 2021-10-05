@@ -5,6 +5,22 @@
 
 	metamodel Compiler(Uri="http://MetaDslx.Languages.Compiler/1.0",MajorVersion=1,MinorVersion=0);
 
+	class AnnotatedElement
+	{
+		containment list<Annotation> Annotations;
+	}
+
+	class Annotation : NamedElement
+	{
+		[property: Members]
+		containment list<AnnotationProperty> Properties;
+	}
+
+	class AnnotationProperty : NamedElement
+	{
+		string Value;
+	}
+
 	[symbol: Namespace]
 	class Namespace : NamedElement
 	{
@@ -13,7 +29,7 @@
 	}
 
 	[symbol: Member]
-	class NamedElement
+	class NamedElement : AnnotatedElement
 	{
 		[property: Name]
 		string Name;
@@ -36,60 +52,59 @@
 	[symbol: NamedType]
 	abstract class Rule : NamedElement
 	{
-		SystemType DefinedModelObject;
-		[property: Members]
-		containment list<RuleAlternative> Alternatives;
 	}
 
-	class RuleAlternative : NamedElement
+	class ParserRule : Rule
 	{
-		containment list<RuleElement> Elements;
+		SystemType DefinedModelObject;
+	}
+
+	class ParserRuleAlt : ParserRule
+	{
+		[property: Members]
+		containment list<ParserRule> Alternatives;
+	}
+
+	class ParserRuleSimple : ParserRule
+	{
+		[property: Members]
+		containment list<ParserRuleNamedElement> Elements;
 	}
 
 	[symbol: NamedType]
-	class RuleElement : NamedElement
+	class ParserRuleNamedElement : NamedElement
 	{
 		bool IsNegated;
 		[property: Members]
-		Element Element;
+		containment ParserRuleElement Element;
 		AssignmentOperator AssignmentOperator;
 		Multiplicity Multiplicity;
 	}
 
 	[symbol: Member]
-	abstract class Element
+	abstract class ParserRuleElement : AnnotatedElement
 	{
 	}
 
-	class RuleReference : Element
+	class ParserRuleReferenceElement : ParserRuleElement
 	{
 		Rule Rule;
 	}
 
-	class RuleBlock : Rule, Element
+	class ParserRuleEofElement : ParserRuleElement
 	{
 	}
 
-	class EofElement : Element
-	{
-	}
-
-	class FixedElement : Element
+	class ParserRuleFixedElement : ParserRuleElement
 	{
 		string Value;
 	}
 	
-	class WildcardElement : Element
+	class ParserRuleWildcardElement : ParserRuleElement
 	{
 	}
 
-	class RangeElement : Element
-	{
-		containment FixedElement Start;
-		containment FixedElement End;
-	}
-
-	class ParserRule : Rule
+	class ParserRuleBlockElement : ParserRuleElement, ParserRuleSimple
 	{
 	}
 
@@ -97,6 +112,61 @@
 	{
 		bool IsFragment;
 		bool IsHidden;
+		SystemType ValueType;
+		object Value;
+		[property: Members]
+		containment list<LexerRuleAlternative> Alternatives;
+	}
+
+	[symbol: Member]
+	class LexerRuleAlternative
+	{
+		[property: Members]
+		containment list<LexerRuleAlternativeElement> Elements;
+	}
+
+	[symbol: Member]
+	class LexerRuleAlternativeElement
+	{
+		bool IsNegated;
+		LexerRuleElement Element;
+		Multiplicity Multiplicity;
+	}
+
+	[symbol: Member]
+	abstract class LexerRuleElement
+	{
+	}
+
+	class LexerRuleReferenceElement : LexerRuleElement
+	{
+		LexerRule Rule;
+	}
+
+	class LexerRuleFixedStringElement : LexerRuleElement
+	{
+		string Value;
+	}
+	
+	class LexerRuleFixedCharElement : LexerRuleElement
+	{
+		string Value;
+	}
+	
+	class LexerRuleWildcardElement : LexerRuleElement
+	{
+	}
+
+	class LexerRuleBlockElement : LexerRuleElement
+	{
+		[property: Members]
+		containment list<LexerRuleAlternative> Alternatives;
+	}
+
+	class LexerRuleRangeElement : LexerRuleElement
+	{
+		containment LexerRuleFixedCharElement Start;
+		containment LexerRuleFixedCharElement End;
 	}
 
 	enum Multiplicity

@@ -42,61 +42,66 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		KNamespace=1, KUsing=2, KGrammar=3, KOptions=4, KFragment=5, KHidden=6, 
-		KDefines=7, KTrue=8, KFalse=9, KNull=10, KEof=11, TSemicolon=12, TArrow=13, 
-		TDot=14, TNonGreedyZeroOrOne=15, TNonGreedyZeroOrMore=16, TNonGreedyOneOrMore=17, 
-		TZeroOrOne=18, TZeroOrMore=19, TOneOrMore=20, TNegate=21, TAssign=22, 
-		TQuestionAssign=23, TNegatedAssign=24, TPlusAssign=25, TBar=26, TAmpersand=27, 
-		TColon=28, TComma=29, TOpenParen=30, TCloseParen=31, TOpenBracket=32, 
-		TCloseBracket=33, TOpenBrace=34, TCloseBrace=35, TLessThan=36, TGreaterThan=37, 
-		LexerIdentifier=38, ParserIdentifier=39, LInteger=40, LDecimal=41, LScientific=42, 
-		LString=43, LUtf8Bom=44, LWhiteSpace=45, LCrLf=46, LLineEnd=47, LSingleLineComment=48, 
-		LMultilineComment=49;
+		KDefines=7, KReturns=8, KTrue=9, KFalse=10, KNull=11, KEof=12, TSemicolon=13, 
+		TDotDot=14, TDot=15, TNonGreedyZeroOrOne=16, TNonGreedyZeroOrMore=17, 
+		TNonGreedyOneOrMore=18, TZeroOrOne=19, TZeroOrMore=20, TOneOrMore=21, 
+		TNegate=22, TAssign=23, TQuestionAssign=24, TNegatedAssign=25, TPlusAssign=26, 
+		TBar=27, TAmpersand=28, TColon=29, TComma=30, TOpenParen=31, TCloseParen=32, 
+		TOpenBracket=33, TCloseBracket=34, TOpenBrace=35, TCloseBrace=36, TLessThan=37, 
+		TGreaterThan=38, LexerIdentifier=39, ParserIdentifier=40, IgnoredIdentifier=41, 
+		LInteger=42, LDecimal=43, LScientific=44, LString=45, LCharacter=46, LUtf8Bom=47, 
+		LWhiteSpace=48, LCrLf=49, LLineEnd=50, LSingleLineComment=51, LMultilineComment=52;
 	public const int
-		RULE_main = 0, RULE_namespaceDeclaration = 1, RULE_namespaceBody = 2, 
-		RULE_grammarDeclaration = 3, RULE_usingDeclaration = 4, RULE_ruleDeclarations = 5, 
-		RULE_ruleDeclaration = 6, RULE_parserRuleDeclaration = 7, RULE_parserRuleAlternative = 8, 
-		RULE_eofElement = 9, RULE_parserRuleAlternativeElement = 10, RULE_parserMultiElement = 11, 
-		RULE_assign = 12, RULE_multiplicity = 13, RULE_parserNegatedElement = 14, 
-		RULE_parserRuleElement = 15, RULE_fixedElement = 16, RULE_parserRuleReference = 17, 
-		RULE_parserRuleBlock = 18, RULE_lexerRuleDeclaration = 19, RULE_lexerRuleAlternative = 20, 
-		RULE_lexerRuleAlternativeElement = 21, RULE_lexerMultiElement = 22, RULE_lexerNegatedElement = 23, 
-		RULE_lexerRangeElement = 24, RULE_lexerRuleElement = 25, RULE_wildcardElement = 26, 
-		RULE_lexerRuleReference = 27, RULE_lexerRuleBlock = 28, RULE_name = 29, 
-		RULE_qualifiedName = 30, RULE_qualifier = 31, RULE_identifier = 32, RULE_lexerRuleName = 33, 
-		RULE_parserRuleName = 34, RULE_elementName = 35, RULE_literal = 36, RULE_nullLiteral = 37, 
-		RULE_booleanLiteral = 38, RULE_integerLiteral = 39, RULE_decimalLiteral = 40, 
-		RULE_scientificLiteral = 41, RULE_stringLiteral = 42;
+		RULE_main = 0, RULE_annotation = 1, RULE_namespaceDeclaration = 2, RULE_namespaceBody = 3, 
+		RULE_grammarDeclaration = 4, RULE_usingDeclaration = 5, RULE_ruleDeclarations = 6, 
+		RULE_ruleDeclaration = 7, RULE_parserRuleDeclaration = 8, RULE_parserRuleAlt = 9, 
+		RULE_parserRuleAltRef = 10, RULE_parserRuleSimple = 11, RULE_eofElement = 12, 
+		RULE_parserRuleNamedElement = 13, RULE_assign = 14, RULE_multiplicity = 15, 
+		RULE_parserNegatedElement = 16, RULE_parserRuleElement = 17, RULE_parserRuleFixedElement = 18, 
+		RULE_parserRuleWildcardElement = 19, RULE_parserRuleReference = 20, RULE_parserRuleBlockElement = 21, 
+		RULE_lexerRuleDeclaration = 22, RULE_lexerRuleAlternative = 23, RULE_lexerRuleAlternativeElement = 24, 
+		RULE_lexerRuleElement = 25, RULE_lexerRuleReferenceElement = 26, RULE_lexerRuleWildcardElement = 27, 
+		RULE_lexerRuleFixedStringElement = 28, RULE_lexerRuleFixedCharElement = 29, 
+		RULE_lexerRuleBlockElement = 30, RULE_lexerRuleRangeElement = 31, RULE_name = 32, 
+		RULE_qualifiedName = 33, RULE_qualifier = 34, RULE_identifier = 35, RULE_lexerRuleIdentifier = 36, 
+		RULE_parserRuleIdentifier = 37, RULE_lexerRuleName = 38, RULE_parserRuleName = 39, 
+		RULE_elementName = 40, RULE_literal = 41, RULE_nullLiteral = 42, RULE_booleanLiteral = 43, 
+		RULE_integerLiteral = 44, RULE_decimalLiteral = 45, RULE_scientificLiteral = 46, 
+		RULE_stringLiteral = 47, RULE_charLiteral = 48;
 	public static readonly string[] ruleNames = {
-		"main", "namespaceDeclaration", "namespaceBody", "grammarDeclaration", 
+		"main", "annotation", "namespaceDeclaration", "namespaceBody", "grammarDeclaration", 
 		"usingDeclaration", "ruleDeclarations", "ruleDeclaration", "parserRuleDeclaration", 
-		"parserRuleAlternative", "eofElement", "parserRuleAlternativeElement", 
-		"parserMultiElement", "assign", "multiplicity", "parserNegatedElement", 
-		"parserRuleElement", "fixedElement", "parserRuleReference", "parserRuleBlock", 
-		"lexerRuleDeclaration", "lexerRuleAlternative", "lexerRuleAlternativeElement", 
-		"lexerMultiElement", "lexerNegatedElement", "lexerRangeElement", "lexerRuleElement", 
-		"wildcardElement", "lexerRuleReference", "lexerRuleBlock", "name", "qualifiedName", 
-		"qualifier", "identifier", "lexerRuleName", "parserRuleName", "elementName", 
+		"parserRuleAlt", "parserRuleAltRef", "parserRuleSimple", "eofElement", 
+		"parserRuleNamedElement", "assign", "multiplicity", "parserNegatedElement", 
+		"parserRuleElement", "parserRuleFixedElement", "parserRuleWildcardElement", 
+		"parserRuleReference", "parserRuleBlockElement", "lexerRuleDeclaration", 
+		"lexerRuleAlternative", "lexerRuleAlternativeElement", "lexerRuleElement", 
+		"lexerRuleReferenceElement", "lexerRuleWildcardElement", "lexerRuleFixedStringElement", 
+		"lexerRuleFixedCharElement", "lexerRuleBlockElement", "lexerRuleRangeElement", 
+		"name", "qualifiedName", "qualifier", "identifier", "lexerRuleIdentifier", 
+		"parserRuleIdentifier", "lexerRuleName", "parserRuleName", "elementName", 
 		"literal", "nullLiteral", "booleanLiteral", "integerLiteral", "decimalLiteral", 
-		"scientificLiteral", "stringLiteral"
+		"scientificLiteral", "stringLiteral", "charLiteral"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, "'namespace'", "'using'", "'grammar'", "'options'", "'fragment'", 
-		"'hidden'", "'defines'", "'true'", "'false'", "'null'", "'EOF'", "';'", 
-		"'->'", "'.'", "'??'", "'*?'", "'+?'", "'?'", "'*'", "'+'", "'~'", "'='", 
-		"'?='", "'!='", "'+='", "'|'", "'&'", "':'", "','", "'('", "')'", "'['", 
-		"']'", "'{'", "'}'", "'<'", "'>'"
+		"'hidden'", "'defines'", "'returns'", "'true'", "'false'", "'null'", "'EOF'", 
+		"';'", "'..'", "'.'", "'??'", "'*?'", "'+?'", "'?'", "'*'", "'+'", "'~'", 
+		"'='", "'?='", "'!='", "'+='", "'|'", "'&'", "':'", "','", "'('", "')'", 
+		"'['", "']'", "'{'", "'}'", "'<'", "'>'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "KNamespace", "KUsing", "KGrammar", "KOptions", "KFragment", "KHidden", 
-		"KDefines", "KTrue", "KFalse", "KNull", "KEof", "TSemicolon", "TArrow", 
-		"TDot", "TNonGreedyZeroOrOne", "TNonGreedyZeroOrMore", "TNonGreedyOneOrMore", 
+		"KDefines", "KReturns", "KTrue", "KFalse", "KNull", "KEof", "TSemicolon", 
+		"TDotDot", "TDot", "TNonGreedyZeroOrOne", "TNonGreedyZeroOrMore", "TNonGreedyOneOrMore", 
 		"TZeroOrOne", "TZeroOrMore", "TOneOrMore", "TNegate", "TAssign", "TQuestionAssign", 
 		"TNegatedAssign", "TPlusAssign", "TBar", "TAmpersand", "TColon", "TComma", 
 		"TOpenParen", "TCloseParen", "TOpenBracket", "TCloseBracket", "TOpenBrace", 
 		"TCloseBrace", "TLessThan", "TGreaterThan", "LexerIdentifier", "ParserIdentifier", 
-		"LInteger", "LDecimal", "LScientific", "LString", "LUtf8Bom", "LWhiteSpace", 
-		"LCrLf", "LLineEnd", "LSingleLineComment", "LMultilineComment"
+		"IgnoredIdentifier", "LInteger", "LDecimal", "LScientific", "LString", 
+		"LCharacter", "LUtf8Bom", "LWhiteSpace", "LCrLf", "LLineEnd", "LSingleLineComment", 
+		"LMultilineComment"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -159,10 +164,59 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 86;
+			State = 98;
 			namespaceDeclaration();
-			State = 87;
+			State = 99;
 			Match(Eof);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class AnnotationContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TOpenBracket() { return GetToken(CompilerParser.TOpenBracket, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TCloseBracket() { return GetToken(CompilerParser.TCloseBracket, 0); }
+		public AnnotationContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_annotation; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitAnnotation(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public AnnotationContext annotation() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseAnnotation() : _DoParseAnnotation();
+	}
+
+	internal AnnotationContext _DoParseAnnotation() {
+		AnnotationContext _localctx = new AnnotationContext(Context, State);
+		EnterRule(_localctx, 2, RULE_annotation);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 101;
+			Match(TOpenBracket);
+			State = 102;
+			name();
+			State = 103;
+			Match(TCloseBracket);
 			}
 		}
 		catch (RecognitionException re) {
@@ -205,17 +259,17 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal NamespaceDeclarationContext _DoParseNamespaceDeclaration() {
 		NamespaceDeclarationContext _localctx = new NamespaceDeclarationContext(Context, State);
-		EnterRule(_localctx, 2, RULE_namespaceDeclaration);
+		EnterRule(_localctx, 4, RULE_namespaceDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 89;
+			State = 105;
 			Match(KNamespace);
-			State = 90;
+			State = 106;
 			qualifiedName();
-			State = 91;
+			State = 107;
 			Match(TSemicolon);
-			State = 92;
+			State = 108;
 			namespaceBody();
 			}
 		}
@@ -260,26 +314,26 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal NamespaceBodyContext _DoParseNamespaceBody() {
 		NamespaceBodyContext _localctx = new NamespaceBodyContext(Context, State);
-		EnterRule(_localctx, 4, RULE_namespaceBody);
+		EnterRule(_localctx, 6, RULE_namespaceBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 97;
+			State = 113;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==KUsing) {
 				{
 				{
-				State = 94;
+				State = 110;
 				usingDeclaration();
 				}
 				}
-				State = 99;
+				State = 115;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 100;
+			State = 116;
 			grammarDeclaration();
 			}
 		}
@@ -303,6 +357,12 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		[System.Diagnostics.DebuggerNonUserCode] public RuleDeclarationsContext ruleDeclarations() {
 			return GetRuleContext<RuleDeclarationsContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
+		}
 		public GrammarDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -323,17 +383,32 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal GrammarDeclarationContext _DoParseGrammarDeclaration() {
 		GrammarDeclarationContext _localctx = new GrammarDeclarationContext(Context, State);
-		EnterRule(_localctx, 6, RULE_grammarDeclaration);
+		EnterRule(_localctx, 8, RULE_grammarDeclaration);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 102;
+			State = 121;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==TOpenBracket) {
+				{
+				{
+				State = 118;
+				annotation();
+				}
+				}
+				State = 123;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 124;
 			Match(KGrammar);
-			State = 103;
+			State = 125;
 			name();
-			State = 104;
+			State = 126;
 			Match(TSemicolon);
-			State = 105;
+			State = 127;
 			ruleDeclarations();
 			}
 		}
@@ -378,27 +453,27 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal UsingDeclarationContext _DoParseUsingDeclaration() {
 		UsingDeclarationContext _localctx = new UsingDeclarationContext(Context, State);
-		EnterRule(_localctx, 8, RULE_usingDeclaration);
+		EnterRule(_localctx, 10, RULE_usingDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 107;
+			State = 129;
 			Match(KUsing);
-			State = 111;
+			State = 133;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,2,Context) ) {
 			case 1:
 				{
-				State = 108;
+				State = 130;
 				name();
-				State = 109;
+				State = 131;
 				Match(TAssign);
 				}
 				break;
 			}
-			State = 113;
+			State = 135;
 			qualifier();
-			State = 114;
+			State = 136;
 			Match(TSemicolon);
 			}
 		}
@@ -440,22 +515,22 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal RuleDeclarationsContext _DoParseRuleDeclarations() {
 		RuleDeclarationsContext _localctx = new RuleDeclarationsContext(Context, State);
-		EnterRule(_localctx, 10, RULE_ruleDeclarations);
+		EnterRule(_localctx, 12, RULE_ruleDeclarations);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 119;
+			State = 141;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KFragment) | (1L << KHidden) | (1L << LexerIdentifier) | (1L << ParserIdentifier))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KFragment) | (1L << KHidden) | (1L << TOpenBracket) | (1L << LexerIdentifier) | (1L << ParserIdentifier))) != 0)) {
 				{
 				{
-				State = 116;
+				State = 138;
 				ruleDeclaration();
 				}
 				}
-				State = 121;
+				State = 143;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -499,29 +574,25 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal RuleDeclarationContext _DoParseRuleDeclaration() {
 		RuleDeclarationContext _localctx = new RuleDeclarationContext(Context, State);
-		EnterRule(_localctx, 12, RULE_ruleDeclaration);
+		EnterRule(_localctx, 14, RULE_ruleDeclaration);
 		try {
-			State = 124;
+			State = 146;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case ParserIdentifier:
+			switch ( Interpreter.AdaptivePredict(TokenStream,4,Context) ) {
+			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 122;
+				State = 144;
 				parserRuleDeclaration();
 				}
 				break;
-			case KFragment:
-			case KHidden:
-			case LexerIdentifier:
+			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 123;
+				State = 145;
 				lexerRuleDeclaration();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -536,24 +607,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 	}
 
 	public partial class ParserRuleDeclarationContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleNameContext parserRuleName() {
-			return GetRuleContext<ParserRuleNameContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAltContext parserRuleAlt() {
+			return GetRuleContext<ParserRuleAltContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TColon() { return GetToken(CompilerParser.TColon, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAlternativeContext[] parserRuleAlternative() {
-			return GetRuleContexts<ParserRuleAlternativeContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAlternativeContext parserRuleAlternative(int i) {
-			return GetRuleContext<ParserRuleAlternativeContext>(i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TSemicolon() { return GetToken(CompilerParser.TSemicolon, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KDefines() { return GetToken(CompilerParser.KDefines, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public QualifierContext qualifier() {
-			return GetRuleContext<QualifierContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] TBar() { return GetTokens(CompilerParser.TBar); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TBar(int i) {
-			return GetToken(CompilerParser.TBar, i);
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleSimpleContext parserRuleSimple() {
+			return GetRuleContext<ParserRuleSimpleContext>(0);
 		}
 		public ParserRuleDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -575,46 +633,138 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal ParserRuleDeclarationContext _DoParseParserRuleDeclaration() {
 		ParserRuleDeclarationContext _localctx = new ParserRuleDeclarationContext(Context, State);
-		EnterRule(_localctx, 14, RULE_parserRuleDeclaration);
+		EnterRule(_localctx, 16, RULE_parserRuleDeclaration);
+		try {
+			State = 150;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 148;
+				parserRuleAlt();
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 149;
+				parserRuleSimple();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ParserRuleAltContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleNameContext parserRuleName() {
+			return GetRuleContext<ParserRuleNameContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TColon() { return GetToken(CompilerParser.TColon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAltRefContext[] parserRuleAltRef() {
+			return GetRuleContexts<ParserRuleAltRefContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAltRefContext parserRuleAltRef(int i) {
+			return GetRuleContext<ParserRuleAltRefContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TSemicolon() { return GetToken(CompilerParser.TSemicolon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KDefines() { return GetToken(CompilerParser.KDefines, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] TBar() { return GetTokens(CompilerParser.TBar); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TBar(int i) {
+			return GetToken(CompilerParser.TBar, i);
+		}
+		public ParserRuleAltContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_parserRuleAlt; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleAlt(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ParserRuleAltContext parserRuleAlt() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleAlt() : _DoParseParserRuleAlt();
+	}
+
+	internal ParserRuleAltContext _DoParseParserRuleAlt() {
+		ParserRuleAltContext _localctx = new ParserRuleAltContext(Context, State);
+		EnterRule(_localctx, 18, RULE_parserRuleAlt);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 126;
+			State = 155;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==TOpenBracket) {
+				{
+				{
+				State = 152;
+				annotation();
+				}
+				}
+				State = 157;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 158;
 			parserRuleName();
-			State = 129;
+			State = 161;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==KDefines) {
 				{
-				State = 127;
+				State = 159;
 				Match(KDefines);
-				State = 128;
+				State = 160;
 				qualifier();
 				}
 			}
 
-			State = 131;
+			State = 163;
 			Match(TColon);
-			State = 132;
-			parserRuleAlternative();
-			State = 137;
+			State = 164;
+			parserRuleAltRef();
+			State = 169;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==TBar) {
 				{
 				{
-				State = 133;
+				State = 165;
 				Match(TBar);
-				State = 134;
-				parserRuleAlternative();
+				State = 166;
+				parserRuleAltRef();
 				}
 				}
-				State = 139;
+				State = 171;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 140;
+			State = 172;
 			Match(TSemicolon);
 			}
 		}
@@ -629,65 +779,155 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class ParserRuleAlternativeContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAlternativeElementContext[] parserRuleAlternativeElement() {
-			return GetRuleContexts<ParserRuleAlternativeElementContext>();
+	public partial class ParserRuleAltRefContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleIdentifierContext parserRuleIdentifier() {
+			return GetRuleContext<ParserRuleIdentifierContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAlternativeElementContext parserRuleAlternativeElement(int i) {
-			return GetRuleContext<ParserRuleAlternativeElementContext>(i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public EofElementContext eofElement() {
-			return GetRuleContext<EofElementContext>(0);
-		}
-		public ParserRuleAlternativeContext(ParserRuleContext parent, int invokingState)
+		public ParserRuleAltRefContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_parserRuleAlternative; } }
+		public override int RuleIndex { get { return RULE_parserRuleAltRef; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitParserRuleAlternative(this);
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleAltRef(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public ParserRuleAlternativeContext parserRuleAlternative() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleAlternative() : _DoParseParserRuleAlternative();
+	public ParserRuleAltRefContext parserRuleAltRef() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleAltRef() : _DoParseParserRuleAltRef();
 	}
 
-	internal ParserRuleAlternativeContext _DoParseParserRuleAlternative() {
-		ParserRuleAlternativeContext _localctx = new ParserRuleAlternativeContext(Context, State);
-		EnterRule(_localctx, 16, RULE_parserRuleAlternative);
+	internal ParserRuleAltRefContext _DoParseParserRuleAltRef() {
+		ParserRuleAltRefContext _localctx = new ParserRuleAltRefContext(Context, State);
+		EnterRule(_localctx, 20, RULE_parserRuleAltRef);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 174;
+			parserRuleIdentifier();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ParserRuleSimpleContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleNameContext parserRuleName() {
+			return GetRuleContext<ParserRuleNameContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TColon() { return GetToken(CompilerParser.TColon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TSemicolon() { return GetToken(CompilerParser.TSemicolon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KDefines() { return GetToken(CompilerParser.KDefines, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleNamedElementContext[] parserRuleNamedElement() {
+			return GetRuleContexts<ParserRuleNamedElementContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleNamedElementContext parserRuleNamedElement(int i) {
+			return GetRuleContext<ParserRuleNamedElementContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public EofElementContext eofElement() {
+			return GetRuleContext<EofElementContext>(0);
+		}
+		public ParserRuleSimpleContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_parserRuleSimple; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleSimple(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ParserRuleSimpleContext parserRuleSimple() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleSimple() : _DoParseParserRuleSimple();
+	}
+
+	internal ParserRuleSimpleContext _DoParseParserRuleSimple() {
+		ParserRuleSimpleContext _localctx = new ParserRuleSimpleContext(Context, State);
+		EnterRule(_localctx, 22, RULE_parserRuleSimple);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 143;
+			State = 179;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==TOpenBracket) {
+				{
+				{
+				State = 176;
+				annotation();
+				}
+				}
+				State = 181;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 182;
+			parserRuleName();
+			State = 185;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==KDefines) {
+				{
+				State = 183;
+				Match(KDefines);
+				State = 184;
+				qualifier();
+				}
+			}
+
+			State = 187;
+			Match(TColon);
+			State = 189;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 142;
-				parserRuleAlternativeElement();
+				State = 188;
+				parserRuleNamedElement();
 				}
 				}
-				State = 145;
+				State = 191;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TNegate) | (1L << TOpenParen) | (1L << LexerIdentifier) | (1L << ParserIdentifier) | (1L << LString))) != 0) );
-			State = 148;
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TDot) | (1L << TNegate) | (1L << TOpenParen) | (1L << TOpenBracket) | (1L << LexerIdentifier) | (1L << ParserIdentifier) | (1L << IgnoredIdentifier) | (1L << LString))) != 0) );
+			State = 194;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==KEof) {
 				{
-				State = 147;
+				State = 193;
 				eofElement();
 				}
 			}
 
+			State = 196;
+			Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -723,11 +963,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal EofElementContext _DoParseEofElement() {
 		EofElementContext _localctx = new EofElementContext(Context, State);
-		EnterRule(_localctx, 18, RULE_eofElement);
+		EnterRule(_localctx, 24, RULE_eofElement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 150;
+			State = 198;
 			Match(KEof);
 			}
 		}
@@ -742,73 +982,15 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class ParserRuleAlternativeElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ParserMultiElementContext parserMultiElement() {
-			return GetRuleContext<ParserMultiElementContext>(0);
-		}
+	public partial class ParserRuleNamedElementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ParserNegatedElementContext parserNegatedElement() {
 			return GetRuleContext<ParserNegatedElementContext>(0);
 		}
-		public ParserRuleAlternativeElementContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
 		}
-		public override int RuleIndex { get { return RULE_parserRuleAlternativeElement; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitParserRuleAlternativeElement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public ParserRuleAlternativeElementContext parserRuleAlternativeElement() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleAlternativeElement() : _DoParseParserRuleAlternativeElement();
-	}
-
-	internal ParserRuleAlternativeElementContext _DoParseParserRuleAlternativeElement() {
-		ParserRuleAlternativeElementContext _localctx = new ParserRuleAlternativeElementContext(Context, State);
-		EnterRule(_localctx, 20, RULE_parserRuleAlternativeElement);
-		try {
-			State = 154;
-			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case TOpenParen:
-			case LexerIdentifier:
-			case ParserIdentifier:
-			case LString:
-				EnterOuterAlt(_localctx, 1);
-				{
-				State = 152;
-				parserMultiElement();
-				}
-				break;
-			case TNegate:
-				EnterOuterAlt(_localctx, 2);
-				{
-				State = 153;
-				parserNegatedElement();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class ParserMultiElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleElementContext parserRuleElement() {
-			return GetRuleContext<ParserRuleElementContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ElementNameContext elementName() {
 			return GetRuleContext<ElementNameContext>(0);
@@ -819,51 +1001,68 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		[System.Diagnostics.DebuggerNonUserCode] public MultiplicityContext multiplicity() {
 			return GetRuleContext<MultiplicityContext>(0);
 		}
-		public ParserMultiElementContext(ParserRuleContext parent, int invokingState)
+		public ParserRuleNamedElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_parserMultiElement; } }
+		public override int RuleIndex { get { return RULE_parserRuleNamedElement; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitParserMultiElement(this);
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleNamedElement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public ParserMultiElementContext parserMultiElement() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserMultiElement() : _DoParseParserMultiElement();
+	public ParserRuleNamedElementContext parserRuleNamedElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleNamedElement() : _DoParseParserRuleNamedElement();
 	}
 
-	internal ParserMultiElementContext _DoParseParserMultiElement() {
-		ParserMultiElementContext _localctx = new ParserMultiElementContext(Context, State);
-		EnterRule(_localctx, 22, RULE_parserMultiElement);
+	internal ParserRuleNamedElementContext _DoParseParserRuleNamedElement() {
+		ParserRuleNamedElementContext _localctx = new ParserRuleNamedElementContext(Context, State);
+		EnterRule(_localctx, 26, RULE_parserRuleNamedElement);
 		int _la;
 		try {
+			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 159;
+			State = 203;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,9,Context) ) {
+			_alt = Interpreter.AdaptivePredict(TokenStream,13,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 200;
+					annotation();
+					}
+					} 
+				}
+				State = 205;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,13,Context);
+			}
+			State = 209;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,14,Context) ) {
 			case 1:
 				{
-				State = 156;
+				State = 206;
 				elementName();
-				State = 157;
+				State = 207;
 				assign();
 				}
 				break;
 			}
-			State = 161;
-			parserRuleElement();
-			State = 163;
+			State = 211;
+			parserNegatedElement();
+			State = 213;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TNonGreedyZeroOrOne) | (1L << TNonGreedyZeroOrMore) | (1L << TNonGreedyOneOrMore) | (1L << TZeroOrOne) | (1L << TZeroOrMore) | (1L << TOneOrMore))) != 0)) {
 				{
-				State = 162;
+				State = 212;
 				multiplicity();
 				}
 			}
@@ -906,12 +1105,12 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal AssignContext _DoParseAssign() {
 		AssignContext _localctx = new AssignContext(Context, State);
-		EnterRule(_localctx, 24, RULE_assign);
+		EnterRule(_localctx, 28, RULE_assign);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 165;
+			State = 215;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TAssign) | (1L << TQuestionAssign) | (1L << TNegatedAssign) | (1L << TPlusAssign))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -960,12 +1159,12 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal MultiplicityContext _DoParseMultiplicity() {
 		MultiplicityContext _localctx = new MultiplicityContext(Context, State);
-		EnterRule(_localctx, 26, RULE_multiplicity);
+		EnterRule(_localctx, 30, RULE_multiplicity);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 167;
+			State = 217;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TNonGreedyZeroOrOne) | (1L << TNonGreedyZeroOrMore) | (1L << TNonGreedyOneOrMore) | (1L << TZeroOrOne) | (1L << TZeroOrMore) | (1L << TOneOrMore))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -988,10 +1187,10 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 	}
 
 	public partial class ParserNegatedElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TNegate() { return GetToken(CompilerParser.TNegate, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleElementContext parserRuleElement() {
 			return GetRuleContext<ParserRuleElementContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TNegate() { return GetToken(CompilerParser.TNegate, 0); }
 		public ParserNegatedElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1012,13 +1211,22 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal ParserNegatedElementContext _DoParseParserNegatedElement() {
 		ParserNegatedElementContext _localctx = new ParserNegatedElementContext(Context, State);
-		EnterRule(_localctx, 28, RULE_parserNegatedElement);
+		EnterRule(_localctx, 32, RULE_parserNegatedElement);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 169;
-			Match(TNegate);
-			State = 170;
+			State = 220;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==TNegate) {
+				{
+				State = 219;
+				Match(TNegate);
+				}
+			}
+
+			State = 222;
 			parserRuleElement();
 			}
 		}
@@ -1034,14 +1242,17 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 	}
 
 	public partial class ParserRuleElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public FixedElementContext fixedElement() {
-			return GetRuleContext<FixedElementContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleFixedElementContext parserRuleFixedElement() {
+			return GetRuleContext<ParserRuleFixedElementContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleReferenceContext parserRuleReference() {
 			return GetRuleContext<ParserRuleReferenceContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleBlockContext parserRuleBlock() {
-			return GetRuleContext<ParserRuleBlockContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleWildcardElementContext parserRuleWildcardElement() {
+			return GetRuleContext<ParserRuleWildcardElementContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleBlockElementContext parserRuleBlockElement() {
+			return GetRuleContext<ParserRuleBlockElementContext>(0);
 		}
 		public ParserRuleElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1063,35 +1274,39 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal ParserRuleElementContext _DoParseParserRuleElement() {
 		ParserRuleElementContext _localctx = new ParserRuleElementContext(Context, State);
-		EnterRule(_localctx, 30, RULE_parserRuleElement);
+		EnterRule(_localctx, 34, RULE_parserRuleElement);
 		try {
-			State = 175;
+			State = 228;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case LString:
+			switch ( Interpreter.AdaptivePredict(TokenStream,17,Context) ) {
+			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 172;
-				fixedElement();
+				State = 224;
+				parserRuleFixedElement();
 				}
 				break;
-			case LexerIdentifier:
-			case ParserIdentifier:
+			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 173;
+				State = 225;
 				parserRuleReference();
 				}
 				break;
-			case TOpenParen:
+			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 174;
-				parserRuleBlock();
+				State = 226;
+				parserRuleWildcardElement();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 4:
+				EnterOuterAlt(_localctx, 4);
+				{
+				State = 227;
+				parserRuleBlockElement();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1105,36 +1320,119 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class FixedElementContext : ParserRuleContext {
+	public partial class ParserRuleFixedElementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public StringLiteralContext stringLiteral() {
 			return GetRuleContext<StringLiteralContext>(0);
 		}
-		public FixedElementContext(ParserRuleContext parent, int invokingState)
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
+		}
+		public ParserRuleFixedElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_fixedElement; } }
+		public override int RuleIndex { get { return RULE_parserRuleFixedElement; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFixedElement(this);
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleFixedElement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public FixedElementContext fixedElement() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseFixedElement() : _DoParseFixedElement();
+	public ParserRuleFixedElementContext parserRuleFixedElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleFixedElement() : _DoParseParserRuleFixedElement();
 	}
 
-	internal FixedElementContext _DoParseFixedElement() {
-		FixedElementContext _localctx = new FixedElementContext(Context, State);
-		EnterRule(_localctx, 32, RULE_fixedElement);
+	internal ParserRuleFixedElementContext _DoParseParserRuleFixedElement() {
+		ParserRuleFixedElementContext _localctx = new ParserRuleFixedElementContext(Context, State);
+		EnterRule(_localctx, 36, RULE_parserRuleFixedElement);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 177;
+			State = 233;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==TOpenBracket) {
+				{
+				{
+				State = 230;
+				annotation();
+				}
+				}
+				State = 235;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 236;
 			stringLiteral();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ParserRuleWildcardElementContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TDot() { return GetToken(CompilerParser.TDot, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
+		}
+		public ParserRuleWildcardElementContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_parserRuleWildcardElement; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleWildcardElement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ParserRuleWildcardElementContext parserRuleWildcardElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleWildcardElement() : _DoParseParserRuleWildcardElement();
+	}
+
+	internal ParserRuleWildcardElementContext _DoParseParserRuleWildcardElement() {
+		ParserRuleWildcardElementContext _localctx = new ParserRuleWildcardElementContext(Context, State);
+		EnterRule(_localctx, 38, RULE_parserRuleWildcardElement);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 241;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==TOpenBracket) {
+				{
+				{
+				State = 238;
+				annotation();
+				}
+				}
+				State = 243;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 244;
+			Match(TDot);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1151,6 +1449,12 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 	public partial class ParserRuleReferenceContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
 		}
 		public ParserRuleReferenceContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1172,11 +1476,26 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal ParserRuleReferenceContext _DoParseParserRuleReference() {
 		ParserRuleReferenceContext _localctx = new ParserRuleReferenceContext(Context, State);
-		EnterRule(_localctx, 34, RULE_parserRuleReference);
+		EnterRule(_localctx, 40, RULE_parserRuleReference);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 179;
+			State = 249;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==TOpenBracket) {
+				{
+				{
+				State = 246;
+				annotation();
+				}
+				}
+				State = 251;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 252;
 			identifier();
 			}
 		}
@@ -1191,65 +1510,77 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class ParserRuleBlockContext : ParserRuleContext {
+	public partial class ParserRuleBlockElementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TOpenParen() { return GetToken(CompilerParser.TOpenParen, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAlternativeContext[] parserRuleAlternative() {
-			return GetRuleContexts<ParserRuleAlternativeContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleAlternativeContext parserRuleAlternative(int i) {
-			return GetRuleContext<ParserRuleAlternativeContext>(i);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TCloseParen() { return GetToken(CompilerParser.TCloseParen, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] TBar() { return GetTokens(CompilerParser.TBar); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TBar(int i) {
-			return GetToken(CompilerParser.TBar, i);
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
 		}
-		public ParserRuleBlockContext(ParserRuleContext parent, int invokingState)
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleNamedElementContext[] parserRuleNamedElement() {
+			return GetRuleContexts<ParserRuleNamedElementContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ParserRuleNamedElementContext parserRuleNamedElement(int i) {
+			return GetRuleContext<ParserRuleNamedElementContext>(i);
+		}
+		public ParserRuleBlockElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_parserRuleBlock; } }
+		public override int RuleIndex { get { return RULE_parserRuleBlockElement; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitParserRuleBlock(this);
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleBlockElement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public ParserRuleBlockContext parserRuleBlock() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleBlock() : _DoParseParserRuleBlock();
+	public ParserRuleBlockElementContext parserRuleBlockElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleBlockElement() : _DoParseParserRuleBlockElement();
 	}
 
-	internal ParserRuleBlockContext _DoParseParserRuleBlock() {
-		ParserRuleBlockContext _localctx = new ParserRuleBlockContext(Context, State);
-		EnterRule(_localctx, 36, RULE_parserRuleBlock);
+	internal ParserRuleBlockElementContext _DoParseParserRuleBlockElement() {
+		ParserRuleBlockElementContext _localctx = new ParserRuleBlockElementContext(Context, State);
+		EnterRule(_localctx, 42, RULE_parserRuleBlockElement);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 181;
-			Match(TOpenParen);
-			State = 182;
-			parserRuleAlternative();
-			State = 187;
+			State = 257;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==TBar) {
+			while (_la==TOpenBracket) {
 				{
 				{
-				State = 183;
-				Match(TBar);
-				State = 184;
-				parserRuleAlternative();
+				State = 254;
+				annotation();
 				}
 				}
-				State = 189;
+				State = 259;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 190;
+			State = 260;
+			Match(TOpenParen);
+			State = 262;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			do {
+				{
+				{
+				State = 261;
+				parserRuleNamedElement();
+				}
+				}
+				State = 264;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TDot) | (1L << TNegate) | (1L << TOpenParen) | (1L << TOpenBracket) | (1L << LexerIdentifier) | (1L << ParserIdentifier) | (1L << IgnoredIdentifier) | (1L << LString))) != 0) );
+			State = 266;
 			Match(TCloseParen);
 			}
 		}
@@ -1277,6 +1608,16 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 			return GetRuleContext<LexerRuleAlternativeContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TSemicolon() { return GetToken(CompilerParser.TSemicolon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext[] annotation() {
+			return GetRuleContexts<AnnotationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AnnotationContext annotation(int i) {
+			return GetRuleContext<AnnotationContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KReturns() { return GetToken(CompilerParser.KReturns, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] TBar() { return GetTokens(CompilerParser.TBar); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TBar(int i) {
 			return GetToken(CompilerParser.TBar, i);
@@ -1303,17 +1644,31 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal LexerRuleDeclarationContext _DoParseLexerRuleDeclaration() {
 		LexerRuleDeclarationContext _localctx = new LexerRuleDeclarationContext(Context, State);
-		EnterRule(_localctx, 38, RULE_lexerRuleDeclaration);
+		EnterRule(_localctx, 44, RULE_lexerRuleDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 193;
+			State = 271;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==TOpenBracket) {
+				{
+				{
+				State = 268;
+				annotation();
+				}
+				}
+				State = 273;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 275;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==KFragment || _la==KHidden) {
 				{
-				State = 192;
+				State = 274;
 				_localctx.modifier = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==KFragment || _la==KHidden) ) {
@@ -1326,29 +1681,41 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 				}
 			}
 
-			State = 195;
+			State = 277;
 			lexerRuleName();
-			State = 196;
+			State = 280;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==KReturns) {
+				{
+				State = 278;
+				Match(KReturns);
+				State = 279;
+				qualifier();
+				}
+			}
+
+			State = 282;
 			Match(TColon);
-			State = 197;
+			State = 283;
 			lexerRuleAlternative();
-			State = 202;
+			State = 288;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==TBar) {
 				{
 				{
-				State = 198;
+				State = 284;
 				Match(TBar);
-				State = 199;
+				State = 285;
 				lexerRuleAlternative();
 				}
 				}
-				State = 204;
+				State = 290;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 205;
+			State = 291;
 			Match(TSemicolon);
 			}
 		}
@@ -1390,25 +1757,25 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal LexerRuleAlternativeContext _DoParseLexerRuleAlternative() {
 		LexerRuleAlternativeContext _localctx = new LexerRuleAlternativeContext(Context, State);
-		EnterRule(_localctx, 40, RULE_lexerRuleAlternative);
+		EnterRule(_localctx, 46, RULE_lexerRuleAlternative);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 208;
+			State = 294;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 207;
+				State = 293;
 				lexerRuleAlternativeElement();
 				}
 				}
-				State = 210;
+				State = 296;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TDot) | (1L << TNegate) | (1L << TOpenParen) | (1L << LexerIdentifier) | (1L << ParserIdentifier) | (1L << LString))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TDot) | (1L << TNegate) | (1L << TOpenParen) | (1L << LexerIdentifier) | (1L << LString) | (1L << LCharacter))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -1423,14 +1790,12 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 	}
 
 	public partial class LexerRuleAlternativeElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public LexerMultiElementContext lexerMultiElement() {
-			return GetRuleContext<LexerMultiElementContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleElementContext lexerRuleElement() {
+			return GetRuleContext<LexerRuleElementContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public LexerNegatedElementContext lexerNegatedElement() {
-			return GetRuleContext<LexerNegatedElementContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public LexerRangeElementContext lexerRangeElement() {
-			return GetRuleContext<LexerRangeElementContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TNegate() { return GetToken(CompilerParser.TNegate, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public MultiplicityContext multiplicity() {
+			return GetRuleContext<MultiplicityContext>(0);
 		}
 		public LexerRuleAlternativeElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1452,85 +1817,29 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal LexerRuleAlternativeElementContext _DoParseLexerRuleAlternativeElement() {
 		LexerRuleAlternativeElementContext _localctx = new LexerRuleAlternativeElementContext(Context, State);
-		EnterRule(_localctx, 42, RULE_lexerRuleAlternativeElement);
-		try {
-			State = 215;
-			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,16,Context) ) {
-			case 1:
-				EnterOuterAlt(_localctx, 1);
-				{
-				State = 212;
-				lexerMultiElement();
-				}
-				break;
-			case 2:
-				EnterOuterAlt(_localctx, 2);
-				{
-				State = 213;
-				lexerNegatedElement();
-				}
-				break;
-			case 3:
-				EnterOuterAlt(_localctx, 3);
-				{
-				State = 214;
-				lexerRangeElement();
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class LexerMultiElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleElementContext lexerRuleElement() {
-			return GetRuleContext<LexerRuleElementContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public MultiplicityContext multiplicity() {
-			return GetRuleContext<MultiplicityContext>(0);
-		}
-		public LexerMultiElementContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_lexerMultiElement; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitLexerMultiElement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public LexerMultiElementContext lexerMultiElement() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerMultiElement() : _DoParseLexerMultiElement();
-	}
-
-	internal LexerMultiElementContext _DoParseLexerMultiElement() {
-		LexerMultiElementContext _localctx = new LexerMultiElementContext(Context, State);
-		EnterRule(_localctx, 44, RULE_lexerMultiElement);
+		EnterRule(_localctx, 48, RULE_lexerRuleAlternativeElement);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 217;
+			State = 299;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==TNegate) {
+				{
+				State = 298;
+				Match(TNegate);
+				}
+			}
+
+			State = 301;
 			lexerRuleElement();
-			State = 219;
+			State = 303;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TNonGreedyZeroOrOne) | (1L << TNonGreedyZeroOrMore) | (1L << TNonGreedyOneOrMore) | (1L << TZeroOrOne) | (1L << TZeroOrMore) | (1L << TOneOrMore))) != 0)) {
 				{
-				State = 218;
+				State = 302;
 				multiplicity();
 				}
 			}
@@ -1548,117 +1857,24 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class LexerNegatedElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TNegate() { return GetToken(CompilerParser.TNegate, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleElementContext lexerRuleElement() {
-			return GetRuleContext<LexerRuleElementContext>(0);
-		}
-		public LexerNegatedElementContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_lexerNegatedElement; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitLexerNegatedElement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public LexerNegatedElementContext lexerNegatedElement() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerNegatedElement() : _DoParseLexerNegatedElement();
-	}
-
-	internal LexerNegatedElementContext _DoParseLexerNegatedElement() {
-		LexerNegatedElementContext _localctx = new LexerNegatedElementContext(Context, State);
-		EnterRule(_localctx, 46, RULE_lexerNegatedElement);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 221;
-			Match(TNegate);
-			State = 222;
-			lexerRuleElement();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class LexerRangeElementContext : ParserRuleContext {
-		public FixedElementContext start;
-		public FixedElementContext end;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TArrow() { return GetToken(CompilerParser.TArrow, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public FixedElementContext[] fixedElement() {
-			return GetRuleContexts<FixedElementContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public FixedElementContext fixedElement(int i) {
-			return GetRuleContext<FixedElementContext>(i);
-		}
-		public LexerRangeElementContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_lexerRangeElement; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitLexerRangeElement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public LexerRangeElementContext lexerRangeElement() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRangeElement() : _DoParseLexerRangeElement();
-	}
-
-	internal LexerRangeElementContext _DoParseLexerRangeElement() {
-		LexerRangeElementContext _localctx = new LexerRangeElementContext(Context, State);
-		EnterRule(_localctx, 48, RULE_lexerRangeElement);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 224;
-			_localctx.start = fixedElement();
-			State = 225;
-			Match(TArrow);
-			State = 226;
-			_localctx.end = fixedElement();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
 	public partial class LexerRuleElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public FixedElementContext fixedElement() {
-			return GetRuleContext<FixedElementContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleReferenceElementContext lexerRuleReferenceElement() {
+			return GetRuleContext<LexerRuleReferenceElementContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public WildcardElementContext wildcardElement() {
-			return GetRuleContext<WildcardElementContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleFixedStringElementContext lexerRuleFixedStringElement() {
+			return GetRuleContext<LexerRuleFixedStringElementContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleReferenceContext lexerRuleReference() {
-			return GetRuleContext<LexerRuleReferenceContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleFixedCharElementContext lexerRuleFixedCharElement() {
+			return GetRuleContext<LexerRuleFixedCharElementContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleBlockContext lexerRuleBlock() {
-			return GetRuleContext<LexerRuleBlockContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleWildcardElementContext lexerRuleWildcardElement() {
+			return GetRuleContext<LexerRuleWildcardElementContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleBlockElementContext lexerRuleBlockElement() {
+			return GetRuleContext<LexerRuleBlockElementContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleRangeElementContext lexerRuleRangeElement() {
+			return GetRuleContext<LexerRuleRangeElementContext>(0);
 		}
 		public LexerRuleElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1682,40 +1898,51 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		LexerRuleElementContext _localctx = new LexerRuleElementContext(Context, State);
 		EnterRule(_localctx, 50, RULE_lexerRuleElement);
 		try {
-			State = 232;
+			State = 311;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case LString:
+			switch ( Interpreter.AdaptivePredict(TokenStream,30,Context) ) {
+			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 228;
-				fixedElement();
+				State = 305;
+				lexerRuleReferenceElement();
 				}
 				break;
-			case TDot:
+			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 229;
-				wildcardElement();
+				State = 306;
+				lexerRuleFixedStringElement();
 				}
 				break;
-			case LexerIdentifier:
-			case ParserIdentifier:
+			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 230;
-				lexerRuleReference();
+				State = 307;
+				lexerRuleFixedCharElement();
 				}
 				break;
-			case TOpenParen:
+			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 231;
-				lexerRuleBlock();
+				State = 308;
+				lexerRuleWildcardElement();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 5:
+				EnterOuterAlt(_localctx, 5);
+				{
+				State = 309;
+				lexerRuleBlockElement();
+				}
+				break;
+			case 6:
+				EnterOuterAlt(_localctx, 6);
+				{
+				State = 310;
+				lexerRuleRangeElement();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1729,33 +1956,76 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class WildcardElementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TDot() { return GetToken(CompilerParser.TDot, 0); }
-		public WildcardElementContext(ParserRuleContext parent, int invokingState)
+	public partial class LexerRuleReferenceElementContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleIdentifierContext lexerRuleIdentifier() {
+			return GetRuleContext<LexerRuleIdentifierContext>(0);
+		}
+		public LexerRuleReferenceElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_wildcardElement; } }
+		public override int RuleIndex { get { return RULE_lexerRuleReferenceElement; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitWildcardElement(this);
+			if (typedVisitor != null) return typedVisitor.VisitLexerRuleReferenceElement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public WildcardElementContext wildcardElement() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseWildcardElement() : _DoParseWildcardElement();
+	public LexerRuleReferenceElementContext lexerRuleReferenceElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleReferenceElement() : _DoParseLexerRuleReferenceElement();
 	}
 
-	internal WildcardElementContext _DoParseWildcardElement() {
-		WildcardElementContext _localctx = new WildcardElementContext(Context, State);
-		EnterRule(_localctx, 52, RULE_wildcardElement);
+	internal LexerRuleReferenceElementContext _DoParseLexerRuleReferenceElement() {
+		LexerRuleReferenceElementContext _localctx = new LexerRuleReferenceElementContext(Context, State);
+		EnterRule(_localctx, 52, RULE_lexerRuleReferenceElement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 234;
+			State = 313;
+			lexerRuleIdentifier();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class LexerRuleWildcardElementContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TDot() { return GetToken(CompilerParser.TDot, 0); }
+		public LexerRuleWildcardElementContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_lexerRuleWildcardElement; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLexerRuleWildcardElement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public LexerRuleWildcardElementContext lexerRuleWildcardElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleWildcardElement() : _DoParseLexerRuleWildcardElement();
+	}
+
+	internal LexerRuleWildcardElementContext _DoParseLexerRuleWildcardElement() {
+		LexerRuleWildcardElementContext _localctx = new LexerRuleWildcardElementContext(Context, State);
+		EnterRule(_localctx, 54, RULE_lexerRuleWildcardElement);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 315;
 			Match(TDot);
 			}
 		}
@@ -1770,36 +2040,34 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class LexerRuleReferenceContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public IdentifierContext identifier() {
-			return GetRuleContext<IdentifierContext>(0);
-		}
-		public LexerRuleReferenceContext(ParserRuleContext parent, int invokingState)
+	public partial class LexerRuleFixedStringElementContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LString() { return GetToken(CompilerParser.LString, 0); }
+		public LexerRuleFixedStringElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_lexerRuleReference; } }
+		public override int RuleIndex { get { return RULE_lexerRuleFixedStringElement; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitLexerRuleReference(this);
+			if (typedVisitor != null) return typedVisitor.VisitLexerRuleFixedStringElement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public LexerRuleReferenceContext lexerRuleReference() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleReference() : _DoParseLexerRuleReference();
+	public LexerRuleFixedStringElementContext lexerRuleFixedStringElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleFixedStringElement() : _DoParseLexerRuleFixedStringElement();
 	}
 
-	internal LexerRuleReferenceContext _DoParseLexerRuleReference() {
-		LexerRuleReferenceContext _localctx = new LexerRuleReferenceContext(Context, State);
-		EnterRule(_localctx, 54, RULE_lexerRuleReference);
+	internal LexerRuleFixedStringElementContext _DoParseLexerRuleFixedStringElement() {
+		LexerRuleFixedStringElementContext _localctx = new LexerRuleFixedStringElementContext(Context, State);
+		EnterRule(_localctx, 56, RULE_lexerRuleFixedStringElement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 236;
-			identifier();
+			State = 317;
+			Match(LString);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1813,7 +2081,48 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		return _localctx;
 	}
 
-	public partial class LexerRuleBlockContext : ParserRuleContext {
+	public partial class LexerRuleFixedCharElementContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LCharacter() { return GetToken(CompilerParser.LCharacter, 0); }
+		public LexerRuleFixedCharElementContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_lexerRuleFixedCharElement; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLexerRuleFixedCharElement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public LexerRuleFixedCharElementContext lexerRuleFixedCharElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleFixedCharElement() : _DoParseLexerRuleFixedCharElement();
+	}
+
+	internal LexerRuleFixedCharElementContext _DoParseLexerRuleFixedCharElement() {
+		LexerRuleFixedCharElementContext _localctx = new LexerRuleFixedCharElementContext(Context, State);
+		EnterRule(_localctx, 58, RULE_lexerRuleFixedCharElement);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 319;
+			Match(LCharacter);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class LexerRuleBlockElementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TOpenParen() { return GetToken(CompilerParser.TOpenParen, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleAlternativeContext[] lexerRuleAlternative() {
 			return GetRuleContexts<LexerRuleAlternativeContext>();
@@ -1826,53 +2135,106 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TBar(int i) {
 			return GetToken(CompilerParser.TBar, i);
 		}
-		public LexerRuleBlockContext(ParserRuleContext parent, int invokingState)
+		public LexerRuleBlockElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_lexerRuleBlock; } }
+		public override int RuleIndex { get { return RULE_lexerRuleBlockElement; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitLexerRuleBlock(this);
+			if (typedVisitor != null) return typedVisitor.VisitLexerRuleBlockElement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public LexerRuleBlockContext lexerRuleBlock() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleBlock() : _DoParseLexerRuleBlock();
+	public LexerRuleBlockElementContext lexerRuleBlockElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleBlockElement() : _DoParseLexerRuleBlockElement();
 	}
 
-	internal LexerRuleBlockContext _DoParseLexerRuleBlock() {
-		LexerRuleBlockContext _localctx = new LexerRuleBlockContext(Context, State);
-		EnterRule(_localctx, 56, RULE_lexerRuleBlock);
+	internal LexerRuleBlockElementContext _DoParseLexerRuleBlockElement() {
+		LexerRuleBlockElementContext _localctx = new LexerRuleBlockElementContext(Context, State);
+		EnterRule(_localctx, 60, RULE_lexerRuleBlockElement);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 238;
+			State = 321;
 			Match(TOpenParen);
-			State = 239;
+			State = 322;
 			lexerRuleAlternative();
-			State = 244;
+			State = 327;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==TBar) {
 				{
 				{
-				State = 240;
+				State = 323;
 				Match(TBar);
-				State = 241;
+				State = 324;
 				lexerRuleAlternative();
 				}
 				}
-				State = 246;
+				State = 329;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 247;
+			State = 330;
 			Match(TCloseParen);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class LexerRuleRangeElementContext : ParserRuleContext {
+		public LexerRuleFixedCharElementContext start;
+		public LexerRuleFixedCharElementContext end;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TDotDot() { return GetToken(CompilerParser.TDotDot, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleFixedCharElementContext[] lexerRuleFixedCharElement() {
+			return GetRuleContexts<LexerRuleFixedCharElementContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public LexerRuleFixedCharElementContext lexerRuleFixedCharElement(int i) {
+			return GetRuleContext<LexerRuleFixedCharElementContext>(i);
+		}
+		public LexerRuleRangeElementContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_lexerRuleRangeElement; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLexerRuleRangeElement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public LexerRuleRangeElementContext lexerRuleRangeElement() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleRangeElement() : _DoParseLexerRuleRangeElement();
+	}
+
+	internal LexerRuleRangeElementContext _DoParseLexerRuleRangeElement() {
+		LexerRuleRangeElementContext _localctx = new LexerRuleRangeElementContext(Context, State);
+		EnterRule(_localctx, 62, RULE_lexerRuleRangeElement);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 332;
+			_localctx.start = lexerRuleFixedCharElement();
+			State = 333;
+			Match(TDotDot);
+			State = 334;
+			_localctx.end = lexerRuleFixedCharElement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1910,11 +2272,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal NameContext _DoParseName() {
 		NameContext _localctx = new NameContext(Context, State);
-		EnterRule(_localctx, 58, RULE_name);
+		EnterRule(_localctx, 64, RULE_name);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 249;
+			State = 336;
 			identifier();
 			}
 		}
@@ -1953,11 +2315,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal QualifiedNameContext _DoParseQualifiedName() {
 		QualifiedNameContext _localctx = new QualifiedNameContext(Context, State);
-		EnterRule(_localctx, 60, RULE_qualifiedName);
+		EnterRule(_localctx, 66, RULE_qualifiedName);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 251;
+			State = 338;
 			qualifier();
 			}
 		}
@@ -2003,26 +2365,26 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal QualifierContext _DoParseQualifier() {
 		QualifierContext _localctx = new QualifierContext(Context, State);
-		EnterRule(_localctx, 62, RULE_qualifier);
+		EnterRule(_localctx, 68, RULE_qualifier);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 253;
+			State = 340;
 			identifier();
-			State = 258;
+			State = 345;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==TDot) {
 				{
 				{
-				State = 254;
+				State = 341;
 				Match(TDot);
-				State = 255;
+				State = 342;
 				identifier();
 				}
 				}
-				State = 260;
+				State = 347;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -2062,12 +2424,12 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal IdentifierContext _DoParseIdentifier() {
 		IdentifierContext _localctx = new IdentifierContext(Context, State);
-		EnterRule(_localctx, 64, RULE_identifier);
+		EnterRule(_localctx, 70, RULE_identifier);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 261;
+			State = 348;
 			_la = TokenStream.LA(1);
 			if ( !(_la==LexerIdentifier || _la==ParserIdentifier) ) {
 			ErrorHandler.RecoverInline(this);
@@ -2076,6 +2438,88 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 				ErrorHandler.ReportMatch(this);
 			    Consume();
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class LexerRuleIdentifierContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LexerIdentifier() { return GetToken(CompilerParser.LexerIdentifier, 0); }
+		public LexerRuleIdentifierContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_lexerRuleIdentifier; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLexerRuleIdentifier(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public LexerRuleIdentifierContext lexerRuleIdentifier() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLexerRuleIdentifier() : _DoParseLexerRuleIdentifier();
+	}
+
+	internal LexerRuleIdentifierContext _DoParseLexerRuleIdentifier() {
+		LexerRuleIdentifierContext _localctx = new LexerRuleIdentifierContext(Context, State);
+		EnterRule(_localctx, 72, RULE_lexerRuleIdentifier);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 350;
+			Match(LexerIdentifier);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ParserRuleIdentifierContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ParserIdentifier() { return GetToken(CompilerParser.ParserIdentifier, 0); }
+		public ParserRuleIdentifierContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_parserRuleIdentifier; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitParserRuleIdentifier(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ParserRuleIdentifierContext parserRuleIdentifier() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParserRuleIdentifier() : _DoParseParserRuleIdentifier();
+	}
+
+	internal ParserRuleIdentifierContext _DoParseParserRuleIdentifier() {
+		ParserRuleIdentifierContext _localctx = new ParserRuleIdentifierContext(Context, State);
+		EnterRule(_localctx, 74, RULE_parserRuleIdentifier);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 352;
+			Match(ParserIdentifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2111,11 +2555,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal LexerRuleNameContext _DoParseLexerRuleName() {
 		LexerRuleNameContext _localctx = new LexerRuleNameContext(Context, State);
-		EnterRule(_localctx, 66, RULE_lexerRuleName);
+		EnterRule(_localctx, 76, RULE_lexerRuleName);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 263;
+			State = 354;
 			Match(LexerIdentifier);
 			}
 		}
@@ -2152,11 +2596,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal ParserRuleNameContext _DoParseParserRuleName() {
 		ParserRuleNameContext _localctx = new ParserRuleNameContext(Context, State);
-		EnterRule(_localctx, 68, RULE_parserRuleName);
+		EnterRule(_localctx, 78, RULE_parserRuleName);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 265;
+			State = 356;
 			Match(ParserIdentifier);
 			}
 		}
@@ -2172,7 +2616,8 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 	}
 
 	public partial class ElementNameContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LexerIdentifier() { return GetToken(CompilerParser.LexerIdentifier, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ParserIdentifier() { return GetToken(CompilerParser.ParserIdentifier, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IgnoredIdentifier() { return GetToken(CompilerParser.IgnoredIdentifier, 0); }
 		public ElementNameContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -2193,12 +2638,20 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal ElementNameContext _DoParseElementName() {
 		ElementNameContext _localctx = new ElementNameContext(Context, State);
-		EnterRule(_localctx, 70, RULE_elementName);
+		EnterRule(_localctx, 80, RULE_elementName);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 267;
-			Match(LexerIdentifier);
+			State = 358;
+			_la = TokenStream.LA(1);
+			if ( !(_la==ParserIdentifier || _la==IgnoredIdentifier) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -2251,15 +2704,15 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal LiteralContext _DoParseLiteral() {
 		LiteralContext _localctx = new LiteralContext(Context, State);
-		EnterRule(_localctx, 72, RULE_literal);
+		EnterRule(_localctx, 82, RULE_literal);
 		try {
-			State = 275;
+			State = 366;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case KNull:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 269;
+				State = 360;
 				nullLiteral();
 				}
 				break;
@@ -2267,35 +2720,35 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 			case KFalse:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 270;
+				State = 361;
 				booleanLiteral();
 				}
 				break;
 			case LInteger:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 271;
+				State = 362;
 				integerLiteral();
 				}
 				break;
 			case LDecimal:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 272;
+				State = 363;
 				decimalLiteral();
 				}
 				break;
 			case LScientific:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 273;
+				State = 364;
 				scientificLiteral();
 				}
 				break;
 			case LString:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 274;
+				State = 365;
 				stringLiteral();
 				}
 				break;
@@ -2336,11 +2789,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal NullLiteralContext _DoParseNullLiteral() {
 		NullLiteralContext _localctx = new NullLiteralContext(Context, State);
-		EnterRule(_localctx, 74, RULE_nullLiteral);
+		EnterRule(_localctx, 84, RULE_nullLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 277;
+			State = 368;
 			Match(KNull);
 			}
 		}
@@ -2378,12 +2831,12 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal BooleanLiteralContext _DoParseBooleanLiteral() {
 		BooleanLiteralContext _localctx = new BooleanLiteralContext(Context, State);
-		EnterRule(_localctx, 76, RULE_booleanLiteral);
+		EnterRule(_localctx, 86, RULE_booleanLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 279;
+			State = 370;
 			_la = TokenStream.LA(1);
 			if ( !(_la==KTrue || _la==KFalse) ) {
 			ErrorHandler.RecoverInline(this);
@@ -2427,11 +2880,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal IntegerLiteralContext _DoParseIntegerLiteral() {
 		IntegerLiteralContext _localctx = new IntegerLiteralContext(Context, State);
-		EnterRule(_localctx, 78, RULE_integerLiteral);
+		EnterRule(_localctx, 88, RULE_integerLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 281;
+			State = 372;
 			Match(LInteger);
 			}
 		}
@@ -2468,11 +2921,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal DecimalLiteralContext _DoParseDecimalLiteral() {
 		DecimalLiteralContext _localctx = new DecimalLiteralContext(Context, State);
-		EnterRule(_localctx, 80, RULE_decimalLiteral);
+		EnterRule(_localctx, 90, RULE_decimalLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 283;
+			State = 374;
 			Match(LDecimal);
 			}
 		}
@@ -2509,11 +2962,11 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal ScientificLiteralContext _DoParseScientificLiteral() {
 		ScientificLiteralContext _localctx = new ScientificLiteralContext(Context, State);
-		EnterRule(_localctx, 82, RULE_scientificLiteral);
+		EnterRule(_localctx, 92, RULE_scientificLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 285;
+			State = 376;
 			Match(LScientific);
 			}
 		}
@@ -2550,12 +3003,53 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	internal StringLiteralContext _DoParseStringLiteral() {
 		StringLiteralContext _localctx = new StringLiteralContext(Context, State);
-		EnterRule(_localctx, 84, RULE_stringLiteral);
+		EnterRule(_localctx, 94, RULE_stringLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 287;
+			State = 378;
 			Match(LString);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class CharLiteralContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LCharacter() { return GetToken(CompilerParser.LCharacter, 0); }
+		public CharLiteralContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_charLiteral; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICompilerParserVisitor<TResult> typedVisitor = visitor as ICompilerParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitCharLiteral(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public CharLiteralContext charLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseCharLiteral() : _DoParseCharLiteral();
+	}
+
+	internal CharLiteralContext _DoParseCharLiteral() {
+		CharLiteralContext _localctx = new CharLiteralContext(Context, State);
+		EnterRule(_localctx, 96, RULE_charLiteral);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 380;
+			Match(LCharacter);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2571,7 +3065,7 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\x33', '\x124', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', '\x36', '\x181', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x4', 
 		'\x6', '\t', '\x6', '\x4', '\a', '\t', '\a', '\x4', '\b', '\t', '\b', 
 		'\x4', '\t', '\t', '\t', '\x4', '\n', '\t', '\n', '\x4', '\v', '\t', '\v', 
@@ -2587,217 +3081,302 @@ public partial class CompilerParser : global::MetaDslx.Languages.Antlr4Roslyn.Sy
 		'#', '\t', '#', '\x4', '$', '\t', '$', '\x4', '%', '\t', '%', '\x4', '&', 
 		'\t', '&', '\x4', '\'', '\t', '\'', '\x4', '(', '\t', '(', '\x4', ')', 
 		'\t', ')', '\x4', '*', '\t', '*', '\x4', '+', '\t', '+', '\x4', ',', '\t', 
-		',', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', '\x3', '\x3', 
-		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x4', '\a', '\x4', '\x62', 
-		'\n', '\x4', '\f', '\x4', '\xE', '\x4', '\x65', '\v', '\x4', '\x3', '\x4', 
-		'\x3', '\x4', '\x3', '\x5', '\x3', '\x5', '\x3', '\x5', '\x3', '\x5', 
-		'\x3', '\x5', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', 
-		'\x5', '\x6', 'r', '\n', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', 
-		'\x3', '\a', '\a', '\a', 'x', '\n', '\a', '\f', '\a', '\xE', '\a', '{', 
-		'\v', '\a', '\x3', '\b', '\x3', '\b', '\x5', '\b', '\x7F', '\n', '\b', 
-		'\x3', '\t', '\x3', '\t', '\x3', '\t', '\x5', '\t', '\x84', '\n', '\t', 
-		'\x3', '\t', '\x3', '\t', '\x3', '\t', '\x3', '\t', '\a', '\t', '\x8A', 
-		'\n', '\t', '\f', '\t', '\xE', '\t', '\x8D', '\v', '\t', '\x3', '\t', 
-		'\x3', '\t', '\x3', '\n', '\x6', '\n', '\x92', '\n', '\n', '\r', '\n', 
-		'\xE', '\n', '\x93', '\x3', '\n', '\x5', '\n', '\x97', '\n', '\n', '\x3', 
-		'\v', '\x3', '\v', '\x3', '\f', '\x3', '\f', '\x5', '\f', '\x9D', '\n', 
-		'\f', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x5', '\r', '\xA2', '\n', 
-		'\r', '\x3', '\r', '\x3', '\r', '\x5', '\r', '\xA6', '\n', '\r', '\x3', 
-		'\xE', '\x3', '\xE', '\x3', '\xF', '\x3', '\xF', '\x3', '\x10', '\x3', 
-		'\x10', '\x3', '\x10', '\x3', '\x11', '\x3', '\x11', '\x3', '\x11', '\x5', 
-		'\x11', '\xB2', '\n', '\x11', '\x3', '\x12', '\x3', '\x12', '\x3', '\x13', 
-		'\x3', '\x13', '\x3', '\x14', '\x3', '\x14', '\x3', '\x14', '\x3', '\x14', 
-		'\a', '\x14', '\xBC', '\n', '\x14', '\f', '\x14', '\xE', '\x14', '\xBF', 
-		'\v', '\x14', '\x3', '\x14', '\x3', '\x14', '\x3', '\x15', '\x5', '\x15', 
-		'\xC4', '\n', '\x15', '\x3', '\x15', '\x3', '\x15', '\x3', '\x15', '\x3', 
-		'\x15', '\x3', '\x15', '\a', '\x15', '\xCB', '\n', '\x15', '\f', '\x15', 
-		'\xE', '\x15', '\xCE', '\v', '\x15', '\x3', '\x15', '\x3', '\x15', '\x3', 
-		'\x16', '\x6', '\x16', '\xD3', '\n', '\x16', '\r', '\x16', '\xE', '\x16', 
-		'\xD4', '\x3', '\x17', '\x3', '\x17', '\x3', '\x17', '\x5', '\x17', '\xDA', 
-		'\n', '\x17', '\x3', '\x18', '\x3', '\x18', '\x5', '\x18', '\xDE', '\n', 
-		'\x18', '\x3', '\x19', '\x3', '\x19', '\x3', '\x19', '\x3', '\x1A', '\x3', 
-		'\x1A', '\x3', '\x1A', '\x3', '\x1A', '\x3', '\x1B', '\x3', '\x1B', '\x3', 
-		'\x1B', '\x3', '\x1B', '\x5', '\x1B', '\xEB', '\n', '\x1B', '\x3', '\x1C', 
-		'\x3', '\x1C', '\x3', '\x1D', '\x3', '\x1D', '\x3', '\x1E', '\x3', '\x1E', 
-		'\x3', '\x1E', '\x3', '\x1E', '\a', '\x1E', '\xF5', '\n', '\x1E', '\f', 
-		'\x1E', '\xE', '\x1E', '\xF8', '\v', '\x1E', '\x3', '\x1E', '\x3', '\x1E', 
-		'\x3', '\x1F', '\x3', '\x1F', '\x3', ' ', '\x3', ' ', '\x3', '!', '\x3', 
-		'!', '\x3', '!', '\a', '!', '\x103', '\n', '!', '\f', '!', '\xE', '!', 
-		'\x106', '\v', '!', '\x3', '\"', '\x3', '\"', '\x3', '#', '\x3', '#', 
-		'\x3', '$', '\x3', '$', '\x3', '%', '\x3', '%', '\x3', '&', '\x3', '&', 
-		'\x3', '&', '\x3', '&', '\x3', '&', '\x3', '&', '\x5', '&', '\x116', '\n', 
-		'&', '\x3', '\'', '\x3', '\'', '\x3', '(', '\x3', '(', '\x3', ')', '\x3', 
-		')', '\x3', '*', '\x3', '*', '\x3', '+', '\x3', '+', '\x3', ',', '\x3', 
-		',', '\x3', ',', '\x2', '\x2', '-', '\x2', '\x4', '\x6', '\b', '\n', '\f', 
-		'\xE', '\x10', '\x12', '\x14', '\x16', '\x18', '\x1A', '\x1C', '\x1E', 
-		' ', '\"', '$', '&', '(', '*', ',', '.', '\x30', '\x32', '\x34', '\x36', 
-		'\x38', ':', '<', '>', '@', '\x42', '\x44', '\x46', 'H', 'J', 'L', 'N', 
-		'P', 'R', 'T', 'V', '\x2', '\a', '\x3', '\x2', '\x18', '\x1B', '\x3', 
-		'\x2', '\x11', '\x16', '\x3', '\x2', '\a', '\b', '\x3', '\x2', '(', ')', 
-		'\x3', '\x2', '\n', '\v', '\x2', '\x116', '\x2', 'X', '\x3', '\x2', '\x2', 
-		'\x2', '\x4', '[', '\x3', '\x2', '\x2', '\x2', '\x6', '\x63', '\x3', '\x2', 
-		'\x2', '\x2', '\b', 'h', '\x3', '\x2', '\x2', '\x2', '\n', 'm', '\x3', 
-		'\x2', '\x2', '\x2', '\f', 'y', '\x3', '\x2', '\x2', '\x2', '\xE', '~', 
-		'\x3', '\x2', '\x2', '\x2', '\x10', '\x80', '\x3', '\x2', '\x2', '\x2', 
-		'\x12', '\x91', '\x3', '\x2', '\x2', '\x2', '\x14', '\x98', '\x3', '\x2', 
-		'\x2', '\x2', '\x16', '\x9C', '\x3', '\x2', '\x2', '\x2', '\x18', '\xA1', 
-		'\x3', '\x2', '\x2', '\x2', '\x1A', '\xA7', '\x3', '\x2', '\x2', '\x2', 
-		'\x1C', '\xA9', '\x3', '\x2', '\x2', '\x2', '\x1E', '\xAB', '\x3', '\x2', 
-		'\x2', '\x2', ' ', '\xB1', '\x3', '\x2', '\x2', '\x2', '\"', '\xB3', '\x3', 
-		'\x2', '\x2', '\x2', '$', '\xB5', '\x3', '\x2', '\x2', '\x2', '&', '\xB7', 
-		'\x3', '\x2', '\x2', '\x2', '(', '\xC3', '\x3', '\x2', '\x2', '\x2', '*', 
-		'\xD2', '\x3', '\x2', '\x2', '\x2', ',', '\xD9', '\x3', '\x2', '\x2', 
-		'\x2', '.', '\xDB', '\x3', '\x2', '\x2', '\x2', '\x30', '\xDF', '\x3', 
-		'\x2', '\x2', '\x2', '\x32', '\xE2', '\x3', '\x2', '\x2', '\x2', '\x34', 
-		'\xEA', '\x3', '\x2', '\x2', '\x2', '\x36', '\xEC', '\x3', '\x2', '\x2', 
-		'\x2', '\x38', '\xEE', '\x3', '\x2', '\x2', '\x2', ':', '\xF0', '\x3', 
-		'\x2', '\x2', '\x2', '<', '\xFB', '\x3', '\x2', '\x2', '\x2', '>', '\xFD', 
-		'\x3', '\x2', '\x2', '\x2', '@', '\xFF', '\x3', '\x2', '\x2', '\x2', '\x42', 
-		'\x107', '\x3', '\x2', '\x2', '\x2', '\x44', '\x109', '\x3', '\x2', '\x2', 
-		'\x2', '\x46', '\x10B', '\x3', '\x2', '\x2', '\x2', 'H', '\x10D', '\x3', 
-		'\x2', '\x2', '\x2', 'J', '\x115', '\x3', '\x2', '\x2', '\x2', 'L', '\x117', 
-		'\x3', '\x2', '\x2', '\x2', 'N', '\x119', '\x3', '\x2', '\x2', '\x2', 
-		'P', '\x11B', '\x3', '\x2', '\x2', '\x2', 'R', '\x11D', '\x3', '\x2', 
-		'\x2', '\x2', 'T', '\x11F', '\x3', '\x2', '\x2', '\x2', 'V', '\x121', 
-		'\x3', '\x2', '\x2', '\x2', 'X', 'Y', '\x5', '\x4', '\x3', '\x2', 'Y', 
-		'Z', '\a', '\x2', '\x2', '\x3', 'Z', '\x3', '\x3', '\x2', '\x2', '\x2', 
-		'[', '\\', '\a', '\x3', '\x2', '\x2', '\\', ']', '\x5', '>', ' ', '\x2', 
-		']', '^', '\a', '\xE', '\x2', '\x2', '^', '_', '\x5', '\x6', '\x4', '\x2', 
-		'_', '\x5', '\x3', '\x2', '\x2', '\x2', '`', '\x62', '\x5', '\n', '\x6', 
-		'\x2', '\x61', '`', '\x3', '\x2', '\x2', '\x2', '\x62', '\x65', '\x3', 
-		'\x2', '\x2', '\x2', '\x63', '\x61', '\x3', '\x2', '\x2', '\x2', '\x63', 
-		'\x64', '\x3', '\x2', '\x2', '\x2', '\x64', '\x66', '\x3', '\x2', '\x2', 
-		'\x2', '\x65', '\x63', '\x3', '\x2', '\x2', '\x2', '\x66', 'g', '\x5', 
-		'\b', '\x5', '\x2', 'g', '\a', '\x3', '\x2', '\x2', '\x2', 'h', 'i', '\a', 
-		'\x5', '\x2', '\x2', 'i', 'j', '\x5', '<', '\x1F', '\x2', 'j', 'k', '\a', 
-		'\xE', '\x2', '\x2', 'k', 'l', '\x5', '\f', '\a', '\x2', 'l', '\t', '\x3', 
-		'\x2', '\x2', '\x2', 'm', 'q', '\a', '\x4', '\x2', '\x2', 'n', 'o', '\x5', 
-		'<', '\x1F', '\x2', 'o', 'p', '\a', '\x18', '\x2', '\x2', 'p', 'r', '\x3', 
-		'\x2', '\x2', '\x2', 'q', 'n', '\x3', '\x2', '\x2', '\x2', 'q', 'r', '\x3', 
-		'\x2', '\x2', '\x2', 'r', 's', '\x3', '\x2', '\x2', '\x2', 's', 't', '\x5', 
-		'@', '!', '\x2', 't', 'u', '\a', '\xE', '\x2', '\x2', 'u', '\v', '\x3', 
-		'\x2', '\x2', '\x2', 'v', 'x', '\x5', '\xE', '\b', '\x2', 'w', 'v', '\x3', 
-		'\x2', '\x2', '\x2', 'x', '{', '\x3', '\x2', '\x2', '\x2', 'y', 'w', '\x3', 
-		'\x2', '\x2', '\x2', 'y', 'z', '\x3', '\x2', '\x2', '\x2', 'z', '\r', 
-		'\x3', '\x2', '\x2', '\x2', '{', 'y', '\x3', '\x2', '\x2', '\x2', '|', 
-		'\x7F', '\x5', '\x10', '\t', '\x2', '}', '\x7F', '\x5', '(', '\x15', '\x2', 
-		'~', '|', '\x3', '\x2', '\x2', '\x2', '~', '}', '\x3', '\x2', '\x2', '\x2', 
-		'\x7F', '\xF', '\x3', '\x2', '\x2', '\x2', '\x80', '\x83', '\x5', '\x46', 
-		'$', '\x2', '\x81', '\x82', '\a', '\t', '\x2', '\x2', '\x82', '\x84', 
-		'\x5', '@', '!', '\x2', '\x83', '\x81', '\x3', '\x2', '\x2', '\x2', '\x83', 
-		'\x84', '\x3', '\x2', '\x2', '\x2', '\x84', '\x85', '\x3', '\x2', '\x2', 
-		'\x2', '\x85', '\x86', '\a', '\x1E', '\x2', '\x2', '\x86', '\x8B', '\x5', 
-		'\x12', '\n', '\x2', '\x87', '\x88', '\a', '\x1C', '\x2', '\x2', '\x88', 
-		'\x8A', '\x5', '\x12', '\n', '\x2', '\x89', '\x87', '\x3', '\x2', '\x2', 
-		'\x2', '\x8A', '\x8D', '\x3', '\x2', '\x2', '\x2', '\x8B', '\x89', '\x3', 
-		'\x2', '\x2', '\x2', '\x8B', '\x8C', '\x3', '\x2', '\x2', '\x2', '\x8C', 
-		'\x8E', '\x3', '\x2', '\x2', '\x2', '\x8D', '\x8B', '\x3', '\x2', '\x2', 
-		'\x2', '\x8E', '\x8F', '\a', '\xE', '\x2', '\x2', '\x8F', '\x11', '\x3', 
-		'\x2', '\x2', '\x2', '\x90', '\x92', '\x5', '\x16', '\f', '\x2', '\x91', 
-		'\x90', '\x3', '\x2', '\x2', '\x2', '\x92', '\x93', '\x3', '\x2', '\x2', 
-		'\x2', '\x93', '\x91', '\x3', '\x2', '\x2', '\x2', '\x93', '\x94', '\x3', 
-		'\x2', '\x2', '\x2', '\x94', '\x96', '\x3', '\x2', '\x2', '\x2', '\x95', 
-		'\x97', '\x5', '\x14', '\v', '\x2', '\x96', '\x95', '\x3', '\x2', '\x2', 
-		'\x2', '\x96', '\x97', '\x3', '\x2', '\x2', '\x2', '\x97', '\x13', '\x3', 
-		'\x2', '\x2', '\x2', '\x98', '\x99', '\a', '\r', '\x2', '\x2', '\x99', 
-		'\x15', '\x3', '\x2', '\x2', '\x2', '\x9A', '\x9D', '\x5', '\x18', '\r', 
-		'\x2', '\x9B', '\x9D', '\x5', '\x1E', '\x10', '\x2', '\x9C', '\x9A', '\x3', 
-		'\x2', '\x2', '\x2', '\x9C', '\x9B', '\x3', '\x2', '\x2', '\x2', '\x9D', 
-		'\x17', '\x3', '\x2', '\x2', '\x2', '\x9E', '\x9F', '\x5', 'H', '%', '\x2', 
-		'\x9F', '\xA0', '\x5', '\x1A', '\xE', '\x2', '\xA0', '\xA2', '\x3', '\x2', 
-		'\x2', '\x2', '\xA1', '\x9E', '\x3', '\x2', '\x2', '\x2', '\xA1', '\xA2', 
-		'\x3', '\x2', '\x2', '\x2', '\xA2', '\xA3', '\x3', '\x2', '\x2', '\x2', 
-		'\xA3', '\xA5', '\x5', ' ', '\x11', '\x2', '\xA4', '\xA6', '\x5', '\x1C', 
-		'\xF', '\x2', '\xA5', '\xA4', '\x3', '\x2', '\x2', '\x2', '\xA5', '\xA6', 
-		'\x3', '\x2', '\x2', '\x2', '\xA6', '\x19', '\x3', '\x2', '\x2', '\x2', 
-		'\xA7', '\xA8', '\t', '\x2', '\x2', '\x2', '\xA8', '\x1B', '\x3', '\x2', 
-		'\x2', '\x2', '\xA9', '\xAA', '\t', '\x3', '\x2', '\x2', '\xAA', '\x1D', 
-		'\x3', '\x2', '\x2', '\x2', '\xAB', '\xAC', '\a', '\x17', '\x2', '\x2', 
-		'\xAC', '\xAD', '\x5', ' ', '\x11', '\x2', '\xAD', '\x1F', '\x3', '\x2', 
-		'\x2', '\x2', '\xAE', '\xB2', '\x5', '\"', '\x12', '\x2', '\xAF', '\xB2', 
-		'\x5', '$', '\x13', '\x2', '\xB0', '\xB2', '\x5', '&', '\x14', '\x2', 
-		'\xB1', '\xAE', '\x3', '\x2', '\x2', '\x2', '\xB1', '\xAF', '\x3', '\x2', 
-		'\x2', '\x2', '\xB1', '\xB0', '\x3', '\x2', '\x2', '\x2', '\xB2', '!', 
-		'\x3', '\x2', '\x2', '\x2', '\xB3', '\xB4', '\x5', 'V', ',', '\x2', '\xB4', 
-		'#', '\x3', '\x2', '\x2', '\x2', '\xB5', '\xB6', '\x5', '\x42', '\"', 
-		'\x2', '\xB6', '%', '\x3', '\x2', '\x2', '\x2', '\xB7', '\xB8', '\a', 
-		' ', '\x2', '\x2', '\xB8', '\xBD', '\x5', '\x12', '\n', '\x2', '\xB9', 
-		'\xBA', '\a', '\x1C', '\x2', '\x2', '\xBA', '\xBC', '\x5', '\x12', '\n', 
-		'\x2', '\xBB', '\xB9', '\x3', '\x2', '\x2', '\x2', '\xBC', '\xBF', '\x3', 
-		'\x2', '\x2', '\x2', '\xBD', '\xBB', '\x3', '\x2', '\x2', '\x2', '\xBD', 
-		'\xBE', '\x3', '\x2', '\x2', '\x2', '\xBE', '\xC0', '\x3', '\x2', '\x2', 
-		'\x2', '\xBF', '\xBD', '\x3', '\x2', '\x2', '\x2', '\xC0', '\xC1', '\a', 
-		'!', '\x2', '\x2', '\xC1', '\'', '\x3', '\x2', '\x2', '\x2', '\xC2', '\xC4', 
-		'\t', '\x4', '\x2', '\x2', '\xC3', '\xC2', '\x3', '\x2', '\x2', '\x2', 
-		'\xC3', '\xC4', '\x3', '\x2', '\x2', '\x2', '\xC4', '\xC5', '\x3', '\x2', 
-		'\x2', '\x2', '\xC5', '\xC6', '\x5', '\x44', '#', '\x2', '\xC6', '\xC7', 
-		'\a', '\x1E', '\x2', '\x2', '\xC7', '\xCC', '\x5', '*', '\x16', '\x2', 
-		'\xC8', '\xC9', '\a', '\x1C', '\x2', '\x2', '\xC9', '\xCB', '\x5', '*', 
-		'\x16', '\x2', '\xCA', '\xC8', '\x3', '\x2', '\x2', '\x2', '\xCB', '\xCE', 
-		'\x3', '\x2', '\x2', '\x2', '\xCC', '\xCA', '\x3', '\x2', '\x2', '\x2', 
-		'\xCC', '\xCD', '\x3', '\x2', '\x2', '\x2', '\xCD', '\xCF', '\x3', '\x2', 
-		'\x2', '\x2', '\xCE', '\xCC', '\x3', '\x2', '\x2', '\x2', '\xCF', '\xD0', 
-		'\a', '\xE', '\x2', '\x2', '\xD0', ')', '\x3', '\x2', '\x2', '\x2', '\xD1', 
-		'\xD3', '\x5', ',', '\x17', '\x2', '\xD2', '\xD1', '\x3', '\x2', '\x2', 
-		'\x2', '\xD3', '\xD4', '\x3', '\x2', '\x2', '\x2', '\xD4', '\xD2', '\x3', 
-		'\x2', '\x2', '\x2', '\xD4', '\xD5', '\x3', '\x2', '\x2', '\x2', '\xD5', 
-		'+', '\x3', '\x2', '\x2', '\x2', '\xD6', '\xDA', '\x5', '.', '\x18', '\x2', 
-		'\xD7', '\xDA', '\x5', '\x30', '\x19', '\x2', '\xD8', '\xDA', '\x5', '\x32', 
-		'\x1A', '\x2', '\xD9', '\xD6', '\x3', '\x2', '\x2', '\x2', '\xD9', '\xD7', 
-		'\x3', '\x2', '\x2', '\x2', '\xD9', '\xD8', '\x3', '\x2', '\x2', '\x2', 
-		'\xDA', '-', '\x3', '\x2', '\x2', '\x2', '\xDB', '\xDD', '\x5', '\x34', 
-		'\x1B', '\x2', '\xDC', '\xDE', '\x5', '\x1C', '\xF', '\x2', '\xDD', '\xDC', 
-		'\x3', '\x2', '\x2', '\x2', '\xDD', '\xDE', '\x3', '\x2', '\x2', '\x2', 
-		'\xDE', '/', '\x3', '\x2', '\x2', '\x2', '\xDF', '\xE0', '\a', '\x17', 
-		'\x2', '\x2', '\xE0', '\xE1', '\x5', '\x34', '\x1B', '\x2', '\xE1', '\x31', 
-		'\x3', '\x2', '\x2', '\x2', '\xE2', '\xE3', '\x5', '\"', '\x12', '\x2', 
-		'\xE3', '\xE4', '\a', '\xF', '\x2', '\x2', '\xE4', '\xE5', '\x5', '\"', 
-		'\x12', '\x2', '\xE5', '\x33', '\x3', '\x2', '\x2', '\x2', '\xE6', '\xEB', 
-		'\x5', '\"', '\x12', '\x2', '\xE7', '\xEB', '\x5', '\x36', '\x1C', '\x2', 
-		'\xE8', '\xEB', '\x5', '\x38', '\x1D', '\x2', '\xE9', '\xEB', '\x5', ':', 
-		'\x1E', '\x2', '\xEA', '\xE6', '\x3', '\x2', '\x2', '\x2', '\xEA', '\xE7', 
-		'\x3', '\x2', '\x2', '\x2', '\xEA', '\xE8', '\x3', '\x2', '\x2', '\x2', 
-		'\xEA', '\xE9', '\x3', '\x2', '\x2', '\x2', '\xEB', '\x35', '\x3', '\x2', 
-		'\x2', '\x2', '\xEC', '\xED', '\a', '\x10', '\x2', '\x2', '\xED', '\x37', 
-		'\x3', '\x2', '\x2', '\x2', '\xEE', '\xEF', '\x5', '\x42', '\"', '\x2', 
-		'\xEF', '\x39', '\x3', '\x2', '\x2', '\x2', '\xF0', '\xF1', '\a', ' ', 
-		'\x2', '\x2', '\xF1', '\xF6', '\x5', '*', '\x16', '\x2', '\xF2', '\xF3', 
-		'\a', '\x1C', '\x2', '\x2', '\xF3', '\xF5', '\x5', '*', '\x16', '\x2', 
-		'\xF4', '\xF2', '\x3', '\x2', '\x2', '\x2', '\xF5', '\xF8', '\x3', '\x2', 
-		'\x2', '\x2', '\xF6', '\xF4', '\x3', '\x2', '\x2', '\x2', '\xF6', '\xF7', 
-		'\x3', '\x2', '\x2', '\x2', '\xF7', '\xF9', '\x3', '\x2', '\x2', '\x2', 
-		'\xF8', '\xF6', '\x3', '\x2', '\x2', '\x2', '\xF9', '\xFA', '\a', '!', 
-		'\x2', '\x2', '\xFA', ';', '\x3', '\x2', '\x2', '\x2', '\xFB', '\xFC', 
-		'\x5', '\x42', '\"', '\x2', '\xFC', '=', '\x3', '\x2', '\x2', '\x2', '\xFD', 
-		'\xFE', '\x5', '@', '!', '\x2', '\xFE', '?', '\x3', '\x2', '\x2', '\x2', 
-		'\xFF', '\x104', '\x5', '\x42', '\"', '\x2', '\x100', '\x101', '\a', '\x10', 
-		'\x2', '\x2', '\x101', '\x103', '\x5', '\x42', '\"', '\x2', '\x102', '\x100', 
-		'\x3', '\x2', '\x2', '\x2', '\x103', '\x106', '\x3', '\x2', '\x2', '\x2', 
-		'\x104', '\x102', '\x3', '\x2', '\x2', '\x2', '\x104', '\x105', '\x3', 
-		'\x2', '\x2', '\x2', '\x105', '\x41', '\x3', '\x2', '\x2', '\x2', '\x106', 
-		'\x104', '\x3', '\x2', '\x2', '\x2', '\x107', '\x108', '\t', '\x5', '\x2', 
-		'\x2', '\x108', '\x43', '\x3', '\x2', '\x2', '\x2', '\x109', '\x10A', 
-		'\a', '(', '\x2', '\x2', '\x10A', '\x45', '\x3', '\x2', '\x2', '\x2', 
-		'\x10B', '\x10C', '\a', ')', '\x2', '\x2', '\x10C', 'G', '\x3', '\x2', 
-		'\x2', '\x2', '\x10D', '\x10E', '\a', '(', '\x2', '\x2', '\x10E', 'I', 
-		'\x3', '\x2', '\x2', '\x2', '\x10F', '\x116', '\x5', 'L', '\'', '\x2', 
-		'\x110', '\x116', '\x5', 'N', '(', '\x2', '\x111', '\x116', '\x5', 'P', 
-		')', '\x2', '\x112', '\x116', '\x5', 'R', '*', '\x2', '\x113', '\x116', 
-		'\x5', 'T', '+', '\x2', '\x114', '\x116', '\x5', 'V', ',', '\x2', '\x115', 
-		'\x10F', '\x3', '\x2', '\x2', '\x2', '\x115', '\x110', '\x3', '\x2', '\x2', 
-		'\x2', '\x115', '\x111', '\x3', '\x2', '\x2', '\x2', '\x115', '\x112', 
-		'\x3', '\x2', '\x2', '\x2', '\x115', '\x113', '\x3', '\x2', '\x2', '\x2', 
-		'\x115', '\x114', '\x3', '\x2', '\x2', '\x2', '\x116', 'K', '\x3', '\x2', 
-		'\x2', '\x2', '\x117', '\x118', '\a', '\f', '\x2', '\x2', '\x118', 'M', 
-		'\x3', '\x2', '\x2', '\x2', '\x119', '\x11A', '\t', '\x6', '\x2', '\x2', 
-		'\x11A', 'O', '\x3', '\x2', '\x2', '\x2', '\x11B', '\x11C', '\a', '*', 
-		'\x2', '\x2', '\x11C', 'Q', '\x3', '\x2', '\x2', '\x2', '\x11D', '\x11E', 
-		'\a', '+', '\x2', '\x2', '\x11E', 'S', '\x3', '\x2', '\x2', '\x2', '\x11F', 
-		'\x120', '\a', ',', '\x2', '\x2', '\x120', 'U', '\x3', '\x2', '\x2', '\x2', 
-		'\x121', '\x122', '\a', '-', '\x2', '\x2', '\x122', 'W', '\x3', '\x2', 
-		'\x2', '\x2', '\x18', '\x63', 'q', 'y', '~', '\x83', '\x8B', '\x93', '\x96', 
-		'\x9C', '\xA1', '\xA5', '\xB1', '\xBD', '\xC3', '\xCC', '\xD4', '\xD9', 
-		'\xDD', '\xEA', '\xF6', '\x104', '\x115',
+		',', '\x4', '-', '\t', '-', '\x4', '.', '\t', '.', '\x4', '/', '\t', '/', 
+		'\x4', '\x30', '\t', '\x30', '\x4', '\x31', '\t', '\x31', '\x4', '\x32', 
+		'\t', '\x32', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', 
+		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x4', '\x3', '\x4', 
+		'\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x5', '\a', '\x5', 'r', 
+		'\n', '\x5', '\f', '\x5', '\xE', '\x5', 'u', '\v', '\x5', '\x3', '\x5', 
+		'\x3', '\x5', '\x3', '\x6', '\a', '\x6', 'z', '\n', '\x6', '\f', '\x6', 
+		'\xE', '\x6', '}', '\v', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', 
+		'\x3', '\x6', '\x3', '\x6', '\x3', '\a', '\x3', '\a', '\x3', '\a', '\x3', 
+		'\a', '\x5', '\a', '\x88', '\n', '\a', '\x3', '\a', '\x3', '\a', '\x3', 
+		'\a', '\x3', '\b', '\a', '\b', '\x8E', '\n', '\b', '\f', '\b', '\xE', 
+		'\b', '\x91', '\v', '\b', '\x3', '\t', '\x3', '\t', '\x5', '\t', '\x95', 
+		'\n', '\t', '\x3', '\n', '\x3', '\n', '\x5', '\n', '\x99', '\n', '\n', 
+		'\x3', '\v', '\a', '\v', '\x9C', '\n', '\v', '\f', '\v', '\xE', '\v', 
+		'\x9F', '\v', '\v', '\x3', '\v', '\x3', '\v', '\x3', '\v', '\x5', '\v', 
+		'\xA4', '\n', '\v', '\x3', '\v', '\x3', '\v', '\x3', '\v', '\x3', '\v', 
+		'\a', '\v', '\xAA', '\n', '\v', '\f', '\v', '\xE', '\v', '\xAD', '\v', 
+		'\v', '\x3', '\v', '\x3', '\v', '\x3', '\f', '\x3', '\f', '\x3', '\r', 
+		'\a', '\r', '\xB4', '\n', '\r', '\f', '\r', '\xE', '\r', '\xB7', '\v', 
+		'\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x5', '\r', '\xBC', '\n', 
+		'\r', '\x3', '\r', '\x3', '\r', '\x6', '\r', '\xC0', '\n', '\r', '\r', 
+		'\r', '\xE', '\r', '\xC1', '\x3', '\r', '\x5', '\r', '\xC5', '\n', '\r', 
+		'\x3', '\r', '\x3', '\r', '\x3', '\xE', '\x3', '\xE', '\x3', '\xF', '\a', 
+		'\xF', '\xCC', '\n', '\xF', '\f', '\xF', '\xE', '\xF', '\xCF', '\v', '\xF', 
+		'\x3', '\xF', '\x3', '\xF', '\x3', '\xF', '\x5', '\xF', '\xD4', '\n', 
+		'\xF', '\x3', '\xF', '\x3', '\xF', '\x5', '\xF', '\xD8', '\n', '\xF', 
+		'\x3', '\x10', '\x3', '\x10', '\x3', '\x11', '\x3', '\x11', '\x3', '\x12', 
+		'\x5', '\x12', '\xDF', '\n', '\x12', '\x3', '\x12', '\x3', '\x12', '\x3', 
+		'\x13', '\x3', '\x13', '\x3', '\x13', '\x3', '\x13', '\x5', '\x13', '\xE7', 
+		'\n', '\x13', '\x3', '\x14', '\a', '\x14', '\xEA', '\n', '\x14', '\f', 
+		'\x14', '\xE', '\x14', '\xED', '\v', '\x14', '\x3', '\x14', '\x3', '\x14', 
+		'\x3', '\x15', '\a', '\x15', '\xF2', '\n', '\x15', '\f', '\x15', '\xE', 
+		'\x15', '\xF5', '\v', '\x15', '\x3', '\x15', '\x3', '\x15', '\x3', '\x16', 
+		'\a', '\x16', '\xFA', '\n', '\x16', '\f', '\x16', '\xE', '\x16', '\xFD', 
+		'\v', '\x16', '\x3', '\x16', '\x3', '\x16', '\x3', '\x17', '\a', '\x17', 
+		'\x102', '\n', '\x17', '\f', '\x17', '\xE', '\x17', '\x105', '\v', '\x17', 
+		'\x3', '\x17', '\x3', '\x17', '\x6', '\x17', '\x109', '\n', '\x17', '\r', 
+		'\x17', '\xE', '\x17', '\x10A', '\x3', '\x17', '\x3', '\x17', '\x3', '\x18', 
+		'\a', '\x18', '\x110', '\n', '\x18', '\f', '\x18', '\xE', '\x18', '\x113', 
+		'\v', '\x18', '\x3', '\x18', '\x5', '\x18', '\x116', '\n', '\x18', '\x3', 
+		'\x18', '\x3', '\x18', '\x3', '\x18', '\x5', '\x18', '\x11B', '\n', '\x18', 
+		'\x3', '\x18', '\x3', '\x18', '\x3', '\x18', '\x3', '\x18', '\a', '\x18', 
+		'\x121', '\n', '\x18', '\f', '\x18', '\xE', '\x18', '\x124', '\v', '\x18', 
+		'\x3', '\x18', '\x3', '\x18', '\x3', '\x19', '\x6', '\x19', '\x129', '\n', 
+		'\x19', '\r', '\x19', '\xE', '\x19', '\x12A', '\x3', '\x1A', '\x5', '\x1A', 
+		'\x12E', '\n', '\x1A', '\x3', '\x1A', '\x3', '\x1A', '\x5', '\x1A', '\x132', 
+		'\n', '\x1A', '\x3', '\x1B', '\x3', '\x1B', '\x3', '\x1B', '\x3', '\x1B', 
+		'\x3', '\x1B', '\x3', '\x1B', '\x5', '\x1B', '\x13A', '\n', '\x1B', '\x3', 
+		'\x1C', '\x3', '\x1C', '\x3', '\x1D', '\x3', '\x1D', '\x3', '\x1E', '\x3', 
+		'\x1E', '\x3', '\x1F', '\x3', '\x1F', '\x3', ' ', '\x3', ' ', '\x3', ' ', 
+		'\x3', ' ', '\a', ' ', '\x148', '\n', ' ', '\f', ' ', '\xE', ' ', '\x14B', 
+		'\v', ' ', '\x3', ' ', '\x3', ' ', '\x3', '!', '\x3', '!', '\x3', '!', 
+		'\x3', '!', '\x3', '\"', '\x3', '\"', '\x3', '#', '\x3', '#', '\x3', '$', 
+		'\x3', '$', '\x3', '$', '\a', '$', '\x15A', '\n', '$', '\f', '$', '\xE', 
+		'$', '\x15D', '\v', '$', '\x3', '%', '\x3', '%', '\x3', '&', '\x3', '&', 
+		'\x3', '\'', '\x3', '\'', '\x3', '(', '\x3', '(', '\x3', ')', '\x3', ')', 
+		'\x3', '*', '\x3', '*', '\x3', '+', '\x3', '+', '\x3', '+', '\x3', '+', 
+		'\x3', '+', '\x3', '+', '\x5', '+', '\x171', '\n', '+', '\x3', ',', '\x3', 
+		',', '\x3', '-', '\x3', '-', '\x3', '.', '\x3', '.', '\x3', '/', '\x3', 
+		'/', '\x3', '\x30', '\x3', '\x30', '\x3', '\x31', '\x3', '\x31', '\x3', 
+		'\x32', '\x3', '\x32', '\x3', '\x32', '\x2', '\x2', '\x33', '\x2', '\x4', 
+		'\x6', '\b', '\n', '\f', '\xE', '\x10', '\x12', '\x14', '\x16', '\x18', 
+		'\x1A', '\x1C', '\x1E', ' ', '\"', '$', '&', '(', '*', ',', '.', '\x30', 
+		'\x32', '\x34', '\x36', '\x38', ':', '<', '>', '@', '\x42', '\x44', '\x46', 
+		'H', 'J', 'L', 'N', 'P', 'R', 'T', 'V', 'X', 'Z', '\\', '^', '`', '\x62', 
+		'\x2', '\b', '\x3', '\x2', '\x19', '\x1C', '\x3', '\x2', '\x12', '\x17', 
+		'\x3', '\x2', '\a', '\b', '\x3', '\x2', ')', '*', '\x3', '\x2', '*', '+', 
+		'\x3', '\x2', '\v', '\f', '\x2', '\x17B', '\x2', '\x64', '\x3', '\x2', 
+		'\x2', '\x2', '\x4', 'g', '\x3', '\x2', '\x2', '\x2', '\x6', 'k', '\x3', 
+		'\x2', '\x2', '\x2', '\b', 's', '\x3', '\x2', '\x2', '\x2', '\n', '{', 
+		'\x3', '\x2', '\x2', '\x2', '\f', '\x83', '\x3', '\x2', '\x2', '\x2', 
+		'\xE', '\x8F', '\x3', '\x2', '\x2', '\x2', '\x10', '\x94', '\x3', '\x2', 
+		'\x2', '\x2', '\x12', '\x98', '\x3', '\x2', '\x2', '\x2', '\x14', '\x9D', 
+		'\x3', '\x2', '\x2', '\x2', '\x16', '\xB0', '\x3', '\x2', '\x2', '\x2', 
+		'\x18', '\xB5', '\x3', '\x2', '\x2', '\x2', '\x1A', '\xC8', '\x3', '\x2', 
+		'\x2', '\x2', '\x1C', '\xCD', '\x3', '\x2', '\x2', '\x2', '\x1E', '\xD9', 
+		'\x3', '\x2', '\x2', '\x2', ' ', '\xDB', '\x3', '\x2', '\x2', '\x2', '\"', 
+		'\xDE', '\x3', '\x2', '\x2', '\x2', '$', '\xE6', '\x3', '\x2', '\x2', 
+		'\x2', '&', '\xEB', '\x3', '\x2', '\x2', '\x2', '(', '\xF3', '\x3', '\x2', 
+		'\x2', '\x2', '*', '\xFB', '\x3', '\x2', '\x2', '\x2', ',', '\x103', '\x3', 
+		'\x2', '\x2', '\x2', '.', '\x111', '\x3', '\x2', '\x2', '\x2', '\x30', 
+		'\x128', '\x3', '\x2', '\x2', '\x2', '\x32', '\x12D', '\x3', '\x2', '\x2', 
+		'\x2', '\x34', '\x139', '\x3', '\x2', '\x2', '\x2', '\x36', '\x13B', '\x3', 
+		'\x2', '\x2', '\x2', '\x38', '\x13D', '\x3', '\x2', '\x2', '\x2', ':', 
+		'\x13F', '\x3', '\x2', '\x2', '\x2', '<', '\x141', '\x3', '\x2', '\x2', 
+		'\x2', '>', '\x143', '\x3', '\x2', '\x2', '\x2', '@', '\x14E', '\x3', 
+		'\x2', '\x2', '\x2', '\x42', '\x152', '\x3', '\x2', '\x2', '\x2', '\x44', 
+		'\x154', '\x3', '\x2', '\x2', '\x2', '\x46', '\x156', '\x3', '\x2', '\x2', 
+		'\x2', 'H', '\x15E', '\x3', '\x2', '\x2', '\x2', 'J', '\x160', '\x3', 
+		'\x2', '\x2', '\x2', 'L', '\x162', '\x3', '\x2', '\x2', '\x2', 'N', '\x164', 
+		'\x3', '\x2', '\x2', '\x2', 'P', '\x166', '\x3', '\x2', '\x2', '\x2', 
+		'R', '\x168', '\x3', '\x2', '\x2', '\x2', 'T', '\x170', '\x3', '\x2', 
+		'\x2', '\x2', 'V', '\x172', '\x3', '\x2', '\x2', '\x2', 'X', '\x174', 
+		'\x3', '\x2', '\x2', '\x2', 'Z', '\x176', '\x3', '\x2', '\x2', '\x2', 
+		'\\', '\x178', '\x3', '\x2', '\x2', '\x2', '^', '\x17A', '\x3', '\x2', 
+		'\x2', '\x2', '`', '\x17C', '\x3', '\x2', '\x2', '\x2', '\x62', '\x17E', 
+		'\x3', '\x2', '\x2', '\x2', '\x64', '\x65', '\x5', '\x6', '\x4', '\x2', 
+		'\x65', '\x66', '\a', '\x2', '\x2', '\x3', '\x66', '\x3', '\x3', '\x2', 
+		'\x2', '\x2', 'g', 'h', '\a', '#', '\x2', '\x2', 'h', 'i', '\x5', '\x42', 
+		'\"', '\x2', 'i', 'j', '\a', '$', '\x2', '\x2', 'j', '\x5', '\x3', '\x2', 
+		'\x2', '\x2', 'k', 'l', '\a', '\x3', '\x2', '\x2', 'l', 'm', '\x5', '\x44', 
+		'#', '\x2', 'm', 'n', '\a', '\xF', '\x2', '\x2', 'n', 'o', '\x5', '\b', 
+		'\x5', '\x2', 'o', '\a', '\x3', '\x2', '\x2', '\x2', 'p', 'r', '\x5', 
+		'\f', '\a', '\x2', 'q', 'p', '\x3', '\x2', '\x2', '\x2', 'r', 'u', '\x3', 
+		'\x2', '\x2', '\x2', 's', 'q', '\x3', '\x2', '\x2', '\x2', 's', 't', '\x3', 
+		'\x2', '\x2', '\x2', 't', 'v', '\x3', '\x2', '\x2', '\x2', 'u', 's', '\x3', 
+		'\x2', '\x2', '\x2', 'v', 'w', '\x5', '\n', '\x6', '\x2', 'w', '\t', '\x3', 
+		'\x2', '\x2', '\x2', 'x', 'z', '\x5', '\x4', '\x3', '\x2', 'y', 'x', '\x3', 
+		'\x2', '\x2', '\x2', 'z', '}', '\x3', '\x2', '\x2', '\x2', '{', 'y', '\x3', 
+		'\x2', '\x2', '\x2', '{', '|', '\x3', '\x2', '\x2', '\x2', '|', '~', '\x3', 
+		'\x2', '\x2', '\x2', '}', '{', '\x3', '\x2', '\x2', '\x2', '~', '\x7F', 
+		'\a', '\x5', '\x2', '\x2', '\x7F', '\x80', '\x5', '\x42', '\"', '\x2', 
+		'\x80', '\x81', '\a', '\xF', '\x2', '\x2', '\x81', '\x82', '\x5', '\xE', 
+		'\b', '\x2', '\x82', '\v', '\x3', '\x2', '\x2', '\x2', '\x83', '\x87', 
+		'\a', '\x4', '\x2', '\x2', '\x84', '\x85', '\x5', '\x42', '\"', '\x2', 
+		'\x85', '\x86', '\a', '\x19', '\x2', '\x2', '\x86', '\x88', '\x3', '\x2', 
+		'\x2', '\x2', '\x87', '\x84', '\x3', '\x2', '\x2', '\x2', '\x87', '\x88', 
+		'\x3', '\x2', '\x2', '\x2', '\x88', '\x89', '\x3', '\x2', '\x2', '\x2', 
+		'\x89', '\x8A', '\x5', '\x46', '$', '\x2', '\x8A', '\x8B', '\a', '\xF', 
+		'\x2', '\x2', '\x8B', '\r', '\x3', '\x2', '\x2', '\x2', '\x8C', '\x8E', 
+		'\x5', '\x10', '\t', '\x2', '\x8D', '\x8C', '\x3', '\x2', '\x2', '\x2', 
+		'\x8E', '\x91', '\x3', '\x2', '\x2', '\x2', '\x8F', '\x8D', '\x3', '\x2', 
+		'\x2', '\x2', '\x8F', '\x90', '\x3', '\x2', '\x2', '\x2', '\x90', '\xF', 
+		'\x3', '\x2', '\x2', '\x2', '\x91', '\x8F', '\x3', '\x2', '\x2', '\x2', 
+		'\x92', '\x95', '\x5', '\x12', '\n', '\x2', '\x93', '\x95', '\x5', '.', 
+		'\x18', '\x2', '\x94', '\x92', '\x3', '\x2', '\x2', '\x2', '\x94', '\x93', 
+		'\x3', '\x2', '\x2', '\x2', '\x95', '\x11', '\x3', '\x2', '\x2', '\x2', 
+		'\x96', '\x99', '\x5', '\x14', '\v', '\x2', '\x97', '\x99', '\x5', '\x18', 
+		'\r', '\x2', '\x98', '\x96', '\x3', '\x2', '\x2', '\x2', '\x98', '\x97', 
+		'\x3', '\x2', '\x2', '\x2', '\x99', '\x13', '\x3', '\x2', '\x2', '\x2', 
+		'\x9A', '\x9C', '\x5', '\x4', '\x3', '\x2', '\x9B', '\x9A', '\x3', '\x2', 
+		'\x2', '\x2', '\x9C', '\x9F', '\x3', '\x2', '\x2', '\x2', '\x9D', '\x9B', 
+		'\x3', '\x2', '\x2', '\x2', '\x9D', '\x9E', '\x3', '\x2', '\x2', '\x2', 
+		'\x9E', '\xA0', '\x3', '\x2', '\x2', '\x2', '\x9F', '\x9D', '\x3', '\x2', 
+		'\x2', '\x2', '\xA0', '\xA3', '\x5', 'P', ')', '\x2', '\xA1', '\xA2', 
+		'\a', '\t', '\x2', '\x2', '\xA2', '\xA4', '\x5', '\x46', '$', '\x2', '\xA3', 
+		'\xA1', '\x3', '\x2', '\x2', '\x2', '\xA3', '\xA4', '\x3', '\x2', '\x2', 
+		'\x2', '\xA4', '\xA5', '\x3', '\x2', '\x2', '\x2', '\xA5', '\xA6', '\a', 
+		'\x1F', '\x2', '\x2', '\xA6', '\xAB', '\x5', '\x16', '\f', '\x2', '\xA7', 
+		'\xA8', '\a', '\x1D', '\x2', '\x2', '\xA8', '\xAA', '\x5', '\x16', '\f', 
+		'\x2', '\xA9', '\xA7', '\x3', '\x2', '\x2', '\x2', '\xAA', '\xAD', '\x3', 
+		'\x2', '\x2', '\x2', '\xAB', '\xA9', '\x3', '\x2', '\x2', '\x2', '\xAB', 
+		'\xAC', '\x3', '\x2', '\x2', '\x2', '\xAC', '\xAE', '\x3', '\x2', '\x2', 
+		'\x2', '\xAD', '\xAB', '\x3', '\x2', '\x2', '\x2', '\xAE', '\xAF', '\a', 
+		'\xF', '\x2', '\x2', '\xAF', '\x15', '\x3', '\x2', '\x2', '\x2', '\xB0', 
+		'\xB1', '\x5', 'L', '\'', '\x2', '\xB1', '\x17', '\x3', '\x2', '\x2', 
+		'\x2', '\xB2', '\xB4', '\x5', '\x4', '\x3', '\x2', '\xB3', '\xB2', '\x3', 
+		'\x2', '\x2', '\x2', '\xB4', '\xB7', '\x3', '\x2', '\x2', '\x2', '\xB5', 
+		'\xB3', '\x3', '\x2', '\x2', '\x2', '\xB5', '\xB6', '\x3', '\x2', '\x2', 
+		'\x2', '\xB6', '\xB8', '\x3', '\x2', '\x2', '\x2', '\xB7', '\xB5', '\x3', 
+		'\x2', '\x2', '\x2', '\xB8', '\xBB', '\x5', 'P', ')', '\x2', '\xB9', '\xBA', 
+		'\a', '\t', '\x2', '\x2', '\xBA', '\xBC', '\x5', '\x46', '$', '\x2', '\xBB', 
+		'\xB9', '\x3', '\x2', '\x2', '\x2', '\xBB', '\xBC', '\x3', '\x2', '\x2', 
+		'\x2', '\xBC', '\xBD', '\x3', '\x2', '\x2', '\x2', '\xBD', '\xBF', '\a', 
+		'\x1F', '\x2', '\x2', '\xBE', '\xC0', '\x5', '\x1C', '\xF', '\x2', '\xBF', 
+		'\xBE', '\x3', '\x2', '\x2', '\x2', '\xC0', '\xC1', '\x3', '\x2', '\x2', 
+		'\x2', '\xC1', '\xBF', '\x3', '\x2', '\x2', '\x2', '\xC1', '\xC2', '\x3', 
+		'\x2', '\x2', '\x2', '\xC2', '\xC4', '\x3', '\x2', '\x2', '\x2', '\xC3', 
+		'\xC5', '\x5', '\x1A', '\xE', '\x2', '\xC4', '\xC3', '\x3', '\x2', '\x2', 
+		'\x2', '\xC4', '\xC5', '\x3', '\x2', '\x2', '\x2', '\xC5', '\xC6', '\x3', 
+		'\x2', '\x2', '\x2', '\xC6', '\xC7', '\a', '\xF', '\x2', '\x2', '\xC7', 
+		'\x19', '\x3', '\x2', '\x2', '\x2', '\xC8', '\xC9', '\a', '\xE', '\x2', 
+		'\x2', '\xC9', '\x1B', '\x3', '\x2', '\x2', '\x2', '\xCA', '\xCC', '\x5', 
+		'\x4', '\x3', '\x2', '\xCB', '\xCA', '\x3', '\x2', '\x2', '\x2', '\xCC', 
+		'\xCF', '\x3', '\x2', '\x2', '\x2', '\xCD', '\xCB', '\x3', '\x2', '\x2', 
+		'\x2', '\xCD', '\xCE', '\x3', '\x2', '\x2', '\x2', '\xCE', '\xD3', '\x3', 
+		'\x2', '\x2', '\x2', '\xCF', '\xCD', '\x3', '\x2', '\x2', '\x2', '\xD0', 
+		'\xD1', '\x5', 'R', '*', '\x2', '\xD1', '\xD2', '\x5', '\x1E', '\x10', 
+		'\x2', '\xD2', '\xD4', '\x3', '\x2', '\x2', '\x2', '\xD3', '\xD0', '\x3', 
+		'\x2', '\x2', '\x2', '\xD3', '\xD4', '\x3', '\x2', '\x2', '\x2', '\xD4', 
+		'\xD5', '\x3', '\x2', '\x2', '\x2', '\xD5', '\xD7', '\x5', '\"', '\x12', 
+		'\x2', '\xD6', '\xD8', '\x5', ' ', '\x11', '\x2', '\xD7', '\xD6', '\x3', 
+		'\x2', '\x2', '\x2', '\xD7', '\xD8', '\x3', '\x2', '\x2', '\x2', '\xD8', 
+		'\x1D', '\x3', '\x2', '\x2', '\x2', '\xD9', '\xDA', '\t', '\x2', '\x2', 
+		'\x2', '\xDA', '\x1F', '\x3', '\x2', '\x2', '\x2', '\xDB', '\xDC', '\t', 
+		'\x3', '\x2', '\x2', '\xDC', '!', '\x3', '\x2', '\x2', '\x2', '\xDD', 
+		'\xDF', '\a', '\x18', '\x2', '\x2', '\xDE', '\xDD', '\x3', '\x2', '\x2', 
+		'\x2', '\xDE', '\xDF', '\x3', '\x2', '\x2', '\x2', '\xDF', '\xE0', '\x3', 
+		'\x2', '\x2', '\x2', '\xE0', '\xE1', '\x5', '$', '\x13', '\x2', '\xE1', 
+		'#', '\x3', '\x2', '\x2', '\x2', '\xE2', '\xE7', '\x5', '&', '\x14', '\x2', 
+		'\xE3', '\xE7', '\x5', '*', '\x16', '\x2', '\xE4', '\xE7', '\x5', '(', 
+		'\x15', '\x2', '\xE5', '\xE7', '\x5', ',', '\x17', '\x2', '\xE6', '\xE2', 
+		'\x3', '\x2', '\x2', '\x2', '\xE6', '\xE3', '\x3', '\x2', '\x2', '\x2', 
+		'\xE6', '\xE4', '\x3', '\x2', '\x2', '\x2', '\xE6', '\xE5', '\x3', '\x2', 
+		'\x2', '\x2', '\xE7', '%', '\x3', '\x2', '\x2', '\x2', '\xE8', '\xEA', 
+		'\x5', '\x4', '\x3', '\x2', '\xE9', '\xE8', '\x3', '\x2', '\x2', '\x2', 
+		'\xEA', '\xED', '\x3', '\x2', '\x2', '\x2', '\xEB', '\xE9', '\x3', '\x2', 
+		'\x2', '\x2', '\xEB', '\xEC', '\x3', '\x2', '\x2', '\x2', '\xEC', '\xEE', 
+		'\x3', '\x2', '\x2', '\x2', '\xED', '\xEB', '\x3', '\x2', '\x2', '\x2', 
+		'\xEE', '\xEF', '\x5', '`', '\x31', '\x2', '\xEF', '\'', '\x3', '\x2', 
+		'\x2', '\x2', '\xF0', '\xF2', '\x5', '\x4', '\x3', '\x2', '\xF1', '\xF0', 
+		'\x3', '\x2', '\x2', '\x2', '\xF2', '\xF5', '\x3', '\x2', '\x2', '\x2', 
+		'\xF3', '\xF1', '\x3', '\x2', '\x2', '\x2', '\xF3', '\xF4', '\x3', '\x2', 
+		'\x2', '\x2', '\xF4', '\xF6', '\x3', '\x2', '\x2', '\x2', '\xF5', '\xF3', 
+		'\x3', '\x2', '\x2', '\x2', '\xF6', '\xF7', '\a', '\x11', '\x2', '\x2', 
+		'\xF7', ')', '\x3', '\x2', '\x2', '\x2', '\xF8', '\xFA', '\x5', '\x4', 
+		'\x3', '\x2', '\xF9', '\xF8', '\x3', '\x2', '\x2', '\x2', '\xFA', '\xFD', 
+		'\x3', '\x2', '\x2', '\x2', '\xFB', '\xF9', '\x3', '\x2', '\x2', '\x2', 
+		'\xFB', '\xFC', '\x3', '\x2', '\x2', '\x2', '\xFC', '\xFE', '\x3', '\x2', 
+		'\x2', '\x2', '\xFD', '\xFB', '\x3', '\x2', '\x2', '\x2', '\xFE', '\xFF', 
+		'\x5', 'H', '%', '\x2', '\xFF', '+', '\x3', '\x2', '\x2', '\x2', '\x100', 
+		'\x102', '\x5', '\x4', '\x3', '\x2', '\x101', '\x100', '\x3', '\x2', '\x2', 
+		'\x2', '\x102', '\x105', '\x3', '\x2', '\x2', '\x2', '\x103', '\x101', 
+		'\x3', '\x2', '\x2', '\x2', '\x103', '\x104', '\x3', '\x2', '\x2', '\x2', 
+		'\x104', '\x106', '\x3', '\x2', '\x2', '\x2', '\x105', '\x103', '\x3', 
+		'\x2', '\x2', '\x2', '\x106', '\x108', '\a', '!', '\x2', '\x2', '\x107', 
+		'\x109', '\x5', '\x1C', '\xF', '\x2', '\x108', '\x107', '\x3', '\x2', 
+		'\x2', '\x2', '\x109', '\x10A', '\x3', '\x2', '\x2', '\x2', '\x10A', '\x108', 
+		'\x3', '\x2', '\x2', '\x2', '\x10A', '\x10B', '\x3', '\x2', '\x2', '\x2', 
+		'\x10B', '\x10C', '\x3', '\x2', '\x2', '\x2', '\x10C', '\x10D', '\a', 
+		'\"', '\x2', '\x2', '\x10D', '-', '\x3', '\x2', '\x2', '\x2', '\x10E', 
+		'\x110', '\x5', '\x4', '\x3', '\x2', '\x10F', '\x10E', '\x3', '\x2', '\x2', 
+		'\x2', '\x110', '\x113', '\x3', '\x2', '\x2', '\x2', '\x111', '\x10F', 
+		'\x3', '\x2', '\x2', '\x2', '\x111', '\x112', '\x3', '\x2', '\x2', '\x2', 
+		'\x112', '\x115', '\x3', '\x2', '\x2', '\x2', '\x113', '\x111', '\x3', 
+		'\x2', '\x2', '\x2', '\x114', '\x116', '\t', '\x4', '\x2', '\x2', '\x115', 
+		'\x114', '\x3', '\x2', '\x2', '\x2', '\x115', '\x116', '\x3', '\x2', '\x2', 
+		'\x2', '\x116', '\x117', '\x3', '\x2', '\x2', '\x2', '\x117', '\x11A', 
+		'\x5', 'N', '(', '\x2', '\x118', '\x119', '\a', '\n', '\x2', '\x2', '\x119', 
+		'\x11B', '\x5', '\x46', '$', '\x2', '\x11A', '\x118', '\x3', '\x2', '\x2', 
+		'\x2', '\x11A', '\x11B', '\x3', '\x2', '\x2', '\x2', '\x11B', '\x11C', 
+		'\x3', '\x2', '\x2', '\x2', '\x11C', '\x11D', '\a', '\x1F', '\x2', '\x2', 
+		'\x11D', '\x122', '\x5', '\x30', '\x19', '\x2', '\x11E', '\x11F', '\a', 
+		'\x1D', '\x2', '\x2', '\x11F', '\x121', '\x5', '\x30', '\x19', '\x2', 
+		'\x120', '\x11E', '\x3', '\x2', '\x2', '\x2', '\x121', '\x124', '\x3', 
+		'\x2', '\x2', '\x2', '\x122', '\x120', '\x3', '\x2', '\x2', '\x2', '\x122', 
+		'\x123', '\x3', '\x2', '\x2', '\x2', '\x123', '\x125', '\x3', '\x2', '\x2', 
+		'\x2', '\x124', '\x122', '\x3', '\x2', '\x2', '\x2', '\x125', '\x126', 
+		'\a', '\xF', '\x2', '\x2', '\x126', '/', '\x3', '\x2', '\x2', '\x2', '\x127', 
+		'\x129', '\x5', '\x32', '\x1A', '\x2', '\x128', '\x127', '\x3', '\x2', 
+		'\x2', '\x2', '\x129', '\x12A', '\x3', '\x2', '\x2', '\x2', '\x12A', '\x128', 
+		'\x3', '\x2', '\x2', '\x2', '\x12A', '\x12B', '\x3', '\x2', '\x2', '\x2', 
+		'\x12B', '\x31', '\x3', '\x2', '\x2', '\x2', '\x12C', '\x12E', '\a', '\x18', 
+		'\x2', '\x2', '\x12D', '\x12C', '\x3', '\x2', '\x2', '\x2', '\x12D', '\x12E', 
+		'\x3', '\x2', '\x2', '\x2', '\x12E', '\x12F', '\x3', '\x2', '\x2', '\x2', 
+		'\x12F', '\x131', '\x5', '\x34', '\x1B', '\x2', '\x130', '\x132', '\x5', 
+		' ', '\x11', '\x2', '\x131', '\x130', '\x3', '\x2', '\x2', '\x2', '\x131', 
+		'\x132', '\x3', '\x2', '\x2', '\x2', '\x132', '\x33', '\x3', '\x2', '\x2', 
+		'\x2', '\x133', '\x13A', '\x5', '\x36', '\x1C', '\x2', '\x134', '\x13A', 
+		'\x5', ':', '\x1E', '\x2', '\x135', '\x13A', '\x5', '<', '\x1F', '\x2', 
+		'\x136', '\x13A', '\x5', '\x38', '\x1D', '\x2', '\x137', '\x13A', '\x5', 
+		'>', ' ', '\x2', '\x138', '\x13A', '\x5', '@', '!', '\x2', '\x139', '\x133', 
+		'\x3', '\x2', '\x2', '\x2', '\x139', '\x134', '\x3', '\x2', '\x2', '\x2', 
+		'\x139', '\x135', '\x3', '\x2', '\x2', '\x2', '\x139', '\x136', '\x3', 
+		'\x2', '\x2', '\x2', '\x139', '\x137', '\x3', '\x2', '\x2', '\x2', '\x139', 
+		'\x138', '\x3', '\x2', '\x2', '\x2', '\x13A', '\x35', '\x3', '\x2', '\x2', 
+		'\x2', '\x13B', '\x13C', '\x5', 'J', '&', '\x2', '\x13C', '\x37', '\x3', 
+		'\x2', '\x2', '\x2', '\x13D', '\x13E', '\a', '\x11', '\x2', '\x2', '\x13E', 
+		'\x39', '\x3', '\x2', '\x2', '\x2', '\x13F', '\x140', '\a', '/', '\x2', 
+		'\x2', '\x140', ';', '\x3', '\x2', '\x2', '\x2', '\x141', '\x142', '\a', 
+		'\x30', '\x2', '\x2', '\x142', '=', '\x3', '\x2', '\x2', '\x2', '\x143', 
+		'\x144', '\a', '!', '\x2', '\x2', '\x144', '\x149', '\x5', '\x30', '\x19', 
+		'\x2', '\x145', '\x146', '\a', '\x1D', '\x2', '\x2', '\x146', '\x148', 
+		'\x5', '\x30', '\x19', '\x2', '\x147', '\x145', '\x3', '\x2', '\x2', '\x2', 
+		'\x148', '\x14B', '\x3', '\x2', '\x2', '\x2', '\x149', '\x147', '\x3', 
+		'\x2', '\x2', '\x2', '\x149', '\x14A', '\x3', '\x2', '\x2', '\x2', '\x14A', 
+		'\x14C', '\x3', '\x2', '\x2', '\x2', '\x14B', '\x149', '\x3', '\x2', '\x2', 
+		'\x2', '\x14C', '\x14D', '\a', '\"', '\x2', '\x2', '\x14D', '?', '\x3', 
+		'\x2', '\x2', '\x2', '\x14E', '\x14F', '\x5', '<', '\x1F', '\x2', '\x14F', 
+		'\x150', '\a', '\x10', '\x2', '\x2', '\x150', '\x151', '\x5', '<', '\x1F', 
+		'\x2', '\x151', '\x41', '\x3', '\x2', '\x2', '\x2', '\x152', '\x153', 
+		'\x5', 'H', '%', '\x2', '\x153', '\x43', '\x3', '\x2', '\x2', '\x2', '\x154', 
+		'\x155', '\x5', '\x46', '$', '\x2', '\x155', '\x45', '\x3', '\x2', '\x2', 
+		'\x2', '\x156', '\x15B', '\x5', 'H', '%', '\x2', '\x157', '\x158', '\a', 
+		'\x11', '\x2', '\x2', '\x158', '\x15A', '\x5', 'H', '%', '\x2', '\x159', 
+		'\x157', '\x3', '\x2', '\x2', '\x2', '\x15A', '\x15D', '\x3', '\x2', '\x2', 
+		'\x2', '\x15B', '\x159', '\x3', '\x2', '\x2', '\x2', '\x15B', '\x15C', 
+		'\x3', '\x2', '\x2', '\x2', '\x15C', 'G', '\x3', '\x2', '\x2', '\x2', 
+		'\x15D', '\x15B', '\x3', '\x2', '\x2', '\x2', '\x15E', '\x15F', '\t', 
+		'\x5', '\x2', '\x2', '\x15F', 'I', '\x3', '\x2', '\x2', '\x2', '\x160', 
+		'\x161', '\a', ')', '\x2', '\x2', '\x161', 'K', '\x3', '\x2', '\x2', '\x2', 
+		'\x162', '\x163', '\a', '*', '\x2', '\x2', '\x163', 'M', '\x3', '\x2', 
+		'\x2', '\x2', '\x164', '\x165', '\a', ')', '\x2', '\x2', '\x165', 'O', 
+		'\x3', '\x2', '\x2', '\x2', '\x166', '\x167', '\a', '*', '\x2', '\x2', 
+		'\x167', 'Q', '\x3', '\x2', '\x2', '\x2', '\x168', '\x169', '\t', '\x6', 
+		'\x2', '\x2', '\x169', 'S', '\x3', '\x2', '\x2', '\x2', '\x16A', '\x171', 
+		'\x5', 'V', ',', '\x2', '\x16B', '\x171', '\x5', 'X', '-', '\x2', '\x16C', 
+		'\x171', '\x5', 'Z', '.', '\x2', '\x16D', '\x171', '\x5', '\\', '/', '\x2', 
+		'\x16E', '\x171', '\x5', '^', '\x30', '\x2', '\x16F', '\x171', '\x5', 
+		'`', '\x31', '\x2', '\x170', '\x16A', '\x3', '\x2', '\x2', '\x2', '\x170', 
+		'\x16B', '\x3', '\x2', '\x2', '\x2', '\x170', '\x16C', '\x3', '\x2', '\x2', 
+		'\x2', '\x170', '\x16D', '\x3', '\x2', '\x2', '\x2', '\x170', '\x16E', 
+		'\x3', '\x2', '\x2', '\x2', '\x170', '\x16F', '\x3', '\x2', '\x2', '\x2', 
+		'\x171', 'U', '\x3', '\x2', '\x2', '\x2', '\x172', '\x173', '\a', '\r', 
+		'\x2', '\x2', '\x173', 'W', '\x3', '\x2', '\x2', '\x2', '\x174', '\x175', 
+		'\t', '\a', '\x2', '\x2', '\x175', 'Y', '\x3', '\x2', '\x2', '\x2', '\x176', 
+		'\x177', '\a', ',', '\x2', '\x2', '\x177', '[', '\x3', '\x2', '\x2', '\x2', 
+		'\x178', '\x179', '\a', '-', '\x2', '\x2', '\x179', ']', '\x3', '\x2', 
+		'\x2', '\x2', '\x17A', '\x17B', '\a', '.', '\x2', '\x2', '\x17B', '_', 
+		'\x3', '\x2', '\x2', '\x2', '\x17C', '\x17D', '\a', '/', '\x2', '\x2', 
+		'\x17D', '\x61', '\x3', '\x2', '\x2', '\x2', '\x17E', '\x17F', '\a', '\x30', 
+		'\x2', '\x2', '\x17F', '\x63', '\x3', '\x2', '\x2', '\x2', '$', 's', '{', 
+		'\x87', '\x8F', '\x94', '\x98', '\x9D', '\xA3', '\xAB', '\xB5', '\xBB', 
+		'\xC1', '\xC4', '\xCD', '\xD3', '\xD7', '\xDE', '\xE6', '\xEB', '\xF3', 
+		'\xFB', '\x103', '\x10A', '\x111', '\x115', '\x11A', '\x122', '\x12A', 
+		'\x12D', '\x131', '\x139', '\x149', '\x15B', '\x170',
 	};
 
 	public static readonly ATN _ATN =

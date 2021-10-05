@@ -75,5 +75,23 @@ namespace MetaDslx.CodeAnalysis
         public virtual void DefaultVisit(SyntaxNode node)
         {
         }
+
+        protected void DefaultVisitChildren(SyntaxNode node)
+        {
+            var childCnt = node.ChildNodesAndTokens().Count;
+            int i = 0;
+
+            do
+            {
+                var child = ChildSyntaxList.ItemInternal((LanguageSyntaxNode)node, i);
+                i++;
+
+                var asNode = child.AsNode();
+                if (asNode != null)
+                {
+                    this.Visit(asNode);
+                }
+            } while (i < childCnt);
+        }
     }
 }
