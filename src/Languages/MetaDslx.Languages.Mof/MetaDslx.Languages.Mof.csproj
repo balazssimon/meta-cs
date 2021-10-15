@@ -9,6 +9,7 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
     <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
+    <AssemblyVersion>0.3.0</AssemblyVersion>
 	
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
@@ -18,7 +19,7 @@
     <PackageDescription>
       The complete implementation of the MOF standard.
     </PackageDescription>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
     <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
@@ -31,18 +32,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
-    <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" />
-    <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
   </ItemGroup>
-  
-  <ItemGroup>
+
+  <!--ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
-  </ItemGroup>
+  </ItemGroup-->
 
 </Project>

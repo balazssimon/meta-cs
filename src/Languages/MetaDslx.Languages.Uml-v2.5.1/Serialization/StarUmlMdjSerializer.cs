@@ -1,9 +1,9 @@
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.Languages.Uml.Serialization
 {

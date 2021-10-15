@@ -16,7 +16,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         }
     }
 
-    class UmlImplementation : UmlImplementationBase
+    public class UmlImplementation : UmlImplementationBase
     {
         internal override void UmlBuilderInstance(UmlBuilderInstance _this)
         {

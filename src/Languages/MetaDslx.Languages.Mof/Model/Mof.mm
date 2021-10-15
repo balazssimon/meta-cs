@@ -1,5 +1,7 @@
 ﻿namespace MetaDslx.Languages.Mof.Model
 {
+    using MetaDslx.CodeAnalysis.Symbols;
+
 	metamodel Mof(Uri="http://www.omg.org/spec/MOF"); 
 
 	// Boolean is used for logical expressions, consisting of the predefined values true and false.
@@ -36,9 +38,10 @@
 	association Comment.OwningElement with Element.OwnedComment;
 	association Comment.AnnotatedElement with Element.Comment;
 
+	[symbol: Member]
 	class Tag
 	{
-		[Name]
+		[property: Name]
 		string Name;
 		string Value;
 		list<Element> Element;
@@ -46,9 +49,10 @@
 
 	association Element.Tag with Tag.Element;
 
+	[symbol: Member]
 	abstract class NamedElement : Element
 	{
-		[Name]
+		[property: Name]
 		string Name;
 		derived string QualifiedName;
 		VisibilityKind Visibility;
@@ -66,7 +70,6 @@
 		Public
 	}
 	
-	[Type]
 	abstract class Type : PackageableElement
 	{
 		Package Package redefines PackageableElement.OwningPackage;
@@ -75,12 +78,11 @@
 
 	abstract class TypedElement : NamedElement
 	{
-		[Type]
 		Type Type;
 	}
 
 	// association TypedElement.Type with Type.TypedElement;
-
+	[symbol: Namespace]
 	abstract class Namespace : NamedElement
 	{
 		containment list<Constraint> OwnedRule;
@@ -92,6 +94,7 @@
 	association Namespace.OwnedMember with NamedElement.Namespace;
 	association Namespace.Member with NamedElement.MemberNamespace;
 
+	[symbol: NamedType]
 	abstract class Classifier : Type, Namespace
 	{
 		bool IsAbstract;

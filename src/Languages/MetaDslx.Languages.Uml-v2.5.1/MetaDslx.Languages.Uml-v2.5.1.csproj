@@ -9,6 +9,7 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
     <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
+    <AssemblyVersion>0.3.0</AssemblyVersion>
 	
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
@@ -35,6 +36,8 @@
   <ItemGroup>
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
     <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
   </ItemGroup>
 
 

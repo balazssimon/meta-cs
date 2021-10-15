@@ -3,13 +3,14 @@ using MetaDslx.Languages.Uml.Model;
 using MetaDslx.Languages.Uml.Serialization.Syntax.InternalSyntax;
 using MetaDslx.Modeling;
 using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 
 namespace MetaDslx.Languages.Uml.Serialization
 {

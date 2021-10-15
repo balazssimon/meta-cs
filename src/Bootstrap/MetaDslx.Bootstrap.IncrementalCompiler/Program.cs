@@ -9,11 +9,11 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
     {
         static void Main(string[] args)
         {
-            MetaCompiler.RandomEdit("meta01.txt");
+            //MetaCompiler.RandomEdit("meta01.txt");
+            MetaCompiler.SerialEdit("meta01.txt");
 
             //TestMetaCompiler.NoEdit("meta09.txt");
             //TestMetaCompiler.Type("meta01.txt");
-            //TestMetaCompiler.SerialEdit("meta01.txt");
             //TestIncrementalCompiler.RandomEdit("meta01.txt");
 
             //TestMGenCompiler.Type("mgen03.txt");

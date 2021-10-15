@@ -47,7 +47,7 @@
         /// </summary>
         FIFO
     }
-
+    
     /// <summary>
     /// ConnectorKind is an enumeration that defines whether a Connector is an assembly or a delegation.
     /// </summary>
@@ -3506,7 +3506,7 @@
     	/// <summary>
     	/// The name of the NamedElement.
     	/// </summary>
-		[symbol: Name]
+		[property: Name]
     	string Name;
     	/// <summary>
     	/// The StringExpression used to define the name of this NamedElement.
@@ -3599,7 +3599,7 @@
     	/// <summary>
     	/// A collection of NamedElements owned by the Namespace.
     	/// </summary>
-        [symbol: Members]
+        [property: Members]
     	containment union set<NamedElement> OwnedMember subsets Element.OwnedElement, Namespace.Member;
     	/// <summary>
     	/// Specifies a set of Constraints owned by this Namespace.
@@ -4158,7 +4158,7 @@
     	/// </summary>
     	// spec:
     	//     result = (parents())
-        [symbol: DeclaredBaseTypes]
+        [property: BaseTypes]
     	derived set<Classifier> General;
     	/// <summary>
     	/// The Generalization relationships for this Classifier. These Generalizations navigate to more general Classifiers in the generalization hierarchy.

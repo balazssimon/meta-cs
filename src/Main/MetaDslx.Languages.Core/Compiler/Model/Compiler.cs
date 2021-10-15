@@ -7332,7 +7332,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			ParserRule.IsAbstract = false;
 			ParserRule.SuperClasses.AddLazy(() => Rule);
 			ParserRule.Properties.AddLazy(() => ParserRule_DefinedModelObject);
-			ParserRule_DefinedModelObject.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.SystemType.ToMutable());
+			ParserRule_DefinedModelObject.SetTypeLazy(() => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.SystemType.ToMutable());
 			ParserRule_DefinedModelObject.Documentation = null;
 			ParserRule_DefinedModelObject.Name = "DefinedModelObject";
 			ParserRule_DefinedModelObject.SymbolProperty = null;
@@ -7494,7 +7494,7 @@ namespace MetaDslx.Languages.Compiler.Model.Internal
 			LexerRule_IsHidden.SetClassLazy(() => LexerRule);
 			LexerRule_IsHidden.DefaultValue = null;
 			LexerRule_IsHidden.IsContainment = false;
-			LexerRule_ValueType.SetTypeLazy(() => global::MetaDslx.Languages.Meta.Model.MetaInstance.SystemType.ToMutable());
+			LexerRule_ValueType.SetTypeLazy(() => global::MetaDslx.Languages.Compiler.Model.CompilerInstance.SystemType.ToMutable());
 			LexerRule_ValueType.Documentation = null;
 			LexerRule_ValueType.Name = "ValueType";
 			LexerRule_ValueType.SymbolProperty = null;

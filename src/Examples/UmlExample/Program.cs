@@ -4,6 +4,7 @@ using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace UmlExample
 {
@@ -21,7 +22,9 @@ namespace UmlExample
             UmlDescriptor.Initialize();
             var umlSerializer = new WhiteStarUmlSerializer();
             //var model = umlSerializer.ReadModelFromFile("../../../DefaultValues.uml", out var diagnostics);
-            var model = umlSerializer.ReadModelFromFile("../../../Pacman.uml", out var diagnostics);
+            //var model = umlSerializer.ReadModelFromFile("../../../Async.uml", out var diagnostics);
+            var model = umlSerializer.ReadModelFromFile("../../../Wsd.uml", out var diagnostics);
+            //var model = umlSerializer.ReadModelFromFile("../../../Pacman.uml", out var diagnostics);
             //var model = umlSerializer.ReadModelFromFile("../../../Class diagram.uml", out var diagnostics);
             DiagnosticFormatter df = new DiagnosticFormatter();
             if (diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))

@@ -5,7 +5,7 @@ using MetaDslx.Modeling;
 
 namespace MetaDslx.Languages.Mof.Model.Internal
 {
-    class MofImplementation : MofImplementationBase
+    public class MofImplementation : MofImplementationBase
     {
         internal override void MofBuilderInstance(MofBuilderInstance _this)
         {
