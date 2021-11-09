@@ -71,10 +71,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModel(string xmiCode, ModelMetadata metadata)
         {
             var result = this.ReadModel(xmiCode, metadata, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
             return result;
         }
 
@@ -90,10 +87,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModel(string xmiCode, XmiReadOptions options)
         {
             var result = this.ReadModel(xmiCode, options, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
             return result;
         }
 
@@ -110,10 +104,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModelFromFile(string xmiFilePath, ModelMetadata metadata)
         {
             var result = this.ReadModelFromFile(xmiFilePath, metadata, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
             return result;
         }
 
@@ -129,10 +120,7 @@ namespace MetaDslx.Modeling
         public ImmutableModel ReadModelFromFile(string xmiFilePath, XmiReadOptions options)
         {
             var result = this.ReadModelFromFile(xmiFilePath, options, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
             return result;
         }
 
@@ -189,10 +177,7 @@ namespace MetaDslx.Modeling
         public string WriteModel(IModel model, XmiWriteOptions options = null)
         {
             var result = WriteModel(model, options, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
             return result;
         }
 
@@ -231,10 +216,7 @@ namespace MetaDslx.Modeling
         public void WriteModelToFile(string xmiFilePath, IModel model, XmiWriteOptions options = null)
         {
             WriteModelToFile(xmiFilePath, model, options, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
         }
 
         public void WriteModelToFile(string xmiFilePath, IModel model, XmiWriteOptions options, out ImmutableArray<Diagnostic> diagnostics)
@@ -271,10 +253,7 @@ namespace MetaDslx.Modeling
         public IReadOnlyDictionary<string, string> WriteModelGroup(IModelGroup modelGroup, XmiWriteOptions options = null)
         {
             var result = WriteModelGroup(modelGroup, options, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
             return result;
         }
 
@@ -358,10 +337,7 @@ namespace MetaDslx.Modeling
         public void WriteModelGroupToFile(IModelGroup modelGroup, XmiWriteOptions options)
         {
             WriteModelGroupToFile(modelGroup, options, out var diagnostics);
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            ThrowIfErrorExists(diagnostics);
         }
 
         public void WriteModelGroupToFile(IModelGroup modelGroup, XmiWriteOptions options, out ImmutableArray<Diagnostic> diagnostics)
@@ -424,6 +400,15 @@ namespace MetaDslx.Modeling
                     var writer = entry.Value;
                     writer.Dispose();
                 }
+            }
+        }
+
+        private void ThrowIfErrorExists(ImmutableArray<Diagnostic> diagnostics)
+        {
+            var errors = diagnostics.Where(diag => diag.Severity == DiagnosticSeverity.Error).ToArray();
+            if (errors.Length > 0)
+            {
+                throw new ModelException(errors[0]);
             }
         }
     }

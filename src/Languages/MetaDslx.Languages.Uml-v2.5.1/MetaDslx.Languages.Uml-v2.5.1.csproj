@@ -9,13 +9,13 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
     <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
-    <AssemblyVersion>0.3.0</AssemblyVersion>
-	
+    <AssemblyVersion>0.3.1.0</AssemblyVersion>
+    <VersionPrefix>0.3.1</VersionPrefix>
+
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
     <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.Languages.Uml-v2.5.1</PackageId>
-    <VersionPrefix>$(MetaDslxLanguagesTargetVersion)</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageDescription>
       The complete implementation of the OMG UML 2.5.1 metamodel standard with XMI serialization support.

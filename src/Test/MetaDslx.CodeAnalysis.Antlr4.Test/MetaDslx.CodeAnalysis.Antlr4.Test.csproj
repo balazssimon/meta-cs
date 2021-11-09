@@ -2,7 +2,7 @@
   <Import Project="..\..\Versions.props" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     
     <IsPackable>false</IsPackable>
     <AssemblyName>MetaDslx.CodeAnalysis.Antlr4.Test</AssemblyName>

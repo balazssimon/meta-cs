@@ -4,7 +4,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>MetaDslx.BuildTools</RootNamespace>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>metadslx</ToolCommandName>
 
@@ -51,7 +51,7 @@
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" PrivateAssets="all" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Compile Update="Resources.Designer.cs">
       <DesignTime>True</DesignTime>

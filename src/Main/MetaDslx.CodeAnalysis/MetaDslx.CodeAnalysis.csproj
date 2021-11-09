@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MetaDslx</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
 

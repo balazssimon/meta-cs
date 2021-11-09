@@ -4,7 +4,7 @@
   <PropertyGroup>
     <RootNamespace>MetaDslx.BuildTasks</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TargetFrameworks>net461;net5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Analyzers\MetaDslx.CodeAnalysis.Analyzers.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Analyzers\MetaDslx.CodeAnalysis.Analyzers.csproj" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

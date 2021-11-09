@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             get
             {
-                if (!_dirty) return _state;
+                //if (!_dirty) return _state;
                 _dirty = false;
                 if (_state == null && IsInState(_state))
                 {
